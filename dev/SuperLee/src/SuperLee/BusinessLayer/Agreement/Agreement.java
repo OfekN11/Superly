@@ -1,4 +1,4 @@
 package SuperLee.BusinessLayer.Agreement;
 
-public class Agreement {
+public abstract class Agreement {
 }
