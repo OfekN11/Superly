@@ -67,7 +67,9 @@ public class Item {
         this.quantity = _quantity;
     }*/
 
-    public void setBulkPrices(Map<Integer, Integer> _bulk){
+    public void setBulkPrices(Map<Integer, Integer> _bulk) throws Exception {
+        NotNull.Check(_bulk);
+
         bulkPrices = _bulk;
     }
 
