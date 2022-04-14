@@ -9,7 +9,7 @@ import java.util.Map;
 
 public abstract class Agreement {
 
-    Map<Integer, Item> items;
+    private Map<Integer, Item> items;
 
     public Agreement(List<Item> _items){
         listToMap(_items);

@@ -7,15 +7,15 @@ import java.util.Map;
 public class Item {
 
     //fields
-    int id;
-    String name;
-    String manufacturer;
-    float pricePerUnit;
+    private int id;
+    private String name;
+    private String manufacturer;
+    private float pricePerUnit;
     //int quantity;
-    Map<Integer, Integer> bulkPrices; // <quantity, percent>
+    private Map<Integer, Integer> bulkPrices; // <quantity, percent>
 
     //POSSIBLE FIELD
-    int idBySupplier = -1; // not yet decided if it's possible
+    private int idBySupplier = -1; // not yet decided if it's possible
 
     public Item(int _id, String _name, String _manu, float _price, Map<Integer, Integer> _bulkPrices){
         id = _id;
