@@ -1,4 +1,68 @@
 package SuperLee.BusinessLayer.Agreement;
 
-public class RoutineAgreement {
+import SuperLee.BusinessLayer.Day;
+import SuperLee.BusinessLayer.Item;
+
+import java.util.*;
+
+public class RoutineAgreement extends Agreement {
+
+    private List<Integer> daysOfDelivery;
+
+    // days should be in the format "x1 x2 x3 ...", xi in {1, 2, 3, 4, 5, 6, 7}
+    public RoutineAgreement(List<Item> _items, String days){
+        super(_items);
+        daysOfDelivery = daysStringToDay(days);
+    }
+
+    private List<Integer> daysStringToDay(String days){
+        List<Integer> list = new LinkedList<>();
+        int d = 0;
+
+        for(int i=0; i<days.length(); i++){
+
+            while(i<days.length() && days.charAt(i) == ' '){
+                i++;
+            }
+
+            d = days.charAt(i)-'0';
+
+            // if the given number is 0 or more than 7 we ignore it
+            if(d>=1 && d<=7){
+                list.add(d);
+            }
+
+            i++;
+        }
+
+        Collections.sort(list);
+
+        return list;
+    }
+
+    @Override
+    public boolean isTransporting() {
+        return true;
+    }
+
+    @Override
+    public int daysToDelivery() {
+        Calendar c = Calendar.getInstance(TimeZone.getDefault());
+        int currentDay = c.get(Calendar.DAY_OF_WEEK);
+        int closestDelivery = 1;
+
+        for(Integer i : daysOfDelivery){
+            if(i > currentDay){
+                closestDelivery = i;
+                break;
+            }
+        }
+
+        if(closestDelivery == 1){
+            return 7-currentDay+2; // 7 days in a week, minus the current day, plus 1 to count the current day, plus one to count Sunday
+        }
+        else{
+            return closestDelivery-currentDay+1; // subtract the current day from the closest delivery day and add one to count the current day
+        }
+    }
 }
