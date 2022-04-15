@@ -13,15 +13,19 @@ class SupplierControllerTest {
 
     private SupplierController controller;
     private ArrayList<Pair<String,String>> contacts;
+    private ArrayList<String> manufacturers;
 
     @BeforeEach
     void setUp() {
         controller = new SupplierController();
         contacts = new ArrayList<>();
+        manufacturers = new ArrayList<>();
+        manufacturers.add("Osem");
+        manufacturers.add("Elit");
         contacts.add(new Pair<String,String>("name", "phone"));
         try {
-            controller.addSupplier(1, "name", 1, "address", "credit card", contacts);
-            controller.addSupplier(2, "name", 2, "address", "credit card", contacts);
+            controller.addSupplier(1, "name", 1, "address", "credit card", contacts, manufacturers);
+            controller.addSupplier(2, "name", 2, "address", "credit card", contacts, manufacturers);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,14 +35,14 @@ class SupplierControllerTest {
     @Test
     void addSupplier() {
         try {
-            controller.addSupplier(3, "name", 3, "address", "credit card", contacts);
+            controller.addSupplier(3, "name", 3, "address", "credit card", contacts, manufacturers);
         } catch (Exception e) {
             e.printStackTrace();
         }
         assertTrue(controller.supplierExist(3));
 
         try {
-            controller.addSupplier(4, "name", 4, "address", "credit card", contacts);
+            controller.addSupplier(4, "name", 4, "address", "credit card", contacts, manufacturers);
         } catch (Exception e) {
             e.printStackTrace();
         }

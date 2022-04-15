@@ -95,6 +95,7 @@ public abstract class Agreement {
         return items.get(id);
     }
 
+
     public abstract boolean isTransporting();
 
     public abstract int daysToDelivery();
@@ -105,4 +106,7 @@ public abstract class Agreement {
     }
 
 
+    public boolean itemExists(int id) {
+        return items.containsKey(id);
+    }
 }

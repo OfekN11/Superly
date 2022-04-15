@@ -17,15 +17,16 @@ public class SupplierController {
 
 
 
-    public void addSupplier(int id, String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs) throws Exception {
+    public void addSupplier(int id, String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
         if(supplierExist(id))
             throw new Exception("Supplier with same Id already exists");
-
         ArrayList<Contact> contacts = new ArrayList<>();
         for(Pair<String,String> curr : contactPairs){
+            if(!validPhoneNumber(curr.getSecond()))
+                throw new Exception("Invalid phone number!");
             contacts.add(new Contact( curr.getFirst(), curr.getSecond()));
         }
-        suppliers.put(id, new Supplier(id, name, bankNumber, address, payingAgreement, contacts) );
+        suppliers.put(id, new Supplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers) );
     }
 
     public void removeSupplier(int id) throws Exception {
@@ -80,7 +81,6 @@ public class SupplierController {
         suppliers.get(id).addManufacturer(manufacturer);
     }
 
-
     public void addAgreement(int supplierId, int agreementType, String agreementDays) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
@@ -105,7 +105,7 @@ public class SupplierController {
     //SHOULD BE PRIVATE, public for testing
     public boolean validPhoneNumber(String phoneNumber){
         //MAYBE THROW THE REGEX?? JUST CHECK NO LETTER INVOLVED
-        // TODO: 15/04/2022 YONE 
+        // TODO: 15/04/2022 YONE
         return phoneNumber.matches("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
 
         //"/^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$/im\n"  not working
@@ -117,7 +117,7 @@ public class SupplierController {
     }
 
 
-    public Map itemsFromAllSuppliers(){
+    public Map<String, List<AgreementItem>> itemsFromAllSuppliers(){
         HashMap<String, List<AgreementItem>> items = new HashMap<>();
         for (Supplier supplier : suppliers.values())
             items.put(supplier.getName(), supplier.getOrderedItems());

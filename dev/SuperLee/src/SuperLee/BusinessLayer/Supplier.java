@@ -26,7 +26,7 @@ public class Supplier {
 
 
 
-    public Supplier(int id, String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts  /*,  ArrayList<String> manufacturers*/){
+    public Supplier(int id, String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts, ArrayList<String> manufacturers){
         this.id = id;
         this.name = name;
         this.bankNumber = bankNumber;
@@ -34,10 +34,9 @@ public class Supplier {
         this.payingAgreement = payingAgreement;
         this.contacts = new ArrayList<>();
         this.contacts = contacts;
+        this.manufacturers = manufacturers;
 
-        manufacturers = new ArrayList<>();
         //this.agreement = new Agreement();
-        //this.manufacturers = manufacturers;
     }
 
     public int getId() {
@@ -52,7 +51,12 @@ public class Supplier {
         return contacts.remove(contact);
     }
 
-    public void addAgreement(int agreementType, String agreementDays) {
+    public void addAgreement(int agreementType, String agreementDays) throws Exception {
+        //"[0-9]+"  checks if all the agreement days chars are digits
+        if(agreementType > 2 || agreementType < 0)
+            throw new Exception("Invalid agreement type!");
+        if( !agreementDays.matches("[0-9]+"))
+            throw new Exception("Invalid agreement days!");
         createAgreement(agreementType, agreementDays);
     }
 
@@ -102,6 +106,8 @@ public class Supplier {
     }
 
     public void addItem(int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+        if(agreement.itemExists(id))
+            throw new Exception("item with this ID already exists!");
         agreement.addItem(new AgreementItem(itemId, itemName, itemManu, itemPrice, bulkPrices));
     }
 
