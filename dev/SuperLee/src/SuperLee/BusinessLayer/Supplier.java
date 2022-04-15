@@ -88,24 +88,20 @@ public class Supplier {
         return agreement.getItems();
     }
 
-    public void updateBulkPriceForItem(String itemName, Map<Integer, Integer> newBulkPrices) {
-        // TODO: 14/04/2022 SAGI
-        //agreement.updateBulkPriceForItem(itemName, newBulkPrices);
+    public void updateBulkPriceForItem(int itemID, Map<Integer, Integer> newBulkPrices) throws Exception {
+        agreement.getItem(itemID).setBulkPrices(newBulkPrices);
     }
 
-    public void updatePricePerUnitForItem(String itemName, int newPrice) {
-        // TODO: 14/04/2022 SAGI
-        //agreement.updatePricePerUnitForItem(itemName, newPrice);
+    public void updatePricePerUnitForItem(int itemID, float newPrice) throws Exception {
+        agreement.getItem(itemID).setPrice(newPrice);
     }
 
-    public void addItem(int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) {
-        //agreement.addItem(new AgreementItem(itemId, itemName, itemManu, itemPrice, bulkPrices));
-        // TODO: 15/04/2022 YONE EROR NOT HANDLED
+    public void addItem(int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+        agreement.addItem(new AgreementItem(itemId, itemName, itemManu, itemPrice, bulkPrices));
     }
 
-    public void deleteItem(int itemId) {
-        //agreement.removeItem(itemId);
-        // TODO: 15/04/2022 YONE EROR NOT HANDLED
+    public void deleteItem(int itemId) throws Exception {
+        agreement.removeItem(itemId);
     }
 
 
@@ -113,18 +109,15 @@ public class Supplier {
         return agreement.isTransporting();
     }
 
-    public void updateItemId(int oldItemId, int newItemId) {
-        // TODO: 14/04/2022 SAGI
-        //agreement.updateItemId(int oldItemId, int newItemId);
+    public void updateItemId(int oldItemId, int newItemId) throws Exception {
+        agreement.getItem(oldItemId).setId(newItemId);
     }
 
-    public void updateItemName(int itemId, String newName) {
-        // TODO: 14/04/2022 SAGI
-        //agreement.updateItemName(itemId, newName);
+    public void updateItemName(int itemId, String newName) throws Exception {
+        agreement.getItem(itemId).setName(newName);
     }
 
-    public void updateItemManufacturer(int itemId, String manufacturer) {
-        // TODO: 14/04/2022 SAGI
-        //agreement.updateItemManufacturer(itemId, manufacturer);
+    public void updateItemManufacturer(int itemId, String manufacturer) throws Exception {
+        agreement.getItem(itemId).setManufacturer(manufacturer);
     }
 }

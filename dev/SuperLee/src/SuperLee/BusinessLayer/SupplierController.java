@@ -1,12 +1,9 @@
 package SuperLee.BusinessLayer;
 
-import SuperLee.ServiceLayer.ServiceItemObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class SupplierController {
 
@@ -109,7 +106,7 @@ public class SupplierController {
         return suppliers.get(id).getOrderedItems();
     }
 
-    //SHOULD BE PRIVATE
+    //SHOULD BE PRIVATE, public for testing
     // TODO: 15/04/2022 YONE
     public boolean supplierExist(int id){
         return suppliers.containsKey(id);
@@ -130,44 +127,44 @@ public class SupplierController {
         //"^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$" not for home numbers
     }
 
-    public void updatebulkPriceForItem(int supplierId, String itemName, Map<Integer, Integer> newBulkPrices){
+    public void updatebulkPriceForItem(int supplierId, int itemID, Map<Integer, Integer> newBulkPrices) throws Exception {
         if(!supplierExist(supplierId))
             throw new IllegalArgumentException("There is no supplier with this ID!");
-        suppliers.get(supplierId).updateBulkPriceForItem(itemName, newBulkPrices);
+        suppliers.get(supplierId).updateBulkPriceForItem(itemID, newBulkPrices);
     }
 
-    public void updatePricePerUnitForItem(int supplierId, String itemName, int newPrice){
+    public void updatePricePerUnitForItem(int supplierId, int itemID, int newPrice) throws Exception {
         if(!supplierExist(supplierId))
             throw new IllegalArgumentException("There is no supplier with this ID!");
-        suppliers.get(supplierId).updatePricePerUnitForItem(itemName, newPrice);
+        suppliers.get(supplierId).updatePricePerUnitForItem(itemID, newPrice);
     }
 
-    public void updateItemId(int supplierId, int olditemId, int newItemId){
+    public void updateItemId(int supplierId, int olditemId, int newItemId) throws Exception {
         if(!supplierExist(supplierId))
             throw new IllegalArgumentException("There is no supplier with this ID!");
         suppliers.get(supplierId).updateItemId(olditemId, newItemId);
     }
 
-    public void updateItemName(int supplierId, int itemId, String newName){
+    public void updateItemName(int supplierId, int itemId, String newName) throws Exception {
         if(!supplierExist(supplierId))
-            throw new IllegalArgumentException("There is no supplier with this ID!");
+            throw new Exception("There is no supplier with this ID!");
         suppliers.get(supplierId).updateItemName(itemId, newName);
     }
 
-    public void updateItemManufacturer(int supplierId, int itemId, String manufacturer){
+    public void updateItemManufacturer(int supplierId, int itemId, String manufacturer) throws Exception {
         if(!supplierExist(supplierId))
-            throw new IllegalArgumentException("There is no supplier with this ID!");
+            throw new Exception("There is no supplier with this ID!");
         suppliers.get(supplierId).updateItemManufacturer(itemId, manufacturer);
     }
 
 
-    public void addItemToAgreement(int supplierId, int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices){
+    public void addItemToAgreement(int supplierId, int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
         if(!supplierExist(supplierId))
-            throw new IllegalArgumentException("There is no supplier with this ID!");
+            throw new Exception("There is no supplier with this ID!");
         suppliers.get(supplierId).addItem(itemId, itemName, itemManu, itemPrice, bulkPrices);
     }
 
-    public void deleteItemFromAgreement(int supplierId, int itemId){
+    public void deleteItemFromAgreement(int supplierId, int itemId) throws Exception {
         if(!supplierExist(supplierId))
             throw new IllegalArgumentException("There is no supplier with this ID!");
         suppliers.get(supplierId).deleteItem(itemId);

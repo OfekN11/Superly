@@ -3,6 +3,7 @@ package SuppliersTests;
 import SuperLee.BusinessLayer.Agreement.Agreement;
 import SuperLee.BusinessLayer.Agreement.NotTransportingAgreement;
 import SuperLee.BusinessLayer.AgreementItem;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class AgreementTest {
 
         return list;
     }
+
+
 
 
 
