@@ -1,10 +1,8 @@
 package SuperLee.BusinessLayer;
 
-import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.Map;
 
-public class Item {
+public class AgreementItem {
 
     //fields
     private int id;
@@ -17,7 +15,7 @@ public class Item {
     //POSSIBLE FIELD
     private int idBySupplier = -1; // not yet decided if it's possible
 
-    public Item(int _id, String _name, String _manu, float _price, Map<Integer, Integer> _bulkPrices){
+    public AgreementItem(int _id, String _name, String _manu, float _price, Map<Integer, Integer> _bulkPrices){
         id = _id;
         name = _name;
         manufacturer = _manu;

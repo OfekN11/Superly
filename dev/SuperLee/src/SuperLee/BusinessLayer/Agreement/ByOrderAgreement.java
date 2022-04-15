@@ -1,6 +1,6 @@
 package SuperLee.BusinessLayer.Agreement;
 
-import SuperLee.BusinessLayer.Item;
+import SuperLee.BusinessLayer.AgreementItem;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ public class ByOrderAgreement extends Agreement{
 
     private int deliveryDays;
 
-    public ByOrderAgreement(List<Item> _items, int _delivery){
+    public ByOrderAgreement(List<AgreementItem> _items, int _delivery){
         super(_items);
         deliveryDays = _delivery;
     }

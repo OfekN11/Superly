@@ -1,6 +1,6 @@
 package SuperLee.BusinessLayer.Agreement;
 
-import SuperLee.BusinessLayer.Item;
+import SuperLee.BusinessLayer.AgreementItem;
 import SuperLee.BusinessLayer.NotNull;
 
 import java.util.ArrayList;
@@ -9,34 +9,34 @@ import java.util.Map;
 
 public abstract class Agreement {
 
-    private Map<Integer, Item> items;
+    private Map<Integer, AgreementItem> items;
 
-    public Agreement(List<Item> _items){
+    public Agreement(List<AgreementItem> _items){
         listToMap(_items);
     }
 
-    private void listToMap(List<Item> _items){
-        for(Item i : _items){
+    private void listToMap(List<AgreementItem> _items){
+        for(AgreementItem i : _items){
             items.put(i.getId(), i);
         }
     }
 
-    private List<Item> mapToList(Map<Integer, Item> map){
+    private List<AgreementItem> mapToList(Map<Integer, AgreementItem> map){
 
         return new ArrayList<>(map.values());
     }
 
-    public List<Item> getItems(){
+    public List<AgreementItem> getItems(){
         return mapToList(items);
     }
 
-    public void setItems(List<Item> _items) throws Exception {
+    public void setItems(List<AgreementItem> _items) throws Exception {
         NotNull.Check(_items);
 
         listToMap(_items);
     }
 
-    public void addItem(Item item) throws Exception {
+    public void addItem(AgreementItem item) throws Exception {
         NotNull.Check(item);
 
         if(items.containsKey(item.getId())){
@@ -54,7 +54,7 @@ public abstract class Agreement {
         items.remove(id);
     }
 
-    public Item getItem(int id) throws Exception {
+    public AgreementItem getItem(int id) throws Exception {
         if(!items.containsKey(id)){
             throw new Exception("No such item exists!");
         }

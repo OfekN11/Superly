@@ -1,12 +1,12 @@
 package SuperLee.BusinessLayer.Agreement;
 
-import SuperLee.BusinessLayer.Item;
+import SuperLee.BusinessLayer.AgreementItem;
 
 import java.util.List;
 
 public class NotTransportingAgreement extends Agreement {
 
-    public NotTransportingAgreement(List<Item> _items){
+    public NotTransportingAgreement(List<AgreementItem> _items){
         super(_items);
     }
 

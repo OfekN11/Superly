@@ -1,7 +1,6 @@
 package SuperLee.BusinessLayer.Agreement;
 
-import SuperLee.BusinessLayer.Day;
-import SuperLee.BusinessLayer.Item;
+import SuperLee.BusinessLayer.AgreementItem;
 
 import java.util.*;
 
@@ -11,7 +10,7 @@ public class RoutineAgreement extends Agreement {
 
     // days should be in the format "x1 x2 x3 ...", xi in {1, 2, 3, 4, 5, 6, 7}
     // THE STRING MUST NOT BE EMPTY!
-    public RoutineAgreement(List<Item> _items, String days){
+    public RoutineAgreement(List<AgreementItem> _items, String days){
         super(_items);
         daysOfDelivery = daysStringToDay(days);
     }
