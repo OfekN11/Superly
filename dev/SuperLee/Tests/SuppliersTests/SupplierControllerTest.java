@@ -1,5 +1,6 @@
-package SuperLee.BusinessLayer;
+package SuppliersTests;
 
+import SuperLee.BusinessLayer.SupplierController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SupplierControllerTest {
 
-    private  SupplierController controller;
+    private SupplierController controller;
 
     @BeforeEach
     void setUp() {
@@ -20,7 +21,7 @@ class SupplierControllerTest {
 
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void addSupplier() {
         controller.addSupplier(3, "name", 3, "address", "credit card", "name", "phone");
         assertTrue(controller.supplierExist(3));
@@ -28,7 +29,7 @@ class SupplierControllerTest {
         assertTrue(controller.supplierExist(4));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void removeSupplier() {
         assertTrue(controller.supplierExist(1));
         controller.removeSupplier(1);

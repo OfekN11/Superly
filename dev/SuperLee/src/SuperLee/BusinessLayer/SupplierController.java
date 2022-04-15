@@ -95,7 +95,7 @@ public class SupplierController {
     }
 
 
-    public HashMap itemsFromAllSuppliers(){
+    public Map itemsFromAllSuppliers(){
         HashMap<String, ArrayList<AgreementItem>> items = new HashMap<>();
          for (Supplier supplier : suppliers.values())
              items.put(supplier.getName(), supplier.getOrderedItems());
@@ -108,11 +108,15 @@ public class SupplierController {
         return suppliers.get(id).getOrderedItems();
     }
 
-    protected boolean supplierExist(int id){
+    //SHOULD BE PRIVATE
+    // TODO: 15/04/2022 YONE
+    public boolean supplierExist(int id){
         return suppliers.containsKey(id);
     }
 
-    protected boolean validPhoneNumber(String phoneNumber){
+    //SHOULD BE PRIVATE
+    // TODO: 15/04/2022 YONE
+    public boolean validPhoneNumber(String phoneNumber){
         //MAYBE THROW THE REGEX?? JUST CHECK NO LETTER INVOLVED
         // TODO: 15/04/2022 YONE 
         return phoneNumber.matches("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
@@ -184,6 +188,5 @@ public class SupplierController {
 
 
     // TODO: 14/04/2022 YONE
-    //changeItemManufacturer
 
 }
