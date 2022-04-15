@@ -10,6 +10,7 @@ public class RoutineAgreement extends Agreement {
     private List<Integer> daysOfDelivery;
 
     // days should be in the format "x1 x2 x3 ...", xi in {1, 2, 3, 4, 5, 6, 7}
+    // THE STRING MUST NOT BE EMPTY!
     public RoutineAgreement(List<Item> _items, String days){
         super(_items);
         daysOfDelivery = daysStringToDay(days);
@@ -63,6 +64,42 @@ public class RoutineAgreement extends Agreement {
         }
         else{
             return closestDelivery-currentDay+1; // subtract the current day from the closest delivery day and add one to count the current day
+        }
+    }
+
+    public List<Integer> getDaysOfDelivery(){
+        return new ArrayList<>(daysOfDelivery);
+    }
+
+    public void setDaysOfDelivery(String days) throws Exception {
+        List<Integer> list = daysStringToDay(days);
+
+        if(list.isEmpty()){
+            throw new Exception("Given string does not contain days of the week!");
+        }
+
+        daysOfDelivery = list;
+    }
+
+    public void addDaysOfDelivery(String days) throws Exception {
+        List<Integer> list = daysStringToDay(days);
+
+        if(list.isEmpty()){
+            throw new Exception("Given string does not contain days of the week!");
+        }
+
+        for(Integer i : list){
+            if(!daysOfDelivery.contains(i)){
+                daysOfDelivery.add(i);
+            }
+        }
+
+        Collections.sort(list);
+    }
+
+    public void removeDayOfDelivery(Integer day){
+        if(daysOfDelivery.contains(day)){
+            daysOfDelivery.remove(day); // Supposed to remove the element day and not the index day
         }
     }
 }
