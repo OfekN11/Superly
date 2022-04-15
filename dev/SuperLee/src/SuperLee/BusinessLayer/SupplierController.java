@@ -4,6 +4,7 @@ import SuperLee.ServiceLayer.ServiceItemObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -96,13 +97,13 @@ public class SupplierController {
 
 
     public Map itemsFromAllSuppliers(){
-        HashMap<String, ArrayList<AgreementItem>> items = new HashMap<>();
+        HashMap<String, List<AgreementItem>> items = new HashMap<>();
          for (Supplier supplier : suppliers.values())
              items.put(supplier.getName(), supplier.getOrderedItems());
         return items;
     }
 
-    public ArrayList<AgreementItem> itemsFromOneSupplier(int id){
+    public List<AgreementItem> itemsFromOneSupplier(int id){
         if(!supplierExist(id))
             throw new IllegalArgumentException("There is no supplier with this ID!");
         return suppliers.get(id).getOrderedItems();

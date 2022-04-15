@@ -3,6 +3,7 @@ package SuperLee.BusinessLayer;
 import SuperLee.BusinessLayer.Agreement.Agreement;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Supplier {
@@ -83,7 +84,7 @@ public class Supplier {
         return name;
     }
 
-    public ArrayList<AgreementItem> getOrderedItems() {
+    public List<AgreementItem> getOrderedItems() {
         return agreement.getItems();
     }
 
