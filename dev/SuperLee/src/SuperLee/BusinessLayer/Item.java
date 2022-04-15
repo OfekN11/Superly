@@ -49,7 +49,7 @@ public class Item {
     public Map<Integer, Integer> getBulkPrices(){
         return bulkPrices;
     }
-    
+
     public void setId(int _id){
         id = _id;
     }
