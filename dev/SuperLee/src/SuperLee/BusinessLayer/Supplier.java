@@ -1,6 +1,9 @@
 package SuperLee.BusinessLayer;
 
 import SuperLee.BusinessLayer.Agreement.Agreement;
+import SuperLee.BusinessLayer.Agreement.ByOrderAgreement;
+import SuperLee.BusinessLayer.Agreement.NotTransportingAgreement;
+import SuperLee.BusinessLayer.Agreement.RoutineAgreement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +20,20 @@ public class Supplier {
     private Agreement agreement;
     private ArrayList<String> manufacturers;
 
-    public Supplier(int id, String name, int bankNumber, String address,String payingAgreement, Contact contact  /*,  ArrayList<String> manufacturers*/){
+    private final int ROUTINE  = 1;
+    private final int BY_ORDER  = 2;
+    private final int NOT_TRANSPORTING  = 3;
+
+
+
+    public Supplier(int id, String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts  /*,  ArrayList<String> manufacturers*/){
         this.id = id;
         this.name = name;
         this.bankNumber = bankNumber;
         this.address = address;
         this.payingAgreement = payingAgreement;
         this.contacts = new ArrayList<>();
-        contacts.add(contact);
+        this.contacts = contacts;
 
         manufacturers = new ArrayList<>();
         //this.agreement = new Agreement();
@@ -43,11 +52,8 @@ public class Supplier {
         return contacts.remove(contact);
     }
 
-    public void addAgreement(ArrayList<AgreementItem> items /*,payingAgreement  */) {
-
-        // TODO: 14/04/2022 SAGI
-        //agreement = new Agreement(items /*,payingAgreement  */);
-
+    public void addAgreement(int agreementType, String agreementDays) {
+        createAgreement(agreementType, agreementDays);
     }
 
     public void updateAddress(String address) {
@@ -79,7 +85,6 @@ public class Supplier {
         manufacturers.add(manufacturer);
     }
 
-
     public String getName() {
         return name;
     }
@@ -104,7 +109,6 @@ public class Supplier {
         agreement.removeItem(itemId);
     }
 
-
     public boolean isTransporting() {
         return agreement.isTransporting();
     }
@@ -120,4 +124,23 @@ public class Supplier {
     public void updateItemManufacturer(int itemId, String manufacturer) throws Exception {
         agreement.getItem(itemId).setManufacturer(manufacturer);
     }
+
+    public void addAgreementItems(List<String> itemsString) throws Exception {
+        agreement.setItemsFromString(itemsString);
+    }
+
+    public void updateAgreementType( int agreementType, String agreementDays) throws Exception {
+        List<AgreementItem> items = agreement.getItems();
+        createAgreement(agreementType, agreementDays);
+        agreement.setItems(items);
+    }
+
+    private void createAgreement(int agreementType, String agreementDays){
+        switch(agreementType){
+            case ROUTINE -> agreement = new RoutineAgreement(agreementDays);
+            case BY_ORDER -> agreement = new ByOrderAgreement(Integer.parseInt(agreementDays));
+            case NOT_TRANSPORTING -> agreement = new NotTransportingAgreement();
+        }
+    }
+
 }

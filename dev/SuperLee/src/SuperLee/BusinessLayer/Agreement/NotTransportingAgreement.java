@@ -6,8 +6,8 @@ import java.util.List;
 
 public class NotTransportingAgreement extends Agreement {
 
-    public NotTransportingAgreement(List<AgreementItem> _items){
-        super(_items);
+    public NotTransportingAgreement(){
+        super();
     }
 
     @Override

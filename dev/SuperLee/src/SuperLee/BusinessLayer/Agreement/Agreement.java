@@ -4,6 +4,7 @@ import SuperLee.BusinessLayer.AgreementItem;
 import SuperLee.BusinessLayer.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +12,8 @@ public abstract class Agreement {
 
     private Map<Integer, AgreementItem> items;
 
-    public Agreement(List<AgreementItem> _items){
-        listToMap(_items);
+    public Agreement(){
+        items = new HashMap<>();
     }
 
     private void listToMap(List<AgreementItem> _items){
@@ -30,10 +31,42 @@ public abstract class Agreement {
         return mapToList(items);
     }
 
+    public void setItemsFromString(List<String> itemsString) throws Exception {
+        NotNull.Check(itemsString);
+        List<AgreementItem> _items = transformStringToItems(itemsString);
+
+        listToMap(_items);
+    }
+
     public void setItems(List<AgreementItem> _items) throws Exception {
         NotNull.Check(_items);
 
         listToMap(_items);
+    }
+
+
+    //Format : " id , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
+    private List<AgreementItem> transformStringToItems(List<String> itemsString) throws Exception {
+        List<AgreementItem> items = new ArrayList<>();
+        for(String curr : itemsString){
+            String[] arr = curr.split(",");
+            if(arr.length % 2 != 0)
+                throw new Exception("You forgot something!");
+
+            for(int i = 0; i < arr.length; i++){
+                arr[i] = arr[i].trim();
+            }
+            int itemId = Integer.parseInt(arr[0]);
+            String name = arr[1];  String manufacturer = arr[2];
+            float pricePerUnit = Float.parseFloat(arr[3]);
+            HashMap<Integer, Integer> bulk = new HashMap<>();
+            for(int i = 4; i < arr.length; i++ ){
+                bulk.put(Integer.parseInt(arr[i]) , Integer.parseInt(arr[i+1]));
+                i++;
+            }
+            items.add(new AgreementItem(itemId, name , manufacturer, pricePerUnit, bulk));
+        }
+        return items;
     }
 
     public void addItem(AgreementItem item) throws Exception {

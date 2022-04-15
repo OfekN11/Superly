@@ -8,8 +8,8 @@ public class ByOrderAgreement extends Agreement{
 
     private int deliveryDays;
 
-    public ByOrderAgreement(List<AgreementItem> _items, int _delivery){
-        super(_items);
+    public ByOrderAgreement( int _delivery){
+        super();
         deliveryDays = _delivery;
     }
 

@@ -1,42 +1,66 @@
 package SuppliersTests;
 
+import SuperLee.BusinessLayer.Pair;
 import SuperLee.BusinessLayer.SupplierController;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class SupplierControllerTest {
 
     private SupplierController controller;
+    private ArrayList<Pair<String,String>> contacts;
 
     @BeforeEach
     void setUp() {
         controller = new SupplierController();
-        controller.addSupplier(1, "name", 1, "address", "credit card", "name", "phone");
-        controller.addSupplier(2, "name", 2, "address", "credit card", "name", "phone");
+        contacts = new ArrayList<>();
+        contacts.add(new Pair<String,String>("name", "phone"));
+        try {
+            controller.addSupplier(1, "name", 1, "address", "credit card", contacts);
+            controller.addSupplier(2, "name", 2, "address", "credit card", contacts);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Test
     void addSupplier() {
-        controller.addSupplier(3, "name", 3, "address", "credit card", "name", "phone");
+        try {
+            controller.addSupplier(3, "name", 3, "address", "credit card", contacts);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         assertTrue(controller.supplierExist(3));
-        controller.addSupplier(4, "name", 4, "address", "credit card", "name", "phone");
+
+        try {
+            controller.addSupplier(4, "name", 4, "address", "credit card", contacts);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         assertTrue(controller.supplierExist(4));
     }
 
     @Test
     void removeSupplier() {
         assertTrue(controller.supplierExist(1));
-        controller.removeSupplier(1);
+        try {
+            controller.removeSupplier(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         assertFalse(controller.supplierExist(1));
 
         assertTrue(controller.supplierExist(2));
-        controller.removeSupplier(2);
+        try {
+            controller.removeSupplier(2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         assertFalse(controller.supplierExist(2));
     }
 

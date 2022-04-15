@@ -1,8 +1,10 @@
 package SuperLee.ServiceLayer;
 
+import SuperLee.BusinessLayer.Pair;
 import SuperLee.BusinessLayer.SupplierController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SupplierService {
 
@@ -14,33 +16,46 @@ public class SupplierService {
 
 
 
-    public void addAgreement(){
-
-        //Get all the things I need from another function maybe?
-        //turning them into ServiceItemObject
-
-        ServiceItemObject obj1 = new ServiceItemObject();
-        ServiceItemObject obj2 = new ServiceItemObject();
-        ArrayList<ServiceItemObject> list = new ArrayList<>();
-        list.add(obj1);
-        list.add(obj2);
-
-        ArrayList<ArrayList<String>> result = new ArrayList<>();
-        for( ServiceItemObject item : list){
-            ArrayList<String> temp = new ArrayList<>();
-
-            // TODO: 14/04/2022 YONE
-            //HOW CAN I SEND FROM SERVICE TO CONTROLLER WITHOUT OBJECTS
-
-            //temp.add(item.getId());
-            //temp.add(item.getName());
-            //temp.add(item.getQuantity());
-            //temp.add(item.getPricePerUnit());
-            //temp.add(item.getBulkDiscount());   //BUT ITS HASHMAP!!!
-            result.add(temp);
+    public void addSupplier(int id, int bankNumber, String address, String name, String payingAgreement , ArrayList<Pair<String,String>> contacts){
+        // TODO: 15/04/2022  Check here if phone number valid
+        try {
+            controller.addSupplier(id, name, bankNumber, address, payingAgreement, contacts );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
-        controller.addAgreement(1,result);
+
+    public void addAgreement(int supplierId, int agreementType, String agreementDays){
+        try {
+            controller.addAgreement(supplierId, agreementType, agreementDays);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addAgreementItems(int supplierId, List<String> itemsString) {
+        try {
+            controller.addItemsToAgreement(supplierId, itemsString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void changeAgreementType(int supplierId,  int agreementType, String agreementDays) {
+        try {
+            controller.updateAgreementType(supplierId, agreementType, agreementDays);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setAgreement(int supplierId, int agreementType, String agreementDays){
+        try {
+            controller.setAgreement(supplierId, agreementType, agreementDays);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

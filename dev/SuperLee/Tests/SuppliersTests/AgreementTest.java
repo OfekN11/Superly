@@ -16,7 +16,7 @@ public class AgreementTest {
 
     @BeforeEach
     public void setUp() throws Exception{
-        agreement = new NotTransportingAgreement(makeItemList());
+        agreement = new NotTransportingAgreement();
     }
 
     private List<AgreementItem> makeItemList(){
