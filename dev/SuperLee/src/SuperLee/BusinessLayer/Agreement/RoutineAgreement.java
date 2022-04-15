@@ -98,8 +98,6 @@ public class RoutineAgreement extends Agreement {
     }
 
     public void removeDayOfDelivery(Integer day){
-        if(daysOfDelivery.contains(day)){
-            daysOfDelivery.remove(day); // Supposed to remove the element day and not the index day
-        }
+        daysOfDelivery.remove(day); // Supposed to remove the element day and not the index day
     }
 }
