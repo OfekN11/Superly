@@ -49,7 +49,7 @@ public class RoutineAgreement extends Agreement {
     public int daysToDelivery() {
         Calendar c = Calendar.getInstance(TimeZone.getDefault());
         int currentDay = c.get(Calendar.DAY_OF_WEEK);
-        int closestDelivery = 1;
+        int closestDelivery = daysOfDelivery.get(0);
 
         for(Integer i : daysOfDelivery){
             if(i > currentDay){
@@ -58,8 +58,8 @@ public class RoutineAgreement extends Agreement {
             }
         }
 
-        if(closestDelivery == 1){
-            return 7-currentDay+2; // 7 days in a week, minus the current day, plus 1 to count the current day, plus one to count Sunday
+        if(closestDelivery <= currentDay){
+            return 7-currentDay+1+closestDelivery; // 7 days in a week, minus the current day, plus 1 to count the current day
         }
         else{
             return closestDelivery-currentDay+1; // subtract the current day from the closest delivery day and add one to count the current day
