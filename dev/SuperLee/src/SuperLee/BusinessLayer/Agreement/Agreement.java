@@ -21,12 +21,12 @@ public abstract class Agreement {
         }
     }
 
-    private ArrayList<AgreementItem> mapToList(Map<Integer, AgreementItem> map){
+    private List<AgreementItem> mapToList(Map<Integer, AgreementItem> map){
 
         return new ArrayList<>(map.values());
     }
 
-    public ArrayList<AgreementItem> getItems(){
+    public List<AgreementItem> getItems(){
         return mapToList(items);
     }
 
