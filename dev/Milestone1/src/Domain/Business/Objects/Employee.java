@@ -34,4 +34,7 @@ public abstract class Employee {
         this.dEmployee = dEmployee;
     }
 
+    public DEmployee getdEmployee() {
+        return dEmployee;
+    }
 }

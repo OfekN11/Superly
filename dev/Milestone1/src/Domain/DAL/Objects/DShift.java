@@ -9,10 +9,10 @@ import java.util.Set;
 public class DShift extends DTO {
 
     // properties
-    private Date date;
-    private String type;
-    private Set<DEmployee> workers;
-    private DEmployeeShiftController employeeShiftController;
+    public Date date;
+    public String type;
+    public Set<DEmployee> workers;
+    public DEmployeeShiftController employeeShiftController;
 
     // constructor
     public DShift(Date date, String type, Set<DEmployee> workers) {
