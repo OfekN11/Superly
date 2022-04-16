@@ -114,4 +114,19 @@ public class AgreementItem {
 
         return finalPrice;
     }
+
+
+    //" id , name , manufacturer , pricePerUnit , quantity1 , percent1 , quantity2 , percent2 ...  "
+    public String getInfoInStringFormat() {
+        String result = "";
+        result += String.valueOf(id) + ",";
+        result += name + ",";
+        result += manufacturer + ",";
+        result += String.valueOf(pricePerUnit) + ",";
+        for( Map.Entry<Integer, Integer> curr : bulkPrices.entrySet()){
+            result += String.valueOf(curr.getKey()) + ",";
+            result += String.valueOf(curr.getValue()) + ",";
+        }
+        return result;
+    }
 }

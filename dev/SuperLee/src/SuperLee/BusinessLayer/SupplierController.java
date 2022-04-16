@@ -117,14 +117,14 @@ public class SupplierController {
     }
 
 
-    public Map<String, List<AgreementItem>> itemsFromAllSuppliers(){
-        HashMap<String, List<AgreementItem>> items = new HashMap<>();
+    public Map<String, Map<Integer, String>> itemsFromAllSuppliers(){
+        HashMap<String, Map<Integer, String>> items = new HashMap<>();
         for (Supplier supplier : suppliers.values())
             items.put(supplier.getName(), supplier.getOrderedItems());
         return items;
     }
 
-    public List<AgreementItem> itemsFromOneSupplier(int id) throws Exception {
+    public Map<Integer, String> itemsFromOneSupplier(int id) throws Exception {
         if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
         return suppliers.get(id).getOrderedItems();
@@ -190,7 +190,15 @@ public class SupplierController {
         suppliers.get(supplierId).addAgreement(agreementType, agreementDays);
     }
 
+    public String getSupplingDaysFromSupplier(int supplierId) throws Exception{
+        if(!supplierExist(supplierId))
+            throw new Exception("There is no supplier with this ID!");
+        return suppliers.get(supplierId).getSupplingDays();
+    }
 
-    // TODO: 14/04/2022 YONE
-
+    public ArrayList<String> getSupplierInfo(int supplierId) throws Exception{
+        if(!supplierExist(supplierId))
+            throw new Exception("There is no supplier with this ID!");
+        return suppliers.get(supplierId).getSupplierInfo();
+    }
 }

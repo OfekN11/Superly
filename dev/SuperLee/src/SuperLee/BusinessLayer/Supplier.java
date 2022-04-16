@@ -32,7 +32,7 @@ public class Supplier {
         this.bankNumber = bankNumber;
         this.address = address;
         this.payingAgreement = payingAgreement;
-        this.contacts = new ArrayList<>();
+        //this.contacts = new ArrayList<>();
         this.contacts = contacts;
         this.manufacturers = manufacturers;
 
@@ -41,6 +41,14 @@ public class Supplier {
 
     public int getId() {
         return id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPayingAgreement() {
+        return payingAgreement;
     }
 
     public int getBankNumber() {
@@ -93,8 +101,8 @@ public class Supplier {
         return name;
     }
 
-    public List<AgreementItem> getOrderedItems() {
-        return agreement.getItems();
+    public Map<Integer, String> getOrderedItems() {
+        return agreement.getItemsInMapFormat();
     }
 
     public void updateBulkPriceForItem(int itemID, Map<Integer, Integer> newBulkPrices) throws Exception {
@@ -149,4 +157,24 @@ public class Supplier {
         }
     }
 
+    public String getSupplingDays() {
+        // TODO: 16/04/2022 SAGI  , how do you want to return the delivery items?
+        return "temp";
+    }
+
+    // < id , name , bankAccount , address , payingAgreement , Contact1Name , Contact1Phone ,  Contact2Name , Contact2Phone ... >
+    public ArrayList<String> getSupplierInfo() {
+        ArrayList<String> result = new ArrayList<>();
+
+        result.add(String.valueOf(getId()));
+        result.add(getName());
+        result.add(String.valueOf(getBankNumber()));
+        result.add(getAddress());
+        result.add(getPayingAgreement());
+        for(Contact contact : contacts){
+            result.add(contact.getName());
+            result.add(contact.getPhone());
+        }
+        return result;
+    }
 }

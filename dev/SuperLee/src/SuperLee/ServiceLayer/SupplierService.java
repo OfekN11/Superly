@@ -3,10 +3,8 @@ package SuperLee.ServiceLayer;
 import SuperLee.BusinessLayer.Pair;
 import SuperLee.BusinessLayer.SupplierController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 public class SupplierService {
 
@@ -19,7 +17,7 @@ public class SupplierService {
 
 
     //Pair.first = name , Pair.second = phoneNumber
-    public void addSupplier(int id, int bankNumber, String address, String name, String payingAgreement , ArrayList<Pair<String,String>> contacts, ArrayList<String> manufacturers){
+    public void addSupplier(int id, String name, int bankNumber, String address, String payingAgreement , ArrayList<Pair<String,String>> contacts, ArrayList<String> manufacturers){
         try {
             controller.addSupplier(id, name, bankNumber, address, payingAgreement, contacts , manufacturers);
         } catch (Exception e) {
@@ -116,16 +114,41 @@ public class SupplierService {
             e.printStackTrace();
         }
     }
+    */
 
-    public List<> itemsFromOneSupplier(int id){
+
+
+    // one entry is : < key : quantity , value : " id , name , manufacturer , pricePerUnit , quantity1 , percent1 , quantity2 , percent2 ...  " >
+    public Map<Integer, ServiceItemObject> itemsFromOneSupplier(int supplierId){
         try {
-            //HashMap<> result = controller.itemsFromOneSupplier(id);
+            Map<Integer, String> result = controller.itemsFromOneSupplier(supplierId);
+            return createServiceItemObject(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return null;
     }
-    */
+
+    private Map<Integer, ServiceItemObject> createServiceItemObject(Map<Integer, String> result) {
+        HashMap<Integer,ServiceItemObject> items = new HashMap<>();
+        for( Map.Entry<Integer, String> currItem : result.entrySet()) {
+            ArrayList<String> info = (ArrayList<String>) Arrays.asList(currItem.getValue().split(","));
+            info = (ArrayList<String>) info.stream().map(curr -> curr.trim() );  //trims all the String in the list
+            int id = Integer.parseInt(info.get(0));
+            String name = info.get(1);
+            String manufacturer = info.get(2);
+            float pricePerUnit = Float.parseFloat(info.get(3));
+            Map<Integer, Integer> bulkPrices = new HashMap<>();  //create the bulkPriceMap
+            for(int i = 4; i < info.size(); i++){
+                bulkPrices.put( Integer.parseInt(info.get(i)) , Integer.parseInt(info.get(i + 1)));
+            }
+            items.put(currItem.getKey(), new ServiceItemObject(id, name , manufacturer , pricePerUnit , bulkPrices));
+        }
+        return items;
+    }
+
+
+
 
     public void updateBulkPriceForItem(int supplierId, int itemID, Map<Integer, Integer> newBulkPrices){
         try {
@@ -207,5 +230,46 @@ public class SupplierService {
             e.printStackTrace();
         }
     }
+
+
+    // "-1" for not transporting , "number" for days until delivery, "x1 x2 .." for supplying days for routine supplier
+    // TODO: 16/04/2022 SAGI What should the return type will be in the end?
+    public String getSupplingDaysFromSupplier(int supplierId){
+        try {
+            return controller.getSupplingDaysFromSupplier(supplierId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "error";
+    }
+
+
+
+    // < id , name , bankAccount , address , payingAgreement , Contact1Name , Contact1Phone ,  Contact2Name , Contact2Phone ... >
+    //Requirement 3
+    public ServiceSupplierObject getSupplierInfo(int supplierId){
+        try {
+            ArrayList<String> result = controller.getSupplierInfo(supplierId);
+            return createServiceSupplierObject(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private ServiceSupplierObject createServiceSupplierObject(ArrayList<String> result) {
+        int id = Integer.parseInt(result.get(0));
+        String name = result.get(1);
+        int bankNumber = Integer.parseInt(result.get(2));
+        String address = result.get(3);
+        String payingAgreement = result.get(4);
+        ArrayList<ServiceContactObject> contacts = new ArrayList<>();
+        for(int i = 5; i < result.size(); i+=2){
+            contacts.add(new ServiceContactObject(result.get(i) , result.get(i+1) ));
+        }
+        return new ServiceSupplierObject(id , name, bankNumber , address , payingAgreement , contacts);
+    }
+
+
 
 }

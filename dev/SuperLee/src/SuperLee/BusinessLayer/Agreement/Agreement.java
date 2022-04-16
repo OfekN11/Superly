@@ -109,4 +109,18 @@ public abstract class Agreement {
     public boolean itemExists(int id) {
         return items.containsKey(id);
     }
+
+
+
+
+
+
+    public Map<Integer, String> getItemsInMapFormat() {
+        HashMap<Integer, String> result = new HashMap<>();
+        for( Map.Entry<Integer, AgreementItem> currItem : items.entrySet()){
+            String currItemInfo = currItem.getValue().getInfoInStringFormat();
+            result.put(currItem.getKey(), currItemInfo);
+        }
+        return result;
+    }
 }
