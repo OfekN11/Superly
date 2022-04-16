@@ -32,7 +32,6 @@ public class Supplier {
         this.bankNumber = bankNumber;
         this.address = address;
         this.payingAgreement = payingAgreement;
-        //this.contacts = new ArrayList<>();
         this.contacts = contacts;
         this.manufacturers = manufacturers;
 
@@ -101,7 +100,7 @@ public class Supplier {
         return name;
     }
 
-    public Map<Integer, String> getOrderedItems() {
+    public List<String> getOrderedItems() {
         return agreement.getItemsInMapFormat();
     }
 
@@ -114,7 +113,7 @@ public class Supplier {
     }
 
     public void addItem(int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
-        if(agreement.itemExists(id))
+        if(agreement.itemExists(itemId))
             throw new Exception("item with this ID already exists!");
         agreement.addItem(new AgreementItem(itemId, itemName, itemManu, itemPrice, bulkPrices));
     }
@@ -127,9 +126,15 @@ public class Supplier {
         return agreement.isTransporting();
     }
 
+    /*
     public void updateItemId(int oldItemId, int newItemId) throws Exception {
         agreement.getItem(oldItemId).setId(newItemId);
+    }*/
+
+    public void updateItemId(int oldItemId, int newItemId) throws Exception {
+        agreement.setItemId(oldItemId, newItemId);
     }
+
 
     public void updateItemName(int itemId, String newName) throws Exception {
         agreement.getItem(itemId).setName(newName);

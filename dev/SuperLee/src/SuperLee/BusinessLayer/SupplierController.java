@@ -63,8 +63,10 @@ public class SupplierController {
     }
 
     public void addSupplierContact(int id, String contactName, String contactPhone) throws Exception {
-        if(!supplierExist(id) || validPhoneNumber(contactPhone))
+        if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
+        if(!validPhoneNumber(contactPhone))
+            throw new Exception("Phone number is Illegal");
         Contact contact = new Contact(contactName, contactPhone);
         suppliers.get(id).addContact(contact);
     }
@@ -106,7 +108,7 @@ public class SupplierController {
     public boolean validPhoneNumber(String phoneNumber){
         //MAYBE THROW THE REGEX?? JUST CHECK NO LETTER INVOLVED
         // TODO: 15/04/2022 YONE
-        return phoneNumber.matches("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
+        return !phoneNumber.matches("[a-zA-Z]+") && phoneNumber.matches("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
 
         //"/^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$/im\n"  not working
         //^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$  half working
@@ -117,14 +119,14 @@ public class SupplierController {
     }
 
 
-    public Map<String, Map<Integer, String>> itemsFromAllSuppliers(){
-        HashMap<String, Map<Integer, String>> items = new HashMap<>();
+    public Map<String, List<String>> itemsFromAllSuppliers(){
+        HashMap<String, List<String>> items = new HashMap<>();
         for (Supplier supplier : suppliers.values())
             items.put(supplier.getName(), supplier.getOrderedItems());
         return items;
     }
 
-    public Map<Integer, String> itemsFromOneSupplier(int id) throws Exception {
+    public List<String> itemsFromOneSupplier(int id) throws Exception {
         if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
         return suppliers.get(id).getOrderedItems();

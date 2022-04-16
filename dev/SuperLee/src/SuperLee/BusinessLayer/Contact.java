@@ -6,7 +6,7 @@ public class Contact {
     private String phone;
 
     public Contact(String contactName, String phoneNumber) {
-        this.name = contactName;
+        this.name = contactName.trim();
         this.phone = phoneNumber;
     }
 

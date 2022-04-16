@@ -122,10 +122,11 @@ public class AgreementItem {
         result += String.valueOf(id) + ",";
         result += name + ",";
         result += manufacturer + ",";
-        result += String.valueOf(pricePerUnit) + ",";
+        result += String.valueOf(pricePerUnit);
         for( Map.Entry<Integer, Integer> curr : bulkPrices.entrySet()){
+            result += ",";
             result += String.valueOf(curr.getKey()) + ",";
-            result += String.valueOf(curr.getValue()) + ",";
+            result += String.valueOf(curr.getValue());
         }
         return result;
     }

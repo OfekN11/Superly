@@ -16,20 +16,25 @@ public abstract class Agreement {
         items = new HashMap<>();
     }
 
-    private void listToMap(List<AgreementItem> _items){
+    private void listToMap(List<AgreementItem> _items) throws Exception {
         for(AgreementItem i : _items){
+            if(itemExists(i.getId()))
+                throw new Exception("Item with this ID already exists!");
             items.put(i.getId(), i);
         }
     }
+
 
     private List<AgreementItem> mapToList(Map<Integer, AgreementItem> map){
 
         return new ArrayList<>(map.values());
     }
 
+
     public List<AgreementItem> getItems(){
         return mapToList(items);
     }
+
 
     public void setItemsFromString(List<String> itemsString) throws Exception {
         NotNull.Check(itemsString);
@@ -37,6 +42,7 @@ public abstract class Agreement {
 
         listToMap(_items);
     }
+
 
     public void setItems(List<AgreementItem> _items) throws Exception {
         NotNull.Check(_items);
@@ -69,6 +75,7 @@ public abstract class Agreement {
         return items;
     }
 
+
     public void addItem(AgreementItem item) throws Exception {
         NotNull.Check(item);
 
@@ -79,6 +86,7 @@ public abstract class Agreement {
         items.put(item.getId(), item);
     }
 
+
     public void removeItem(int id) throws Exception {
         if(!items.containsKey(id)){
             throw new Exception("No such item exists!");
@@ -86,6 +94,7 @@ public abstract class Agreement {
 
         items.remove(id);
     }
+
 
     public AgreementItem getItem(int id) throws Exception {
         if(!items.containsKey(id)){
@@ -98,7 +107,9 @@ public abstract class Agreement {
 
     public abstract boolean isTransporting();
 
+
     public abstract int daysToDelivery();
+
 
     // This method calculates the order's price of only one item
     public double getOrderPrice(int id, int quantity) throws Exception {
@@ -111,16 +122,24 @@ public abstract class Agreement {
     }
 
 
-
-
-
-
-    public Map<Integer, String> getItemsInMapFormat() {
-        HashMap<Integer, String> result = new HashMap<>();
+    public List<String> getItemsInMapFormat() {
+        ArrayList<String> result = new ArrayList<>();
         for( Map.Entry<Integer, AgreementItem> currItem : items.entrySet()){
             String currItemInfo = currItem.getValue().getInfoInStringFormat();
-            result.put(currItem.getKey(), currItemInfo);
+            result.add(currItemInfo);
         }
         return result;
+    }
+
+
+    public void setItemId(int oldItemId, int newItemId) throws Exception {
+        if(!itemExists(oldItemId))
+            throw new Exception("Item with this ID does not exist");
+        if(itemExists(newItemId))
+            throw new Exception("The new ID you gave has already been used!");
+        AgreementItem item = items.remove(oldItemId);
+        item.setId(newItemId);
+        items.put(newItemId, item);
+
     }
 }

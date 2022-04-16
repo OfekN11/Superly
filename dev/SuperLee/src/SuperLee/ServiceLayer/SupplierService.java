@@ -97,6 +97,7 @@ public class SupplierService {
         }
     }
 
+    //Format : " id , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
     public void addAgreementItems(int supplierId, List<String> itemsString) {
         try {
             controller.addItemsToAgreement(supplierId, itemsString);
@@ -105,23 +106,22 @@ public class SupplierService {
         }
     }
 
-    // TODO: 15/04/2022   What is the return type from the Controller? we cant pass objects!
-    /*
-    public Map itemsFromAllSuppliers(){
+    // TODO: 16/04/2022  Need to change the key of  the Map if we want to use this, name is not unique
+    public Map<String, ServiceItemObject> itemsFromAllSuppliers(){
+        /*
         try {
-            //HashMap<> result = controller.itemsFromAllSuppliers();
+            Map<String, List<String>> result = controller.itemsFromAllSuppliers();
         } catch (Exception e) {
             e.printStackTrace();
         }
+         */
+        return null;
     }
-    */
 
-
-
-    // one entry is : < key : quantity , value : " id , name , manufacturer , pricePerUnit , quantity1 , percent1 , quantity2 , percent2 ...  " >
-    public Map<Integer, ServiceItemObject> itemsFromOneSupplier(int supplierId){
+    // one component is : < " id , name , manufacturer , pricePerUnit , quantity1 , percent1 , quantity2 , percent2 ...  " >
+    public List<ServiceItemObject> itemsFromOneSupplier(int supplierId){
         try {
-            Map<Integer, String> result = controller.itemsFromOneSupplier(supplierId);
+            List<String> result = controller.itemsFromOneSupplier(supplierId);
             return createServiceItemObject(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,26 +129,25 @@ public class SupplierService {
         return null;
     }
 
-    private Map<Integer, ServiceItemObject> createServiceItemObject(Map<Integer, String> result) {
-        HashMap<Integer,ServiceItemObject> items = new HashMap<>();
-        for( Map.Entry<Integer, String> currItem : result.entrySet()) {
-            ArrayList<String> info = (ArrayList<String>) Arrays.asList(currItem.getValue().split(","));
-            info = (ArrayList<String>) info.stream().map(curr -> curr.trim() );  //trims all the String in the list
+    private List<ServiceItemObject> createServiceItemObject(List<String> result) {
+        ArrayList<ServiceItemObject> items = new ArrayList<>();
+        for(String currItem : result) {
+            List<String> temp =  Arrays.asList(currItem.split(","));
+            ArrayList<String> info = new ArrayList<>();
+            temp.forEach( (curr) -> info.add(curr.trim()) );
+
             int id = Integer.parseInt(info.get(0));
             String name = info.get(1);
             String manufacturer = info.get(2);
             float pricePerUnit = Float.parseFloat(info.get(3));
             Map<Integer, Integer> bulkPrices = new HashMap<>();  //create the bulkPriceMap
-            for(int i = 4; i < info.size(); i++){
+            for(int i = 4; i < info.size(); i+=2){
                 bulkPrices.put( Integer.parseInt(info.get(i)) , Integer.parseInt(info.get(i + 1)));
             }
-            items.put(currItem.getKey(), new ServiceItemObject(id, name , manufacturer , pricePerUnit , bulkPrices));
+            items.add( new ServiceItemObject(id, name , manufacturer , pricePerUnit , bulkPrices));
         }
         return items;
     }
-
-
-
 
     public void updateBulkPriceForItem(int supplierId, int itemID, Map<Integer, Integer> newBulkPrices){
         try {
@@ -242,7 +241,6 @@ public class SupplierService {
         }
         return "error";
     }
-
 
 
     // < id , name , bankAccount , address , payingAgreement , Contact1Name , Contact1Phone ,  Contact2Name , Contact2Phone ... >
