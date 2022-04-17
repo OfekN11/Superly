@@ -1,6 +1,7 @@
 package Domain.Business.Objects;
 
 import Domain.Business.Objects.Enums.EmployeeJob;
+import Domain.Business.Objects.Enums.ShiftType;
 import Domain.DAL.Objects.DEmployee;
 
 import java.util.Date;
@@ -26,7 +27,7 @@ public abstract class Employee {
         this.salary = salary;
         this.employmentConditions = employmentConditions;
         this.startingDate = startingDate;
-        this.dEmployee = new DEmployee(id,name,bankDetails,salary,employmentConditions,startingDate,getJobTitle().name());
+        this.dEmployee = new DEmployee(id,name,bankDetails,salary,employmentConditions,startingDate,getJobTitle().toString());
         constraint = new HashSet<>();
     }
 
@@ -48,7 +49,7 @@ public abstract class Employee {
         return id;
     }
 
-    public void addConstraint(Date date, String type){
+    public void addConstraint(Date date, ShiftType type){
         constraint.add(new Constraint(date, type));
     }
 

@@ -1,5 +1,6 @@
 package Domain.Business.Objects;
 
+import Domain.Business.Objects.Enums.ShiftType;
 import Domain.DAL.Objects.DShift;
 
 import java.util.Date;
@@ -10,7 +11,12 @@ public  class NightShift extends Shift {
         super(dShift,employees);
     }
 
+    @Override
+    public ShiftType getType() {
+        return ShiftType.Night;
+    }
+
     public NightShift(Date date,  Employee shiftManager){
-        super(date,"Night",shiftManager);
+        super(date,shiftManager);
     }
 }

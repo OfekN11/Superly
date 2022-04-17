@@ -1,7 +1,5 @@
 package Domain.DAL.Objects;
-
 import Domain.DAL.Abstract.DTO;
-
 import java.util.Date;
 
 

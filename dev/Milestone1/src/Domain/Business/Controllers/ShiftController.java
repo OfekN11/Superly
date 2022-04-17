@@ -3,7 +3,6 @@ import Domain.Business.Objects.DayShift;
 import Domain.Business.Objects.Employee;
 import Domain.Business.Objects.Enums.ShiftType;
 import Domain.Business.Objects.NightShift;
-import Domain.Business.Objects.Shift;
 import Domain.DAL.Controllers.DShiftController;
 import Domain.DAL.Objects.DShift;
 
@@ -28,7 +27,7 @@ public class ShiftController {
 
     public void CreateFakeShifts(){
         for (DShift dShift: dShiftController.createFakeDTOs()) {
-            if (dShift.type.equals("Day"))
+            if (dShift.type.equals(ShiftType.Day.toString()))
                 dayShifts.put(dShift.date.getTime() ,new DayShift(dShift,employeeController.getEmployees(dShift.workersId)));
             else
                 nightShifts.put(dShift.date.getTime(),new NightShift(dShift,employeeController.getEmployees(dShift.workersId)));
