@@ -13,9 +13,6 @@ public class Product {
     private int weight;
     private List<Supplier> suppliers;
     private double price;
-    private List<Discount> discountHistory;
-    private List<Sale> saleHistory;
-
     private void RemoveItems(int storeId, int amount) { //brought or thrown
     }
     private void MoveItem(int storeId, int amount) { //from warehouse to store
