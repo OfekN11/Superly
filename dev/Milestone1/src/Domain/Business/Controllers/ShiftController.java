@@ -1,4 +1,5 @@
 package Domain.Business.Controllers;
+import Domain.Business.Objects.Cashier;
 import Domain.Business.Objects.DayShift;
 import Domain.Business.Objects.Employee;
 import Domain.Business.Objects.Enums.ShiftType;
@@ -34,14 +35,14 @@ public class ShiftController {
         }
     }
 
-    public NightShift CreateNewNightShift(Date date, Employee shiftManager){
+    public NightShift CreateNewNightShift(Date date, Cashier shiftManager){
 
         NightShift newShift =new NightShift(date,shiftManager);
         nightShifts.put(date.getTime(),newShift);
         return newShift;
     }
 
-    public DayShift CreateNewDayShift(Date date, Employee shiftManager){
+    public DayShift CreateNewDayShift(Date date, Cashier shiftManager){
         DayShift newShift =new DayShift(date,shiftManager);
         dayShifts.put(date.getTime(), newShift);
         return newShift;

@@ -11,7 +11,7 @@ public class DayShift extends Shift {
         super(dShift,employees);
     }
 
-    public DayShift(Date date,  Employee shiftManager){
+    public DayShift(Date date,  Cashier shiftManager){
         super(date,shiftManager);
     }
 

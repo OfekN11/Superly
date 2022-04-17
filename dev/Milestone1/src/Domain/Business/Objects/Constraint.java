@@ -12,4 +12,12 @@ public class Constraint {
         this.date = date;
         this.type = type;
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public ShiftType getType() {
+        return type;
+    }
 }

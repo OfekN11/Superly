@@ -16,7 +16,7 @@ public  class NightShift extends Shift {
         return ShiftType.Night;
     }
 
-    public NightShift(Date date,  Employee shiftManager){
+    public NightShift(Date date,  Cashier shiftManager){
         super(date,shiftManager);
     }
 }

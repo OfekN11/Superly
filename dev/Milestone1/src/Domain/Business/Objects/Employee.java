@@ -17,7 +17,7 @@ public abstract class Employee {
     protected int salary;
     protected String employmentConditions;
     protected Date startingDate;
-    protected Set<Constraint> constraint;
+    protected Set<Constraint> constraints;
     protected DEmployee dEmployee; // represent of this object in the DAL
 
     public Employee(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate) {
@@ -28,7 +28,7 @@ public abstract class Employee {
         this.employmentConditions = employmentConditions;
         this.startingDate = startingDate;
         this.dEmployee = new DEmployee(id,name,bankDetails,salary,employmentConditions,startingDate,getJobTitle().toString());
-        constraint = new HashSet<>();
+        constraints = new HashSet<>();
     }
 
     public Employee(DEmployee dEmployee) {
@@ -50,7 +50,15 @@ public abstract class Employee {
     }
 
     public void addConstraint(Date date, ShiftType type){
-        constraint.add(new Constraint(date, type));
+        constraints.add(new Constraint(date, type));
+    }
+
+    public boolean isAvailable(Date date,ShiftType shiftType){
+        for(Constraint constraint: constraints)
+            if (constraint.getDate().getTime()==date.getTime() & constraint.getType() == shiftType)
+                return false;
+
+        return true;
     }
 
     public abstract EmployeeJob getJobTitle();

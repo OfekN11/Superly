@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Shift {
-    private static final String employeeAlreadyIn = "this employee already in this shift";
+    private static final String employeeAlreadyInShiftErrorMsg = "this employee already in this shift";
     // properties
     protected Date date;
     protected Set<Employee> employees;
@@ -14,16 +14,14 @@ public abstract class Shift {
     protected DShift dShift; // represent of this object in the DAL
 
     // constructors
-    public Shift(Date date,Employee shiftManager) {
+    public Shift(Date date,Cashier shiftManager) {
         this.employees = new HashSet<>();
         this.date = date;
         this.employees.add(shiftManager);
-        Set<Integer> employeesId = new HashSet<>();
-        for (Employee employee: employees) {
-            employeesId.add(employee.getId());
-        }
-        this.dShift = new DShift(date,getType().toString(),employeesId,shiftManager.getId());
         this.shiftManagerId =shiftManager.getId();
+        Set<Integer> employeesId = new HashSet<>();
+        employeesId.add(shiftManagerId);
+        this.dShift = new DShift(date,getType().toString(),employeesId,shiftManager.getId());
     }
 
     public Shift(DShift dShift, Set<Employee> employees) {
@@ -35,7 +33,7 @@ public abstract class Shift {
 
     public void AddEmployee(Employee employee){
         if(employees.contains(employee))
-            throw new RuntimeException(employeeAlreadyIn);
+            throw new RuntimeException(employeeAlreadyInShiftErrorMsg);
         employees.add(employee);
     }
 

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DShiftController extends DalController<DShift> {
+public class  DShiftController extends DalController<DShift> {
     // properties
     private DEmployeeController dEmployeeController;
     private DEmployeeShiftController dEmployeeShiftController;
