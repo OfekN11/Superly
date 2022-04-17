@@ -18,30 +18,27 @@ public class EmployeeController {
 
     // constructor
     public EmployeeController() {
-        dEmployeeController = new DEmployeeController();
-        Set<DEmployee> dEmployees = dEmployeeController.createFakeDTOs();
         employees = new HashMap<>();
-        for (DEmployee dEmployee :dEmployees) {
-            Employee employee;
-            switch (dEmployee.job){
-                case "Carrier":
-                    employee =new Carrier(dEmployee);
-                    break;
-                case "Cashier":
-                    employee =new Cashier(dEmployee);
-                    break;
-                default:
-                    employee =new Storekeeper(dEmployee);
-                    break;
-            }
-            employees.put(employee.getId(),employee);
-        }
+        dEmployeeController = new DEmployeeController();
     }
+
 
     public Set<Employee> getEmployees(Set<Integer> workersId) {
         Set<Employee> output = new HashSet<>();
         for (Integer id : workersId)
             output.add(this.employees.get(id));
         return output;
+    }
+
+    public void createFakeEmployees() {
+        Set<DEmployee> dEmployees = dEmployeeController.createFakeDTOs();
+        for (DEmployee dEmployee : dEmployees) {
+            Employee employee = switch (dEmployee.job) {
+                case "Carrier" -> new Carrier(dEmployee);
+                case "Cashier" -> new Cashier(dEmployee);
+                default -> new Storekeeper(dEmployee);
+            };
+            employees.put(employee.getId(), employee);
+        }
     }
 }
