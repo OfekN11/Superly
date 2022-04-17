@@ -5,6 +5,8 @@ import SuperLee.BusinessLayer.Agreement.NotTransportingAgreement;
 import SuperLee.BusinessLayer.AgreementItem;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +17,7 @@ public class AgreementTest {
     Agreement agreement;
 
     @BeforeEach
-    public void setUp() throws Exception{
+    public void setUp(){
         agreement = new NotTransportingAgreement();
     }
 
@@ -32,7 +34,23 @@ public class AgreementTest {
         return list;
     }
 
+    @Test
+    public void test_setItems_getItems(){
+        List<AgreementItem> list = makeItemList();
 
+        try{
+            agreement.setItems(list);
+            assertEquals(list, agreement.getItems());
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void test_setItemsFromString(){
+
+    }
 
 
 

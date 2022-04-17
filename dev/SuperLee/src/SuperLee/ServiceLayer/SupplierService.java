@@ -233,7 +233,7 @@ public class SupplierService {
 
     // "-1" for not transporting , "number" for days until delivery, "x1 x2 .." for supplying days for routine supplier
     // TODO: 16/04/2022 SAGI What should the return type will be in the end?
-    public String getSupplingDaysFromSupplier(int supplierId){
+    public String getSupplyingDaysFromSupplier(int supplierId){
         try {
             return controller.getSupplingDaysFromSupplier(supplierId);
         } catch (Exception e) {
