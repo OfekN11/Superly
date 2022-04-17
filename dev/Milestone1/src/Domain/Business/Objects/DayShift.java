@@ -1,4 +1,11 @@
 package Domain.Business.Objects;
 
-public class DayShift {
+import Domain.DAL.Objects.DShift;
+
+import java.util.Set;
+
+public class DayShift extends Shift {
+    public DayShift(DShift dShift, Set<Employee> employees,int shiftManagerId) {
+        super(dShift,employees,shiftManagerId);
+    }
 }

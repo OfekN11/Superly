@@ -5,19 +5,22 @@ import Domain.Business.Objects.Employee;
 import Domain.Business.Objects.Storekeeper;
 import Domain.DAL.Controllers.DEmployeeController;
 import Domain.DAL.Objects.DEmployee;
+
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class EmployeeController {
     // properties
-    Set<Employee> employees;
+    Map<Integer,Employee> employees;
     DEmployeeController dEmployeeController;
-    // constructor
 
+    // constructor
     public EmployeeController() {
         dEmployeeController = new DEmployeeController();
         Set<DEmployee> dEmployees = dEmployeeController.createFakeDTOs();
-        employees = new HashSet<>();
+        employees = new HashMap<>();
         for (DEmployee dEmployee :dEmployees) {
             Employee employee;
             switch (dEmployee.job){
@@ -31,7 +34,14 @@ public class EmployeeController {
                     employee =new Storekeeper(dEmployee);
                     break;
             }
-            employees.add(employee);
+            employees.put(employee.getId(),employee);
         }
+    }
+
+    public Set<Employee> getEmployees(Set<Integer> workersId) {
+        Set<Employee> output = new HashSet<>();
+        for (Integer id : workersId)
+            output.add(this.employees.get(id));
+        return output;
     }
 }

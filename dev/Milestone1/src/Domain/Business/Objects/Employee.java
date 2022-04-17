@@ -37,4 +37,8 @@ public abstract class Employee {
     public DEmployee getdEmployee() {
         return dEmployee;
     }
+
+    public Integer getId() {
+        return id;
+    }
 }

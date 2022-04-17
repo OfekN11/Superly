@@ -1,6 +1,5 @@
 package Domain.Business.Objects;
 
-import Domain.DAL.Objects.DEmployee;
 import Domain.DAL.Objects.DShift;
 
 import java.util.Date;
@@ -9,33 +8,26 @@ import java.util.Set;
 
 public abstract class Shift {
     // properties
-    Date date;
-    Set<Carrier> carriers;
-    Set<Cashier> cashiers;
-    Set<Storekeeper> storekeepers;
-    DShift dShift; // represent of this object in the DAL
+    private Date date;
+    private Set<Employee> employees;
+    private int shiftManagerId;
+    private DShift dShift; // represent of this object in the DAL
 
-    public Shift(Date date, Set<Carrier> carriers, Set<Cashier> cashiers, Set<Storekeeper> storekeepers, String type) {
+    // constructors
+    public Shift(Date date, Set<Employee> employees, String type,int shiftManagerId) {
         this.date = date;
-        this.carriers = carriers;
-        this.cashiers = cashiers;
-        this.storekeepers = storekeepers;
-        Set<DEmployee> dEmployees = new HashSet<>();
-
-        for(Employee employee: carriers)
-            dEmployees.add(employee.getdEmployee());
-        for(Employee employee: cashiers)
-            dEmployees.add(employee.getdEmployee());
-        for(Employee employee: storekeepers)
-            dEmployees.add(employee.getdEmployee());
-        this.dShift = new DShift(date,type,dEmployees);
+        Set<Integer> dEmployeesId = new HashSet<>();
+        for (Employee employee: employees) {
+            dEmployeesId.add(employee.getId());
+        }
+        this.dShift = new DShift(date,type,dEmployeesId,shiftManagerId);
+        this.shiftManagerId =shiftManagerId;
     }
 
-    public Shift(DShift dShift,Set<Carrier> carriers, Set<Cashier> cashiers, Set<Storekeeper> storekeepers) {
+    public Shift(DShift dShift, Set<Employee> employees,int shiftManagerId) {
         this.dShift = dShift;
         this.date = dShift.date;
-        this.carriers = carriers;
-        this.cashiers =cashiers;
-        this.storekeepers =storekeepers;
+        this.employees =employees;
+        this.shiftManagerId = shiftManagerId;
     }
 }

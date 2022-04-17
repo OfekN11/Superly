@@ -11,14 +11,16 @@ public class DShift extends DTO {
     // properties
     public Date date;
     public String type;
-    public Set<DEmployee> workers;
-    public DEmployeeShiftController employeeShiftController;
+    public Set<Integer> workersId;
+    public int shiftManagerId;
+    private DEmployeeShiftController employeeShiftController;
 
     // constructor
-    public DShift(Date date, String type, Set<DEmployee> workers) {
+    public DShift(Date date, String type, Set<Integer> workers,int shiftManagerId) {
         this.date = date;
         this.type = type;
-        this.workers = workers;
+        this.workersId = workers;
         this.employeeShiftController = new DEmployeeShiftController();
+        this.shiftManagerId = shiftManagerId;
     }
 }
