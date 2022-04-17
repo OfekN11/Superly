@@ -13,6 +13,6 @@ public class Product {
     private int weight;
     private List<Supplier> suppliers;
     private double price;
-    private List<Discount> discountHistory;
+    private List<SaleToCustomer> discountHistory;
     private Date expiration;
 }
