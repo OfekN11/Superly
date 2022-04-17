@@ -14,7 +14,7 @@ public class StoreController {
     }
 
     public void init() {
-        //initialize stuff
+        //initialize stuff for tests
     }
 
     public List<DiscountFromSupplier> getDiscountFromSupplierHistory(int productID) {
@@ -35,5 +35,21 @@ public class StoreController {
 
     public List<Product> getItemsFromCategory(int categoryID) {
         return null;
+    }
+
+    public void purchaseProduct(int storeID, int productID, int amount) {
+        //find product remove amount
+    }
+
+    public void removeProduct(int storeID, int productID, int amount) {
+        //find product remove amount
+    }
+
+    public void returnProduct(int storeID, int productID, int amount) {
+        //find product add amount
+    }
+
+    public void move(int productID, Location from, Location to) {
+        //find product move amount
     }
 }
