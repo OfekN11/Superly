@@ -162,7 +162,7 @@ public class Supplier {
         }
     }
 
-    public String getSupplingDays() {
+    public String getSupplyingDays() {
         // TODO: 16/04/2022 SAGI  , how do you want to return the delivery items?
         return "temp";
     }

@@ -195,7 +195,7 @@ public class SupplierController {
     public String getSupplingDaysFromSupplier(int supplierId) throws Exception{
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
-        return suppliers.get(supplierId).getSupplingDays();
+        return suppliers.get(supplierId).getSupplyingDays();
     }
 
     public ArrayList<String> getSupplierInfo(int supplierId) throws Exception{
