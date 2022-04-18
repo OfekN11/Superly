@@ -10,6 +10,8 @@ import Domain.DAL.Objects.DEmployee;
 import java.util.*;
 
 public class EmployeeController {
+    private static final String EmployeeNotFoundErrorMsg ="Employee id %f could not be found";
+
     // properties
     Map<Integer,Employee> employees;
     DEmployeeController dEmployeeController;
@@ -23,8 +25,20 @@ public class EmployeeController {
 
     public Set<Employee> getEmployees(Set<Integer> workersId) {
         Set<Employee> output = new HashSet<>();
-        for (Integer id : workersId)
-            output.add(this.employees.get(id));
+        for (Integer id : workersId) {
+            Employee employee = this.employees.get(id);
+            if (employee == null)
+                throw new RuntimeException(String.format(EmployeeNotFoundErrorMsg,id));
+            output.add(employee);
+        }
+        return output;
+    }
+
+    public Employee getEmployee(int employeeID){
+        Employee output =employees.get(employeeID);
+        if (output== null)
+            throw new RuntimeException(String.format(EmployeeNotFoundErrorMsg,employeeID));
+
         return output;
     }
 

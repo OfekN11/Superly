@@ -7,11 +7,12 @@ import java.util.Set;
 
 public abstract class Shift {
     private static final String employeeAlreadyInShiftErrorMsg = "this employee already in this shift";
+    private static final String employeeNotInShiftErrorMsg = "Employee %o was not in the shift";
     // properties
-    protected Date date;
-    protected Set<Employee> employees;
-    protected int shiftManagerId;
-    protected DShift dShift; // represent of this object in the DAL
+    private Date date;
+    private Set<Employee> employees;
+    private int shiftManagerId;
+    private DShift dShift; // represent of this object in the DAL
 
     // constructors
     public Shift(Date date,Cashier shiftManager) {
@@ -37,5 +38,35 @@ public abstract class Shift {
         employees.add(employee);
     }
 
+    public void replaceShiftManager(Cashier newManager){
+        if(employees.contains(newManager))
+            shiftManagerId = newManager.getId();
+    }
+
+    public static String getEmployeeAlreadyInShiftErrorMsg() {
+        return employeeAlreadyInShiftErrorMsg;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public int getShiftManagerId() {
+        return shiftManagerId;
+    }
+
+    public DShift getdShift() {
+        return dShift;
+    }
+
     public abstract ShiftType getType();
+
+    public void removeEmployee(Employee employee){
+        if (!employees.remove(employee))
+            throw new RuntimeException(String.format(employeeNotInShiftErrorMsg,employee.getId()));
+    }
 }

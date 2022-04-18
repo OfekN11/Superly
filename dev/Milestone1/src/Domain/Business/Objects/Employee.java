@@ -11,14 +11,14 @@ import java.util.Set;
 public abstract class Employee {
 
     // properties
-    protected int id;
-    protected String name;
-    protected String bankDetails;
-    protected int salary;
-    protected String employmentConditions;
-    protected Date startingDate;
-    protected Set<Constraint> constraints;
-    protected DEmployee dEmployee; // represent of this object in the DAL
+    private int id;
+    private String name;
+    private String bankDetails;
+    private int salary;
+    private String employmentConditions;
+    private Date startingDate;
+    private Set<Constraint> constraints;
+    private DEmployee dEmployee; // represent of this object in the DAL
 
     public Employee(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate) {
         this.id = id;
@@ -59,6 +59,34 @@ public abstract class Employee {
                 return false;
 
         return true;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getBankDetails() {
+        return bankDetails;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public String getEmploymentConditions() {
+        return employmentConditions;
+    }
+
+    public Date getStartingDate() {
+        return startingDate;
+    }
+
+    public Set<Constraint> getConstraints() {
+        return constraints;
+    }
+
+    public DEmployee getdEmployee() {
+        return dEmployee;
     }
 
     public abstract EmployeeJob getJobTitle();
