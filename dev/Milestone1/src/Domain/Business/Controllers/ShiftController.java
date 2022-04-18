@@ -2,10 +2,10 @@ package Domain.Business.Controllers;
 import Domain.Business.Objects.Cashier;
 import Domain.Business.Objects.DayShift;
 import Domain.Business.Objects.Employee;
-import Domain.Business.Objects.Enums.ShiftType;
 import Domain.Business.Objects.NightShift;
 import Domain.DAL.Controllers.DShiftController;
 import Domain.DAL.Objects.DShift;
+import Globals.Enums.ShiftTypes;
 
 import java.util.*;
 
@@ -28,7 +28,7 @@ public class ShiftController {
 
     public void CreateFakeShifts(){
         for (DShift dShift: dShiftController.createFakeDTOs()) {
-            if (dShift.type.equals(ShiftType.Day.toString()))
+            if (dShift.type.equals(ShiftTypes.Morning.toString()))
                 dayShifts.put(dShift.date.toString() ,new DayShift(dShift,employeeController.getEmployees(dShift.workersId)));
             else
                 nightShifts.put(dShift.date.toString(),new NightShift(dShift,employeeController.getEmployees(dShift.workersId)));
@@ -48,8 +48,8 @@ public class ShiftController {
         return newShift;
     }
 
-    public void AddEmployeeToShift(Date date, ShiftType shiftType,Employee employee){
-        if(shiftType == ShiftType.Day){
+    public void AddEmployeeToShift(Date date, ShiftTypes shiftType,Employee employee){
+        if(shiftType == ShiftTypes.Morning){
             DayShift dayShift = dayShifts.get(date.toString());
             if(dayShift != null) {
                 dayShift.AddEmployee(employee);
@@ -66,8 +66,8 @@ public class ShiftController {
         throw new RuntimeException(shiftNotFoundErrorMsg);
     }
 
-    public void removeEmployeeFromShift(Date shiftDate, ShiftType shiftType,int employeeId){
-        if(shiftType == ShiftType.Day)
+    public void removeEmployeeFromShift(Date shiftDate, ShiftTypes shiftType,int employeeId){
+        if(shiftType == ShiftTypes.Morning)
             dayShifts.get(shiftDate.toString()).removeEmployee(employeeController.getEmployee(employeeId)) ;
         else
             nightShifts.get(shiftDate.toString()).removeEmployee(employeeController.getEmployee(employeeId));

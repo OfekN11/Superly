@@ -1,15 +1,18 @@
 package Domain.Business.Objects;
 
-import Domain.Business.Objects.Enums.EmployeeJob;
-import Domain.Business.Objects.Enums.ShiftType;
 import Domain.DAL.Objects.DEmployee;
+import Globals.Enums.Certifications;
+import Globals.Enums.JobTitles;
+import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Abstract class representing Employee for business purposes
+ */
 public abstract class Employee {
-
     // properties
     private int id;
     private String name;
@@ -17,20 +20,38 @@ public abstract class Employee {
     private int salary;
     private String employmentConditions;
     private Date startingDate;
+    private Set<Certifications> certifications;
     private Set<Constraint> constraints;
     private DEmployee dEmployee; // represent of this object in the DAL
 
-    public Employee(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate) {
+    /**
+     * Raw data constructor
+     *
+     * @param id Employee's ID
+     * @param name Employee's Name
+     * @param bankDetails Employee's bank details
+     * @param salary Employee's salary
+     * @param employmentConditions Employee's employment conditions
+     * @param startingDate Employee's Starting date
+     * @param certifications Employees Certifications
+     */
+    public Employee(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
         this.id = id;
         this.name = name;
         this.bankDetails = bankDetails;
         this.salary = salary;
         this.employmentConditions = employmentConditions;
         this.startingDate = startingDate;
+        this.certifications = certifications;
         this.dEmployee = new DEmployee(id,name,bankDetails,salary,employmentConditions,startingDate,getJobTitle().toString());
         constraints = new HashSet<>();
     }
 
+    /**
+     * Reconstractor from DAL type employee
+     *
+     * @param dEmployee DAL type representing the employee
+     */
     public Employee(DEmployee dEmployee) {
         this.id = dEmployee.id;
         this.name = dEmployee.name;
@@ -47,18 +68,6 @@ public abstract class Employee {
 
     public Integer getId() {
         return id;
-    }
-
-    public void addConstraint(Date date, ShiftType type){
-        constraints.add(new Constraint(date, type));
-    }
-
-    public boolean isAvailable(Date date,ShiftType shiftType){
-        for(Constraint constraint: constraints)
-            if (constraint.getDate().getTime()==date.getTime() & constraint.getType() == shiftType)
-                return false;
-
-        return true;
     }
 
     public String getName() {
@@ -81,13 +90,28 @@ public abstract class Employee {
         return startingDate;
     }
 
+    public Set<Certifications> getCertifications() {
+        return certifications;
+    }
+
     public Set<Constraint> getConstraints() {
         return constraints;
+    }
+
+    public void addConstraint(Date date, ShiftTypes type){
+        constraints.add(new Constraint(date, type));
+    }
+
+    public boolean isAvailable(Date date,ShiftTypes shiftType){
+        for(Constraint constraint: constraints)
+            if (constraint.getDate().getTime()==date.getTime() && constraint.getType() == shiftType)
+                return false;
+        return true;
     }
 
     public DEmployee getdEmployee() {
         return dEmployee;
     }
 
-    public abstract EmployeeJob getJobTitle();
+    public abstract JobTitles getJobTitle();
 }

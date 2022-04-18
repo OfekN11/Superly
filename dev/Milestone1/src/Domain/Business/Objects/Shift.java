@@ -1,6 +1,7 @@
 package Domain.Business.Objects;
-import Domain.Business.Objects.Enums.ShiftType;
 import Domain.DAL.Objects.DShift;
+import Globals.Enums.ShiftTypes;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -63,7 +64,7 @@ public abstract class Shift {
         return dShift;
     }
 
-    public abstract ShiftType getType();
+    public abstract ShiftTypes getType();
 
     public void removeEmployee(Employee employee){
         if (!employees.remove(employee))

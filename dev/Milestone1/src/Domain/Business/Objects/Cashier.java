@@ -1,14 +1,19 @@
 package Domain.Business.Objects;
 
-import Domain.Business.Objects.Enums.EmployeeJob;
 import Domain.DAL.Objects.DEmployee;
+import Globals.Enums.Certifications;
+import Globals.Enums.JobTitles;
 
 import java.util.Date;
+import java.util.Set;
 
+/**
+ * Business model of the Cashier
+ */
 public class Cashier extends Employee {
 
-    public Cashier(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate) {
-        super(id, name, bankDetails, salary, employmentConditions, startingDate);
+    public Cashier(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
+        super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
     }
 
     public Cashier(DEmployee dEmployee) {
@@ -16,7 +21,7 @@ public class Cashier extends Employee {
     }
 
     @Override
-    public EmployeeJob getJobTitle() {
-        return EmployeeJob.Cashier;
+    public JobTitles getJobTitle() {
+        return JobTitles.Cashier;
     }
 }

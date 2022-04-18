@@ -2,10 +2,10 @@ package Domain.Business.Controllers;
 import Domain.Business.Objects.Carrier;
 import Domain.Business.Objects.Cashier;
 import Domain.Business.Objects.Employee;
-import Domain.Business.Objects.Enums.ShiftType;
 import Domain.Business.Objects.Storekeeper;
 import Domain.DAL.Controllers.DEmployeeController;
 import Domain.DAL.Objects.DEmployee;
+import Globals.Enums.ShiftTypes;
 
 import java.util.*;
 
@@ -54,7 +54,7 @@ public class EmployeeController {
         }
     }
 
-    public Set<Employee> availableEmployeeForShift(Date date, ShiftType type){
+    public Set<Employee> availableEmployeeForShift(Date date, ShiftTypes type){
         Set<Employee> output = new HashSet<>();
         for(Employee employee: employees.values())
             if(employee.isAvailable(date, type))

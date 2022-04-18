@@ -1,6 +1,6 @@
 package Domain.Service.Objects;
 
-import Domain.Business.Objects.Enums.ShiftType;
+import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
 
@@ -9,9 +9,9 @@ import java.util.Date;
  */
 public class Shift {
     public final Date date;
-    public final ShiftType type;
+    public final ShiftTypes type;
 
-    private Shift(Date date, ShiftType type){
+    private Shift(Date date, ShiftTypes type){
         this.date = date;
         this.type = type;
     }

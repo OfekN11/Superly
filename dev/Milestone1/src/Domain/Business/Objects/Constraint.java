@@ -1,14 +1,14 @@
 package Domain.Business.Objects;
-import Domain.Business.Objects.Enums.ShiftType;
+import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
 public class Constraint {
 
     // properties
     private Date date;
-    private ShiftType type; // morning evening
+    private ShiftTypes type; // morning evening
 
-    public Constraint(Date date, ShiftType type) {
+    public Constraint(Date date, ShiftTypes type) {
         this.date = date;
         this.type = type;
     }
@@ -17,7 +17,7 @@ public class Constraint {
         return date;
     }
 
-    public ShiftType getType() {
+    public ShiftTypes getType() {
         return type;
     }
 }
