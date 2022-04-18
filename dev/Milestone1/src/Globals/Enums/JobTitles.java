@@ -1,5 +1,5 @@
 package Globals.Enums;
 
 public enum JobTitles {
-    Cashier, Storekeeper, Carrier
+    Cashier, Storekeeper, Carrier, Sorter, HR_Manager, Logistics_Manager
 }
