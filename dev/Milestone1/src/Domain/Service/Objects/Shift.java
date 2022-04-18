@@ -1,4 +1,4 @@
-package Domain.Service;
+package Domain.Service.Objects;
 
 import Domain.Business.Objects.Enums.ShiftType;
 

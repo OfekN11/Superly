@@ -1,4 +1,4 @@
-package Domain.Service;
+package Domain.Service.Objects;
 
 import java.util.Collections;
 import java.util.Set;

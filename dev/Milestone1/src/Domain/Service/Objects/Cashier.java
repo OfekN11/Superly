@@ -1,4 +1,4 @@
-package Domain.Service;
+package Domain.Service.Objects;
 
 /**
  * Service model of the cashier
