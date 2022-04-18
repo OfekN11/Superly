@@ -32,12 +32,12 @@ public abstract class Employee {
     }
 
     public Employee(DEmployee dEmployee) {
-        this.id = dEmployee.id;
-        this.name = dEmployee.name;
-        this.bankDetails = dEmployee.bankDetails;
-        this.salary = dEmployee.salary;
-        this.employmentConditions = dEmployee.employmentConditions;
-        this.startingDate = dEmployee.startingDate;
+        this.id = dEmployee.getId();
+        this.name = dEmployee.getName();
+        this.bankDetails = dEmployee.getBankDetails();
+        this.salary = dEmployee.getSalary();
+        this.employmentConditions = dEmployee.getEmploymentConditions();
+        this.startingDate = dEmployee.getStartingDate();
         this.dEmployee = dEmployee;
     }
 
@@ -50,7 +50,19 @@ public abstract class Employee {
     }
 
     public void addConstraint(Date date, ShiftType type){
-        constraints.add(new Constraint(date, type));
+        constraints.add(new Constraint(date, type,getId()));
+    }
+
+    public void removeConstrain(Date date, ShiftType type){
+        boolean constrainFound =false;
+        for(Constraint constraint: constraints)
+            if (constraint.getDate().getTime()==date.getTime() & constraint.getType()==type){
+                constraints.remove(constraint);
+                constraint.remove();
+                constrainFound =true;
+            }
+        if(!constrainFound)
+            throw new RuntimeException("Constrain Did NotFound");
     }
 
     public boolean isAvailable(Date date,ShiftType shiftType){

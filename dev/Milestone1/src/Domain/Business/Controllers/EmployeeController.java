@@ -4,6 +4,7 @@ import Domain.Business.Objects.Cashier;
 import Domain.Business.Objects.Employee;
 import Domain.Business.Objects.Enums.ShiftType;
 import Domain.Business.Objects.Storekeeper;
+import Domain.DAL.Controllers.DConstraintController;
 import Domain.DAL.Controllers.DEmployeeController;
 import Domain.DAL.Objects.DEmployee;
 
@@ -15,11 +16,13 @@ public class EmployeeController {
     // properties
     Map<Integer,Employee> employees;
     DEmployeeController dEmployeeController;
+    DConstraintController dConstraintController;
 
     // constructor
     public EmployeeController() {
         employees = new HashMap<>();
         dEmployeeController = new DEmployeeController();
+        dConstraintController =new DConstraintController();
     }
 
 
@@ -45,7 +48,7 @@ public class EmployeeController {
     public void createFakeEmployees() {
         Set<DEmployee> dEmployees = dEmployeeController.createFakeDTOs();
         for (DEmployee dEmployee : dEmployees) {
-            Employee employee = switch (dEmployee.job) {
+            Employee employee = switch (dEmployee.getJob()) {
                 case "Carrier" -> new Carrier(dEmployee);
                 case "Cashier" -> new Cashier(dEmployee);
                 default -> new Storekeeper(dEmployee);
