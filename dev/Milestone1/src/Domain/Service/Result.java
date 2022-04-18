@@ -24,7 +24,7 @@ public class Result<T> {
      * @return Ok encapsulating the value
      * @param <U>
      */
-    public static <U> Result<U> ok(U value) {
+    public static <U> Result<U> makeOk(U value) {
         return new Result<>(value, null);
     }
 
@@ -35,7 +35,7 @@ public class Result<T> {
      * @return Error encapsulating the error message
      * @param <U>
      */
-    public static <U> Result<U> error(String error) {
+    public static <U> Result<U> makeError(String error) {
         return new Result<>(null, error);
     }
 
