@@ -8,7 +8,6 @@ public class StoreController {
     private List<SaleToCustomer> sales;
     private List<Product> products;
     private long itemsAmount;
-    //make singleton??
     public StoreController() {
         storeIds = new ArrayList<>();
         categoryIds = new ArrayList<>();
