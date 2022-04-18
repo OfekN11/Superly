@@ -55,4 +55,15 @@ public class Category {
         }
         return category;
     }
+
+    public boolean inCategory(List<Integer> categories) { //if this category or its subcategories have one of the given IDs.
+        if (categories.contains(id))
+            return true;
+        else if (subcategories.size()!=0)
+            for (Category c: subcategories) {
+                if (c.inCategory(categories))
+                    return true;
+            }
+        return false;
+    }
 }

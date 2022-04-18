@@ -38,13 +38,16 @@ public class Product {
     public void addSale(SaleToCustomer sale) {
         price.addSale(sale);
     }
-    private void RemoveItems(List<Item> itemList) { //bought or thrown
+    public boolean inCategory(List<Integer> categories) {
+        return category.inCategory(categories);
+    }
+    public void RemoveItems(List<Item> itemList) { //bought or thrown
         int amount = itemList.size();
         Items.removeAll(itemList);
         Location l = itemList.get(0).getLocation(); //ASSUME all items of this product are at the same location.
         inStore.put(l, inStore.get(l)-amount);
     }
-    private void MoveItems(List<Item> itemList) { //from warehouse to store
+    public void MoveItems(List<Item> itemList) { //from warehouse to store
         int amount = itemList.size();
         Location from = itemList.get(0).getLocation(); //ASSUME all items of this product are at the same location.
         Location to = getStoreLocation(from.getStoreID()); //the storeID of the product is the same in the warehouse and in the store.
@@ -56,26 +59,32 @@ public class Product {
         //add to store
         inStore.put(to, inStore.get(to)+amount);
     }
-    private void AddItems(int storeID, Map<Date, Integer> expiryDates) { //from supplier to warehouse
+    public int AddItems(int storeID, Map<Date, Integer> expiryDates, long currentItemId) { //from supplier to warehouse
         Location l = getWarehouseLocation(storeID);
         int amount = 0;
         for (Map.Entry<Date, Integer> entry : expiryDates.entrySet()) {
             amount += entry.getValue();
-            for (int i=0; i<entry.getValue(); i++)
-                Items.add(new Item(l, name, entry.getKey()));
+            for (int i=0; i<entry.getValue(); i++) {
+                currentItemId++;
+                Items.add(new Item(currentItemId, l, name, entry.getKey()));
+            }
         }
         inWarehouse.put(l, inWarehouse.get(l)+amount);
+        return amount;
     }
 
-    private void ReturnItems(int storeID, Map<Date, Integer> expiryDates) { //from customer to store
+    public int ReturnItems(int storeID, Map<Date, Integer> expiryDates, long currentItemId) { //from customer to store
         Location l = getStoreLocation(storeID);
         int amount = 0;
         for (Map.Entry<Date, Integer> entry : expiryDates.entrySet()) {
             amount += entry.getValue();
-            for (int i=0; i<entry.getValue(); i++)
-                Items.add(new Item(l, name, entry.getKey()));
+            for (int i=0; i<entry.getValue(); i++) {
+                currentItemId++;
+                Items.add(new Item(currentItemId, l, name, entry.getKey()));
+            }
         }
         inStore.put(l, inStore.get(l)+amount);
+        return amount;
     }
     private Location getStoreLocation(int storeId) {
         Location l = null;
