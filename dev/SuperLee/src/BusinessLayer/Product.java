@@ -3,11 +3,12 @@ package BusinessLayer;
 import java.util.*;
 
 public class Product {
-    public Product(int id, String name, int weight, double price) {
+    public Product(int id, String name, Category category, int weight, double price, List<SaleToCustomer> sales) {
         this.id = id;
         this.name = name;
+        this.category = category;
         this.weight = weight;
-        this.price = price;
+        this.price = new Price(price, sales);
         Items = new ArrayList<>();
         inStore = new HashMap<Location, Integer>(); //needs to filled with all stores locations.
         inWarehouse = new HashMap<Location, Integer>(); //needs to filled with all warehouses locations.
@@ -15,6 +16,7 @@ public class Product {
     }
     private int id;
     private String name;
+    private Category category;
     private List<Item> Items; //list of items in stock in the whole chain.
     private Map<Location, Integer> minAmount; //min amount which indicates for lack of the specific product in each location.
     private Map<Location, Integer> maxAmount; //max amount available to store in the warehouse for this product at once.
@@ -22,12 +24,20 @@ public class Product {
     private Map<Location, Integer> inWarehouse; //current amount in warehouse.
     private int weight;
     private List<Supplier> suppliers;
-    private double price;
+    private Price price;
 
     public int getId() {
         return id;
     }
-
+    public double getOriginalPrice() {
+        return price.getOriginalPrice();
+    }
+    public double getCurrentPrice() {
+        return price.getCurrentPrice();
+    }
+    public void addSale(SaleToCustomer sale) {
+        price.addSale(sale);
+    }
     private void RemoveItems(List<Item> itemList) { //bought or thrown
         int amount = itemList.size();
         Items.removeAll(itemList);
@@ -46,13 +56,26 @@ public class Product {
         //add to store
         inStore.put(to, inStore.get(to)+amount);
     }
-    private void AddItems(List<Item> itemList) { //from supplier to warehouse
-        int amount = itemList.size();
-        Location l = itemList.get(0).getLocation(); //Do we have the items instances before the function call?
+    private void AddItems(int storeID, Map<Date, Integer> expiryDates) { //from supplier to warehouse
+        Location l = getWarehouseLocation(storeID);
+        int amount = 0;
+        for (Map.Entry<Date, Integer> entry : expiryDates.entrySet()) {
+            amount += entry.getValue();
+            for (int i=0; i<entry.getValue(); i++)
+                Items.add(new Item(l, name, entry.getKey()));
+        }
+        inWarehouse.put(l, inWarehouse.get(l)+amount);
     }
-    private void ReturnedToStore(List<Item> itemList, int storeId) { //from customer to store
-        int amount = itemList.size();
-        Location l = itemList.get(0).getLocation(); //Do we have the items instances before the function call?
+
+    private void ReturnItems(int storeID, Map<Date, Integer> expiryDates) { //from customer to store
+        Location l = getStoreLocation(storeID);
+        int amount = 0;
+        for (Map.Entry<Date, Integer> entry : expiryDates.entrySet()) {
+            amount += entry.getValue();
+            for (int i=0; i<entry.getValue(); i++)
+                Items.add(new Item(l, name, entry.getKey()));
+        }
+        inStore.put(l, inStore.get(l)+amount);
     }
     private Location getStoreLocation(int storeId) {
         Location l = null;
