@@ -17,19 +17,21 @@ public class SupplierService {
 
 
     //Pair.first = name , Pair.second = phoneNumber
-    public void addSupplier(int id, String name, int bankNumber, String address, String payingAgreement , ArrayList<Pair<String,String>> contacts, ArrayList<String> manufacturers){
+    public Result<Boolean> addSupplier(int id, String name, int bankNumber, String address, String payingAgreement , ArrayList<Pair<String,String>> contacts, ArrayList<String> manufacturers){
         try {
             controller.addSupplier(id, name, bankNumber, address, payingAgreement, contacts , manufacturers);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return  Result.makeError(e.getMessage());
         }
     }
 
-    public void removeSupplier(int id){
+    public Result<Boolean> removeSupplier(int id){
         try {
             controller.removeSupplier(id);
+            return  Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
