@@ -11,5 +11,4 @@ public class TransportDocument {
     private String sources;
     private String destinations;
     private List<Integer> destsSN;
-    private int weightAtSource; // can be more than 1 source
 }
