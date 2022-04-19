@@ -116,10 +116,19 @@ public class Supplier {
         if(agreement.itemExists(itemId))
             throw new Exception("item with this ID already exists!");
         agreement.addItem(new AgreementItem(itemId, itemName, itemManu, itemPrice, bulkPrices));
+        if(!manufacturers.contains(itemManu)){
+            manufacturers.add(itemManu);
+        }
     }
 
     public void deleteItem(int itemId) throws Exception {
+        String manu = agreement.getItem(itemId).getManufacturer();
+
         agreement.removeItem(itemId);
+
+        if(!agreement.isManufacturerRepresented(manu)){
+            manufacturers.remove(manu);
+        }
     }
 
     public boolean isTransporting() {
@@ -141,11 +150,24 @@ public class Supplier {
     }
 
     public void updateItemManufacturer(int itemId, String manufacturer) throws Exception {
+        String manu = agreement.getItem(itemId).getManufacturer();
+
         agreement.getItem(itemId).setManufacturer(manufacturer);
+
+        if(!agreement.isManufacturerRepresented(manu)){
+            manufacturers.remove(manu);
+            manufacturers.add(manufacturer);
+        }
     }
 
     public void addAgreementItems(List<String> itemsString) throws Exception {
         agreement.setItemsFromString(itemsString);
+
+        manufacturers = new ArrayList<>();
+
+        for(AgreementItem item : agreement.getItems()){
+            manufacturers.add(item.getManufacturer());
+        }
     }
 
     public void updateAgreementType( int agreementType, String agreementDays) throws Exception {
@@ -162,9 +184,22 @@ public class Supplier {
         }
     }
 
-    public String getSupplyingDays() {
-        // TODO: 16/04/2022 SAGI  , how do you want to return the delivery items?
-        return "temp";
+    public List<Integer> getDaysOfDelivery() {
+        if(agreement instanceof RoutineAgreement){
+            return ((RoutineAgreement)agreement).getDaysOfDelivery();
+        }
+        else{
+            return null;
+        }
+    }
+
+    public int getDeliveryDays(){
+        if(agreement instanceof ByOrderAgreement){
+            return ((ByOrderAgreement)agreement).getDeliveryDays();
+        }
+        else{
+            return -1;
+        }
     }
 
     // < id , name , bankAccount , address , payingAgreement , Contact1Name , Contact1Phone ,  Contact2Name , Contact2Phone ... >
@@ -181,5 +216,21 @@ public class Supplier {
             result.add(contact.getPhone());
         }
         return result;
+    }
+
+    public int daysToDelivery(){
+        return agreement.daysToDelivery();
+    }
+
+    public boolean isRoutineAgreement(){
+        return agreement instanceof RoutineAgreement;
+    }
+
+    public boolean isByOrderAgreement(){
+        return agreement instanceof ByOrderAgreement;
+    }
+
+    public boolean isNotTransportingAgreement(){
+        return agreement instanceof NotTransportingAgreement;
     }
 }

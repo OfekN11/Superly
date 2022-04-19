@@ -192,15 +192,50 @@ public class SupplierController {
         suppliers.get(supplierId).addAgreement(agreementType, agreementDays);
     }
 
-    public String getSupplingDaysFromSupplier(int supplierId) throws Exception{
+    public List<Integer> getDaysOfDelivery(int supplierId) throws Exception{
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
-        return suppliers.get(supplierId).getSupplyingDays();
+        return suppliers.get(supplierId).getDaysOfDelivery();
+    }
+
+    public int getDeliveryDays(int supplierId) throws Exception{
+        if(!supplierExist(supplierId))
+            throw new Exception("There is no supplier with this ID!");
+        return suppliers.get(supplierId).getDeliveryDays();
+    }
+
+    public int daysToDelivery(int supplierId) throws Exception {
+        if(!supplierExist(supplierId)){
+            throw new Exception("There is no supplier with this ID!");
+        }
+        return suppliers.get(supplierId).daysToDelivery();
+
     }
 
     public ArrayList<String> getSupplierInfo(int supplierId) throws Exception{
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
         return suppliers.get(supplierId).getSupplierInfo();
+    }
+
+    public boolean isRoutineAgreement(int supplierId) throws Exception {
+        if(!supplierExist(supplierId)){
+            throw new Exception("There is no supplier with this ID!");
+        }
+        return suppliers.get(supplierId).isRoutineAgreement();
+    }
+
+    public boolean isByOrderAgreement(int supplierId) throws Exception {
+        if(!supplierExist(supplierId)){
+            throw new Exception("There is no supplier with this ID!");
+        }
+        return suppliers.get(supplierId).isByOrderAgreement();
+    }
+
+    public boolean isNotTransportingAgreement(int supplierId) throws Exception {
+        if(!supplierExist(supplierId)){
+            throw new Exception("There is no supplier with this ID!");
+        }
+        return suppliers.get(supplierId).isNotTransportingAgreement();
     }
 }

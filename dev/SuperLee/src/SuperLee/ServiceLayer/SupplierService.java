@@ -230,18 +230,69 @@ public class SupplierService {
         }
     }
 
-
-    // "-1" for not transporting , "number" for days until delivery, "x1 x2 .." for supplying days for routine supplier
-    // TODO: 16/04/2022 SAGI What should the return type will be in the end?
-    public String getSupplyingDaysFromSupplier(int supplierId){
-        try {
-            return controller.getSupplingDaysFromSupplier(supplierId);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public boolean isRoutineAgreement(int supplierId){
+        try{
+            return controller.isRoutineAgreement(supplierId);
         }
-        return "error";
+        catch(Exception e){
+            // Return a result
+        }
+
+        return false;
     }
 
+    public boolean isByOrderAgreement(int supplierId){
+        try{
+            return controller.isByOrderAgreement(supplierId);
+        }
+        catch(Exception e){
+            // Return a result
+        }
+
+        return false;
+    }
+
+    public boolean isNotTransportingAgreement(int supplierId){
+        try{
+            return controller.isNotTransportingAgreement(supplierId);
+        }
+        catch(Exception e){
+            // Return a result
+        }
+
+        return false;
+    }
+
+    public int daysToDelivery(int supplierId){
+        try{
+            return controller.daysToDelivery(supplierId);
+        }
+        catch(Exception e){
+            // Return a result
+        }
+
+        return -1;
+    }
+
+    public List<Integer> getDaysOfDelivery(int supplierId){
+        try{
+            return controller.getDaysOfDelivery(supplierId);
+        }
+        catch(Exception e){
+            // Return a result
+        }
+
+        return null;
+    }
+
+    public int getDeliveryDays(int supplierId){
+        try{
+            return controller.getDeliveryDays(supplierId);
+        }
+        catch(Exception e){
+            return -1;
+        }
+    }
 
     // < id , name , bankAccount , address , payingAgreement , Contact1Name , Contact1Phone ,  Contact2Name , Contact2Phone ... >
     //Requirement 3
@@ -267,7 +318,5 @@ public class SupplierService {
         }
         return new ServiceSupplierObject(id , name, bankNumber , address , payingAgreement , contacts);
     }
-
-
 
 }

@@ -40,12 +40,16 @@ public abstract class Agreement {
         NotNull.Check(itemsString);
         List<AgreementItem> _items = transformStringToItems(itemsString);
 
+        items = new HashMap<>();
+
         listToMap(_items);
     }
 
 
     public void setItems(List<AgreementItem> _items) throws Exception {
         NotNull.Check(_items);
+
+        items = new HashMap<>();
 
         listToMap(_items);
     }
@@ -141,5 +145,16 @@ public abstract class Agreement {
         item.setId(newItemId);
         items.put(newItemId, item);
 
+    }
+
+
+    public boolean isManufacturerRepresented(String manu){
+        for(AgreementItem item : items.values()){
+            if(item.getManufacturer() == manu){
+                return true;
+            }
+        }
+
+        return false;
     }
 }
