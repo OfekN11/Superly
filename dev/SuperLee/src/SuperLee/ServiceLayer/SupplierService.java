@@ -205,13 +205,12 @@ public class SupplierService {
         }
     }
 
-    public boolean isTransporting(int supplierId){
+    public Result<Boolean> isTransporting(int supplierId){
         try {
-            return controller.isTransporting( supplierId);
+            return Result.makeOk(controller.isTransporting( supplierId));
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
-        return false;
     }
 
     public void changeAgreementType(int supplierId,  int agreementType, String agreementDays) {
@@ -230,80 +229,69 @@ public class SupplierService {
         }
     }
 
-    public boolean isRoutineAgreement(int supplierId){
+    public Result<Boolean> isRoutineAgreement(int supplierId){
         try{
-            return controller.isRoutineAgreement(supplierId);
+            return Result.makeOk(controller.isRoutineAgreement(supplierId));
         }
         catch(Exception e){
-            // Return a result
+            return Result.makeError(e.getMessage());
         }
-
-        return false;
     }
 
-    public boolean isByOrderAgreement(int supplierId){
+    public Result<Boolean> isByOrderAgreement(int supplierId){
         try{
-            return controller.isByOrderAgreement(supplierId);
+            return Result.makeOk(controller.isByOrderAgreement(supplierId));
         }
         catch(Exception e){
-            // Return a result
+            return Result.makeError(e.getMessage());
         }
-
-        return false;
     }
 
-    public boolean isNotTransportingAgreement(int supplierId){
+    public Result<Boolean> isNotTransportingAgreement(int supplierId){
         try{
-            return controller.isNotTransportingAgreement(supplierId);
+            return Result.makeOk(controller.isNotTransportingAgreement(supplierId));
         }
         catch(Exception e){
-            // Return a result
+            return Result.makeError(e.getMessage());
         }
-
-        return false;
     }
 
-    public int daysToDelivery(int supplierId){
+    public Result<Integer> daysToDelivery(int supplierId){
         try{
-            return controller.daysToDelivery(supplierId);
+            return Result.makeOk(controller.daysToDelivery(supplierId));
         }
         catch(Exception e){
-            // Return a result
+            return Result.makeError(e.getMessage());
         }
-
-        return -1;
     }
 
-    public List<Integer> getDaysOfDelivery(int supplierId){
+    public Result<List<Integer>> getDaysOfDelivery(int supplierId){
         try{
-            return controller.getDaysOfDelivery(supplierId);
+            return Result.makeOk(controller.getDaysOfDelivery(supplierId));
         }
         catch(Exception e){
-            // Return a result
+            return Result.makeError(e.getMessage());
         }
-
-        return null;
     }
 
-    public int getDeliveryDays(int supplierId){
+    public Result<Integer> getDeliveryDays(int supplierId){
         try{
-            return controller.getDeliveryDays(supplierId);
+            return Result.makeOk(controller.getDeliveryDays(supplierId));
         }
         catch(Exception e){
-            return -1;
+            return Result.makeError(e.getMessage());
         }
     }
 
     // < id , name , bankAccount , address , payingAgreement , Contact1Name , Contact1Phone ,  Contact2Name , Contact2Phone ... >
     //Requirement 3
-    public ServiceSupplierObject getSupplierInfo(int supplierId){
+    public Result<ServiceSupplierObject> getSupplierInfo(int supplierId){
         try {
             ArrayList<String> result = controller.getSupplierInfo(supplierId);
-            return createServiceSupplierObject(result);
+            return Result.makeOk(createServiceSupplierObject(result));
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
-        return null;
     }
 
     private ServiceSupplierObject createServiceSupplierObject(ArrayList<String> result) {
