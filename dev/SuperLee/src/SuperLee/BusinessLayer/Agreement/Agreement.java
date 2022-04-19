@@ -3,10 +3,7 @@ package SuperLee.BusinessLayer.Agreement;
 import SuperLee.BusinessLayer.AgreementItem;
 import SuperLee.BusinessLayer.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Agreement {
 
@@ -150,7 +147,7 @@ public abstract class Agreement {
 
     public boolean isManufacturerRepresented(String manu){
         for(AgreementItem item : items.values()){
-            if(item.getManufacturer() == manu){
+            if(Objects.equals(item.getManufacturer(), manu)){
                 return true;
             }
         }
