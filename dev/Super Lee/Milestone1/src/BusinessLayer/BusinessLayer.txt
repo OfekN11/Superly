@@ -1,1 +1,2 @@
 - Create new branch of business layer
+- Add some basic class and enum
