@@ -53,5 +53,9 @@ public class ServiceSupplierObject {
         return contacts;
     }
 
+    public String toString(){
+        return "ID: " + id + "\nName: " + name + "\nAddress: " + address + "\nBank number: " + bankNumber + "\nPaying agreement: " + payingAgreement;
+    }
+
 
 }
