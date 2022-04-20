@@ -3,7 +3,6 @@ package ServiceLayer;
 
 import BusinessLayer.Category;
 import BusinessLayer.InventoryController;
-import BusinessLayer.Item;
 import BusinessLayer.SaleToCustomer;
 
 import java.util.Date;
@@ -193,9 +192,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> removeProduct(int productID, List<Item> items){
+    public Result<Object> removeItems(int productID, int storeID, int amount){
         try {
-            controller.removeProduct(productID, items);
+            controller.RemoveItems(productID, storeID, amount);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -208,9 +207,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> moveProduct(int productID, List<Item> items){
+    public Result<Object> moveProduct(int productID, int storeID, int amount){
         try {
-            controller.move(productID, items);
+            controller.MoveItems(productID, storeID, amount);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -223,9 +222,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> addItems(int storeID, int productID, Map<Date, Integer> expiryDates){
+    public Result<Object> addItems(int storeID, int productID, int amount){
         try {
-            controller.AddItems(storeID, productID, expiryDates);
+            controller.AddItems(storeID, productID, amount);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -238,9 +237,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> returnProduct(int productID, List<Item> items){
+    public Result<Object> returnProduct(int productID){
         try {
-//            controller.returnProduct(productID, items);
+            controller.returnProduct(productID,productID, productID);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
