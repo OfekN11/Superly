@@ -15,7 +15,6 @@ public class Product {
         inWarehouse = new HashMap<Location, Integer>(); //needs to filled with all warehouses locations.
         sales = new ArrayList<>();
     }
-
     private int id;
     private String name;
     private Category category;
@@ -23,6 +22,8 @@ public class Product {
     private Map<Location, Integer> maxAmount; //max amount available to store in the warehouse for this product at once.
     private Map<Location, Integer> inStore; //current amount in store.
     private Map<Location, Integer> inWarehouse; //current amount in warehouse.
+    private List<DamagedItemReport> damagedItemReport;
+    private List<ExpiredItemReport> expiredItemReport;
     private int weight;
     private List<Supplier> suppliers;
     private double price;
@@ -90,5 +91,28 @@ public class Product {
         if (l==null)
             throw new IllegalArgumentException("Product: getWarehouseLocation: location not found");
         return l;
+    }
+
+    public void reportDamaged(int storeID, int amount, String description) {
+        damagedItemReport.add(new DamagedItemReport(new Date(), storeID, amount, description));
+    }
+    public void reportExpired(int storeID, int amount) {
+        expiredItemReport.add(new ExpiredItemReport(new Date(), storeID, amount));
+    }
+    public List<DamagedItemReport> getDamagedItemReports(Date start, Date end, List<Integer> storeID) {
+        List<DamagedItemReport> dirList = new ArrayList<>();
+        for (DamagedItemReport dir: damagedItemReport) {
+            if (dir.inDates(start, end) && (storeID.contains(dir.getStoreID()) || storeID.size()==0))
+                dirList.add(dir);
+        }
+        return dirList;
+    }
+    public List<ExpiredItemReport> getExpiredItemReports(Date start, Date end, List<Integer> storeID) {
+        List<ExpiredItemReport> eirList = new ArrayList<>();
+        for (ExpiredItemReport eir: expiredItemReport) {
+            if (eir.inDates(start, end) && (storeID.contains(eir.getStoreID()) || storeID.size()==0))
+                eirList.add(eir);
+        }
+        return eirList;
     }
 }
