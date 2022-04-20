@@ -6,6 +6,7 @@ import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -35,5 +36,9 @@ public class Carrier extends Employee {
 
     public Set<String> getLicenses() {
         return licenses;
+    }
+
+    public void setLicences(Set<String> licences) {
+        this.licenses = new HashSet<>(licences);
     }
 }

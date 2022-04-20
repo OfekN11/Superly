@@ -15,7 +15,7 @@ import java.util.Set;
  */
 public abstract class Employee {
     // properties
-    private int id;
+    private final int id;
     private String name;
     private String bankDetails;
     private int salary;
@@ -75,8 +75,16 @@ public abstract class Employee {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getBankDetails() {
         return bankDetails;
+    }
+
+    public void setBankDetails(String bankDetails) {
+        this.bankDetails = bankDetails;
     }
 
     public int getSalary() {
@@ -87,12 +95,20 @@ public abstract class Employee {
         return employmentConditions;
     }
 
+    public void setEmploymentConditions(String employmentConditions) {
+        this.employmentConditions = employmentConditions;
+    }
+
     public Date getStartingDate() {
         return startingDate;
     }
 
     public Set<Certifications> getCertifications() {
         return certifications;
+    }
+
+    public void setCertifications(Set<Certifications> certifications) {
+        this.certifications = new HashSet<>(certifications);
     }
 
     public Set<Constraint> getConstraints() {
