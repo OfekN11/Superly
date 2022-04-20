@@ -8,10 +8,10 @@ public class SaleToCustomer {
     private Date startDate;
     private Date endDate;
     private double percent;
-    private List<Category> categories;
+    private List<Integer> categories;
     private List<Integer> products;
 
-    public SaleToCustomer(int id, Date startDate, Date endDate, double percent, List<Category> categoriesList, List<Integer> products) {
+    public SaleToCustomer(int id, Date startDate, Date endDate, double percent, List<Integer> categoriesList, List<Integer> products) {
         if (percent>=100 || percent<=0)
             throw new IllegalArgumentException("SaleToCustomer: Constructor: Illegal percent value");
         this.id = id;
@@ -33,16 +33,5 @@ public class SaleToCustomer {
     }
     public double getPercent() {
         return percent;
-    }
-
-    public boolean appliedForProduct(Category category) {
-        Boolean applied = false;
-        for (Category c: categories) {
-            if (c.contains(category)) {
-                applied = true;
-                break;
-            }
-        }
-        return applied;
     }
 }

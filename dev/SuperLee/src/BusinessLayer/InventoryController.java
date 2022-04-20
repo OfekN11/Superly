@@ -27,23 +27,20 @@ public class InventoryController {
 
     }
 
-    public SaleToCustomer addSale(List<Category> categoriesList, List<Integer> productIDs, int percent, Date start, Date end) {
+    public SaleToCustomer addSale(List<Integer> categoriesList, List<Integer> productIDs, int percent, Date start, Date end) {
         SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categoriesList, productIDs);
         sales.add(sale);
-        for (Category c: categoriesList) {
-            if (c!=null)
-                productIDs = c.findProductsIDs(productIDs);
-        }
         Product product = null;
         for (Integer pID: productIDs) {
             product = products.get(pID);
             if (product!=null)
                 product.addSale(sale);
         }
-        for (Integer pID: productIDs) {
-            if (products.get(pID)!=null)
-                products.get(pID).addSale(sale);
-        }
+        Category category = null;
+        for (Integer cID: categoriesList) {
+            category = categories.get(cID);
+            if (category!=null)
+                category.addSale(sale);        }
         return sale;
     }
 
@@ -110,17 +107,16 @@ public class InventoryController {
         List<SaleToCustomer> salesToCustomers = findProductSales(category);
         int id = products.size()+1;
         Product product = new Product(id, name, category, weight, price, suppliers, sales);
+    public void addCategory(String name, int parentCategoryID) {
+
+    }
+
+    public Product newProduct(int id, String name, Category category, int weight, double price, List<Supplier> suppliers) {
+        Product product = new Product(id, name, category, weight, price, suppliers);
         products.put(id, product);
         return product;
     }
-    private List<SaleToCustomer> findProductSales(Category category) {
-        List<SaleToCustomer> salesToCustomers = new ArrayList<>();
-        for (SaleToCustomer sale: sales) {
-            if (!sale.isPassed() && sale.appliedForProduct(category))
-                salesToCustomers.add(sale);
-        }
-        return salesToCustomers;
-    }
+
     public void deleteProduct(int id) {
         products.remove(id);
         //remove sales? remove empty categories?

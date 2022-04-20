@@ -7,8 +7,9 @@ public class Category {
     private int id;
     private String name;
     private List<Category> subcategories;
-    private List<Product> products;
     private Category parentCategory;
+    private List<Product> products;
+    private List<SaleToCustomer> sales;
     public int getId() {
         return id;
     }
@@ -25,11 +26,13 @@ public class Category {
         return parentCategory;
     }
 
-    public Category(int id, String name, List<Category> subcategories, List<Product> products) {
+    public Category(int id, String name, List<Category> subcategories, List<Product> products, Category parentCategory) {
         this.id = id;
         this.name = name;
         this.subcategories = subcategories;
         this.products = products;
+        this.parentCategory = parentCategory;
+        sales = new ArrayList<>();
     }
 
     public List<Product> getProducts() {
@@ -49,6 +52,9 @@ public class Category {
         return products.remove(p);
     }
 
+    public boolean addSale(SaleToCustomer s) {
+        return sales.add(s);
+    }
     public boolean addProduct(Product p) {
         return products.add(p);
     }
@@ -74,22 +80,13 @@ public class Category {
         }
         return category;
     }
-
-    public List<Integer> findProductsIDs(List<Integer> productsIDs) {
-        for (Product p: products)
-            productsIDs.add(p.getId());
-        for (Category c: subcategories)
-            productsIDs.addAll(c.findProductsIDs(productsIDs));
-        return productsIDs;
-    }
-
-    public boolean contains(Category category) {
-        if (category.id == id)
-            return true;
-        for (Category c: subcategories)
-            if (c.contains(category))
-                return true;
-        return false;
+    public SaleToCustomer findCurrentBestSale(SaleToCustomer currentSale) {
+        for (SaleToCustomer sale: sales)
+            if ((sale.isActive() && currentSale==null) || (sale.isActive() && currentSale.getPercent()<sale.getPercent()))
+                currentSale = sale;
+        if (parentCategory!=null)
+            currentSale = parentCategory.findCurrentBestSale(currentSale);
+        return currentSale;
     }
 
     public String getParentCategoryName() {
