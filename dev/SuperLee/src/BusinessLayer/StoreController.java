@@ -21,7 +21,11 @@ public class StoreController {
         return null;
     }
 
-    public List<SaleToCustomer> getSaleHistory(int productID) {
+    public List<SaleToCustomer> getSaleHistoryByProduct(int productID) {
+        return null;
+    }
+
+    public List<SaleToCustomer> getSaleHistoryByCategory(int categoryID) {
         return null;
     }
 
