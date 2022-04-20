@@ -74,9 +74,9 @@ public class Product {
     private Location getWarehouseLocation(int storeId) {
         Location l = null;
         for (Map.Entry<Location, Integer> entry : inWarehouse.entrySet())
-            if (entry.getKey().getStoreID()==storeId)
+            if (entry.getKey().getStoreID() == storeId)
                 l = entry.getKey();
-        if (l==null)
+        if (l == null)
             throw new IllegalArgumentException("Product: getWarehouseLocation: location not found");
         return l;
     }

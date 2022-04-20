@@ -14,22 +14,23 @@ public class InventoryController {
         products = new HashMap<>();
     }
 
-    public void testInit() {
+    public void loadTestData() {
         //initialize stuff for tests
     }
 
 
-    public void addSale(List<Integer> categoryIDs, List<Integer> productIDs, int percent, Date start, Date end) {
+    public SaleToCustomer addSale(List<Integer> categoryIDs, List<Integer> productIDs, int percent, Date start, Date end) {
         SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categoryIDs, productIDs);
         sales.add(sale);
         for (Integer pID: productIDs) {
             if (products.get(pID)!=null)
                 products.get(pID).addSale(sale);
         }
-        for (Integer cID: categoryIDs) {
-            if (categories.get(cID)!=null)
-                //add sale for each product in this categories
-        }
+//        for (Integer cID: categoryIDs) {
+//            if (categories.get(cID)!=null)
+//                //add sale for each product in this categories
+//        }
+        return sale;
     }
 
     public List<DiscountFromSupplier> getDiscountFromSupplierHistory(int productID) {
@@ -87,7 +88,8 @@ public class InventoryController {
 
     }
 
-    public void newProduct(int id, String name, Category category, int weight, double price) {
+    public Product newProduct(int id, String name, Category category, int weight, double price) {
+        return null;
     }
 
     public void deleteProduct(int id) {

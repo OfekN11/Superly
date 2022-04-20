@@ -4,6 +4,9 @@ package ServiceLayer;
 import BusinessLayer.Category;
 import BusinessLayer.InventoryController;
 import BusinessLayer.SaleToCustomer;
+import ServiceLayer.Objects.Product;
+import ServiceLayer.Objects.Sale;
+import ServiceLayer.Objects.SaleReport;
 
 import java.util.Date;
 import java.util.List;
@@ -57,14 +60,14 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> newProduct(int id, String name, Category category, int weight, double price){
+    public Result<Product> newProduct(int id, String name, Category category, int weight, double price){
         try {
-            controller.newProduct(id, name, category, weight, price);
+            BusinessLayer.Product p = controller.newProduct(id, name, category, weight, price);
+            return Result.makeOk(new Product(p));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
     }
 
     /**
@@ -87,14 +90,14 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end){
+    public Result<Sale> addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end){
         try {
-            controller.addSale(categories, products, percent, start, end);
+            SaleToCustomer s = controller.addSale(categories, products, percent, start, end);
+            return Result.makeOk(new Sale(s));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
     }
 
     /**
@@ -117,7 +120,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> getSaleHistoryByProduct(int productId){
+    public Result<SaleReport> getSaleHistoryByProduct(int productId){
         try {
             controller.getSaleHistoryByProduct(productId);
         }
@@ -162,9 +165,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> getProducts(){
+    public Result<List<Product>> getProducts(){
         try {
-            controller.getProducts();
+            controller.getItems();
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -177,9 +180,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> getProductsFromCategory(int categoryID){
+    public Result<List<Product>> getProductsFromCategory(int categoryID){
         try {
-            controller.getProductsFromCategory(categoryID);
+            controller.getItemsFromCategory(categoryID);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -239,7 +242,7 @@ public class InventoryService {
      */
     public Result<Object> returnProduct(int productID){
         try {
-            controller.returnProduct(productID,productID, productID);
+            controller.ReturnItems(productID,productID, productID);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
