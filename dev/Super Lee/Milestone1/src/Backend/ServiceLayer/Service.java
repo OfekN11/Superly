@@ -1,6 +1,8 @@
 package Backend.ServiceLayer;
 
 
+import Backend.Globals.Enums.LicenseTypes;
+
 public class Service {
     public Service() {
     }
