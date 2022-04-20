@@ -29,6 +29,9 @@ public class Product {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
     public double getOriginalPrice() {
         return price.getOriginalPrice();
     }

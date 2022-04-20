@@ -9,10 +9,7 @@ import ServiceLayer.Objects.Product;
 import ServiceLayer.Objects.Sale;
 import ServiceLayer.Objects.SaleReport;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Service controller for employee operations
@@ -62,9 +59,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Product> newProduct(int id, String name, Category category, int weight, double price, List<Supplier> suppliers){
+    public Result<Product> newProduct(String name, int categoryID, int weight, double price, List<Supplier> suppliers){
         try {
-            BusinessLayer.Product p = controller.newProduct(id, name, category, weight, price, suppliers);
+            BusinessLayer.Product p = controller.newProduct(name, categoryID, weight, price, suppliers);
             return Result.makeOk(new Product(p));
         }
         catch (Exception e){
@@ -208,7 +205,7 @@ public class InventoryService {
      */
     public Result<List<ServiceLayer.Objects.Category>> getCategories(){
         try {
-            List<BusinessLayer.Category> categories = controller.getCategories();
+            Collection<Category> categories = controller.getCategories();
             List<ServiceLayer.Objects.Category> categoryList = new ArrayList<>();
             for (BusinessLayer.Category c : categories) {
                 categoryList.add(new ServiceLayer.Objects.Category(c));

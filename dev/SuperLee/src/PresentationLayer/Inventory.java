@@ -6,6 +6,7 @@ import ServiceLayer.Objects.Product;
 import ServiceLayer.Objects.SaleReport;
 import ServiceLayer.Result;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -32,8 +33,11 @@ public class Inventory {
         System.out.println(help());
         while (!quit) {
             String command  = scanner.nextLine();
+            if (command.equals("q"))
+                break;
             doCommand(command);
         }
+        System.out.println("Shutting down - Thanks!");
     }
 
     private static void doCommand(String command) {
@@ -45,6 +49,27 @@ public class Inventory {
                 List<Product> productList = r.getValue();
                 for (Product p : productList)
                     System.out.println(p);
+            }
+        }
+        else if (command.equals("list categories")) {
+            Result<List<Category>> r = is.getCategories();
+            if (r.isError())
+                System.out.println(r.getError());
+            else {
+                List<Category> categoryList = r.getValue();
+                for (Category c : categoryList)
+                    System.out.println(c);
+            }
+        }
+        else if (command.equals("add product")) {
+            System.out.println("Please insert product name, categoryID, weight, and price. Separated by commas, no spaces");
+            String[] info = scanner.nextLine().split(",");
+            Result<Product> r = is.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]),Double.parseDouble(info[3]),new ArrayList<>());
+            if (r.isError())
+                System.out.println(r.getError());
+            else {
+                Product p = r.getValue();
+                System.out.println(p);
             }
         }
         else if (command.equals("sale history by product")) {

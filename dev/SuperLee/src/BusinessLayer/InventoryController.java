@@ -67,8 +67,8 @@ public class InventoryController {
         return null;
     }
 
-    public List<Category> getCategories() {
-        return null;
+    public Collection<Category> getCategories() {
+        return categories.values();
     }
 
     public List<Product> getItemsFromCategory(int categoryID) {
@@ -105,8 +105,10 @@ public class InventoryController {
 
     }
 
-    public Product newProduct(int id, String name, Category category, int weight, double price, List<Supplier> suppliers) {
+    public Product newProduct(String name, int categoryID, int weight, double price, List<Supplier> suppliers) {
+        Category category = categories.get(categoryID);
         List<SaleToCustomer> salesToCustomers = findProductSales(category);
+        int id = products.size()+1;
         Product product = new Product(id, name, category, weight, price, suppliers, sales);
         products.put(id, product);
         return product;

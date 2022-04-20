@@ -8,7 +8,22 @@ public class Category {
     private String name;
     private List<Category> subcategories;
     private List<Product> products;
+    private Category parentCategory;
+    public int getId() {
+        return id;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public List<Category> getSubcategories() {
+        return subcategories;
+    }
+
+    public Category getParentCategory() {
+        return parentCategory;
+    }
 
     public Category(int id, String name, List<Category> subcategories, List<Product> products) {
         this.id = id;
@@ -75,5 +90,11 @@ public class Category {
             if (c.contains(category))
                 return true;
         return false;
+    }
+
+    public String getParentCategoryName() {
+        if (parentCategory==null)
+            return "";
+        else return parentCategory.getName();
     }
 }
