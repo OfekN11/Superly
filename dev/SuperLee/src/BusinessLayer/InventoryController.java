@@ -48,11 +48,11 @@ public class InventoryController {
     }
 
     public List<SaleToCustomer> getSaleHistoryByProduct(int productID) {
-        return null;
+        return products.get(productID).getSaleHistory();
     }
 
     public List<SaleToCustomer> getSaleHistoryByCategory(int categoryID) {
-        return null;
+        return categories.get(categoryID).getSaleHistory();
     }
 
     public List<Product> getDamagedItems() {

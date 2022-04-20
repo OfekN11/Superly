@@ -112,4 +112,17 @@ public class Category {
             return "";
         else return parentCategory.getName();
     }
+
+    public List<SaleToCustomer> getSaleHistory() {
+        List<SaleToCustomer> result;
+        if (parentCategory==null)
+             result = new ArrayList<>();
+        else
+            result = parentCategory.getSaleHistory();
+        for (SaleToCustomer sale : sales) {
+            if (sale.isPassed())
+                result.add(sale);
+        }
+        return result;
+    }
 }

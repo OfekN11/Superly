@@ -3,12 +3,11 @@ package PresentationLayer;
 import ServiceLayer.InventoryService;
 import ServiceLayer.Objects.Category;
 import ServiceLayer.Objects.Product;
-import ServiceLayer.Objects.SaleReport;
+import ServiceLayer.Objects.Sale;
 import ServiceLayer.Result;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Inventory {
@@ -87,12 +86,25 @@ public class Inventory {
         else if (command.equals("sale history by product")) {
             System.out.println("Please insert product ID");
             int id = scanner.nextInt();
-            Result<SaleReport> r = is.getSaleHistoryByProduct(id);
+            Result<List<Sale>> r = is.getSaleHistoryByProduct(id);
             if (r.isError())
                 System.out.println(r.getError());
             else {
-                SaleReport report = r.getValue();
-                System.out.println(report);
+                List<Sale> saleReport = r.getValue();
+                for (Sale s : saleReport)
+                    System.out.println(s);
+            }
+        }
+        else if (command.equals("sale history by category")) {
+            System.out.println("Please insert category ID");
+            int id = scanner.nextInt();
+            Result<List<Sale>> r = is.getSaleHistoryByCategory(id);
+            if (r.isError())
+                System.out.println(r.getError());
+            else {
+                List<Sale> saleReport = r.getValue();
+                for (Sale s : saleReport)
+                    System.out.println(s);
             }
         }
         else if (command.equals("add sale")) {

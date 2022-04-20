@@ -91,4 +91,13 @@ public class Product {
             throw new IllegalArgumentException("Product: getWarehouseLocation: location not found");
         return l;
     }
+
+    public List<SaleToCustomer> getSaleHistory() {
+        List<SaleToCustomer> result = category.getSaleHistory();
+        for (SaleToCustomer sale : sales) {
+            if (sale.isPassed())
+                result.add(sale);
+        }
+        return result;
+    }
 }

@@ -7,7 +7,6 @@ import BusinessLayer.SaleToCustomer;
 import BusinessLayer.Supplier;
 import ServiceLayer.Objects.Product;
 import ServiceLayer.Objects.Sale;
-import ServiceLayer.Objects.SaleReport;
 
 import java.util.*;
 
@@ -134,14 +133,18 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<SaleReport> getSaleHistoryByProduct(int productId){
+    public Result<List<Sale>> getSaleHistoryByProduct(int productId){
         try {
-            controller.getSaleHistoryByProduct(productId);
+            List<SaleToCustomer> saleToCustomerList = controller.getSaleHistoryByProduct(productId);
+            List<Sale> sales = new ArrayList<>();
+            for (SaleToCustomer sale : saleToCustomerList) {
+                sales.add(new Sale(sale));
+            }
+            return Result.makeOk(sales);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
     }
 
     /**
@@ -149,14 +152,18 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> getSaleHistoryByCategory(int categoryID){
+    public Result<List<Sale>> getSaleHistoryByCategory(int categoryID){
         try {
-            controller.getSaleHistoryByCategory(categoryID);
+            List<SaleToCustomer> saleToCustomerList = controller.getSaleHistoryByCategory(categoryID);
+            List<Sale> saleList = new ArrayList<>();
+            for (SaleToCustomer s : saleToCustomerList) {
+                saleList.add(new Sale(s));
+            }
+            return Result.makeOk(saleList);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
     }
 
     /**
