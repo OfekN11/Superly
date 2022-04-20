@@ -9,7 +9,6 @@ public class Product {
         this.category = category;
         this.weight = weight;
         this.price = new Price(price, sales);
-        Items = new ArrayList<>();
         inStore = new HashMap<Location, Integer>(); //needs to filled with all stores locations.
         inWarehouse = new HashMap<Location, Integer>(); //needs to filled with all warehouses locations.
     }
@@ -17,7 +16,6 @@ public class Product {
     private int id;
     private String name;
     private Category category;
-    private List<Item> Items; //list of items in stock in the whole chain.
     private Map<Location, Integer> minAmount; //min amount which indicates for lack of the specific product in each location.
     private Map<Location, Integer> maxAmount; //max amount available to store in the warehouse for this product at once.
     private Map<Location, Integer> inStore; //current amount in store.
@@ -45,51 +43,24 @@ public class Product {
     public boolean inCategory(List<Integer> categories) {
         return category.inCategory(categories);
     }
-
-    public void RemoveItems(List<Item> itemList) { //bought or thrown
-        int amount = itemList.size();
-        Items.removeAll(itemList);
-        Location l = itemList.get(0).getLocation(); //ASSUME all items of this product are at the same location.
+    public void RemoveItems(int storeID, int amount) { //bought or thrown
+        Location l = getStoreLocation(storeID);
         inStore.put(l, inStore.get(l)-amount);
     }
-    public void MoveItems(List<Item> itemList) { //from warehouse to store
-        int amount = itemList.size();
-        Location from = itemList.get(0).getLocation(); //ASSUME all items of this product are at the same location.
-        Location to = getStoreLocation(from.getStoreID()); //the storeID of the product is the same in the warehouse and in the store.
-        //change location of Items
-        for (Item item: itemList)
-            item.setLocation(to);
-        //remove from warehouse
+    public void MoveItems(int storeID, int amount) { //from warehouse to store
+        Location from = getWarehouseLocation(storeID);
+        Location to = getStoreLocation(storeID);
         inWarehouse.put(from, inWarehouse.get(from)-amount);
-        //add to store
         inStore.put(to, inStore.get(to)+amount);
     }
-    public int AddItems(int storeID, Map<Date, Integer> expiryDates, long currentItemId) { //from supplier to warehouse
+    public void AddItems(int storeID, int amount) { //from supplier to warehouse
         Location l = getWarehouseLocation(storeID);
-        int amount = 0;
-        for (Map.Entry<Date, Integer> entry : expiryDates.entrySet()) {
-            amount += entry.getValue();
-            for (int i=0; i<entry.getValue(); i++) {
-                currentItemId++;
-                Items.add(new Item(currentItemId, l, name, entry.getKey()));
-            }
-        }
         inWarehouse.put(l, inWarehouse.get(l)+amount);
-        return amount;
     }
 
-    public int ReturnItems(int storeID, Map<Date, Integer> expiryDates, long currentItemId) { //from customer to store
+    public void ReturnItems(int storeID, int amount) { //from customer to store
         Location l = getStoreLocation(storeID);
-        int amount = 0;
-        for (Map.Entry<Date, Integer> entry : expiryDates.entrySet()) {
-            amount += entry.getValue();
-            for (int i=0; i<entry.getValue(); i++) {
-                currentItemId++;
-                Items.add(new Item(currentItemId, l, name, entry.getKey()));
-            }
-        }
         inStore.put(l, inStore.get(l)+amount);
-        return amount;
     }
     private Location getStoreLocation(int storeId) {
         Location l = null;
