@@ -36,25 +36,22 @@ public class Product {
     public void addSale(SaleToCustomer sale) {
         price.addSale(sale);
     }
-    public boolean inCategory(List<Integer> categories) {
-        return category.inCategory(categories);
-    }
-    public void RemoveItems(int storeID, int amount) { //bought or thrown
+    public void removeItems(int storeID, int amount) { //bought or thrown
         Location l = getStoreLocation(storeID);
         inStore.put(l, inStore.get(l)-amount);
     }
-    public void MoveItems(int storeID, int amount) { //from warehouse to store
+    public void moveItems(int storeID, int amount) { //from warehouse to store
         Location from = getWarehouseLocation(storeID);
         Location to = getStoreLocation(storeID);
         inWarehouse.put(from, inWarehouse.get(from)-amount);
         inStore.put(to, inStore.get(to)+amount);
     }
-    public void AddItems(int storeID, int amount) { //from supplier to warehouse
+    public void addItems(int storeID, int amount) { //from supplier to warehouse
         Location l = getWarehouseLocation(storeID);
         inWarehouse.put(l, inWarehouse.get(l)+amount);
     }
 
-    public void ReturnItems(int storeID, int amount) { //from customer to store
+    public void returnItems(int storeID, int amount) { //from customer to store
         Location l = getStoreLocation(storeID);
         inStore.put(l, inStore.get(l)+amount);
     }
