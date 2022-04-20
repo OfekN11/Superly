@@ -41,9 +41,9 @@ public abstract class Shift {
 
     public Shift(DShift dShift, Set<Employee> employees) {
         this.dShift = dShift;
-        this.date = dShift.date;
+        this.date = dShift.getDate();
         this.employees =employees;
-        this.shiftManagerId = dShift.shiftManagerId;
+        this.shiftManagerId = dShift.getShiftManagerId();
     }
 
     public void AddEmployee(Employee employee){

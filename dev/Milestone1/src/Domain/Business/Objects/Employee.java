@@ -1,5 +1,7 @@
 package Domain.Business.Objects;
 
+import Domain.Business.Objects.Enums.EmployeeJob;
+import Domain.Business.Objects.Enums.ShiftType;
 import Domain.DAL.Objects.DEmployee;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
@@ -54,12 +56,12 @@ public abstract class Employee {
      * @param dEmployee DAL type representing the employee
      */
     public Employee(DEmployee dEmployee) {
-        this.id = dEmployee.id;
-        this.name = dEmployee.name;
-        this.bankDetails = dEmployee.bankDetails;
-        this.salary = dEmployee.salary;
-        this.employmentConditions = dEmployee.employmentConditions;
-        this.startingDate = dEmployee.startingDate;
+        this.id = dEmployee.getId();
+        this.name = dEmployee.getName();
+        this.bankDetails = dEmployee.getBankDetails();
+        this.salary = dEmployee.getSalary();
+        this.employmentConditions = dEmployee.getEmploymentConditions();
+        this.startingDate = dEmployee.getStartingDate();
         this.dEmployee = dEmployee;
     }
 

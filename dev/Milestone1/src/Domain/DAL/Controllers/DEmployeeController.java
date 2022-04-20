@@ -7,6 +7,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DEmployeeController extends DalController<DEmployee> {
+
+    // constructor
+    public DEmployeeController() {
+        super("PlaceHolder");
+    }
+
+    // functions
     @Override
     public Set<DEmployee> createFakeDTOs() {
         Set<DEmployee> employees= new HashSet<>();
@@ -19,5 +26,15 @@ public class DEmployeeController extends DalController<DEmployee> {
         employees.add(new DEmployee(13,"number" +13,"i wish i had money",0,"i am free, no conditions",Time.valueOf("14/07/1998"),"Storekeeper"
         ));
         return employees;
+    }
+
+    @Override
+    public Set<DEmployee> select() {
+        return null;
+    }
+
+    @Override
+    public void deleteAll() {
+
     }
 }
