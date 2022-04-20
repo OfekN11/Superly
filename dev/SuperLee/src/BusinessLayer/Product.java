@@ -3,12 +3,13 @@ package BusinessLayer;
 import java.util.*;
 
 public class Product {
-    public Product(int id, String name, Category category, int weight, double price, List<SaleToCustomer> sales) {
+    public Product(int id, String name, Category category, int weight, double price, List<Supplier> suppliers, List<SaleToCustomer> sales) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.weight = weight;
         this.price = new Price(price, sales);
+        this.suppliers = suppliers;
         inStore = new HashMap<Location, Integer>(); //needs to filled with all stores locations.
         inWarehouse = new HashMap<Location, Integer>(); //needs to filled with all warehouses locations.
     }

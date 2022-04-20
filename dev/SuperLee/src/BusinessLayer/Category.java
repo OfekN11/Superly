@@ -67,4 +67,13 @@ public class Category {
             productsIDs.addAll(c.findProductsIDs(productsIDs));
         return productsIDs;
     }
+
+    public boolean contains(Category category) {
+        if (category.id == id)
+            return true;
+        for (Category c: subcategories)
+            if (c.contains(category))
+                return true;
+        return false;
+    }
 }
