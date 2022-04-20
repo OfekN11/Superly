@@ -197,7 +197,7 @@ public class InventoryService {
      */
     public Result<Object> removeItems(int productID, int storeID, int amount){
         try {
-            controller.RemoveItems(productID, storeID, amount);
+            controller.removeItems(productID, storeID, amount);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -212,7 +212,7 @@ public class InventoryService {
      */
     public Result<Object> moveProduct(int productID, int storeID, int amount){
         try {
-            controller.MoveItems(productID, storeID, amount);
+            controller.moveItems(productID, storeID, amount);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -227,7 +227,7 @@ public class InventoryService {
      */
     public Result<Object> addItems(int storeID, int productID, int amount){
         try {
-            controller.AddItems(storeID, productID, amount);
+            controller.addItems(storeID, productID, amount);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
