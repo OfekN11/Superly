@@ -15,7 +15,7 @@ public class Inventory {
     public static InventoryService is = new InventoryService();
     public static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-        System.out.println("Welcome to the Inventory Mangaer!");
+        System.out.println("Welcome to the Inventory Manager!");
         System.out.println("Would you like to load test data?");
         System.out.println("(yes/no)");
         boolean testData=true;

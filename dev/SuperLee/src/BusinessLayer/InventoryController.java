@@ -114,6 +114,15 @@ public class InventoryController {
         //remove sales? remove empty categories?
     }
 
+    public void reportDamaged(int storeID, int productID, int amount, String description) {
+
+    }
+
+    public void reportExpired(int storeID, int productID, int amount) {
+
+    }
+
+
     private void addCategoriesForTests () {
 //        Category cSmall1 = new Category(1, "Small", new ArrayList<>(), new ArrayList<>());
 //        categories.put(categories.size() + 1, cSmall1);
