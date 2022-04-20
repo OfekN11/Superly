@@ -12,8 +12,8 @@ public class Product {
         Items = new ArrayList<>();
         inStore = new HashMap<Location, Integer>(); //needs to filled with all stores locations.
         inWarehouse = new HashMap<Location, Integer>(); //needs to filled with all warehouses locations.
-
     }
+
     private int id;
     private String name;
     private Category category;
@@ -29,18 +29,23 @@ public class Product {
     public int getId() {
         return id;
     }
+
     public double getOriginalPrice() {
         return price.getOriginalPrice();
     }
+
     public double getCurrentPrice() {
         return price.getCurrentPrice();
     }
+
     public void addSale(SaleToCustomer sale) {
         price.addSale(sale);
     }
+
     public boolean inCategory(List<Integer> categories) {
         return category.inCategory(categories);
     }
+
     public void RemoveItems(List<Item> itemList) { //bought or thrown
         int amount = itemList.size();
         Items.removeAll(itemList);

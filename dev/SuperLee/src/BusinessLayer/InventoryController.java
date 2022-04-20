@@ -7,7 +7,7 @@ public class InventoryController {
     private Map<Integer, Category> categories;
     private List<SaleToCustomer> sales;
     private Map<Integer, Product> products;
-    private long itemsAmount;
+    private long itemsAmount; //is this ok
     public InventoryController() {
         storeIds = new ArrayList<>();
         categories = new HashMap<>();
@@ -16,7 +16,7 @@ public class InventoryController {
         itemsAmount = 0;
     }
 
-    public void testInit() {
+    public void loadTestData() {
         //initialize stuff for tests
     }
 
@@ -31,14 +31,16 @@ public class InventoryController {
     }
 
     public void addSale(List<Integer> categories, List<Integer> productsIDs, int percent, Date start, Date end) {
-        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categories, productsIDs);
-        sales.add(sale);
-        for (Integer p: productsIDs)
-            if (products.get(p)!=null)
-                products.get(p).addSale(sale);
-        for (Integer c: categories)
-            if (p.inCategory(categories))
-                p.addSale(sale);
+//        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categories, productsIDs);
+//        sales.add(sale);
+//        for (Integer p: productsIDs)
+//            if (products.get(p)!=null)
+//                products.get(p).addSale(sale);
+//        for (Integer c: categories)
+//            if (categories.get(c)!=null)
+//                products.get(p).addSale(sale);
+//            if (p.inCategory(categories))
+//                p.addSale(sale);
     }
 
     public List<DiscountFromSupplier> getDiscountFromSupplierHistory(int productID) {
@@ -69,11 +71,11 @@ public class InventoryController {
     public void removeProduct(int productID, List<Item> items) {
         //find product remove amount
         Product product = null;
-        for (Product p: products)
-            if (p.getId()==productID) {
-                product = p;
-                break;
-            }
+//        for (Product p: products)
+//            if (p.getId()==productID) {
+//                product = p;
+//                break;
+//            }
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
         product.RemoveItems(items);
@@ -82,11 +84,11 @@ public class InventoryController {
     public void move(int productID, List<Item> items) {
         //find product move amount
         Product product = null;
-        for (Product p: products)
-            if (p.getId()==productID) {
-                product = p;
-                break;
-            }
+//        for (Product p: products)
+//            if (p.getId()==productID) {
+//                product = p;
+//                break;
+//            }
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
         product.MoveItems(items);
@@ -94,11 +96,11 @@ public class InventoryController {
     public void AddItems(int storeID, int productID, Map<Date, Integer> expiryDates) {
         //find product add amount
         Product product = null;
-        for (Product p: products)
-            if (p.getId()==productID) {
-                product = p;
-                break;
-            }
+//        for (Product p: products)
+//            if (p.getId()==productID) {
+//                product = p;
+//                break;
+//            }
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
         itemsAmount += product.AddItems(storeID, expiryDates, itemsAmount);
@@ -106,11 +108,11 @@ public class InventoryController {
     public void returnProduct(int storeID, int productID, Map<Date, Integer> expiryDates) {
         //find product add amount
         Product product = null;
-        for (Product p: products)
-            if (p.getId()==productID) {
-                product = p;
-                break;
-            }
+//        for (Product p: products)
+//            if (p.getId()==productID) {
+//                product = p;
+//                break;
+//            }
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
         itemsAmount += product.ReturnItems(storeID, expiryDates, itemsAmount);

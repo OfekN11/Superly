@@ -24,7 +24,22 @@ public class InventoryService {
     }
 
     /**
-     * Loads data form persistence layer
+     * Loads test data
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<Object> loadTestData(){
+        try {
+            controller.loadTestData();
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
+    }
+
+    /**
+     * Loads data from persistence layer
      *
      * @return Result detailing success of operation
      */
@@ -225,11 +240,13 @@ public class InventoryService {
      */
     public Result<Object> returnProduct(int productID, List<Item> items){
         try {
-            controller.returnProduct(productID, items);
+//            controller.returnProduct(productID, items);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
         return Result.makeOk(null);
     }
+
+    //edit product stuff (price, category, name)
 }
