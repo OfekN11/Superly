@@ -6,13 +6,13 @@ public class InventoryController {
     private List<Integer> storeIds;
     private List<Integer> categoryIds;
     private List<SaleToCustomer> sales;
-    private List<Product> products;
+    private Map<Integer, Product> products;
     private long itemsAmount;
     public InventoryController() {
         storeIds = new ArrayList<>();
         categoryIds = new ArrayList<>();
         sales = new ArrayList<>();
-        products = new ArrayList<>();
+        products = new HashMap<>();
         itemsAmount = 0;
     }
 
@@ -21,11 +21,14 @@ public class InventoryController {
     }
 
 
-    public void addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end) {
-        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categories, products);
+    public void addSale(List<Integer> categories, List<Integer> productsIDs, int percent, Date start, Date end) {
+        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categories, productsIDs);
         sales.add(sale);
-        for (Product p: this.products)
-            if (products.contains(p.getId()) || p.inCategory(categories)) //HOPE IT WILL WORK PROPERLY.
+        for (Integer p: productsIDs)
+            if (products.get(p)!=null)
+                products.get(p).addSale(sale);
+        for (Integer c: categories)
+            if (p.inCategory(categories))
                 p.addSale(sale);
     }
 
