@@ -74,29 +74,46 @@ public class InventoryController {
     public void removeItems(int productID, int storeID, int amount) {
         Product product = products.get(productID);
         if (product==null)
-            throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
+            throw new IllegalArgumentException("InventoryController: removeProduct: no such product found");
         product.removeItems(storeID, amount);
     }
     public void moveItems(int productID, int storeID, int amount) {
         Product product = products.get(productID);
         if (product==null)
-            throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
+            throw new IllegalArgumentException("InventoryController: moveItems: no such product found");
         product.moveItems(storeID, amount);
     }
     public void addItems(int productID, int storeID, int amount) {
         Product product = products.get(productID);
         if (product==null)
-            throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
+            throw new IllegalArgumentException("InventoryController: addItems: no such product found");
         product.addItems(storeID, amount);
     }
-    public void ReturnItems(int productID, int storeID, int amount) {
+    public void returnItems(int productID, int storeID, int amount) {
         //find product add amount
         Product product = products.get(productID);
         if (product==null)
-            throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
+            throw new IllegalArgumentException("InventoryController: returnItems: no such product found");
         product.returnItems(storeID, amount);
     }
 
+    public void addStore() {
+        if (storeIds.isEmpty())
+            storeIds.add(0);
+        storeIds.add(storeIds.get(storeIds.size()-1)+1);
+    }
+    public void removeStore(int storeID) {
+        storeIds.remove(storeIds.indexOf(storeID));
+    }
+    public void addProductToStore(int storeID, int shelfInStore, int shelfInWarehouse, int productID, int minAmount, int maxAmount) { //affect 4 maps in product.
+        Product product = products.get(productID);
+        product.addLocation(storeID, shelfInStore, shelfInWarehouse, minAmount, maxAmount);
+    }
+    public void removeProductFromStore(int storeID, int productID) {
+        Product product = products.get(productID);
+        product.removeLocation(storeID);
+    }
+    
     public void loadData() {
 
     }
@@ -115,13 +132,35 @@ public class InventoryController {
     }
 
     public void reportDamaged(int storeID, int productID, int amount, String description) {
-
+        Product product = products.get(productID);
+        if (product==null)
+            throw new IllegalArgumentException("InventoryController: reportDamaged: no such product found");
+        product.removeItems(storeID, amount);
+        product.reportDamaged(storeID, amount, description);
     }
-
     public void reportExpired(int storeID, int productID, int amount) {
-
+        Product product = products.get(productID);
+        if (product==null)
+            throw new IllegalArgumentException("InventoryController: reportExpired: no such product found");
+        product.removeItems(storeID, amount);
+        product.reportExpired(storeID, amount);
     }
-
+    public List<DamagedItemReport> getDamagedItemReports(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
+        List<DamagedItemReport> dirList = new ArrayList<>();
+        Collection<Product> productList = getProducts();
+        for (Product p: productList) {
+            dirList.addAll(p.getDamagedItemReports(start, end, storeID));
+        }
+        return dirList;
+    }
+    public List<ExpiredItemReport> getExpiredItemReports(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
+        List<ExpiredItemReport> eirList = new ArrayList<>();
+        Collection<Product> productList = getProducts();
+        for (Product p: productList) {
+            eirList.addAll(p.getExpiredItemReports(start, end, storeID));
+        }
+        return eirList;
+    }
 
     private void addCategoriesForTests () {
         Category cSmall1 = new Category(1, "Small", new HashSet<>(), new ArrayList<>(), null);

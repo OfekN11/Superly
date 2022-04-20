@@ -14,15 +14,21 @@ public class Product {
         inStore = new HashMap<Location, Integer>(); //needs to filled with all stores locations.
         inWarehouse = new HashMap<Location, Integer>(); //needs to filled with all warehouses locations.
         sales = new ArrayList<>();
+        minAmounts = new HashMap<>();
+        maxAmounts = new HashMap<>();
+        damagedItemReport = new ArrayList<>();
+        expiredItemReport = new ArrayList<>();
     }
-
     private int id;
     private String name;
     private Category category;
-    private Map<Location, Integer> minAmount; //min amount which indicates for lack of the specific product in each location.
-    private Map<Location, Integer> maxAmount; //max amount available to store in the warehouse for this product at once.
+
+    private Map<Integer, Integer> minAmounts; //<storeID, minAmount in total>
+    private Map<Integer, Integer> maxAmounts; //<storeID, maxAmount in total>
     private Map<Location, Integer> inStore; //current amount in store.
     private Map<Location, Integer> inWarehouse; //current amount in warehouse.
+    private List<DamagedItemReport> damagedItemReport;
+    private List<ExpiredItemReport> expiredItemReport;
     private double weight;
     private List<Supplier> suppliers;
     private double price;
@@ -90,6 +96,47 @@ public class Product {
         if (l==null)
             throw new IllegalArgumentException("Product: getWarehouseLocation: location not found");
         return l;
+    }
+
+    public void reportDamaged(int storeID, int amount, String description) {
+        damagedItemReport.add(new DamagedItemReport(new Date(), storeID, amount, description));
+    }
+    public void reportExpired(int storeID, int amount) {
+        expiredItemReport.add(new ExpiredItemReport(new Date(), storeID, amount));
+    }
+    public List<DamagedItemReport> getDamagedItemReports(Date start, Date end, List<Integer> storeID) {
+        List<DamagedItemReport> dirList = new ArrayList<>();
+        for (DamagedItemReport dir: damagedItemReport) {
+            if (dir.inDates(start, end) && (storeID.contains(dir.getStoreID()) || storeID.size()==0))
+                dirList.add(dir);
+        }
+        return dirList;
+    }
+    public List<ExpiredItemReport> getExpiredItemReports(Date start, Date end, List<Integer> storeID) {
+        List<ExpiredItemReport> eirList = new ArrayList<>();
+        for (ExpiredItemReport eir: expiredItemReport) {
+            if (eir.inDates(start, end) && (storeID.contains(eir.getStoreID()) || storeID.size()==0))
+                eirList.add(eir);
+        }
+        return eirList;
+    }
+
+    public void addLocation(int storeID, int shelfInStore, int shelfInWarehouse, int minAmount, int maxAmount) {
+        Location storeLocation = new Location(storeID, false, shelfInStore);
+        Location warehouseLocation = new Location(storeID, true, shelfInWarehouse);
+        minAmounts.put(storeID, minAmount);
+        maxAmounts.put(storeID, maxAmount);
+        inStore.put(storeLocation, 0);
+        inWarehouse.put(warehouseLocation, 0);
+    }
+
+    public void removeLocation(int storeID) {
+        Location storeLocation = getStoreLocation(storeID);
+        Location warehouseLocation = getWarehouseLocation(storeID);
+        minAmounts.remove(storeID);
+        maxAmounts.remove(storeID);
+        inStore.remove(storeLocation);
+        inWarehouse.remove(warehouseLocation);
     }
 
     public List<SaleToCustomer> getSaleHistory() {

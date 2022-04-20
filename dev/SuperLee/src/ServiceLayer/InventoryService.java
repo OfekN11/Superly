@@ -305,7 +305,7 @@ public class InventoryService {
      */
     public Result<Object> returnProduct(int productID){
         try {
-            controller.ReturnItems(productID,productID, productID);
+            controller.returnItems(productID,productID, productID);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
