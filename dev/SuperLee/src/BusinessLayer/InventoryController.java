@@ -7,46 +7,29 @@ public class InventoryController {
     private Map<Integer, Category> categories;
     private List<SaleToCustomer> sales;
     private Map<Integer, Product> products;
-    private long itemsAmount; //is this ok
     public InventoryController() {
         storeIds = new ArrayList<>();
         categories = new HashMap<>();
         sales = new ArrayList<>();
         products = new HashMap<>();
-        itemsAmount = 0;
     }
 
-    public void loadTestData() {
+    public void testInit() {
         //initialize stuff for tests
     }
 
-    public void loadData() {
 
-    }
-
-    public void newProduct(int id, String name, Category category, int weight, double price) {
-    }
-
-    public void deleteProduct(int id) {
-    }
-
-    public void addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end) {
-        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categories, products);
+    public void addSale(List<Integer> categoryIDs, List<Integer> productIDs, int percent, Date start, Date end) {
+        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categoryIDs, productIDs);
         sales.add(sale);
-        for (Product p: this.products)
-            if (products.contains(p.getId()) || p.inCategory(categories)) //HOPE IT WILL WORK PROPERLY.
-                p.addSale(sale);
-    public void addSale(List<Integer> categories, List<Integer> productsIDs, int percent, Date start, Date end) {
-//        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categories, productsIDs);
-//        sales.add(sale);
-//        for (Integer p: productsIDs)
-//            if (products.get(p)!=null)
-//                products.get(p).addSale(sale);
-//        for (Integer c: categories)
-//            if (categories.get(c)!=null)
-//                products.get(p).addSale(sale);
-//            if (p.inCategory(categories))
-//                p.addSale(sale);
+        for (Integer pID: productIDs) {
+            if (products.get(pID)!=null)
+                products.get(pID).addSale(sale);
+        }
+        for (Integer cID: categoryIDs) {
+            if (categories.get(cID)!=null)
+                //add sale for each product in this categories
+        }
     }
 
     public List<DiscountFromSupplier> getDiscountFromSupplierHistory(int productID) {
@@ -65,11 +48,11 @@ public class InventoryController {
         return null;
     }
 
-    public List<Product> getProducts() {
+    public List<Product> getItems() {
         return null;
     }
 
-    public List<Product> getProductsFromCategory(int categoryID) {
+    public List<Product> getItemsFromCategory(int categoryID) {
         return null;
     }
 
@@ -92,16 +75,21 @@ public class InventoryController {
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
         product.AddItems(storeID, amount);
     }
-    public void returnProduct(int productID, int storeID, int amount) {
+    public void ReturnItems(int productID, int storeID, int amount) {
         //find product add amount
-        Product product = null;
-//        for (Product p: products)
-//            if (p.getId()==productID) {
-//                product = p;
-//                break;
-//            }
+        Product product = products.get(productID);
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
         product.ReturnItems(storeID, amount);
+    }
+
+    public void loadData() {
+
+    }
+
+    public void newProduct(int id, String name, Category category, int weight, double price) {
+    }
+
+    public void deleteProduct(int id) {
     }
 }
