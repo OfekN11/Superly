@@ -3,7 +3,7 @@ package BusinessLayer;
 import java.util.*;
 
 public class Product {
-    public Product(int id, String name, Category category, int weight, double price, List<Supplier> suppliers) {
+    public Product(int id, String name, Category category, double weight, double price, List<Supplier> suppliers) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -14,17 +14,22 @@ public class Product {
         inStore = new HashMap<Location, Integer>(); //needs to filled with all stores locations.
         inWarehouse = new HashMap<Location, Integer>(); //needs to filled with all warehouses locations.
         sales = new ArrayList<>();
+        minAmounts = new HashMap<>();
+        maxAmounts = new HashMap<>();
+        damagedItemReport = new ArrayList<>();
+        expiredItemReport = new ArrayList<>();
     }
     private int id;
     private String name;
     private Category category;
-    private Map<Location, Integer> minAmount; //min amount which indicates for lack of the specific product in each location.
-    private Map<Location, Integer> maxAmount; //max amount available to store in the warehouse for this product at once.
+
+    private Map<Integer, Integer> minAmounts; //<storeID, minAmount in total>
+    private Map<Integer, Integer> maxAmounts; //<storeID, maxAmount in total>
     private Map<Location, Integer> inStore; //current amount in store.
     private Map<Location, Integer> inWarehouse; //current amount in warehouse.
     private List<DamagedItemReport> damagedItemReport;
     private List<ExpiredItemReport> expiredItemReport;
-    private int weight;
+    private double weight;
     private List<Supplier> suppliers;
     private double price;
     private List<SaleToCustomer> sales;
@@ -114,5 +119,23 @@ public class Product {
                 eirList.add(eir);
         }
         return eirList;
+    }
+
+    public void addLocation(int storeID, int shelfInStore, int shelfInWarehouse, int minAmount, int maxAmount) {
+        Location storeLocation = new Location(storeID, false, shelfInStore);
+        Location warehouseLocation = new Location(storeID, true, shelfInWarehouse);
+        minAmounts.put(storeID, minAmount);
+        maxAmounts.put(storeID, maxAmount);
+        inStore.put(storeLocation, 0);
+        inWarehouse.put(warehouseLocation, 0);
+    }
+
+    public void removeLocation(int storeID) {
+        Location storeLocation = getStoreLocation(storeID);
+        Location warehouseLocation = getWarehouseLocation(storeID);
+        minAmounts.remove(storeID);
+        maxAmounts.remove(storeID);
+        inStore.remove(storeLocation);
+        inWarehouse.remove(warehouseLocation);
     }
 }

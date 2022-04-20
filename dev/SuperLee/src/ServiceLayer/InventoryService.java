@@ -40,6 +40,21 @@ public class InventoryService {
     }
 
     /**
+     * gets store ids of existing stores
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<List<Integer>> getStoreIDs(){
+        try {
+            return Result.makeOk(controller.getStoreIDs());
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+
+    }
+
+    /**
      * Loads data from persistence layer
      *
      * @return Result detailing success of operation
@@ -166,7 +181,7 @@ public class InventoryService {
      */
     public Result<List<Product>> getProducts(){
         try {
-            List<BusinessLayer.Product> products = controller.getProducts();
+            Collection<BusinessLayer.Product> products = controller.getProducts();
             List<Product> productList = new ArrayList<>();
             for (BusinessLayer.Product p : products) {
                 productList.add(new Product(p));
@@ -186,7 +201,7 @@ public class InventoryService {
      */
     public Result<List<Product>> getProductsFromCategory(int categoryID){
         try {
-            List<BusinessLayer.Product> products = controller.getProducts();
+            Collection<BusinessLayer.Product> products = controller.getProductsFromCategory(categoryID);
             List<Product> productList = new ArrayList<>();
             for (BusinessLayer.Product p : products) {
                 productList.add(new Product(p));
@@ -218,7 +233,21 @@ public class InventoryService {
     }
 
     /**
-     * Remove items from the store - either damaged or purchased
+     * Remove damage or expired items from the store
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<Double> buyItems(int productID, int storeID, int amount){
+        try {
+            return Result.makeOk(controller.buyItems(productID, storeID, amount));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Remove damage or expired items from the store
      *
      * @return Result detailing success of operation
      */
