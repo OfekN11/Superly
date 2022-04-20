@@ -1,4 +1,4 @@
-package BusinessLayer.Objects;
+package Backend.BusinessLayer.Objects;
 
 import java.util.Date;
 import java.util.List;
