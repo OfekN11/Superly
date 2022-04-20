@@ -44,41 +44,44 @@ public class Product {
         return category.inCategory(categories);
     }
     public void RemoveItems(int storeID, int amount) { //bought or thrown
-    public void removeItems(int storeID, int amount) { //bought or thrown
-        Location l = getStoreLocation(storeID);
-        inStore.put(l, inStore.get(l)-amount);
-    }
-    public void moveItems(int storeID, int amount) { //from warehouse to store
-        Location from = getWarehouseLocation(storeID);
-        Location to = getStoreLocation(storeID);
-        inWarehouse.put(from, inWarehouse.get(from)-amount);
-        inStore.put(to, inStore.get(to)+amount);
-    }
-    public void addItems(int storeID, int amount) { //from supplier to warehouse
-        Location l = getWarehouseLocation(storeID);
-        inWarehouse.put(l, inWarehouse.get(l)+amount);
-    }
+        public void removeItems ( int storeID, int amount){ //bought or thrown
+            Location l = getStoreLocation(storeID);
+            inStore.put(l, inStore.get(l) - amount);
+        }
+        public void moveItems ( int storeID, int amount){ //from warehouse to store
+            Location from = getWarehouseLocation(storeID);
+            Location to = getStoreLocation(storeID);
+            inWarehouse.put(from, inWarehouse.get(from) - amount);
+            inStore.put(to, inStore.get(to) + amount);
+        }
+        public void addItems ( int storeID, int amount){ //from supplier to warehouse
+            Location l = getWarehouseLocation(storeID);
+            inWarehouse.put(l, inWarehouse.get(l) + amount);
+        }
 
-    public void returnItems(int storeID, int amount) { //from customer to store
-        Location l = getStoreLocation(storeID);
-        inStore.put(l, inStore.get(l)+amount);
-    }
-    private Location getStoreLocation(int storeId) {
-        Location l = null;
-        for (Map.Entry<Location, Integer> entry : inStore.entrySet())
-            if (entry.getKey().getStoreID()==storeId)
-                l = entry.getKey();
-        if (l==null)
-            throw new IllegalArgumentException("Product: getStoreLocation: location not found");
-        return l;
-    }
-    private Location getWarehouseLocation(int storeId) {
-        Location l = null;
-        for (Map.Entry<Location, Integer> entry : inWarehouse.entrySet())
-            if (entry.getKey().getStoreID() == storeId)
-                l = entry.getKey();
-        if (l == null)
-            throw new IllegalArgumentException("Product: getWarehouseLocation: location not found");
-        return l;
+        public void returnItems ( int storeID, int amount){ //from customer to store
+            Location l = getStoreLocation(storeID);
+            inStore.put(l, inStore.get(l) + amount);
+        }
+
+        private Location getStoreLocation ( int storeId){
+            Location l = null;
+            for (Map.Entry<Location, Integer> entry : inStore.entrySet())
+                if (entry.getKey().getStoreID() == storeId)
+                    l = entry.getKey();
+            if (l == null)
+                throw new IllegalArgumentException("Product: getStoreLocation: location not found");
+            return l;
+        }
+
+        private Location getWarehouseLocation ( int storeId){
+            Location l = null;
+            for (Map.Entry<Location, Integer> entry : inWarehouse.entrySet())
+                if (entry.getKey().getStoreID() == storeId)
+                    l = entry.getKey();
+            if (l == null)
+                throw new IllegalArgumentException("Product: getWarehouseLocation: location not found");
+            return l;
+        }
     }
 }

@@ -65,12 +65,11 @@ public class InventoryController {
         return null;
     }
 
-
     public void removeItems(int productID, int storeID, int amount) {
         Product product = products.get(productID);
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
-        product.removeItems(storeID, amount);
+        product.RemoveItems(storeID, amount);
     }
     public void moveItems(int productID, int storeID, int amount) {
         Product product = products.get(productID);
