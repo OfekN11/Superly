@@ -22,14 +22,22 @@ public class InventoryController {
     public SaleToCustomer addSale(List<Integer> categoryIDs, List<Integer> productIDs, int percent, Date start, Date end) {
         SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categoryIDs, productIDs);
         sales.add(sale);
+        Category category = null;
+        for (Integer cID: categoryIDs) {
+            category = categories.get(cID);
+            if (category!=null)
+                productIDs = category.findProductsIDs(productIDs);
+        }
+        Product product = null;
+        for (Integer pID: productIDs) {
+            product = products.get(pID);
+            if (product!=null)
+                product.addSale(sale);
+        }
         for (Integer pID: productIDs) {
             if (products.get(pID)!=null)
                 products.get(pID).addSale(sale);
         }
-//        for (Integer cID: categoryIDs) {
-//            if (categories.get(cID)!=null)
-//                //add sale for each product in this categories
-//        }
         return sale;
     }
 
@@ -58,38 +66,37 @@ public class InventoryController {
     }
 
 
-    public void RemoveItems(int productID, int storeID, int amount) {
+    public void removeItems(int productID, int storeID, int amount) {
         Product product = products.get(productID);
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
-        product.RemoveItems(storeID, amount);
+        product.removeItems(storeID, amount);
     }
-    public void MoveItems(int productID, int storeID, int amount) {
+    public void moveItems(int productID, int storeID, int amount) {
         Product product = products.get(productID);
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
-        product.MoveItems(storeID, amount);
+        product.moveItems(storeID, amount);
     }
-    public void AddItems(int productID, int storeID, int amount) {
+    public void addItems(int productID, int storeID, int amount) {
         Product product = products.get(productID);
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
-        product.AddItems(storeID, amount);
+        product.addItems(storeID, amount);
     }
     public void ReturnItems(int productID, int storeID, int amount) {
         //find product add amount
         Product product = products.get(productID);
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
-        product.ReturnItems(storeID, amount);
+        product.returnItems(storeID, amount);
     }
 
     public void loadData() {
 
     }
 
-    public Product newProduct(int id, String name, Category category, int weight, double price) {
-        return null;
+    public void newProduct(int id, String name, Category category, int weight, double price) {
     }
 
     public void deleteProduct(int id) {
