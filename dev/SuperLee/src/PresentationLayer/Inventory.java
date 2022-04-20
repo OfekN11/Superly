@@ -61,6 +61,18 @@ public class Inventory {
                     System.out.println(c);
             }
         }
+        else if (command.equals("list products by category")) {
+            System.out.println("Which category would you like to examine?");
+            int categoryID = scanner.nextInt();
+            Result<List<Product>> r = is.getProductsFromCategory(categoryID);
+            if (r.isError())
+                System.out.println(r.getError());
+            else {
+                List<Product> productList = r.getValue();
+                for (Product p : productList)
+                    System.out.println(p);
+            }
+        }
         else if (command.equals("add product")) {
             System.out.println("Please insert product name, categoryID, weight, and price. Separated by commas, no spaces");
             String[] info = scanner.nextLine().split(",");
@@ -105,7 +117,20 @@ public class Inventory {
         }
         else if (command.equals("return item")) {
         }
-        else if (command.equals("buy item")) {
+        else if (command.equals("buy items")) {
+            System.out.println("Please insert store ID of store you are in. Current store IDs are:");
+            System.out.println(is.getStoreIDs());
+            int storeID = scanner.nextInt();
+            System.out.println("Please insert product ID of product you would like to buy");
+            int productId = scanner.nextInt();
+            System.out.println("Please insert amount of product you would like to buy");
+            int amount = scanner.nextInt();
+            Result<Double> r = is.buyItems(productId, storeID, amount);
+            if (r.isError())
+                System.out.println(r.getError());
+            else {
+                System.out.println("Purhase successful! Total price is " + r.getValue() + "NIS");
+            }
         }
         else if (command.equals("add sale")) {
         }

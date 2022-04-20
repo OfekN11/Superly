@@ -1,8 +1,8 @@
 package BusinessLayer;
 
 import ServiceLayer.Objects.Sale;
-
 import java.util.*;
+import java.lang.Object.*;
 
 public class InventoryController {
     private List<Integer> storeIds;
@@ -59,16 +59,16 @@ public class InventoryController {
         return null;
     }
 
-    public List<Product> getProducts() {
-        return null;
+    public Collection<Product> getProducts() {
+        return products.values();
     }
 
     public Collection<Category> getCategories() {
         return categories.values();
     }
 
-    public List<Product> getItemsFromCategory(int categoryID) {
-        return null;
+    public List<Product> getProductsFromCategory(int categoryID) {
+        return categories.get(categoryID).getProducts();
     }
 
     public void removeItems(int productID, int storeID, int amount) {
@@ -124,59 +124,83 @@ public class InventoryController {
 
 
     private void addCategoriesForTests () {
-//        Category cSmall1 = new Category(1, "Small", new ArrayList<>(), new ArrayList<>());
-//        categories.put(categories.size() + 1, cSmall1);
-//        Category cSmall2 = new Category(1, "Small", new ArrayList<>(), new ArrayList<>());
-//        categories.put(categories.size() + 1, cSmall1);
-//        Category cLarge1 = new Category(1, "Large", new ArrayList<>(), new ArrayList<>());
-//        categories.put(categories.size() + 1, cSmall1);
-//        Category cLarge2 = new Category(1, "Large", new ArrayList<>(), new ArrayList<>());
-//        categories.put(categories.size() + 1, cSmall1);
-//        Category cMedium = new Category(1, "Medium", new ArrayList<>(), new ArrayList<>());
-//        categories.put(categories.size() + 1, cSmall1);
-//        Category cShampoo = new Category(1, "Shampoo", new ArrayList<>(), new ArrayList<>());
-//        categories.put(categories.size() + 1, cSmall1);
-//        Category cToothpaste = new Category(1, "Toothpaste", new ArrayList<>(), new ArrayList<>());
-//        categories.put(categories.size() + 1, cSmall1);
-//        List<Category> milk = new ArrayList();
-//        milk.add(cSmall1);
-//        milk.add(cMedium);
-//        milk.add(cLarge1);
-//        List<Category> yogurt = new ArrayList();
-//        yogurt.add(cSmall2);
-//        yogurt.add(cLarge2);
-//        List<Category> health = new ArrayList();
-//        health.add(cShampoo);
-//        health.add(cToothpaste);
-//        List<Category> dairy = new ArrayList();
-//        dairy.add(new Category(1, "Milk", milk, new ArrayList<>()));
-//        dairy.add(new Category(1, "Yogurt", yogurt, new ArrayList<>()));
-//        Category cdairy = new Category(1, "Dairy", dairy, new ArrayList<>());
-//        categories.put(categories.size() + 1, cdairy);
-//        Category cHealth = new Category(1, "Health,", health, new ArrayList<>());
-//        categories.put(categories.size() + 1, cHealth);
-//        Category cOrg1 = new Category(1, "Organic", new ArrayList<>(), new ArrayList<>());
-//        categories.put(categories.size() + 1, cOrg1);
-//        Category cOrg2 = new Category(1, "Organic", new ArrayList<>(), new ArrayList<>());
-//        categories.put(categories.size() + 1, cOrg2);
-//        List<Category> veggies = new ArrayList();
-//        veggies.add(cOrg1);
-//        List<Category> fruits = new ArrayList();
-//        fruits.add(cOrg2);
-//        Category cVeggie = new Category(1, "Vegetables", veggies, new ArrayList<>());
-//        categories.put(categories.size() + 1, cVeggie);
-//        Category cFruit = new Category(1, "Fruits", veggies, new ArrayList<>());
-//        categories.put(categories.size() + 1, cFruit);
-//        List<Category> produce = new ArrayList();
-//        produce.add(cFruit);
-//        produce.add(cVeggie);
-//        Category cProduce = new Category(1, "Produce", produce, new ArrayList<>());
-//        categories.put(categories.size() + 1, cProduce);
+        Category cSmall1 = new Category(1, "Small", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cSmall1);
+        Category cSmall2 = new Category(1, "Small", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cSmall2);
+        Category cLarge1 = new Category(1, "Large", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cLarge1);
+        Category cLarge2 = new Category(1, "Large", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cLarge2);
+        Category cMedium = new Category(1, "Medium", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cMedium);
+        Category cShampoo = new Category(1, "Shampoo", new HashSet<>(), new ArrayList<>(), null);
+        Set<Category> milk = new HashSet<>();
+        milk.add(cSmall1);
+        milk.add(cMedium);
+        milk.add(cLarge1);
+        Set<Category> yogurt = new HashSet<>();
+        yogurt.add(cSmall2);
+        yogurt.add(cLarge2);
+        Set<Category> dairy = new HashSet<>();
+        Category cMilk = new Category(1, "Milk", milk, new ArrayList<>(), null);
+        Category cYogurt = new Category(1, "Yogurt", yogurt, new ArrayList<>(), null);
+        dairy.add(cMilk);
+        dairy.add(cYogurt);
+        Category cdairy = new Category(1, "Dairy", dairy, new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cdairy);
+        categories.put(categories.size() + 1, cShampoo);
+        Category cToothpaste = new Category(1, "Toothpaste", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cToothpaste);
+        Set<Category> health = new HashSet<>();
+        health.add(cShampoo);
+        health.add(cToothpaste);
+        Category cHealth = new Category(1, "Health,", health, new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cHealth);
+        Category cOrg1 = new Category(1, "Organic", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cOrg1);
+        Category cOrg2 = new Category(1, "Organic", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cOrg2);
+        Set<Category> veggies = new HashSet();
+        veggies.add(cOrg1);
+        Set<Category> fruits = new HashSet();
+        fruits.add(cOrg2);
+        Category cVeggie = new Category(1, "Vegetables", veggies, new ArrayList<>(), null);
+        //12
+        categories.put(categories.size() + 1, cVeggie);
+        Category cFruit = new Category(1, "Fruits", veggies, new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cFruit);
+        Set<Category> produce = new HashSet<>();
+        produce.add(cFruit);
+        produce.add(cVeggie);
+        Category cProduce = new Category(1, "Produce", produce, new ArrayList<>(), null);
+        categories.put(categories.size() + 1, cProduce);
     }
 
     private void addProductsForTests () {
+        products.put(products.size()+1, new Product(products.size()+1, "tomato", categories.get(12), -1, 7.2, new ArrayList<>()));
+        products.put(products.size()+1, new Product(products.size()+1, "tomato", categories.get(10), -1, 9.2, new ArrayList<>()));
+        products.put(products.size()+1, new Product(products.size()+1, "strawberry", categories.get(11), -1, 7.2, new ArrayList<>()));
+        products.put(products.size()+1, new Product(products.size()+1, "melon", categories.get(13), -1, 7.2, new ArrayList<>()));
+        products.put(products.size()+1, new Product(products.size()+1, "Hawaii", categories.get(6), 1.2, 13, new ArrayList<>()));
+        products.put(products.size()+1, new Product(products.size()+1, "Crest", categories.get(9), 0.7, 7.2, new ArrayList<>()));
+        products.put(products.size()+1, new Product(products.size()+1, "Tara 1L", categories.get(5), 1.2, 8.6, new ArrayList<>()));
+        products.put(products.size()+1, new Product(products.size()+1, "Tnuva 1L", categories.get(5), 1.2, 8, new ArrayList<>()));
+        products.put(products.size()+1, new Product(products.size()+1, "yoplait strawberry", categories.get(2), 0.5, 5.3, new ArrayList<>()));
+        products.put(products.size()+1, new Product(products.size()+1, "yoplait vanilla", categories.get(2), 0.5, 5.3, new ArrayList<>()));
+
     }
 
     private void addSalesForTests () {
+    }
+
+    public List<Integer> getStoreIDs() {
+        return storeIds;
+    }
+
+    public Double buyItems(int productID, int storeID, int amount) {
+        double price = products.get(productID).getCurrentPrice()*amount;
+        removeItems(productID, storeID, amount);
+        return price;
     }
 }

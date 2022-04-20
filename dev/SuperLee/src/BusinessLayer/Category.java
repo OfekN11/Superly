@@ -2,11 +2,12 @@ package BusinessLayer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Category {
     private int id;
     private String name;
-    private List<Category> subcategories;
+    private Set<Category> subcategories;
     private Category parentCategory;
     private List<Product> products;
     private List<SaleToCustomer> sales;
@@ -18,7 +19,7 @@ public class Category {
         return name;
     }
 
-    public List<Category> getSubcategories() {
+    public Set<Category> getSubcategories() {
         return subcategories;
     }
 
@@ -26,21 +27,38 @@ public class Category {
         return parentCategory;
     }
 
-    public Category(int id, String name, List<Category> subcategories, List<Product> products, Category parentCategory) {
+    public void changeParentCategory(Category newParentCategory) {
+        if (parentCategory!=null && parentCategory!=newParentCategory) {
+            parentCategory.removeSubcategory(this);
+        }
+        else {
+            parentCategory = newParentCategory;
+            parentCategory.addSubcategory(this);
+        }
+    }
+
+    public Category(int id, String name, Set<Category> subcategories, List<Product> products, Category parentCategory) {
         this.id = id;
         this.name = name;
         this.subcategories = subcategories;
+        for (Category c : subcategories)
+            c.changeParentCategory(this);
         this.products = products;
         this.parentCategory = parentCategory;
+        if (parentCategory!=null)
+            parentCategory.addSubcategory(this);
         sales = new ArrayList<>();
     }
 
     public List<Product> getProducts() {
-        return products;
+        List<Product> output = products;
+        for (Category c : subcategories) {
+            output.addAll(c.getProducts());
+        }
+        return output;
     }
-    public boolean removeSubcategory(int categoryID) {
-        Category c = findCategory(categoryID);
-        return subcategories.remove(c);
+    public boolean removeSubcategory(Category category) {
+        return subcategories.remove(category);
     }
 
     public boolean addSubcategory(Category c) {

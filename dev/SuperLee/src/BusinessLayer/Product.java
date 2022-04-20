@@ -3,7 +3,7 @@ package BusinessLayer;
 import java.util.*;
 
 public class Product {
-    public Product(int id, String name, Category category, int weight, double price, List<Supplier> suppliers) {
+    public Product(int id, String name, Category category, double weight, double price, List<Supplier> suppliers) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -23,7 +23,7 @@ public class Product {
     private Map<Location, Integer> maxAmount; //max amount available to store in the warehouse for this product at once.
     private Map<Location, Integer> inStore; //current amount in store.
     private Map<Location, Integer> inWarehouse; //current amount in warehouse.
-    private int weight;
+    private double weight;
     private List<Supplier> suppliers;
     private double price;
     private List<SaleToCustomer> sales;
