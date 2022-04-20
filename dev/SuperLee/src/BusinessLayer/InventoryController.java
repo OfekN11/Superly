@@ -77,12 +77,7 @@ public class InventoryController {
     }
     public void ReturnItems(int productID, int storeID, int amount) {
         //find product add amount
-        Product product = null;
-        for (Product p: products)
-            if (p.getId()==productID) {
-                product = p;
-                break;
-            }
+        Product product = products.get(productID);
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
         product.ReturnItems(storeID, amount);
