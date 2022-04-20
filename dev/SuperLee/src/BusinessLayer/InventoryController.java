@@ -2,13 +2,13 @@ package BusinessLayer;
 
 import java.util.*;
 
-public class StoreController {
+public class InventoryController {
     private List<Integer> storeIds;
     private List<Integer> categoryIds;
     private List<SaleToCustomer> sales;
     private List<Product> products;
     private long itemsAmount;
-    public StoreController() {
+    public InventoryController() {
         storeIds = new ArrayList<>();
         categoryIds = new ArrayList<>();
         sales = new ArrayList<>();
@@ -16,9 +16,10 @@ public class StoreController {
         itemsAmount = 0;
     }
 
-    public void init() {
+    public void testInit() {
         //initialize stuff for tests
     }
+
 
     public void addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end) {
         SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categories, products);
@@ -27,6 +28,7 @@ public class StoreController {
             if (products.contains(p.getId()) || p.inCategory(categories)) //HOPE IT WILL WORK PROPERLY.
                 p.addSale(sale);
     }
+
     public List<DiscountFromSupplier> getDiscountFromSupplierHistory(int productID) {
         return null;
     }
@@ -100,5 +102,15 @@ public class StoreController {
         if (product==null)
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
         itemsAmount += product.ReturnItems(storeID, expiryDates, itemsAmount);
+    }
+
+    public void loadData() {
+
+    }
+
+    public void newProduct(int id, String name, Category category, int weight, double price) {
+    }
+
+    public void deleteProduct(int id) {
     }
 }
