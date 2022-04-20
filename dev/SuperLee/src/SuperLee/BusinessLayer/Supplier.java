@@ -8,6 +8,7 @@ import SuperLee.BusinessLayer.Agreement.RoutineAgreement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Supplier {
 
@@ -233,4 +234,45 @@ public class Supplier {
     public boolean isNotTransportingAgreement(){
         return agreement instanceof NotTransportingAgreement;
     }
+
+    public void setDaysOfDelivery(String days) throws Exception{
+        if(!(agreement instanceof RoutineAgreement)){
+            throw new Exception("The supplier's agreement is not Routine agreement");
+        }
+
+        ((RoutineAgreement) agreement).setDaysOfDelivery(days);
+    }
+
+    public void setDaysUntilDelivery(int days) throws Exception{
+        if(!(agreement instanceof RoutineAgreement)){
+            throw new Exception("The supplier's agreement is not Routine agreement");
+        }
+
+        ((ByOrderAgreement) agreement).setDeliveryDays(days);
+    }
+
+    public void addDaysOfDelivery(String days) throws Exception {
+        if(!(agreement instanceof RoutineAgreement)){
+            throw new Exception("The supplier's agreement is not Routine agreement");
+        }
+
+        ((RoutineAgreement) agreement).addDaysOfDelivery(days);
+    }
+
+    public void removeDayOfDelivery(int day) throws Exception {
+        if(!(agreement instanceof RoutineAgreement)){
+            throw new Exception("The supplier's agreement is not Routine agreement");
+        }
+
+        ((RoutineAgreement) agreement).removeDayOfDelivery(day);
+    }
+
+    public AgreementItem getItem(int itemId) throws Exception {
+        return agreement.getItem(itemId);
+    }
+
+    public List<Contact> getAllContact(){
+        return contacts;
+    }
+
 }

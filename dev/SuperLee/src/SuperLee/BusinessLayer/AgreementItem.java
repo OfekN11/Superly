@@ -75,12 +75,12 @@ public class AgreementItem {
         bulkPrices = _bulk;
     }
 
-    public void addBulkPrice(int quantity, int price) throws Exception {
+    public void addBulkPrice(int quantity, int discount) throws Exception {
         if(bulkPrices.containsKey(quantity)){
             throw new Exception("This quantity already exists!");
         }
 
-        bulkPrices.put(quantity, price);
+        bulkPrices.put(quantity, discount);
     }
 
     public void removeBulkPrice(int quantity) throws Exception {
@@ -91,9 +91,9 @@ public class AgreementItem {
         bulkPrices.remove(quantity);
     }
 
-    public void editBulkPrice(int quantity, int price) throws Exception {
+    public void editBulkPrice(int quantity, int discount) throws Exception {
         removeBulkPrice(quantity);
-        addBulkPrice(quantity, price);
+        addBulkPrice(quantity, discount);
     }
 
     public double calculateTotalPrice(int quantity){

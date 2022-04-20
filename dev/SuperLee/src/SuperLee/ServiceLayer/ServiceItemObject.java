@@ -1,5 +1,6 @@
 package SuperLee.ServiceLayer;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ServiceItemObject {
@@ -20,6 +21,22 @@ public class ServiceItemObject {
         bulkPrices = _bulkPrices;
     }
 
+    //Format : " id , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
+    public ServiceItemObject(String s){
+        String[] fields = s.replaceAll("\\s+","").split(",");
+
+        id = Integer.parseInt(fields[0]);
+        name = fields[1];
+        manufacturer = fields[2];
+        pricePerUnit = Float.parseFloat(fields[3]);
+        bulkPrices = new HashMap<>();
+
+        for(int i=4; i<fields.length; i++){
+            bulkPrices.put(Integer.parseInt(fields[i]), Integer.parseInt(fields[i+1]));
+            i++;
+        }
+    }
+
     public int getId(){
         return id;
     }
@@ -38,5 +55,19 @@ public class ServiceItemObject {
 
     public Map<Integer, Integer> getBulkPrices(){
         return bulkPrices;
+    }
+
+    public String toString(){
+        return "" + id + ", " + name + ", " + manufacturer + ", " + pricePerUnit + ", " + printBulkMap();
+    }
+
+    private String printBulkMap(){
+        String toReturn = "";
+
+        for(Integer key : bulkPrices.keySet()){
+            toReturn += (key + ", " + bulkPrices.get(key) + ", ");
+        }
+
+        return toReturn.substring(0, toReturn.length()-2);
     }
 }

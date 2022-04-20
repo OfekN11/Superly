@@ -4,6 +4,7 @@ import SuperLee.BusinessLayer.Pair;
 import SuperLee.BusinessLayer.SupplierController;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 
 public class SupplierService {
@@ -35,43 +36,48 @@ public class SupplierService {
         }
     }
 
-    public void updateSupplierAddress(int id, String address){
+    public Result<Boolean> updateSupplierAddress(int id, String address){
         try {
             controller.updateSupplierAddress(id, address);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
-    public void updateSupplierBankNumber(int id, int bankNumber){
+    public Result<Boolean> updateSupplierBankNumber(int id, int bankNumber){
         try {
             controller.updateSupplierBankNumber(id, bankNumber);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
-    public void updateSupplierID(int id, int newId){
+    public Result<Boolean> updateSupplierID(int id, int newId){
         try {
             controller.updateSupplierID(id, newId);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
-    public void updateSupplierName(int id, String newName){
+    public Result<Boolean> updateSupplierName(int id, String newName){
         try {
             controller.updateSupplierName(id, newName);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
-    public void addSupplierContact(int id, String contactName, String contactPhone){
+    public Result<Boolean> addSupplierContact(int id, String contactName, String contactPhone){
         try {
             controller.addSupplierContact(id, contactName, contactPhone);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
@@ -91,11 +97,12 @@ public class SupplierService {
         }
     }
 
-    public void addAgreement(int supplierId, int agreementType, String agreementDays){
+    public Result<Boolean> addAgreement(int supplierId, int agreementType, String agreementDays){
         try {
             controller.addAgreement(supplierId, agreementType, agreementDays);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
@@ -121,14 +128,13 @@ public class SupplierService {
     }
 
     // one component is : < " id , name , manufacturer , pricePerUnit , quantity1 , percent1 , quantity2 , percent2 ...  " >
-    public List<ServiceItemObject> itemsFromOneSupplier(int supplierId){
+    public Result<List<ServiceItemObject>> itemsFromOneSupplier(int supplierId){
         try {
             List<String> result = controller.itemsFromOneSupplier(supplierId);
-            return createServiceItemObject(result);
+            return Result.makeOk(createServiceItemObject(result));
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
-        return null;
     }
 
     private List<ServiceItemObject> createServiceItemObject(List<String> result) {
@@ -151,59 +157,75 @@ public class SupplierService {
         return items;
     }
 
-    public void updateBulkPriceForItem(int supplierId, int itemID, Map<Integer, Integer> newBulkPrices){
+    public Result<ServiceItemObject> getItem(int supplierId, int itemId){
+        try{
+            return Result.makeOk(new ServiceItemObject(controller.getItem(supplierId, itemId)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> updateBulkPriceForItem(int supplierId, int itemID, Map<Integer, Integer> newBulkPrices){
         try {
             controller.updateBulkPriceForItem(supplierId, itemID, newBulkPrices);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
-    public void updatePricePerUnitForItem(int supplierId, int itemID, int newPrice){
+    public Result<Boolean> updatePricePerUnitForItem(int supplierId, int itemID, float newPrice){
         try {
             controller.updatePricePerUnitForItem(supplierId, itemID, newPrice);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
-    public void updateItemId(int supplierId, int olditemId, int newItemId){
+    public Result<Boolean> updateItemId(int supplierId, int olditemId, int newItemId){
         try {
             controller.updateItemId( supplierId, olditemId, newItemId);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
-    public void updateItemName(int supplierId, int itemId, String newName){
+    public Result<Boolean> updateItemName(int supplierId, int itemId, String newName){
         try {
             controller.updateItemName( supplierId, itemId, newName);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
-    public void updateItemManufacturer(int supplierId, int itemId, String manufacturer){
+    public Result<Boolean> updateItemManufacturer(int supplierId, int itemId, String manufacturer){
         try {
             controller.updateItemManufacturer( supplierId, itemId, manufacturer);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
-    public void addItemToAgreement(int supplierId, int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices){
+    public Result<Boolean> addItemToAgreement(int supplierId, int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices){
         try {
             controller.addItemToAgreement( supplierId, itemId, itemName, itemManu, itemPrice, bulkPrices);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
-    public void deleteItemFromAgreement(int supplierId, int itemId){
+    public Result<Boolean> deleteItemFromAgreement(int supplierId, int itemId){
         try {
             controller.deleteItemFromAgreement( supplierId, itemId);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
@@ -215,11 +237,12 @@ public class SupplierService {
         }
     }
 
-    public void changeAgreementType(int supplierId,  int agreementType, String agreementDays) {
+    public Result<Boolean> changeAgreementType(int supplierId,  int agreementType, String agreementDays) {
         try {
             controller.updateAgreementType(supplierId, agreementType, agreementDays);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
@@ -307,6 +330,94 @@ public class SupplierService {
             contacts.add(new ServiceContactObject(result.get(i) , result.get(i+1) ));
         }
         return new ServiceSupplierObject(id , name, bankNumber , address , payingAgreement , contacts);
+    }
+
+    public Result<Boolean> setDaysOfDelivery(int supplierID, String days){
+        try{
+            controller.setDaysOfDelivery(supplierID, days);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> addDaysOfDelivery(int supplierID, String days){
+        try{
+            controller.addDaysOfDelivery(supplierID, days);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> removeDayOfDelivery(int supplierID, int day){
+        try{
+            controller.removeDayOfDelivery(supplierID, day);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> editBulkPriceForItem(int supID, int itemID, int quantity, int discount){
+        try{
+            controller.editBulkPrice(supID, itemID, quantity, discount);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> addBulkPriceForItem(int supID, int itemID, int quantity, int discount){
+        try{
+            controller.editBulkPrice(supID, itemID, quantity, discount);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> removeBulkPriceForItem(int supID, int itemID, int quantity){
+        try{
+            controller.removeBulkPrice(supID, itemID, quantity);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Double> calculatePriceForItemOrder(int supID, int itemID, int quantity){
+        try{
+            return Result.makeOk(controller.calculatePriceForItemOrder(supID, itemID, quantity));
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> changeDaysUntilDelivery(int supID, int days){
+        try{
+            controller.changeDaysUntilDelivery(supID, days);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<List<String>> getAllContacts(int supID){
+        try{
+            return Result.makeOk(controller.getAllContact(supID));
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 
 }

@@ -1,9 +1,6 @@
 package SuperLee.BusinessLayer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SupplierController {
 
@@ -138,7 +135,7 @@ public class SupplierController {
         suppliers.get(supplierId).updateBulkPriceForItem(itemID, newBulkPrices);
     }
 
-    public void updatePricePerUnitForItem(int supplierId, int itemID, int newPrice) throws Exception {
+    public void updatePricePerUnitForItem(int supplierId, int itemID, float newPrice) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
         suppliers.get(supplierId).updatePricePerUnitForItem(itemID, newPrice);
@@ -237,5 +234,98 @@ public class SupplierController {
             throw new Exception("There is no supplier with this ID!");
         }
         return suppliers.get(supplierId).isNotTransportingAgreement();
+    }
+
+    public void setDaysOfDelivery(int supplierID, String days) throws Exception{
+        if(!supplierExist(supplierID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        suppliers.get(supplierID).setDaysOfDelivery(days);
+    }
+
+    public void addDaysOfDelivery(int supplierID, String days) throws Exception{
+        if(!supplierExist(supplierID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        suppliers.get(supplierID).addDaysOfDelivery(days);
+    }
+
+    public void removeDayOfDelivery(int supplierID, int day) throws Exception{
+        if(!supplierExist(supplierID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        suppliers.get(supplierID).removeDayOfDelivery(day);
+    }
+
+    public String getItem(int supplierID, int itemId) throws Exception {
+        if(!supplierExist(supplierID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        return suppliers.get(supplierID).getItem(itemId).toString();
+    }
+
+    public void editBulkPrice(int supplierID, int itemId, int quantity, int discount)throws Exception{
+        if(!supplierExist(supplierID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        suppliers.get(supplierID).getItem(itemId).editBulkPrice(quantity, discount);
+    }
+
+    public void addBulkPrice(int supplierID, int itemId, int quantity, int discount)throws Exception{
+        if(!supplierExist(supplierID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        suppliers.get(supplierID).getItem(itemId).addBulkPrice(quantity, discount);
+    }
+
+    public void removeBulkPrice(int supplierID, int itemId, int quantity)throws Exception{
+        if(!supplierExist(supplierID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        suppliers.get(supplierID).getItem(itemId).removeBulkPrice(quantity);
+    }
+
+    public double calculatePriceForItemOrder(int supplierID, int itemId, int quantity) throws Exception {
+        if(!supplierExist(supplierID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        return suppliers.get(supplierID).getItem(itemId).calculateTotalPrice(quantity);
+    }
+
+    public void changeDaysUntilDelivery(int supplierID, int days)throws Exception{
+        if(!supplierExist(supplierID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        if(suppliers.get(supplierID).isByOrderAgreement()){
+            suppliers.get(supplierID).setDaysUntilDelivery(days);
+        }
+        else{
+            throw new Exception("This supplier does not have a BY-ORDER-TRANSPORT agreement.");
+        }
+    }
+
+    public List<String> getAllContact(int supID)throws Exception{
+        if(!supplierExist(supID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        List<String> contacts = new LinkedList<>();
+
+        List<Contact> list = suppliers.get(supID).getAllContact();
+
+        for(Contact c : list){
+            contacts.add(c.toString());
+        }
+
+        return contacts;
     }
 }
