@@ -8,6 +8,7 @@ import ServiceLayer.Objects.Product;
 import ServiceLayer.Objects.Sale;
 import ServiceLayer.Objects.SaleReport;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -167,12 +168,17 @@ public class InventoryService {
      */
     public Result<List<Product>> getProducts(){
         try {
-            controller.getItems();
+            List<BusinessLayer.Product> products = controller.getProducts();
+            List<Product> productList = new ArrayList<>();
+            for (BusinessLayer.Product p : products) {
+                productList.add(new Product(p));
+            }
+            return Result.makeOk(productList);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
+
     }
 
     /**
@@ -182,16 +188,39 @@ public class InventoryService {
      */
     public Result<List<Product>> getProductsFromCategory(int categoryID){
         try {
-            controller.getItemsFromCategory(categoryID);
+            List<BusinessLayer.Product> products = controller.getProducts();
+            List<Product> productList = new ArrayList<>();
+            for (BusinessLayer.Product p : products) {
+                productList.add(new Product(p));
+            }
+            return Result.makeOk(productList);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
     }
 
     /**
-     * Get list of all products in a category
+     * Get list of all Categories in the store
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<List<ServiceLayer.Objects.Category>> getCategories(){
+        try {
+            List<BusinessLayer.Category> categories = controller.getCategories();
+            List<ServiceLayer.Objects.Category> categoryList = new ArrayList<>();
+            for (BusinessLayer.Category c : categories) {
+                categoryList.add(new ServiceLayer.Objects.Category(c));
+            }
+            return Result.makeOk(categoryList);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Remove items from the store - either damaged or purchased
      *
      * @return Result detailing success of operation
      */
