@@ -1,6 +1,7 @@
 package Domain.Business.Objects;
 
 import Domain.DAL.Objects.DEmployee;
+import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
@@ -23,5 +24,10 @@ public class Storekeeper extends Employee {
     @Override
     public JobTitles getJobTitle() {
         return JobTitles.Storekeeper;
+    }
+
+    @Override
+    public Domain.Service.Objects.Employee accept(ServiceEmployeeFactory factory) {
+        return factory.createServiceEmployee(this);
     }
 }

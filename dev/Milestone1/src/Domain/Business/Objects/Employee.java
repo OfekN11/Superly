@@ -1,6 +1,7 @@
 package Domain.Business.Objects;
 
 import Domain.DAL.Objects.DEmployee;
+import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
@@ -114,4 +115,6 @@ public abstract class Employee {
     }
 
     public abstract JobTitles getJobTitle();
+
+    public abstract Domain.Service.Objects.Employee accept(ServiceEmployeeFactory factory);
 }

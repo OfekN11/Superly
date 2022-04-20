@@ -1,6 +1,7 @@
 package Domain.Business.Objects;
 
 import Domain.DAL.Objects.DEmployee;
+import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
@@ -22,5 +23,10 @@ public class HR_Manager extends Employee{
     @Override
     public JobTitles getJobTitle() {
         return JobTitles.HR_Manager;
+    }
+
+    @Override
+    public Domain.Service.Objects.Employee accept(ServiceEmployeeFactory factory) {
+        return factory.createServiceEmployee(this);
     }
 }
