@@ -4,6 +4,7 @@ package ServiceLayer;
 import BusinessLayer.Category;
 import BusinessLayer.InventoryController;
 import BusinessLayer.SaleToCustomer;
+import BusinessLayer.Supplier;
 import ServiceLayer.Objects.Product;
 import ServiceLayer.Objects.Sale;
 import ServiceLayer.Objects.SaleReport;
@@ -61,9 +62,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Product> newProduct(int id, String name, Category category, int weight, double price){
+    public Result<Product> newProduct(int id, String name, Category category, int weight, double price, List<Supplier> suppliers){
         try {
-            BusinessLayer.Product p = controller.newProduct(id, name, category, weight, price);
+            BusinessLayer.Product p = controller.newProduct(id, name, category, weight, price, suppliers);
             return Result.makeOk(new Product(p));
         }
         catch (Exception e){
@@ -91,7 +92,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Sale> addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end){
+    public Result<Sale> addSale(List<Category> categories, List<Integer> products, int percent, Date start, Date end){
         try {
             SaleToCustomer s = controller.addSale(categories, products, percent, start, end);
             return Result.makeOk(new Sale(s));

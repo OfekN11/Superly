@@ -1,5 +1,7 @@
 package BusinessLayer;
 
+import ServiceLayer.Objects.Sale;
+
 import java.util.*;
 
 public class InventoryController {
@@ -25,14 +27,12 @@ public class InventoryController {
 
     }
 
-    public SaleToCustomer addSale(List<Integer> categoryIDs, List<Integer> productIDs, int percent, Date start, Date end) {
-        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categoryIDs, productIDs);
+    public SaleToCustomer addSale(List<Category> categoriesList, List<Integer> productIDs, int percent, Date start, Date end) {
+        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categoriesList, productIDs);
         sales.add(sale);
-        Category category = null;
-        for (Integer cID: categoryIDs) {
-            category = categories.get(cID);
-            if (category!=null)
-                productIDs = category.findProductsIDs(productIDs);
+        for (Category c: categoriesList) {
+            if (c!=null)
+                productIDs = c.findProductsIDs(productIDs);
         }
         Product product = null;
         for (Integer pID: productIDs) {
@@ -105,11 +105,23 @@ public class InventoryController {
 
     }
 
-    public Product newProduct(int id, String name, Category category, int weight, double price) {
-        return null;
+    public Product newProduct(int id, String name, Category category, int weight, double price, List<Supplier> suppliers) {
+        List<SaleToCustomer> salesToCustomers = findProductSales(category);
+        Product product = new Product(id, name, category, weight, price, suppliers, sales);
+        products.put(id, product);
+        return product;
     }
-
+    private List<SaleToCustomer> findProductSales(Category category) {
+        List<SaleToCustomer> salesToCustomers = new ArrayList<>();
+        for (SaleToCustomer sale: sales) {
+            if (!sale.isPassed() && sale.appliedForProduct(category))
+                salesToCustomers.add(sale);
+        }
+        return salesToCustomers;
+    }
     public void deleteProduct(int id) {
+        products.remove(id);
+        //remove sales? remove empty categories?
     }
 
     private void addCategoriesForTests() {
