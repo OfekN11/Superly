@@ -91,7 +91,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Sale> addSale(List<Category> categories, List<Integer> products, int percent, Date start, Date end){
+    public Result<Sale> addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end){
         try {
             SaleToCustomer s = controller.addSale(categories, products, percent, start, end);
             return Result.makeOk(new Sale(s));
