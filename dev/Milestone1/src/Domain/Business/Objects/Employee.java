@@ -1,7 +1,5 @@
 package Domain.Business.Objects;
 
-import Domain.Business.Objects.Enums.EmployeeJob;
-import Domain.Business.Objects.Enums.ShiftType;
 import Domain.DAL.Objects.DEmployee;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;

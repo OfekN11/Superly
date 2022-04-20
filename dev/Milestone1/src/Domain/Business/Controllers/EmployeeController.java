@@ -1,9 +1,7 @@
 package Domain.Business.Controllers;
-import Domain.Business.Objects.Carrier;
-import Domain.Business.Objects.Cashier;
-import Domain.Business.Objects.Employee;
-import Domain.Business.Objects.Enums.ShiftType;
-import Domain.Business.Objects.Storekeeper;
+
+import Domain.Business.Objects.*;
+import Globals.Enums.*;
 import Domain.DAL.Controllers.DEmployeeController;
 import Domain.DAL.Objects.DEmployee;
 
