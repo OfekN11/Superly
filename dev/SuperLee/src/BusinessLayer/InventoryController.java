@@ -30,9 +30,15 @@ public class InventoryController {
     public void deleteProduct(int id) {
     }
 
-    public void addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end) {
-        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categories, products);
+    public void addSale(List<Integer> categories, List<Integer> productsIDs, int percent, Date start, Date end) {
+        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categories, productsIDs);
         sales.add(sale);
+        for (Integer p: productsIDs)
+            if (products.get(p)!=null)
+                products.get(p).addSale(sale);
+        for (Integer c: categories)
+            if (p.inCategory(categories))
+                p.addSale(sale);
     }
 
     public List<DiscountFromSupplier> getDiscountFromSupplierHistory(int productID) {

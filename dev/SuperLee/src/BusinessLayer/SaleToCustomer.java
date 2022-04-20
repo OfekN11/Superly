@@ -21,10 +21,10 @@ public class SaleToCustomer {
         this.products = products;
     }
     //"new Date()" returns the current date.
-    public boolean isUpcoming() {
+    private boolean isUpcoming() {
         return startDate.after(new Date());
     }
-    public boolean isPassed() {
+    private boolean isPassed() {
         return endDate.before(new Date());
     }
     public boolean isActive() {
