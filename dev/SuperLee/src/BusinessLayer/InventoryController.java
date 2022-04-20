@@ -4,14 +4,14 @@ import java.util.*;
 
 public class InventoryController {
     private List<Integer> storeIds;
-    private List<Integer> categoryIds;
+    private Map<Integer, Category> categories;
     private List<SaleToCustomer> sales;
-    private List<Product> products;
+    private Map<Integer, Product> products;
     public InventoryController() {
         storeIds = new ArrayList<>();
-        categoryIds = new ArrayList<>();
+        categories = new HashMap<>();
         sales = new ArrayList<>();
-        products = new ArrayList<>();
+        products = new HashMap<>();
     }
 
     public void testInit() {
@@ -19,12 +19,17 @@ public class InventoryController {
     }
 
 
-    public void addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end) {
-        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categories, products);
+    public void addSale(List<Integer> categoryIDs, List<Integer> productIDs, int percent, Date start, Date end) {
+        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categoryIDs, productIDs);
         sales.add(sale);
-        for (Product p: this.products)
-            if (products.contains(p.getId()) || p.inCategory(categories)) //HOPE IT WILL WORK PROPERLY.
-                p.addSale(sale);
+        for (Integer pID: productIDs) {
+            if (products.get(pID)!=null)
+                products.get(pID).addSale(sale);
+        }
+        for (Integer cID: categoryIDs) {
+            if (categories.get(cID)!=null)
+                //add sale for each product in this categories
+        }
     }
 
     public List<DiscountFromSupplier> getDiscountFromSupplierHistory(int productID) {
@@ -70,7 +75,7 @@ public class InventoryController {
             throw new IllegalArgumentException("StoreController: returnProduct: no such product found");
         product.AddItems(storeID, amount);
     }
-    public void returnProduct(int productID, int storeID, int amount) {
+    public void ReturnItems(int productID, int storeID, int amount) {
         //find product add amount
         Product product = null;
         for (Product p: products)
