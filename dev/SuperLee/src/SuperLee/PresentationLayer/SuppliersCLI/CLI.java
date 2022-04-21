@@ -587,6 +587,7 @@ public class CLI {
                     case 8 -> {
                         changeAgreementType(supplierID);
                         correctInput = true;
+                        return;
                     }
                     case 9 -> {
                         correctInput = true;
@@ -1192,7 +1193,7 @@ public class CLI {
             correctInput = false;
             System.out.println("Transporting: Yes");
             System.out.println("Routine \\ By Order: By Order");
-            System.out.println("Days to next delivery: " + service.getDeliveryDays(supplierID));
+            System.out.println("Days to next delivery: " + service.getDeliveryDays(supplierID).getValue());
 
             System.out.println("Choose:");
             System.out.println("1) Change days until delivery");
@@ -1231,6 +1232,7 @@ public class CLI {
                     case 6 -> {
                         changeAgreementType(supplierID);
                         correctInput = true;
+                        return;
                     }
                     case 7 -> {
                         correctInput = true;
@@ -1306,6 +1308,7 @@ public class CLI {
                     case 5 -> {
                         changeAgreementType(supplierID);
                         correctInput = true;
+                        return;
                     }
                     case 6 -> {
                         correctInput = true;
