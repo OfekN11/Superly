@@ -19,6 +19,6 @@ public class Contact {
     }
 
     public String toString(){
-        return "Name: " + "Phone-Number: " + phone;
+        return "Name: " + name + "Phone-Number: " + phone;
     }
 }
