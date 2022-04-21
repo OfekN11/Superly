@@ -42,11 +42,13 @@ public class CLI {
             System.out.println("3) Remove supplier");
             System.out.println("4) Exit\n");
 
-            input = scan.nextInt();
-            scan.nextLine();
+
             correctInput = false;
 
            while(!correctInput){
+               input = scan.nextInt();
+               scan.nextLine();
+
                switch (input){ // temporary
                    case 1 -> {
                        supplierCard();
@@ -504,7 +506,8 @@ public class CLI {
         Result<Boolean> r = service.isRoutineAgreement(supplierID);
 
         if(!service.hasAgreement(supplierID).getValue()){
-            System.out.println("No agreement with this supplier, press \"Enter\" to return.\n\n");
+            System.out.println("No agreement with this supplier, press \"Enter\" to return.");
+            scan.nextLine();
             return;
         }
 
