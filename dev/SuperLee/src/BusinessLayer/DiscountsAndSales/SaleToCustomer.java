@@ -25,6 +25,7 @@ public class SaleToCustomer {
         c.setTime(endDate);
         c.add(Calendar.DATE, 1);
         endDate = c.getTime();
+        endDate.setSeconds(-1);
         this.endDate = endDate;
     }
 

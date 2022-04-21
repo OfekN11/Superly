@@ -22,14 +22,43 @@ public class SaleToCustomerTests {
     @Test
     public void testIsUpcoming() {
         try {
-            SaleToCustomer sale1 = new SaleToCustomer(0, new Date(122, 3, 20), new Date(122, 3, 22), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale2 = new SaleToCustomer(1, new Date(122, 3, 21), new Date(122, 3, 22), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale3 = new SaleToCustomer(2, new Date(122, 3, 20), new Date(122, 3, 21), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale4 = new SaleToCustomer(3, new Date(122, 3, 21), new Date(122, 3, 21), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale5 = new SaleToCustomer(4, new Date(122, 3, 19), new Date(122, 3, 20), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale6 = new SaleToCustomer(5, new Date(122, 3, 22), new Date(122, 3, 23), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale7 = new SaleToCustomer(6, new Date(122, 3, 20), new Date(122, 3, 20), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale8 = new SaleToCustomer(7, new Date(122, 3, 22), new Date(122, 3, 22), 30, new LinkedList<>(), new LinkedList<>());
+            Date today = new Date();
+            today.setHours(0);
+            today.setMinutes(0);
+            today.setSeconds(0);
+
+            Date tommorow = new Date();
+            tommorow.setHours(0);
+            tommorow.setMinutes(0);
+            tommorow.setSeconds(0);
+            tommorow.setHours(24);
+
+            Date yesterday = new Date();
+            yesterday.setHours(0);
+            yesterday.setMinutes(0);
+            yesterday.setSeconds(0);
+            yesterday.setHours(-24);
+
+            Date beforeTwoDays = new Date();
+            beforeTwoDays.setHours(0);
+            beforeTwoDays.setMinutes(0);
+            beforeTwoDays.setSeconds(0);
+            beforeTwoDays.setHours(-48);
+
+            Date afterTwoDays = new Date();
+            afterTwoDays.setHours(0);
+            afterTwoDays.setMinutes(0);
+            afterTwoDays.setSeconds(0);
+            afterTwoDays.setHours(48);
+
+            SaleToCustomer sale1 = new SaleToCustomer(0, yesterday, tommorow, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale2 = new SaleToCustomer(1, today, tommorow, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale3 = new SaleToCustomer(2, yesterday, today, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale4 = new SaleToCustomer(3, today, today, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale5 = new SaleToCustomer(4, beforeTwoDays, yesterday, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale6 = new SaleToCustomer(5, tommorow, afterTwoDays, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale7 = new SaleToCustomer(6, yesterday, yesterday, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale8 = new SaleToCustomer(7, tommorow, tommorow, 30, new LinkedList<>(), new LinkedList<>());
 
             Assertions.assertFalse(sale1.isUpcoming());
             Assertions.assertFalse(sale2.isUpcoming());
@@ -47,14 +76,43 @@ public class SaleToCustomerTests {
     @Test
     public void testIsPassed() {
         try {
-            SaleToCustomer sale1 = new SaleToCustomer(0, new Date(122, 3, 20), new Date(122, 3, 22), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale2 = new SaleToCustomer(1, new Date(122, 3, 21), new Date(122, 3, 22), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale3 = new SaleToCustomer(2, new Date(122, 3, 20), new Date(122, 3, 21), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale4 = new SaleToCustomer(3, new Date(122, 3, 21), new Date(122, 3, 21), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale5 = new SaleToCustomer(4, new Date(122, 3, 19), new Date(122, 3, 20), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale6 = new SaleToCustomer(5, new Date(122, 3, 22), new Date(122, 3, 23), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale7 = new SaleToCustomer(6, new Date(122, 3, 20), new Date(122, 3, 20), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale8 = new SaleToCustomer(7, new Date(122, 3, 22), new Date(122, 3, 22), 30, new LinkedList<>(), new LinkedList<>());
+            Date today = new Date();
+            today.setHours(0);
+            today.setMinutes(0);
+            today.setSeconds(0);
+
+            Date tommorow = new Date();
+            tommorow.setHours(0);
+            tommorow.setMinutes(0);
+            tommorow.setSeconds(0);
+            tommorow.setHours(24);
+
+            Date yesterday = new Date();
+            yesterday.setHours(0);
+            yesterday.setMinutes(0);
+            yesterday.setSeconds(0);
+            yesterday.setHours(-24);
+
+            Date beforeTwoDays = new Date();
+            beforeTwoDays.setHours(0);
+            beforeTwoDays.setMinutes(0);
+            beforeTwoDays.setSeconds(0);
+            beforeTwoDays.setHours(-48);
+
+            Date afterTwoDays = new Date();
+            afterTwoDays.setHours(0);
+            afterTwoDays.setMinutes(0);
+            afterTwoDays.setSeconds(0);
+            afterTwoDays.setHours(48);
+
+            SaleToCustomer sale1 = new SaleToCustomer(0, yesterday, tommorow, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale2 = new SaleToCustomer(1, today, tommorow, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale3 = new SaleToCustomer(2, yesterday, today, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale4 = new SaleToCustomer(3, today, today, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale5 = new SaleToCustomer(4, beforeTwoDays, yesterday, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale6 = new SaleToCustomer(5, tommorow, afterTwoDays, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale7 = new SaleToCustomer(6, yesterday, yesterday, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale8 = new SaleToCustomer(7, tommorow, tommorow, 30, new LinkedList<>(), new LinkedList<>());
 
             Assertions.assertFalse(sale1.isPassed());
             Assertions.assertFalse(sale2.isPassed());
@@ -72,14 +130,43 @@ public class SaleToCustomerTests {
     @Test
     public void testIsActive() {
         try {
-            SaleToCustomer sale1 = new SaleToCustomer(0, new Date(122, 3, 20), new Date(122, 3, 22), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale2 = new SaleToCustomer(1, new Date(122, 3, 21), new Date(122, 3, 22), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale3 = new SaleToCustomer(2, new Date(122, 3, 20), new Date(122, 3, 21), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale4 = new SaleToCustomer(3, new Date(122, 3, 21), new Date(122, 3, 21), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale5 = new SaleToCustomer(4, new Date(122, 3, 19), new Date(122, 3, 20), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale6 = new SaleToCustomer(5, new Date(122, 3, 22), new Date(122, 3, 23), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale7 = new SaleToCustomer(6, new Date(122, 3, 20), new Date(122, 3, 20), 30, new LinkedList<>(), new LinkedList<>());
-            SaleToCustomer sale8 = new SaleToCustomer(7, new Date(122, 3, 22), new Date(122, 3, 22), 30, new LinkedList<>(), new LinkedList<>());
+            Date today = new Date();
+            today.setHours(0);
+            today.setMinutes(0);
+            today.setSeconds(0);
+
+            Date tommorow = new Date();
+            tommorow.setHours(0);
+            tommorow.setMinutes(0);
+            tommorow.setSeconds(0);
+            tommorow.setHours(24);
+
+            Date yesterday = new Date();
+            yesterday.setHours(0);
+            yesterday.setMinutes(0);
+            yesterday.setSeconds(0);
+            yesterday.setHours(-24);
+
+            Date beforeTwoDays = new Date();
+            beforeTwoDays.setHours(0);
+            beforeTwoDays.setMinutes(0);
+            beforeTwoDays.setSeconds(0);
+            beforeTwoDays.setHours(-48);
+
+            Date afterTwoDays = new Date();
+            afterTwoDays.setHours(0);
+            afterTwoDays.setMinutes(0);
+            afterTwoDays.setSeconds(0);
+            afterTwoDays.setHours(48);
+
+            SaleToCustomer sale1 = new SaleToCustomer(0, yesterday, tommorow, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale2 = new SaleToCustomer(1, today, tommorow, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale3 = new SaleToCustomer(2, yesterday, today, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale4 = new SaleToCustomer(3, today, today, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale5 = new SaleToCustomer(4, beforeTwoDays, yesterday, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale6 = new SaleToCustomer(5, tommorow, afterTwoDays, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale7 = new SaleToCustomer(6, yesterday, yesterday, 30, new LinkedList<>(), new LinkedList<>());
+            SaleToCustomer sale8 = new SaleToCustomer(7, tommorow, tommorow, 30, new LinkedList<>(), new LinkedList<>());
 
             Assertions.assertTrue(sale1.isActive());
             Assertions.assertTrue(sale2.isActive());

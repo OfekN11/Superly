@@ -24,21 +24,15 @@ public class Product {
     private List<SaleToCustomer> sales;
     private List<DiscountFromSupplier> discountFromSupplierList;
 
-    public int getId() {
-        return id;
-    }
-    public String getName() {
-        return name;
-    }
-    public double getOriginalPrice() {
-        return price;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public void setPrice(double price) {
-        this.price = price;
-    }
+    public Map<Location, Integer> getInStore() { return inStore; }
+    public Map<Location, Integer> getInWarehouse() { return inWarehouse; }
+    public Integer getStoreAmount(int storeID) { return inStore.get(getStoreLocation(storeID)); }
+    public Integer getWarehouseAmount(int storeID) { return inWarehouse.get(getWarehouseLocation(storeID)); }
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public double getOriginalPrice() { return price; }
+    public void setName(String name) { this.name = name; }
+    public void setPrice(double price) { this.price = price; }
     public void setCategory(Category category) {
         if (category!=null)
             category.removeProduct(this);
@@ -65,7 +59,7 @@ public class Product {
 
 
     public double getCurrentPrice() {
-        return price*getCurrentSale().getPercent()/100;
+        return price*(100-getCurrentSale().getPercent())/100;
     }
 
     private SaleToCustomer getCurrentSale() {
@@ -101,6 +95,8 @@ public class Product {
     }
 
     private double getPriceOnDate(Date dateBought) {
+        if (dateBought.after(new Date()))
+            throw new IllegalArgumentException("An item isn't able to be bought after present time");
         List<SaleToCustomer> salesActive = new ArrayList<>();
         for (SaleToCustomer s : sales) {
             if (s.wasActive(dateBought))
@@ -109,12 +105,15 @@ public class Product {
         salesActive.addAll(category.getSalesOnDate(dateBought));
         SaleToCustomer bestSale = null;
         for (SaleToCustomer sale: salesActive)
-            if (bestSale==null || bestSale.getPercent()<sale.getPercent())
+            if (bestSale==null || bestSale.getPercent()<sale.getPercent()) {
                 bestSale = sale;
-        return bestSale.getPercent()*getOriginalPrice()/100; //what if price in general changed? do we need a log of the prices?
+            }
+        if (bestSale==null)
+            return getOriginalPrice();
+        return getOriginalPrice()*(100-bestSale.getPercent())/100; //what if price in general changed? do we need a log of the prices?
     }
 
-    private Location getStoreLocation(int storeId) {
+    public Location getStoreLocation(int storeId) { //public for tests
         Location l = null;
         for (Map.Entry<Location, Integer> entry : inStore.entrySet())
             if (entry.getKey().getStoreID()==storeId)
@@ -123,7 +122,7 @@ public class Product {
             throw new IllegalArgumentException("Product: getStoreLocation: location not found");
         return l;
     }
-    private Location getWarehouseLocation(int storeId) {
+    public Location getWarehouseLocation(int storeId) { //public for tests
         Location l = null;
         for (Map.Entry<Location, Integer> entry : inWarehouse.entrySet())
             if (entry.getKey().getStoreID()==storeId)

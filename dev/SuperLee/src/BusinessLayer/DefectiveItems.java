@@ -53,6 +53,7 @@ public class DefectiveItems {
         c.setTime(endDate);
         c.add(Calendar.DATE, 1);
         endDate = c.getTime();
+        endDate.setSeconds(-1);
         return (!(startDate.after(today) || endDate.before(today)));
     }
 }
