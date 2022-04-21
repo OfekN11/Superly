@@ -1610,7 +1610,7 @@ public class CLI {
 
             manufacturer = scan.nextLine();
 
-            if(service.addSupplierManufacturer(supID, manufacturer).isOk()){
+            if(service.removeManufacturer(supID, manufacturer).isOk()){
                 System.out.println("The manufacturer was removed successfully.\n");
                 System.out.println("Choose:");
                 System.out.println("1) Remove another manufacturer");
