@@ -5,24 +5,19 @@ import Domain.DAL.Controllers.DShiftController;
 import Domain.DAL.Objects.DShift;
 import Globals.Enums.ShiftTypes;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ShiftController {
     private static final String shiftNotFoundErrorMsg = "This shift Could not be found";
 
     // properties
-    Map<String, EveningShift> nightShifts; // string representing the date
-    Map<String, MorningShift> dayShifts;// string representing the date
-    DShiftController dShiftController;
+    //Map<String, EveningShift> nightShifts; // string representing the date
+    //Map<String, MorningShift> dayShifts;// string representing the date
+    private final DShiftController dShiftController = new DShiftController();
     EmployeeController employeeController;
 
-    // constructor
-    public ShiftController() {
-//        this.employeeController = employeeController;
-        dayShifts= new HashMap<>();
-        nightShifts = new HashMap<>();
-        dShiftController = new DShiftController();
-    }
+    private final Map<Date,Map<ShiftTypes,Shift>> shifts = new HashMap<>();
 
     public void CreateFakeShifts(){
         for (DShift dShift: dShiftController.createFakeDTOs()) {
@@ -78,47 +73,75 @@ public class ShiftController {
     }
 
     public void registerWorkday(Date workday) {
+        shifts.put(workday, new HashMap<>());
+        for (ShiftTypes type: ShiftTypes.values()){
+            switch (type){
+                case Morning -> shifts.get(workday).put(type, new MorningShift(workday, ))
+            }
+        }
     }
 
-    public void removeWorkday(Date workday) {
+    public void removeWorkday(Date workday) throws Exception {
+        validateWorkday(workday);
+        shifts.remove(workday);
     }
 
-    public Shift getShift(Date workday, ShiftTypes type) {
+    public Shift getShift(Date workday, ShiftTypes type) throws Exception {
+        validateWorkday(workday);
+        return shifts.get(workday).get(type);
     }
 
-    public void editShiftCarrierCount(Date workday, ShiftTypes type, int carrierCount) {
+    public void editShiftCarrierCount(Date workday, ShiftTypes type, int carrierCount) throws Exception {
+        validateWorkday(workday);
+
     }
 
-    public void editShiftCashierCount(Date workday, ShiftTypes type, int cashierCount) {
+    public void editShiftCashierCount(Date workday, ShiftTypes type, int cashierCount) throws Exception {
+        validateWorkday(workday);
     }
 
-    public void editShiftStorekeeperCount(Date workday, ShiftTypes type, int storekeeperCount) {
+    public void editShiftStorekeeperCount(Date workday, ShiftTypes type, int storekeeperCount) throws Exception {
+        validateWorkday(workday);
     }
 
-    public void editShiftSorterCount(Date workday, ShiftTypes type, int sorterCount) {
+    public void editShiftSorterCount(Date workday, ShiftTypes type, int sorterCount) throws Exception {
+        validateWorkday(workday);
     }
 
-    public void editShiftHR_ManagerCount(Date workday, ShiftTypes type, int hr_managerCount) {
+    public void editShiftHR_ManagerCount(Date workday, ShiftTypes type, int hr_managerCount) throws Exception {
+        validateWorkday(workday);
     }
 
-    public void editShiftLogistics_ManagerCount(Date workday, ShiftTypes type, int logistics_managerCount) {
+    public void editShiftLogistics_ManagerCount(Date workday, ShiftTypes type, int logistics_managerCount) throws Exception {
+        validateWorkday(workday);
     }
 
-    public void editShiftCarrierIDs(Date workday, ShiftTypes type, Set<Integer> ids) {
+    public void editShiftCarrierIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+        validateWorkday(workday);
     }
 
-    public void editShiftCashierIDs(Date workday, ShiftTypes type, Set<Integer> ids) {
+    public void editShiftCashierIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+        validateWorkday(workday);
     }
 
-    public void editShiftStorekeeperIDs(Date workday, ShiftTypes type, Set<Integer> ids) {
+    public void editShiftStorekeeperIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+        validateWorkday(workday);
     }
 
-    public void editShiftSorterIDs(Date workday, ShiftTypes type, Set<Integer> ids) {
+    public void editShiftSorterIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+        validateWorkday(workday);
     }
 
-    public void editShiftHR_ManagerIDs(Date workday, ShiftTypes type, Set<Integer> ids) {
+    public void editShiftHR_ManagerIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+        validateWorkday(workday);
     }
 
-    public void editShiftLogistics_ManagerIDs(Date workday, ShiftTypes type, Set<Integer> ids) {
+    public void editShiftLogistics_ManagerIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+        validateWorkday(workday);
+    }
+
+    private void validateWorkday(Date workday) throws Exception{
+        if (!shifts.containsKey(workday))
+            throw new Exception(String.format("The workday %s is not registered!", new SimpleDateFormat("dd-MM-yyyy").format(workday)));
     }
 }
