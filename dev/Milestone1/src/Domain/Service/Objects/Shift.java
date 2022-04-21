@@ -9,6 +9,7 @@ import java.util.Set;
  */
 public abstract class Shift {
     public final Date date;
+    public final int shiftManagerId;
 
     public final int carrierCount;
     public final int cashierCount;
@@ -24,10 +25,11 @@ public abstract class Shift {
     public final Set<Integer> hr_managerIDs;
     public final Set<Integer> logistics_managerIDs;
 
-    private Shift(Date date,
+    private Shift(Date date, int shiftManagerId,
                   int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,
                   Set<Integer> carrierIDs, Set<Integer> cashierIDs, Set<Integer> storekeeperIDs, Set<Integer> sorterIDs, Set<Integer> hr_managerIDs, Set<Integer> logistics_managerIDs){
         this.date = date;
+        this.shiftManagerId = shiftManagerId;
 
         this.carrierCount = carrierCount;
         this.cashierCount = cashierCount;
@@ -45,7 +47,7 @@ public abstract class Shift {
     }
 
     public Shift(Domain.Business.Objects.Shift bShift){
-        this(bShift.getDate(),
+        this(bShift.getDate(), bShift.getShiftManagerId(),
                 bShift.getCarrierCount(), bShift.getCashierCount(), bShift.getStorekeeperCount(), bShift.getSorterCount(), bShift.getHr_managersCount(), bShift.getLogistics_managersCount(),
                 bShift.getCarrierIDs(), bShift.getCashierIDs(), bShift.getStorekeeperIDs(), bShift.getSorterIDs(), bShift.getHr_managerIDs(), bShift.getLogistics_managerIDs());
     }

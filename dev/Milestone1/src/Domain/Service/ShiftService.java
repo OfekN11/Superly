@@ -71,6 +71,15 @@ public class ShiftService {
         }
     }
 
+    public Result<Object> editShiftManagerID(Date workday, ShiftTypes type, int managerID){
+        try {
+            controller.editShiftManagerID(workday, type, managerID);
+        }
+        catch (Exception e) {
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
+    }
 
     public Result<Object> editShiftCarrierCount(Date workday, ShiftTypes type, int carrierCount){
         try {

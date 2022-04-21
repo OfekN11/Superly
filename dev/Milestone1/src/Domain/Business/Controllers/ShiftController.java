@@ -92,6 +92,11 @@ public class ShiftController {
         return shifts.get(workday).get(type);
     }
 
+    public void editShiftManagerID(Date workday, ShiftTypes type, int managerID) throws Exception {
+        validateWorkday(workday);
+        shifts.get(workday).get(type).setShiftManagerId(managerID);
+    }
+
     public void editShiftCarrierCount(Date workday, ShiftTypes type, int carrierCount) throws Exception {
         validateWorkday(workday);
         shifts.get(workday).get(type).setCarrierCount(carrierCount);
