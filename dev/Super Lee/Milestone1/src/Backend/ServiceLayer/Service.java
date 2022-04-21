@@ -32,6 +32,21 @@ public class Service {
         //TODO: implement
         return null;
     }
+    public Result getInProgressTransports(int transportSN)
+    {
+        //TODO: implement
+        return null;
+    }
+    public Result getWaitingTransports(int transportSN)
+    {
+        //TODO: implement
+        return null;
+    }
+    public Result getPastTransports(int transportSN)
+    {
+        //TODO: implement
+        return null;
+    }
     public Result getDestinationDocument(int destinationDocumentSN)
     {
         //TODO: implement
