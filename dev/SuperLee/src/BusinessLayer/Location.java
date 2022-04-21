@@ -14,13 +14,10 @@ public class Location {
     public int getStoreID() {
         return storeID;
     }
-    public boolean getInWarehouse() {
-        return inWarehouse;
-    }
+    public boolean getInWarehouse() { return inWarehouse; }
     public int getShelf() {
         return shelf;
     }
-
     public void move(int storeID, boolean inWarehouse, int shelf) {
         this.storeID = storeID;
         this.inWarehouse = inWarehouse;

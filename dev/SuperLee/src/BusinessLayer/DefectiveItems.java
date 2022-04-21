@@ -1,5 +1,6 @@
 package BusinessLayer;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class DefectiveItems {
@@ -8,7 +9,9 @@ public class DefectiveItems {
     private int amount;
     private String description;
     private Defect defect;
+
     enum Defect {Expired, Damaged};
+
     public DefectiveItems(Defect defect ,Date date, int storeID, int amount, String description) {
         this.date = date;
         this.storeID = storeID;
@@ -21,8 +24,12 @@ public class DefectiveItems {
         return storeID;
     }
 
-    public boolean inDates(Date start, Date end) {
+    public boolean inDates(Date startDate, Date endDate) {
         Date today = new Date();
-        return (!(start.after(today) || end.before(today)));
+        Calendar c = Calendar.getInstance();
+        c.setTime(endDate);
+        c.add(Calendar.DATE, 1);
+        endDate = c.getTime();
+        return (!(startDate.after(today) || endDate.before(today)));
     }
 }
