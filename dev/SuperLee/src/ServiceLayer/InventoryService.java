@@ -184,7 +184,7 @@ public class InventoryService {
     }
 
     /**
-     * Get History of recent damaged items
+     * Get History of recent damaged and expired items
      *
      * @return Result detailing success of operation
      */
@@ -275,39 +275,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> reportDamaged(int storeID, int productID, int amount, String description){
+    public Result<DefectiveItemReport> reportDamaged(int storeID, int productID, int amount, String description){
         try {
-            controller.reportDamaged(storeID, productID, amount, description);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
-
-    /**
-     * Remove damage items from the store
-     *
-     * @return Result detailing success of operation
-     */
-    public Result<Object> reportExpired(int storeID, int productID, int amount){
-        try {
-            controller.reportExpired(storeID, productID, amount);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
-
-    /**
-     * Remove damage items from the store
-     *
-     * @return Result detailing success of operation
-     */
-    public Result<DamagedItemReport> getDamagedItemsReport(Date start, Date end, List<Integer> storeIDs){
-        try {
-            return Result.makeOk(new DamagedItemReport(controller.getDamagedItemReports(start, end, storeIDs)));
+            return Result.makeOk(new DefectiveItemReport(controller.reportDamaged(storeID, productID, amount, description)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -319,14 +289,121 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> getExpiredItemReports(Date start, Date end, List<Integer> storeIDs){
+    public Result<DefectiveItemReport> reportExpired(int storeID, int productID, int amount, String description){
         try {
-            controller.getExpiredItemReports(start, end, storeIDs);
+            return Result.makeOk(new DefectiveItemReport(controller.reportExpired(storeID, productID, amount, description)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
+    }
+
+    /**
+     * Remove damage items from the store
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(Date start, Date end, List<Integer> storeIDs){
+        try {
+            List<BusinessLayer.DefectiveItems> dirs = controller.getDamagedItemReportsByStore(start, end, storeIDs);
+            List<DefectiveItemReport> SLdirs = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems dir : dirs)
+                SLdirs.add(new DefectiveItemReport(dir));
+            return Result.makeOk(SLdirs);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Remove damage items from the store
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByCategory(Date start, Date end, List<Integer> categoryIDs){
+        try {
+            List<BusinessLayer.DefectiveItems> dirs = controller.getDamagedItemReportsByCategory(start, end, categoryIDs);
+            List<DefectiveItemReport> SLdirs = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems dir : dirs)
+                SLdirs.add(new DefectiveItemReport(dir));
+            return Result.makeOk(SLdirs);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Remove damage items from the store
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByProduct(Date start, Date end, List<Integer> productIDs){
+        try {
+            List<BusinessLayer.DefectiveItems> dirs = controller.getDamagedItemReportsByProduct(start, end, productIDs);
+            List<DefectiveItemReport> SLdirs = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems dir : dirs)
+                SLdirs.add(new DefectiveItemReport(dir));
+            return Result.makeOk(SLdirs);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Remove damage items from the store
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeIDs){
+        try {
+            List<BusinessLayer.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByStore(start, end, storeIDs);
+            List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems eir : expiredItemReports)
+                expiredItemReportList.add(new DefectiveItemReport(eir));
+            return Result.makeOk(expiredItemReportList);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Remove damage items from the store
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByCategory(Date start, Date end, List<Integer> categoryIDs){
+        try {
+            List<BusinessLayer.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByCategory(start, end, categoryIDs);
+            List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems eir : expiredItemReports)
+                expiredItemReportList.add(new DefectiveItemReport(eir));
+            return Result.makeOk(expiredItemReportList);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Remove damage items from the store
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productIDs){
+        try {
+            List<BusinessLayer.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByProduct(start, end, productIDs);
+            List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems eir : expiredItemReports)
+                expiredItemReportList.add(new DefectiveItemReport(eir));
+            return Result.makeOk(expiredItemReportList);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 
     /**
@@ -378,14 +455,13 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> addStore(){
+    public Result<Integer> addStore(){
         try {
-            controller.addStore();
+            return Result.makeOk(controller.addStore());
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
     }
 
     /**
@@ -424,7 +500,7 @@ public class InventoryService {
      */
     public Result<Product> editProductName(int productID, String newName){
         try {
-            return Result.makeOk(new Product(controller.editProductname(productID, newName)));
+            return Result.makeOk(new Product(controller.editProductName(productID, newName)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -436,7 +512,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation holding the renewed Product
      */
-    public Result<Product> moveProduct(int productID, int newCatID){
+    public Result<Product> moveProductToCategory(int productID, int newCatID){
         try {
             return Result.makeOk(new Product(controller.moveProduct(productID, newCatID)));
         }
@@ -450,7 +526,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation holding the renewed Product
      */
-    public Result<Category> editCategoryname(int categoryID, String newName){
+    public Result<Category> editCategoryName(int categoryID, String newName){
         try {
             return Result.makeOk(new Category(controller.editCategoryName(categoryID, newName)));
         }
@@ -464,9 +540,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation holding the renewed Product
      */
-    public Result<Category> changeCategoryParent(int categoryID, String newName){
+    public Result<Category> changeCategoryParent(int categoryID, int parentID){
         try {
-            return Result.makeOk(new Category(controller.editCategoryName(categoryID, newName)));
+            return Result.makeOk(new Category(controller.changeParentCategory(categoryID, parentID)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -486,5 +562,4 @@ public class InventoryService {
             return Result.makeError(e.getMessage());
         }
     }
-    //edit product stuff (price, category, name)
 }

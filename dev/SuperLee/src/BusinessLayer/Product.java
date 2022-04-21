@@ -1,7 +1,5 @@
 package BusinessLayer;
 
-import BusinessLayer.DefectiveItems.DamagedItemReport;
-import BusinessLayer.DefectiveItems.ExpiredItemReport;
 import BusinessLayer.DiscountsAndSales.DiscountFromSupplier;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 
@@ -15,8 +13,8 @@ public class Product {
     private Map<Integer, Integer> maxAmounts; //<storeID, maxAmount in total>
     private Map<Location, Integer> inStore; //current amount in store.
     private Map<Location, Integer> inWarehouse; //current amount in warehouse.
-    private List<DamagedItemReport> damagedItemReport;
-    private List<ExpiredItemReport> expiredItemReport;
+    private List<DefectiveItems> damagedItemReport;
+    private List<DefectiveItems> expiredItemReport;
     private double weight;
     private List<Supplier> suppliers;
     private double price;
@@ -132,24 +130,47 @@ public class Product {
         return l;
     }
 
-    public void reportDamaged(int storeID, int amount, String description) {
-        damagedItemReport.add(new DamagedItemReport(new Date(), storeID, amount, description));
+    public DefectiveItems reportDamaged(int storeID, int amount, String description) {
+        DefectiveItems dir = new DefectiveItems(DefectiveItems.Defect.Damaged, new Date(), storeID, amount, description);
+        damagedItemReport.add(dir);
+        return dir;
     }
-    public void reportExpired(int storeID, int amount) {
-        expiredItemReport.add(new ExpiredItemReport(new Date(), storeID, amount));
+    public DefectiveItems reportExpired(int storeID, int amount, String description) {
+        DefectiveItems eir = new DefectiveItems(DefectiveItems.Defect.Expired, new Date(), storeID, amount, description);
+        expiredItemReport.add(eir);
+        return eir;
     }
-    public List<DamagedItemReport> getDamagedItemReports(Date start, Date end, List<Integer> storeID) {
-        List<DamagedItemReport> dirList = new ArrayList<>();
-        for (DamagedItemReport dir: damagedItemReport) {
+    public List<DefectiveItems> getDamagedItemReportsByStore(Date start, Date end, List<Integer> storeID) {
+        List<DefectiveItems> dirList = new ArrayList<>();
+        for (DefectiveItems dir: damagedItemReport) {
             if (dir.inDates(start, end) && (storeID.contains(dir.getStoreID()) || storeID.size()==0))
                 dirList.add(dir);
         }
         return dirList;
     }
-    public List<ExpiredItemReport> getExpiredItemReports(Date start, Date end, List<Integer> storeID) {
-        List<ExpiredItemReport> eirList = new ArrayList<>();
-        for (ExpiredItemReport eir: expiredItemReport) {
+
+    public Collection<DefectiveItems> getDamagedItemReports(Date start, Date end) {
+        List<DefectiveItems> dirList = new ArrayList<>();
+        for (DefectiveItems dir: damagedItemReport) {
+            if (dir.inDates(start, end))
+                dirList.add(dir);
+        }
+        return dirList;
+    }
+
+    public List<DefectiveItems> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeID) {
+        List<DefectiveItems> eirList = new ArrayList<>();
+        for (DefectiveItems eir: expiredItemReport) {
             if (eir.inDates(start, end) && (storeID.contains(eir.getStoreID()) || storeID.size()==0))
+                eirList.add(eir);
+        }
+        return eirList;
+    }
+
+    public Collection<DefectiveItems> getExpiredItemReports(Date start, Date end) {
+        List<DefectiveItems> eirList = new ArrayList<>();
+        for (DefectiveItems eir: expiredItemReport) {
+            if (eir.inDates(start, end))
                 eirList.add(eir);
         }
         return eirList;
@@ -188,4 +209,5 @@ public class Product {
     public DiscountFromSupplier addDiscountFromSupplier(Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
         return new DiscountFromSupplier(discountFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
     }
+
 }
