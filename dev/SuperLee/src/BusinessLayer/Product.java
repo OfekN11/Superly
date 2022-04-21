@@ -40,7 +40,7 @@ public class Product {
     }
     public void setCategory(Category category) {
         if (category!=null)
-            category.removeProduct(getId());
+            category.removeProduct(this);
         this.category = category;
         category.addProduct(this);
     }

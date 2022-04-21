@@ -3,23 +3,105 @@ package BusinessTests;
 import BusinessLayer.Category;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashSet;
 import java.util.LinkedList;
 
 
 public class CategoryTests {
-    @Test
-    public void testGetName(){
+    //Tests formula
+    /*@Test
+    public void testX() {
         try
         {
-            Category category = new Category("Milk", new HashSet<>(), new LinkedList<>(), null);
-            Assertions.assertEquals(true, category.getName()=="Milk");
+
         }
         catch (Exception e)
         {
-            Assertions.fail("Category name is not created properly or getName does not work");
+
+        }
+    }*/
+    @Test
+    public void testChangeParentCategory(){
+        try
+        {
+            Category category1 = new Category("Milk", new HashSet<>(), new LinkedList<>(), null);
+            Category category2 = new Category("Milk", new HashSet<>(), new LinkedList<>(), category1);
+            Category category3 = new Category("Milk", new HashSet<>(), new LinkedList<>(), category1);
+            Category category4 = new Category("Milk", new HashSet<>(), new LinkedList<>(), category2);
+            //1-2-4, 1-3.
+            Assertions.assertFalse(category1.getSubcategories().contains(category1));
+            Assertions.assertTrue(category1.getSubcategories().contains(category2));
+            Assertions.assertTrue(category1.getSubcategories().contains(category3));
+            Assertions.assertFalse(category1.getSubcategories().contains(category4));
+            Assertions.assertFalse(category2.getSubcategories().contains(category1));
+            Assertions.assertFalse(category2.getSubcategories().contains(category2));
+            Assertions.assertFalse(category2.getSubcategories().contains(category3));
+            Assertions.assertTrue(category2.getSubcategories().contains(category4));
+            Assertions.assertFalse(category3.getSubcategories().contains(category1));
+            Assertions.assertFalse(category3.getSubcategories().contains(category2));
+            Assertions.assertFalse(category3.getSubcategories().contains(category3));
+            Assertions.assertFalse(category3.getSubcategories().contains(category4));
+            Assertions.assertFalse(category4.getSubcategories().contains(category1));
+            Assertions.assertFalse(category4.getSubcategories().contains(category2));
+            Assertions.assertFalse(category4.getSubcategories().contains(category3));
+            Assertions.assertFalse(category4.getSubcategories().contains(category4));
+
+            Assertions.assertTrue(category1.getParentCategory()==null);
+            Assertions.assertTrue(category2.getParentCategory()==category1);
+            Assertions.assertTrue(category3.getParentCategory()==category1);
+            Assertions.assertTrue(category4.getParentCategory()==category2);
+
+            category2.changeParentCategory(null);
+            //1-3, 2-4.
+            Assertions.assertFalse(category1.getSubcategories().contains(category1));
+            Assertions.assertFalse(category1.getSubcategories().contains(category2));
+            Assertions.assertTrue(category1.getSubcategories().contains(category3));
+            Assertions.assertFalse(category1.getSubcategories().contains(category4));
+            Assertions.assertFalse(category2.getSubcategories().contains(category1));
+            Assertions.assertFalse(category2.getSubcategories().contains(category2));
+            Assertions.assertFalse(category2.getSubcategories().contains(category3));
+            Assertions.assertTrue(category2.getSubcategories().contains(category4));
+            Assertions.assertFalse(category3.getSubcategories().contains(category1));
+            Assertions.assertFalse(category3.getSubcategories().contains(category2));
+            Assertions.assertFalse(category3.getSubcategories().contains(category3));
+            Assertions.assertFalse(category3.getSubcategories().contains(category4));
+            Assertions.assertFalse(category4.getSubcategories().contains(category1));
+            Assertions.assertFalse(category4.getSubcategories().contains(category2));
+            Assertions.assertFalse(category4.getSubcategories().contains(category3));
+            Assertions.assertFalse(category4.getSubcategories().contains(category4));
+
+            Assertions.assertTrue(category1.getParentCategory()==null);
+            Assertions.assertTrue(category2.getParentCategory()==null);
+            Assertions.assertTrue(category3.getParentCategory()==category1);
+            Assertions.assertTrue(category4.getParentCategory()==category2);
+
+            category4.changeParentCategory(category1);
+            //1-3, 1-4, 2.
+            Assertions.assertFalse(category1.getSubcategories().contains(category1));
+            Assertions.assertFalse(category1.getSubcategories().contains(category2));
+            Assertions.assertTrue(category1.getSubcategories().contains(category3));
+            Assertions.assertTrue(category1.getSubcategories().contains(category4));
+            Assertions.assertFalse(category2.getSubcategories().contains(category1));
+            Assertions.assertFalse(category2.getSubcategories().contains(category2));
+            Assertions.assertFalse(category2.getSubcategories().contains(category3));
+            Assertions.assertFalse(category2.getSubcategories().contains(category4));
+            Assertions.assertFalse(category3.getSubcategories().contains(category1));
+            Assertions.assertFalse(category3.getSubcategories().contains(category2));
+            Assertions.assertFalse(category3.getSubcategories().contains(category3));
+            Assertions.assertFalse(category3.getSubcategories().contains(category4));
+            Assertions.assertFalse(category4.getSubcategories().contains(category1));
+            Assertions.assertFalse(category4.getSubcategories().contains(category2));
+            Assertions.assertFalse(category4.getSubcategories().contains(category3));
+            Assertions.assertFalse(category4.getSubcategories().contains(category4));
+
+            Assertions.assertTrue(category1.getParentCategory()==null);
+            Assertions.assertTrue(category2.getParentCategory()==null);
+            Assertions.assertTrue(category3.getParentCategory()==category1);
+            Assertions.assertTrue(category4.getParentCategory()==category1);
+        }
+        catch (Exception e)
+        {
+            Assertions.fail("change parent category does not work properly");
         }
     }
 }

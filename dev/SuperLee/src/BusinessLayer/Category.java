@@ -17,28 +17,14 @@ public class Category {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public Set<Category> getSubcategories() {
         return subcategories;
     }
-
     public Category getParentCategory() {
         return parentCategory;
-    }
-
-    public void changeParentCategory(Category newParentCategory) {
-        if (parentCategory!=null && parentCategory!=newParentCategory) {
-            parentCategory.removeSubcategory(this);
-        }
-        else {
-            parentCategory = newParentCategory;
-            if (parentCategory!=null)
-                parentCategory.addSubcategory(this);
-        }
     }
 
     public Category(String name, Set<Category> subcategories, List<Product> products, Category parentCategory) {
@@ -53,6 +39,13 @@ public class Category {
         sales = new ArrayList<>();
     }
 
+    public void changeParentCategory(Category newParentCategory) {
+        if (parentCategory!=null)
+            parentCategory.removeSubcategory(this);
+        parentCategory = newParentCategory;
+        if (parentCategory!= null)
+            parentCategory.addSubcategory(this);
+    }
     public List<Product> getProducts() {
         List<Product> output = products;
         for (Category c : subcategories) {
@@ -60,47 +53,21 @@ public class Category {
         }
         return output;
     }
-    public boolean removeSubcategory(Category category) {
+    private boolean removeSubcategory(Category category) {
         return subcategories.remove(category);
     }
-
-    public boolean addSubcategory(Category c) {
-        return subcategories.add(c);
+    private boolean addSubcategory(Category category) {
+        return subcategories.add(category);
     }
-
-    public boolean removeProduct(int productID) {
-        Product p = findProduct(productID);
-        return products.remove(p);
+    public boolean removeProduct(Product product) {
+        return products.remove(product);
     }
-
-    public boolean addSale(SaleToCustomer s) {
-        return sales.add(s);
+    public boolean addProduct(Product product) {
+        return products.add(product);
     }
-    public boolean addProduct(Product p) {
-        return products.add(p);
+    public boolean addSale(SaleToCustomer sale) {
+        return sales.add(sale);
     }
-
-    public Product findProduct(int productID) {
-        Product product = null;
-        for (Product p: products) {
-            if (p.getId()==productID) {
-                product = p;
-                break;
-            }
-        }
-        return product;
-    }
-
-//    public Category findCategory(int categoryID) {
-//        Category category = null;
-//        for (Category c: subcategories) {
-//            if (c.id==categoryID) {
-//                category = c;
-//                break;
-//            }
-//        }
-//        return category;
-//    }
     public SaleToCustomer findCurrentBestSale(SaleToCustomer currentSale) {
         for (SaleToCustomer sale: sales)
             if ((sale.isActive() && currentSale==null) || (sale.isActive() && currentSale.getPercent()<sale.getPercent()))
@@ -109,13 +76,6 @@ public class Category {
             currentSale = parentCategory.findCurrentBestSale(currentSale);
         return currentSale;
     }
-
-    public String getParentCategoryName() {
-        if (parentCategory==null)
-            return "";
-        else return parentCategory.getName();
-    }
-
     public List<SaleToCustomer> getSaleHistory() {
         List<SaleToCustomer> result;
         if (parentCategory==null)
@@ -128,7 +88,11 @@ public class Category {
         }
         return result;
     }
-
+    public String getParentCategoryName() {
+        if (parentCategory==null)
+            return "";
+        return parentCategory.getName();
+    }
     public List<SaleToCustomer> getSalesOnDate(Date date) {
         List<SaleToCustomer> result;
         if (parentCategory==null)
