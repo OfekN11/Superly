@@ -76,7 +76,8 @@ public class ShiftController {
         shifts.put(workday, new HashMap<>());
         for (ShiftTypes type: ShiftTypes.values()){
             switch (type){
-                case Morning -> shifts.get(workday).put(type, new MorningShift(workday, ))
+                case Morning -> shifts.get(workday).put(type, new MorningShift(workday));
+                case Evening -> shifts.get(workday).put(type, new EveningShift(workday));
             }
         }
     }
@@ -93,51 +94,62 @@ public class ShiftController {
 
     public void editShiftCarrierCount(Date workday, ShiftTypes type, int carrierCount) throws Exception {
         validateWorkday(workday);
-
+        shifts.get(workday).get(type).setCarrierCount(carrierCount);
     }
 
     public void editShiftCashierCount(Date workday, ShiftTypes type, int cashierCount) throws Exception {
         validateWorkday(workday);
+        shifts.get(workday).get(type).setCashierCount(cashierCount);
     }
 
     public void editShiftStorekeeperCount(Date workday, ShiftTypes type, int storekeeperCount) throws Exception {
         validateWorkday(workday);
+        shifts.get(workday).get(type).setStorekeeperCount(storekeeperCount);
     }
 
     public void editShiftSorterCount(Date workday, ShiftTypes type, int sorterCount) throws Exception {
         validateWorkday(workday);
+        shifts.get(workday).get(type).setSorterCount(sorterCount);
     }
 
     public void editShiftHR_ManagerCount(Date workday, ShiftTypes type, int hr_managerCount) throws Exception {
         validateWorkday(workday);
+        shifts.get(workday).get(type).setHr_managersCount(hr_managerCount);
     }
 
     public void editShiftLogistics_ManagerCount(Date workday, ShiftTypes type, int logistics_managerCount) throws Exception {
         validateWorkday(workday);
+        shifts.get(workday).get(type).setLogistics_managersCount(logistics_managerCount);
     }
 
     public void editShiftCarrierIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
         validateWorkday(workday);
+        shifts.get(workday).get(type).setCarrierIDs(ids);
     }
 
     public void editShiftCashierIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
         validateWorkday(workday);
+        shifts.get(workday).get(type).setCashierIDs(ids);
     }
 
     public void editShiftStorekeeperIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
         validateWorkday(workday);
+        shifts.get(workday).get(type).setStorekeeperIDs(ids);
     }
 
     public void editShiftSorterIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
         validateWorkday(workday);
+        shifts.get(workday).get(type).setSorterIDs(ids);
     }
 
     public void editShiftHR_ManagerIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
         validateWorkday(workday);
+        shifts.get(workday).get(type).setHr_managerIDs(ids);
     }
 
     public void editShiftLogistics_ManagerIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
         validateWorkday(workday);
+        shifts.get(workday).get(type).setLogistics_managerIDs(ids);
     }
 
     private void validateWorkday(Date workday) throws Exception{
