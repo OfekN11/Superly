@@ -245,7 +245,7 @@ public class Supplier {
     }
 
     public void setDaysUntilDelivery(int days) throws Exception{
-        if(!(agreement instanceof RoutineAgreement)){
+        if(!(agreement instanceof ByOrderAgreement)){
             throw new Exception("The supplier's agreement is not Routine agreement");
         }
 
