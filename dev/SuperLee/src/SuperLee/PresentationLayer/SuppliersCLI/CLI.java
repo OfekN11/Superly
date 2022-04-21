@@ -321,7 +321,7 @@ public class CLI {
         while(_continue){
             correctInput = false;
             System.out.println("Choose what to edit:");
-            System.out.println("1) ID\n2) Bunk number\n3) Address\n4) Name\n 5) Paying agreement\n");
+            System.out.println("1) ID\n2) Bunk number\n3) Address\n4) Name\n5) Paying agreement\n");
 
             while(!correctInput){
                 input = scan.nextInt();
@@ -514,7 +514,7 @@ public class CLI {
             correctInput = false;
             System.out.println("Transporting: Yes");
             System.out.println("Routine \\ By Order: Routine");
-            System.out.println("Days to next delivery: " + service.daysToDelivery(supplierID));
+            System.out.println("Days to next delivery: " + service.daysToDelivery(supplierID).getValue());
             System.out.println("Days of delivery: " + listToString(service.getDaysOfDelivery(supplierID).getValue()) + "\n\n");
 
             System.out.println("Choose:");
@@ -600,7 +600,7 @@ public class CLI {
         while(!correctInput){
             input = scan.nextLine();
 
-            if(input.length() > 1){
+            if(input.length() > 0){
                 Result<Boolean> r = service.setDaysOfDelivery(supplierID, input);
 
                 if(r.isOk()){
@@ -609,6 +609,9 @@ public class CLI {
                 else{
                     System.out.println("Something went wrong, please try again.");
                 }
+            }
+            else{
+                System.out.println("Wrong input, please try again.\n");
             }
         }
 
@@ -624,7 +627,7 @@ public class CLI {
         while(!correctInput){
             input = scan.nextLine();
 
-            if(input.length() > 1){
+            if(input.length() > 0){
                 Result<Boolean> r = service.addDaysOfDelivery(supplierID, input);
 
                 if(r.isOk()){
@@ -707,7 +710,7 @@ public class CLI {
             pricePerUnit = scan.nextFloat();
             scan.nextLine();
 
-            System.out.println("Now, let's insert the bulk prices int he following format:");
+            System.out.println("Now, let's insert the bulk prices in the following format:");
             System.out.println("quantity, price, quantity, price, quantity, price ...");
             System.out.println("Example:");
             System.out.println("100, 13, 200, 24");

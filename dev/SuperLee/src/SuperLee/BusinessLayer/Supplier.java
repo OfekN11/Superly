@@ -63,8 +63,8 @@ public class Supplier {
         //"[0-9]+"  checks if all the agreement days chars are digits
         if(agreementType > 2 || agreementType < 0)
             throw new Exception("Invalid agreement type!");
-        if( !agreementDays.matches("[0-9]+"))
-            throw new Exception("Invalid agreement days!");
+        /*if( !agreementDays.matches("[0-9]+"))
+            throw new Exception("Invalid agreement days!");*/
         createAgreement(agreementType, agreementDays);
     }
 

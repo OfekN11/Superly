@@ -62,8 +62,8 @@ public class SupplierController {
     public void addSupplierContact(int id, String contactName, String contactPhone) throws Exception {
         if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
-        if(!validPhoneNumber(contactPhone))
-            throw new Exception("Phone number is Illegal");
+        /*if(!validPhoneNumber(contactPhone))
+            throw new Exception("Phone number is Illegal");*/
         Contact contact = new Contact(contactName, contactPhone);
         suppliers.get(id).addContact(contact);
     }

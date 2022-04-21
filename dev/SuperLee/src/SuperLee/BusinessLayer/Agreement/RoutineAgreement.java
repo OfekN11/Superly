@@ -59,7 +59,7 @@ public class RoutineAgreement extends Agreement {
         }
 
         if(closestDelivery <= currentDay){
-            return 7-currentDay+1+closestDelivery; // 7 days in a week, minus the current day, plus 1 to count the current day
+            return 7-currentDay+closestDelivery; // 7 days in a week, minus the current day
         }
         else{
             return closestDelivery-currentDay+1; // subtract the current day from the closest delivery day and add one to count the current day
