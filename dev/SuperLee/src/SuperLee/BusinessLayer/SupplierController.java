@@ -19,8 +19,8 @@ public class SupplierController {
             throw new Exception("Supplier with same Id already exists");
         ArrayList<Contact> contacts = new ArrayList<>();
         for(Pair<String,String> curr : contactPairs){
-            if(!validPhoneNumber(curr.getSecond()))
-                throw new Exception("Invalid phone number!");
+            /*if(!validPhoneNumber(curr.getSecond()))
+                throw new Exception("Invalid phone number!");*/
             contacts.add(new Contact( curr.getFirst(), curr.getSecond()));
         }
         suppliers.put(id, new Supplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers) );

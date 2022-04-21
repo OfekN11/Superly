@@ -21,7 +21,7 @@ public class CLI {
         terminateSystem = false;
     }
 
-    private void init(){
+    public void init(){
         service = new SupplierService();
         boolean terminateSystem = false;
 
@@ -43,6 +43,7 @@ public class CLI {
             System.out.println("4) Exit\n");
 
             input = scan.nextInt();
+            scan.nextLine();
             correctInput = false;
 
            while(!correctInput){
@@ -90,6 +91,7 @@ public class CLI {
 
             while(!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 Result<ServiceSupplierObject> r = service.getSupplierInfo(input);
 
@@ -117,6 +119,7 @@ public class CLI {
 
             while (!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 switch (input){
                     case 1 -> {
@@ -175,10 +178,12 @@ public class CLI {
 
             System.out.println("ID: ");
             id = scan.nextInt();
+            scan.nextLine();
             System.out.println("Name: ");
             name = scan.nextLine();
             System.out.println("Bank number: ");
             bankNumber = scan.nextInt();
+            scan.nextLine();
             System.out.println("Address: ");
             address = scan.nextLine();
             System.out.println("Paying agreement: ");
@@ -237,6 +242,7 @@ public class CLI {
 
             while(!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 switch (input){
                     case 1 -> {
@@ -273,6 +279,7 @@ public class CLI {
             while(!done){
                 correctInput = false;
                 input = scan.nextInt();
+                scan.nextLine();
 
                 Result<Boolean> r = service.removeSupplier(input);
 
@@ -284,6 +291,7 @@ public class CLI {
 
                     while(!correctInput) {
                         input = scan.nextInt();
+                        scan.nextLine();
 
                         switch (input) {
                             case 1 -> {
@@ -317,6 +325,7 @@ public class CLI {
 
             while(!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 switch (input){
                     case 1 -> {
@@ -351,6 +360,7 @@ public class CLI {
 
             while(!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 switch(input){
                     case 1 -> {
@@ -376,6 +386,7 @@ public class CLI {
         while(!correctInput){
             System.out.println("Insert the new id please.");
             input = scan.nextInt();
+            scan.nextLine();
 
             Result<Boolean> r = service.updateSupplierID(supplierID, input);
 
@@ -398,6 +409,7 @@ public class CLI {
         while(!correctInput){
             System.out.println("Insert the new bunk number please.");
             input = scan.nextInt();
+            scan.nextLine();
 
             Result<Boolean> r = service.updateSupplierBankNumber(supplierID, input);
 
@@ -518,6 +530,7 @@ public class CLI {
 
             while(!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 switch (input){
                     case 1 -> {
@@ -634,6 +647,7 @@ public class CLI {
 
         while(!correctInput){
             input = scan.nextInt();
+            scan.nextLine();
 
             Result<Boolean> r = service.removeDayOfDelivery(supplierID, input);
 
@@ -684,12 +698,14 @@ public class CLI {
 
             System.out.println("ID:");
             id = scan.nextInt();
+            scan.nextLine();
             System.out.println("Name:");
             name = scan.nextLine();
             System.out.println("Manufacturer:");
             manufacturer = scan.nextLine();
             System.out.println("Price per unit:");
             pricePerUnit = scan.nextFloat();
+            scan.nextLine();
 
             System.out.println("Now, let's insert the bulk prices int he following format:");
             System.out.println("quantity, price, quantity, price, quantity, price ...");
@@ -727,6 +743,7 @@ public class CLI {
 
                 while(!correctInput){
                     input = scan.nextInt();
+                    scan.nextLine();
 
                     switch (input){
                         case 1 -> {
@@ -760,6 +777,7 @@ public class CLI {
 
             while(!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 Result<Boolean> r = service.deleteItemFromAgreement(supplierID, input);
 
@@ -780,6 +798,7 @@ public class CLI {
 
             while(!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 switch(input){
                     case 1 -> {
@@ -807,6 +826,7 @@ public class CLI {
 
             while(!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 Result<ServiceItemObject> r = service.getItem(supplierID, input);
 
@@ -838,6 +858,7 @@ public class CLI {
 
             while(!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 switch (input){
                     case 1 -> {
@@ -894,6 +915,7 @@ public class CLI {
             System.out.println("Insert the new ID:");
 
             input = scan.nextInt();
+            scan.nextLine();
 
             Result<Boolean> r = service.updateItemId(supID, itemID, input);
 
@@ -960,6 +982,7 @@ public class CLI {
             System.out.println("Insert the new price:");
 
             input = scan.nextFloat();
+            scan.nextLine();
 
             Result<Boolean> r = service.updatePricePerUnitForItem(supID, itemID, input);
 
@@ -981,9 +1004,11 @@ public class CLI {
         while(!correctInput){
             System.out.println("Insert quantity:");
             quantity = scan.nextInt();
+            scan.nextLine();
 
             System.out.println("Insert discount:");
             discount = scan.nextInt();
+            scan.nextLine();
 
             Result<Boolean> r = service.addBulkPriceForItem(supID, itemID, quantity, discount);
 
@@ -1005,9 +1030,11 @@ public class CLI {
         while(!correctInput){
             System.out.println("Insert quantity:");
             quantity = scan.nextInt();
+            scan.nextLine();
 
             System.out.println("Insert discount:");
             discount = scan.nextInt();
+            scan.nextLine();
 
             Result<Boolean> r = service.editBulkPriceForItem(supID, itemID, quantity, discount);
 
@@ -1029,6 +1056,7 @@ public class CLI {
         while(!correctInput){
             System.out.println("Insert quantity to order:");
             input = scan.nextInt();
+            scan.nextLine();
 
             Result<Double> r = service.calculatePriceForItemOrder(supID, itemID, input);
 
@@ -1051,6 +1079,7 @@ public class CLI {
         while(!correctInput){
             System.out.println("Insert quantity:");
             quantity = scan.nextInt();
+            scan.nextLine();
 
             Result<Boolean> r = service.removeBulkPriceForItem(supID, itemID, quantity);
 
@@ -1077,8 +1106,9 @@ public class CLI {
             System.out.println("3) Self-Transport agreement");
 
             input = scan.nextInt();
+            scan.nextLine();
 
-            if(input == 1 || input ==2 || input == 3){
+            if(input == 1 || input == 2 || input == 3){
                 if(input == 1){
                     System.out.println("Insert the number of days of delivery, in the following format:");
                     System.out.println("1 2 5");
@@ -1149,6 +1179,7 @@ public class CLI {
 
             while (!correctInput) {
                 input = scan.nextInt();
+                scan.nextLine();
 
                 switch (input) {
                     case 1 -> {
@@ -1196,6 +1227,7 @@ public class CLI {
             System.out.println("Insert the number of days until delivery:");
 
             input = scan.nextInt();
+            scan.nextLine();
 
             if(service.changeDaysUntilDelivery(supID, input).isOk()){
                 correctInput = true;
@@ -1226,6 +1258,7 @@ public class CLI {
 
             while (!correctInput) {
                 input = scan.nextInt();
+                scan.nextLine();
 
                 switch (input) {
                     case 1 -> {
@@ -1274,6 +1307,7 @@ public class CLI {
 
         while(!correctInput){
             input = scan.nextInt();
+            scan.nextLine();
 
             if(input == 1 || input == 2 || input == 3){
                 correctInput = true;
@@ -1336,6 +1370,7 @@ public class CLI {
 
             while(!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 switch(input){
                     case 1 -> {
@@ -1378,6 +1413,7 @@ public class CLI {
 
                 while(!correctInput){
                     input = scan.nextInt();
+                    scan.nextLine();
 
                     switch (input){
                         case 1 -> {
@@ -1419,6 +1455,7 @@ public class CLI {
 
                 while(!correctInput){
                     input = scan.nextInt();
+                    scan.nextLine();
 
                     switch(input){
                         case 1 -> {
@@ -1469,6 +1506,7 @@ public class CLI {
 
             while(!correctInput){
                 input = scan.nextInt();
+                scan.nextLine();
 
                 switch(input){
                     case 1 -> {
@@ -1510,6 +1548,7 @@ public class CLI {
 
                 while(!correctInput){
                     input = scan.nextInt();
+                    scan.nextLine();
 
                     switch(input){
                         case 1 -> {
@@ -1552,6 +1591,7 @@ public class CLI {
 
                 while(!correctInput){
                     input = scan.nextInt();
+                    scan.nextLine();
 
                     switch(input){
                         case 1 -> {
