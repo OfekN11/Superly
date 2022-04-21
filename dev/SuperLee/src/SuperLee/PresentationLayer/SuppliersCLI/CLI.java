@@ -344,7 +344,7 @@ public class CLI {
 
                 switch (input){
                     case 1 -> {
-                        editID(supplierID);
+                        supplierID = editID(supplierID);
                         correctInput = true;
                     }
                     case 2 -> {
@@ -394,8 +394,8 @@ public class CLI {
 
     }
 
-    private void editID(int supplierID){
-        int input;
+    private int editID(int supplierID){
+        int input, newID = -1;
         boolean correctInput = false;
 
         while(!correctInput){
@@ -407,6 +407,7 @@ public class CLI {
 
             if(r.isOk()){
                 correctInput = true;
+                newID = input;
             }
             else{
                 System.out.println("Something went wrong, please try again.");
@@ -414,6 +415,7 @@ public class CLI {
         }
 
         System.out.println("ID was changed successfully.\n\n");
+        return newID;
 
     }
 
