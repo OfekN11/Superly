@@ -70,4 +70,8 @@ public class ServiceItemObject {
 
         return toReturn.substring(0, toReturn.length()-2);
     }
+
+    public void setId(int newID){
+        id = newID;
+    }
 }

@@ -62,7 +62,7 @@ public class Supplier {
 
     public void addAgreement(int agreementType, String agreementDays) throws Exception {
         //"[0-9]+"  checks if all the agreement days chars are digits
-        if(agreementType > 2 || agreementType < 0)
+        if(agreementType > NOT_TRANSPORTING || agreementType < ROUTINE)
             throw new Exception("Invalid agreement type!");
         /*if( !agreementDays.matches("[0-9]+"))
             throw new Exception("Invalid agreement days!");*/

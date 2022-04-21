@@ -890,7 +890,7 @@ public class CLI {
                 switch (input){
                     case 1 -> {
                         correctInput = true;
-                        changeItemID(supplierID, item.getId());
+                        item.setId(changeItemID(supplierID, item.getId()));
                     }
                     case 2 -> {
                         correctInput = true;
@@ -934,8 +934,8 @@ public class CLI {
         }
     }
 
-    private void changeItemID(int supID, int itemID){
-        int input;
+    private int changeItemID(int supID, int itemID){
+        int input, newID = -1;
         boolean correctInput = false;
 
         while(!correctInput){
@@ -948,6 +948,7 @@ public class CLI {
 
             if(r.isOk()){
                 correctInput = true;
+                newID = input;
             }
             else{
                 System.out.println("Something went wrong, please try again.\n\n");
@@ -955,6 +956,8 @@ public class CLI {
         }
 
         System.out.println("Item's ID was changed successfully.\n\n");
+
+        return newID;
     }
 
     private void changeItemName(int supID, int itemID){

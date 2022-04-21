@@ -380,7 +380,7 @@ public class SupplierService {
 
     public Result<Boolean> addBulkPriceForItem(int supID, int itemID, int quantity, int discount){
         try{
-            controller.editBulkPrice(supID, itemID, quantity, discount);
+            controller.addBulkPrice(supID, itemID, quantity, discount);
             return Result.makeOk(true);
         }
         catch(Exception e){
