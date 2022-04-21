@@ -183,11 +183,13 @@ public class Inventory {
         int productID = scanner.nextInt();
         System.out.println("How much of the product is expired?");
         int amount = scanner.nextInt();
-        Result<ExpiredItemReport> r = is.reportExpired(store, productID, amount);
+        System.out.println("Please add a description (not mandatory)");
+        String description = scanner.nextLine();
+        Result<DefectiveItemReport> r = is.reportExpired(store, productID, amount, description);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            ExpiredItemReport eir = r.getValue();
+            DefectiveItemReport eir = r.getValue();
             System.out.println(eir);
         }
     }
@@ -226,12 +228,12 @@ public class Inventory {
         Date end = getDate();
         if (end==null)
             return;
-        Result<List<ExpiredItemReport>> r = is.getExpiredItemReportsByStore(start, end, new ArrayList<>());
+        Result<List<DefectiveItemReport>> r = is.getExpiredItemReportsByStore(start, end, new ArrayList<>());
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<ExpiredItemReport> reportList = r.getValue();
-            for (ExpiredItemReport eir : reportList)
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport eir : reportList)
                 System.out.println(eir);
         }
     }
@@ -248,12 +250,12 @@ public class Inventory {
         Date end = getDate();
         if (end==null)
             return;
-        Result<List<ExpiredItemReport>> r = is.getExpiredItemReportsByStore(start, end, storeIDs);
+        Result<List<DefectiveItemReport>> r = is.getExpiredItemReportsByStore(start, end, storeIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<ExpiredItemReport> reportList = r.getValue();
-            for (ExpiredItemReport eir : reportList)
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport eir : reportList)
                 System.out.println(eir);
         }
     }
@@ -270,12 +272,12 @@ public class Inventory {
         Date end = getDate();
         if (end==null)
             return;
-        Result<List<ExpiredItemReport>> r = is.getExpiredItemReportsByCategory(start, end, categoryIDs);
+        Result<List<DefectiveItemReport>> r = is.getExpiredItemReportsByCategory(start, end, categoryIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<ExpiredItemReport> reportList = r.getValue();
-            for (ExpiredItemReport eir : reportList)
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport eir : reportList)
                 System.out.println(eir);
         }
     }
@@ -292,12 +294,12 @@ public class Inventory {
         Date end = getDate();
         if (end==null)
             return;
-        Result<List<ExpiredItemReport>> r = is.getExpiredItemReportsByProduct(start, end, productIDs);
+        Result<List<DefectiveItemReport>> r = is.getExpiredItemReportsByProduct(start, end, productIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<ExpiredItemReport> reportList = r.getValue();
-            for (ExpiredItemReport eir : reportList)
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport eir : reportList)
                 System.out.println(eir);
         }
     }
@@ -310,11 +312,11 @@ public class Inventory {
         int amount = scanner.nextInt();
         System.out.println("Please describe the damage");
         String description = scanner.nextLine();
-        Result<DamagedItemReport> r = is.reportDamaged(store, productID, amount, description);
+        Result<DefectiveItemReport> r = is.reportDamaged(store, productID, amount, description);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            DamagedItemReport dir = r.getValue();
+            DefectiveItemReport dir = r.getValue();
             System.out.println(dir);
         }
     }
@@ -356,12 +358,12 @@ public class Inventory {
         Date end = getDate();
         if (end==null)
             return;
-        Result<List<DamagedItemReport>> r = is.getDamagedItemsReportByStore(start, end, new ArrayList<>());
+        Result<List<DefectiveItemReport>> r = is.getDamagedItemsReportByStore(start, end, new ArrayList<>());
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<DamagedItemReport> reportList = r.getValue();
-            for (DamagedItemReport dir : reportList)
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
         }
     }
@@ -378,12 +380,12 @@ public class Inventory {
         Date end = getDate();
         if (end==null)
             return;
-        Result<List<DamagedItemReport>> r = is.getDamagedItemsReportByStore(start, end, storeIDs);
+        Result<List<DefectiveItemReport>> r = is.getDamagedItemsReportByStore(start, end, storeIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<DamagedItemReport> reportList = r.getValue();
-            for (DamagedItemReport dir : reportList)
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
         }
     }
@@ -400,12 +402,12 @@ public class Inventory {
         Date end = getDate();
         if (end==null)
             return;
-        Result<List<DamagedItemReport>> r = is.getDamagedItemsReportByCategory(start, end, categoryIDs);
+        Result<List<DefectiveItemReport>> r = is.getDamagedItemsReportByCategory(start, end, categoryIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<DamagedItemReport> reportList = r.getValue();
-            for (DamagedItemReport dir : reportList)
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
         }
     }
@@ -422,12 +424,12 @@ public class Inventory {
         Date end = getDate();
         if (end==null)
             return;
-        Result<List<DamagedItemReport>> r = is.getDamagedItemsReportByProduct(start, end, productIDs);
+        Result<List<DefectiveItemReport>> r = is.getDamagedItemsReportByProduct(start, end, productIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<DamagedItemReport> reportList = r.getValue();
-            for (DamagedItemReport dir : reportList)
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
         }
     }

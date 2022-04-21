@@ -1,10 +1,8 @@
 package BusinessLayer;
 
-import BusinessLayer.DefectiveItems.DamagedItemReport;
-import BusinessLayer.DefectiveItems.DefectiveItems;
-import BusinessLayer.DefectiveItems.ExpiredItemReport;
 import BusinessLayer.DiscountsAndSales.DiscountFromSupplier;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
+import ServiceLayer.Objects.DefectiveItemReport;
 
 import java.util.*;
 
@@ -147,44 +145,44 @@ public class InventoryController {
         //remove sales? remove empty categories?
     }
 
-    public DamagedItemReport reportDamaged(int storeID, int productID, int amount, String description) {
+    public DefectiveItems reportDamaged(int storeID, int productID, int amount, String description) {
         Product product = getProduct(productID);
         product.removeItems(storeID, amount);
         return product.reportDamaged(storeID, amount, description);
     }
-    public ExpiredItemReport reportExpired(int storeID, int productID, int amount) {
+    public DefectiveItems reportExpired(int storeID, int productID, int amount, String description) {
         Product product = getProduct(productID);
         product.removeItems(storeID, amount);
-        return product.reportExpired(storeID, amount);
+        return product.reportExpired(storeID, amount, description);
     }
 
     //why is storeIDS a list?
-    public List<DamagedItemReport> getDamagedItemReportsByStore(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
-        List<DamagedItemReport> dirList = new ArrayList<>();
+    public List<DefectiveItems> getDamagedItemReportsByStore(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
+        List<DefectiveItems> dirList = new ArrayList<>();
         Collection<Product> productList = getProducts();
         for (Product p: productList) {
             dirList.addAll(p.getDamagedItemReportsByStore(start, end, storeID));
         }
         return dirList;
     }
-    public List<DamagedItemReport> getDamagedItemReportsByCategory(Date start, Date end, List<Integer> categoryID) {
-        List<DamagedItemReport> dirList = new ArrayList<>();
+    public List<DefectiveItems> getDamagedItemReportsByCategory(Date start, Date end, List<Integer> categoryID) {
+        List<DefectiveItems> dirList = new ArrayList<>();
         for (Integer c: categoryID) {
             dirList.addAll(categories.get(c).getDamagedItemReports(start, end));
         }
         return dirList;
     }
 
-    public List<DamagedItemReport> getDamagedItemReportsByProduct(Date start, Date end, List<Integer> productID) {
-        List<DamagedItemReport> dirList = new ArrayList<>();
+    public List<DefectiveItems> getDamagedItemReportsByProduct(Date start, Date end, List<Integer> productID) {
+        List<DefectiveItems> dirList = new ArrayList<>();
         for (Integer p: productID) {
             dirList.addAll(getProduct(p).getDamagedItemReports(start, end));
         }
         return dirList;
     }
 
-    public List<ExpiredItemReport> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
-        List<ExpiredItemReport> eirList = new ArrayList<>();
+    public List<DefectiveItems> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
+        List<DefectiveItems> eirList = new ArrayList<>();
         Collection<Product> productList = getProducts();
         for (Product p: productList) {
             eirList.addAll(p.getExpiredItemReportsByStore(start, end, storeID));
@@ -192,16 +190,16 @@ public class InventoryController {
         return eirList;
     }
 
-    public List<ExpiredItemReport> getExpiredItemReportsByCategory(Date start, Date end, List<Integer> categoryID) {
-        List<ExpiredItemReport> eirList = new ArrayList<>();
+    public List<DefectiveItems> getExpiredItemReportsByCategory(Date start, Date end, List<Integer> categoryID) {
+        List<DefectiveItems> eirList = new ArrayList<>();
         for (Integer c: categoryID) {
             eirList.addAll(categories.get(c).getExpiredItemReports(start, end));
         }
         return eirList;
     }
 
-    public List<ExpiredItemReport> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productID) {
-        List<ExpiredItemReport> eirList = new ArrayList<>();
+    public List<DefectiveItems> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productID) {
+        List<DefectiveItems> eirList = new ArrayList<>();
         for (Integer p: productID) {
             eirList.addAll(getProduct(p).getExpiredItemReports(start, end));
         }

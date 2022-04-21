@@ -1,7 +1,5 @@
 package BusinessLayer;
 
-import BusinessLayer.DefectiveItems.DamagedItemReport;
-import BusinessLayer.DefectiveItems.ExpiredItemReport;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 
 import java.util.*;
@@ -141,8 +139,8 @@ public class Category {
         return result;
     }
 
-    public Collection<ExpiredItemReport> getExpiredItemReports(Date start, Date end) {
-        List<ExpiredItemReport> eirList = new ArrayList<>();
+    public Collection<DefectiveItems> getExpiredItemReports(Date start, Date end) {
+        List<DefectiveItems> eirList = new ArrayList<>();
         for (Product p : products) {
             eirList.addAll(p.getExpiredItemReports(start, end));
         }
@@ -152,8 +150,8 @@ public class Category {
         return eirList;
     }
 
-    public Collection<DamagedItemReport> getDamagedItemReports(Date start, Date end) {
-        List<DamagedItemReport> dirList = new ArrayList<>();
+    public Collection<DefectiveItems> getDamagedItemReports(Date start, Date end) {
+        List<DefectiveItems> dirList = new ArrayList<>();
         for (Product p : products) {
             dirList.addAll(p.getDamagedItemReports(start, end));
         }

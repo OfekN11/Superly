@@ -275,9 +275,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<DamagedItemReport> reportDamaged(int storeID, int productID, int amount, String description){
+    public Result<DefectiveItemReport> reportDamaged(int storeID, int productID, int amount, String description){
         try {
-            return Result.makeOk(new DamagedItemReport(controller.reportDamaged(storeID, productID, amount, description)));
+            return Result.makeOk(new DefectiveItemReport(controller.reportDamaged(storeID, productID, amount, description)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -289,9 +289,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<ExpiredItemReport> reportExpired(int storeID, int productID, int amount){
+    public Result<DefectiveItemReport> reportExpired(int storeID, int productID, int amount, String description){
         try {
-            return Result.makeOk(new ExpiredItemReport(controller.reportExpired(storeID, productID, amount)));
+            return Result.makeOk(new DefectiveItemReport(controller.reportExpired(storeID, productID, amount, description)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -303,12 +303,12 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<List<DamagedItemReport>> getDamagedItemsReportByStore(Date start, Date end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(Date start, Date end, List<Integer> storeIDs){
         try {
-            List<BusinessLayer.DefectiveItems.DamagedItemReport> dirs = controller.getDamagedItemReportsByStore(start, end, storeIDs);
-            List<DamagedItemReport> SLdirs = new ArrayList<>();
-            for (BusinessLayer.DefectiveItems.DamagedItemReport dir : dirs)
-                SLdirs.add(new DamagedItemReport(dir));
+            List<BusinessLayer.DefectiveItems> dirs = controller.getDamagedItemReportsByStore(start, end, storeIDs);
+            List<DefectiveItemReport> SLdirs = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems dir : dirs)
+                SLdirs.add(new DefectiveItemReport(dir));
             return Result.makeOk(SLdirs);
         }
         catch (Exception e){
@@ -321,12 +321,12 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<List<DamagedItemReport>> getDamagedItemsReportByCategory(Date start, Date end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByCategory(Date start, Date end, List<Integer> categoryIDs){
         try {
-            List<BusinessLayer.DefectiveItems.DamagedItemReport> dirs = controller.getDamagedItemReportsByCategory(start, end, categoryIDs);
-            List<DamagedItemReport> SLdirs = new ArrayList<>();
-            for (BusinessLayer.DefectiveItems.DamagedItemReport dir : dirs)
-                SLdirs.add(new DamagedItemReport(dir));
+            List<BusinessLayer.DefectiveItems> dirs = controller.getDamagedItemReportsByCategory(start, end, categoryIDs);
+            List<DefectiveItemReport> SLdirs = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems dir : dirs)
+                SLdirs.add(new DefectiveItemReport(dir));
             return Result.makeOk(SLdirs);
         }
         catch (Exception e){
@@ -339,12 +339,12 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<List<DamagedItemReport>> getDamagedItemsReportByProduct(Date start, Date end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByProduct(Date start, Date end, List<Integer> productIDs){
         try {
-            List<BusinessLayer.DefectiveItems.DamagedItemReport> dirs = controller.getDamagedItemReportsByProduct(start, end, productIDs);
-            List<DamagedItemReport> SLdirs = new ArrayList<>();
-            for (BusinessLayer.DefectiveItems.DamagedItemReport dir : dirs)
-                SLdirs.add(new DamagedItemReport(dir));
+            List<BusinessLayer.DefectiveItems> dirs = controller.getDamagedItemReportsByProduct(start, end, productIDs);
+            List<DefectiveItemReport> SLdirs = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems dir : dirs)
+                SLdirs.add(new DefectiveItemReport(dir));
             return Result.makeOk(SLdirs);
         }
         catch (Exception e){
@@ -357,12 +357,12 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<List<ExpiredItemReport>> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeIDs){
         try {
-            List<BusinessLayer.DefectiveItems.ExpiredItemReport> expiredItemReports = controller.getExpiredItemReportsByStore(start, end, storeIDs);
-            List<ExpiredItemReport> expiredItemReportList = new ArrayList<>();
-            for (BusinessLayer.DefectiveItems.ExpiredItemReport eir : expiredItemReports)
-                expiredItemReportList.add(new ExpiredItemReport(eir));
+            List<BusinessLayer.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByStore(start, end, storeIDs);
+            List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems eir : expiredItemReports)
+                expiredItemReportList.add(new DefectiveItemReport(eir));
             return Result.makeOk(expiredItemReportList);
         }
         catch (Exception e){
@@ -375,12 +375,12 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<List<ExpiredItemReport>> getExpiredItemReportsByCategory(Date start, Date end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByCategory(Date start, Date end, List<Integer> categoryIDs){
         try {
-            List<BusinessLayer.DefectiveItems.ExpiredItemReport> expiredItemReports = controller.getExpiredItemReportsByCategory(start, end, categoryIDs);
-            List<ExpiredItemReport> expiredItemReportList = new ArrayList<>();
-            for (BusinessLayer.DefectiveItems.ExpiredItemReport eir : expiredItemReports)
-                expiredItemReportList.add(new ExpiredItemReport(eir));
+            List<BusinessLayer.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByCategory(start, end, categoryIDs);
+            List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems eir : expiredItemReports)
+                expiredItemReportList.add(new DefectiveItemReport(eir));
             return Result.makeOk(expiredItemReportList);
         }
         catch (Exception e){
@@ -393,12 +393,12 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<List<ExpiredItemReport>> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productIDs){
         try {
-            List<BusinessLayer.DefectiveItems.ExpiredItemReport> expiredItemReports = controller.getExpiredItemReportsByProduct(start, end, productIDs);
-            List<ExpiredItemReport> expiredItemReportList = new ArrayList<>();
-            for (BusinessLayer.DefectiveItems.ExpiredItemReport eir : expiredItemReports)
-                expiredItemReportList.add(new ExpiredItemReport(eir));
+            List<BusinessLayer.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByProduct(start, end, productIDs);
+            List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems eir : expiredItemReports)
+                expiredItemReportList.add(new DefectiveItemReport(eir));
             return Result.makeOk(expiredItemReportList);
         }
         catch (Exception e){
