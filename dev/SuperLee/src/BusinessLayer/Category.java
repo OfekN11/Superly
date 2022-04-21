@@ -1,6 +1,9 @@
 package BusinessLayer;
 
+import BusinessLayer.DiscountsAndSales.SaleToCustomer;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -121,6 +124,19 @@ public class Category {
             result = parentCategory.getSaleHistory();
         for (SaleToCustomer sale : sales) {
             if (sale.isPassed())
+                result.add(sale);
+        }
+        return result;
+    }
+
+    public List<SaleToCustomer> getSalesOnDate(Date date) {
+        List<SaleToCustomer> result;
+        if (parentCategory==null)
+            result = new ArrayList<>();
+        else
+            result = parentCategory.getSalesOnDate(date);
+        for (SaleToCustomer sale : sales) {
+            if (sale.wasActive(date))
                 result.add(sale);
         }
         return result;

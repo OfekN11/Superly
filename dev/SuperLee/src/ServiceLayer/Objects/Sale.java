@@ -1,6 +1,6 @@
 package ServiceLayer.Objects;
 
-import BusinessLayer.SaleToCustomer;
+import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 
 public class Sale {
     private final double percent;

@@ -1,8 +1,12 @@
 package BusinessLayer;
 
-import ServiceLayer.Objects.Sale;
+import BusinessLayer.DefectiveItems.DamagedItemReport;
+import BusinessLayer.DefectiveItems.DefectiveItems;
+import BusinessLayer.DefectiveItems.ExpiredItemReport;
+import BusinessLayer.DiscountsAndSales.DiscountFromSupplier;
+import BusinessLayer.DiscountsAndSales.SaleToCustomer;
+
 import java.util.*;
-import java.lang.Object.*;
 
 public class InventoryController {
     private List<Integer> storeIds;
@@ -31,9 +35,9 @@ public class InventoryController {
         sales.add(sale);
         Product product = null;
         for (Integer pID: productIDs) {
-            product = products.get(pID);
-            if (product!=null)
-                product.addSale(sale);
+            //should we throw error if only one of them is illegal
+            product = getProduct(pID);
+            product.addSale(sale);
         }
         Category category = null;
         for (Integer cID: categoriesList) {
@@ -44,19 +48,33 @@ public class InventoryController {
     }
 
     public List<DiscountFromSupplier> getDiscountFromSupplierHistory(int productID) {
-        return null;
+        return getProduct(productID).getDiscountFromSupplierHistory();
+    }
+
+    public DiscountFromSupplier addDiscountFromSupplier(int productID, Date date, int supplierID, String description, Map<Product, Integer> amountBought, int pricePaid, int originalPrice) {
+        return  getProduct(productID).addDiscountFromSupplier(date, supplierID, description, amountBought, pricePaid, originalPrice);
+    }
+
+    private Product getProduct(int productID) {
+        Product output = getProduct(productID);
+        if (output==null)
+            throw new IllegalArgumentException("Product ID Invalid: "+productID);
+        return output;
     }
 
     public List<SaleToCustomer> getSaleHistoryByProduct(int productID) {
-        return products.get(productID).getSaleHistory();
+        return getProduct(productID).getSaleHistory();
     }
 
     public List<SaleToCustomer> getSaleHistoryByCategory(int categoryID) {
         return categories.get(categoryID).getSaleHistory();
     }
 
-    public List<Product> getDamagedItems() {
-        return null;
+    public List<DefectiveItems> getDefectiveItems(Date start, Date end, List<Integer> storeIDs) {
+        List<DefectiveItems> defective = new ArrayList<>();
+        defective.addAll(getDamagedItemReports(start, end, storeIDs));
+        defective.addAll(getExpiredItemReports(start, end, storeIDs));
+        return defective;
     }
 
     public Collection<Product> getProducts() {
@@ -71,30 +89,18 @@ public class InventoryController {
         return categories.get(categoryID).getProducts();
     }
 
-    public void removeItems(int productID, int storeID, int amount) {
-        Product product = products.get(productID);
-        if (product==null)
-            throw new IllegalArgumentException("InventoryController: removeProduct: no such product found");
-        product.removeItems(storeID, amount);
-    }
     public void moveItems(int productID, int storeID, int amount) {
-        Product product = products.get(productID);
-        if (product==null)
-            throw new IllegalArgumentException("InventoryController: moveItems: no such product found");
+        Product product = getProduct(productID);
         product.moveItems(storeID, amount);
     }
     public void addItems(int productID, int storeID, int amount) {
-        Product product = products.get(productID);
-        if (product==null)
-            throw new IllegalArgumentException("InventoryController: addItems: no such product found");
+        Product product = getProduct(productID);
         product.addItems(storeID, amount);
     }
-    public void returnItems(int productID, int storeID, int amount) {
+    public Double returnItems(int storeID, int productID, int amount, Date dateBought) {
         //find product add amount
-        Product product = products.get(productID);
-        if (product==null)
-            throw new IllegalArgumentException("InventoryController: returnItems: no such product found");
-        product.returnItems(storeID, amount);
+        Product product = getProduct(productID);
+        return product.returnItems(storeID, amount, dateBought);
     }
 
     public void addStore() {
@@ -106,16 +112,16 @@ public class InventoryController {
         storeIds.remove(storeIds.indexOf(storeID));
     }
     public void addProductToStore(int storeID, int shelfInStore, int shelfInWarehouse, int productID, int minAmount, int maxAmount) { //affect 4 maps in product.
-        Product product = products.get(productID);
+        Product product = getProduct(productID);
         product.addLocation(storeID, shelfInStore, shelfInWarehouse, minAmount, maxAmount);
     }
     public void removeProductFromStore(int storeID, int productID) {
-        Product product = products.get(productID);
+        Product product = getProduct(productID);
         product.removeLocation(storeID);
     }
     
-    public void loadData() {
-
+    public void loadData() throws NoSuchMethodException {
+        throw new NoSuchMethodException();
     }
 
     public Product newProduct(String name, int categoryID, int weight, double price, List<Supplier> suppliers) {
@@ -132,19 +138,17 @@ public class InventoryController {
     }
 
     public void reportDamaged(int storeID, int productID, int amount, String description) {
-        Product product = products.get(productID);
-        if (product==null)
-            throw new IllegalArgumentException("InventoryController: reportDamaged: no such product found");
+        Product product = getProduct(productID);
         product.removeItems(storeID, amount);
         product.reportDamaged(storeID, amount, description);
     }
     public void reportExpired(int storeID, int productID, int amount) {
-        Product product = products.get(productID);
-        if (product==null)
-            throw new IllegalArgumentException("InventoryController: reportExpired: no such product found");
+        Product product = getProduct(productID);
         product.removeItems(storeID, amount);
         product.reportExpired(storeID, amount);
     }
+
+    //why is storeIDS a list?
     public List<DamagedItemReport> getDamagedItemReports(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
         List<DamagedItemReport> dirList = new ArrayList<>();
         Collection<Product> productList = getProducts();
@@ -162,6 +166,16 @@ public class InventoryController {
         return eirList;
     }
 
+    public List<Integer> getStoreIDs() {
+        return storeIds;
+    }
+
+    public Double buyItems(int productID, int storeID, int amount) {
+        Product product = getProduct(productID);
+        double price = product.getCurrentPrice()*amount;
+        product.removeItems(storeID, amount);
+        return price;
+    }
     private void addCategoriesForTests () {
         Category cSmall1 = new Category(1, "Small", new HashSet<>(), new ArrayList<>(), null);
         categories.put(categories.size() + 1, cSmall1);
@@ -233,13 +247,4 @@ public class InventoryController {
     private void addSalesForTests () {
     }
 
-    public List<Integer> getStoreIDs() {
-        return storeIds;
-    }
-
-    public Double buyItems(int productID, int storeID, int amount) {
-        double price = products.get(productID).getCurrentPrice()*amount;
-        removeItems(productID, storeID, amount);
-        return price;
-    }
 }

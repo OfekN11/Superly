@@ -1,16 +1,16 @@
-package BusinessLayer;
-
-import java.util.Date;
-
-public class ExpiredItemReport {
+package BusinessLayer.DefectiveItems;
+import java.util.*;
+public class DamagedItemReport extends DefectiveItems{
     private Date date;
     private int storeID;
     private int amount;
+    private String description;
 
-    public ExpiredItemReport(Date date, int storeID, int amount) {
+    public DamagedItemReport(Date date, int storeID, int amount, String description) {
         this.date = date;
         this.storeID = storeID;
         this. amount = amount;
+        this. description = description;
     }
 
     public int getStoreID() {

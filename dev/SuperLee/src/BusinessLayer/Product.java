@@ -1,8 +1,38 @@
 package BusinessLayer;
 
+import BusinessLayer.DefectiveItems.DamagedItemReport;
+import BusinessLayer.DefectiveItems.ExpiredItemReport;
+import BusinessLayer.DiscountsAndSales.DiscountFromSupplier;
+import BusinessLayer.DiscountsAndSales.SaleToCustomer;
+
 import java.util.*;
 
 public class Product {
+    private int id;
+    private String name;
+    private Category category;
+    private Map<Integer, Integer> minAmounts; //<storeID, minAmount in total>
+    private Map<Integer, Integer> maxAmounts; //<storeID, maxAmount in total>
+    private Map<Location, Integer> inStore; //current amount in store.
+    private Map<Location, Integer> inWarehouse; //current amount in warehouse.
+    private List<DamagedItemReport> damagedItemReport;
+    private List<ExpiredItemReport> expiredItemReport;
+    private double weight;
+    private List<Supplier> suppliers;
+    private double price;
+    private List<SaleToCustomer> sales;
+    private List<DiscountFromSupplier> discountFromSupplierList;
+
+    public int getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public double getOriginalPrice() {
+        return price;
+    }
+
     public Product(int id, String name, Category category, double weight, double price, List<Supplier> suppliers) {
         this.id = id;
         this.name = name;
@@ -18,32 +48,9 @@ public class Product {
         maxAmounts = new HashMap<>();
         damagedItemReport = new ArrayList<>();
         expiredItemReport = new ArrayList<>();
-    }
-    private int id;
-    private String name;
-    private Category category;
-
-    private Map<Integer, Integer> minAmounts; //<storeID, minAmount in total>
-    private Map<Integer, Integer> maxAmounts; //<storeID, maxAmount in total>
-    private Map<Location, Integer> inStore; //current amount in store.
-    private Map<Location, Integer> inWarehouse; //current amount in warehouse.
-    private List<DamagedItemReport> damagedItemReport;
-    private List<ExpiredItemReport> expiredItemReport;
-    private double weight;
-    private List<Supplier> suppliers;
-    private double price;
-    private List<SaleToCustomer> sales;
-
-    public int getId() {
-        return id;
+        discountFromSupplierList = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
-    }
-    public double getOriginalPrice() {
-        return price;
-    }
 
     public double getCurrentPrice() {
         return price*getCurrentSale().getPercent()/100;
@@ -75,10 +82,26 @@ public class Product {
         inWarehouse.put(l, inWarehouse.get(l)+amount);
     }
 
-    public void returnItems(int storeID, int amount) { //from customer to store
+    public double returnItems(int storeID, int amount, Date dateBought) { //from customer to store
         Location l = getStoreLocation(storeID);
         inStore.put(l, inStore.get(l)+amount);
+        return amount*getPriceOnDate(dateBought);
     }
+
+    private double getPriceOnDate(Date dateBought) {
+        List<SaleToCustomer> salesActive = new ArrayList<>();
+        for (SaleToCustomer s : sales) {
+            if (s.wasActive(dateBought))
+                salesActive.add(s);
+        }
+        salesActive.addAll(category.getSalesOnDate(dateBought));
+        SaleToCustomer bestSale = null;
+        for (SaleToCustomer sale: salesActive)
+            if (bestSale==null || bestSale.getPercent()<sale.getPercent())
+                bestSale = sale;
+        return bestSale.getPercent()*getOriginalPrice()/100; //what if price in general changed? do we need a log of the prices?
+    }
+
     private Location getStoreLocation(int storeId) {
         Location l = null;
         for (Map.Entry<Location, Integer> entry : inStore.entrySet())
@@ -146,5 +169,12 @@ public class Product {
                 result.add(sale);
         }
         return result;
+    }
+
+    public List<DiscountFromSupplier> getDiscountFromSupplierHistory() {
+        return discountFromSupplierList;
+    }
+    public DiscountFromSupplier addDiscountFromSupplier(Date date, int supplierID, String description, Map<Product, Integer> amountBought, int pricePaid, int originalPrice) {
+        return new DiscountFromSupplier(discountFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
     }
 }

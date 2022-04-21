@@ -1,7 +1,6 @@
-package BusinessLayer;
+package BusinessLayer.DiscountsAndSales;
 
 import java.util.*;
-import java.util.function.BiPredicate;
 
 public class SaleToCustomer {
     private int id;
@@ -21,6 +20,7 @@ public class SaleToCustomer {
         this.categories = categoriesList;
         this.products = products;
     }
+
     //"new Date()" returns the current date.
     public boolean isUpcoming() {
         return startDate.after(new Date());
@@ -33,5 +33,9 @@ public class SaleToCustomer {
     }
     public double getPercent() {
         return percent;
+    }
+
+    public boolean wasActive(Date dateBought) {
+        return startDate.before(dateBought) && endDate.after(dateBought);
     }
 }
