@@ -84,14 +84,27 @@ public class CLI {
         int input, supplierID = -1;
         boolean correctInput, _continue = true;
 
+        if(service.isSuppliersEmpty().getValue()){
+            System.out.println("NO SUPPLIERS ARE AVAILABLE!\nPress \"Enter\" to return.");
+            scan.nextLine();
+            return;
+        }
+
         while(_continue){
+
             System.out.println("Insert the supplier ID you wish to view, then press \"Enter\" to continue.\n");
+            System.out.println("If you wish to return, type \"-1\" and press \"Enter\"");
 
             correctInput = false;
 
             while(!correctInput){
                 input = scan.nextInt();
                 scan.nextLine();
+
+                if(input == -1){
+                    System.out.println("\n\n");
+                    return;
+                }
 
                 Result<ServiceSupplierObject> r = service.getSupplierInfo(input);
 
