@@ -11,4 +11,5 @@ public class Transport {
     private  int truckWeight;
     private List<Source> sources;
     private List<Destination> destinations;
+
 }
