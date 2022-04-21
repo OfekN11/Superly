@@ -352,4 +352,8 @@ public class SupplierController {
 
         suppliers.get(supID).removeManufacturer(name);
     }
+
+    public boolean isSuppliersEmpty(){
+        return suppliers.isEmpty();
+    }
 }

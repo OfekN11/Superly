@@ -108,6 +108,10 @@ public class SupplierService {
         }
     }
 
+    public Result<Boolean> isSuppliersEmpty(){
+        return Result.makeOk(controller.isSuppliersEmpty());
+    }
+
     //Format : " id , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
     public void addAgreementItems(int supplierId, List<String> itemsString) {
         try {
