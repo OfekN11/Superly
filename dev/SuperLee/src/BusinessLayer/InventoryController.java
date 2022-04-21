@@ -113,13 +113,11 @@ public class InventoryController {
         storeIds.remove(storeIds.indexOf(storeID));
     }
 
-    //is this needed? doesn't addItems do this automatically?
     public void addProductToStore(int storeID, int shelfInStore, int shelfInWarehouse, int productID, int minAmount, int maxAmount) { //affect 4 maps in product.
         Product product = getProduct(productID);
         product.addLocation(storeID, shelfInStore, shelfInWarehouse, minAmount, maxAmount);
     }
 
-    //is this needed? does it affect anything?
     public void removeProductFromStore(int storeID, int productID) {
         Product product = getProduct(productID);
         product.removeLocation(storeID);
