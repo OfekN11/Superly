@@ -93,7 +93,7 @@ public class RoutineAgreement extends Agreement {
             }
         }
 
-        Collections.sort(list);
+        Collections.sort(daysOfDelivery);
     }
 
     public void removeDayOfDelivery(Integer day){
