@@ -754,7 +754,7 @@ public class CLI {
             }
 
             for(int i=0; i<bulkArr.length; i++){
-                bulkMap.put(Integer.parseInt(bulkArr[i]), Integer.parseInt(bulkArr[1]));
+                bulkMap.put(Integer.parseInt(bulkArr[i]), Integer.parseInt(bulkArr[i+1]));
                 i++;
             }
 
@@ -1350,7 +1350,7 @@ public class CLI {
         }
 
         if(input == 1){
-            System.out.println("Inset the delivery days as numbers with whitespaces in between. For example:");
+            System.out.println("Insert the delivery days as numbers with whitespaces in between. For example:");
             System.out.println("1 2 5");
             System.out.println("Meaning: Sunday, Monday, Thursday");
 
