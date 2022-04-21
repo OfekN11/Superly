@@ -113,6 +113,21 @@ public class InventoryService {
     }
 
     /**
+     * add Discount from supplier on product
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<DiscountReport> addDiscountFromSupplier(int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice){
+        try {
+            DiscountFromSupplier dr = controller.addDiscountFromSupplier(productID, date, supplierID, description, amountBought, pricePaid, originalPrice);
+            return Result.makeOk(new DiscountReport(dr));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
      * Get History of all discounts from the different suppliers on specified product
      *
      * @return Result detailing success of operation
@@ -358,5 +373,118 @@ public class InventoryService {
         }
     }
 
+    /**
+     * Get list of all products in a category
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<Object> addStore(){
+        try {
+            controller.addStore();
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
+    }
+
+    /**
+     * Get list of all products in a category
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<Object> removeStore(int storeID){
+        try {
+            controller.removeStore(storeID);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
+    }
+
+    /**
+     * Change product Price
+     *
+     * @return Result detailing success of operation holding the renewed Product
+     */
+    public Result<Product> editProductPrice(int productID, double newPrice){
+        try {
+            return Result.makeOk(new Product(controller.editProductPrice(productID, newPrice)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Change product Name
+     *
+     * @return Result detailing success of operation holding the renewed Product
+     */
+    public Result<Product> editProductName(int productID, String newName){
+        try {
+            return Result.makeOk(new Product(controller.editProductname(productID, newName)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Move Product to new Category
+     *
+     * @return Result detailing success of operation holding the renewed Product
+     */
+    public Result<Product> moveProduct(int productID, int newCatID){
+        try {
+            return Result.makeOk(new Product(controller.moveProduct(productID, newCatID)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Change Category Name
+     *
+     * @return Result detailing success of operation holding the renewed Product
+     */
+    public Result<Category> editCategoryname(int categoryID, String newName){
+        try {
+            return Result.makeOk(new Category(controller.editCategoryName(categoryID, newName)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Change Category Name
+     *
+     * @return Result detailing success of operation holding the renewed Product
+     */
+    public Result<Category> changeCategoryParent(int categoryID, String newName){
+        try {
+            return Result.makeOk(new Category(controller.editCategoryName(categoryID, newName)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Change Category Name
+     *
+     * @return Result detailing success of operation holding the renewed Product
+     */
+    public Result<Category> addNewCategory(String name, int parentCategoryID){
+        try {
+            return Result.makeOk(new Category(controller.addCategory(name, parentCategoryID)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
     //edit product stuff (price, category, name)
 }

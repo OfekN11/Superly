@@ -12,7 +12,7 @@ public class DiscountReport {
     private final Date date;
     private final int supplierID;
     private final String description;
-    private final Map<Product, Integer> amountBought;
+    private final int amountBought;
     public DiscountReport(DiscountFromSupplier d) {
         this.originalPrice = d.getOriginalPrice();
         this.finalPrice = d.getPricePaid();

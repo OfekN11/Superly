@@ -51,7 +51,7 @@ public class InventoryController {
         return getProduct(productID).getDiscountFromSupplierHistory();
     }
 
-    public DiscountFromSupplier addDiscountFromSupplier(int productID, Date date, int supplierID, String description, Map<Product, Integer> amountBought, int pricePaid, int originalPrice) {
+    public DiscountFromSupplier addDiscountFromSupplier(int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
         return  getProduct(productID).addDiscountFromSupplier(date, supplierID, description, amountBought, pricePaid, originalPrice);
     }
 
@@ -108,13 +108,18 @@ public class InventoryController {
             storeIds.add(0);
         storeIds.add(storeIds.get(storeIds.size()-1)+1);
     }
+
     public void removeStore(int storeID) {
         storeIds.remove(storeIds.indexOf(storeID));
     }
+
+    //is this needed? doesn't addItems do this automatically?
     public void addProductToStore(int storeID, int shelfInStore, int shelfInWarehouse, int productID, int minAmount, int maxAmount) { //affect 4 maps in product.
         Product product = getProduct(productID);
         product.addLocation(storeID, shelfInStore, shelfInWarehouse, minAmount, maxAmount);
     }
+
+    //is this needed? does it affect anything?
     public void removeProductFromStore(int storeID, int productID) {
         Product product = getProduct(productID);
         product.removeLocation(storeID);
@@ -177,17 +182,17 @@ public class InventoryController {
         return price;
     }
     private void addCategoriesForTests () {
-        Category cSmall1 = new Category(1, "Small", new HashSet<>(), new ArrayList<>(), null);
+        Category cSmall1 = new Category("Small", new HashSet<>(), new ArrayList<>(), null);
         categories.put(categories.size() + 1, cSmall1);
-        Category cSmall2 = new Category(1, "Small", new HashSet<>(), new ArrayList<>(), null);
+        Category cSmall2 = new Category("Small", new HashSet<>(), new ArrayList<>(), null);
         categories.put(categories.size() + 1, cSmall2);
-        Category cLarge1 = new Category(1, "Large", new HashSet<>(), new ArrayList<>(), null);
+        Category cLarge1 = new Category("Large", new HashSet<>(), new ArrayList<>(), null);
         categories.put(categories.size() + 1, cLarge1);
-        Category cLarge2 = new Category(1, "Large", new HashSet<>(), new ArrayList<>(), null);
+        Category cLarge2 = new Category("Large", new HashSet<>(), new ArrayList<>(), null);
         categories.put(categories.size() + 1, cLarge2);
-        Category cMedium = new Category(1, "Medium", new HashSet<>(), new ArrayList<>(), null);
+        Category cMedium = new Category("Medium", new HashSet<>(), new ArrayList<>(), null);
         categories.put(categories.size() + 1, cMedium);
-        Category cShampoo = new Category(1, "Shampoo", new HashSet<>(), new ArrayList<>(), null);
+        Category cShampoo = new Category("Shampoo", new HashSet<>(), new ArrayList<>(), null);
         Set<Category> milk = new HashSet<>();
         milk.add(cSmall1);
         milk.add(cMedium);
@@ -196,37 +201,37 @@ public class InventoryController {
         yogurt.add(cSmall2);
         yogurt.add(cLarge2);
         Set<Category> dairy = new HashSet<>();
-        Category cMilk = new Category(1, "Milk", milk, new ArrayList<>(), null);
-        Category cYogurt = new Category(1, "Yogurt", yogurt, new ArrayList<>(), null);
+        Category cMilk = new Category("Milk", milk, new ArrayList<>(), null);
+        Category cYogurt = new Category("Yogurt", yogurt, new ArrayList<>(), null);
         dairy.add(cMilk);
         dairy.add(cYogurt);
-        Category cdairy = new Category(1, "Dairy", dairy, new ArrayList<>(), null);
+        Category cdairy = new Category("Dairy", dairy, new ArrayList<>(), null);
         categories.put(categories.size() + 1, cdairy);
         categories.put(categories.size() + 1, cShampoo);
-        Category cToothpaste = new Category(1, "Toothpaste", new HashSet<>(), new ArrayList<>(), null);
+        Category cToothpaste = new Category("Toothpaste", new HashSet<>(), new ArrayList<>(), null);
         categories.put(categories.size() + 1, cToothpaste);
         Set<Category> health = new HashSet<>();
         health.add(cShampoo);
         health.add(cToothpaste);
-        Category cHealth = new Category(1, "Health,", health, new ArrayList<>(), null);
+        Category cHealth = new Category("Health,", health, new ArrayList<>(), null);
         categories.put(categories.size() + 1, cHealth);
-        Category cOrg1 = new Category(1, "Organic", new HashSet<>(), new ArrayList<>(), null);
+        Category cOrg1 = new Category("Organic", new HashSet<>(), new ArrayList<>(), null);
         categories.put(categories.size() + 1, cOrg1);
-        Category cOrg2 = new Category(1, "Organic", new HashSet<>(), new ArrayList<>(), null);
+        Category cOrg2 = new Category("Organic", new HashSet<>(), new ArrayList<>(), null);
         categories.put(categories.size() + 1, cOrg2);
         Set<Category> veggies = new HashSet();
         veggies.add(cOrg1);
         Set<Category> fruits = new HashSet();
         fruits.add(cOrg2);
-        Category cVeggie = new Category(1, "Vegetables", veggies, new ArrayList<>(), null);
+        Category cVeggie = new Category("Vegetables", veggies, new ArrayList<>(), null);
         //12
         categories.put(categories.size() + 1, cVeggie);
-        Category cFruit = new Category(1, "Fruits", veggies, new ArrayList<>(), null);
+        Category cFruit = new Category("Fruits", veggies, new ArrayList<>(), null);
         categories.put(categories.size() + 1, cFruit);
         Set<Category> produce = new HashSet<>();
         produce.add(cFruit);
         produce.add(cVeggie);
-        Category cProduce = new Category(1, "Produce", produce, new ArrayList<>(), null);
+        Category cProduce = new Category("Produce", produce, new ArrayList<>(), null);
         categories.put(categories.size() + 1, cProduce);
     }
 
@@ -247,4 +252,38 @@ public class InventoryController {
     private void addSalesForTests () {
     }
 
+    public Product editProductPrice(int productID, double newPrice) {
+        Product p = getProduct(productID);
+        p.setPrice(newPrice);
+        return p;
+    }
+
+    public Product editProductname(int productID, String newName) {
+        Product p = getProduct(productID);
+        p.setName(newName);
+        return p;
+    }
+
+    public Product moveProduct(int productID, int newCatID) {
+        Product p = getProduct(productID);
+        p.setCategory(categories.get(newCatID));
+        return p;
+    }
+
+    public Category editCategoryName(int categoryID, String newName) {
+        Category c = categories.get(categoryID);
+        c.setName(newName);
+        return c;
+    }
+
+    public Category addCategory(String name, int parentCategoryID) {
+        int id = categories.size()+1;
+        if (parentCategoryID==-1) {
+            categories.put(id, new Category(name, new HashSet<>(), new ArrayList<>(), null));
+        }
+        else {
+            categories.put(id, new Category(name, new HashSet<>(), new ArrayList<>(), categories.get(parentCategoryID)));
+        }
+        return categories.get(id);
+    }
 }

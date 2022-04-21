@@ -11,7 +11,7 @@ public class DiscountFromSupplier {
     private Date date;
     private int supplierID;
     private String description;
-    private Map<Product, Integer> amountBought;
+    private int amountBought;
     private int pricePaid;
     private int originalPrice;
     public Date getDate() {
@@ -26,7 +26,7 @@ public class DiscountFromSupplier {
         return description;
     }
 
-    public Map<Product, Integer> getAmountBought() {
+    public int getAmountBought() {
         return amountBought;
     }
 
@@ -37,7 +37,7 @@ public class DiscountFromSupplier {
     public int getOriginalPrice() {
         return originalPrice;
     }
-    public DiscountFromSupplier(int id, Date date, int supplierID, String description, Map<Product, Integer> amountBought, int pricePaid, int originalPrice) {
+    public DiscountFromSupplier(int id, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
         this.id = id;
         this.date = date;
         this.supplierID = supplierID;

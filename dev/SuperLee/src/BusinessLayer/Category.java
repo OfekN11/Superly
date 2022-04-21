@@ -8,18 +8,18 @@ import java.util.List;
 import java.util.Set;
 
 public class Category {
-    private int id;
     private String name;
     private Set<Category> subcategories;
     private Category parentCategory;
     private List<Product> products;
     private List<SaleToCustomer> sales;
-    public int getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Category> getSubcategories() {
@@ -36,12 +36,12 @@ public class Category {
         }
         else {
             parentCategory = newParentCategory;
-            parentCategory.addSubcategory(this);
+            if (parentCategory!=null)
+                parentCategory.addSubcategory(this);
         }
     }
 
-    public Category(int id, String name, Set<Category> subcategories, List<Product> products, Category parentCategory) {
-        this.id = id;
+    public Category(String name, Set<Category> subcategories, List<Product> products, Category parentCategory) {
         this.name = name;
         this.subcategories = subcategories;
         for (Category c : subcategories)
@@ -91,16 +91,16 @@ public class Category {
         return product;
     }
 
-    public Category findCategory(int categoryID) {
-        Category category = null;
-        for (Category c: subcategories) {
-            if (c.id==categoryID) {
-                category = c;
-                break;
-            }
-        }
-        return category;
-    }
+//    public Category findCategory(int categoryID) {
+//        Category category = null;
+//        for (Category c: subcategories) {
+//            if (c.id==categoryID) {
+//                category = c;
+//                break;
+//            }
+//        }
+//        return category;
+//    }
     public SaleToCustomer findCurrentBestSale(SaleToCustomer currentSale) {
         for (SaleToCustomer sale: sales)
             if ((sale.isActive() && currentSale==null) || (sale.isActive() && currentSale.getPercent()<sale.getPercent()))

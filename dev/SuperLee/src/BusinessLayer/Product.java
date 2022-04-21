@@ -32,7 +32,18 @@ public class Product {
     public double getOriginalPrice() {
         return price;
     }
-
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    public void setCategory(Category category) {
+        if (category!=null)
+            category.removeProduct(getId());
+        this.category = category;
+        category.addProduct(this);
+    }
     public Product(int id, String name, Category category, double weight, double price, List<Supplier> suppliers) {
         this.id = id;
         this.name = name;
@@ -174,7 +185,7 @@ public class Product {
     public List<DiscountFromSupplier> getDiscountFromSupplierHistory() {
         return discountFromSupplierList;
     }
-    public DiscountFromSupplier addDiscountFromSupplier(Date date, int supplierID, String description, Map<Product, Integer> amountBought, int pricePaid, int originalPrice) {
+    public DiscountFromSupplier addDiscountFromSupplier(Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
         return new DiscountFromSupplier(discountFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
     }
 }
