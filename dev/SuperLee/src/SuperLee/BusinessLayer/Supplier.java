@@ -275,4 +275,40 @@ public class Supplier {
         return contacts;
     }
 
+    public void removeContact(String name) throws Exception {
+        for(Contact c : contacts){
+            if(Objects.equals(name, c.getName())){
+                contacts.remove(c);
+                return;
+            }
+        }
+
+        throw new Exception("No such contact Exists!");
+    }
+
+    public List<String> getManufacturers(){
+        return new ArrayList<>(manufacturers);
+    }
+
+    public void removeManufacturer(String name) throws Exception {
+        boolean found = false;
+
+        for(String s : manufacturers){
+            if(Objects.equals(s, name)){
+                found = true;
+                break;
+            }
+        }
+
+        if(!found){
+            throw new Exception("This manufacturer is not represented by the current supplier!");
+        }
+
+        if(agreement.isManufacturerRepresented(name)){
+            throw new Exception("This manufacturer is selling items to the supplier, remove them first!");
+        }
+
+        manufacturers.remove(name);
+    }
+
 }

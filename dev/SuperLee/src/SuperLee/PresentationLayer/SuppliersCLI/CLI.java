@@ -81,70 +81,75 @@ public class CLI {
 
     private void supplierCard(){
         int input, supplierID = -1;
-        boolean correctInput = false;
+        boolean correctInput, _continue = true;
 
-        System.out.println("Insert the supplier ID you wish to view, then press \"Enter\" to continue.\n");
+        while(_continue){
+            System.out.println("Insert the supplier ID you wish to view, then press \"Enter\" to continue.\n");
 
-        while(!correctInput){
-            input = scan.nextInt();
+            correctInput = false;
 
-            Result<ServiceSupplierObject> r = service.getSupplierInfo(input);
+            while(!correctInput){
+                input = scan.nextInt();
 
-            if(r.isOk()){
-                System.out.println(r.getValue().toString());
-                correctInput = true;
-                supplierID = input;
+                Result<ServiceSupplierObject> r = service.getSupplierInfo(input);
+
+                if(r.isOk()){
+                    System.out.println(r.getValue().toString());
+                    correctInput = true;
+                    supplierID = input;
+                }
+                else{
+                    System.out.println("No such supplier or your input is incorrect, please try again.");
+                }
             }
-            else{
-                System.out.println("No such supplier or your input is incorrect, please try again.");
+
+            System.out.println("\n");
+
+            System.out.println("Choose the next operation: ");
+
+            System.out.println("1) Edit card");
+            System.out.println("2) View agreement");
+            System.out.println("3) New agreement");
+            System.out.println("4) View contacts");
+            System.out.println("5) View represented manufacturers");
+            System.out.println("6) Back to home page\n");
+            correctInput = false;
+
+            while (!correctInput){
+                input = scan.nextInt();
+
+                switch (input){
+                    case 1 -> {
+                        editCard(supplierID);
+                        correctInput = true;
+                    }
+                    case 2 -> {
+                        viewAgreement(supplierID);
+                        correctInput = true;
+                    }
+                    case 3 -> {
+                        newAgreement(supplierID);
+                        correctInput = true;
+                    }
+                    case 4 -> {
+                        viewContacts(supplierID);
+                        correctInput = true;
+                    }
+                    case 5 -> {
+                        viewRepresentedManufacturers(supplierID);
+                        correctInput = true;
+                    }
+                    case 6 -> {
+                        correctInput = true;
+                        _continue = false;
+                        System.out.println("Returning\n\n");
+                    }
+                    default -> System.out.println("You inserted wrong value, please try again.");
+                }
             }
+
+            System.out.println("\n\n");
         }
-
-        System.out.println("\n");
-
-        System.out.println("Choose the next operation: ");
-
-        System.out.println("1) Edit card");
-        System.out.println("2) View agreement");
-        System.out.println("3) New agreement");
-        System.out.println("4) View contacts");
-        System.out.println("5) View represented manufacturers");
-        System.out.println("6) Back to home page\n");
-        correctInput = false;
-
-        while (!correctInput){
-            input = scan.nextInt();
-
-            switch (input){
-                case 1 -> {
-                    editCard(supplierID);
-                    correctInput = true;
-                }
-                case 2 -> {
-                    viewAgreement(supplierID);
-                    correctInput = true;
-                }
-                case 3 -> {
-                    newAgreement(supplierID);
-                    correctInput = true;
-                }
-                case 4 -> {
-                    viewContacts(supplierID);
-                    correctInput = true;
-                }
-                case 5 -> {
-                    viewRepresentedManufacturers();
-                    correctInput = true;
-                }
-                case 6 -> {
-                    correctInput = true;
-                    System.out.println("Returning\n\n");
-                }
-                default -> System.out.println("You inserted wrong value, please try again.");
-            }
-        }
-
-        System.out.println("\n\n");
 
     }
 
@@ -228,7 +233,7 @@ public class CLI {
             System.out.println("Choose your next action: ");
             System.out.println("1) New agreement to supplier");
             System.out.println("2) Add another supplier");
-            System.out.println("3) Back to Home Page\n");
+            System.out.println("3) Back\n");
 
             while(!correctInput){
                 input = scan.nextInt();
@@ -454,10 +459,10 @@ public class CLI {
         boolean correctInput = false;
 
         while(!correctInput){
-            System.out.println("Insert the new name please.");
+            System.out.println("Insert the new paying agreement please.");
             input = scan.nextLine();
 
-            Result<Boolean> r = service.updateSupplierName(supplierID, input);
+            Result<Boolean> r = service.updateSupplierPayingAgreement(supplierID, input);
 
             if(r.isOk()){
                 correctInput = true;
@@ -467,7 +472,7 @@ public class CLI {
             }
         }
 
-        System.out.println("Address was changed successfully.\n\n");
+        System.out.println("The paying agreement was changed successfully.\n\n");
     }
 
     private void viewAgreement(int supplierID){
@@ -550,6 +555,7 @@ public class CLI {
                     case 9 -> {
                         correctInput = true;
                         _continue = false;
+                        System.out.println("Returning..\n\n");
                     }
                     default -> System.out.println("You inserted wrong value, please try again.");
 
@@ -872,6 +878,7 @@ public class CLI {
                     case 10 -> {
                         correctInput = true;
                         _continue = false;
+                        System.out.println("Returning..\n\n");
                     }
                     default -> System.out.println("You inserted wrong value, please try again.");
                 }
@@ -1394,14 +1401,178 @@ public class CLI {
     }
 
     private void removeContact(int supID){
+        int input;
+        boolean _continue = true, correctInput;
+        String contact;
+
+        while(_continue){
+            correctInput = false;
+
+            System.out.println("Insert the name of the contact you want to remove:");
+            contact = scan.nextLine();
+
+            if(service.removeContact(supID, contact).isOk()){
+                System.out.println("The contact was removed successfully.\n\n");
+                System.out.println("Choose:");
+                System.out.println("1) Remove another contact");
+                System.out.println("2) Return");
+
+                while(!correctInput){
+                    input = scan.nextInt();
+
+                    switch(input){
+                        case 1 -> {
+                            System.out.println("\n\n");
+                            correctInput = true;
+                        }
+                        case 2 -> {
+                            System.out.println("Returning..\n\n");
+                            correctInput = true;
+                            _continue = false;
+                        }
+                        default -> System.out.println("You inserted wrong value, please try again.");
+                    }
+                }
+            }
+            else{
+                System.out.println("Something went wrong, please try again.");
+            }
+        }
+    }
+
+    private void viewRepresentedManufacturers(int supID){
+        int input;
+        boolean _continue = true, correctInput;
+
+        while (_continue){
+            Result<List<String>> r = service.getManufacturers(supID);
+
+            if(r.isError()){
+                System.out.println("Something went wrong, returning..\n\n");
+                return;
+            }
+
+            List<String> list = r.getValue();
+
+            for(String s : list){
+                System.out.println(s);
+            }
+
+            System.out.println("\n\n");
+
+            System.out.println("Choose:");
+            System.out.println("1) Add manufacturer");
+            System.out.println("2) Remove manufacturer");
+            System.out.println("3) Return");
+
+            correctInput = false;
+
+            while(!correctInput){
+                input = scan.nextInt();
+
+                switch(input){
+                    case 1 -> {
+                        correctInput = true;
+                        addManufacturer(supID);
+                    }
+                    case 2 -> {
+                        correctInput = true;
+                        removeManufacturer(supID);
+                    }
+                    case 3 -> {
+                        correctInput = true;
+                        _continue = false;
+                        System.out.println("Returning..\n\n");
+                    }
+                    default -> System.out.println("You inserted wrong value, please try again.");
+                }
+            }
+        }
+    }
+
+    public void addManufacturer(int supID){
+        int input;
+        boolean _continue = true, correctInput;
+        String manufacturer;
+
+        while(_continue){
+            System.out.println("Insert the new manufacturer's name:");
+
+            manufacturer = scan.nextLine();
+
+            if(service.addSupplierManufacturer(supID, manufacturer).isOk()){
+                System.out.println("The new manufacturer was added successfully.\n");
+                System.out.println("Choose:");
+                System.out.println("1) Add another manufacturer");
+                System.out.println("2) Return");
+
+                correctInput = false;
+
+                while(!correctInput){
+                    input = scan.nextInt();
+
+                    switch(input){
+                        case 1 -> {
+                            System.out.println("\n");
+                            correctInput = true;
+                        }
+                        case 2 -> {
+                            System.out.println("Returning..\n\n");
+                            correctInput = true;
+                            _continue = false;
+                        }
+                        default -> System.out.println("You inserted wrong value, please try again.");
+                    }
+                }
+            }
+            else{
+                System.out.println("Something went wrong, please try again.");
+            }
+        }
 
     }
 
+    public void removeManufacturer(int supID){
+        int input;
+        boolean _continue = true, correctInput;
+        String manufacturer;
 
+        while(_continue){
+            System.out.println("Insert the manufacturer's name you wish to remove:");
 
+            manufacturer = scan.nextLine();
 
+            if(service.addSupplierManufacturer(supID, manufacturer).isOk()){
+                System.out.println("The manufacturer was removed successfully.\n");
+                System.out.println("Choose:");
+                System.out.println("1) Remove another manufacturer");
+                System.out.println("2) Return");
 
-    private void viewRepresentedManufacturers(){}
+                correctInput = false;
+
+                while(!correctInput){
+                    input = scan.nextInt();
+
+                    switch(input){
+                        case 1 -> {
+                            System.out.println("\n\n\n");
+                            correctInput = true;
+                        }
+                        case 2 -> {
+                            System.out.println("Returning..\n\n");
+                            correctInput = true;
+                            _continue = false;
+                        }
+                        default -> System.out.println("You inserted wrong value, please try again.");
+                    }
+                }
+            }
+            else{
+                System.out.println("Something went wrong, please try again.");
+            }
+        }
+
+    }
 
 
 }

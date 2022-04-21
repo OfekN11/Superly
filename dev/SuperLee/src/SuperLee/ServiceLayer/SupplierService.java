@@ -81,19 +81,21 @@ public class SupplierService {
         }
     }
 
-    public void updateSupplierPayingAgreement(int id, String payingAgreement){
+    public Result<Boolean> updateSupplierPayingAgreement(int id, String payingAgreement){
         try {
             controller.updateSupplierPayingAgreement(id, payingAgreement);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
-    public void addSupplierManufacturer(int id, String manufacturer){
+    public Result<Boolean> addSupplierManufacturer(int id, String manufacturer){
         try {
             controller.addSupplierManufacturer(id, manufacturer);
+            return Result.makeOk(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Result.makeError(e.getMessage());
         }
     }
 
@@ -414,6 +416,35 @@ public class SupplierService {
     public Result<List<String>> getAllContacts(int supID){
         try{
             return Result.makeOk(controller.getAllContact(supID));
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> removeContact(int supID, String name){
+        try{
+            controller.removeContact(supID, name);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<List<String>> getManufacturers(int supID){
+        try{
+            return Result.makeOk(controller.getManufacturers(supID));
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> removeManufacturer(int supID, String name){
+        try{
+            controller.removeManufacturer(supID, name);
+            return Result.makeOk(true);
         }
         catch(Exception e){
             return Result.makeError(e.getMessage());

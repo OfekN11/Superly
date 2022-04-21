@@ -328,4 +328,28 @@ public class SupplierController {
 
         return contacts;
     }
+
+    public void removeContact(int supID, String name) throws Exception {
+        if(!supplierExist(supID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        suppliers.get(supID).removeContact(name);
+    }
+
+    public List<String> getManufacturers(int supID) throws Exception {
+        if(!supplierExist(supID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        return suppliers.get(supID).getManufacturers();
+    }
+
+    public void removeManufacturer(int supID, String name) throws Exception {
+        if(!supplierExist(supID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        suppliers.get(supID).removeManufacturer(name);
+    }
 }
