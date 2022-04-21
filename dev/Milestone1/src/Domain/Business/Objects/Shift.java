@@ -58,7 +58,7 @@ public abstract class Shift {
                 new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
-    public Shift(DShift dShift, Set<Employee> employees) {
+    public Shift(DShift dShift) {
         this.dShift = dShift;
 
         this.workday = dShift.getDate();
