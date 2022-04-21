@@ -1,10 +1,7 @@
 package PresentationLayer;
 
 import ServiceLayer.InventoryService;
-import ServiceLayer.Objects.Category;
-import ServiceLayer.Objects.DiscountReport;
-import ServiceLayer.Objects.Product;
-import ServiceLayer.Objects.Sale;
+import ServiceLayer.Objects.*;
 import ServiceLayer.Result;
 
 import java.text.ParseException;
@@ -59,7 +56,7 @@ public class Inventory {
 
     private static int getStoreID() {
         System.out.println("Please insert store ID of store you are in. Current store IDs are:");
-        System.out.println(is.getStoreIDs());
+        System.out.println(is.getStoreIDs().getValue());
         return scanner.nextInt();
     }
 
@@ -70,6 +67,20 @@ public class Inventory {
             listCategories();
         else if (command.equals("add product"))
             addProduct();
+        else if (command.equals("change product name"))
+            changeProductName();
+        else if (command.equals("change product price"))
+            changeProductPrice();
+        else if (command.equals("delete product"))
+            deleteProduct();
+        else if (command.equals("add category"))
+            addCategory();
+        else if (command.equals("change category parent"))
+            changeCatParent();
+        else if (command.equals("change category name"))
+            changeCatName();
+        else if (command.equals("move product"))
+            moveProduct();
         else if (command.equals("sale history by product"))
             saleHistoryByProduct();
         else if (command.equals("sale history by category"))
@@ -78,6 +89,8 @@ public class Inventory {
             discountHistory();
         else if (command.equals("add sale"))
             addSale();
+        else if (command.equals("add discount from supplier"))
+            addDiscount();
         else if (command.equals("list products in category"))
             listProductsByCategory();
         else if (command.equals("return item"))
@@ -88,12 +101,423 @@ public class Inventory {
             addItems();
         else if (command.equals("remove items"))
             addItems();
+        else if (command.equals("report expired"))
+            reportExpired();
+        else if (command.equals("expired items"))
+            expiredItems();
+        else if (command.equals("report damaged"))
+            reportDamaged();
+        else if (command.equals("damaged items"))
+            defectiveItems();
+        else if (command.equals("defective items"))
+            damagedItems();
+        else if (command.equals("add store"))
+            addStore();
+        else if (command.equals("remove store"))
+            removeStore();
         else if (command.equals("help"))
             help();
         else if (command.equals("load data"))
             System.out.println("Persistence Layer is not implemented yet");
         else
             System.out.println("Command not found. please use 'help' for info or 'q' to quit");
+    }
+
+    private static void changeCatName() {
+        System.out.println("Which category would you like to edit?");
+        int id = scanner.nextInt();
+        System.out.println("Please insert new category name");
+        String name = scanner.nextLine();
+        Result<Category> r = is.editCategoryName(id, name);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            Category c = r.getValue();
+            System.out.println(c);
+        }
+    }
+
+    private static void moveProduct() {
+        int store = getStoreID();
+        System.out.println("Which product's items are you moving? (insert ID)");
+        int productID = scanner.nextInt();
+        System.out.println("How much is being moved?");
+        int amount = scanner.nextInt();
+        Result r = is.moveProduct(store, productID, amount);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("Moving of items successful");
+        }
+    }
+
+    private static void addDiscount() {
+        System.out.println("Which product received a discount? (insert ID)");
+        int productID = scanner.nextInt();
+        System.out.println("Which supplier gave the discount? (insert ID)");
+        int supplier = scanner.nextInt();
+        System.out.println("How much of the product was purchased?");
+        int amount = scanner.nextInt();
+        System.out.println("How much was the original price?");
+        int originalPrice = scanner.nextInt();
+        System.out.println("How much was paid?");
+        int finalPrice = scanner.nextInt();
+        System.out.println("When did the discount occur?");
+        Date date = getDate();
+        if (date==null)
+            return;
+        System.out.println("Please insert a general description of the discount");
+        String description = scanner.nextLine();
+        Result<DiscountReport> r = is.addDiscountFromSupplier(productID, date, supplier, description, amount, finalPrice, originalPrice);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            DiscountReport dr = r.getValue();
+            System.out.println(dr);
+        }
+    }
+
+    private static void reportExpired() {
+        int store = getStoreID();
+        System.out.println("Which product is expired? (insert ID)");
+        int productID = scanner.nextInt();
+        System.out.println("How much of the product is expired?");
+        int amount = scanner.nextInt();
+        Result<ExpiredItemReport> r = is.reportExpired(store, productID, amount);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            ExpiredItemReport eir = r.getValue();
+            System.out.println(eir);
+        }
+    }
+
+    private static void expiredItems() {
+        System.out.println("Please insert for which items you would like to see expired item history: (choose the corresponding number)");
+        System.out.println("1: A product/products");
+        System.out.println("2: A category/categories");
+        System.out.println("3: A store/number of stores");
+        System.out.println("4: all products");
+        int expireCase = scanner.nextInt();
+        switch (expireCase) {
+            case (1):
+                expiredItemsByProduct();
+                break;
+            case (2):
+                expiredItemsByCategory();
+                break;
+            case (3):
+                expiredItemsByStore();
+                break;
+            case (4):
+                expiredItemsAll();
+                break;
+            default:
+                System.out.println("Incorrect command, please try again");
+        }
+    }
+
+    private static void expiredItemsAll() {
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<ExpiredItemReport>> r = is.getExpiredItemReportsByStore(start, end, new ArrayList<>());
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<ExpiredItemReport> reportList = r.getValue();
+            for (ExpiredItemReport eir : reportList)
+                System.out.println(eir);
+        }
+    }
+
+    private static void expiredItemsByStore() {
+        System.out.println("Please insert store IDs, separated by commas");
+        System.out.println("For example: 2,4,1,11");
+        List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<ExpiredItemReport>> r = is.getExpiredItemReportsByStore(start, end, storeIDs);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<ExpiredItemReport> reportList = r.getValue();
+            for (ExpiredItemReport eir : reportList)
+                System.out.println(eir);
+        }
+    }
+
+    private static void expiredItemsByCategory() {
+        System.out.println("Please insert category IDs, separated by commas");
+        System.out.println("For example: 2,4,1,11");
+        List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<ExpiredItemReport>> r = is.getExpiredItemReportsByCategory(start, end, categoryIDs);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<ExpiredItemReport> reportList = r.getValue();
+            for (ExpiredItemReport eir : reportList)
+                System.out.println(eir);
+        }
+    }
+
+    private static void expiredItemsByProduct() {
+        System.out.println("Please insert product IDs, separated by commas");
+        System.out.println("For example: 2,4,1,11");
+        List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<ExpiredItemReport>> r = is.getExpiredItemReportsByProduct(start, end, productIDs);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<ExpiredItemReport> reportList = r.getValue();
+            for (ExpiredItemReport eir : reportList)
+                System.out.println(eir);
+        }
+    }
+
+    private static void reportDamaged() {
+        int store = getStoreID();
+        System.out.println("Which product is damaged? (insert ID)");
+        int productID = scanner.nextInt();
+        System.out.println("How much of the product is damaged?");
+        int amount = scanner.nextInt();
+        System.out.println("Please describe the damage");
+        String description = scanner.nextLine();
+        Result<DamagedItemReport> r = is.reportDamaged(store, productID, amount, description);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            DamagedItemReport dir = r.getValue();
+            System.out.println(dir);
+        }
+    }
+
+    private static void defectiveItems() {
+    }
+
+    private static void damagedItems() {
+        System.out.println("Please insert for which items you would like to see damaged item history: (choose the corresponding number)");
+        System.out.println("1: A product/products");
+        System.out.println("2: A category/categories");
+        System.out.println("3: A store/number of stores");
+        System.out.println("4: all products");
+        int damagedCase = scanner.nextInt();
+        switch (damagedCase) {
+            case (1):
+                damagedItemsByProduct();
+                break;
+            case (2):
+                damagedItemsByCategory();
+                break;
+            case (3):
+                damagedItemsByStore();
+                break;
+            case (4):
+                damagedItemsAll();
+                break;
+            default:
+                System.out.println("Incorrect command, please try again");
+        }
+    }
+
+    private static void damagedItemsAll() {
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<DamagedItemReport>> r = is.getDamagedItemsReportByStore(start, end, new ArrayList<>());
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<DamagedItemReport> reportList = r.getValue();
+            for (DamagedItemReport dir : reportList)
+                System.out.println(dir);
+        }
+    }
+
+    private static void damagedItemsByStore() {
+        System.out.println("Please insert store IDs, separated by commas");
+        System.out.println("For example: 2,4,1,11");
+        List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<DamagedItemReport>> r = is.getDamagedItemsReportByStore(start, end, storeIDs);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<DamagedItemReport> reportList = r.getValue();
+            for (DamagedItemReport dir : reportList)
+                System.out.println(dir);
+        }
+    }
+
+    private static void damagedItemsByCategory() {
+        System.out.println("Please insert category IDs, separated by commas");
+        System.out.println("For example: 2,4,1,11");
+        List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<DamagedItemReport>> r = is.getDamagedItemsReportByCategory(start, end, categoryIDs);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<DamagedItemReport> reportList = r.getValue();
+            for (DamagedItemReport dir : reportList)
+                System.out.println(dir);
+        }
+    }
+
+    private static void damagedItemsByProduct() {
+        System.out.println("Please insert product IDs, separated by commas");
+        System.out.println("For example: 2,4,1,11");
+        List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<DamagedItemReport>> r = is.getDamagedItemsReportByProduct(start, end, productIDs);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<DamagedItemReport> reportList = r.getValue();
+            for (DamagedItemReport dir : reportList)
+                System.out.println(dir);
+        }
+    }
+
+    private static void addStore() {
+        Result<Integer> r = is.addStore();
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            int id = r.getValue();
+            System.out.println("new store created, ID is: " + id);
+        }
+    }
+
+    private static void removeStore() {
+        System.out.println("Which store would you like remove?");
+        int id = scanner.nextInt();
+        Result r = is.removeStore(id);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("Store removed");
+        }
+    }
+
+    private static void changeCatParent() {
+        System.out.println("Which category would you like to edit?");
+        int id = scanner.nextInt();
+        System.out.println("Please insert new category parent ID");
+        int parent = scanner.nextInt();
+        Result<Category> r = is.changeCategoryParent(id, parent);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            Category c = r.getValue();
+            System.out.println(c);
+        }
+    }
+
+    private static void deleteProduct() {
+        System.out.println("Which product would you like remove?");
+        int id = scanner.nextInt();
+        Result r = is.deleteProduct(id);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("Product removed");
+        }
+    }
+
+    private static void changeProductPrice() {
+        System.out.println("Which product would you like to edit?");
+        int id = scanner.nextInt();
+        System.out.println("Please insert new product price");
+        double price = scanner.nextDouble();
+        Result<Product> r = is.editProductPrice(id, price);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            Product p = r.getValue();
+            System.out.println(p);
+        }
+    }
+
+    private static void changeProductName() {
+        System.out.println("Which product would you like to edit?");
+        int id = scanner.nextInt();
+        System.out.println("Please insert new product name");
+        String name = scanner.nextLine();
+        Result<Product> r = is.editProductName(id, name);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            Product p = r.getValue();
+            System.out.println(p);
+        }
+    }
+
+    private static void addCategory() {
+        System.out.println("Please insert category name");
+        String name = scanner.nextLine();
+        System.out.println("Please insert parent category ID, or 0 if there is none");
+        int parent = scanner.nextInt();
+        Result<Category> r = is.addNewCategory(name, parent);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            Category c = r.getValue();
+            System.out.println(c);
+        }
     }
 
     private static void listProducts() {
@@ -121,7 +545,7 @@ public class Inventory {
     private static void addProduct() {
         System.out.println("Please insert product name, categoryID, weight, and price. Separated by commas, no spaces");
         String[] info = scanner.nextLine().split(",");
-        Result<Product> r = is.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]),Double.parseDouble(info[3]),new ArrayList<>());
+        Result<Product> r = is.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]), Double.parseDouble(info[3]),new ArrayList<>());
         if (r.isError())
             System.out.println(r.getError());
         else {

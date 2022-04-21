@@ -132,13 +132,17 @@ public class Product {
         return l;
     }
 
-    public void reportDamaged(int storeID, int amount, String description) {
-        damagedItemReport.add(new DamagedItemReport(new Date(), storeID, amount, description));
+    public DamagedItemReport reportDamaged(int storeID, int amount, String description) {
+        DamagedItemReport dir = new DamagedItemReport(new Date(), storeID, amount, description);
+        damagedItemReport.add(dir);
+        return dir;
     }
-    public void reportExpired(int storeID, int amount) {
-        expiredItemReport.add(new ExpiredItemReport(new Date(), storeID, amount));
+    public ExpiredItemReport reportExpired(int storeID, int amount) {
+        ExpiredItemReport eir = new ExpiredItemReport(new Date(), storeID, amount);
+        expiredItemReport.add(eir);
+        return eir;
     }
-    public List<DamagedItemReport> getDamagedItemReports(Date start, Date end, List<Integer> storeID) {
+    public List<DamagedItemReport> getDamagedItemReportsByStore(Date start, Date end, List<Integer> storeID) {
         List<DamagedItemReport> dirList = new ArrayList<>();
         for (DamagedItemReport dir: damagedItemReport) {
             if (dir.inDates(start, end) && (storeID.contains(dir.getStoreID()) || storeID.size()==0))
@@ -146,10 +150,29 @@ public class Product {
         }
         return dirList;
     }
-    public List<ExpiredItemReport> getExpiredItemReports(Date start, Date end, List<Integer> storeID) {
+
+    public Collection<DamagedItemReport> getDamagedItemReports(Date start, Date end) {
+        List<DamagedItemReport> dirList = new ArrayList<>();
+        for (DamagedItemReport dir: damagedItemReport) {
+            if (dir.inDates(start, end))
+                dirList.add(dir);
+        }
+        return dirList;
+    }
+
+    public List<ExpiredItemReport> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeID) {
         List<ExpiredItemReport> eirList = new ArrayList<>();
         for (ExpiredItemReport eir: expiredItemReport) {
             if (eir.inDates(start, end) && (storeID.contains(eir.getStoreID()) || storeID.size()==0))
+                eirList.add(eir);
+        }
+        return eirList;
+    }
+
+    public Collection<ExpiredItemReport> getExpiredItemReports(Date start, Date end) {
+        List<ExpiredItemReport> eirList = new ArrayList<>();
+        for (ExpiredItemReport eir: expiredItemReport) {
+            if (eir.inDates(start, end))
                 eirList.add(eir);
         }
         return eirList;
@@ -188,4 +211,5 @@ public class Product {
     public DiscountFromSupplier addDiscountFromSupplier(Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
         return new DiscountFromSupplier(discountFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
     }
+
 }

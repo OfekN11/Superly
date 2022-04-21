@@ -1,11 +1,10 @@
 package BusinessLayer;
 
+import BusinessLayer.DefectiveItems.DamagedItemReport;
+import BusinessLayer.DefectiveItems.ExpiredItemReport;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Category {
     private String name;
@@ -140,5 +139,27 @@ public class Category {
                 result.add(sale);
         }
         return result;
+    }
+
+    public Collection<ExpiredItemReport> getExpiredItemReports(Date start, Date end) {
+        List<ExpiredItemReport> eirList = new ArrayList<>();
+        for (Product p : products) {
+            eirList.addAll(p.getExpiredItemReports(start, end));
+        }
+        for (Category c: subcategories) {
+            eirList.addAll(c.getExpiredItemReports(start, end));
+        }
+        return eirList;
+    }
+
+    public Collection<DamagedItemReport> getDamagedItemReports(Date start, Date end) {
+        List<DamagedItemReport> dirList = new ArrayList<>();
+        for (Product p : products) {
+            dirList.addAll(p.getDamagedItemReports(start, end));
+        }
+        for (Category c: subcategories) {
+            dirList.addAll(c.getDamagedItemReports(start, end));
+        }
+        return dirList;
     }
 }

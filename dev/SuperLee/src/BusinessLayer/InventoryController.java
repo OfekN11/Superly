@@ -8,6 +8,8 @@ import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 
 import java.util.*;
 
+import static java.util.Collections.max;
+
 public class InventoryController {
     private List<Integer> storeIds;
     private Map<Integer, Category> categories;
@@ -70,11 +72,12 @@ public class InventoryController {
         return categories.get(categoryID).getSaleHistory();
     }
 
-    public List<DefectiveItems> getDefectiveItems(Date start, Date end, List<Integer> storeIDs) {
+    public List<DefectiveItems> getDefectiveItems(Date start, Date end, List<Integer> storeIDs) throws NoSuchMethodException {
         List<DefectiveItems> defective = new ArrayList<>();
-        defective.addAll(getDamagedItemReports(start, end, storeIDs));
-        defective.addAll(getExpiredItemReports(start, end, storeIDs));
-        return defective;
+        //defective.addAll(getDamagedItemReports(start, end, storeIDs));
+        //defective.addAll(getExpiredItemReports(start, end, storeIDs));
+        throw new NoSuchMethodException();
+//        return defective;
     }
 
     public Collection<Product> getProducts() {
@@ -103,10 +106,14 @@ public class InventoryController {
         return product.returnItems(storeID, amount, dateBought);
     }
 
-    public void addStore() {
-        if (storeIds.isEmpty())
+    public int addStore() {
+        if (storeIds.isEmpty()) {
             storeIds.add(0);
-        storeIds.add(storeIds.get(storeIds.size()-1)+1);
+            return 0;
+        }
+        int id = max(storeIds)+1;
+        storeIds.add(id);
+        return id;
     }
 
     public void removeStore(int storeID) {
@@ -140,31 +147,63 @@ public class InventoryController {
         //remove sales? remove empty categories?
     }
 
-    public void reportDamaged(int storeID, int productID, int amount, String description) {
+    public DamagedItemReport reportDamaged(int storeID, int productID, int amount, String description) {
         Product product = getProduct(productID);
         product.removeItems(storeID, amount);
-        product.reportDamaged(storeID, amount, description);
+        return product.reportDamaged(storeID, amount, description);
     }
-    public void reportExpired(int storeID, int productID, int amount) {
+    public ExpiredItemReport reportExpired(int storeID, int productID, int amount) {
         Product product = getProduct(productID);
         product.removeItems(storeID, amount);
-        product.reportExpired(storeID, amount);
+        return product.reportExpired(storeID, amount);
     }
 
     //why is storeIDS a list?
-    public List<DamagedItemReport> getDamagedItemReports(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
+    public List<DamagedItemReport> getDamagedItemReportsByStore(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
         List<DamagedItemReport> dirList = new ArrayList<>();
         Collection<Product> productList = getProducts();
         for (Product p: productList) {
-            dirList.addAll(p.getDamagedItemReports(start, end, storeID));
+            dirList.addAll(p.getDamagedItemReportsByStore(start, end, storeID));
         }
         return dirList;
     }
-    public List<ExpiredItemReport> getExpiredItemReports(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
+    public List<DamagedItemReport> getDamagedItemReportsByCategory(Date start, Date end, List<Integer> categoryID) {
+        List<DamagedItemReport> dirList = new ArrayList<>();
+        for (Integer c: categoryID) {
+            dirList.addAll(categories.get(c).getDamagedItemReports(start, end));
+        }
+        return dirList;
+    }
+
+    public List<DamagedItemReport> getDamagedItemReportsByProduct(Date start, Date end, List<Integer> productID) {
+        List<DamagedItemReport> dirList = new ArrayList<>();
+        for (Integer p: productID) {
+            dirList.addAll(getProduct(p).getDamagedItemReports(start, end));
+        }
+        return dirList;
+    }
+
+    public List<ExpiredItemReport> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
         List<ExpiredItemReport> eirList = new ArrayList<>();
         Collection<Product> productList = getProducts();
         for (Product p: productList) {
-            eirList.addAll(p.getExpiredItemReports(start, end, storeID));
+            eirList.addAll(p.getExpiredItemReportsByStore(start, end, storeID));
+        }
+        return eirList;
+    }
+
+    public List<ExpiredItemReport> getExpiredItemReportsByCategory(Date start, Date end, List<Integer> categoryID) {
+        List<ExpiredItemReport> eirList = new ArrayList<>();
+        for (Integer c: categoryID) {
+            eirList.addAll(categories.get(c).getExpiredItemReports(start, end));
+        }
+        return eirList;
+    }
+
+    public List<ExpiredItemReport> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productID) {
+        List<ExpiredItemReport> eirList = new ArrayList<>();
+        for (Integer p: productID) {
+            eirList.addAll(getProduct(p).getExpiredItemReports(start, end));
         }
         return eirList;
     }
@@ -256,7 +295,7 @@ public class InventoryController {
         return p;
     }
 
-    public Product editProductname(int productID, String newName) {
+    public Product editProductName(int productID, String newName) {
         Product p = getProduct(productID);
         p.setName(newName);
         return p;
@@ -274,9 +313,15 @@ public class InventoryController {
         return c;
     }
 
+    public Category changeParentCategory(int categoryID, int newCatID) {
+        Category c = categories.get(categoryID);
+        c.changeParentCategory(categories.get(newCatID));
+        return c;
+    }
+
     public Category addCategory(String name, int parentCategoryID) {
         int id = categories.size()+1;
-        if (parentCategoryID==-1) {
+        if (parentCategoryID==0) {
             categories.put(id, new Category(name, new HashSet<>(), new ArrayList<>(), null));
         }
         else {
