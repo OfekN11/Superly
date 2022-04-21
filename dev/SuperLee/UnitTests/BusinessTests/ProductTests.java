@@ -27,28 +27,6 @@ public class ProductTests {
     Product product1 = new Product(1, "Milk-Tara-1L", category0, 1.0, 4, new ArrayList<>());
 
     @Test
-    public void testRemoveItems() {
-        try
-        {
-
-        }
-        catch (Exception e)
-        {
-
-        }
-    }
-    @Test
-    public void testMoveItems() {
-        try
-        {
-
-        }
-        catch (Exception e)
-        {
-
-        }
-    }
-    @Test
     public void testAddItems() {
         try
         {
@@ -81,6 +59,88 @@ public class ProductTests {
         catch (Exception e)
         {
             Assertions.fail("addItems does not work");
+        }
+    }
+    @Test
+    public void testMoveItems() {
+        try
+        {
+            product0.addLocation(0, 0, 0, 80, 300);
+            product0.addLocation(1, 0, 0, 65, 250);
+            product1.addLocation(0, 1, 1, 40, 150);
+            Assertions.assertEquals(0, product0.getStoreAmount(0));
+            Assertions.assertEquals(0, product0.getWarehouseAmount(0));
+            Assertions.assertEquals(0, product0.getStoreAmount(1));
+            Assertions.assertEquals(0, product0.getWarehouseAmount(1));
+            Assertions.assertEquals(0, product1.getStoreAmount(0));
+            Assertions.assertEquals(0, product1.getWarehouseAmount(0));
+            product0.addItems(0, 100);
+            product0.moveItems(0, 58);
+            Assertions.assertEquals(58, product0.getStoreAmount(0));
+            Assertions.assertEquals(42, product0.getWarehouseAmount(0));
+            Assertions.assertEquals(0, product0.getStoreAmount(1));
+            Assertions.assertEquals(0, product0.getWarehouseAmount(1));
+            Assertions.assertEquals(0, product1.getStoreAmount(0));
+            Assertions.assertEquals(0, product1.getWarehouseAmount(0));
+            product0.addItems(0, 40);
+            product0.addItems(1, 30);
+            product1.addItems(0, 99);
+            product0.moveItems(0, 40);
+            product0.moveItems(1, 25);
+            product1.moveItems(0, 18);
+            Assertions.assertEquals(98, product0.getStoreAmount(0));
+            Assertions.assertEquals(42, product0.getWarehouseAmount(0));
+            Assertions.assertEquals(25, product0.getStoreAmount(1));
+            Assertions.assertEquals(5, product0.getWarehouseAmount(1));
+            Assertions.assertEquals(18, product1.getStoreAmount(0));
+            Assertions.assertEquals(81, product1.getWarehouseAmount(0));
+        }
+        catch (Exception e)
+        {
+            Assertions.fail("moveItems does not work");
+        }
+    }
+    @Test
+    public void testRemoveItems() {
+        try
+        {
+            product0.addLocation(0, 0, 0, 80, 300);
+            product0.addLocation(1, 0, 0, 65, 250);
+            product1.addLocation(0, 1, 1, 40, 150);
+            Assertions.assertEquals(0, product0.getStoreAmount(0));
+            Assertions.assertEquals(0, product0.getWarehouseAmount(0));
+            Assertions.assertEquals(0, product0.getStoreAmount(1));
+            Assertions.assertEquals(0, product0.getWarehouseAmount(1));
+            Assertions.assertEquals(0, product1.getStoreAmount(0));
+            Assertions.assertEquals(0, product1.getWarehouseAmount(0));
+            product0.addItems(0, 100);
+            product0.moveItems(0, 58);
+            product0.removeItems(0, 37);
+            Assertions.assertEquals(21, product0.getStoreAmount(0));
+            Assertions.assertEquals(42, product0.getWarehouseAmount(0));
+            Assertions.assertEquals(0, product0.getStoreAmount(1));
+            Assertions.assertEquals(0, product0.getWarehouseAmount(1));
+            Assertions.assertEquals(0, product1.getStoreAmount(0));
+            Assertions.assertEquals(0, product1.getWarehouseAmount(0));
+            product0.addItems(0, 40);
+            product0.addItems(1, 30);
+            product1.addItems(0, 99);
+            product0.moveItems(0, 40);
+            product0.moveItems(1, 25);
+            product1.moveItems(0, 18);
+            product0.removeItems(0, 15);
+            product0.removeItems(1, 25);
+            product1.removeItems(0, 0);
+            Assertions.assertEquals(46, product0.getStoreAmount(0));
+            Assertions.assertEquals(42, product0.getWarehouseAmount(0));
+            Assertions.assertEquals(0, product0.getStoreAmount(1));
+            Assertions.assertEquals(5, product0.getWarehouseAmount(1));
+            Assertions.assertEquals(18, product1.getStoreAmount(0));
+            Assertions.assertEquals(81, product1.getWarehouseAmount(0));
+        }
+        catch (Exception e)
+        {
+            Assertions.fail("removeItems does not work");
         }
     }
     @Test
@@ -171,17 +231,6 @@ public class ProductTests {
         catch (Exception e)
         {
             Assertions.fail("returnItems does not work");
-        }
-    }
-    @Test
-    public void testGetPriceOnDate() {
-        try
-        {
-
-        }
-        catch (Exception e)
-        {
-
         }
     }
     @Test

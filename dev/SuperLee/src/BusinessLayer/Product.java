@@ -75,11 +75,15 @@ public class Product {
     }
     public void removeItems(int storeID, int amount) { //bought or thrown
         Location l = getStoreLocation(storeID);
+        if (inStore.get(l)-amount<0)
+            throw new IllegalArgumentException("Can not buy more items than in the store");
         inStore.put(l, inStore.get(l)-amount);
     }
     public void moveItems(int storeID, int amount) { //from warehouse to store
         Location from = getWarehouseLocation(storeID);
         Location to = getStoreLocation(storeID);
+        if (inWarehouse.get(from)-amount<0)
+            throw new IllegalArgumentException("Can not move more items than in the warehouse");
         inWarehouse.put(from, inWarehouse.get(from)-amount);
         inStore.put(to, inStore.get(to)+amount);
     }
