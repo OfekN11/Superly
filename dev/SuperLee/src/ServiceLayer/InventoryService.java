@@ -1,6 +1,7 @@
 package ServiceLayer;
 
 
+import BusinessLayer.DefectiveItems;
 import BusinessLayer.DiscountsAndSales.DiscountFromSupplier;
 import BusinessLayer.InventoryController;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
@@ -188,16 +189,53 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> getDefectiveItems(Date start, Date end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByStore(Date start, Date end, List<Integer> storeIDs){
         try {
-            controller.getDefectiveItems(start, end, storeIDs);
+            List<DefectiveItems> dirs = controller.getDefectiveItemsByStore(start, end, storeIDs);
+            List<DefectiveItemReport> SLdirs = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems dir : dirs)
+                SLdirs.add(new DefectiveItemReport(dir));
+            return Result.makeOk(SLdirs);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
     }
 
+    /**
+     * Get History of recent damaged and expired items
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByCategory(Date start, Date end, List<Integer> categoryIDs){
+        try {
+            List<DefectiveItems> dirs = controller.getDefectiveItemsByCategory(start, end, categoryIDs);
+            List<DefectiveItemReport> SLdirs = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems dir : dirs)
+                SLdirs.add(new DefectiveItemReport(dir));
+            return Result.makeOk(SLdirs);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+    /**
+     * Get History of recent damaged and expired items
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByProduct(Date start, Date end, List<Integer> productIDs){
+        try {
+            List<DefectiveItems> dirs = controller.getDefectiveItemsByProduct(start, end, productIDs);
+            List<DefectiveItemReport> SLdirs = new ArrayList<>();
+            for (BusinessLayer.DefectiveItems dir : dirs)
+                SLdirs.add(new DefectiveItemReport(dir));
+            return Result.makeOk(SLdirs);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
     /**
      * Get list of all products in catalog
      *
@@ -407,7 +445,7 @@ public class InventoryService {
     }
 
     /**
-     * Get list of all products in a category
+     * Move product from warehouse to store
      *
      * @return Result detailing success of operation
      */
