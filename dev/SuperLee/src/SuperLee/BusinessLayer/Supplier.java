@@ -35,6 +35,7 @@ public class Supplier {
         this.payingAgreement = payingAgreement;
         this.contacts = contacts;
         this.manufacturers = manufacturers;
+        agreement = null;
 
         //this.agreement = new Agreement();
     }
@@ -309,6 +310,10 @@ public class Supplier {
         }
 
         manufacturers.remove(name);
+    }
+
+    public boolean hasAgreement(){
+        return agreement != null;
     }
 
 }

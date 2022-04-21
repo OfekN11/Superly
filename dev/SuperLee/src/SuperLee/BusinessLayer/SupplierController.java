@@ -356,4 +356,12 @@ public class SupplierController {
     public boolean isSuppliersEmpty(){
         return suppliers.isEmpty();
     }
+
+    public boolean hasAgreement(int supID) throws Exception {
+        if(!supplierExist(supID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        return suppliers.get(supID).hasAgreement();
+    }
 }

@@ -503,6 +503,11 @@ public class CLI {
     private void viewAgreement(int supplierID){
         Result<Boolean> r = service.isRoutineAgreement(supplierID);
 
+        if(!service.hasAgreement(supplierID).getValue()){
+            System.out.println("No agreement with this supplier, press \"Enter\" to return.\n\n");
+            return;
+        }
+
         if(r.isOk() && r.getValue()){
             viewRoutineAgreement(supplierID);
         }

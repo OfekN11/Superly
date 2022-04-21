@@ -436,6 +436,15 @@ public class SupplierService {
         }
     }
 
+    public Result<Boolean> hasAgreement(int supID){
+        try{
+            return Result.makeOk(controller.hasAgreement(supID));
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
     public Result<List<String>> getManufacturers(int supID){
         try{
             return Result.makeOk(controller.getManufacturers(supID));
