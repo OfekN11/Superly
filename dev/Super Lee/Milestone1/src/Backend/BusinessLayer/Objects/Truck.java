@@ -7,7 +7,7 @@ public class Truck {
     private LicenseTypes model;
     private int netWeight;
     private int maxCapacityWeight;
-    private Driver driver;
+    private Driver driver;//Remove to transport
     private int currWeight;
 
     public Truck(int licenseNumber, LicenseTypes model, int netWeight, int maxCapacityWeight) {

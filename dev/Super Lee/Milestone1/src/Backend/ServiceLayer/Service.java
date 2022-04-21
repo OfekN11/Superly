@@ -32,17 +32,43 @@ public class Service {
         //TODO: implement
         return null;
     }
-    public Result getInProgressTransports(int transportSN)
+    public Result inviteTransport()
     {
         //TODO: implement
         return null;
     }
-    public Result getWaitingTransports(int transportSN)
+    //Maybe driver and truck will be together
+    public Result getAvailableTrucks()
     {
         //TODO: implement
         return null;
     }
-    public Result getPastTransports(int transportSN)
+    public Result placeDriver()
+    {
+        //TODO: implement
+        return null;
+    }
+    public Result placeTruck()
+    {
+        //TODO: implement
+        return null;
+    }
+    public Result getAvailableDrivers()
+    {
+        //TODO: implement
+        return null;
+    }
+    public Result getInProgressTransports()
+    {
+        //TODO: implement
+        return null;
+    }
+    public Result getWaitingTransports()
+    {
+        //TODO: implement
+        return null;
+    }
+    public Result getPastTransports()
     {
         //TODO: implement
         return null;
