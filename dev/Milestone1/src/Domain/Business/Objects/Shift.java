@@ -1,5 +1,6 @@
 package Domain.Business.Objects;
 import Domain.DAL.Objects.DShift;
+import Domain.Service.ServiceShiftFactory;
 import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
@@ -179,4 +180,6 @@ public abstract class Shift {
     public void setSorterIDs(Set<Integer> sorterIDs) {
         this.sorterIDs = new HashSet<>(sorterIDs);
     }
+
+    public abstract Domain.Service.Objects.Shift accept(ServiceShiftFactory factory);
 }
