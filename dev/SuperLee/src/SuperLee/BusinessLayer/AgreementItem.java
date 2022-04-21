@@ -109,7 +109,7 @@ public class AgreementItem {
         finalPrice = quantity*pricePerUnit;
 
         if(closerQuantity != 0){
-            finalPrice *= (1-(double)(bulkPrices.get(closerQuantity)/100));
+            finalPrice *= (1-((double)bulkPrices.get(closerQuantity)/100));
         }
 
         return finalPrice;
