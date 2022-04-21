@@ -5,6 +5,9 @@ import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 
 import java.util.*;
 
+import static BusinessLayer.DefectiveItems.Defect.Damaged;
+import static BusinessLayer.DefectiveItems.Defect.Expired;
+
 public class Product {
     private int id;
     private String name;
@@ -131,12 +134,12 @@ public class Product {
     }
 
     public DefectiveItems reportDamaged(int storeID, int amount, String description) {
-        DefectiveItems dir = new DefectiveItems(DefectiveItems.Defect.Damaged, new Date(), storeID, amount, description);
+        DefectiveItems dir = new DefectiveItems(Damaged, new Date(), storeID, id, amount, description);
         damagedItemReport.add(dir);
         return dir;
     }
     public DefectiveItems reportExpired(int storeID, int amount, String description) {
-        DefectiveItems eir = new DefectiveItems(DefectiveItems.Defect.Expired, new Date(), storeID, amount, description);
+        DefectiveItems eir = new DefectiveItems(Expired, new Date(), storeID, id, amount, description);
         expiredItemReport.add(eir);
         return eir;
     }

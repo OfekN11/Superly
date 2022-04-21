@@ -70,12 +70,25 @@ public class InventoryController {
         return categories.get(categoryID).getSaleHistory();
     }
 
-    public List<DefectiveItems> getDefectiveItems(Date start, Date end, List<Integer> storeIDs) throws NoSuchMethodException {
+    public List<DefectiveItems> getDefectiveItemsByStore(Date start, Date end, List<Integer> storeIDs) {
         List<DefectiveItems> defective = new ArrayList<>();
-        //defective.addAll(getDamagedItemReports(start, end, storeIDs));
-        //defective.addAll(getExpiredItemReports(start, end, storeIDs));
-        throw new NoSuchMethodException();
-//        return defective;
+        defective.addAll(getDamagedItemReportsByStore(start, end, storeIDs));
+        defective.addAll(getExpiredItemReportsByStore(start, end, storeIDs));
+        return defective;
+    }
+
+    public List<DefectiveItems> getDefectiveItemsByCategory(Date start, Date end, List<Integer> catIDs) {
+        List<DefectiveItems> defective = new ArrayList<>();
+        defective.addAll(getDamagedItemReportsByCategory(start, end, catIDs));
+        defective.addAll(getExpiredItemReportsByCategory(start, end, catIDs));
+        return defective;
+    }
+
+    public List<DefectiveItems> getDefectiveItemsByProduct(Date start, Date end, List<Integer> productIDs) {
+        List<DefectiveItems> defective = new ArrayList<>();
+        defective.addAll(getDamagedItemReportsByProduct(start, end, productIDs));
+        defective.addAll(getExpiredItemReportsByProduct(start, end, productIDs));
+        return defective;
     }
 
     public Collection<Product> getProducts() {

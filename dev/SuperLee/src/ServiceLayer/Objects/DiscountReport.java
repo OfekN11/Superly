@@ -1,10 +1,8 @@
 package ServiceLayer.Objects;
 
 import BusinessLayer.DiscountsAndSales.DiscountFromSupplier;
-import BusinessLayer.Product;
 
 import java.util.Date;
-import java.util.Map;
 
 public class DiscountReport {
     private final int originalPrice;

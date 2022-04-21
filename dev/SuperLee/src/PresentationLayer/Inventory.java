@@ -81,6 +81,8 @@ public class Inventory {
             changeCatName();
         else if (command.equals("move product"))
             moveProduct();
+        else if (command.equals("change product category"))
+            changeProductCategory();
         else if (command.equals("sale history by product"))
             saleHistoryByProduct();
         else if (command.equals("sale history by category"))
@@ -108,9 +110,9 @@ public class Inventory {
         else if (command.equals("report damaged"))
             reportDamaged();
         else if (command.equals("damaged items"))
-            defectiveItems();
-        else if (command.equals("defective items"))
             damagedItems();
+        else if (command.equals("defective items"))
+            defectiveItems();
         else if (command.equals("add store"))
             addStore();
         else if (command.equals("remove store"))
@@ -121,6 +123,21 @@ public class Inventory {
             System.out.println("Persistence Layer is not implemented yet");
         else
             System.out.println("Command not found. please use 'help' for info or 'q' to quit");
+    }
+
+    private static void changeProductCategory() {
+        System.out.println("Which product would you like to edit? (insert ID)");
+        int productID = scanner.nextInt();
+        System.out.println("To which category would you like to move it? (insert ID)");
+        int category = scanner.nextInt();
+        Result<Product> r = is.moveProductToCategory(productID, category);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("product successfully moved to new category");
+            Product p = r.getValue();
+            System.out.println(p);
+        }
     }
 
     private static void changeCatName() {
@@ -322,6 +339,112 @@ public class Inventory {
     }
 
     private static void defectiveItems() {
+        System.out.println("Please insert for which items you would like to see defect item history: (choose the corresponding number)");
+        System.out.println("1: A product/products");
+        System.out.println("2: A category/categories");
+        System.out.println("3: A store/number of stores");
+        System.out.println("4: all products");
+        int defectCase = scanner.nextInt();
+        switch (defectCase) {
+            case (1):
+                defectiveItemsByProduct();
+                break;
+            case (2):
+                defectiveItemsByCategory();
+                break;
+            case (3):
+                defectiveItemsByStore();
+                break;
+            case (4):
+                defectiveItemsAll();
+                break;
+            default:
+                System.out.println("Incorrect command, please try again");
+        }
+    }
+    private static void defectiveItemsAll() {
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<DefectiveItemReport>> r = is.getDefectiveItemsByStore(start, end, new ArrayList<>());
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport dir : reportList)
+                System.out.println(dir);
+        }
+    }
+
+    private static void defectiveItemsByStore() {
+        System.out.println("Please insert store IDs, separated by commas");
+        System.out.println("For example: 2,4,1,11");
+        List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<DefectiveItemReport>> r = is.getDefectiveItemsByStore(start, end, storeIDs);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport dir : reportList)
+                System.out.println(dir);
+        }
+    }
+
+    private static void defectiveItemsByCategory() {
+        System.out.println("Please insert category IDs, separated by commas");
+        System.out.println("For example: 2,4,1,11");
+        List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<DefectiveItemReport>> r = is.getDefectiveItemsByCategory(start, end, categoryIDs);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport dir : reportList)
+                System.out.println(dir);
+        }
+    }
+
+    private static void defectiveItemsByProduct() {
+        System.out.println("Please insert product IDs, separated by commas");
+        System.out.println("For example: 2,4,1,11");
+        List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<List<DefectiveItemReport>> r = is.getDefectiveItemsByProduct(start, end, productIDs);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<DefectiveItemReport> reportList = r.getValue();
+            for (DefectiveItemReport dir : reportList)
+                System.out.println(dir);
+        }
     }
 
     private static void damagedItems() {
@@ -679,6 +802,8 @@ public class Inventory {
     }
 
     private static String help() {
+        System.out.println("Welcome to help session");
+        System.out.println("Possible commands are:");
         return "This will be the guide to what commands are available";
     }
 }
