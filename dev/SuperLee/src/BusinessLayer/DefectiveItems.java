@@ -14,7 +14,7 @@ public class DefectiveItems {
     private String description;
     private Defect defect;
 
-    public DefectiveItems(Defect defect ,Date date, int storeID, int productID, int amount, String description) {
+    public DefectiveItems(Defect defect ,Date date, int storeID, int productID, int amount, int employeeID, String description) {
         this.date = date;
         this.storeID = storeID;
         this.productID = productID;

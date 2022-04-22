@@ -5,7 +5,6 @@ import BusinessLayer.DefectiveItems;
 import BusinessLayer.DiscountsAndSales.DiscountFromSupplier;
 import BusinessLayer.InventoryController;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
-import BusinessLayer.Supplier;
 import ServiceLayer.Objects.*;
 
 import java.util.*;
@@ -50,7 +49,6 @@ public class InventoryService {
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-
     }
 
     /**
@@ -73,9 +71,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Product> newProduct(String name, int categoryID, int weight, double price, List<Supplier> suppliers){
+    public Result<Product> newProduct(String name, int categoryID, int weight, double price, Map<Integer, Integer> suppliers, int manufacturerID){
         try {
-            BusinessLayer.Product p = controller.newProduct(name, categoryID, weight, price, suppliers);
+            BusinessLayer.Product p = controller.newProduct(name, categoryID, weight, price, suppliers, manufacturerID);
             return Result.makeOk(new Product(p));
         }
         catch (Exception e){
@@ -313,9 +311,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<DefectiveItemReport> reportDamaged(int storeID, int productID, int amount, String description){
+    public Result<DefectiveItemReport> reportDamaged(int storeID, int productID, int amount, int employeeID, String description){
         try {
-            return Result.makeOk(new DefectiveItemReport(controller.reportDamaged(storeID, productID, amount, description)));
+            return Result.makeOk(new DefectiveItemReport(controller.reportDamaged(storeID, productID, amount, employeeID, description)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -327,9 +325,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<DefectiveItemReport> reportExpired(int storeID, int productID, int amount, String description){
+    public Result<DefectiveItemReport> reportExpired(int storeID, int productID, int amount, int employeeID, String description){
         try {
-            return Result.makeOk(new DefectiveItemReport(controller.reportExpired(storeID, productID, amount, description)));
+            return Result.makeOk(new DefectiveItemReport(controller.reportExpired(storeID, productID, amount, employeeID, description)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

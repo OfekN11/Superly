@@ -46,7 +46,13 @@ public class InventoryController {
                 category.addSale(sale);        }
         return sale;
     }
+    /*public SaleToCustomer removeSale(int saleID) {
+        SaleToCustomer sale = findSale(saleID);
+        if (sale.isUpcoming())
+            //remove sale - from sales list, and from all products and categories it's applied to.
+        else
 
+    }*/
     public List<DiscountFromSupplier> getDiscountFromSupplierHistory(int productID) {
         return getProduct(productID).getDiscountFromSupplierHistory();
     }
@@ -145,10 +151,10 @@ public class InventoryController {
         throw new NoSuchMethodException();
     }
 
-    public Product newProduct(String name, int categoryID, int weight, double price, List<Supplier> suppliers) {
+    public Product newProduct(String name, int categoryID, int weight, double price, Map<Integer, Integer> suppliers, int manufacturerID) {
         Category category = categories.get(categoryID);
         int id = products.size() + 1;
-        Product product = new Product(id, name, category, weight, price, suppliers);
+        Product product = new Product(id, name, category, weight, price, suppliers, manufacturerID);
         products.put(id, product);
         return product;
     }
@@ -158,15 +164,15 @@ public class InventoryController {
         //remove sales? remove empty categories?
     }
 
-    public DefectiveItems reportDamaged(int storeID, int productID, int amount, String description) {
+    public DefectiveItems reportDamaged(int storeID, int productID, int amount, int employeeID, String description) {
         Product product = getProduct(productID);
         product.removeItems(storeID, amount);
-        return product.reportDamaged(storeID, amount, description);
+        return product.reportDamaged(storeID, amount, employeeID, description);
     }
-    public DefectiveItems reportExpired(int storeID, int productID, int amount, String description) {
+    public DefectiveItems reportExpired(int storeID, int productID, int amount, int employeeID, String description) {
         Product product = getProduct(productID);
         product.removeItems(storeID, amount);
-        return product.reportExpired(storeID, amount, description);
+        return product.reportExpired(storeID, amount, employeeID, description);
     }
 
     //why is storeIDS a list?
@@ -284,16 +290,16 @@ public class InventoryController {
     }
 
     private void addProductsForTests () {
-        products.put(products.size()+1, new Product(products.size()+1, "tomato", categories.get(12), -1, 7.2, new ArrayList<>()));
-        products.put(products.size()+1, new Product(products.size()+1, "tomato", categories.get(10), -1, 9.2, new ArrayList<>()));
-        products.put(products.size()+1, new Product(products.size()+1, "strawberry", categories.get(11), -1, 7.2, new ArrayList<>()));
-        products.put(products.size()+1, new Product(products.size()+1, "melon", categories.get(13), -1, 7.2, new ArrayList<>()));
-        products.put(products.size()+1, new Product(products.size()+1, "Hawaii", categories.get(6), 1.2, 13, new ArrayList<>()));
-        products.put(products.size()+1, new Product(products.size()+1, "Crest", categories.get(9), 0.7, 7.2, new ArrayList<>()));
-        products.put(products.size()+1, new Product(products.size()+1, "Tara 1L", categories.get(5), 1.2, 8.6, new ArrayList<>()));
-        products.put(products.size()+1, new Product(products.size()+1, "Tnuva 1L", categories.get(5), 1.2, 8, new ArrayList<>()));
-        products.put(products.size()+1, new Product(products.size()+1, "yoplait strawberry", categories.get(2), 0.5, 5.3, new ArrayList<>()));
-        products.put(products.size()+1, new Product(products.size()+1, "yoplait vanilla", categories.get(2), 0.5, 5.3, new ArrayList<>()));
+        products.put(products.size()+1, new Product(products.size()+1, "tomato", categories.get(12), -1, 7.2, new HashMap<>(), 0));
+        products.put(products.size()+1, new Product(products.size()+1, "tomato", categories.get(10), -1, 9.2, new HashMap<>(), 0));
+        products.put(products.size()+1, new Product(products.size()+1, "strawberry", categories.get(11), -1, 7.2, new HashMap<>(), 0));
+        products.put(products.size()+1, new Product(products.size()+1, "melon", categories.get(13), -1, 7.2, new HashMap<>(), 0));
+        products.put(products.size()+1, new Product(products.size()+1, "Hawaii", categories.get(6), 1.2, 13, new HashMap<>(), 1));
+        products.put(products.size()+1, new Product(products.size()+1, "Crest", categories.get(9), 0.7, 7.2, new HashMap<>(), 2));
+        products.put(products.size()+1, new Product(products.size()+1, "Tara 1L", categories.get(5), 1.2, 8.6, new HashMap<>(), 17));
+        products.put(products.size()+1, new Product(products.size()+1, "Tnuva 1L", categories.get(5), 1.2, 8, new HashMap<>(), 18));
+        products.put(products.size()+1, new Product(products.size()+1, "yoplait strawberry", categories.get(2), 0.5, 5.3, new HashMap<>(), 9));
+        products.put(products.size()+1, new Product(products.size()+1, "yoplait vanilla", categories.get(2), 0.5, 5.3, new HashMap<>(), 9));
 
     }
 

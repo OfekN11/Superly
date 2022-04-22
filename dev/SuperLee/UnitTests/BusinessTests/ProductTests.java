@@ -23,8 +23,8 @@ public class ProductTests {
         }
     }*/
     Category category0 = new Category("Milk", new HashSet<>(), new ArrayList<>(), null);
-    Product product0 = new Product(0, "Milk-Tnuva-1L", category0, 1, 4.5, new ArrayList<>());
-    Product product1 = new Product(1, "Milk-Tara-1L", category0, 1.0, 4, new ArrayList<>());
+    Product product0 = new Product(0, "Milk-Tnuva-1L", category0, 1, 4.5, new HashMap<>(), 18);
+    Product product1 = new Product(1, "Milk-Tara-1L", category0, 1.0, 4, new HashMap<>(), 25);
 
     @Test
     public void testAddItems() {

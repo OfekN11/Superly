@@ -200,9 +200,11 @@ public class Inventory {
         int productID = scanner.nextInt();
         System.out.println("How much of the product is expired?");
         int amount = scanner.nextInt();
+        System.out.println("Please enter your ID");
+        int employeeID = scanner.nextInt();
         System.out.println("Please add a description (not mandatory)");
         String description = scanner.nextLine();
-        Result<DefectiveItemReport> r = is.reportExpired(store, productID, amount, description);
+        Result<DefectiveItemReport> r = is.reportExpired(store, productID, amount, employeeID, description);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -327,9 +329,11 @@ public class Inventory {
         int productID = scanner.nextInt();
         System.out.println("How much of the product is damaged?");
         int amount = scanner.nextInt();
+        System.out.println("Please enter your ID");
+        int employeeID = scanner.nextInt();
         System.out.println("Please describe the damage");
         String description = scanner.nextLine();
-        Result<DefectiveItemReport> r = is.reportDamaged(store, productID, amount, description);
+        Result<DefectiveItemReport> r = is.reportDamaged(store, productID, amount, employeeID, description);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -668,9 +672,9 @@ public class Inventory {
     }
 
     private static void addProduct() {
-        System.out.println("Please insert product name, categoryID, weight, and price. Separated by commas, no spaces");
+        System.out.println("Please insert product name, categoryID, weight, price, and manufacturerID. Separated by commas, no spaces");
         String[] info = scanner.nextLine().split(",");
-        Result<Product> r = is.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]), Double.parseDouble(info[3]),new ArrayList<>());
+        Result<Product> r = is.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]), Double.parseDouble(info[3]),new HashMap<>(), Integer.parseInt(info[4]));
         if (r.isError())
             System.out.println(r.getError());
         else {

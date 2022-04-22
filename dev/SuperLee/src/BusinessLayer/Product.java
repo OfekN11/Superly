@@ -19,7 +19,8 @@ public class Product {
     private List<DefectiveItems> damagedItemReport;
     private List<DefectiveItems> expiredItemReport;
     private double weight;
-    private List<Supplier> suppliers;
+    private int manufacturerID;
+    private Map<Integer, Integer> supplierIdToProductIdOfTheSupplier;
     private double price;
     private List<SaleToCustomer> sales;
     private List<DiscountFromSupplier> discountFromSupplierList;
@@ -39,14 +40,15 @@ public class Product {
         this.category = category;
         category.addProduct(this);
     }
-    public Product(int id, String name, Category category, double weight, double price, List<Supplier> suppliers) {
+    public Product(int id, String name, Category category, double weight, double price, Map<Integer, Integer> suppliers, int manufacturerID) {
         this.id = id;
         this.name = name;
         this.category = category;
         category.addProduct(this);
         this.weight = weight;
         this.price = price;
-        this.suppliers = suppliers;
+        this.manufacturerID = manufacturerID;
+        this.supplierIdToProductIdOfTheSupplier = suppliers;
         inStore = new HashMap<Location, Integer>(); //needs to filled with all stores locations.
         inWarehouse = new HashMap<Location, Integer>(); //needs to filled with all warehouses locations.
         sales = new ArrayList<>();
@@ -136,13 +138,13 @@ public class Product {
         return l;
     }
 
-    public DefectiveItems reportDamaged(int storeID, int amount, String description) {
-        DefectiveItems dir = new DefectiveItems(Damaged, new Date(), storeID, id, amount, description);
+    public DefectiveItems reportDamaged(int storeID, int amount, int employeeID, String description) {
+        DefectiveItems dir = new DefectiveItems(Damaged, new Date(), storeID, id, amount, employeeID, description);
         damagedItemReport.add(dir);
         return dir;
     }
-    public DefectiveItems reportExpired(int storeID, int amount, String description) {
-        DefectiveItems eir = new DefectiveItems(Expired, new Date(), storeID, id, amount, description);
+    public DefectiveItems reportExpired(int storeID, int amount, int employeeID, String description) {
+        DefectiveItems eir = new DefectiveItems(Expired, new Date(), storeID, id, amount, employeeID, description);
         expiredItemReport.add(eir);
         return eir;
     }
