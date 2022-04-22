@@ -182,7 +182,7 @@ public class Inventory {
 
     private static void addProductToStore() {
         int store = getStoreID();
-        System.out.println("Which product would you like to add?");
+        System.out.println("Which product would you like to add? (insert ID)");
         int product = scanner.nextInt();
         System.out.println("What will be the product's shelves in the store?");
         System.out.println("please insert shelf numbers, separated by commas");
