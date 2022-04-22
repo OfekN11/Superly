@@ -62,9 +62,9 @@ public class InventoryController {
     }
 
     private Product getProduct(int productID) {
-        Product output = getProduct(productID);
+        Product output = products.get(productID);
         if (output==null)
-            throw new IllegalArgumentException("Product ID Invalid: "+productID);
+            throw new IllegalArgumentException("Product ID Invalid: " + productID);
         return output;
     }
 
@@ -113,7 +113,7 @@ public class InventoryController {
         Product product = getProduct(productID);
         product.moveItems(storeID, amount);
     }
-    public void addItems(int productID, int storeID, int amount) {
+    public void addItems(int storeID, int productID, int amount) {
         Product product = getProduct(productID);
         product.addItems(storeID, amount);
     }
