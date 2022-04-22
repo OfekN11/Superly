@@ -743,6 +743,11 @@ public class CLI {
 
             while(!correctInput){
                 bulkString = scan.nextLine();
+
+                if(bulkString.isEmpty()){
+                    break;
+                }
+
                 bulkArr = bulkString.replaceAll("\\s+","").split(",");
 
                 if(bulkArr.length % 2 != 0){
