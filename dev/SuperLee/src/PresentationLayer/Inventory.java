@@ -56,7 +56,8 @@ public class Inventory {
     }
 
     private static int getStoreID() {
-        System.out.println("Please insert store ID of store you are in. Current store IDs are:");
+        System.out.println("Please insert store ID of store you are interested in.");
+        System.out.println("Current store IDs are:");
         System.out.println(is.getStoreIDs().getValue());
         return scanner.nextInt();
     }
@@ -102,8 +103,6 @@ public class Inventory {
             buyItems();
         else if (command.equals("add items"))
             addItems();
-        else if (command.equals("remove items"))
-            addItems();
         else if (command.equals("report expired"))
             reportExpired();
         else if (command.equals("expired items"))
@@ -118,12 +117,115 @@ public class Inventory {
             addStore();
         else if (command.equals("remove store"))
             removeStore();
+        else if (command.equals("remove sale"))
+            removeSale();
+        else if (command.equals("add product to store"))
+            addProductToStore();
+        else if (command.equals("remove product from store"))
+            removeProductFromStore();
+        else if (command.equals("min stock report"))
+            getMinStockReport();
+        else if (command.equals("add supplier to product"))
+            addSupplierToProduct();
+        else if (command.equals("remove supplier from product"))
+            removeSupplierFromProduct();
         else if (command.equals("help"))
             help();
         else if (command.equals("load data"))
             System.out.println("Persistence Layer is not implemented yet");
         else
             System.out.println("Command not found. please use 'help' for info or 'q' to quit");
+    }
+
+    private static void removeSupplierFromProduct() {
+        System.out.println("Which product would you like to remove a supplier from? (insert ID)");
+        int productID = scanner.nextInt();
+        System.out.println("Which supplier would you like to remove? (insert ID)");
+        int supplierID = scanner.nextInt();
+        Result<Product> r = is.removeSupplierFromProduct(productID, supplierID);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("Supplier successfully removed");
+            System.out.println(r.getValue());
+        }
+    }
+
+    private static void addSupplierToProduct() {
+        System.out.println("Which product would you like to add a supplier to? (insert ID)");
+        int productID = scanner.nextInt();
+        System.out.println("Which supplier would you like to add? (insert ID)");
+        int supplierID = scanner.nextInt();
+        System.out.println("What is the supplier's ID for the product?");
+        int productIDWithSupplier = scanner.nextInt();
+        Result<Product> r = is.addSupplierToProduct(productID, supplierID, productIDWithSupplier);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("Supplier successfully added");
+            System.out.println(r.getValue());
+        }
+    }
+
+    private static void removeSale() {
+        System.out.println("Which sale would you like to remove? (insert ID)");
+        int saleID = scanner.nextInt();
+        Result r = is.removeSale(saleID);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("sale successfully removed");
+        }
+    }
+
+    private static void addProductToStore() {
+        int store = getStoreID();
+        System.out.println("Which product would you like to add?");
+        int product = scanner.nextInt();
+        System.out.println("What will be the product's shelves in the store?");
+        System.out.println("please insert shelf numbers, separated by commas");
+        System.out.println("For example: 2,4,1,11");
+        List<Integer> inStore = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("What will be the product's shelves in the warehouse?");
+        System.out.println("please insert shelf numbers, separated by commas");
+        System.out.println("For example: 2,4,1,11");
+        List<Integer> inWareHouse = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("What will be the min amount in the store?");
+        int min = scanner.nextInt();
+        System.out.println("What will be the max amount in the store?");
+        int max = scanner.nextInt();
+        Result<Product> r = is.addProductToStore(store, inStore, inWareHouse, product, min, max);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("Product added");
+            System.out.println(r.getValue());
+        }
+    }
+
+    private static void removeProductFromStore() {
+        int store = getStoreID();
+        System.out.println("What product would you like to remove?");
+        int product = scanner.nextInt();
+        Result<Product> r = is.removeProductFromStore(store, product);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("Product removed");
+            System.out.println(r.getValue());
+        }
+    }
+
+    private static void getMinStockReport() {
+        Result<Map<Integer, Product>> r = is.getMinStockReport();
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.printf("%-30.30s %-30.50s\n", "Store ID", "Product");
+            Map<Integer, Product> productMap = r.getValue();
+            for (Integer i : productMap.keySet())
+                System.out.printf("%-30.10s %-30.50s\n", i, productMap.get(i));
+        }
     }
 
     private static void changeProductCategory() {
@@ -814,9 +916,6 @@ public class Inventory {
     }
 
     private static void help() {
-        //add product to store
-        //remove sale
-        //stock min report
         //addSupplier
         //removeSupplier
         System.out.println("Welcome to help session");
@@ -842,7 +941,6 @@ public class Inventory {
         System.out.printf("%-30.30s %-30.50s\n", "return item", "return a previously purchased item to the store");
         System.out.printf("%-30.30s %-30.50s\n", "buy items", "buy items from a store");
         System.out.printf("%-30.30s %-30.50s\n", "add items", "add items to a store");//is this the same as create purchaseFromSupplier?
-        System.out.printf("%-30.30s %-30.50s\n", "remove items", "");
         System.out.printf("%-30.30s %-30.50s\n", "report expired", "report finding of expired items");
         System.out.printf("%-30.30s %-30.50s\n", "expired items", "print a report of expired items");
         System.out.printf("%-30.30s %-30.50s\n", "report damaged", "report finding of damaged items");
@@ -850,8 +948,15 @@ public class Inventory {
         System.out.printf("%-30.30s %-30.50s\n", "defective items", "print a report of defective (damaged and expired together) items");
         System.out.printf("%-30.30s %-30.50s\n", "add store", "add a new store to the system");
         System.out.printf("%-30.30s %-30.50s\n", "remove store", "remove store from the system");
+        System.out.printf("%-30.30s %-30.50s\n", "remove sale", "remove future or current sale from the system");
+        System.out.printf("%-30.30s %-30.50s\n", "add product to store", "add a product to specific store in system");
+        System.out.printf("%-30.30s %-30.50s\n", "remove product from store", "add a product to specific store in system");
+        System.out.printf("%-30.30s %-30.50s\n", "min stock report", "prints stock report of items under the min amount");
+        System.out.printf("%-30.30s %-30.50s\n", "add supplier to product", "adds a supplier as one of the product's suppliers");
+        System.out.printf("%-30.30s %-30.50s\n", "remove supplier from product", "removes a supplier from list of product's suppliers");
         System.out.printf("%-30.30s %-30.50s\n", "help", "prints this menu");
         System.out.printf("%-30.30s %-30.50s\n", "q", "quits program");
+
 //        System.out.println("load data", "Persistence Layer is not implemented yet");
     }
 }

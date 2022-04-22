@@ -206,10 +206,22 @@ public class Product {
     }
 
     public boolean isLow(int storeID) {
-        return inStore.get(storeID)+inWarehouse.get(storeID)<=minAmounts.get(storeID);
+        return inStore.get(storeID)+inWarehouse.get(storeID)<minAmounts.get(storeID);
     }
 
     public void removeSale(SaleToCustomer sale) {
         sales.remove(sale);
+    }
+
+    public void addSupplier(int supplierID, int productIDWithSupplier) {
+        if (supplierIdToProductIdOfTheSupplier.containsKey(supplierID))
+            throw new IllegalArgumentException("Supplier" + supplierID + " is already listed as a supplier");
+        supplierIdToProductIdOfTheSupplier.put(supplierID, productIDWithSupplier);
+    }
+
+    public void removeSupplier(int supplierID) {
+        if (!supplierIdToProductIdOfTheSupplier.containsKey(supplierID))
+            throw new IllegalArgumentException("Supplier" + supplierID + " is not registered as a supplier of " + id);
+        supplierIdToProductIdOfTheSupplier.remove(supplierID);
     }
 }

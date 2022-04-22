@@ -356,7 +356,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Map<Integer, Product>> getMinStockReport(int productID, int storeID, int amount){
+    public Result<Map<Integer, Product>> getMinStockReport(){
         try {
             Map<Integer, BusinessLayer.Product> minStock = controller.getMinStockReport();
             Map<Integer, Product> minStockReport = new HashMap<>();
@@ -657,6 +657,34 @@ public class InventoryService {
     public Result<Category> addNewCategory(String name, int parentCategoryID){
         try {
             return Result.makeOk(new Category(controller.addCategory(name, parentCategoryID)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Change Category Name
+     *
+     * @return Result detailing success of operation holding the renewed Product
+     */
+    public Result<Product> addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier){
+        try {
+            return Result.makeOk(new Product(controller.addSupplierToProduct(productID, supplierID, productIDWithSupplier)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Change Category Name
+     *
+     * @return Result detailing success of operation holding the renewed Product
+     */
+    public Result<Product> removeSupplierFromProduct(int productID, int supplierID){
+        try {
+            return Result.makeOk(new Product(controller.removeSupplierFromProduct(productID, supplierID)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
