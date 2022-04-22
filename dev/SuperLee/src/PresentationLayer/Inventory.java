@@ -28,7 +28,8 @@ public class Inventory {
         }
         boolean quit = false;
         System.out.println("System ready: At any point enter q to quit");
-        System.out.println(help());
+        System.out.println("Before you begin, here is the help menu with the possible commands: \n");
+        help();
         while (!quit) {
             String command  = scanner.nextLine();
             if (command.equals("q"))
@@ -801,9 +802,42 @@ public class Inventory {
         }
     }
 
-    private static String help() {
+    private static void help() {
+        //add product to store
+        //remove sale
         System.out.println("Welcome to help session");
+        System.out.println("Please notice that commands are case sensitive");
         System.out.println("Possible commands are:");
-        return "This will be the guide to what commands are available";
+        System.out.printf("%-30.30s %-30.50s\n","list products", "list of all the products in catalog");
+        System.out.printf("%-30.30s %-30.50s\n", "list categories", "list of all the different categories");
+        System.out.printf("%-30.30s %-30.50s\n", "add product", "add a new product");
+        System.out.printf("%-30.30s %-30.50s\n", "change product name", "change product name");
+        System.out.printf("%-30.30s %-30.50s\n", "change product price", "change product price");
+        System.out.printf("%-30.30s %-30.50s\n", "delete product", "delete product from catalog");
+        System.out.printf("%-30.30s %-30.50s\n", "add category", "create a new category");
+        System.out.printf("%-30.30s %-30.50s\n", "change category parent", "change a category's \"parent\" category");
+        System.out.printf("%-30.30s %-30.50s\n", "change category name", "change a category's name");
+        System.out.printf("%-30.30s %-30.50s\n", "move product", "move a product from the warehouse to the store");
+        System.out.printf("%-30.30s %-30.50s\n", "change product category", "move a product to a new category");
+        System.out.printf("%-30.30s %-30.50s\n", "sale history by product", "see history of sales on a specific product");
+        System.out.printf("%-30.30s %-30.50s\n", "sale history by category", "see history of sales on a specific category");
+        System.out.printf("%-30.30s %-30.50s\n", "purchase from supplier history", "see history of all purchases from suppliers");
+        System.out.printf("%-30.30s %-30.50s\n", "add sale", "create a new sale");
+        System.out.printf("%-30.30s %-30.50s\n", "add discount from supplier", "input a purchase of stock from supplier");
+        System.out.printf("%-30.30s %-30.50s\n", "list products in category", "list all products in specified category/ies");
+        System.out.printf("%-30.30s %-30.50s\n", "return item", "return a previously purchased item to the store");
+        System.out.printf("%-30.30s %-30.50s\n", "buy items", "buy items from a store");
+        System.out.printf("%-30.30s %-30.50s\n", "add items", "add items to a store");//is this the same as create purchaseFromSupplier?
+        System.out.printf("%-30.30s %-30.50s\n", "remove items", "");
+        System.out.printf("%-30.30s %-30.50s\n", "report expired", "report finding of expired items");
+        System.out.printf("%-30.30s %-30.50s\n", "expired items", "print a report of expired items");
+        System.out.printf("%-30.30s %-30.50s\n", "report damaged", "report finding of damaged items");
+        System.out.printf("%-30.30s %-30.50s\n", "damaged items", "print a report of damaged items");
+        System.out.printf("%-30.30s %-30.50s\n", "defective items", "print a report of defective (damaged and expired together) items");
+        System.out.printf("%-30.30s %-30.50s\n", "add store", "add a new store to the system");
+        System.out.printf("%-30.30s %-30.50s\n", "remove store", "remove store from the system");
+        System.out.printf("%-30.30s %-30.50s\n", "help", "prints this menu");
+        System.out.printf("%-30.30s %-30.50s\n", "q", "quits program");
+//        System.out.println("load data", "Persistence Layer is not implemented yet");
     }
 }
