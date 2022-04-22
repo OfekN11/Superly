@@ -72,7 +72,7 @@ public class ShiftController {
     public void deleteData() {
     }
 
-    public void registerWorkday(Date workday) {
+    public void registerWorkday(Date workday) throws Exception {
         shifts.put(workday, new HashMap<>());
         for (ShiftTypes type: ShiftTypes.values()){
             switch (type){
