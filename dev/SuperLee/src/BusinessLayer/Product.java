@@ -1,6 +1,6 @@
 package BusinessLayer;
 
-import BusinessLayer.DiscountsAndSales.DiscountFromSupplier;
+import BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 
 import java.util.*;
@@ -14,8 +14,9 @@ public class Product {
     private Category category;
     private Map<Integer, Integer> minAmounts; //<storeID, minAmount in total>
     private Map<Integer, Integer> maxAmounts; //<storeID, maxAmount in total>
-    private Map<Location, Integer> inStore; //current amount in store.
-    private Map<Location, Integer> inWarehouse; //current amount in warehouse.
+    private Map<Integer, Integer> inStore; //current amount in store.
+    private Map<Integer, Integer> inWarehouse; //current amount in warehouse.
+    private List<Location> locations;
     private List<DefectiveItems> damagedItemReport;
     private List<DefectiveItems> expiredItemReport;
     private double weight;
@@ -23,12 +24,9 @@ public class Product {
     private Map<Integer, Integer> supplierIdToProductIdOfTheSupplier;
     private double price;
     private List<SaleToCustomer> sales;
-    private List<DiscountFromSupplier> discountFromSupplierList;
-
-    public Map<Location, Integer> getInStore() { return inStore; }
-    public Map<Location, Integer> getInWarehouse() { return inWarehouse; }
-    public Integer getStoreAmount(int storeID) { return inStore.get(getStoreLocation(storeID)); }
-    public Integer getWarehouseAmount(int storeID) { return inWarehouse.get(getWarehouseLocation(storeID)); }
+    private List<PurchaseFromSupplier> purchaseFromSupplierList;
+    public Map<Integer, Integer> getInStore() { return inStore; }
+    public Map<Integer, Integer> getInWarehouse() { return inWarehouse; }
     public int getId() { return id; }
     public String getName() { return name; }
     public double getOriginalPrice() { return price; }
@@ -49,14 +47,15 @@ public class Product {
         this.price = price;
         this.manufacturerID = manufacturerID;
         this.supplierIdToProductIdOfTheSupplier = suppliers;
-        inStore = new HashMap<Location, Integer>(); //needs to filled with all stores locations.
-        inWarehouse = new HashMap<Location, Integer>(); //needs to filled with all warehouses locations.
+        inStore = new HashMap<Integer, Integer>(); //needs to filled with all stores locations.
+        inWarehouse = new HashMap<Integer, Integer>(); //needs to filled with all warehouses locations.
         sales = new ArrayList<>();
         minAmounts = new HashMap<>();
         maxAmounts = new HashMap<>();
         damagedItemReport = new ArrayList<>();
         expiredItemReport = new ArrayList<>();
-        discountFromSupplierList = new ArrayList<>();
+        purchaseFromSupplierList = new ArrayList<>();
+        locations = new ArrayList<>();
     }
 
 
@@ -75,28 +74,24 @@ public class Product {
     public void addSale(SaleToCustomer sale) {
         sales.add(sale);
     }
-    public void removeItems(int storeID, int amount) { //bought or thrown
-        Location l = getStoreLocation(storeID);
-        if (inStore.get(l)-amount<0)
-            throw new IllegalArgumentException("Can not buy more items than in the store");
-        inStore.put(l, inStore.get(l)-amount);
+
+    public void removeItems(int storeID, int amount) { //bought or thrown=
+        if (inStore.get(storeID)-amount<0)
+            throw new IllegalArgumentException("Can not buy or remove more items than in the store - please check amount");
+        inStore.put(storeID, inStore.get(storeID)-amount);
     }
     public void moveItems(int storeID, int amount) { //from warehouse to store
-        Location from = getWarehouseLocation(storeID);
-        Location to = getStoreLocation(storeID);
-        if (inWarehouse.get(from)-amount<0)
+        if (inWarehouse.get(storeID)-amount<0)
             throw new IllegalArgumentException("Can not move more items than in the warehouse");
-        inWarehouse.put(from, inWarehouse.get(from)-amount);
-        inStore.put(to, inStore.get(to)+amount);
+        inWarehouse.put(storeID, inWarehouse.get(storeID)-amount);
+        inStore.put(storeID, inStore.get(storeID)+amount);
     }
     public void addItems(int storeID, int amount) { //from supplier to warehouse
-        Location l = getWarehouseLocation(storeID);
-        inWarehouse.put(l, inWarehouse.get(l)+amount);
+        inWarehouse.put(storeID, inWarehouse.get(storeID)+amount);
     }
 
     public double returnItems(int storeID, int amount, Date dateBought) { //from customer to store
-        Location l = getStoreLocation(storeID);
-        inStore.put(l, inStore.get(l)+amount);
+        inStore.put(storeID, inStore.get(storeID)+amount);
         return amount*getPriceOnDate(dateBought);
     }
 
@@ -119,31 +114,14 @@ public class Product {
         return getOriginalPrice()*(100-bestSale.getPercent())/100; //what if price in general changed? do we need a log of the prices?
     }
 
-    public Location getStoreLocation(int storeId) { //public for tests
-        Location l = null;
-        for (Map.Entry<Location, Integer> entry : inStore.entrySet())
-            if (entry.getKey().getStoreID()==storeId)
-                l = entry.getKey();
-        if (l==null)
-            throw new IllegalArgumentException("Product: getStoreLocation: location not found");
-        return l;
-    }
-    public Location getWarehouseLocation(int storeId) { //public for tests
-        Location l = null;
-        for (Map.Entry<Location, Integer> entry : inWarehouse.entrySet())
-            if (entry.getKey().getStoreID()==storeId)
-                l = entry.getKey();
-        if (l==null)
-            throw new IllegalArgumentException("Product: getWarehouseLocation: location not found");
-        return l;
-    }
-
     public DefectiveItems reportDamaged(int storeID, int amount, int employeeID, String description) {
+        removeItems(storeID, amount);
         DefectiveItems dir = new DefectiveItems(Damaged, new Date(), storeID, id, amount, employeeID, description);
         damagedItemReport.add(dir);
         return dir;
     }
     public DefectiveItems reportExpired(int storeID, int amount, int employeeID, String description) {
+        removeItems(storeID, amount);
         DefectiveItems eir = new DefectiveItems(Expired, new Date(), storeID, id, amount, employeeID, description);
         expiredItemReport.add(eir);
         return eir;
@@ -184,22 +162,28 @@ public class Product {
         return eirList;
     }
 
-    public void addLocation(int storeID, int shelfInStore, int shelfInWarehouse, int minAmount, int maxAmount) {
-        Location storeLocation = new Location(storeID, false, shelfInStore);
-        Location warehouseLocation = new Location(storeID, true, shelfInWarehouse);
+    public void addLocation(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int minAmount, int maxAmount) {
+        Location storeLocation = new Location(storeID, false, shelvesInStore);
+        Location warehouseLocation = new Location(storeID, true, shelvesInWarehouse);
         minAmounts.put(storeID, minAmount);
         maxAmounts.put(storeID, maxAmount);
-        inStore.put(storeLocation, 0);
-        inWarehouse.put(warehouseLocation, 0);
+        inStore.put(storeID, 0);
+        inWarehouse.put(storeID, 0);
+        locations.add(storeLocation);
+        locations.add(warehouseLocation);
     }
 
     public void removeLocation(int storeID) {
-        Location storeLocation = getStoreLocation(storeID);
-        Location warehouseLocation = getWarehouseLocation(storeID);
         minAmounts.remove(storeID);
         maxAmounts.remove(storeID);
-        inStore.remove(storeLocation);
-        inWarehouse.remove(warehouseLocation);
+        inStore.remove(storeID);
+        inWarehouse.remove(storeID);
+        for (int i=0; i<locations.size(); i++) {
+            if (locations.get(i).getStoreID()==storeID) {
+                locations.remove(i);
+                i--;
+            }
+        }
     }
 
     public List<SaleToCustomer> getSaleHistory() {
@@ -211,11 +195,18 @@ public class Product {
         return result;
     }
 
-    public List<DiscountFromSupplier> getDiscountFromSupplierHistory() {
-        return discountFromSupplierList;
+    public List<PurchaseFromSupplier> getDiscountFromSupplierHistory() {
+        return purchaseFromSupplierList;
     }
-    public DiscountFromSupplier addDiscountFromSupplier(Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
-        return new DiscountFromSupplier(discountFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
+    public PurchaseFromSupplier addPurchaseFromSupplier(Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
+        return new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
     }
 
+    public boolean isLow(int storeID) {
+        return inStore.get(storeID)+inWarehouse.get(storeID)<=minAmounts.get(storeID);
+    }
+
+    public void removeSale(SaleToCustomer sale) {
+        sales.remove(sale);
+    }
 }

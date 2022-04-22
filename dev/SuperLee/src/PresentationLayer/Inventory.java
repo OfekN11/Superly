@@ -186,7 +186,7 @@ public class Inventory {
             return;
         System.out.println("Please insert a general description of the discount");
         String description = scanner.nextLine();
-        Result<DiscountReport> r = is.addDiscountFromSupplier(productID, date, supplier, description, amount, finalPrice, originalPrice);
+        Result<DiscountReport> r = is.addPurchaseFromSupplier(productID, date, supplier, description, amount, finalPrice, originalPrice);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -749,8 +749,10 @@ public class Inventory {
 
     private static void listProductsByCategory() {
         System.out.println("Which category would you like to examine?");
-        int categoryID = scanner.nextInt();
-        Result<List<Product>> r = is.getProductsFromCategory(categoryID);
+        System.out.println("Please insert category IDs, separated by ','");
+        System.out.println("For example: 12,3,4,1");
+        List<Integer> categories = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        Result<List<Product>> r = is.getProductsFromCategory(categories);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -809,6 +811,9 @@ public class Inventory {
     private static void help() {
         //add product to store
         //remove sale
+        //stock min report
+        //addSupplier
+        //removeSupplier
         System.out.println("Welcome to help session");
         System.out.println("Please notice that commands are case sensitive");
         System.out.println("Possible commands are:");

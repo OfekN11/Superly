@@ -1,6 +1,6 @@
 package ServiceLayer.Objects;
 
-import BusinessLayer.DiscountsAndSales.DiscountFromSupplier;
+import BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ public class DiscountReport {
     private final int supplierID;
     private final String description;
     private final int amountBought;
-    public DiscountReport(DiscountFromSupplier d) {
+    public DiscountReport(PurchaseFromSupplier d) {
         this.originalPrice = d.getOriginalPrice();
         this.finalPrice = d.getPricePaid();
         this.date = d.getDate();
