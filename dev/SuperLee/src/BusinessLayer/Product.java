@@ -60,7 +60,10 @@ public class Product {
 
 
     public double getCurrentPrice() {
-        return price*(100-getCurrentSale().getPercent())/100;
+        SaleToCustomer BestCurrentSale = getCurrentSale();
+        if (BestCurrentSale==null)
+            return price;
+        return price*(100-BestCurrentSale.getPercent())/100;
     }
 
     private SaleToCustomer getCurrentSale() {

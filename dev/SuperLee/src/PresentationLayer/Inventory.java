@@ -623,7 +623,7 @@ public class Inventory {
     }
 
     private static void changeProductName() {
-        System.out.println("Which product would you like to edit?");
+        System.out.println("Which product would you like to edit? (insert ID)");
         int id = scanner.nextInt();
         System.out.println("Please insert new product name");
         String name = scanner.nextLine();
@@ -673,9 +673,14 @@ public class Inventory {
     }
 
     private static void addProduct() {
-        System.out.println("Please insert product name, categoryID, weight, price, and manufacturerID. Separated by commas, no spaces");
+        System.out.println("Please insert product name, categoryID, weight, price, List of <supplierID><space><productID> with spaces between entries, and manufacturerID. Separated by commas, no spaces");
         String[] info = scanner.nextLine().split(",");
-        Result<Product> r = is.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]), Double.parseDouble(info[3]),new HashMap<>(), Integer.parseInt(info[4]));
+        Map<Integer, Integer> suppliersMap = new HashMap<>();
+        String[] suppliersStringArray = info[4].split(" ");
+        for (int i=0; i< suppliersStringArray.length; i=i+2) {
+            suppliersMap.put(Integer.parseInt(suppliersStringArray[i]), Integer.parseInt(suppliersStringArray[i + 1]));
+        }
+        Result<Product> r = is.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]), Double.parseDouble(info[3]), suppliersMap, Integer.parseInt(info[5]));
         if (r.isError())
             System.out.println(r.getError());
         else {
