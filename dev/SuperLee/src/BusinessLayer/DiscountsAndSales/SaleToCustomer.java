@@ -1,8 +1,12 @@
 package BusinessLayer.DiscountsAndSales;
 
+import BusinessLayer.Category;
+import BusinessLayer.Product;
+
 import java.util.*;
 
 public class SaleToCustomer {
+
     private int id;
     private Date startDate;
     private Date endDate;
@@ -29,6 +33,17 @@ public class SaleToCustomer {
         this.endDate = endDate;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public List<Integer> getCategories() {
+        return categories;
+    }
+
+    public List<Integer> getProducts() {
+        return products;
+    }
     public Date getStartDate() {
         return startDate;
     }

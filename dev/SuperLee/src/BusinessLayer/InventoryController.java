@@ -1,8 +1,7 @@
 package BusinessLayer;
 
-import BusinessLayer.DiscountsAndSales.DiscountFromSupplier;
+import BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
-import ServiceLayer.Objects.DefectiveItemReport;
 
 import java.util.*;
 
@@ -13,11 +12,13 @@ public class InventoryController {
     private Map<Integer, Category> categories;
     private List<SaleToCustomer> sales;
     private Map<Integer, Product> products;
+    private int saleID;
     public InventoryController() {
         storeIds = new ArrayList<>();
         categories = new HashMap<>();
         sales = new ArrayList<>();
         products = new HashMap<>();
+        saleID=1;
     }
 
     public void loadTestData() {
@@ -31,7 +32,7 @@ public class InventoryController {
     }
 
     public SaleToCustomer addSale(List<Integer> categoriesList, List<Integer> productIDs, int percent, Date start, Date end) {
-        SaleToCustomer sale = new SaleToCustomer(sales.size(), start, end, percent, categoriesList, productIDs);
+        SaleToCustomer sale = new SaleToCustomer(saleID++, start, end, percent, categoriesList, productIDs);
         sales.add(sale);
         Product product = null;
         for (Integer pID: productIDs) {
@@ -46,19 +47,57 @@ public class InventoryController {
                 category.addSale(sale);        }
         return sale;
     }
-    /*public SaleToCustomer removeSale(int saleID) {
-        SaleToCustomer sale = findSale(saleID);
-        if (sale.isUpcoming())
-            //remove sale - from sales list, and from all products and categories it's applied to.
-        else
 
-    }*/
-    public List<DiscountFromSupplier> getDiscountFromSupplierHistory(int productID) {
+    private void copySale(SaleToCustomer sale) {
+        SaleToCustomer newSale = new SaleToCustomer(saleID++, sale.getStartDate(), new Date(), sale.getPercent(), sale.getCategories(), sale.getProducts());
+        sales.add(newSale);
+        Product product = null;
+        for (Integer pID: newSale.getProducts()) {
+            //should we throw error if only one of them is illegal
+            product = getProduct(pID);
+            product.addSale(newSale);
+        }
+        Category category = null;
+        for (Integer cID: newSale.getCategories()) {
+            category = categories.get(cID);
+            if (category!=null)
+                category.addSale(newSale);        }
+    }
+    private void removeSaleFromProductsAndCategories(SaleToCustomer sale) {
+        Product product = null;
+        for (Integer pID: sale.getProducts()) {
+            product = getProduct(pID);
+            product.removeSale(sale);
+        }
+        Category category = null;
+        for (Integer cID: sale.getCategories()) {
+            category = categories.get(cID);
+            if (category!=null)
+                category.removeSale(sale);
+        }
+    }
+
+    public void removeSale(int saleID) {
+        for (SaleToCustomer sale : sales) {
+            if (sale.getId()==saleID) {
+                if (sale.isActive()) {
+                    copySale(sale);
+                    removeSaleFromProductsAndCategories(sale);
+                }
+                else if (sale.isUpcoming()) {
+                    sales.remove(sale);
+                    removeSaleFromProductsAndCategories(sale);
+                }
+            }
+        }
+    }
+
+    public List<PurchaseFromSupplier> getDiscountFromSupplierHistory(int productID) {
         return getProduct(productID).getDiscountFromSupplierHistory();
     }
 
-    public DiscountFromSupplier addDiscountFromSupplier(int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
-        return  getProduct(productID).addDiscountFromSupplier(date, supplierID, description, amountBought, pricePaid, originalPrice);
+    public PurchaseFromSupplier addPurchaseFromSupplier(int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
+        return  getProduct(productID).addPurchaseFromSupplier(date, supplierID, description, amountBought, pricePaid, originalPrice);
     }
 
     private Product getProduct(int productID) {
@@ -105,8 +144,11 @@ public class InventoryController {
         return categories.values();
     }
 
-    public List<Product> getProductsFromCategory(int categoryID) {
-        return categories.get(categoryID).getProducts();
+    public List<Product> getProductsFromCategory(List<Integer> categoryIDs) {
+        List<Product> products = new ArrayList<>();
+        for (int i : categoryIDs)
+            products.addAll(categories.get(i).getProducts());
+        return products;
     }
 
     public void moveItems(int productID, int storeID, int amount) {
@@ -137,14 +179,16 @@ public class InventoryController {
         storeIds.remove(storeIds.indexOf(storeID));
     }
 
-    public void addProductToStore(int storeID, int shelfInStore, int shelfInWarehouse, int productID, int minAmount, int maxAmount) { //affect 4 maps in product.
+    public Product addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int maxAmount) { //affect 4 maps in product.
         Product product = getProduct(productID);
-        product.addLocation(storeID, shelfInStore, shelfInWarehouse, minAmount, maxAmount);
+        product.addLocation(storeID, shelvesInStore, shelvesInWarehouse, minAmount, maxAmount);
+        return product;
     }
 
-    public void removeProductFromStore(int storeID, int productID) {
+    public Product removeProductFromStore(int storeID, int productID) {
         Product product = getProduct(productID);
         product.removeLocation(storeID);
+        return product;
     }
     
     public void loadData() throws NoSuchMethodException {
@@ -166,12 +210,10 @@ public class InventoryController {
 
     public DefectiveItems reportDamaged(int storeID, int productID, int amount, int employeeID, String description) {
         Product product = getProduct(productID);
-        product.removeItems(storeID, amount);
         return product.reportDamaged(storeID, amount, employeeID, description);
     }
     public DefectiveItems reportExpired(int storeID, int productID, int amount, int employeeID, String description) {
         Product product = getProduct(productID);
-        product.removeItems(storeID, amount);
         return product.reportExpired(storeID, amount, employeeID, description);
     }
 
@@ -235,6 +277,7 @@ public class InventoryController {
         product.removeItems(storeID, amount);
         return price;
     }
+
     private void addCategoriesForTests () {
         Category cSmall1 = new Category("Small", new HashSet<>(), new ArrayList<>(), null);
         categories.put(categories.size() + 1, cSmall1);
@@ -345,5 +388,28 @@ public class InventoryController {
             categories.put(id, new Category(name, new HashSet<>(), new ArrayList<>(), categories.get(parentCategoryID)));
         }
         return categories.get(id);
+    }
+
+    public Map<Integer, Product> getMinStockReport() {
+        Map<Integer, Product> lowOnStock = new HashMap<>();
+        for (Product p : products.values()) {
+            for (int i : storeIds) {
+                if (p.isLow(i))
+                    lowOnStock.put(i, p);
+            }
+        }
+        return lowOnStock;
+    }
+
+    public Product addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier) {
+        Product product = getProduct(productID);
+        product.addSupplier(supplierID, productIDWithSupplier);
+        return product;
+    }
+
+    public Product removeSupplierFromProduct(int productID, int supplierID) {
+        Product product = getProduct(productID);
+        product.removeSupplier(supplierID);
+        return product;
     }
 }

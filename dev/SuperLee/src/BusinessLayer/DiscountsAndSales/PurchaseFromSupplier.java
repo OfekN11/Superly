@@ -6,7 +6,7 @@ import jdk.jshell.spi.ExecutionControl;
 import java.util.Date;
 import java.util.Map;
 
-public class DiscountFromSupplier {
+public class PurchaseFromSupplier {
     private int id;
     private Date date;
     private int supplierID;
@@ -37,7 +37,7 @@ public class DiscountFromSupplier {
     public int getOriginalPrice() {
         return originalPrice;
     }
-    public DiscountFromSupplier(int id, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
+    public PurchaseFromSupplier(int id, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
         this.id = id;
         this.date = date;
         this.supplierID = supplierID;

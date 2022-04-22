@@ -124,4 +124,8 @@ public class Category {
         }
         return dirList;
     }
+
+    public void removeSale(SaleToCustomer sale) {
+        sales.remove(sale);
+    }
 }

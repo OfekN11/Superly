@@ -2,7 +2,7 @@ package ServiceLayer;
 
 
 import BusinessLayer.DefectiveItems;
-import BusinessLayer.DiscountsAndSales.DiscountFromSupplier;
+import BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
 import BusinessLayer.InventoryController;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 import ServiceLayer.Objects.*;
@@ -112,13 +112,58 @@ public class InventoryService {
     }
 
     /**
+     * add sale on specified categories and/or items
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<Object> removeSale(int saleID){
+        try {
+            controller.removeSale(saleID);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
+    }
+
+    /**
      * add Discount from supplier on product
      *
      * @return Result detailing success of operation
      */
-    public Result<DiscountReport> addDiscountFromSupplier(int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice){
+    public Result<Product> addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int maxAmount){
         try {
-            DiscountFromSupplier dr = controller.addDiscountFromSupplier(productID, date, supplierID, description, amountBought, pricePaid, originalPrice);
+            BusinessLayer.Product p = controller.addProductToStore(storeID, shelvesInStore, shelvesInWarehouse, productID, minAmount, maxAmount);
+            return Result.makeOk(new Product(p));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * add Discount from supplier on product
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<Product> removeProductFromStore(int storeID, int productID){
+        try {
+            BusinessLayer.Product p = controller.removeProductFromStore(storeID, productID);
+            return Result.makeOk(new Product(p));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * add Discount from supplier on product
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<DiscountReport> addPurchaseFromSupplier(int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice){
+        try {
+            PurchaseFromSupplier dr = controller.addPurchaseFromSupplier(productID, date, supplierID, description, amountBought, pricePaid, originalPrice);
             return Result.makeOk(new DiscountReport(dr));
         }
         catch (Exception e){
@@ -133,9 +178,9 @@ public class InventoryService {
      */
     public Result<List<DiscountReport>> getDiscountFromSupplierHistory(int productId){
         try {
-            List<DiscountFromSupplier> discountFromSupplierList = controller.getDiscountFromSupplierHistory(productId);
+            List<PurchaseFromSupplier> purchaseFromSupplierList = controller.getDiscountFromSupplierHistory(productId);
             List<DiscountReport> discountReports = new ArrayList<>();
-            for (DiscountFromSupplier d : discountFromSupplierList)
+            for (PurchaseFromSupplier d : purchaseFromSupplierList)
                 discountReports.add(new DiscountReport(d));
             return Result.makeOk(discountReports);
         }
@@ -259,9 +304,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<List<Product>> getProductsFromCategory(int categoryID){
+    public Result<List<Product>> getProductsFromCategory(List<Integer> categoryIDs){
         try {
-            Collection<BusinessLayer.Product> products = controller.getProductsFromCategory(categoryID);
+            Collection<BusinessLayer.Product> products = controller.getProductsFromCategory(categoryIDs);
             List<Product> productList = new ArrayList<>();
             for (BusinessLayer.Product p : products) {
                 productList.add(new Product(p));
@@ -300,6 +345,25 @@ public class InventoryService {
     public Result<Double> buyItems(int productID, int storeID, int amount){
         try {
             return Result.makeOk(controller.buyItems(productID, storeID, amount));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Remove damage or expired items from the store
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<Map<Integer, Product>> getMinStockReport(){
+        try {
+            Map<Integer, BusinessLayer.Product> minStock = controller.getMinStockReport();
+            Map<Integer, Product> minStockReport = new HashMap<>();
+            for (int i : minStock.keySet())
+                minStockReport.put(i, new Product(minStock.get(i)));
+            return Result.makeOk(minStockReport);
+
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -593,6 +657,34 @@ public class InventoryService {
     public Result<Category> addNewCategory(String name, int parentCategoryID){
         try {
             return Result.makeOk(new Category(controller.addCategory(name, parentCategoryID)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Change Category Name
+     *
+     * @return Result detailing success of operation holding the renewed Product
+     */
+    public Result<Product> addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier){
+        try {
+            return Result.makeOk(new Product(controller.addSupplierToProduct(productID, supplierID, productIDWithSupplier)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Change Category Name
+     *
+     * @return Result detailing success of operation holding the renewed Product
+     */
+    public Result<Product> removeSupplierFromProduct(int productID, int supplierID){
+        try {
+            return Result.makeOk(new Product(controller.removeSupplierFromProduct(productID, supplierID)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
