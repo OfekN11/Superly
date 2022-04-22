@@ -62,6 +62,15 @@ public class Inventory {
         return scanner.nextInt();
     }
 
+    private static void isUnderMin(int store, int product) {
+        Result<Boolean> r = is.isUnderMin(store, product);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("WARNING: product with ID " + product + " is in low stock in store " + store);
+        }
+    }
+
     private static void doCommand(String command) {
         if (command.equals("list products"))
             listProducts();
@@ -313,6 +322,7 @@ public class Inventory {
         else {
             DefectiveItemReport eir = r.getValue();
             System.out.println(eir);
+            isUnderMin(store, productID);
         }
     }
 
@@ -442,6 +452,7 @@ public class Inventory {
         else {
             DefectiveItemReport dir = r.getValue();
             System.out.println(dir);
+            isUnderMin(store, productID);
         }
     }
 
@@ -898,6 +909,7 @@ public class Inventory {
             System.out.println(r.getError());
         else {
             System.out.println("Purchase successful! Total price is " + r.getValue() + "NIS");
+            isUnderMin(storeID, productId);
         }
     }
 

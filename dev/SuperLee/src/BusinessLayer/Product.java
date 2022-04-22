@@ -224,4 +224,8 @@ public class Product {
             throw new IllegalArgumentException("Supplier" + supplierID + " is not registered as a supplier of " + id);
         supplierIdToProductIdOfTheSupplier.remove(supplierID);
     }
+
+    public boolean isUnderMin(int store) {
+        return (inStore.get(store)+inWarehouse.get(store)<minAmounts.get(store));
+    }
 }

@@ -279,6 +279,7 @@ public class InventoryService {
             return Result.makeError(e.getMessage());
         }
     }
+
     /**
      * Get list of all products in catalog
      *
@@ -296,7 +297,6 @@ public class InventoryService {
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-
     }
 
     /**
@@ -364,6 +364,20 @@ public class InventoryService {
                 minStockReport.put(i, new Product(minStock.get(i)));
             return Result.makeOk(minStockReport);
 
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Remove damage or expired items from the store
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<Boolean> isUnderMin(int store, int product){
+        try {
+            return Result.makeOk(controller.isUnderMin(store, product));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

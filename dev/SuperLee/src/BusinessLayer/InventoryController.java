@@ -412,4 +412,8 @@ public class InventoryController {
         product.removeSupplier(supplierID);
         return product;
     }
+
+    public boolean isUnderMin(int store, int product) {
+        return getProduct(product).isUnderMin(store);
+    }
 }

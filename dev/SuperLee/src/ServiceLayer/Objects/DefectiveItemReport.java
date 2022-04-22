@@ -8,6 +8,7 @@ public class DefectiveItemReport {
     private final int productID;
     private final int storeID;
     private final int amount;
+    private final int employeeID;
     private final String description;
     private final Date date;
     private final Defect defect;
@@ -15,6 +16,7 @@ public class DefectiveItemReport {
         this.productID=report.getProductID();
         this.storeID=report.getStoreID();
         this.amount=report.getAmount();
+        this.employeeID = report.getEmployeeID();
         this.description=report.getDescription();
         this.date=report.getDate();
         this.defect=report.getDefect();
@@ -26,6 +28,7 @@ public class DefectiveItemReport {
                 "productID=" + productID +
                 ", storeID=" + storeID +
                 ", amount=" + amount +
+                ", employeeID=" + employeeID +
                 ", description='" + description + '\'' +
                 ", date=" + date +
                 ", defect=" + defect +

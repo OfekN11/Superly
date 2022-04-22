@@ -11,6 +11,7 @@ public class DefectiveItems {
     private int storeID;
     private int productID;
     private int amount;
+    private int employeeID;
     private String description;
     private Defect defect;
 
@@ -19,6 +20,7 @@ public class DefectiveItems {
         this.storeID = storeID;
         this.productID = productID;
         this.amount = amount;
+        this.employeeID = employeeID;
         this.description = description;
         this.defect = defect;
     }
@@ -46,6 +48,11 @@ public class DefectiveItems {
     public int getStoreID() {
         return storeID;
     }
+
+    public int getEmployeeID() {
+        return employeeID;
+    }
+
 
     public boolean inDates(Date startDate, Date endDate) {
         Date today = new Date();
