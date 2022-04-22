@@ -4,6 +4,8 @@ import BusinessLayer.Category;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 import BusinessLayer.Location;
 import BusinessLayer.Product;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -25,14 +27,16 @@ public class ProductTests {
     Category category0 = new Category("Milk", new HashSet<>(), new ArrayList<>(), null);
     Product product0 = new Product(0, "Milk-Tnuva-1L", category0, 1, 4.5, new HashMap<>(), 18);
     Product product1 = new Product(1, "Milk-Tara-1L", category0, 1.0, 4, new HashMap<>(), 25);
-
+    @BeforeEach
+    void addLocations() {
+        product0.addLocation(0, 0, 0, 80, 300);
+        product0.addLocation(1, 0, 0, 65, 250);
+        product1.addLocation(0, 1, 1, 40, 150);
+    }
     @Test
     public void testAddItems() {
         try
         {
-            product0.addLocation(0, 0, 0, 80, 300);
-            product0.addLocation(1, 0, 0, 65, 250);
-            product1.addLocation(0, 1, 1, 40, 150);
             Assertions.assertEquals(0, product0.getStoreAmount(0));
             Assertions.assertEquals(0, product0.getWarehouseAmount(0));
             Assertions.assertEquals(0, product0.getStoreAmount(1));
@@ -65,9 +69,6 @@ public class ProductTests {
     public void testMoveItems() {
         try
         {
-            product0.addLocation(0, 0, 0, 80, 300);
-            product0.addLocation(1, 0, 0, 65, 250);
-            product1.addLocation(0, 1, 1, 40, 150);
             Assertions.assertEquals(0, product0.getStoreAmount(0));
             Assertions.assertEquals(0, product0.getWarehouseAmount(0));
             Assertions.assertEquals(0, product0.getStoreAmount(1));
@@ -104,9 +105,6 @@ public class ProductTests {
     public void testRemoveItems() {
         try
         {
-            product0.addLocation(0, 0, 0, 80, 300);
-            product0.addLocation(1, 0, 0, 65, 250);
-            product1.addLocation(0, 1, 1, 40, 150);
             Assertions.assertEquals(0, product0.getStoreAmount(0));
             Assertions.assertEquals(0, product0.getWarehouseAmount(0));
             Assertions.assertEquals(0, product0.getStoreAmount(1));
@@ -183,9 +181,6 @@ public class ProductTests {
             beforeSixDays.setSeconds(0);
             beforeSixDays.setHours(-24*6);
 
-            product0.addLocation(0, 0, 0, 80, 300);
-            product0.addLocation(1, 0, 0, 65, 250);
-            product1.addLocation(0, 1, 1, 40, 150);
             SaleToCustomer sale0 = new SaleToCustomer(0, beforeFourDays, beforeTwoDays, 30, new LinkedList<>(), new ArrayList<>());
             product0.addSale(sale0);
             List<Integer> categories = new ArrayList<>();
