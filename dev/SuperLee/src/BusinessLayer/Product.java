@@ -5,8 +5,8 @@ import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 
 import java.util.*;
 
-import static BusinessLayer.DefectiveItems.Defect.Damaged;
-import static BusinessLayer.DefectiveItems.Defect.Expired;
+import static Globals.Defect.Damaged;
+import static Globals.Defect.Expired;
 
 public class Product {
     private int id;

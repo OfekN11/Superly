@@ -1,6 +1,7 @@
 package ServiceLayer.Objects;
 
-import static BusinessLayer.DefectiveItems.Defect;
+import Globals.Defect;
+
 import java.util.Date;
 
 public class DefectiveItemReport {

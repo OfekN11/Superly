@@ -1,5 +1,7 @@
 package BusinessLayer;
 
+import Globals.Defect;
+
 import java.util.Calendar;
 
 import java.util.Date;
@@ -11,8 +13,6 @@ public class DefectiveItems {
     private int amount;
     private String description;
     private Defect defect;
-
-    public enum Defect {Expired, Damaged};
 
     public DefectiveItems(Defect defect ,Date date, int storeID, int productID, int amount, String description) {
         this.date = date;
