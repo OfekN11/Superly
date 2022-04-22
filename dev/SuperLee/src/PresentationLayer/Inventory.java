@@ -30,7 +30,9 @@ public class Inventory {
         System.out.println("System ready: At any point enter q to quit");
         System.out.println("Before you begin, here is the help menu with the possible commands: \n");
         help();
+        System.out.println();
         while (!quit) {
+            System.out.print("Enter command: ");
             String command  = scanner.nextLine();
             if (command.equals("q"))
                 break;
@@ -598,8 +600,9 @@ public class Inventory {
     }
 
     private static void deleteProduct() {
-        System.out.println("Which product would you like remove?");
+        System.out.println("Which product would you like remove? (insert ID)");
         int id = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result r = is.deleteProduct(id);
         if (r.isError())
             System.out.println(r.getError());
@@ -609,10 +612,12 @@ public class Inventory {
     }
 
     private static void changeProductPrice() {
-        System.out.println("Which product would you like to edit?");
+        System.out.println("Which product would you like to edit? (insert ID)");
         int id = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert new product price");
         double price = scanner.nextDouble();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<Product> r = is.editProductPrice(id, price);
         if (r.isError())
             System.out.println(r.getError());
@@ -625,6 +630,7 @@ public class Inventory {
     private static void changeProductName() {
         System.out.println("Which product would you like to edit? (insert ID)");
         int id = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert new product name");
         String name = scanner.nextLine();
         Result<Product> r = is.editProductName(id, name);
