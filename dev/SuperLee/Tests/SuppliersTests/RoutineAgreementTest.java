@@ -19,11 +19,11 @@ import java.util.List;
 
 public class RoutineAgreementTest {
 
-    RoutineAgreement agreement;
+    private RoutineAgreement agreement = new RoutineAgreement("1 2 3 4 5 6 7");;
 
     @BeforeEach
     public void setUp(){
-        agreement = new RoutineAgreement("1 2 3 4 5 6 7");
+        //agreement = new RoutineAgreement("1 2 3 4 5 6 7");
     }
 
     @Test
@@ -78,7 +78,7 @@ public class RoutineAgreementTest {
         agreement.removeDayOfDelivery(5);
 
         List<Integer> list = new ArrayList<>();
-        list.add(1); list.add(2); list.add(3); list.add(4); list.add(6);
+        list.add(1); list.add(2); list.add(3); list.add(4); list.add(6); list.add(7);
 
         assertEquals(list, agreement.getDaysOfDelivery());
     }

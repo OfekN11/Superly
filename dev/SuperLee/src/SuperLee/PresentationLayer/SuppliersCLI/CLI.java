@@ -336,7 +336,7 @@ public class CLI {
         while(_continue){
             correctInput = false;
             System.out.println("Choose what to edit:");
-            System.out.println("1) ID\n2) Bunk number\n3) Address\n4) Name\n5) Paying agreement\n");
+            System.out.println("1) ID\n2) Bank number\n3) Address\n4) Name\n5) Paying agreement\n");
 
             while(!correctInput){
                 input = scan.nextInt();

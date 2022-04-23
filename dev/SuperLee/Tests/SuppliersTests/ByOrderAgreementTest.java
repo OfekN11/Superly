@@ -20,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ByOrderAgreementTest {
-    ByOrderAgreement agreement;
+    private ByOrderAgreement agreement = new ByOrderAgreement(22);;
 
     @BeforeEach
     public void setUp(){
-        agreement = new ByOrderAgreement(22);
+        //agreement = new ByOrderAgreement(22);
     }
 
     @Test

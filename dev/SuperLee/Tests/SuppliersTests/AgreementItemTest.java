@@ -14,7 +14,12 @@ import java.util.List;
 
 public class AgreementItemTest {
 
-    AgreementItem item;
+    private AgreementItem item =  new AgreementItem(1, "Bamaba", "Osem", 8.99f, new HashMap()
+    {{
+        put(20, 15);
+        put(50, 20);
+        put(100, 30);
+    }} );
 
     @BeforeEach
     public void setUp(){
@@ -89,20 +94,20 @@ public class AgreementItemTest {
     public void test_calculateTotalPrice_noBulk(){
         double price = item.calculateTotalPrice(10);
 
-        assertEquals(10*8.99, price);
+        assertTrue(10*8.99 - price < 0.00001);
     }
 
     @Test
     public void test_calculateTotalPrice_withBulk(){
         double price = item.calculateTotalPrice(30);
 
-        assertEquals(30*8.99*0.85, price);
+        assertTrue(30*8.99*0.85 - price < 0.0001);
 
         price = item.calculateTotalPrice(50);
-        assertEquals(50*8.99*0.8, price);
+        assertTrue(50*8.99*0.8 - price < 0.0001);
 
         price = item.calculateTotalPrice(99);
-        assertEquals(99*8.99*0.8, price);
+        assertTrue(99*8.99*0.8 - price < 0.0001);
     }
 
 }

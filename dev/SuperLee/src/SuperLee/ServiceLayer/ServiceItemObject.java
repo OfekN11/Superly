@@ -68,6 +68,8 @@ public class ServiceItemObject {
             toReturn += (key + ", " + bulkPrices.get(key) + ", ");
         }
 
+        if(toReturn.length() == 0)
+            return toReturn;
         return toReturn.substring(0, toReturn.length()-2);
     }
 

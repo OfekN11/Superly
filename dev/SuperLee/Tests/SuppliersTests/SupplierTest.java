@@ -1,9 +1,7 @@
 package SuppliersTests;
 
 import SuperLee.BusinessLayer.Agreement.Agreement;
-import SuperLee.BusinessLayer.Agreement.NotTransportingAgreement;
 import SuperLee.BusinessLayer.Contact;
-import SuperLee.BusinessLayer.Pair;
 import SuperLee.BusinessLayer.Supplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,23 +27,6 @@ class SupplierTest {
         supplier = new Supplier(1,"name",23, "address", "credit", contacts, manufacturers);
     }
 
-    /*
-    @Test
-    void removeContact() {
-        supplier.
-        //Don't have function for getContacts!
-    }
-    */
-
-
-    /*
-    @Test
-    void addAgreement() {
-        assertNull(supplier.getAgreement());
-        supplier.addAgreement(1, "3");
-        assertNotNull(agreement);
-    }
-    */
 
     @Test
     void isTransporting() {

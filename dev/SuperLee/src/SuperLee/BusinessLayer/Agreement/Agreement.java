@@ -57,8 +57,8 @@ public abstract class Agreement {
         List<AgreementItem> items = new ArrayList<>();
         for(String curr : itemsString){
             String[] arr = curr.split(",");
-            if(arr.length % 2 != 0)
-                throw new Exception("You forgot something!");
+            //if(arr.length % 2 != 0)
+            //    throw new Exception("You forgot something!");
 
             for(int i = 0; i < arr.length; i++){
                 arr[i] = arr[i].trim();
