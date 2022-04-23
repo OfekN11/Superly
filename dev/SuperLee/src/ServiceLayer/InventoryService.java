@@ -543,7 +543,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> moveProduct(int productID, int storeID, int amount){
+    public Result<Object> moveItems(int productID, int storeID, int amount){
         try {
             controller.moveItems(productID, storeID, amount);
         }
@@ -573,7 +573,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Double> returnProduct(int storeID, int productID, int amount, Date dateBought){
+    public Result<Double> returnItems(int storeID, int productID, int amount, Date dateBought){
         try {
             return Result.makeOk(controller.returnItems(storeID, productID, amount, dateBought));
         }
@@ -646,7 +646,7 @@ public class InventoryService {
      */
     public Result<Product> moveProductToCategory(int productID, int newCatID){
         try {
-            return Result.makeOk(new Product(controller.moveProduct(productID, newCatID)));
+            return Result.makeOk(new Product(controller.moveProductToCategory(productID, newCatID)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

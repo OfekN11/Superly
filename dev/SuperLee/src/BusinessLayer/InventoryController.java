@@ -386,7 +386,7 @@ public class InventoryController {
         return p;
     }
 
-    public Product moveProduct(int productID, int newCatID) {
+    public Product moveProductToCategory(int productID, int newCatID) {
         Product p = getProduct(productID);
         p.setCategory(categories.get(newCatID));
         return p;

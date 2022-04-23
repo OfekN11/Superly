@@ -94,8 +94,8 @@ public class Inventory {
             changeCatParent();
         else if (command.equals("change category name"))
             changeCatName();
-        else if (command.equals("move product"))
-            moveProduct();
+        else if (command.equals("move items"))
+            moveItems();
         else if (command.equals("change product category"))
             changeProductCategory();
         else if (command.equals("sale history by product"))
@@ -112,8 +112,8 @@ public class Inventory {
             addDiscount();
         else if (command.equals("list products in category"))
             listProductsByCategory();
-        else if (command.equals("return item"))
-            returnItem();
+        else if (command.equals("return items"))
+            returnItems();
         else if (command.equals("buy items"))
             buyItems();
         else if (command.equals("add items"))
@@ -272,6 +272,7 @@ public class Inventory {
     private static void changeCatName() {
         System.out.println("Which category would you like to edit?");
         int id = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert new category name");
         String name = scanner.nextLine();
         Result<Category> r = is.editCategoryName(id, name);
@@ -283,13 +284,13 @@ public class Inventory {
         }
     }
 
-    private static void moveProduct() {
+    private static void moveItems() {
         int store = getStoreID();
         System.out.println("Which product's items are you moving? (insert ID)");
         int productID = scanner.nextInt();
         System.out.println("How much is being moved?");
         int amount = scanner.nextInt();
-        Result r = is.moveProduct(store, productID, amount);
+        Result r = is.moveItems(store, productID, amount);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -718,6 +719,7 @@ public class Inventory {
         int id = scanner.nextInt();
         System.out.println("Please insert new category parent ID");
         int parent = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<Category> r = is.changeCategoryParent(id, parent);
         if (r.isError())
             System.out.println(r.getError());
@@ -775,6 +777,7 @@ public class Inventory {
         String name = scanner.nextLine();
         System.out.println("Please insert parent category ID, or 0 if there is none");
         int parent = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<Category> r = is.addNewCategory(name, parent);
         if (r.isError())
             System.out.println(r.getError());
@@ -914,17 +917,17 @@ public class Inventory {
         }
     }
 
-    private static void returnItem() {
+    private static void returnItems() {
         int storeID = getStoreID();
-        System.out.println("Please insert product ID of product you would like to return");
+        System.out.println("Please insert product ID of the product's items you would like to return");
         int productId = scanner.nextInt();
-        System.out.println("Please insert amount of product you would like to return");
+        System.out.println("Please insert amount of items you would like to return");
         int amount = scanner.nextInt();
-        System.out.println("Please insert date items were bought");
+        System.out.println("Please insert the date the items were bought");
         Date dateBought = getDate();
         if (dateBought==null)
             return;
-        Result<Double> r = is.returnProduct(storeID, productId, amount, dateBought);
+        Result<Double> r = is.returnItems(storeID, productId, amount, dateBought);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -977,7 +980,7 @@ public class Inventory {
         System.out.printf("%-30.30s %-30.50s\n", "add category", "create a new category");
         System.out.printf("%-30.30s %-30.50s\n", "change category parent", "change a category's \"parent\" category");
         System.out.printf("%-30.30s %-30.50s\n", "change category name", "change a category's name");
-        System.out.printf("%-30.30s %-30.50s\n", "move product", "move a product from the warehouse to the store");
+        System.out.printf("%-30.30s %-30.50s\n", "move items", "move product's items from the warehouse to the store");
         System.out.printf("%-30.30s %-30.50s\n", "change product category", "move a product to a new category");
         System.out.printf("%-30.30s %-30.50s\n", "sale history by product", "see history of sales on a specific product");
         System.out.printf("%-30.30s %-30.50s\n", "sale history by category", "see history of sales on a specific category");
@@ -986,7 +989,7 @@ public class Inventory {
         System.out.printf("%-30.30s %-30.50s\n", "add sale", "create a new sale");
         System.out.printf("%-30.30s %-30.50s\n", "add discount from supplier", "input a purchase of stock from supplier");
         System.out.printf("%-30.30s %-30.50s\n", "list products in category", "list all products in specified category/ies");
-        System.out.printf("%-30.30s %-30.50s\n", "return item", "return a previously purchased item to the store");
+        System.out.printf("%-30.30s %-30.50s\n", "return items", "return a previously purchased product's items to the store");
         System.out.printf("%-30.30s %-30.50s\n", "buy items", "buy items from a store");
         System.out.printf("%-30.30s %-30.50s\n", "add items", "add items to a store");//is this the same as create purchaseFromSupplier?
         System.out.printf("%-30.30s %-30.50s\n", "report expired", "report finding of expired items");
