@@ -905,9 +905,13 @@ public class Inventory {
     }
 
     private static void listProductsByCategory() {
-        System.out.println("Which category would you like to examine?");
-        System.out.println("Please insert category IDs, separated by ','");
-        System.out.println("For example: 12,3,4,1");
+        System.out.println("Which categories would you like to examine? (Please insert categories IDs separated by ',' without spaces)");
+        System.out.println("Current categories IDs are:");
+        List<Integer> cIDs = new ArrayList<>();
+        for (Category c: is.getCategories().getValue()) {
+            cIDs.add(c.getID());
+        }
+        System.out.println(cIDs);
         List<Integer> categories = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         Result<List<Product>> r = is.getProductsFromCategory(categories);
         if (r.isError())
