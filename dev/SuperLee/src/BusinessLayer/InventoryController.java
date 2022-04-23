@@ -497,8 +497,11 @@ public class InventoryController {
     public List<StockReport> getStockReport(int store) {
         List<StockReport> stock = new ArrayList<>();
         for (Product p : products.values()) {
-            stock.add(new StockReport(store, p.getId(), p.getName(), p.getInStore(store), p.getInWarehouse(store), p.getInStore(store)+p.getInWarehouse(store), p.getMinInStore(store), p.getMaxInStore(store)));
-        }
+            try {
+                stock.add(new StockReport(store, p.getId(), p.getName(), p.getInStore(store), p.getInWarehouse(store), p.getInStore(store) + p.getInWarehouse(store), p.getMinInStore(store), p.getMaxInStore(store)));
+            }
+            catch (Exception e) {}
+            }
         return stock;
     }
 }

@@ -45,7 +45,6 @@ public class Inventory {
         while (true) {
             try {
                 System.out.println("Please insert date in format: DD/MM/YYYY");
-                scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
                 String dateInput = scanner.nextLine();
                 if (dateInput.equals("c")) {
                     System.out.println("Cancelling command");
@@ -215,13 +214,9 @@ public class Inventory {
         System.out.println("Which product would you like to add? (insert ID)");
         int product = scanner.nextInt();
         scanner.nextLine(); //to remove extra \n
-        System.out.println("What will be the product's shelves in the store?");
-        System.out.println("please insert shelf numbers, separated by commas");
-        System.out.println("For example: 2,4,1,11");
+        System.out.println("What will be the product's shelves in the store? (please insert shelf numbers, separated by commas without spaces)");
         List<Integer> inStore = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
-        System.out.println("What will be the product's shelves in the warehouse?");
-        System.out.println("please insert shelf numbers, separated by commas");
-        System.out.println("For example: 2,4,1,11");
+        System.out.println("What will be the product's shelves in the warehouse? (please insert shelf numbers, separated by commas without spaces)");
         List<Integer> inWareHouse = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("What will be the min amount in the store?");
         int min = scanner.nextInt();
@@ -977,7 +972,6 @@ public class Inventory {
             System.out.println("Purchase successful! Total price is " + r.getValue() + "NIS");
             isUnderMin(storeID, productId);
         }
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
     }
 
     private static void addItems() {
@@ -993,7 +987,6 @@ public class Inventory {
         else {
             System.out.println("Process complete");
         }
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
     }
 
     private static void help() {
