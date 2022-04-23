@@ -131,4 +131,8 @@ public class Category {
     public void removeSale(SaleToCustomer sale) {
         sales.remove(sale);
     }
+
+    public boolean belongsToCategory(Category category) {
+        return (parentCategory!=null && (parentCategory==category || parentCategory.belongsToCategory(category)));
+    }
 }

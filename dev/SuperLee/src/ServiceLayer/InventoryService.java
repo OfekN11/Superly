@@ -161,10 +161,10 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<DiscountReport> addPurchaseFromSupplier(int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice){
+    public Result<PurchaseFromSupplierReport> addPurchaseFromSupplier(int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice){
         try {
             PurchaseFromSupplier dr = controller.addPurchaseFromSupplier(productID, date, supplierID, description, amountBought, pricePaid, originalPrice);
-            return Result.makeOk(new DiscountReport(dr));
+            return Result.makeOk(new PurchaseFromSupplierReport(dr));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -176,13 +176,13 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<List<DiscountReport>> getPurchaseFromSupplierHistory(int productId){
+    public Result<List<PurchaseFromSupplierReport>> getPurchaseFromSupplierHistory(int productId){
         try {
             List<PurchaseFromSupplier> purchaseFromSupplierList = controller.getPurchaseFromSupplierHistory(productId);
-            List<DiscountReport> discountReports = new ArrayList<>();
+            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = new ArrayList<>();
             for (PurchaseFromSupplier d : purchaseFromSupplierList)
-                discountReports.add(new DiscountReport(d));
-            return Result.makeOk(discountReports);
+                purchaseFromSupplierReports.add(new PurchaseFromSupplierReport(d));
+            return Result.makeOk(purchaseFromSupplierReports);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -194,13 +194,13 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<List<DiscountReport>> getDiscountFromSupplierHistory(int productId){
+    public Result<List<PurchaseFromSupplierReport>> getDiscountFromSupplierHistory(int productId){
         try {
             List<PurchaseFromSupplier> purchaseFromSupplierList = controller.getDiscountFromSupplierHistory(productId);
-            List<DiscountReport> discountReports = new ArrayList<>();
+            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = new ArrayList<>();
             for (PurchaseFromSupplier d : purchaseFromSupplierList)
-                discountReports.add(new DiscountReport(d));
-            return Result.makeOk(discountReports);
+                purchaseFromSupplierReports.add(new PurchaseFromSupplierReport(d));
+            return Result.makeOk(purchaseFromSupplierReports);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

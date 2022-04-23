@@ -4,14 +4,14 @@ import BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
 
 import java.util.Date;
 
-public class DiscountReport {
+public class PurchaseFromSupplierReport {
     private final int originalPrice;
     private final int finalPrice;
     private final Date date;
     private final int supplierID;
     private final String description;
     private final int amountBought;
-    public DiscountReport(PurchaseFromSupplier d) {
+    public PurchaseFromSupplierReport(PurchaseFromSupplier d) {
         this.originalPrice = d.getOriginalPrice();
         this.finalPrice = d.getPricePaid();
         this.date = d.getDate();
@@ -22,7 +22,7 @@ public class DiscountReport {
 
     @Override
     public String toString() {
-        return "DiscountReport{" +
+        return "PurchaseFromSupplierReport{" +
                 "originalPrice=" + originalPrice +
                 ", finalPrice=" + finalPrice +
                 ", date=" + date +

@@ -109,7 +109,7 @@ public class Inventory {
         else if (command.equals("add sale"))
             addSale();
         else if (command.equals("add discount from supplier"))
-            addDiscount();
+            addPuchaseFromSupplier();
         else if (command.equals("list products in category"))
             listProductsByCategory();
         else if (command.equals("return items"))
@@ -300,10 +300,10 @@ public class Inventory {
         }
     }
 
-    private static void addDiscount() {
-        System.out.println("Which product received a discount? (insert ID)");
+    private static void addPuchaseFromSupplier() {
+        System.out.println("Which product was purchased? (insert ID)");
         int productID = scanner.nextInt();
-        System.out.println("Which supplier gave the discount? (insert ID)");
+        System.out.println("Which supplier was the purchase from? (insert ID)");
         int supplier = scanner.nextInt();
         System.out.println("How much of the product was purchased?");
         int amount = scanner.nextInt();
@@ -311,17 +311,17 @@ public class Inventory {
         int originalPrice = scanner.nextInt();
         System.out.println("How much was paid?");
         int finalPrice = scanner.nextInt();
-        System.out.println("When did the discount occur?");
+        System.out.println("When did the purchase occur?");
         Date date = getDate();
         if (date==null)
             return;
-        System.out.println("Please insert a general description of the discount");
+        System.out.println("Please insert a general description of the purchase");
         String description = scanner.nextLine();
-        Result<DiscountReport> r = is.addPurchaseFromSupplier(productID, date, supplier, description, amount, finalPrice, originalPrice);
+        Result<PurchaseFromSupplierReport> r = is.addPurchaseFromSupplier(productID, date, supplier, description, amount, finalPrice, originalPrice);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            DiscountReport dr = r.getValue();
+            PurchaseFromSupplierReport dr = r.getValue();
             System.out.println(dr);
         }
     }
@@ -857,12 +857,12 @@ public class Inventory {
     private static void getPurchaseFromSupplierHistory() {
         System.out.println("Please insert product ID");
         int id = scanner.nextInt();
-        Result<List<DiscountReport>> r = is.getPurchaseFromSupplierHistory(id);
+        Result<List<PurchaseFromSupplierReport>> r = is.getPurchaseFromSupplierHistory(id);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<DiscountReport> discountReports = r.getValue();
-            for (DiscountReport dr : discountReports)
+            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
+            for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
                 System.out.println(dr);
         }
     }
@@ -870,12 +870,12 @@ public class Inventory {
     private static void getDiscountFromSupplierHistory() {
         System.out.println("Please insert product ID");
         int id = scanner.nextInt();
-        Result<List<DiscountReport>> r = is.getDiscountFromSupplierHistory(id);
+        Result<List<PurchaseFromSupplierReport>> r = is.getDiscountFromSupplierHistory(id);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<DiscountReport> discountReports = r.getValue();
-            for (DiscountReport dr : discountReports)
+            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
+            for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
                 System.out.println(dr);
         }
     }
@@ -1008,7 +1008,7 @@ public class Inventory {
         System.out.printf("%-30.30s %-30.50s\n", "sale history by category", "see history of sales on a specific category");
         System.out.printf("%-30.30s %-30.50s\n", "purchase from supplier history", "see history of all purchases from suppliers");
         System.out.printf("%-30.30s %-30.50s\n", "discount from supplier history", "see history of all discounts from suppliers");
-        System.out.printf("%-30.30s %-30.50s\n", "add discount from supplier", "input a purchase of stock from supplier");
+        System.out.printf("%-30.30s %-30.50s\n", "add purchase from supplier", "input a purchase of stock from supplier");
 
         System.out.printf("%-30.30s %-30.50s\n", "report expired", "report finding of expired items");
         System.out.printf("%-30.30s %-30.50s\n", "report damaged", "report finding of damaged items");
