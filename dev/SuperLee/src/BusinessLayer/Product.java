@@ -58,8 +58,13 @@ public class Product {
 
     public Integer getMinInStore(int store) {
         if (inStore.get(store)==null)
-            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
+            throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store);
         return minAmounts.get(store);
+    }
+    public int getMaxInStore(int store) {
+        if (inStore.get(store)==null)
+            throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store);
+        return maxAmounts.get(store);
     }
 
     public Integer getInStore(int store) {
