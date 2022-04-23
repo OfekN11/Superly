@@ -25,7 +25,7 @@ public class InventoryController {
         //initialize stuff for tests
         //add stores
         for (int i = 1; i <= 10; i++)
-            storeIds.add(i);
+            addStore();
         addCategoriesForTests();
         addProductsForTests();
         addSalesForTests();
@@ -90,6 +90,10 @@ public class InventoryController {
                 }
             }
         }
+    }
+
+    public List<PurchaseFromSupplier> getPurchaseFromSupplierHistory(int productID) {
+        return getProduct(productID).getPurchaseFromSupplierList();
     }
 
     public List<PurchaseFromSupplier> getDiscountFromSupplierHistory(int productID) {
@@ -170,12 +174,19 @@ public class InventoryController {
             storeIds.add(0);
             return 0;
         }
-        int id = max(storeIds)+1;
-        storeIds.add(id);
-        return id;
+        else {
+            int id = max(storeIds) + 1;
+            storeIds.add(id);
+            return id;
+        }
     }
 
     public void removeStore(int storeID) {
+        if (!storeIds.contains(storeID))
+            throw new IllegalArgumentException("There is no store with ID" + storeID);
+        for (int i : products.keySet()) {
+            removeProductFromStore(storeID, i);
+        }
         storeIds.remove(storeIds.indexOf(storeID));
     }
 
@@ -260,6 +271,8 @@ public class InventoryController {
     }
 
     public List<DefectiveItems> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productID) {
+        if (!start.before(end) || !start.before(new Date()))
+            throw new IllegalArgumentException("Illegal start/end dates");
         List<DefectiveItems> eirList = new ArrayList<>();
         for (Integer p: productID) {
             eirList.addAll(getProduct(p).getExpiredItemReports(start, end));
@@ -343,10 +356,22 @@ public class InventoryController {
         products.put(products.size()+1, new Product(products.size()+1, "Tnuva 1L", categories.get(5), 1.2, 8, new HashMap<>(), 18));
         products.put(products.size()+1, new Product(products.size()+1, "yoplait strawberry", categories.get(2), 0.5, 5.3, new HashMap<>(), 9));
         products.put(products.size()+1, new Product(products.size()+1, "yoplait vanilla", categories.get(2), 0.5, 5.3, new HashMap<>(), 9));
-
+        for (int i : storeIds) {
+            List<Integer> shelves = new ArrayList<>();
+            shelves.add(2*i); shelves.add(2*i+1);
+            for (int p : products.keySet()) {
+                addProductToStore(i, shelves, shelves, p, 10*shelves.get(1), 30*shelves.get(1));
+                addItems(i, p, 37);
+            }
+        }
     }
 
     private void addSalesForTests () {
+
+    }
+
+    private void addReportsForTests () {
+        //add expired reports for items 2 and 3, none for 1
     }
 
     public Product editProductPrice(int productID, double newPrice) {
@@ -415,5 +440,12 @@ public class InventoryController {
 
     public boolean isUnderMin(int store, int product) {
         return getProduct(product).isUnderMin(store);
+    }
+
+    public int getAmountInStore(int store, int productID) {
+        if (!storeIds.contains(store))
+            throw new IllegalArgumentException("Store " + store + " is not registered in the system");
+        Product p = getProduct(productID);
+        return p.getInStore(store)+p.getInWarehouse(store);
     }
 }

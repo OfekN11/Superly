@@ -76,6 +76,8 @@ public class Inventory {
     private static void doCommand(String command) {
         if (command.equals("list products"))
             listProducts();
+        else if (command.equals("store stock report"))
+            storeStockReport();
         else if (command.equals("list categories"))
             listCategories();
         else if (command.equals("add product"))
@@ -100,8 +102,10 @@ public class Inventory {
             saleHistoryByProduct();
         else if (command.equals("sale history by category"))
             saleHistoryByCategory();
-        else if (command.equals("discount history"))
-            discountHistory();
+        else if (command.equals("purchase from supplier history"))
+            getPurchaseFromSupplierHistory();
+        else if (command.equals("discount from supplier history"))
+            getDiscountFromSupplierHistory();
         else if (command.equals("add sale"))
             addSale();
         else if (command.equals("add discount from supplier"))
@@ -146,6 +150,17 @@ public class Inventory {
             System.out.println("Persistence Layer is not implemented yet");
         else
             System.out.println("Command not found. please use 'help' for info or 'q' to quit");
+    }
+
+    private static void storeStockReport() {
+//        int store = getStoreID();
+//        Result<List<Product>> r = is.storeStockReport(store);
+//        if (r.isError())
+//            System.out.println(r.getError());
+//        else {
+//            System.out.println("Supplier successfully removed");
+//            System.out.println(r.getValue());
+//        }
     }
 
     private static void removeSupplierFromProduct() {
@@ -834,7 +849,20 @@ public class Inventory {
         }
     }
 
-    private static void discountHistory() {
+    private static void getPurchaseFromSupplierHistory() {
+        System.out.println("Please insert product ID");
+        int id = scanner.nextInt();
+        Result<List<DiscountReport>> r = is.getPurchaseFromSupplierHistory(id);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<DiscountReport> discountReports = r.getValue();
+            for (DiscountReport dr : discountReports)
+                System.out.println(dr);
+        }
+    }
+
+    private static void getDiscountFromSupplierHistory() {
         System.out.println("Please insert product ID");
         int id = scanner.nextInt();
         Result<List<DiscountReport>> r = is.getDiscountFromSupplierHistory(id);
@@ -940,6 +968,7 @@ public class Inventory {
         System.out.println("Please notice that commands are case sensitive");
         System.out.println("Possible commands are:");
         System.out.printf("%-30.30s %-30.50s\n","list products", "list of all the products in catalog");
+        System.out.printf("%-30.30s %-30.50s\n","store stock report", "report of stock in specified store");
         System.out.printf("%-30.30s %-30.50s\n", "list categories", "list of all the different categories");
         System.out.printf("%-30.30s %-30.50s\n", "add product", "add a new product");
         System.out.printf("%-30.30s %-30.50s\n", "change product name", "change product name");
@@ -953,6 +982,7 @@ public class Inventory {
         System.out.printf("%-30.30s %-30.50s\n", "sale history by product", "see history of sales on a specific product");
         System.out.printf("%-30.30s %-30.50s\n", "sale history by category", "see history of sales on a specific category");
         System.out.printf("%-30.30s %-30.50s\n", "purchase from supplier history", "see history of all purchases from suppliers");
+        System.out.printf("%-30.30s %-30.50s\n", "discount from supplier history", "see history of all discounts from suppliers");
         System.out.printf("%-30.30s %-30.50s\n", "add sale", "create a new sale");
         System.out.printf("%-30.30s %-30.50s\n", "add discount from supplier", "input a purchase of stock from supplier");
         System.out.printf("%-30.30s %-30.50s\n", "list products in category", "list all products in specified category/ies");

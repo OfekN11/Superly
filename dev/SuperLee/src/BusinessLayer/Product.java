@@ -25,8 +25,6 @@ public class Product {
     private double price;
     private List<SaleToCustomer> sales;
     private List<PurchaseFromSupplier> purchaseFromSupplierList;
-    public Map<Integer, Integer> getInStore() { return inStore; }
-    public Map<Integer, Integer> getInWarehouse() { return inWarehouse; }
     public int getId() { return id; }
     public String getName() { return name; }
     public double getOriginalPrice() { return price; }
@@ -58,6 +56,16 @@ public class Product {
         locations = new ArrayList<>();
     }
 
+    public Integer getInStore(int store) {
+        if (inStore.get(store)==null)
+            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
+        return inStore.get(store);
+    }
+    public Integer getInWarehouse(int store) {
+        if (inWarehouse.get(store)==null)
+            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
+        return inWarehouse.get(store);
+    }
 
     public double getCurrentPrice() {
         SaleToCustomer BestCurrentSale = getCurrentSale();
@@ -198,9 +206,18 @@ public class Product {
         return result;
     }
 
-    public List<PurchaseFromSupplier> getDiscountFromSupplierHistory() {
+    public List<PurchaseFromSupplier> getPurchaseFromSupplierList() {
         return purchaseFromSupplierList;
     }
+
+    public List<PurchaseFromSupplier> getDiscountFromSupplierHistory() {
+        List<PurchaseFromSupplier> purchaseFromSuppliers = new ArrayList<>();
+        for (PurchaseFromSupplier p : purchaseFromSupplierList)
+            if (p.isDiscount())
+                purchaseFromSuppliers.add(p);
+        return purchaseFromSuppliers;
+    }
+
     public PurchaseFromSupplier addPurchaseFromSupplier(Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
         return new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
     }

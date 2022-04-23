@@ -8,18 +8,7 @@ import java.util.LinkedList;
 
 
 public class CategoryTests {
-    //Tests formula
-    /*@Test
-    public void testX() {
-        try
-        {
 
-        }
-        catch (Exception e)
-        {
-
-        }
-    }*/
     @Test
     public void testChangeParentCategory(){
         try

@@ -12,21 +12,10 @@ import org.junit.jupiter.api.Assertions;
 import java.util.*;
 
 public class ProductTests {
-    //Tests formula
-    /*@Test
-    public void testX() {
-        try
-        {
-
-        }
-        catch (Exception e)
-        {
-
-        }
-    }*/
     Category category0 = new Category("Milk", new HashSet<>(), new ArrayList<>(), null);
     Product product0 = new Product(0, "Milk-Tnuva-1L", category0, 1, 4.5, new HashMap<>(), 18);
     Product product1 = new Product(1, "Milk-Tara-1L", category0, 1.0, 4, new HashMap<>(), 25);
+
     @BeforeEach
     void addLocations() {
         List<Integer> shelves1 = new LinkedList<Integer>();
@@ -49,6 +38,7 @@ public class ProductTests {
         product0.addLocation(1, shelves3, shelves4, 65, 250);
         product1.addLocation(0, shelves5, shelves6, 40, 150);
     }
+
     @Test
     public void testAddItems() {
         try

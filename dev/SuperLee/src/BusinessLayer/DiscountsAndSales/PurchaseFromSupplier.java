@@ -47,4 +47,7 @@ public class PurchaseFromSupplier {
         this.originalPrice = originalPrice;
     }
 
+    public boolean isDiscount() {
+        return pricePaid==originalPrice;
+    }
 }

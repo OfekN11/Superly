@@ -176,6 +176,24 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
+    public Result<List<DiscountReport>> getPurchaseFromSupplierHistory(int productId){
+        try {
+            List<PurchaseFromSupplier> purchaseFromSupplierList = controller.getPurchaseFromSupplierHistory(productId);
+            List<DiscountReport> discountReports = new ArrayList<>();
+            for (PurchaseFromSupplier d : purchaseFromSupplierList)
+                discountReports.add(new DiscountReport(d));
+            return Result.makeOk(discountReports);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * Get History of all discounts from the different suppliers on specified product
+     *
+     * @return Result detailing success of operation
+     */
     public Result<List<DiscountReport>> getDiscountFromSupplierHistory(int productId){
         try {
             List<PurchaseFromSupplier> purchaseFromSupplierList = controller.getDiscountFromSupplierHistory(productId);

@@ -9,18 +9,7 @@ import java.util.Date;
 import java.util.LinkedList;
 
 public class SaleToCustomerTests {
-    //Tests formula
-    /*@Test
-    public void testX() {
-        try
-        {
 
-        }
-        catch (Exception e)
-        {
-
-        }
-    }*/
     SaleToCustomer sale1;
     SaleToCustomer sale2;
     SaleToCustomer sale3;
@@ -36,11 +25,11 @@ public class SaleToCustomerTests {
         today.setMinutes(0);
         today.setSeconds(0);
 
-        Date tommorow = new Date();
-        tommorow.setHours(0);
-        tommorow.setMinutes(0);
-        tommorow.setSeconds(0);
-        tommorow.setHours(24);
+        Date tomorrow = new Date();
+        tomorrow.setHours(0);
+        tomorrow.setMinutes(0);
+        tomorrow.setSeconds(0);
+        tomorrow.setHours(24);
 
         Date yesterday = new Date();
         yesterday.setHours(0);
@@ -60,14 +49,14 @@ public class SaleToCustomerTests {
         afterTwoDays.setSeconds(0);
         afterTwoDays.setHours(48);
 
-        sale1 = new SaleToCustomer(0, yesterday, tommorow, 30, new LinkedList<>(), new LinkedList<>());
-        sale2 = new SaleToCustomer(1, today, tommorow, 30, new LinkedList<>(), new LinkedList<>());
+        sale1 = new SaleToCustomer(0, yesterday, tomorrow, 30, new LinkedList<>(), new LinkedList<>());
+        sale2 = new SaleToCustomer(1, today, tomorrow, 30, new LinkedList<>(), new LinkedList<>());
         sale3 = new SaleToCustomer(2, yesterday, today, 30, new LinkedList<>(), new LinkedList<>());
         sale4 = new SaleToCustomer(3, today, today, 30, new LinkedList<>(), new LinkedList<>());
         sale5 = new SaleToCustomer(4, beforeTwoDays, yesterday, 30, new LinkedList<>(), new LinkedList<>());
-        sale6 = new SaleToCustomer(5, tommorow, afterTwoDays, 30, new LinkedList<>(), new LinkedList<>());
+        sale6 = new SaleToCustomer(5, tomorrow, afterTwoDays, 30, new LinkedList<>(), new LinkedList<>());
         sale7 = new SaleToCustomer(6, yesterday, yesterday, 30, new LinkedList<>(), new LinkedList<>());
-        sale8 = new SaleToCustomer(7, tommorow, tommorow, 30, new LinkedList<>(), new LinkedList<>());
+        sale8 = new SaleToCustomer(7, tomorrow, tomorrow, 30, new LinkedList<>(), new LinkedList<>());
     }
     @Test
     public void testIsUpcoming() {
