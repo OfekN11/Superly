@@ -176,6 +176,9 @@ public class Product {
     }
 
     public List<DefectiveItems> getDamagedItemReportsByStore(Date start, Date end, List<Integer> storeID) {
+        end.setHours(24);
+        end.setMinutes(0);
+        end.setSeconds(-1);
         List<DefectiveItems> dirList = new ArrayList<>();
         for (DefectiveItems dir: damagedItemReport) {
             if (dir.inDates(start, end) && (storeID.contains(dir.getStoreID()) || storeID.size()==0))
@@ -185,6 +188,9 @@ public class Product {
     }
 
     public Collection<DefectiveItems> getDamagedItemReports(Date start, Date end) {
+        end.setHours(24);
+        end.setMinutes(0);
+        end.setSeconds(-1);
         List<DefectiveItems> dirList = new ArrayList<>();
         for (DefectiveItems dir: damagedItemReport) {
             if (dir.inDates(start, end))
@@ -194,6 +200,9 @@ public class Product {
     }
 
     public List<DefectiveItems> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeID) {
+        end.setHours(24);
+        end.setMinutes(0);
+        end.setSeconds(-1);
         List<DefectiveItems> eirList = new ArrayList<>();
         for (DefectiveItems eir: expiredItemReport) {
             if (eir.inDates(start, end) && (storeID.contains(eir.getStoreID()) || storeID.size()==0))
@@ -203,6 +212,9 @@ public class Product {
     }
 
     public Collection<DefectiveItems> getExpiredItemReports(Date start, Date end) {
+        end.setHours(24);
+        end.setMinutes(0);
+        end.setSeconds(-1);
         List<DefectiveItems> eirList = new ArrayList<>();
         for (DefectiveItems eir: expiredItemReport) {
             if (eir.inDates(start, end))

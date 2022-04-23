@@ -161,7 +161,7 @@ public class Inventory {
             for (StockReport s : stockReports)
                 System.out.println(s);
             if (stockReports.isEmpty())
-                System.out.println("the store has no products registered to it in the system. please use add product to store");
+                System.out.println("the store has no products registered to it in the system or it has been removed");
         }
     }
 
@@ -1081,6 +1081,7 @@ public class Inventory {
         System.out.println();
         System.out.printf("%-30.30s %-30s\n", "help", "prints this menu");
         System.out.printf("%-30.30s %-30s\n", "q", "quits program");
+        System.out.println();
 
 //        System.out.println("load data", "Persistence Layer is not implemented yet");
     }

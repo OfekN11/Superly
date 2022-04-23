@@ -48,6 +48,6 @@ public class PurchaseFromSupplier {
     }
 
     public boolean isDiscount() {
-        return pricePaid==originalPrice;
+        return pricePaid!=originalPrice;
     }
 }
