@@ -2,7 +2,7 @@ package Domain.DAL.Abstract;
 
 import java.util.Set;
 
-public abstract class DalController<T extends DTO> {
+public abstract class DalController<T> {
 
     // properties
     protected String tableName; // this field will be valid if we will save data in tables
@@ -13,7 +13,6 @@ public abstract class DalController<T extends DTO> {
     }
 
     // functions
-    public abstract Set<T> createFakeDTOs();
-    public abstract Set<T> select();
+    public abstract Set<T> loadData();
     public abstract void deleteAll();
 }

@@ -20,7 +20,7 @@ public class DConstraintController extends DalController<DConstraint> {
 
     //functions
     @Override
-    public Set<DConstraint> createFakeDTOs() {
+    public Set<DConstraint> loadData() {
         try {
             Set<DConstraint> output = new HashSet<>();
             output.add(new DConstraint(new SimpleDateFormat("dd-MM-yyyy").parse("14-07-2012"),"Day",10));
@@ -28,11 +28,6 @@ public class DConstraintController extends DalController<DConstraint> {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    @Override
-    public Set<DConstraint> select() {
         return null;
     }
 

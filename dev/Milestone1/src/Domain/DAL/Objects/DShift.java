@@ -6,7 +6,7 @@ import Domain.DAL.Controllers.DEmployeeShiftController;
 import java.util.Date;
 import java.util.Set;
 
-public class DShift extends DTO {
+public abstract class DShift extends DTO {
 
     // properties
     private Date date;
@@ -16,8 +16,8 @@ public class DShift extends DTO {
     private DEmployeeShiftController employeeShiftController;
 
     // constructor
-    public DShift(Date date, String type, Set<Integer> workers,int shiftManagerId) {
-        super(0,"placeHolder"); // no id to Shifts
+    public DShift(String tableName,Date date, String type, Set<Integer> workers,int shiftManagerId) {
+        super(0, tableName); // no id to Shifts
         this.date = date;
         this.type = type;
         this.employeesId = workers;
@@ -67,12 +67,8 @@ public class DShift extends DTO {
         employeesId.remove(employeeId);
     }
 
-    @Override
-    public void save() {
-        // code to save this instance in the DB
-    }
 
     public void delete(){
-        //nee to overwrite the delete because there is no id
+        //need to overwrite the delete because there is no id
     }
 }

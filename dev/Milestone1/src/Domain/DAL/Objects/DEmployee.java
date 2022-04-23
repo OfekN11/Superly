@@ -1,34 +1,36 @@
 package Domain.DAL.Objects;
 import Domain.DAL.Abstract.DTO;
+import Domain.DAL.Controllers.DEmployeeCertificationController;
+import Globals.Enums.Certifications;
+
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
-public class DEmployee extends DTO {
+public abstract class DEmployee extends DTO {
     // properties
     private String name;
     private String bankDetails;
     private int salary;
     private String employmentConditions;
     private Date startingDate;
-    private String job;
+    private Set<Certifications> certifications;
+    private DEmployeeCertificationController dEmployeeCertificationController;
 
     // constructor
-    public DEmployee(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, String job) {
-        super(id, "placeHolder");
+    public DEmployee(String tableName,int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate) {
+        super(id,tableName);
         this.name = name;
         this.bankDetails = bankDetails;
         this.salary = salary;
         this.employmentConditions = employmentConditions;
         this.startingDate = startingDate;
-        this.job = job;
+        this.certifications = new HashSet<>();
+        this.dEmployeeCertificationController = new DEmployeeCertificationController();
     }
 
-    @Override
-    public void save() {
-        // saves this object in the DB  code
-        setPersist(true);
-    }
-
+    // functions
     public String getName() {
         return name;
     }
@@ -47,10 +49,6 @@ public class DEmployee extends DTO {
 
     public Date getStartingDate() {
         return startingDate;
-    }
-
-    public String getJob() {
-        return job;
     }
 
     public void setName(String name) {
@@ -88,10 +86,11 @@ public class DEmployee extends DTO {
         this.startingDate = startingDate;
     }
 
-    public void setJob(String job) {
-        if (isPersist()){
-            update("Job",job);
-        }
-        this.job = job;
+    public void setCertifications(Set<Certifications> certifications) {
+        this.certifications = certifications;
+    }
+
+    public void addCertification(Certifications certification){
+        dEmployeeCertificationController.add(getId(),certification);
     }
 }

@@ -35,7 +35,7 @@ public class EmployeeController {
     }
 
     public void createFakeEmployees() {
-        Set<DEmployee> dEmployees = dEmployeeController.createFakeDTOs();
+        Set<DEmployee> dEmployees = dEmployeeController.loadData();
         for (DEmployee dEmployee : dEmployees) {
             Employee employee = switch (dEmployee.getJob()) {
                 case "Carrier" -> new Carrier(dEmployee);

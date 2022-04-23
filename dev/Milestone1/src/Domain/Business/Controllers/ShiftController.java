@@ -20,7 +20,7 @@ public class ShiftController {
     private final Map<Date,Map<ShiftTypes,Shift>> shifts = new HashMap<>();
 
     public void CreateFakeShifts(){
-        for (DShift dShift: dShiftController.createFakeDTOs()) {
+        for (DShift dShift: dShiftController.loadData()) {
             if (dShift.type.equals(ShiftTypes.Morning.toString()))
                 dayShifts.put(dShift.date.toString() ,new MorningShift(dShift,employeeController.getEmployees(dShift.workersId)));
             else
