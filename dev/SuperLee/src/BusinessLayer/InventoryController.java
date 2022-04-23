@@ -153,16 +153,16 @@ public class InventoryController {
         }
     }
 
+    public PurchaseFromSupplier addItems(int storeID, int productID, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
+        return  getProduct(productID).addItems(storeID, new Date(), supplierID, description, amountBought, pricePaid, originalPrice);
+    }
+
     public List<PurchaseFromSupplier> getPurchaseFromSupplierHistory(int productID) {
         return getProduct(productID).getPurchaseFromSupplierList();
     }
 
     public List<PurchaseFromSupplier> getDiscountFromSupplierHistory(int productID) {
         return getProduct(productID).getDiscountFromSupplierHistory();
-    }
-
-    public PurchaseFromSupplier addPurchaseFromSupplier(int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
-        return  getProduct(productID).addPurchaseFromSupplier(date, supplierID, description, amountBought, pricePaid, originalPrice);
     }
 
     private Product getProduct(int productID) {
@@ -221,10 +221,7 @@ public class InventoryController {
         Product product = getProduct(productID);
         product.moveItems(storeID, amount);
     }
-    public void addItems(int storeID, int productID, int amount) {
-        Product product = getProduct(productID);
-        product.addItems(storeID, amount);
-    }
+
     public Double returnItems(int storeID, int productID, int amount, Date dateBought) {
         //find product add amount
         Product product = getProduct(productID);
@@ -489,7 +486,7 @@ public class InventoryController {
             shelves.add(2*i); shelves.add(2*i+1);
             for (int p : products.keySet()) {
                 addProductToStore(i, shelves, shelves, p, 10*shelves.get(1), 30*shelves.get(1));
-                addItems(i, p, 37);
+                addItems(i, p,3,"load test data", 37, 37*10/10*shelves.get(1), 37*10/10*shelves.get(1));
             }
         }
     }

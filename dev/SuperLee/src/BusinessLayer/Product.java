@@ -69,13 +69,13 @@ public class Product {
     }
 
     public Integer getInStore(int store) {
-        if (inStore.get(store)==null)
-            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
+//        if (inStore.get(store)==null)
+//            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
         return inStore.get(store);
     }
     public Integer getInWarehouse(int store) {
-        if (inWarehouse.get(store)==null)
-            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
+//        if (inWarehouse.get(store)==null)
+//            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
         return inWarehouse.get(store);
     }
 
@@ -99,7 +99,7 @@ public class Product {
     }
 
     public void removeItems(int storeID, int amount) { //bought or thrown=
-        if (inStore.get(storeID)-amount<0)
+        if (inStore.get(storeID)+inWarehouse.get(storeID)-amount<0)
             throw new IllegalArgumentException("Can not buy or remove more items than in the store - please check amount");
         inStore.put(storeID, inStore.get(storeID)-amount);
     }
@@ -109,14 +109,15 @@ public class Product {
         inWarehouse.put(storeID, inWarehouse.get(storeID)-amount);
         inStore.put(storeID, inStore.get(storeID)+amount);
     }
-    public void addItems(int storeID, int amount) { //from supplier to warehouse
-        if (inStore.get(storeID)+inWarehouse.get(storeID)+amount>maxAmounts.get(storeID))
+    public PurchaseFromSupplier addItems(int storeId, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
+        if (inStore.get(storeId)+inWarehouse.get(storeId)+amountBought>maxAmounts.get(storeId))
             throw new IllegalArgumentException("Can not add more items than the max capacity in the store");
-        inWarehouse.put(storeID, inWarehouse.get(storeID)+amount);
+        PurchaseFromSupplier p = new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
+        inWarehouse.put(storeId, inWarehouse.get(storeId)+amountBought);
+        purchaseFromSupplierList.add(p);
+        return p;
     }
     public double returnItems(int storeID, int amount, Date dateBought) { //from customer to store
-        if (inStore.get(storeID)+inWarehouse.get(storeID)+amount>maxAmounts.get(storeID))
-            throw new IllegalArgumentException("Can not add more items than the max capacity in the store");
         inStore.put(storeID, inStore.get(storeID)+amount);
         return amount*getPriceOnDate(dateBought);
     }
@@ -243,10 +244,6 @@ public class Product {
             if (p.isDiscount())
                 purchaseFromSuppliers.add(p);
         return purchaseFromSuppliers;
-    }
-
-    public PurchaseFromSupplier addPurchaseFromSupplier(Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
-        return new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
     }
 
     public boolean isLow(int storeID) {

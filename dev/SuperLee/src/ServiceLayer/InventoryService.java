@@ -174,9 +174,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<PurchaseFromSupplierReport> addPurchaseFromSupplier(int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice){
+    public Result<PurchaseFromSupplierReport> addItems(int storeID, int productID, int supplierID, String description, int amountBought, int pricePaid, int originalPrice){
         try {
-            PurchaseFromSupplier dr = controller.addPurchaseFromSupplier(productID, date, supplierID, description, amountBought, pricePaid, originalPrice);
+            PurchaseFromSupplier dr = controller.addItems(storeID, productID, supplierID, description, amountBought, pricePaid, originalPrice);
             return Result.makeOk(new PurchaseFromSupplierReport(dr));
         }
         catch (Exception e){
@@ -576,21 +576,6 @@ public class InventoryService {
     public Result<Object> moveItems(int storeID, int productID, int amount){
         try {
             controller.moveItems(storeID, productID, amount);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
-
-    /**
-     * add items to warehouse in specified store
-     *
-     * @return Result detailing success of operation
-     */
-    public Result<Object> addItems(int storeID, int productID, int amount){
-        try {
-            controller.addItems(storeID, productID, amount);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
