@@ -171,6 +171,7 @@ public class Inventory {
         int productID = scanner.nextInt();
         System.out.println("Which supplier would you like to remove? (insert ID)");
         int supplierID = scanner.nextInt();
+        scanner.nextLine(); //to remove extra \n
         Result<Product> r = is.removeSupplierFromProduct(productID, supplierID);
         if (r.isError())
             System.out.println(r.getError());
@@ -187,6 +188,7 @@ public class Inventory {
         int supplierID = scanner.nextInt();
         System.out.println("What is the supplier's ID for the product?");
         int productIDWithSupplier = scanner.nextInt();
+        scanner.nextLine(); //to remove extra \n
         Result<Product> r = is.addSupplierToProduct(productID, supplierID, productIDWithSupplier);
         if (r.isError())
             System.out.println(r.getError());
@@ -199,6 +201,7 @@ public class Inventory {
     private static void removeSale() {
         System.out.println("Which sale would you like to remove? (insert ID)");
         int saleID = scanner.nextInt();
+        scanner.nextLine(); //to remove extra \n
         Result r = is.removeSale(saleID);
         if (r.isError())
             System.out.println(r.getError());
@@ -211,6 +214,7 @@ public class Inventory {
         int store = getStoreID();
         System.out.println("Which product would you like to add? (insert ID)");
         int product = scanner.nextInt();
+        scanner.nextLine(); //to remove extra \n
         System.out.println("What will be the product's shelves in the store?");
         System.out.println("please insert shelf numbers, separated by commas");
         System.out.println("For example: 2,4,1,11");
@@ -223,6 +227,7 @@ public class Inventory {
         int min = scanner.nextInt();
         System.out.println("What will be the max amount in the store?");
         int max = scanner.nextInt();
+        scanner.nextLine(); //to remove extra \n
         Result<Product> r = is.addProductToStore(store, inStore, inWareHouse, product, min, max);
         if (r.isError())
             System.out.println(r.getError());
@@ -236,6 +241,7 @@ public class Inventory {
         int store = getStoreID();
         System.out.println("What product would you like to remove?");
         int product = scanner.nextInt();
+        scanner.nextLine(); //to remove extra \n
         Result<Product> r = is.removeProductFromStore(store, product);
         if (r.isError())
             System.out.println(r.getError());
@@ -262,6 +268,7 @@ public class Inventory {
         int productID = scanner.nextInt();
         System.out.println("To which category would you like to move it? (insert ID)");
         int category = scanner.nextInt();
+        scanner.nextLine(); //to remove extra \n
         Result<Product> r = is.moveProductToCategory(productID, category);
         if (r.isError())
             System.out.println(r.getError());
@@ -293,13 +300,13 @@ public class Inventory {
         int productID = scanner.nextInt();
         System.out.println("How much is being moved?");
         int amount = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result r = is.moveItems(store, productID, amount);
         if (r.isError())
             System.out.println(r.getError());
         else {
             System.out.println("Moving of items successful");
         }
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
     }
 
     private static void addPuchaseFromSupplier() {
@@ -313,6 +320,7 @@ public class Inventory {
         int originalPrice = scanner.nextInt();
         System.out.println("How much was paid?");
         int finalPrice = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("When did the purchase occur?");
         Date date = getDate();
         if (date==null)
@@ -336,6 +344,7 @@ public class Inventory {
         int amount = scanner.nextInt();
         System.out.println("Please enter your ID");
         int employeeID = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please add a description (not mandatory)");
         String description = scanner.nextLine();
         Result<DefectiveItemReport> r = is.reportExpired(store, productID, amount, employeeID, description);
@@ -355,6 +364,7 @@ public class Inventory {
         System.out.println("3: A store/number of stores");
         System.out.println("4: all products");
         int expireCase = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         switch (expireCase) {
             case (1):
                 expiredItemsByProduct();
@@ -466,6 +476,7 @@ public class Inventory {
         int amount = scanner.nextInt();
         System.out.println("Please enter your ID");
         int employeeID = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please describe the damage");
         String description = scanner.nextLine();
         Result<DefectiveItemReport> r = is.reportDamaged(store, productID, amount, employeeID, description);
@@ -485,6 +496,7 @@ public class Inventory {
         System.out.println("3: A store/number of stores");
         System.out.println("4: all products");
         int defectCase = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         switch (defectCase) {
             case (1):
                 defectiveItemsByProduct();
@@ -594,6 +606,7 @@ public class Inventory {
         System.out.println("3: A store/number of stores");
         System.out.println("4: all products");
         int damagedCase = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         switch (damagedCase) {
             case (1):
                 damagedItemsByProduct();
@@ -710,6 +723,7 @@ public class Inventory {
     private static void removeStore() {
         System.out.println("Which store would you like remove?");
         int id = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result r = is.removeStore(id);
         if (r.isError())
             System.out.println(r.getError());
@@ -748,7 +762,6 @@ public class Inventory {
     private static void changeProductPrice() {
         System.out.println("Which product would you like to edit? (insert ID)");
         int id = scanner.nextInt();
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert new product price");
         double price = scanner.nextDouble();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
@@ -833,6 +846,7 @@ public class Inventory {
     private static void saleHistoryByProduct() {
         System.out.println("Please insert product ID");
         int id = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<List<Sale>> r = is.getSaleHistoryByProduct(id);
         if (r.isError())
             System.out.println(r.getError());
@@ -846,6 +860,7 @@ public class Inventory {
     private static void saleHistoryByCategory() {
         System.out.println("Please insert category ID");
         int id = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<List<Sale>> r = is.getSaleHistoryByCategory(id);
         if (r.isError())
             System.out.println(r.getError());
@@ -859,6 +874,7 @@ public class Inventory {
     private static void getPurchaseFromSupplierHistory() {
         System.out.println("Please insert product ID");
         int id = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<List<PurchaseFromSupplierReport>> r = is.getPurchaseFromSupplierHistory(id);
         if (r.isError())
             System.out.println(r.getError());
@@ -872,6 +888,7 @@ public class Inventory {
     private static void getDiscountFromSupplierHistory() {
         System.out.println("Please insert product ID");
         int id = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<List<PurchaseFromSupplierReport>> r = is.getDiscountFromSupplierHistory(id);
         if (r.isError())
             System.out.println(r.getError());
@@ -891,6 +908,7 @@ public class Inventory {
         List<Integer> products = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert percent of sale: 0-100");
         int percent = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert start date");
         Date start = getDate();
         if (start==null)
@@ -932,6 +950,7 @@ public class Inventory {
         int productId = scanner.nextInt();
         System.out.println("Please insert amount of items you would like to return");
         int amount = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert the date the items were bought");
         Date dateBought = getDate();
         if (dateBought==null)
@@ -950,7 +969,7 @@ public class Inventory {
         int productId = scanner.nextInt();
         System.out.println("Please insert amount of product you would like to buy");
         int amount = scanner.nextInt();
-        scanner.nextLine();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<Double> r = is.buyItems(productId, storeID, amount);
         if (r.isError())
             System.out.println(r.getError());
@@ -967,6 +986,7 @@ public class Inventory {
         int productId = scanner.nextInt();
         System.out.println("Please insert amount of product you have received");
         int amount = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result r = is.addItems(storeID, productId, amount);
         if (r.isError())
             System.out.println(r.getError());
