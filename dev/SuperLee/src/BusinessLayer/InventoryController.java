@@ -292,17 +292,18 @@ public class InventoryController {
     }
 
     private void addCategoriesForTests () {
-        Category cSmall1 = new Category("Small", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cSmall1);
-        Category cSmall2 = new Category("Small", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cSmall2);
-        Category cLarge1 = new Category("Large", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cLarge1);
-        Category cLarge2 = new Category("Large", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cLarge2);
-        Category cMedium = new Category("Medium", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cMedium);
-        Category cShampoo = new Category("Shampoo", new HashSet<>(), new ArrayList<>(), null);
+        Category cSmall1 = new Category(categories.size()+1, "Small", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size()+1, cSmall1);
+        Category cSmall2 = new Category(categories.size()+1, "Small", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size()+1, cSmall2);
+        Category cLarge1 = new Category(categories.size()+1, "Large", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size()+1, cLarge1);
+        Category cLarge2 = new Category(categories.size()+1, "Large", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size()+1, cLarge2);
+        Category cMedium = new Category(categories.size()+1, "Medium", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size()+1, cMedium);
+        Category cShampoo = new Category(categories.size()+1, "Shampoo", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size()+1, cShampoo);
         Set<Category> milk = new HashSet<>();
         milk.add(cSmall1);
         milk.add(cMedium);
@@ -311,38 +312,38 @@ public class InventoryController {
         yogurt.add(cSmall2);
         yogurt.add(cLarge2);
         Set<Category> dairy = new HashSet<>();
-        Category cMilk = new Category("Milk", milk, new ArrayList<>(), null);
-        Category cYogurt = new Category("Yogurt", yogurt, new ArrayList<>(), null);
+        Category cMilk = new Category(categories.size()+1, "Milk", milk, new ArrayList<>(), null);
+        categories.put(categories.size()+1, cMilk);
+        Category cYogurt = new Category(categories.size()+1, "Yogurt", yogurt, new ArrayList<>(), null);
+        categories.put(categories.size()+1, cYogurt);
         dairy.add(cMilk);
         dairy.add(cYogurt);
-        Category cdairy = new Category("Dairy", dairy, new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cdairy);
-        categories.put(categories.size() + 1, cShampoo);
-        Category cToothpaste = new Category("Toothpaste", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cToothpaste);
+        Category cdairy = new Category(categories.size()+1, "Dairy", dairy, new ArrayList<>(), null);
+        categories.put(categories.size()+1, cdairy);
+        Category cToothpaste = new Category(categories.size()+1, "Toothpaste", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size()+1, cToothpaste);
         Set<Category> health = new HashSet<>();
         health.add(cShampoo);
         health.add(cToothpaste);
-        Category cHealth = new Category("Health,", health, new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cHealth);
-        Category cOrg1 = new Category("Organic", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cOrg1);
-        Category cOrg2 = new Category("Organic", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cOrg2);
+        Category cHealth = new Category(categories.size()+1, "Health,", health, new ArrayList<>(), null);
+        categories.put(categories.size()+1, cHealth);
+        Category cOrg1 = new Category(categories.size()+1, "Organic", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size()+1, cOrg1);
+        Category cOrg2 = new Category(categories.size()+1, "Organic", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(categories.size()+1, cOrg2);
         Set<Category> veggies = new HashSet();
         veggies.add(cOrg1);
         Set<Category> fruits = new HashSet();
         fruits.add(cOrg2);
-        Category cVeggie = new Category("Vegetables", veggies, new ArrayList<>(), null);
-        //12
-        categories.put(categories.size() + 1, cVeggie);
-        Category cFruit = new Category("Fruits", veggies, new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cFruit);
+        Category cVeggie = new Category(categories.size()+1, "Vegetables", veggies, new ArrayList<>(), null);
+        categories.put(categories.size()+1, cVeggie);
+        Category cFruit = new Category(categories.size()+1, "Fruits", veggies, new ArrayList<>(), null);
+        categories.put(categories.size()+1, cFruit);
         Set<Category> produce = new HashSet<>();
         produce.add(cFruit);
         produce.add(cVeggie);
-        Category cProduce = new Category("Produce", produce, new ArrayList<>(), null);
-        categories.put(categories.size() + 1, cProduce);
+        Category cProduce = new Category(categories.size()+1, "Produce", produce, new ArrayList<>(), null);
+        categories.put(categories.size()+1, cProduce);
     }
 
     private void addProductsForTests () {
@@ -407,10 +408,10 @@ public class InventoryController {
     public Category addCategory(String name, int parentCategoryID) {
         int id = categories.size()+1;
         if (parentCategoryID==0) {
-            categories.put(id, new Category(name, new HashSet<>(), new ArrayList<>(), null));
+            categories.put(id, new Category(id, name, new HashSet<>(), new ArrayList<>(), null));
         }
         else {
-            categories.put(id, new Category(name, new HashSet<>(), new ArrayList<>(), categories.get(parentCategoryID)));
+            categories.put(id, new Category(id, name, new HashSet<>(), new ArrayList<>(), categories.get(parentCategoryID)));
         }
         return categories.get(id);
     }

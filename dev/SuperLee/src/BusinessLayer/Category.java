@@ -5,12 +5,14 @@ import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 import java.util.*;
 
 public class Category {
+    private int ID;
     private String name;
     private Set<Category> subcategories;
     private Category parentCategory;
     private List<Product> products;
     private List<SaleToCustomer> sales;
 
+    public int getID() { return ID; }
     public String getName() {
         return name;
     }
@@ -24,7 +26,8 @@ public class Category {
         return parentCategory;
     }
 
-    public Category(String name, Set<Category> subcategories, List<Product> products, Category parentCategory) {
+    public Category(int ID, String name, Set<Category> subcategories, List<Product> products, Category parentCategory) {
+        this.ID = ID;
         this.name = name;
         this.subcategories = subcategories;
         for (Category c : subcategories)

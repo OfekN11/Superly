@@ -13,10 +13,10 @@ public class CategoryTests {
     public void testChangeParentCategory(){
         try
         {
-            Category category1 = new Category("Milk", new HashSet<>(), new LinkedList<>(), null);
-            Category category2 = new Category("Milk", new HashSet<>(), new LinkedList<>(), category1);
-            Category category3 = new Category("Milk", new HashSet<>(), new LinkedList<>(), category1);
-            Category category4 = new Category("Milk", new HashSet<>(), new LinkedList<>(), category2);
+            Category category1 = new Category(1,"Milk", new HashSet<>(), new LinkedList<>(), null);
+            Category category2 = new Category(2,"Milk", new HashSet<>(), new LinkedList<>(), category1);
+            Category category3 = new Category(3,"Milk", new HashSet<>(), new LinkedList<>(), category1);
+            Category category4 = new Category(4,"Milk", new HashSet<>(), new LinkedList<>(), category2);
             //1-2-4, 1-3.
             Assertions.assertFalse(category1.getSubcategories().contains(category1));
             Assertions.assertTrue(category1.getSubcategories().contains(category2));
