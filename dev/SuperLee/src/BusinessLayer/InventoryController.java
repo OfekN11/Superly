@@ -24,7 +24,7 @@ public class InventoryController {
         products = new HashMap<>();
         storeID=0;
         saleID=1;
-        catID=0;
+        catID=1;
         productID=1;
     }
 
@@ -330,18 +330,18 @@ public class InventoryController {
     }
 
     private void addCategoriesForTests () {
-        Category cSmall1 = new Category(catID++, "Small", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID, cSmall1);
-        Category cSmall2 = new Category(catID++, "Small", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID, cSmall2);
-        Category cLarge1 = new Category(catID++, "Large", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID, cLarge1);
-        Category cLarge2 = new Category(catID++, "Large", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID, cLarge2);
-        Category cMedium = new Category(catID++, "Medium", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID, cMedium);
-        Category cShampoo = new Category(catID++, "Shampoo", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID, cShampoo);
+        Category cSmall1 = new Category(catID, "Small", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(catID++, cSmall1);
+        Category cSmall2 = new Category(catID, "Small", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(catID++, cSmall2);
+        Category cLarge1 = new Category(catID, "Large", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(catID++, cLarge1);
+        Category cLarge2 = new Category(catID, "Large", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(catID++, cLarge2);
+        Category cMedium = new Category(catID, "Medium", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(catID++, cMedium);
+        Category cShampoo = new Category(catID, "Shampoo", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(catID++, cShampoo);
         Set<Category> milk = new HashSet<>();
         milk.add(cSmall1);
         milk.add(cMedium);
@@ -350,38 +350,38 @@ public class InventoryController {
         yogurt.add(cSmall2);
         yogurt.add(cLarge2);
         Set<Category> dairy = new HashSet<>();
-        Category cMilk = new Category(catID++, "Milk", milk, new ArrayList<>(), null);
-        categories.put(catID, cMilk);
-        Category cYogurt = new Category(catID++, "Yogurt", yogurt, new ArrayList<>(), null);
-        categories.put(catID, cYogurt);
+        Category cMilk = new Category(catID, "Milk", milk, new ArrayList<>(), null);
+        categories.put(catID++, cMilk);
+        Category cYogurt = new Category(catID, "Yogurt", yogurt, new ArrayList<>(), null);
+        categories.put(catID++, cYogurt);
         dairy.add(cMilk);
         dairy.add(cYogurt);
-        Category cdairy = new Category(catID++, "Dairy", dairy, new ArrayList<>(), null);
-        categories.put(catID, cdairy);
-        Category cToothpaste = new Category(catID++, "Toothpaste", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID, cToothpaste);
+        Category cdairy = new Category(catID, "Dairy", dairy, new ArrayList<>(), null);
+        categories.put(catID++, cdairy);
+        Category cToothpaste = new Category(catID, "Toothpaste", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(catID++, cToothpaste);
         Set<Category> health = new HashSet<>();
         health.add(cShampoo);
         health.add(cToothpaste);
-        Category cHealth = new Category(catID++, "Health,", health, new ArrayList<>(), null);
-        categories.put(catID, cHealth);
-        Category cOrg1 = new Category(catID++, "Organic", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID, cOrg1);
-        Category cOrg2 = new Category(catID++, "Organic", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID, cOrg2);
+        Category cHealth = new Category(catID, "Health,", health, new ArrayList<>(), null);
+        categories.put(catID++, cHealth);
+        Category cOrg1 = new Category(catID, "Organic", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(catID++, cOrg1);
+        Category cOrg2 = new Category(catID, "Organic", new HashSet<>(), new ArrayList<>(), null);
+        categories.put(catID++, cOrg2);
         Set<Category> veggies = new HashSet();
         veggies.add(cOrg1);
         Set<Category> fruits = new HashSet();
         fruits.add(cOrg2);
-        Category cVeggie = new Category(catID++, "Vegetables", veggies, new ArrayList<>(), null);
-        categories.put(catID, cVeggie);
-        Category cFruit = new Category(catID++, "Fruits", veggies, new ArrayList<>(), null);
-        categories.put(catID, cFruit);
+        Category cVeggie = new Category(catID, "Vegetables", veggies, new ArrayList<>(), null);
+        categories.put(catID++, cVeggie);
+        Category cFruit = new Category(catID, "Fruits", veggies, new ArrayList<>(), null);
+        categories.put(catID++, cFruit);
         Set<Category> produce = new HashSet<>();
         produce.add(cFruit);
         produce.add(cVeggie);
-        Category cProduce = new Category(catID++, "Produce", produce, new ArrayList<>(), null);
-        categories.put(catID, cProduce);
+        Category cProduce = new Category(catID, "Produce", produce, new ArrayList<>(), null);
+        categories.put(catID++, cProduce);
     }
 
     private void addProductsForTests () {
