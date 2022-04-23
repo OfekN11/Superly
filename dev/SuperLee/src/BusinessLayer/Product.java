@@ -251,4 +251,8 @@ public class Product {
     public boolean isUnderMin(int store) {
         return (inStore.get(store)+inWarehouse.get(store)<minAmounts.get(store));
     }
+
+    public boolean belongsToCategory(Category category) {
+        return (this.category==category || this.category.belongsToCategory(category));
+    }
 }
