@@ -56,6 +56,12 @@ public class Product {
         locations = new ArrayList<>();
     }
 
+    public Integer getMinInStore(int store) {
+        if (inStore.get(store)==null)
+            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
+        return minAmounts.get(store);
+    }
+
     public Integer getInStore(int store) {
         if (inStore.get(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);

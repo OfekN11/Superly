@@ -374,14 +374,31 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Map<Integer, Product>> getMinStockReport(){
+    public Result<List<StockReport>> getMinStockReport(){
         try {
-            Map<Integer, BusinessLayer.Product> minStock = controller.getMinStockReport();
-            Map<Integer, Product> minStockReport = new HashMap<>();
-            for (int i : minStock.keySet())
-                minStockReport.put(i, new Product(minStock.get(i)));
-            return Result.makeOk(minStockReport);
+            List<BusinessLayer.StockReport> minStock = controller.getMinStockReport();
+            List<StockReport> stockReports = new ArrayList<>();
+            for (BusinessLayer.StockReport s : minStock)
+                stockReports.add(new StockReport(s));
+            return Result.makeOk(stockReports);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
 
+    /**
+     * Remove damage or expired items from the store
+     *
+     * @return Result detailing success of operation
+     */
+    public Result<List<StockReport>> storeStockReport(int store){
+        try {
+            List<BusinessLayer.StockReport> stock = controller.getStockReport(store);
+            List<StockReport> stockReports = new ArrayList<>();
+            for (BusinessLayer.StockReport s : stock)
+                stockReports.add(new StockReport(s));
+            return Result.makeOk(stockReports);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

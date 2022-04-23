@@ -415,12 +415,12 @@ public class InventoryController {
         return categories.get(id);
     }
 
-    public Map<Integer, Product> getMinStockReport() {
-        Map<Integer, Product> lowOnStock = new HashMap<>();
+    public List<StockReport> getMinStockReport() {
+        List<StockReport> lowOnStock = new ArrayList<>();
         for (Product p : products.values()) {
             for (int i : storeIds) {
                 if (p.isLow(i))
-                    lowOnStock.put(i, p);
+                    lowOnStock.add(new StockReport(i, p.getId(), p.getName(), p.getInStore(i)+p.getInWarehouse(i), p.getMinInStore(i)));
             }
         }
         return lowOnStock;
@@ -447,5 +447,13 @@ public class InventoryController {
             throw new IllegalArgumentException("Store " + store + " is not registered in the system");
         Product p = getProduct(productID);
         return p.getInStore(store)+p.getInWarehouse(store);
+    }
+
+    public List<StockReport> getStockReport(int store) {
+        List<StockReport> stock = new ArrayList<>();
+        for (Product p : products.values()) {
+            stock.add(new StockReport(store, p.getId(), p.getName(), p.getInStore(store)+p.getInWarehouse(store), p.getMinInStore(store)));
+        }
+        return stock;
     }
 }
