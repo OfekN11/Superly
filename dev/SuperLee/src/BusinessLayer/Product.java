@@ -40,7 +40,6 @@ public class Product {
         this.id = id;
         this.name = name;
         this.category = category;
-        category.addProduct(this);
         this.weight = weight;
         this.price = price;
         this.manufacturerID = manufacturerID;

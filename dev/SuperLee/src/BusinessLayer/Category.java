@@ -46,13 +46,19 @@ public class Category {
         if (parentCategory!= null)
             parentCategory.addSubcategory(this);
     }
-    public List<Product> getProducts() {
-        List<Product> output = products;
+    public List<Product> getAllProductsInCategory() {
+        List<Product> output = new ArrayList<>();
+        output.addAll(products);
         for (Category c : subcategories) {
-            output.addAll(c.getProducts());
+            output.addAll(c.getAllProductsInCategory());
         }
         return output;
     }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
     private boolean removeSubcategory(Category category) {
         return subcategories.remove(category);
     }

@@ -908,8 +908,9 @@ public class Inventory {
         System.out.println("Which categories would you like to examine? (Please insert categories IDs separated by ',' without spaces)");
         System.out.println("Current categories IDs are:");
         List<Integer> cIDs = new ArrayList<>();
-        for (Category c: is.getCategories().getValue()) {
-            cIDs.add(c.getID());
+        List<Category> c = is.getCategories().getValue();
+        for (Category cat: c) {
+            cIDs.add(cat.getID());
         }
         System.out.println(cIDs);
         List<Integer> categories = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
