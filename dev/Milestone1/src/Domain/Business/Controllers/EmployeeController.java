@@ -1,11 +1,14 @@
 package Domain.Business.Controllers;
-import Domain.Business.Objects.Carrier;
 import Domain.Business.Objects.Cashier;
-import Domain.Business.Objects.Employee;
-import Domain.Business.Objects.Enums.ShiftType;
+import Domain.Business.Objects.Carrier;
+import Domain.Business.Objects.HR_Manager;
+import Domain.Business.Objects.Logistics_Manager;
 import Domain.Business.Objects.Storekeeper;
+import Domain.Business.Objects.Employee;
+import Domain.Business.Objects.Sorter;
 import Domain.DAL.Controllers.DEmployeeController;
 import Domain.DAL.Objects.DEmployee;
+import Globals.Enums.*;
 
 import java.util.*;
 

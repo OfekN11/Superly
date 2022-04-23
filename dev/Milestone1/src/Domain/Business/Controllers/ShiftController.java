@@ -28,10 +28,10 @@ public class ShiftController {
 
     public void CreateFakeShifts(){
         for (DShift dShift: dShiftController.createFakeDTOs()) {
-            if (dShift.type.equals(ShiftTypes.Morning.toString()))
-                dayShifts.put(dShift.date.toString() ,new DayShift(dShift,employeeController.getEmployees(dShift.workersId)));
+            if (dShift.getDate().equals(ShiftTypes.Morning.toString()))
+                dayShifts.put(dShift.getDate().toString() ,new DayShift(dShift,employeeController.getEmployees(dShift.getEmployeesId())));
             else
-                nightShifts.put(dShift.date.toString(),new NightShift(dShift,employeeController.getEmployees(dShift.workersId)));
+                nightShifts.put(dShift.getDate().toString(),new NightShift(dShift,employeeController.getEmployees(dShift.getEmployeesId())));
         }
     }
 
