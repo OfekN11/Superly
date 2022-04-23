@@ -200,7 +200,7 @@ public class InventoryController {
         return products;
     }
 
-    public void moveItems(int productID, int storeID, int amount) {
+    public void moveItems(int storeID, int productID, int amount) {
         Product product = getProduct(productID);
         product.moveItems(storeID, amount);
     }
@@ -324,7 +324,7 @@ public class InventoryController {
         return storeIds;
     }
 
-    public Double buyItems(int productID, int storeID, int amount) {
+    public Double buyItems(int storeID, int productID, int amount) {
         Product product = getProduct(productID);
         double price = product.getCurrentPrice()*amount;
         product.removeItems(storeID, amount);

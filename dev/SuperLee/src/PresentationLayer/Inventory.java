@@ -951,7 +951,7 @@ public class Inventory {
         System.out.println("Please insert amount of product you would like to buy");
         int amount = scanner.nextInt();
         scanner.nextLine();
-        Result<Double> r = is.buyItems(productId, storeID, amount);
+        Result<Double> r = is.buyItems(storeID, productId, amount);
         if (r.isError())
             System.out.println(r.getError());
         else {

@@ -360,9 +360,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Double> buyItems(int productID, int storeID, int amount){
+    public Result<Double> buyItems(int storeID, int productID, int amount){
         try {
-            return Result.makeOk(controller.buyItems(productID, storeID, amount));
+            return Result.makeOk(controller.buyItems(storeID, productID, amount));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -560,9 +560,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> moveItems(int productID, int storeID, int amount){
+    public Result<Object> moveItems(int storeID, int productID, int amount){
         try {
-            controller.moveItems(productID, storeID, amount);
+            controller.moveItems(storeID, productID, amount);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

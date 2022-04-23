@@ -39,6 +39,7 @@ public class Product {
     public Product(int id, String name, Category category, double weight, double price, Map<Integer, Integer> suppliers, int manufacturerID) {
         this.id = id;
         this.name = name;
+        this.name = name;
         this.category = category;
         this.weight = weight;
         this.price = price;
