@@ -201,6 +201,7 @@ public class Inventory {
 
     private static void removeSale() {
         System.out.println("Which sale would you like to remove? (insert ID)");
+        PrintRemovableSales();
         int saleID = scanner.nextInt();
         scanner.nextLine(); //to remove extra \n
         Result r = is.removeSale(saleID);
@@ -209,6 +210,12 @@ public class Inventory {
         else {
             System.out.println("sale successfully removed");
         }
+    }
+
+    private static void PrintRemovableSales() {
+        Result<List<Sale>> removableSales = is.getRemovableSales();
+        for (Sale sale: removableSales.getValue())
+            System.out.println(sale);
     }
 
     private static void addProductToStore() {

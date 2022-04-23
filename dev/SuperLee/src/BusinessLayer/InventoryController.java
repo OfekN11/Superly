@@ -40,6 +40,14 @@ public class InventoryController {
         addReportsForTests();
     }
 
+    public List<SaleToCustomer> getRemovableSales() {
+        List<SaleToCustomer> removableSales = new ArrayList<>();
+        for (SaleToCustomer sale: sales) {
+            if (!sale.isPassed())
+                removableSales.add(sale);
+        }
+        return removableSales;
+    }
     public SaleToCustomer addSale(List<Integer> categoriesList, List<Integer> productIDs, int percent, Date start, Date end) {
         /*if (!start.before(end)) //could add more restrictions regarding adding past sales but would be problematic for tests
             throw new IllegalArgumentException("Illegal dates. start must be before end");
@@ -97,7 +105,11 @@ public class InventoryController {
     }
 
     private void copySale(SaleToCustomer sale) {
-        SaleToCustomer newSale = new SaleToCustomer(saleID++, sale.getStartDate(), new Date(), sale.getPercent(), sale.getCategories(), sale.getProducts());
+        Date endOfToday = new Date();
+        endOfToday.setHours(24);
+        endOfToday.setMinutes(1);
+        endOfToday.setSeconds(-1);
+        SaleToCustomer newSale = new SaleToCustomer(saleID++, sale.getStartDate(), endOfToday, sale.getPercent(), sale.getCategories(), sale.getProducts());
         sales.add(newSale);
         Product product = null;
         for (Integer pID: newSale.getProducts()) {
@@ -123,6 +135,7 @@ public class InventoryController {
             if (category!=null)
                 category.removeSale(sale);
         }
+        sales.remove(sale);
     }
 
     public void removeSale(int saleID) {

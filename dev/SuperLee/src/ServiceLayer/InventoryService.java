@@ -2,6 +2,7 @@ package ServiceLayer;
 
 
 import BusinessLayer.DefectiveItems;
+import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 import BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
 import BusinessLayer.InventoryController;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
@@ -50,7 +51,19 @@ public class InventoryService {
             return Result.makeError(e.getMessage());
         }
     }
-
+    public Result<List<Sale>> getRemovableSales(){
+        try {
+            List<SaleToCustomer> removableSales = controller.getRemovableSales();
+            List<Sale> result = new ArrayList<>();
+            for (SaleToCustomer sale: removableSales) {
+                result.add(new Sale(sale));
+            }
+            return Result.makeOk(result);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
     /**
      * Loads data from persistence layer
      *

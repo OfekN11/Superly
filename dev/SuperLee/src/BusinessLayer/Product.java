@@ -114,7 +114,6 @@ public class Product {
             throw new IllegalArgumentException("Can not add more items than the max capacity in the store");
         inWarehouse.put(storeID, inWarehouse.get(storeID)+amount);
     }
-
     public double returnItems(int storeID, int amount, Date dateBought) { //from customer to store
         if (inStore.get(storeID)+inWarehouse.get(storeID)+amount>maxAmounts.get(storeID))
             throw new IllegalArgumentException("Can not add more items than the max capacity in the store");
