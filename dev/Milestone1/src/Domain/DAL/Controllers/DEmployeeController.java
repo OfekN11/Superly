@@ -1,6 +1,7 @@
 package Domain.DAL.Controllers;
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DEmployee;
+import Globals.Enums.Certifications;
 
 import java.sql.Time;
 import java.util.HashSet;
@@ -8,9 +9,12 @@ import java.util.Set;
 
 public class DEmployeeController extends DalController<DEmployee> {
 
+    // properties
+    private DEmployeeCertificationController dEmployeeCertificationController;
     // constructor
     public DEmployeeController() {
         super("PlaceHolder");
+        dEmployeeCertificationController = new DEmployeeCertificationController();
     }
 
     // functions
@@ -26,6 +30,9 @@ public class DEmployeeController extends DalController<DEmployee> {
         employees.add(new DEmployee(13,"number" +13,"i wish i had money",0,"i am free, no conditions",Time.valueOf("14/07/1998"),"Storekeeper"
         ));
         return employees;
+    }
+    public Set<Certifications> getCertificationOfEmployee(int employeeId){
+        return dEmployeeCertificationController.selectCertificationsOfEmployee(employeeId);
     }
 
     @Override

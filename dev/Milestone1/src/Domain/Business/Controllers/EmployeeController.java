@@ -13,6 +13,7 @@ public class EmployeeController {
     // properties
     private final Map<Integer,Employee> employees = new HashMap<>();
     private final DEmployeeController dEmployeeController = new DEmployeeController();
+    private final Map<Date,Map<ShiftTypes, Set<Integer>>> constraints = new HashMap<>();
 
     public Set<Employee> getEmployees(Set<Integer> workersId) {
         Set<Employee> output = new HashSet<>();
