@@ -194,8 +194,9 @@ public class InventoryController {
 
     public List<Product> getProductsFromCategory(List<Integer> categoryIDs) {
         List<Product> products = new ArrayList<>();
+        //remove redundancies?
         for (int i : categoryIDs)
-            products.addAll(categories.get(i).getProducts());
+            products.addAll(categories.get(i).getAllProductsInCategory());
         return products;
     }
 
@@ -244,11 +245,12 @@ public class InventoryController {
         throw new NoSuchMethodException();
     }
 
-    public Product newProduct(String name, int categoryID, int weight, double price, Map<Integer, Integer> suppliers, int manufacturerID) {
+    public Product newProduct(String name, int categoryID, double weight, double price, Map<Integer, Integer> suppliers, int manufacturerID) {
         Category category = categories.get(categoryID);
         int id = productID++;
         Product product = new Product(id, name, category, weight, price, suppliers, manufacturerID);
         products.put(id, product);
+        category.addProduct(product);
         return product;
     }
 
@@ -330,71 +332,57 @@ public class InventoryController {
     }
 
     private void addCategoriesForTests () {
-        Category cSmall1 = new Category(catID, "Small", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID++, cSmall1);
-        Category cSmall2 = new Category(catID, "Small", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID++, cSmall2);
-        Category cLarge1 = new Category(catID, "Large", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID++, cLarge1);
-        Category cLarge2 = new Category(catID, "Large", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID++, cLarge2);
-        Category cMedium = new Category(catID, "Medium", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID++, cMedium);
-        Category cShampoo = new Category(catID, "Shampoo", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID++, cShampoo);
-        Set<Category> milk = new HashSet<>();
-        milk.add(cSmall1);
-        milk.add(cMedium);
-        milk.add(cLarge1);
-        Set<Category> yogurt = new HashSet<>();
-        yogurt.add(cSmall2);
-        yogurt.add(cLarge2);
-        Set<Category> dairy = new HashSet<>();
-        Category cMilk = new Category(catID, "Milk", milk, new ArrayList<>(), null);
-        categories.put(catID++, cMilk);
-        Category cYogurt = new Category(catID, "Yogurt", yogurt, new ArrayList<>(), null);
-        categories.put(catID++, cYogurt);
-        dairy.add(cMilk);
-        dairy.add(cYogurt);
-        Category cdairy = new Category(catID, "Dairy", dairy, new ArrayList<>(), null);
-        categories.put(catID++, cdairy);
-        Category cToothpaste = new Category(catID, "Toothpaste", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID++, cToothpaste);
-        Set<Category> health = new HashSet<>();
-        health.add(cShampoo);
-        health.add(cToothpaste);
-        Category cHealth = new Category(catID, "Health,", health, new ArrayList<>(), null);
-        categories.put(catID++, cHealth);
-        Category cOrg1 = new Category(catID, "Organic", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID++, cOrg1);
-        Category cOrg2 = new Category(catID, "Organic", new HashSet<>(), new ArrayList<>(), null);
-        categories.put(catID++, cOrg2);
-        Set<Category> veggies = new HashSet();
-        veggies.add(cOrg1);
-        Set<Category> fruits = new HashSet();
-        fruits.add(cOrg2);
-        Category cVeggie = new Category(catID, "Vegetables", veggies, new ArrayList<>(), null);
-        categories.put(catID++, cVeggie);
-        Category cFruit = new Category(catID, "Fruits", veggies, new ArrayList<>(), null);
-        categories.put(catID++, cFruit);
-        Set<Category> produce = new HashSet<>();
-        produce.add(cFruit);
-        produce.add(cVeggie);
-        Category cProduce = new Category(catID, "Produce", produce, new ArrayList<>(), null);
-        categories.put(catID++, cProduce);
+        addCategory("Small", 0);
+        addCategory("Small", 0);
+        addCategory("Large", 0);
+        addCategory("Large", 0);
+        addCategory("Medium", 0);
+
+        addCategory("Shampoo", 0);
+
+        addCategory("Milk", 0);
+        changeParentCategory(1, 7);
+        changeParentCategory(3, 7);
+        changeParentCategory(5, 7);
+
+        addCategory("Yogurt", 0);
+        changeParentCategory(2, 8);
+        changeParentCategory(3, 8);
+
+        addCategory("Dairy", 0);
+        changeParentCategory(7, 9);
+        changeParentCategory(7, 9);
+
+        addCategory("Toothpaste", 0);
+
+        addCategory("Health", 0);
+        changeParentCategory(6, 11);
+        changeParentCategory(9, 11);
+
+        addCategory("Organic", 0);
+        addCategory("Organic", 0);
+
+        addCategory("Vegetables", 0);
+        addCategory("Fruit", 0);
+        changeParentCategory(12, 14);
+        changeParentCategory(13, 15);
+
+        addCategory("Produce", 0);
+        changeParentCategory(14, 16);
+        changeParentCategory(15, 16);
     }
 
     private void addProductsForTests () {
-        products.put(productID, new Product(productID++, "tomato", categories.get(12), -1, 7.2, new HashMap<>(), 0));
-        products.put(productID, new Product(productID++, "tomato", categories.get(10), -1, 9.2, new HashMap<>(), 0));
-        products.put(productID, new Product(productID++, "strawberry", categories.get(11), -1, 7.2, new HashMap<>(), 0));
-        products.put(productID, new Product(productID++, "melon", categories.get(13), -1, 7.2, new HashMap<>(), 0));
-        products.put(productID, new Product(productID++, "Hawaii", categories.get(7), 1.2, 13, new HashMap<>(), 1));
-        products.put(productID, new Product(productID++, "Crest", categories.get(8), 0.7, 7.2, new HashMap<>(), 2));
-        products.put(productID, new Product(productID++, "Tara 1L", categories.get(5), 1.2, 8.6, new HashMap<>(), 17));
-        products.put(productID, new Product(productID++, "Tnuva 1L", categories.get(5), 1.2, 8, new HashMap<>(), 18));
-        products.put(productID, new Product(productID++, "yoplait strawberry", categories.get(2), 0.5, 5.3, new HashMap<>(), 9));
-        products.put(productID, new Product(productID++, "yoplait vanilla", categories.get(2), 0.5, 5.3, new HashMap<>(), 9));
+        newProduct("tomato", 12, -1, 7.2, new HashMap<>(), 0);
+        newProduct("tomato", 10, -1, 9.2, new HashMap<>(), 0);
+        newProduct("strawberry", 11, -1, 7.2, new HashMap<>(), 0);
+        newProduct("melon", 13, -1, 7.2, new HashMap<>(), 0);
+        newProduct( "Hawaii", 7, 1.2, 13, new HashMap<>(), 1);
+        newProduct("Crest", 8, 0.7, 7.2, new HashMap<>(), 2);
+        newProduct("Tara 1L", 5, 1.2, 8.6, new HashMap<>(), 17);
+        newProduct("Tnuva 1L", 5, 1.2, 8, new HashMap<>(), 18);
+        newProduct("yoplait strawberry", 2, 0.5, 5.3, new HashMap<>(), 9);
+        newProduct("yoplait vanilla", 2, 0.5, 5.3, new HashMap<>(), 9);
         for (int i : storeIds) {
             List<Integer> shelves = new ArrayList<>();
             shelves.add(2*i); shelves.add(2*i+1);

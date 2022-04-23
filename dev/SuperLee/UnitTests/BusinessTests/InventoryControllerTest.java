@@ -1,5 +1,6 @@
-package BusinessLayer;
+package BusinessTests;
 
+import BusinessLayer.InventoryController;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
