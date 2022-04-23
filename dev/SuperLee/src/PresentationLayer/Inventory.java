@@ -251,7 +251,7 @@ public class Inventory {
         if (r.isError())
             System.out.println(r.getError());
         else {
-            System.out.printf("%-30.30s %-30.50s\n", "Store ID", "Product");
+            System.out.printf("%-30.30s %-30s\n", "Store ID", "Product");
             List<StockReport> stockReports = r.getValue();
             for (StockReport s : stockReports)
                 System.out.println(s);
@@ -997,63 +997,63 @@ public class Inventory {
         System.out.println("Possible commands are:");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30.50s\n", "list products", "list of all the products in catalog");
-        System.out.printf("%-30.30s %-30.50s\n", "list categories", "list of all the different categories");
-        System.out.printf("%-30.30s %-30.50s\n", "list products in category", "list all products in specified category/ies");
+        System.out.printf("%-30.30s %-30s\n", "list products", "list of all the products in catalog");
+        System.out.printf("%-30.30s %-30s\n", "list categories", "list of all the different categories");
+        System.out.printf("%-30.30s %-30s\n", "list products in category", "list all products in specified category/ies");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30.50s\n", "add items", "add items to a store");
-        System.out.printf("%-30.30s %-30.50s\n", "move items", "move product's items from the warehouse to the store");
-        System.out.printf("%-30.30s %-30.50s\n", "buy items", "buy items from a store");
-        System.out.printf("%-30.30s %-30.50s\n", "return items", "return a previously purchased product's items to the store");
+        System.out.printf("%-30.30s %-30s\n", "add items", "add items to a store");
+        System.out.printf("%-30.30s %-30s\n", "move items", "move product's items from the warehouse to the store");
+        System.out.printf("%-30.30s %-30s\n", "buy items", "buy items from a store");
+        System.out.printf("%-30.30s %-30s\n", "return items", "return a previously purchased product's items to the store");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30.50s\n", "add product to store", "add a product to specific store in system");
-        System.out.printf("%-30.30s %-30.50s\n", "remove product from store", "add a product to specific store in system");
+        System.out.printf("%-30.30s %-30s\n", "add product to store", "add a product to specific store in system");
+        System.out.printf("%-30.30s %-30s\n", "remove product from store", "add a product to specific store in system");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30.50s\n", "add sale", "create a new sale");
-        System.out.printf("%-30.30s %-30.50s\n", "remove sale", "remove future or current sale from the system");
+        System.out.printf("%-30.30s %-30s\n", "add sale", "create a new sale");
+        System.out.printf("%-30.30s %-30s\n", "remove sale", "remove future or current sale from the system");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30.50s\n", "add product", "add a new product");
-        System.out.printf("%-30.30s %-30.50s\n", "delete product", "delete product from catalog");
-        System.out.printf("%-30.30s %-30.50s\n", "change product name", "change product name");
-        System.out.printf("%-30.30s %-30.50s\n", "change product price", "change product price");
+        System.out.printf("%-30.30s %-30s\n", "add product", "add a new product");
+        System.out.printf("%-30.30s %-30s\n", "delete product", "delete product from catalog");
+        System.out.printf("%-30.30s %-30s\n", "change product name", "change product name");
+        System.out.printf("%-30.30s %-30s\n", "change product price", "change product price");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30.50s\n", "add category", "create a new category");
-        System.out.printf("%-30.30s %-30.50s\n", "change category parent", "change a category's \"parent\" category");
-        System.out.printf("%-30.30s %-30.50s\n", "change category name", "change a category's name");
-        System.out.printf("%-30.30s %-30.50s\n", "change product category", "move a product to a new category");
+        System.out.printf("%-30.30s %-30s\n", "add category", "create a new category");
+        System.out.printf("%-30.30s %-30s\n", "change category parent", "change a category's \"parent\" category");
+        System.out.printf("%-30.30s %-30s\n", "change category name", "change a category's name");
+        System.out.printf("%-30.30s %-30s\n", "change product category", "move a product to a new category");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30.50s\n", "min stock report", "prints stock report of items under the min amount");
-        System.out.printf("%-30.30s %-30.50s\n", "store stock report", "report of stock in specified store");
-        System.out.printf("%-30.30s %-30.50s\n", "sale history by product", "see history of sales on a specific product");
-        System.out.printf("%-30.30s %-30.50s\n", "sale history by category", "see history of sales on a specific category");
-        System.out.printf("%-30.30s %-30.50s\n", "purchase from supplier history", "see history of all purchases from suppliers");
-        System.out.printf("%-30.30s %-30.50s\n", "discount from supplier history", "see history of all discounts from suppliers");
-        System.out.printf("%-30.30s %-30.50s\n", "add purchase from supplier", "input a purchase of stock from supplier");
+        System.out.printf("%-30.30s %-30s\n", "min stock report", "prints stock report of items under the min amount");
+        System.out.printf("%-30.30s %-30s\n", "store stock report", "report of stock in specified store");
+        System.out.printf("%-30.30s %-30s\n", "sale history by product", "see history of sales on a specific product");
+        System.out.printf("%-30.30s %-30s\n", "sale history by category", "see history of sales on a specific category");
+        System.out.printf("%-30.30s %-30s\n", "purchase from supplier history", "see history of all purchases from suppliers");
+        System.out.printf("%-30.30s %-30s\n", "discount from supplier history", "see history of all discounts from suppliers");
+        System.out.printf("%-30.30s %-30s\n", "add purchase from supplier", "input a purchase of stock from supplier");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30.50s\n", "report expired", "report finding of expired items");
-        System.out.printf("%-30.30s %-30.50s\n", "report damaged", "report finding of damaged items");
-        System.out.printf("%-30.30s %-30.50s\n", "expired items", "print a report of expired items");
-        System.out.printf("%-30.30s %-30.50s\n", "damaged items", "print a report of damaged items");
-        System.out.printf("%-30.30s %-30.50s\n", "defective items", "print a report of defective (damaged and expired together) items");
+        System.out.printf("%-30.30s %-30s\n", "report expired", "report finding of expired items");
+        System.out.printf("%-30.30s %-30s\n", "report damaged", "report finding of damaged items");
+        System.out.printf("%-30.30s %-30s\n", "expired items", "print a report of expired items");
+        System.out.printf("%-30.30s %-30s\n", "damaged items", "print a report of damaged items");
+        System.out.printf("%-30.30s %-30s\n", "defective items", "print a report of defective (damaged and expired together) items");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30.50s\n", "add supplier to product", "adds a supplier as one of the product's suppliers");
-        System.out.printf("%-30.30s %-30.50s\n", "remove supplier from product", "removes a supplier from list of product's suppliers");
+        System.out.printf("%-30.30s %-30s\n", "add supplier to product", "adds a supplier as one of the product's suppliers");
+        System.out.printf("%-30.30s %-30s\n", "remove supplier from product", "removes a supplier from list of product's suppliers");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30.50s\n", "add store", "add a new store to the system");
-        System.out.printf("%-30.30s %-30.50s\n", "remove store", "remove store from the system");
+        System.out.printf("%-30.30s %-30s\n", "add store", "add a new store to the system");
+        System.out.printf("%-30.30s %-30s\n", "remove store", "remove store from the system");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30.50s\n", "help", "prints this menu");
-        System.out.printf("%-30.30s %-30.50s\n", "q", "quits program");
+        System.out.printf("%-30.30s %-30s\n", "help", "prints this menu");
+        System.out.printf("%-30.30s %-30s\n", "q", "quits program");
 
 //        System.out.println("load data", "Persistence Layer is not implemented yet");
     }

@@ -2,6 +2,7 @@ package BusinessLayer;
 
 import BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
+import Globals.Defect;
 
 import java.util.*;
 
@@ -142,12 +143,24 @@ public class Product {
         damagedItemReport.add(dir);
         return dir;
     }
+
     public DefectiveItems reportExpired(int storeID, int amount, int employeeID, String description) {
         removeItems(storeID, amount);
         DefectiveItems eir = new DefectiveItems(Expired, new Date(), storeID, id, amount, employeeID, description);
         expiredItemReport.add(eir);
         return eir;
     }
+
+    public DefectiveItems reportDefectiveForTest(int storeID, int amount, int employeeID, String description, Defect defect, Date date) {
+        removeItems(storeID, amount);
+        DefectiveItems eir = new DefectiveItems(defect, date, storeID, id, amount, employeeID, description);
+        if (defect==Expired)
+            expiredItemReport.add(eir);
+        else
+            damagedItemReport.add(eir);
+        return eir;
+    }
+
     public List<DefectiveItems> getDamagedItemReportsByStore(Date start, Date end, List<Integer> storeID) {
         List<DefectiveItems> dirList = new ArrayList<>();
         for (DefectiveItems dir: damagedItemReport) {

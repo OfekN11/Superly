@@ -2,6 +2,7 @@ package BusinessLayer;
 
 import BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
+import Globals.Defect;
 import jdk.jfr.Percentage;
 
 import java.util.*;
@@ -36,6 +37,7 @@ public class InventoryController {
         addCategoriesForTests();
         addProductsForTests();
         addSalesForTests();
+        addReportsForTests();
     }
 
     public SaleToCustomer addSale(List<Integer> categoriesList, List<Integer> productIDs, int percent, Date start, Date end) {
@@ -49,22 +51,24 @@ public class InventoryController {
         //remove redundant products and categories
         List<Integer> redundantCategories = new ArrayList<>();
         //search forward
-        for (Integer i = 0; i<categoriesList.size(); i++) {
+        for (Integer i : categories.keySet()) {
             Category category1 = categories.get(i);
-            for (Integer j = i + 1; i < categoriesList.size(); j++) {
-                Category category2 = categories.get(j);
-                if (category2.belongsToCategory(category1)) {
-                    redundantCategories.add(j);
-                }
-                if (category1.belongsToCategory(category2)) {
-                    redundantCategories.add(i);
+            for (Integer j : categories.keySet()) {
+                if (j!=i) {
+                    Category category2 = categories.get(j);
+                    if (category2.belongsToCategory(category1)) {
+                        redundantCategories.add(j);
+                    }
+                    if (category1.belongsToCategory(category2)) {
+                        redundantCategories.add(i);
+                    }
                 }
             }
         }
         categoriesList.removeAll(redundantCategories);
         //search products
         List<Integer> redundantProducts = new ArrayList<>();
-        for (Integer i = 0; i< productIDs.size(); i++) {
+        for (Integer i : productIDs) {
             Product product = getProduct(i);
             for (Integer c : categoriesList) {
                 Category category = categories.get(c);
@@ -331,94 +335,6 @@ public class InventoryController {
         return price;
     }
 
-    private void addCategoriesForTests () {
-        addCategory("Small", 0);
-        addCategory("Small", 0);
-        addCategory("Large", 0);
-        addCategory("Large", 0);
-        addCategory("Medium", 0);
-
-        addCategory("Shampoo", 0);
-
-        addCategory("Milk", 0);
-        changeParentCategory(1, 7);
-        changeParentCategory(3, 7);
-        changeParentCategory(5, 7);
-
-        addCategory("Yogurt", 0);
-        changeParentCategory(2, 8);
-        changeParentCategory(3, 8);
-
-        addCategory("Dairy", 0);
-        changeParentCategory(7, 9);
-        changeParentCategory(7, 9);
-
-        addCategory("Toothpaste", 0);
-
-        addCategory("Health", 0);
-        changeParentCategory(6, 11);
-        changeParentCategory(9, 11);
-
-        addCategory("Organic", 0);
-        addCategory("Organic", 0);
-
-        addCategory("Vegetables", 0);
-        addCategory("Fruit", 0);
-        changeParentCategory(12, 14);
-        changeParentCategory(13, 15);
-
-        addCategory("Produce", 0);
-        changeParentCategory(14, 16);
-        changeParentCategory(15, 16);
-    }
-
-    private void addProductsForTests () {
-        newProduct("tomato", 12, -1, 7.2, new HashMap<>(), 0);
-        newProduct("tomato", 10, -1, 9.2, new HashMap<>(), 0);
-        newProduct("strawberry", 11, -1, 7.2, new HashMap<>(), 0);
-        newProduct("melon", 13, -1, 7.2, new HashMap<>(), 0);
-        newProduct( "Hawaii", 7, 1.2, 13, new HashMap<>(), 1);
-        newProduct("Crest", 8, 0.7, 7.2, new HashMap<>(), 2);
-        newProduct("Tara 1L", 5, 1.2, 8.6, new HashMap<>(), 17);
-        newProduct("Tnuva 1L", 5, 1.2, 8, new HashMap<>(), 18);
-        newProduct("yoplait strawberry", 2, 0.5, 5.3, new HashMap<>(), 9);
-        newProduct("yoplait vanilla", 2, 0.5, 5.3, new HashMap<>(), 9);
-        for (int i : storeIds) {
-            List<Integer> shelves = new ArrayList<>();
-            shelves.add(2*i); shelves.add(2*i+1);
-            for (int p : products.keySet()) {
-                addProductToStore(i, shelves, shelves, p, 10*shelves.get(1), 30*shelves.get(1));
-                addItems(i, p, 37);
-            }
-        }
-    }
-
-    private void addSalesForTests () {
-        List<Integer> categories = new ArrayList<>();
-        List<Integer> products = new ArrayList<>();
-        List<Integer> empty = new ArrayList<>();
-        //small milk,       medium milk,         toothpaste,         health
-        categories.add(1); categories.add(5); categories.add(8); categories.add(9);
-        //crest             tara1L          tnuva1L         organic tomato  organic strawberry
-        products.add(6); products.add(7); products.add(8); products.add(2); products.add(3);
-        Date threeDaysAgo = new Date(); threeDaysAgo.setHours(-72);
-        Date twoDaysAgo = new Date(); twoDaysAgo.setHours(-48);
-        Date yesterday = new Date(); yesterday.setHours(-24);
-        Date today = new Date();
-        Date tomorrow = new Date(); tomorrow.setHours(24);
-        Date twoDays = new Date(); twoDays.setHours(48);
-        Date threeDays = new Date(); threeDays.setHours(72);
-        addSale(categories, products, 15, threeDaysAgo, tomorrow);
-        addSale(categories, empty, 20, threeDaysAgo, yesterday);
-        addSale(empty, products, 5, today, tomorrow);
-        addSale(categories, products, 12, tomorrow, threeDays);
-        addSale(categories, empty, 17, twoDaysAgo, twoDays);
-    }
-
-    private void addReportsForTests () {
-        //add expired reports for items 2 and 3, none for 1
-    }
-
     public Product editProductPrice(int productID, double newPrice) {
         Product p = getProduct(productID);
         p.setPrice(newPrice);
@@ -503,5 +419,116 @@ public class InventoryController {
             catch (Exception e) {}
             }
         return stock;
+    }
+
+    private void addCategoriesForTests () {
+        addCategory("Small", 0);
+        addCategory("Small", 0);
+        addCategory("Large", 0);
+        addCategory("Large", 0);
+        addCategory("Medium", 0);
+
+        addCategory("Shampoo", 0);
+
+        addCategory("Milk", 0);
+        changeParentCategory(1, 7);
+        changeParentCategory(3, 7);
+        changeParentCategory(5, 7);
+
+        addCategory("Yogurt", 0);
+        changeParentCategory(2, 8);
+        changeParentCategory(4, 8);
+
+        addCategory("Dairy", 0);
+        changeParentCategory(7, 9);
+        changeParentCategory(8, 9);
+
+        addCategory("Toothpaste", 0);
+
+        addCategory("Health", 0);
+        changeParentCategory(6, 11);
+        changeParentCategory(10, 11);
+
+        addCategory("Organic", 0);
+        addCategory("Organic", 0);
+
+        addCategory("Vegetables", 0);
+        addCategory("Fruit", 0);
+        changeParentCategory(12, 14);
+        changeParentCategory(13, 15);
+
+        addCategory("Produce", 0);
+        changeParentCategory(14, 16);
+        changeParentCategory(15, 16);
+    }
+
+    private void addProductsForTests () {
+        newProduct("tomato", 14, -1, 7.2, new HashMap<>(), 0);
+        newProduct("tomato", 12, -1, 9.2, new HashMap<>(), 0);
+        newProduct("strawberry", 13, -1, 7.2, new HashMap<>(), 0);
+        newProduct("melon", 15, -1, 7.2, new HashMap<>(), 0);
+        newProduct( "Hawaii", 6, 1.2, 13, new HashMap<>(), 1);
+        newProduct("Crest", 10, 0.7, 7.2, new HashMap<>(), 2);
+        newProduct("Tara 1L", 5, 1.2, 8.6, new HashMap<>(), 17);
+        newProduct("Tnuva 1L", 5, 1.2, 8, new HashMap<>(), 18);
+        newProduct("yoplait strawberry", 2, 0.5, 5.3, new HashMap<>(), 9);
+        newProduct("yoplait vanilla", 2, 0.5, 5.3, new HashMap<>(), 9);
+        for (int i : storeIds) {
+            List<Integer> shelves = new ArrayList<>();
+            shelves.add(2*i); shelves.add(2*i+1);
+            for (int p : products.keySet()) {
+                addProductToStore(i, shelves, shelves, p, 10*shelves.get(1), 30*shelves.get(1));
+                addItems(i, p, 37);
+            }
+        }
+    }
+
+    private void addSalesForTests () {
+        List<Integer> categories = new ArrayList<>();
+        List<Integer> products = new ArrayList<>();
+        List<Integer> empty = new ArrayList<>();
+        //small milk,       medium milk,         toothpaste,         health
+        categories.add(1); categories.add(5); categories.add(8); categories.add(9);
+        //crest             tara1L          tnuva1L         organic tomato  organic strawberry
+        products.add(6); products.add(7); products.add(8); products.add(2); products.add(3);
+
+        Date threeDaysAgo = new Date(); threeDaysAgo.setHours(-72);
+        Date twoDaysAgo = new Date(); twoDaysAgo.setHours(-48);
+        Date yesterday = new Date(); yesterday.setHours(-24);
+        Date today = new Date();
+        Date tomorrow = new Date(); tomorrow.setHours(24);
+        Date twoDays = new Date(); twoDays.setHours(48);
+        Date threeDays = new Date(); threeDays.setHours(72);
+
+        addSale(categories, products, 15, threeDaysAgo, tomorrow);
+        addSale(categories, empty, 20, threeDaysAgo, yesterday);
+        addSale(empty, products, 5, today, tomorrow);
+        addSale(categories, products, 12, tomorrow, threeDays);
+        addSale(categories, empty, 17, twoDaysAgo, twoDays);
+    }
+
+    private void addReportsForTests () {
+        //add expired reports for items 2 and 3, none for 1
+        Date threeDaysAgo = new Date(); threeDaysAgo.setHours(-72);
+        Date twoDaysAgo = new Date(); twoDaysAgo.setHours(-48);
+        Date yesterday = new Date(); yesterday.setHours(-24);
+        Date today = new Date();
+
+        reportDefectiveForTest(4,2,10, 23, "", Defect.Expired, threeDaysAgo);
+        reportDefectiveForTest(4,6,11, 23, "", Defect.Expired, threeDaysAgo);
+        reportDefectiveForTest(4,3,3, 23, "", Defect.Expired, twoDaysAgo);
+        reportDefectiveForTest(4,2,2, 23, "", Defect.Expired, yesterday);
+        reportDefectiveForTest(4,2,6, 23, "", Defect.Expired, today);
+
+        reportDefectiveForTest(4,4,10, 24, "broken spout", Defect.Damaged, threeDaysAgo);
+        reportDefectiveForTest(4,4,11, 2, "fell on floor", Defect.Damaged, threeDaysAgo);
+        reportDefectiveForTest(4,1,3, 3, "the dog ate it", Defect.Damaged, twoDaysAgo);
+        reportDefectiveForTest(4,9,2, 23, "alarm didn't go off", Defect.Damaged, yesterday);
+        reportDefectiveForTest(4,2,6, 23, "very sour", Defect.Damaged, today);
+    }
+
+    private void reportDefectiveForTest(int storeID, int productID, int amount, int employeeID, String description, Defect defect, Date date) {
+        Product product = getProduct(productID);
+        product.reportDefectiveForTest(storeID, amount, employeeID, description, defect, date);
     }
 }

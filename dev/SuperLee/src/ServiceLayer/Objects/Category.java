@@ -17,7 +17,7 @@ public class Category {
         for (BusinessLayer.Category ca : c.getSubcategories())
             subCats.add(new Category(ca));
         this.subCategories = subCats;
-        this.numOfProducts=c.getProducts().size();
+        this.numOfProducts=c.getAllProductsInCategory().size();
     }
     public int getID() { return ID; }
     @Override
