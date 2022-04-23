@@ -244,7 +244,7 @@ public class InventoryController {
         throw new NoSuchMethodException();
     }
 
-    public Product newProduct(String name, int categoryID, int weight, double price, Map<Integer, Integer> suppliers, int manufacturerID) {
+    public Product newProduct(String name, int categoryID, double weight, double price, Map<Integer, Integer> suppliers, int manufacturerID) {
         Category category = categories.get(categoryID);
         int id = productID++;
         Product product = new Product(id, name, category, weight, price, suppliers, manufacturerID);
@@ -385,16 +385,16 @@ public class InventoryController {
     }
 
     private void addProductsForTests () {
-        products.put(productID, new Product(productID++, "tomato", categories.get(12), -1, 7.2, new HashMap<>(), 0));
-        products.put(productID, new Product(productID++, "tomato", categories.get(10), -1, 9.2, new HashMap<>(), 0));
-        products.put(productID, new Product(productID++, "strawberry", categories.get(11), -1, 7.2, new HashMap<>(), 0));
-        products.put(productID, new Product(productID++, "melon", categories.get(13), -1, 7.2, new HashMap<>(), 0));
-        products.put(productID, new Product(productID++, "Hawaii", categories.get(7), 1.2, 13, new HashMap<>(), 1));
-        products.put(productID, new Product(productID++, "Crest", categories.get(8), 0.7, 7.2, new HashMap<>(), 2));
-        products.put(productID, new Product(productID++, "Tara 1L", categories.get(5), 1.2, 8.6, new HashMap<>(), 17));
-        products.put(productID, new Product(productID++, "Tnuva 1L", categories.get(5), 1.2, 8, new HashMap<>(), 18));
-        products.put(productID, new Product(productID++, "yoplait strawberry", categories.get(2), 0.5, 5.3, new HashMap<>(), 9));
-        products.put(productID, new Product(productID++, "yoplait vanilla", categories.get(2), 0.5, 5.3, new HashMap<>(), 9));
+        newProduct("tomato", 12, -1, 7.2, new HashMap<>(), 0);
+        newProduct("tomato", 10, -1, 9.2, new HashMap<>(), 0);
+        newProduct("strawberry", 11, -1, 7.2, new HashMap<>(), 0);
+        newProduct("melon", 13, -1, 7.2, new HashMap<>(), 0);
+        newProduct( "Hawaii", 7, 1.2, 13, new HashMap<>(), 1);
+        newProduct("Crest", 8, 0.7, 7.2, new HashMap<>(), 2);
+        newProduct("Tara 1L", 5, 1.2, 8.6, new HashMap<>(), 17);
+        newProduct("Tnuva 1L", 5, 1.2, 8, new HashMap<>(), 18);
+        newProduct("yoplait strawberry", 2, 0.5, 5.3, new HashMap<>(), 9);
+        newProduct("yoplait vanilla", 2, 0.5, 5.3, new HashMap<>(), 9);
         for (int i : storeIds) {
             List<Integer> shelves = new ArrayList<>();
             shelves.add(2*i); shelves.add(2*i+1);
