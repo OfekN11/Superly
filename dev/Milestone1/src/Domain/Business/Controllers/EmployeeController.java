@@ -55,11 +55,6 @@ public class EmployeeController {
         return output;
     }
 
-    public Set<Employee> getEmployeesForWork(Date workday, ShiftTypes shift) {
-        createWorkday(workday);
-        return getEmployees(constraints.get(workday).get(shift));
-    }
-
     public void loadData() {
     }
 
@@ -116,28 +111,8 @@ public class EmployeeController {
         checkIDValidity(id);
         employees.remove(id);
     }
-
-    public void addEmployeeConstraint(int id, Date workday, ShiftTypes shift) throws Exception {
-        checkIDValidity(id);
-        createWorkday(workday);
-        constraints.get(workday).get(shift).add(id);
-    }
-
-    public void removeEmployeeConstraint(int id, Date workday, ShiftTypes shift) throws Exception {
-        checkIDValidity(id);
-        createWorkday(workday);
-        constraints.get(workday).get(shift).remove(id);
-    }
-
     private void checkIDValidity(int id) throws Exception{
         if (!employees.containsKey(id))
             throw new Exception(String.format("No such employee with ID: ", id));
-    }
-
-    private void createWorkday(Date workday){
-        if (!constraints.containsKey(workday))
-            constraints.put(workday, new HashMap<>());
-            for (ShiftTypes shift: ShiftTypes.values())
-                constraints.get(workday).put(shift, new HashSet<>());
     }
 }

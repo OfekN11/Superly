@@ -2,6 +2,7 @@ package Domain.Business.Objects;
 
 import Domain.DAL.Objects.DShift;
 import Domain.Service.ServiceShiftFactory;
+import Globals.Enums.JobTitles;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -10,6 +11,13 @@ import java.util.Set;
 public abstract class Shift {
     private static final String employeeAlreadyInShiftErrorMsg = "this employee already in this shift";
     private static final String employeeNotInShiftErrorMsg = "Employee %o was not in the shift";
+
+    private static final int MIN_CARRIERS= 1;
+    private static final int MIN_CASHIERS = 1;
+    private static final int MIN_STOREKEEPERS= 1;
+    private static final int MIN_SORTERS = 1;
+    private static final int MIN_HR_MANAGERS = 0;
+    private static final int MIN_LOGISTICS_MANAGERS = 0;
     private final DShift dShift; // represent of this object in the DAL
     // properties
     private final Date workday;
@@ -31,15 +39,21 @@ public abstract class Shift {
     // constructors
     public Shift(Date workday, int shiftManagerId,
                  int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,
-                 Set<Integer> carrierIDs, Set<Integer> cashierIDs, Set<Integer> storekeeperIDs, Set<Integer> sorterIDs, Set<Integer> hr_managerIDs, Set<Integer> logistics_managerIDs) {
+                 Set<Integer> carrierIDs, Set<Integer> cashierIDs, Set<Integer> storekeeperIDs, Set<Integer> sorterIDs, Set<Integer> hr_managerIDs, Set<Integer> logistics_managerIDs) throws Exception {
         this.workday = workday;
         this.shiftManagerId = shiftManagerId;
 
+        checkCountValidity(carrierCount, MIN_CARRIERS, JobTitles.Carrier);
         this.carrierCount = carrierCount;
-        this.cashierCount= cashierCount;
+        checkCountValidity(cashierCount, MIN_CASHIERS, JobTitles.Cashier);
+        this.cashierCount = cashierCount;
+        checkCountValidity(storekeeperCount, MIN_STOREKEEPERS, JobTitles.Storekeeper);
         this.storekeeperCount = storekeeperCount;
+        checkCountValidity(sorterCount, MIN_SORTERS, JobTitles.Sorter);
         this.sorterCount = sorterCount;
+        checkCountValidity(hr_managersCount, MIN_HR_MANAGERS, JobTitles.HR_Manager);
         this.hr_managersCount = hr_managersCount;
+        checkCountValidity(logistics_managersCount, MIN_LOGISTICS_MANAGERS, JobTitles.Logistics_Manager);
         this.logistics_managersCount = logistics_managersCount;
 
         this.carrierIDs = new HashSet<>(cashierIDs);
@@ -52,9 +66,9 @@ public abstract class Shift {
         this.dShift = new DShift(workday, employeesId, shiftManager.getId());
     }
 
-    public Shift(Date workday){
+    public Shift(Date workday) throws Exception {
         this(workday, -1,
-                0, 0, 0, 0, 0, 0,
+                MIN_CARRIERS, MIN_CASHIERS, MIN_STOREKEEPERS, MIN_SORTERS, MIN_HR_MANAGERS, MIN_LOGISTICS_MANAGERS,
                 new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
@@ -100,7 +114,7 @@ public abstract class Shift {
     }
 
     public void setCarrierCount(int carrierCount) throws Exception {
-        checkCountValidity(carrierCount);
+        checkCountValidity(carrierCount, MIN_CARRIERS, JobTitles.Carrier);
         checkSizeValidity(carrierCount, carrierIDs.size());
         this.carrierCount = carrierCount;
     }
@@ -110,7 +124,7 @@ public abstract class Shift {
     }
 
     public void setCashierCount(int cashierCount) throws Exception {
-        checkCountValidity(cashierCount);
+        checkCountValidity(cashierCount, MIN_CASHIERS, JobTitles.Cashier);
         checkSizeValidity(cashierCount, cashierIDs.size());
         this.cashierCount = cashierCount;
     }
@@ -120,7 +134,7 @@ public abstract class Shift {
     }
 
     public void setStorekeeperCount(int storekeeperCount) throws Exception {
-        checkCountValidity(storekeeperCount);
+        checkCountValidity(storekeeperCount, MIN_STOREKEEPERS, JobTitles.Storekeeper);
         checkSizeValidity(storekeeperCount, storekeeperIDs.size());
         this.storekeeperCount = storekeeperCount;
     }
@@ -130,7 +144,7 @@ public abstract class Shift {
     }
 
     public void setSorterCount(int sorterCount) throws Exception {
-        checkCountValidity(sorterCount);
+        checkCountValidity(sorterCount, MIN_SORTERS, JobTitles.Sorter);
         checkSizeValidity(sorterCount, sorterIDs.size());
         this.sorterCount = sorterCount;
     }
@@ -140,7 +154,7 @@ public abstract class Shift {
     }
 
     public void setHr_managersCount(int hr_managersCount) throws Exception {
-        checkCountValidity(hr_managersCount);
+        checkCountValidity(hr_managersCount, MIN_HR_MANAGERS, JobTitles.HR_Manager);
         checkSizeValidity(hr_managersCount, hr_managerIDs.size());
         this.hr_managersCount = hr_managersCount;
     }
@@ -150,7 +164,7 @@ public abstract class Shift {
     }
 
     public void setLogistics_managersCount(int logistics_managersCount) throws Exception {
-        checkCountValidity(logistics_managersCount);
+        checkCountValidity(logistics_managersCount, MIN_LOGISTICS_MANAGERS, JobTitles.Logistics_Manager);
         checkSizeValidity(logistics_managersCount, logistics_managerIDs.size());
         this.logistics_managersCount = logistics_managersCount;
     }
@@ -211,9 +225,9 @@ public abstract class Shift {
 
     public abstract Domain.Service.Objects.Shift accept(ServiceShiftFactory factory);
 
-    private void checkCountValidity(int count) throws Exception {
-        if (count < 0)
-            throw new Exception("A shift can't have less the 0 workers of any type");
+    private void checkCountValidity(int count, int minimum, JobTitles type) throws Exception {
+        if (count < minimum)
+            throw new Exception(String.format("A shift can't have less than %s %s(s)", minimum, type));
     }
 
     private void checkSizeValidity(int count, int size) throws Exception {

@@ -1,8 +1,9 @@
-package Domain.Service;
+package Domain.Service.Services;
 
 import Domain.Business.Controllers.ShiftController;
 import Domain.Service.Objects.Result;
 import Domain.Service.Objects.Shift;
+import Domain.Service.ServiceShiftFactory;
 import Globals.Enums.ShiftTypes;
 
 import java.util.Date;

@@ -1,7 +1,8 @@
-package Domain.Service;
+package Domain.Service.Services;
 
 import Domain.Business.Controllers.EmployeeController;
 import Domain.Service.Objects.*;
+import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
