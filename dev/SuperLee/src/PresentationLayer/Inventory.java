@@ -1016,21 +1016,6 @@ public class Inventory {
             isUnderMin(storeID, productId);
         }
     }
-//
-//    private static void addItems() {
-//        int storeID = getStoreID();
-//        System.out.println("Please insert product ID of product you are receiving");
-//        int productId = scanner.nextInt();
-//        System.out.println("Please insert amount of product you have received");
-//        int amount = scanner.nextInt();
-//        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-//        Result r = is.addItems(storeID, productId, amount);
-//        if (r.isError())
-//            System.out.println(r.getError());
-//        else {
-//            System.out.println("Process complete");
-//        }
-//    }
 
     private static void help() {
         //addSupplier
@@ -1077,7 +1062,6 @@ public class Inventory {
         System.out.printf("%-30.30s %-30s\n", "sale history by category", "see history of sales on a specific category");
         System.out.printf("%-30.30s %-30s\n", "purchase from supplier history", "see history of all purchases from suppliers");
         System.out.printf("%-30.30s %-30s\n", "discount from supplier history", "see history of all discounts from suppliers");
-        System.out.printf("%-30.30s %-30s\n", "add purchase from supplier", "input a purchase of stock from supplier");
 
         System.out.println();
         System.out.printf("%-30.30s %-30s\n", "report expired", "report finding of expired items");

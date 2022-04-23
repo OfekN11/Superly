@@ -99,17 +99,23 @@ public class Product {
     }
 
     public void removeItems(int storeID, int amount) { //bought or thrown=
+        if (!inStore.containsKey(storeID))
+            throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
         if (inStore.get(storeID)+inWarehouse.get(storeID)-amount<0)
             throw new IllegalArgumentException("Can not buy or remove more items than in the store - please check amount");
         inStore.put(storeID, inStore.get(storeID)-amount);
     }
     public void moveItems(int storeID, int amount) { //from warehouse to store
+        if (!inStore.containsKey(storeID))
+            throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
         if (inWarehouse.get(storeID)-amount<0)
             throw new IllegalArgumentException("Can not move more items than in the warehouse");
         inWarehouse.put(storeID, inWarehouse.get(storeID)-amount);
         inStore.put(storeID, inStore.get(storeID)+amount);
     }
     public PurchaseFromSupplier addItems(int storeId, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
+        if (!inStore.containsKey(storeId))
+            throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
         if (inStore.get(storeId)+inWarehouse.get(storeId)+amountBought>maxAmounts.get(storeId))
             throw new IllegalArgumentException("Can not add more items than the max capacity in the store");
         PurchaseFromSupplier p = new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
@@ -118,6 +124,10 @@ public class Product {
         return p;
     }
     public double returnItems(int storeID, int amount, Date dateBought) { //from customer to store
+        if (!inStore.containsKey(storeID))
+            throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
+        if (inStore.get(storeID)+inWarehouse.get(storeID)+amount>maxAmounts.get(storeID))
+            throw new IllegalArgumentException("Can not return more items than the max capacity in the store");
         inStore.put(storeID, inStore.get(storeID)+amount);
         return amount*getPriceOnDate(dateBought);
     }
