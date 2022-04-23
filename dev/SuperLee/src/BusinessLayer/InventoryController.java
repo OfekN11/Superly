@@ -22,7 +22,7 @@ public class InventoryController {
         categories = new HashMap<>();
         sales = new ArrayList<>();
         products = new HashMap<>();
-        storeID=0;
+        storeID=1;
         saleID=1;
         catID=1;
         productID=1;
@@ -465,7 +465,7 @@ public class InventoryController {
         for (Product p : products.values()) {
             for (int i : storeIds) {
                 if (p.isLow(i))
-                    lowOnStock.add(new StockReport(i, p.getId(), p.getName(), p.getInStore(i)+p.getInWarehouse(i), p.getMinInStore(i)));
+                    lowOnStock.add(new StockReport(i, p.getId(), p.getName(), p.getInStore(i), p.getInWarehouse(i), p.getInStore(i)+p.getInWarehouse(i), p.getMinInStore(i), p.getMaxInStore(i)));
             }
         }
         return lowOnStock;
@@ -497,7 +497,7 @@ public class InventoryController {
     public List<StockReport> getStockReport(int store) {
         List<StockReport> stock = new ArrayList<>();
         for (Product p : products.values()) {
-            stock.add(new StockReport(store, p.getId(), p.getName(), p.getInStore(store)+p.getInWarehouse(store), p.getMinInStore(store)));
+            stock.add(new StockReport(store, p.getId(), p.getName(), p.getInStore(store), p.getInWarehouse(store), p.getInStore(store)+p.getInWarehouse(store), p.getMinInStore(store), p.getMaxInStore(store)));
         }
         return stock;
     }
