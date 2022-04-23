@@ -55,12 +55,11 @@ public class DefectiveItems {
 
 
     public boolean inDates(Date startDate, Date endDate) {
-        Date today = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(endDate);
         c.add(Calendar.DATE, 1);
         endDate = c.getTime();
         endDate.setSeconds(-1);
-        return (!(startDate.after(today) || endDate.before(today)));
+        return (!(startDate.after(date) || endDate.before(date)));
     }
 }

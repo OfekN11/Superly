@@ -315,8 +315,6 @@ public class InventoryController {
     }
 
     public List<DefectiveItems> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productID) {
-        if (!start.before(end) || !start.before(new Date()))
-            throw new IllegalArgumentException("Illegal start/end dates");
         List<DefectiveItems> eirList = new ArrayList<>();
         for (Integer p: productID) {
             eirList.addAll(getProduct(p).getExpiredItemReports(start, end));
