@@ -398,8 +398,7 @@ public class Inventory {
     }
 
     private static void expiredItemsByStore() {
-        System.out.println("Please insert store IDs, separated by commas");
-        System.out.println("For example: 2,4,1,11");
+        System.out.println("Please insert store IDs, separated by commas without spaces");
         List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
         Date start = getDate();
@@ -420,8 +419,7 @@ public class Inventory {
     }
 
     private static void expiredItemsByCategory() {
-        System.out.println("Please insert category IDs, separated by commas");
-        System.out.println("For example: 2,4,1,11");
+        System.out.println("Please insert category IDs, separated by commas without spaces");
         List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
         Date start = getDate();
@@ -442,8 +440,7 @@ public class Inventory {
     }
 
     private static void expiredItemsByProduct() {
-        System.out.println("Please insert product IDs, separated by commas");
-        System.out.println("For example: 2,4,1,11");
+        System.out.println("Please insert product IDs, separated by commas without spaces");
         List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
         Date start = getDate();
@@ -529,8 +526,7 @@ public class Inventory {
     }
 
     private static void defectiveItemsByStore() {
-        System.out.println("Please insert store IDs, separated by commas");
-        System.out.println("For example: 2,4,1,11");
+        System.out.println("Please insert store IDs, separated by commas without spaces");
         List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
         Date start = getDate();
@@ -551,8 +547,7 @@ public class Inventory {
     }
 
     private static void defectiveItemsByCategory() {
-        System.out.println("Please insert category IDs, separated by commas");
-        System.out.println("For example: 2,4,1,11");
+        System.out.println("Please insert category IDs, separated by commas without spaces");
         List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
         Date start = getDate();
@@ -573,8 +568,7 @@ public class Inventory {
     }
 
     private static void defectiveItemsByProduct() {
-        System.out.println("Please insert product IDs, separated by commas");
-        System.out.println("For example: 2,4,1,11");
+        System.out.println("Please insert product IDs, separated by commas without spaces");
         List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
         Date start = getDate();
@@ -640,8 +634,7 @@ public class Inventory {
     }
 
     private static void damagedItemsByStore() {
-        System.out.println("Please insert store IDs, separated by commas");
-        System.out.println("For example: 2,4,1,11");
+        System.out.println("Please insert store IDs, separated by commas without spaces");
         List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
         Date start = getDate();
@@ -662,8 +655,7 @@ public class Inventory {
     }
 
     private static void damagedItemsByCategory() {
-        System.out.println("Please insert category IDs, separated by commas");
-        System.out.println("For example: 2,4,1,11");
+        System.out.println("Please insert category IDs, separated by commas without spaces");
         List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
         Date start = getDate();
@@ -684,8 +676,7 @@ public class Inventory {
     }
 
     private static void damagedItemsByProduct() {
-        System.out.println("Please insert product IDs, separated by commas");
-        System.out.println("For example: 2,4,1,11");
+        System.out.println("Please insert product IDs, separated by commas without spaces");
         List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
         Date start = getDate();
@@ -895,13 +886,17 @@ public class Inventory {
     }
 
     private static void addSale() {
-        System.out.println("Please insert category IDs, separated by ','");
-        System.out.println("For example: 12,3,4,1");
-        List<Integer> categories = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        List<Integer> categories;
+        List<Integer> products;
+        System.out.println("Please insert category IDs, separated by ',' without spaces");
+        try {
+            categories = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        } catch (Exception e) { categories = new ArrayList<>(); }
         System.out.println("Please insert product IDs, separated by ',' without spaces");
-        System.out.println("For example: 12,3,4,1");
-        List<Integer> products = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
-        System.out.println("Please insert percent of sale: 0-100");
+        try {
+            products = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        } catch (Exception e) { products = new ArrayList<>(); }
+        System.out.println("Please insert percent of sale: (more than 0, less than 100)");
         int percent = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert start date");

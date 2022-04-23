@@ -3,7 +3,7 @@ package ServiceLayer.Objects;
 import BusinessLayer.DiscountsAndSales.SaleToCustomer;
 
 public class Sale {
-    private final double percent;
+    private final int percent;
     public Sale(SaleToCustomer s) {
         this.percent = s.getPercent();
     }
