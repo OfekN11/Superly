@@ -153,14 +153,15 @@ public class Inventory {
     }
 
     private static void storeStockReport() {
-//        int store = getStoreID();
-//        Result<List<Product>> r = is.storeStockReport(store);
-//        if (r.isError())
-//            System.out.println(r.getError());
-//        else {
-//            System.out.println("Supplier successfully removed");
-//            System.out.println(r.getValue());
-//        }
+        int store = getStoreID();
+        Result<List<StockReport>> r = is.storeStockReport(store);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<StockReport> stockReports = r.getValue();
+            for (StockReport s : stockReports)
+                System.out.println(s);
+        }
     }
 
     private static void removeSupplierFromProduct() {
@@ -243,14 +244,14 @@ public class Inventory {
     }
 
     private static void getMinStockReport() {
-        Result<Map<Integer, Product>> r = is.getMinStockReport();
+        Result<List<StockReport>> r = is.getMinStockReport();
         if (r.isError())
             System.out.println(r.getError());
         else {
             System.out.printf("%-30.30s %-30.50s\n", "Store ID", "Product");
-            Map<Integer, Product> productMap = r.getValue();
-            for (Integer i : productMap.keySet())
-                System.out.printf("%-30.10s %-30.50s\n", i, productMap.get(i));
+            List<StockReport> stockReports = r.getValue();
+            for (StockReport s : stockReports)
+                System.out.println(s);
         }
     }
 
