@@ -93,7 +93,7 @@ public class Product {
     }
 
     public void removeItems(int storeID, int amount) { //bought or thrown=
-        if (inStore.get(storeID)-amount<0)
+        if (inStore.get(storeID)+inWarehouse.get(storeID)-amount<0)
             throw new IllegalArgumentException("Can not buy or remove more items than in the store - please check amount");
         inStore.put(storeID, inStore.get(storeID)-amount);
     }
