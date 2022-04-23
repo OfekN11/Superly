@@ -16,7 +16,7 @@ public class SaleToCustomer {
 
     public SaleToCustomer(int id, Date startDate, Date endDate, int percent, List<Integer> categoriesList, List<Integer> products) {
         if (percent>=100 || percent<=0)
-            throw new IllegalArgumentException("SaleToCustomer: Constructor: Illegal percent value");
+            throw new IllegalArgumentException("Percent sale must be between 1 and 99. Received: " + percent);
         if (endDate.before(startDate))
             throw new IllegalArgumentException("SaleToCustomer: Constructor: end date is before the start date");
         this.id = id;

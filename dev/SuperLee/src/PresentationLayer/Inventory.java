@@ -987,10 +987,13 @@ public class Inventory {
         if (r.isError())
             System.out.println(r.getError());
         else {
-            System.out.println("Total refund is " + r.getValue() + "NIS");
+            System.out.println("Total refund is " + round(r.getValue()) + "NIS");
         }
     }
-
+    private static double round(double price) {
+        price = (int)(price*100);
+        return price/100;
+    }
     private static void buyItems() {
         int storeID = getStoreID();
         System.out.println("Please insert product ID of product you would like to buy");
@@ -1002,7 +1005,7 @@ public class Inventory {
         if (r.isError())
             System.out.println(r.getError());
         else {
-            System.out.println("Purchase successful! Total price is " + r.getValue() + "NIS");
+            System.out.println("Purchase successful! Total price is " + round(r.getValue()) + "NIS");
             isUnderMin(storeID, productId);
         }
     }
