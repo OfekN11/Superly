@@ -45,6 +45,7 @@ public class Inventory {
         while (true) {
             try {
                 System.out.println("Please insert date in format: DD/MM/YYYY");
+                scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
                 String dateInput = scanner.nextLine();
                 if (dateInput.equals("c")) {
                     System.out.println("Cancelling command");
@@ -298,6 +299,7 @@ public class Inventory {
         else {
             System.out.println("Moving of items successful");
         }
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
     }
 
     private static void addPuchaseFromSupplier() {
@@ -938,7 +940,7 @@ public class Inventory {
         if (r.isError())
             System.out.println(r.getError());
         else {
-            System.out.println("Purchase successful! Total refund is " + r.getValue() + "NIS");
+            System.out.println("Total refund is " + r.getValue() + "NIS");
         }
     }
 
@@ -956,6 +958,7 @@ public class Inventory {
             System.out.println("Purchase successful! Total price is " + r.getValue() + "NIS");
             isUnderMin(storeID, productId);
         }
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
     }
 
     private static void addItems() {
@@ -970,6 +973,7 @@ public class Inventory {
         else {
             System.out.println("Process complete");
         }
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
     }
 
     private static void help() {
