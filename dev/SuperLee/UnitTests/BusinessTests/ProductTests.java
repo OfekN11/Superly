@@ -43,28 +43,28 @@ public class ProductTests {
     public void testAddItems() {
         try
         {
-            Assertions.assertEquals(0, product0.getInStore().get(0));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(0, product0.getInStore().get(1));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(0, product1.getInStore().get(0));
-            Assertions.assertEquals(0, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(0, product0.getInStore(0));
+            Assertions.assertEquals(0, product0.getInWarehouse(0));
+            Assertions.assertEquals(0, product0.getInStore(1));
+            Assertions.assertEquals(0, product0.getInWarehouse(1));
+            Assertions.assertEquals(0, product1.getInStore(0));
+            Assertions.assertEquals(0, product1.getInWarehouse(0));
             product0.addItems(0, 100);
-            Assertions.assertEquals(0, product0.getInStore().get(0));
-            Assertions.assertEquals(100, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(0, product0.getInStore().get(1));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(0, product1.getInStore().get(0));
-            Assertions.assertEquals(0, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(0, product0.getInStore(0));
+            Assertions.assertEquals(100, product0.getInWarehouse(0));
+            Assertions.assertEquals(0, product0.getInStore(1));
+            Assertions.assertEquals(0, product0.getInWarehouse(1));
+            Assertions.assertEquals(0, product1.getInStore(0));
+            Assertions.assertEquals(0, product1.getInWarehouse(0));
             product0.addItems(0, 40);
             product0.addItems(1, 30);
             product1.addItems(0, 99);
-            Assertions.assertEquals(0, product0.getInStore().get(0));
-            Assertions.assertEquals(140, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(0, product0.getInStore().get(1));
-            Assertions.assertEquals(30, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(0, product1.getInStore().get(0));
-            Assertions.assertEquals(99, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(0, product0.getInStore(0));
+            Assertions.assertEquals(140, product0.getInWarehouse(0));
+            Assertions.assertEquals(0, product0.getInStore(1));
+            Assertions.assertEquals(30, product0.getInWarehouse(1));
+            Assertions.assertEquals(0, product1.getInStore(0));
+            Assertions.assertEquals(99, product1.getInWarehouse(0));
         }
         catch (Exception e)
         {
@@ -75,32 +75,32 @@ public class ProductTests {
     public void testMoveItems() {
         try
         {
-            Assertions.assertEquals(0, product0.getInStore().get(0));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(0, product0.getInStore().get(1));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(0, product1.getInStore().get(0));
-            Assertions.assertEquals(0, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(0, product0.getInStore(0));
+            Assertions.assertEquals(0, product0.getInWarehouse(0));
+            Assertions.assertEquals(0, product0.getInStore(1));
+            Assertions.assertEquals(0, product0.getInWarehouse(1));
+            Assertions.assertEquals(0, product1.getInStore(0));
+            Assertions.assertEquals(0, product1.getInWarehouse(0));
             product0.addItems(0, 100);
             product0.moveItems(0, 58);
-            Assertions.assertEquals(58, product0.getInStore().get(0));
-            Assertions.assertEquals(42, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(0, product0.getInStore().get(1));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(0, product1.getInStore().get(0));
-            Assertions.assertEquals(0, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(58, product0.getInStore(0));
+            Assertions.assertEquals(42, product0.getInWarehouse(0));
+            Assertions.assertEquals(0, product0.getInStore(1));
+            Assertions.assertEquals(0, product0.getInWarehouse(1));
+            Assertions.assertEquals(0, product1.getInStore(0));
+            Assertions.assertEquals(0, product1.getInWarehouse(0));
             product0.addItems(0, 40);
             product0.addItems(1, 30);
             product1.addItems(0, 99);
             product0.moveItems(0, 40);
             product0.moveItems(1, 25);
             product1.moveItems(0, 18);
-            Assertions.assertEquals(98, product0.getInStore().get(0));
-            Assertions.assertEquals(42, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(25, product0.getInStore().get(1));
-            Assertions.assertEquals(5, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(18, product1.getInStore().get(0));
-            Assertions.assertEquals(81, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(98, product0.getInStore(0));
+            Assertions.assertEquals(42, product0.getInWarehouse(0));
+            Assertions.assertEquals(25, product0.getInStore(1));
+            Assertions.assertEquals(5, product0.getInWarehouse(1));
+            Assertions.assertEquals(18, product1.getInStore(0));
+            Assertions.assertEquals(81, product1.getInWarehouse(0));
         }
         catch (Exception e)
         {
@@ -111,21 +111,21 @@ public class ProductTests {
     public void testRemoveItems() {
         try
         {
-            Assertions.assertEquals(0, product0.getInStore().get(0));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(0, product0.getInStore().get(1));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(0, product1.getInStore().get(0));
-            Assertions.assertEquals(0, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(0, product0.getInStore(0));
+            Assertions.assertEquals(0, product0.getInWarehouse(0));
+            Assertions.assertEquals(0, product0.getInStore(1));
+            Assertions.assertEquals(0, product0.getInWarehouse(1));
+            Assertions.assertEquals(0, product1.getInStore(0));
+            Assertions.assertEquals(0, product1.getInWarehouse(0));
             product0.addItems(0, 100);
             product0.moveItems(0, 58);
             product0.removeItems(0, 37);
-            Assertions.assertEquals(21, product0.getInStore().get(0));
-            Assertions.assertEquals(42, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(0, product0.getInStore().get(1));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(0, product1.getInStore().get(0));
-            Assertions.assertEquals(0, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(21, product0.getInStore(0));
+            Assertions.assertEquals(42, product0.getInWarehouse(0));
+            Assertions.assertEquals(0, product0.getInStore(1));
+            Assertions.assertEquals(0, product0.getInWarehouse(1));
+            Assertions.assertEquals(0, product1.getInStore(0));
+            Assertions.assertEquals(0, product1.getInWarehouse(0));
             product0.addItems(0, 40);
             product0.addItems(1, 30);
             product1.addItems(0, 99);
@@ -135,12 +135,12 @@ public class ProductTests {
             product0.removeItems(0, 15);
             product0.removeItems(1, 25);
             product1.removeItems(0, 0);
-            Assertions.assertEquals(46, product0.getInStore().get(0));
-            Assertions.assertEquals(42, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(0, product0.getInStore().get(1));
-            Assertions.assertEquals(5, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(18, product1.getInStore().get(0));
-            Assertions.assertEquals(81, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(46, product0.getInStore(0));
+            Assertions.assertEquals(42, product0.getInWarehouse(0));
+            Assertions.assertEquals(0, product0.getInStore(1));
+            Assertions.assertEquals(5, product0.getInWarehouse(1));
+            Assertions.assertEquals(18, product1.getInStore(0));
+            Assertions.assertEquals(81, product1.getInWarehouse(0));
         }
         catch (Exception e)
         {
@@ -198,19 +198,19 @@ public class ProductTests {
             category0.addSale(sale2);
             category0.addSale(sale3);
 
-            Assertions.assertEquals(0, product0.getInStore().get(0));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(0, product0.getInStore().get(1));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(0, product1.getInStore().get(0));
-            Assertions.assertEquals(0, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(0, product0.getInStore(0));
+            Assertions.assertEquals(0, product0.getInWarehouse(0));
+            Assertions.assertEquals(0, product0.getInStore(1));
+            Assertions.assertEquals(0, product0.getInWarehouse(1));
+            Assertions.assertEquals(0, product1.getInStore(0));
+            Assertions.assertEquals(0, product1.getInWarehouse(0));
             double returnedValue = product0.returnItems(0, 100, beforeThreeDays);
-            Assertions.assertEquals(100, product0.getInStore().get(0));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(0, product0.getInStore().get(1));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(0, product1.getInStore().get(0));
-            Assertions.assertEquals(0, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(100, product0.getInStore(0));
+            Assertions.assertEquals(0, product0.getInWarehouse(0));
+            Assertions.assertEquals(0, product0.getInStore(1));
+            Assertions.assertEquals(0, product0.getInWarehouse(1));
+            Assertions.assertEquals(0, product1.getInStore(0));
+            Assertions.assertEquals(0, product1.getInWarehouse(0));
             Assertions.assertEquals(270 ,returnedValue);
             returnedValue = product0.returnItems(0, 40, beforeFourDays);
             Assertions.assertEquals(90 ,returnedValue);
@@ -222,12 +222,12 @@ public class ProductTests {
             Assertions.assertEquals(4 ,returnedValue);
             returnedValue = product0.returnItems(0, 99, beforeSixDays);
             Assertions.assertEquals(445.5 ,returnedValue);
-            Assertions.assertEquals(239, product0.getInStore().get(0));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(0));
-            Assertions.assertEquals(30, product0.getInStore().get(1));
-            Assertions.assertEquals(0, product0.getInWarehouse().get(1));
-            Assertions.assertEquals(104, product1.getInStore().get(0));
-            Assertions.assertEquals(0, product1.getInWarehouse().get(0));
+            Assertions.assertEquals(239, product0.getInStore(0));
+            Assertions.assertEquals(0, product0.getInWarehouse(0));
+            Assertions.assertEquals(30, product0.getInStore(1));
+            Assertions.assertEquals(0, product0.getInWarehouse(1));
+            Assertions.assertEquals(104, product1.getInStore(0));
+            Assertions.assertEquals(0, product1.getInWarehouse(0));
         }
         catch (Exception e)
         {
