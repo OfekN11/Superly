@@ -34,113 +34,99 @@ public class ProductTests {
         shelves5.add(10);
         shelves6.add(40);
         shelves6.add(39);
-        product0.addLocation(0, shelves1, shelves2, 80, 300);
-        product0.addLocation(1, shelves3, shelves4, 65, 250);
-        product1.addLocation(0, shelves5, shelves6, 40, 150);
+        product0.addLocation(1, shelves1, shelves2, 80, 300);
+        product0.addLocation(2, shelves3, shelves4, 65, 250);
+        product1.addLocation(1, shelves5, shelves6, 40, 150);
     }
 
     @Test
     public void testAddItems() {
-        try
-        {
-            Assertions.assertEquals(0, product0.getInStore(0));
-            Assertions.assertEquals(0, product0.getInWarehouse(0));
-            Assertions.assertEquals(0, product0.getInStore(1));
-            Assertions.assertEquals(0, product0.getInWarehouse(1));
-            Assertions.assertEquals(0, product1.getInStore(0));
-            Assertions.assertEquals(0, product1.getInWarehouse(0));
-            product0.addItems(0, 100);
-            Assertions.assertEquals(0, product0.getInStore(0));
-            Assertions.assertEquals(100, product0.getInWarehouse(0));
-            Assertions.assertEquals(0, product0.getInStore(1));
-            Assertions.assertEquals(0, product0.getInWarehouse(1));
-            Assertions.assertEquals(0, product1.getInStore(0));
-            Assertions.assertEquals(0, product1.getInWarehouse(0));
-            product0.addItems(0, 40);
-            product0.addItems(1, 30);
-            product1.addItems(0, 99);
-            Assertions.assertEquals(0, product0.getInStore(0));
-            Assertions.assertEquals(140, product0.getInWarehouse(0));
-            Assertions.assertEquals(0, product0.getInStore(1));
-            Assertions.assertEquals(30, product0.getInWarehouse(1));
-            Assertions.assertEquals(0, product1.getInStore(0));
-            Assertions.assertEquals(99, product1.getInWarehouse(0));
-        }
-        catch (Exception e)
-        {
-            Assertions.fail("addItems does not work");
-        }
+        Assertions.assertEquals(0, product0.getInStore(1));
+        Assertions.assertEquals(0, product0.getInWarehouse(1));
+        Assertions.assertEquals(0, product0.getInStore(2));
+        Assertions.assertEquals(0, product0.getInWarehouse(2));
+        Assertions.assertEquals(0, product1.getInStore(1));
+        Assertions.assertEquals(0, product1.getInWarehouse(1));
+        product0.addItems(1, new Date(), 1, "", 100, 5, 5);
+        Assertions.assertEquals(0, product0.getInStore(1));
+        Assertions.assertEquals(100, product0.getInWarehouse(1));
+        Assertions.assertEquals(0, product0.getInStore(2));
+        Assertions.assertEquals(0, product0.getInWarehouse(2));
+        Assertions.assertEquals(0, product1.getInStore(1));
+        Assertions.assertEquals(0, product1.getInWarehouse(1));
+        product0.addItems(1, new Date(), 1, "", 40, 5, 5);
+        product0.addItems(2, new Date(), 1, "", 30, 5, 5);
+        product1.addItems(1, new Date(), 1, "", 99, 5, 5);
+        Assertions.assertEquals(0, product0.getInStore(1));
+        Assertions.assertEquals(140, product0.getInWarehouse(1));
+        Assertions.assertEquals(0, product0.getInStore(2));
+        Assertions.assertEquals(30, product0.getInWarehouse(2));
+        Assertions.assertEquals(0, product1.getInStore(1));
+        Assertions.assertEquals(99, product1.getInWarehouse(1));
     }
     @Test
     public void testMoveItems() {
-        try
-        {
-            Assertions.assertEquals(0, product0.getInStore(0));
-            Assertions.assertEquals(0, product0.getInWarehouse(0));
-            Assertions.assertEquals(0, product0.getInStore(1));
-            Assertions.assertEquals(0, product0.getInWarehouse(1));
-            Assertions.assertEquals(0, product1.getInStore(0));
-            Assertions.assertEquals(0, product1.getInWarehouse(0));
-            product0.addItems(0, 100);
-            product0.moveItems(0, 58);
-            Assertions.assertEquals(58, product0.getInStore(0));
-            Assertions.assertEquals(42, product0.getInWarehouse(0));
-            Assertions.assertEquals(0, product0.getInStore(1));
-            Assertions.assertEquals(0, product0.getInWarehouse(1));
-            Assertions.assertEquals(0, product1.getInStore(0));
-            Assertions.assertEquals(0, product1.getInWarehouse(0));
-            product0.addItems(0, 40);
-            product0.addItems(1, 30);
-            product1.addItems(0, 99);
-            product0.moveItems(0, 40);
-            product0.moveItems(1, 25);
-            product1.moveItems(0, 18);
-            Assertions.assertEquals(98, product0.getInStore(0));
-            Assertions.assertEquals(42, product0.getInWarehouse(0));
-            Assertions.assertEquals(25, product0.getInStore(1));
-            Assertions.assertEquals(5, product0.getInWarehouse(1));
-            Assertions.assertEquals(18, product1.getInStore(0));
-            Assertions.assertEquals(81, product1.getInWarehouse(0));
-        }
-        catch (Exception e)
-        {
-            Assertions.fail("moveItems does not work");
-        }
+        Assertions.assertEquals(0, product0.getInStore(1));
+        Assertions.assertEquals(0, product0.getInWarehouse(1));
+        Assertions.assertEquals(0, product0.getInStore(2));
+        Assertions.assertEquals(0, product0.getInWarehouse(2));
+        Assertions.assertEquals(0, product1.getInStore(1));
+        Assertions.assertEquals(0, product1.getInWarehouse(1));
+        product0.addItems(1, new Date(), 1, "", 100, 5, 5);
+        product0.moveItems(1, 58);
+        Assertions.assertEquals(58, product0.getInStore(1));
+        Assertions.assertEquals(42, product0.getInWarehouse(1));
+        Assertions.assertEquals(0, product0.getInStore(2));
+        Assertions.assertEquals(0, product0.getInWarehouse(2));
+        Assertions.assertEquals(0, product1.getInStore(1));
+        Assertions.assertEquals(0, product1.getInWarehouse(1));
+        product0.addItems(1, new Date(), 1, "", 40, 5, 5);
+        product0.addItems(2, new Date(), 1, "", 30, 5, 5);
+        product1.addItems(1, new Date(), 1, "", 99, 5, 5);
+        product0.moveItems(1, 40);
+        product0.moveItems(2, 25);
+        product1.moveItems(1, 18);
+        Assertions.assertEquals(98, product0.getInStore(2));
+        Assertions.assertEquals(42, product0.getInWarehouse(1));
+        Assertions.assertEquals(25, product0.getInStore(2));
+        Assertions.assertEquals(5, product0.getInWarehouse(2));
+        Assertions.assertEquals(18, product1.getInStore(1));
+        Assertions.assertEquals(81, product1.getInWarehouse(1));
     }
     @Test
     public void testRemoveItems() {
         try
         {
-            Assertions.assertEquals(0, product0.getInStore(0));
-            Assertions.assertEquals(0, product0.getInWarehouse(0));
             Assertions.assertEquals(0, product0.getInStore(1));
             Assertions.assertEquals(0, product0.getInWarehouse(1));
-            Assertions.assertEquals(0, product1.getInStore(0));
-            Assertions.assertEquals(0, product1.getInWarehouse(0));
-            product0.addItems(0, 100);
-            product0.moveItems(0, 58);
-            product0.removeItems(0, 37);
-            Assertions.assertEquals(21, product0.getInStore(0));
-            Assertions.assertEquals(42, product0.getInWarehouse(0));
-            Assertions.assertEquals(0, product0.getInStore(1));
-            Assertions.assertEquals(0, product0.getInWarehouse(1));
-            Assertions.assertEquals(0, product1.getInStore(0));
-            Assertions.assertEquals(0, product1.getInWarehouse(0));
-            product0.addItems(0, 40);
-            product0.addItems(1, 30);
-            product1.addItems(0, 99);
-            product0.moveItems(0, 40);
-            product0.moveItems(1, 25);
-            product1.moveItems(0, 18);
-            product0.removeItems(0, 15);
-            product0.removeItems(1, 25);
-            product1.removeItems(0, 0);
-            Assertions.assertEquals(46, product0.getInStore(0));
-            Assertions.assertEquals(42, product0.getInWarehouse(0));
-            Assertions.assertEquals(0, product0.getInStore(1));
-            Assertions.assertEquals(5, product0.getInWarehouse(1));
-            Assertions.assertEquals(18, product1.getInStore(0));
-            Assertions.assertEquals(81, product1.getInWarehouse(0));
+            Assertions.assertEquals(0, product0.getInStore(2));
+            Assertions.assertEquals(0, product0.getInWarehouse(2));
+            Assertions.assertEquals(0, product1.getInStore(1));
+            Assertions.assertEquals(0, product1.getInWarehouse(1));
+            product0.addItems(1, new Date(), 1, "", 100, 5, 5);
+            product0.moveItems(1, 58);
+            product0.removeItems(1, 37);
+            Assertions.assertEquals(21, product0.getInStore(1));
+            Assertions.assertEquals(42, product0.getInWarehouse(1));
+            Assertions.assertEquals(0, product0.getInStore(2));
+            Assertions.assertEquals(0, product0.getInWarehouse(2));
+            Assertions.assertEquals(0, product1.getInStore(1));
+            Assertions.assertEquals(0, product1.getInWarehouse(1));
+            product0.addItems(1, new Date(), 1, "", 40, 5, 5);
+            product0.addItems(2, new Date(), 1, "", 30, 5, 5);
+            product1.addItems(1, new Date(), 1, "", 99, 5, 5);
+            product0.moveItems(1, 40);
+            product0.moveItems(2, 25);
+            product1.moveItems(1, 18);
+            product0.removeItems(1, 15);
+            product0.removeItems(2, 25);
+            product1.removeItems(1, 0);
+            Assertions.assertEquals(46, product0.getInStore(1));
+            Assertions.assertEquals(42, product0.getInWarehouse(1));
+            Assertions.assertEquals(0, product0.getInStore(2));
+            Assertions.assertEquals(5, product0.getInWarehouse(2));
+            Assertions.assertEquals(18, product1.getInStore(1));
+            Assertions.assertEquals(81, product1.getInWarehouse(1));
         }
         catch (Exception e)
         {

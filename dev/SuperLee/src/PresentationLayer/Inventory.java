@@ -108,8 +108,6 @@ public class Inventory {
             getDiscountFromSupplierHistory();
         else if (command.equals("add sale"))
             addSale();
-        else if (command.equals("add discount from supplier"))
-            addPuchaseFromSupplier();
         else if (command.equals("list products in category"))
             listProductsByCategory();
         else if (command.equals("return items"))
@@ -308,7 +306,8 @@ public class Inventory {
         }
     }
 
-    private static void addPuchaseFromSupplier() {
+    private static void addItems() {
+        int storeID = getStoreID();
         System.out.println("Which product was purchased? (insert ID)");
         int productID = scanner.nextInt();
         System.out.println("Which supplier was the purchase from? (insert ID)");
@@ -320,17 +319,14 @@ public class Inventory {
         System.out.println("How much was paid?");
         int finalPrice = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        System.out.println("When did the purchase occur?");
-        Date date = getDate();
-        if (date==null)
-            return;
         System.out.println("Please insert a general description of the purchase");
         String description = scanner.nextLine();
-        Result<PurchaseFromSupplierReport> r = is.addPurchaseFromSupplier(productID, date, supplier, description, amount, finalPrice, originalPrice);
+        Result<PurchaseFromSupplierReport> r = is.addItems(storeID, productID, supplier, description, amount, finalPrice, originalPrice);
         if (r.isError())
             System.out.println(r.getError());
         else {
             PurchaseFromSupplierReport dr = r.getValue();
+            System.out.println("Purchase added to system successfully");
             System.out.println(dr);
         }
     }
@@ -862,7 +858,7 @@ public class Inventory {
     }
 
     private static void saleHistoryByProduct() {
-        System.out.println("Please insert product ID");
+        System.out.println("Please insert product ID for which you would like to see history");
         int id = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<List<Sale>> r = is.getSaleHistoryByProduct(id);
@@ -878,7 +874,7 @@ public class Inventory {
     }
 
     private static void saleHistoryByCategory() {
-        System.out.println("Please insert category ID");
+        System.out.println("Please insert category ID for which you would like to see history");
         int id = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<List<Sale>> r = is.getSaleHistoryByCategory(id);
@@ -894,7 +890,7 @@ public class Inventory {
     }
 
     private static void getPurchaseFromSupplierHistory() {
-        System.out.println("Please insert product ID");
+        System.out.println("Please insert product ID for which you would like to see history");
         int id = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<List<PurchaseFromSupplierReport>> r = is.getPurchaseFromSupplierHistory(id);
@@ -910,7 +906,7 @@ public class Inventory {
     }
 
     private static void getDiscountFromSupplierHistory() {
-        System.out.println("Please insert product ID");
+        System.out.println("Please insert product ID for which you would like to see history");
         int id = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<List<PurchaseFromSupplierReport>> r = is.getDiscountFromSupplierHistory(id);
@@ -1010,21 +1006,21 @@ public class Inventory {
             isUnderMin(storeID, productId);
         }
     }
-
-    private static void addItems() {
-        int storeID = getStoreID();
-        System.out.println("Please insert product ID of product you are receiving");
-        int productId = scanner.nextInt();
-        System.out.println("Please insert amount of product you have received");
-        int amount = scanner.nextInt();
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result r = is.addItems(storeID, productId, amount);
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            System.out.println("Process complete");
-        }
-    }
+//
+//    private static void addItems() {
+//        int storeID = getStoreID();
+//        System.out.println("Please insert product ID of product you are receiving");
+//        int productId = scanner.nextInt();
+//        System.out.println("Please insert amount of product you have received");
+//        int amount = scanner.nextInt();
+//        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
+//        Result r = is.addItems(storeID, productId, amount);
+//        if (r.isError())
+//            System.out.println(r.getError());
+//        else {
+//            System.out.println("Process complete");
+//        }
+//    }
 
     private static void help() {
         //addSupplier

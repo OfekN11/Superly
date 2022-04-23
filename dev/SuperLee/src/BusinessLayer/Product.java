@@ -69,13 +69,13 @@ public class Product {
     }
 
     public Integer getInStore(int store) {
-        if (inStore.get(store)==null)
-            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
+//        if (inStore.get(store)==null)
+//            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
         return inStore.get(store);
     }
     public Integer getInWarehouse(int store) {
-        if (inWarehouse.get(store)==null)
-            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
+//        if (inWarehouse.get(store)==null)
+//            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
         return inWarehouse.get(store);
     }
 
@@ -108,9 +108,6 @@ public class Product {
             throw new IllegalArgumentException("Can not move more items than in the warehouse");
         inWarehouse.put(storeID, inWarehouse.get(storeID)-amount);
         inStore.put(storeID, inStore.get(storeID)+amount);
-    }
-    public void addItems(int storeID, int amount) { //from supplier to warehouse
-        inWarehouse.put(storeID, inWarehouse.get(storeID)+amount);
     }
 
     public double returnItems(int storeID, int amount, Date dateBought) { //from customer to store
@@ -242,8 +239,11 @@ public class Product {
         return purchaseFromSuppliers;
     }
 
-    public PurchaseFromSupplier addPurchaseFromSupplier(Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
-        return new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
+    public PurchaseFromSupplier addItems(int storeId, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
+        PurchaseFromSupplier p = new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
+        inWarehouse.put(storeId, inWarehouse.get(storeId)+amountBought);
+        purchaseFromSupplierList.add(p);
+        return p;
     }
 
     public boolean isLow(int storeID) {
