@@ -515,8 +515,8 @@ public class InventoryController {
         reportDefectiveForTest(4,2,10, 23, "", Defect.Expired, threeDaysAgo);
         reportDefectiveForTest(4,6,11, 23, "", Defect.Expired, threeDaysAgo);
         reportDefectiveForTest(4,3,3, 23, "", Defect.Expired, twoDaysAgo);
-        reportDefectiveForTest(4,2,2, 23, "", Defect.Expired, yesterday);
-        reportDefectiveForTest(4,2,6, 23, "", Defect.Expired, today);
+        reportDefectiveForTest(5,2,2, 23, "", Defect.Expired, yesterday);
+        reportDefectiveForTest(5,2,6, 23, "", Defect.Expired, today);
 
         reportDefectiveForTest(4,4,10, 24, "broken spout", Defect.Damaged, threeDaysAgo);
         reportDefectiveForTest(4,4,11, 2, "fell on floor", Defect.Damaged, threeDaysAgo);

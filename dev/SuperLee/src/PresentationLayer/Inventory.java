@@ -162,6 +162,8 @@ public class Inventory {
             List<StockReport> stockReports = r.getValue();
             for (StockReport s : stockReports)
                 System.out.println(s);
+            if (stockReports.isEmpty())
+                System.out.println("the store has no products registered to it in the system. please use add product to store");
         }
     }
 
@@ -255,6 +257,8 @@ public class Inventory {
             List<StockReport> stockReports = r.getValue();
             for (StockReport s : stockReports)
                 System.out.println(s);
+            if (stockReports.isEmpty())
+                System.out.println("There are no products under the min amount");
         }
     }
 
@@ -394,6 +398,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport eir : reportList)
                 System.out.println(eir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -415,6 +421,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport eir : reportList)
                 System.out.println(eir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -436,6 +444,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport eir : reportList)
                 System.out.println(eir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -457,6 +467,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport eir : reportList)
                 System.out.println(eir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -522,6 +534,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -543,6 +557,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -564,6 +580,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -585,6 +603,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -630,6 +650,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -651,6 +673,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -672,6 +696,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -693,6 +719,8 @@ public class Inventory {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
                 System.out.println(dir);
+            if (reportList.isEmpty())
+                System.out.println("There were no reports matching search");
         }
     }
 
@@ -798,6 +826,8 @@ public class Inventory {
             List<Product> productList = r.getValue();
             for (Product p : productList)
                 System.out.println(p);
+            if (productList.isEmpty())
+                System.out.println("there are no products in the system");
         }
     }
 
@@ -809,6 +839,8 @@ public class Inventory {
             List<Category> categoryList = r.getValue();
             for (Category c : categoryList)
                 System.out.println(c);
+            if (categoryList.isEmpty())
+                System.out.println("there are no categories in the system");
         }
     }
 
@@ -840,6 +872,8 @@ public class Inventory {
             List<Sale> saleReport = r.getValue();
             for (Sale s : saleReport)
                 System.out.println(s);
+            if (saleReport.isEmpty())
+                System.out.println("there are no sales for this product in the system");
         }
     }
 
@@ -854,6 +888,8 @@ public class Inventory {
             List<Sale> saleReport = r.getValue();
             for (Sale s : saleReport)
                 System.out.println(s);
+            if (saleReport.isEmpty())
+                System.out.println("there are no sales for this category in the system");
         }
     }
 
@@ -868,6 +904,8 @@ public class Inventory {
             List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
             for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
                 System.out.println(dr);
+            if (purchaseFromSupplierReports.isEmpty())
+                System.out.println("there are no purchases from suppliers for this product in the system");
         }
     }
 
@@ -882,6 +920,8 @@ public class Inventory {
             List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
             for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
                 System.out.println(dr);
+            if (purchaseFromSupplierReports.isEmpty())
+                System.out.println("there are no discounts from suppliers for this product in the system");
         }
     }
 
@@ -931,6 +971,8 @@ public class Inventory {
             List<Product> productList = r.getValue();
             for (Product p : productList)
                 System.out.println(p);
+            if (productList.isEmpty())
+                System.out.println("there are no products in specified categories");
         }
     }
 
