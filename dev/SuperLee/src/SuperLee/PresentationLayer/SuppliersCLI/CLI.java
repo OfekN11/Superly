@@ -214,10 +214,10 @@ public class CLI {
                     done = true;
                 }
                 else{
-                    if(contact.length() > 12 && contact.contains(",")){ //12 is the minimal length according to the format
+                    //if(contact.length() > 12 && contact.contains(",")){ //12 is the minimal length according to the format
                         splitedContact = contact.split(",");
                         contacts.add(new Pair<>(splitedContact[0], splitedContact[1]));
-                    }
+                    //}
                 }
             }
 
@@ -240,13 +240,14 @@ public class CLI {
                 }
             }
 
-            Result<Boolean> r = service.addSupplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers);
+            Result<Boolean> result = service.addSupplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers);
 
-            if(r.isOk()){
+            if(result.isOk()){
                 System.out.println("The new supplier was added successfully to the data base.\n\n");
             }
             else{
-                System.out.println("Something went wrong, please try again.\n\n");
+                //System.out.println("Something went wrong, please try again.\n\n");
+                System.out.println(result.getError());
                 return;
             }
 
@@ -323,7 +324,8 @@ public class CLI {
                     }
                 }
                 else{
-                    System.out.println("Something went wrong, please try again.\n");
+                    System.out.println(r.getError());
+                    //System.out.println("Something went wrong, please try again.\n");
                 }
             }
         }
@@ -1440,7 +1442,8 @@ public class CLI {
             System.out.println("Phone-Number:");
             phone = scan.nextLine();
 
-            if(service.addSupplierContact(supID, name, phone).isOk()){
+            Result<Boolean> result =  service.addSupplierContact(supID, name, phone);
+            if(result.isOk()){
                 System.out.println("The new contact has been added.");
                 System.out.println("Choose:");
                 System.out.println("1) Add another contact");
@@ -1466,7 +1469,8 @@ public class CLI {
                 }
             }
             else{
-                System.out.println("Something went wrong, please try again.\n\n");
+                System.out.println(result.getError());
+                //System.out.println("Something went wrong, please try again.\n\n");
             }
         }
 
@@ -1484,7 +1488,8 @@ public class CLI {
             System.out.println("Insert the name of the contact you want to remove:");
             contact = scan.nextLine();
 
-            if(service.removeContact(supID, contact).isOk()){
+            Result<Boolean> result = service.removeContact(supID, contact);
+            if(result.isOk()){
                 System.out.println("The contact was removed successfully.\n\n");
                 System.out.println("Choose:");
                 System.out.println("1) Remove another contact");
@@ -1509,7 +1514,8 @@ public class CLI {
                 }
             }
             else{
-                System.out.println("Something went wrong, please try again.");
+                System.out.println(result.getError());
+                //System.out.println("Something went wrong, please try again.");
             }
         }
     }

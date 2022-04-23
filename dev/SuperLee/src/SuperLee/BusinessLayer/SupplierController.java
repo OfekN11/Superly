@@ -19,8 +19,8 @@ public class SupplierController {
             throw new Exception("Supplier with same Id already exists");
         ArrayList<Contact> contacts = new ArrayList<>();
         for(Pair<String,String> curr : contactPairs){
-            /*if(!validPhoneNumber(curr.getSecond()))
-                throw new Exception("Invalid phone number!");*/
+            if(!validPhoneNumber(curr.getSecond()))
+                throw new Exception("Invalid phone number!");
             contacts.add(new Contact( curr.getFirst(), curr.getSecond()));
         }
         suppliers.put(id, new Supplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers) );
@@ -62,8 +62,8 @@ public class SupplierController {
     public void addSupplierContact(int id, String contactName, String contactPhone) throws Exception {
         if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
-        /*if(!validPhoneNumber(contactPhone))
-            throw new Exception("Phone number is Illegal");*/
+        if(!validPhoneNumber(contactPhone))
+            throw new Exception("Phone number is Illegal");
         Contact contact = new Contact(contactName, contactPhone);
         suppliers.get(id).addContact(contact);
     }
@@ -94,25 +94,21 @@ public class SupplierController {
     }
 
 
-    // TODO: YONE
     //SHOULD BE PRIVATE, public for testing
     public boolean supplierExist(int id){
         return suppliers.containsKey(id);
     }
 
-    // TODO: YONE
+
     //SHOULD BE PRIVATE, public for testing
     public boolean validPhoneNumber(String phoneNumber){
-        //MAYBE THROW THE REGEX?? JUST CHECK NO LETTER INVOLVED
-        // TODO: 15/04/2022 YONE
-        return !phoneNumber.matches("[a-zA-Z]+") && phoneNumber.matches("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
-
-        //"/^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$/im\n"  not working
-        //^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$  half working
-        //"/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/"  not working
-        ///^(([+]{0,1}\d{2})|\d?)[\s-]?[0-9]{2}[\s-]?[0-9]{3}[\s-]?[0-9]{4}$/gm not working
-        //"^(\\d{3}[- .]?){2}\\d{4}$" working for israeli numbers!  not for home numbers
-        //"^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$" not for home numbers
+        for(int i = 0; i < phoneNumber.length(); i++){
+            if(Character.isLetter(phoneNumber.charAt(i)))
+                return false;
+        }
+        if(phoneNumber.length() < 8 || phoneNumber.length() > 13)
+            return false;
+        return true;
     }
 
 
