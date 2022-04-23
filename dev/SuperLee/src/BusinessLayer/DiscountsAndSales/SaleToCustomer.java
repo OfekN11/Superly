@@ -10,11 +10,11 @@ public class SaleToCustomer {
     private int id;
     private Date startDate;
     private Date endDate;
-    private double percent;
+    private int percent;
     private List<Integer> categories;
     private List<Integer> products;
 
-    public SaleToCustomer(int id, Date startDate, Date endDate, double percent, List<Integer> categoriesList, List<Integer> products) {
+    public SaleToCustomer(int id, Date startDate, Date endDate, int percent, List<Integer> categoriesList, List<Integer> products) {
         if (percent>=100 || percent<=0)
             throw new IllegalArgumentException("SaleToCustomer: Constructor: Illegal percent value");
         if (endDate.before(startDate))
@@ -50,7 +50,7 @@ public class SaleToCustomer {
     public Date getEndDate() {
         return endDate;
     }
-    public double getPercent() {
+    public int getPercent() {
         return percent;
     }
     //"new Date()" returns the current date.
