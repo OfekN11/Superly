@@ -41,10 +41,10 @@ public class InventoryController {
     }
 
     public SaleToCustomer addSale(List<Integer> categoriesList, List<Integer> productIDs, int percent, Date start, Date end) {
-        if (!start.before(end)) //could add more restrictions regarding adding past sales but would be problematic for tests
+        /*if (!start.before(end)) //could add more restrictions regarding adding past sales but would be problematic for tests
             throw new IllegalArgumentException("Illegal dates. start must be before end");
         if (!(percent>0 && percent<100))
-            throw new IllegalArgumentException("Percent sale must be between 1 and 99. Received: " + percent);
+            throw new IllegalArgumentException("Percent sale must be between 1 and 99. Received: " + percent);*/
         if (categoriesList.isEmpty()&&productIDs.isEmpty())
             throw new IllegalArgumentException("Must specify categories and/or products for the sale to apply to");
 

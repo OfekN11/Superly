@@ -99,7 +99,7 @@ public class Product {
     }
 
     public void removeItems(int storeID, int amount) { //bought or thrown=
-        if (inStore.get(storeID)+inWarehouse.get(storeID)-amount<0)
+        if (inStore.get(storeID)-amount<0)
             throw new IllegalArgumentException("Can not buy or remove more items than in the store - please check amount");
         inStore.put(storeID, inStore.get(storeID)-amount);
     }
@@ -110,10 +110,14 @@ public class Product {
         inStore.put(storeID, inStore.get(storeID)+amount);
     }
     public void addItems(int storeID, int amount) { //from supplier to warehouse
+        if (inStore.get(storeID)+inWarehouse.get(storeID)+amount>maxAmounts.get(storeID))
+            throw new IllegalArgumentException("Can not add more items than the max capacity in the store");
         inWarehouse.put(storeID, inWarehouse.get(storeID)+amount);
     }
 
     public double returnItems(int storeID, int amount, Date dateBought) { //from customer to store
+        if (inStore.get(storeID)+inWarehouse.get(storeID)+amount>maxAmounts.get(storeID))
+            throw new IllegalArgumentException("Can not add more items than the max capacity in the store");
         inStore.put(storeID, inStore.get(storeID)+amount);
         return amount*getPriceOnDate(dateBought);
     }
