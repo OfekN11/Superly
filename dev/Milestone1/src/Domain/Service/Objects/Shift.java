@@ -1,5 +1,7 @@
 package Domain.Service.Objects;
 
+import Presentation.Screens.ScreenShiftFactory;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
@@ -51,4 +53,6 @@ public abstract class Shift {
                 bShift.getCarrierCount(), bShift.getCashierCount(), bShift.getStorekeeperCount(), bShift.getSorterCount(), bShift.getHr_managersCount(), bShift.getLogistics_managersCount(),
                 bShift.getCarrierIDs(), bShift.getCashierIDs(), bShift.getStorekeeperIDs(), bShift.getSorterIDs(), bShift.getHr_managerIDs(), bShift.getLogistics_managerIDs());
     }
+
+    public abstract Presentation.Screens.Shift accept(ScreenShiftFactory screenShiftFactory);
 }

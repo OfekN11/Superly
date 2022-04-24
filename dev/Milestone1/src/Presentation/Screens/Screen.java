@@ -59,10 +59,16 @@ public abstract class Screen implements Runnable{
     protected void endRun(){
         if (caller != null)
             new Thread(caller).start();
+        else
+            System.out.println("Thanks for using software by Group_L!\nBye bye!");
     }
 
-    protected boolean areYouSure(){
+    protected static boolean areYouSure(){
         System.out.println("Are you sure?");
+        return yesOrNo();
+    }
+
+    protected static boolean yesOrNo(){
         int ans = 0;
         while (ans != 1 && ans != 2){
             System.out.println("1 -- yes\n2 -- no");
@@ -79,5 +85,79 @@ public abstract class Screen implements Runnable{
             }
         }
         return ans == 1;
+    }
+
+    public static Date buildDate() {
+        Date date = new Date();
+        boolean success = false;
+        while (!success) {
+            System.out.println("Enter day");
+            try {
+                int day = scanner.nextInt();
+                if (day == -1) {
+                    System.out.println("Operation Canceled");
+                    return null;
+                } else if (day < 1 || day > 31) {
+                    System.out.println("Enter valid day");
+                } else {
+                    date.setDate(day);
+                    success = true;
+                }
+            } catch (InputMismatchException ex) {
+                System.out.println("Please enter an integer between 1 and 31");
+                scanner.next();
+            } catch (Exception ex) {
+                System.out.println("Unexpected error occurred");
+                System.out.println("Please try again");
+                scanner.next();
+            }
+        }
+        success = false;
+        while (!success) {
+            System.out.println("Enter month");
+            try {
+                int month = scanner.nextInt();
+                if (month == -1) {
+                    System.out.println("Operation Canceled");
+                    return null;
+                } else if (month < 1 || month > 12) {
+                    System.out.println("Enter valid month");
+                } else {
+                    date.setMonth(month - 1);
+                    success = true;
+                }
+            } catch (InputMismatchException ex) {
+                System.out.println("Please enter an integer between 1 and 12");
+                scanner.next();
+            } catch (Exception ex) {
+                System.out.println("Unexpected error occurred");
+                System.out.println("Please try again");
+                scanner.next();
+            }
+        }
+        success = false;
+        while (!success) {
+            System.out.println("Enter year");
+            try {
+                int year = scanner.nextInt();
+                if (year == -1) {
+                    System.out.println("Operation Canceled");
+                    return null;
+                } else if (year < 1900 || year > 2030) {
+                    System.out.println("Enter valid year");
+                } else {
+                    date.setYear(year - 1900);
+                    success = true;
+                }
+            } catch (InputMismatchException ex) {
+                System.out.println("Please enter an integer between 1900 and 2030");
+                scanner.next();
+            } catch (Exception ex) {
+                System.out.println("Unexpected error occurred");
+                System.out.println("Please try again");
+                scanner.next();
+            }
+        }
+        return date;
     }
 }
