@@ -4,6 +4,8 @@ package Backend.ServiceLayer;
 import Backend.Globals.Enums.LicenseTypes;
 
 public class Service {
+    private TruckService truckSer;
+    private TransportService transportSer;
     public Service() {
     }
 
