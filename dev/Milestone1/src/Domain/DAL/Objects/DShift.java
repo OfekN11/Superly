@@ -156,5 +156,11 @@ public abstract class DShift extends DTO {
         employeesId.addAll(newSet);
     }
 
-    public abstract Shift accept(BusinessShiftFactory businessShiftFactory);
+    public abstract Shift accept(BusinessShiftFactory businessShiftFactory, Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs);
+
+    public void setEmployees(Set<String> employeesId) {
+        replaceEmployeeSet(this.employeesId,employeesId);
+    }
+
+    public abstract ShiftTypes getType();
 }

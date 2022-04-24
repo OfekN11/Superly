@@ -30,4 +30,9 @@ public class DHR_ManagerController extends DTOControllers<DHR_Manager> {
     public void deleteAll() {
 
     }
+
+    @Override
+    public void delete(DHR_Manager toDelete) {
+
+    }
 }

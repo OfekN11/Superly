@@ -33,4 +33,9 @@ public class DStorekeeperController extends DTOControllers<DStorekeeper> {
     public void deleteAll() {
 
     }
+
+    @Override
+    public void delete(DStorekeeper toDelete) {
+
+    }
 }

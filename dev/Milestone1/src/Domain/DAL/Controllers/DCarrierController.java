@@ -44,4 +44,9 @@ public class DCarrierController extends DTOControllers<DCarrier> {
     @Override
     public void deleteAll() {
     }
+
+    @Override
+    public void delete(DCarrier toDelete) {
+
+    }
 }

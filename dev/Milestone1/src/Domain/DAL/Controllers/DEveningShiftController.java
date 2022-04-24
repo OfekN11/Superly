@@ -32,4 +32,9 @@ public class DEveningShiftController extends DTOControllers<DEveningShift> {
     public void deleteAll() {
 
     }
+
+    @Override
+    public void delete(DEveningShift toDelete) {
+
+    }
 }

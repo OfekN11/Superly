@@ -25,7 +25,12 @@ public class DEveningShift extends DShift{
     }
 
     @Override
-    public Shift accept(BusinessShiftFactory businessShiftFactory) {
-        return businessShiftFactory.createServiceShift(this);
+    public Shift accept(BusinessShiftFactory businessShiftFactory, Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs) {
+        return businessShiftFactory.createServiceShift(this,carrierIDs,cashierIDs,storekeeperIDs,sorterIDs,hr_managerIDs,logistics_managerIDs);
+    }
+
+    @Override
+    public ShiftTypes getType() {
+        return ShiftTypes.Evening;
     }
 }

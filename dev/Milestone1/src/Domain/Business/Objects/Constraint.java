@@ -52,4 +52,8 @@ public class Constraint {
     public void unregister(int id) {
         employees.remove(id);
     }
+
+    public DConstraint getdConstraint() {
+        return dConstraint;
+    }
 }

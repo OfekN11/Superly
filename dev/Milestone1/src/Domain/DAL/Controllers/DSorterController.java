@@ -33,4 +33,9 @@ public class DSorterController extends DTOControllers<DSorter> {
     public void deleteAll() {
 
     }
+
+    @Override
+    public void delete(DSorter toDelete) {
+
+    }
 }

@@ -59,4 +59,9 @@ public class DConstraintController extends DTOControllers<DConstraint> {
     public void addEmployeeToConstraint(DConstraint dConstraint, String employeeId) {
         // code to add
     }
+
+    @Override
+    public void delete(DConstraint toDelete) {
+
+    }
 }

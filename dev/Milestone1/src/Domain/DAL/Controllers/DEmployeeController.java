@@ -62,4 +62,8 @@ public class DEmployeeController extends DTOControllers<DEmployee> {
     public void deleteAll() {
 
     }
+
+    @Override
+    public void delete(DEmployee toDelete) {
+    }
 }

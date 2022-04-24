@@ -31,4 +31,9 @@ public class DLogistics_ManagerController extends DTOControllers<DLogistics_Mana
     public void deleteAll() {
 
     }
+
+    @Override
+    public void delete(DLogistics_Manager toDelete) {
+
+    }
 }

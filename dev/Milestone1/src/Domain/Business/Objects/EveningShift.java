@@ -3,17 +3,15 @@ package Domain.Business.Objects;
 import Domain.DAL.Objects.DEveningShift;
 import Domain.DAL.Objects.DShift;
 import Domain.Service.ServiceShiftFactory;
-import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 public  class EveningShift extends Shift {
 
     public EveningShift(Date workday, String shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount, Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs) throws Exception {
-        super(workday, shiftManagerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managersCount, logistics_managersCount, carrierIDs, cashierIDs, storekeeperIDs, sorterIDs, hr_managerIDs, logistics_managerIDs,new DEveningShift(workday,shiftManagerId,carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managersCount,logistics_managersCount));
+        super(workday, shiftManagerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managersCount, logistics_managersCount, carrierIDs, cashierIDs, storekeeperIDs, sorterIDs, hr_managerIDs, logistics_managerIDs);
         validateManagerialCount(hr_managersCount);
         validateManagerialCount(logistics_managersCount);
     }
@@ -22,8 +20,8 @@ public  class EveningShift extends Shift {
         super(workday);
     }
 
-    public EveningShift(DShift dShift) {
-        super(dShift);
+    public EveningShift(DShift dShift,Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs) {
+        super(dShift,carrierIDs,cashierIDs,storekeeperIDs,sorterIDs,hr_managerIDs,logistics_managerIDs);
     }
 
     public ShiftTypes getType() {
@@ -33,6 +31,11 @@ public  class EveningShift extends Shift {
     @Override
     public Domain.Service.Objects.EveningShift accept(ServiceShiftFactory factory) {
         return factory.createServiceShift(this);
+    }
+
+    @Override
+    public DShift createDShift() {
+        return new DEveningShift(getWorkday(),getShiftManagerId(),getCarrierCount(),getCashierCount(),getStorekeeperCount(),getSorterCount(),getHr_managersCount(),getLogistics_managersCount());
     }
 
     @Override
