@@ -26,7 +26,12 @@ public class Order {
     }
 
     public boolean itemExists(int itemId) {
-        return orderItems.contains(itemId);
+        for(OrderItem orderItem : orderItems){
+            if(orderItem.getId() == itemId)
+                return true;
+        }
+        return false;
+
     }
 
     public void removeItem(int itemId) {

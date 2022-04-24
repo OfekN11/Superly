@@ -1,5 +1,8 @@
 package SuperLee.BusinessLayer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OrderItem {
 
     private int id;
@@ -43,14 +46,14 @@ public class OrderItem {
         return quantity;
     }
 
-    public String getStringInfo() {
-        String result = "";
-        result += String.valueOf(id);
-        result += name;
-        result += String.valueOf(quantity);
-        result += String.valueOf(ppu);
-        result += String.valueOf(discount);
-        result += String.valueOf(finalPrice);
+    public List<String> getStringInfo() {
+        List<String> result = new ArrayList<>();
+        result.add(String.valueOf(id));
+        result.add(name);
+        result.add(String.valueOf(quantity));
+        result.add(String.valueOf(ppu));
+        result.add(String.valueOf(discount));
+        result.add(String.valueOf(finalPrice));
         return result;
     }
 }

@@ -477,7 +477,7 @@ public class SupplierService {
     }
 
 
-    // Format :  "  id1, name1, quantity1 , id2, name2 , quantity2 ..."
+    // Format :  <id1, name1, quantity1> , <id2, name2 , quantity2> , ...
     public Result<Boolean> addItemsToOrder(int supId, int orderId, List<String> itemsString){
         try{
             controller.addItemsToOrder(supId, orderId, itemsString);

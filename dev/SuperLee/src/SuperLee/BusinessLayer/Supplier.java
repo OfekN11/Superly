@@ -427,7 +427,7 @@ public class Supplier {
 
         List<OrderItem> items = currOrder.getOrderItems();
         for(OrderItem item : items){
-            result.add(item.getStringInfo());
+            result.addAll(item.getStringInfo());
         }
         return result;
     }

@@ -186,6 +186,9 @@ public class CLI {
         System.out.println("For each detail you insert, please press \"Enter\" after the insertion to continue.\n");
 
         while(_continue){
+
+            System.out.println("If you want to go back, please insert \"-1\" instead of the ID.\n");
+
             correctInput = false;
             contacts = new ArrayList<>();
             done = false;
@@ -194,6 +197,12 @@ public class CLI {
             System.out.println("ID: ");
             id = scan.nextInt();
             scan.nextLine();
+
+            if(id == -1){
+                System.out.println("Returning..\n\n");
+                return;
+            }
+
             System.out.println("Name: ");
             name = scan.nextLine();
             System.out.println("Bank number: ");
@@ -292,10 +301,17 @@ public class CLI {
             System.out.println("Insert the ID of the supplier you wish to delete.");
             System.out.println("WARNING! this action is finite!\n");
 
+            System.out.println("If you want to go back, please insert \"-1\" instead of the ID.\n");
+
             while(!done){
                 correctInput = false;
                 input = scan.nextInt();
                 scan.nextLine();
+
+                if(input == -1){
+                    System.out.println("Returning..\n");
+                    return;
+                }
 
                 Result<Boolean> r = service.removeSupplier(input);
 
@@ -338,7 +354,7 @@ public class CLI {
         while(_continue){
             correctInput = false;
             System.out.println("Choose what to edit:");
-            System.out.println("1) ID\n2) Bank number\n3) Address\n4) Name\n5) Paying agreement\n");
+            System.out.println("1) ID\n2) Bank number\n3) Address\n4) Name\n5) Paying agreement\n6) Back\n");
 
             while(!correctInput){
                 input = scan.nextInt();
@@ -364,6 +380,10 @@ public class CLI {
                     case 5 -> {
                         editPayingAgreement(supplierID);
                         correctInput = true;
+                    }
+                    case 6 -> {
+                        System.out.println("Returning..");
+                        return;
                     }
                     default -> System.out.println("You inserted wrong value, please try again.");
                 }
@@ -402,8 +422,15 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert the new id please.");
+
+            System.out.println("If you want to go back, please insert \"-1\".\n");
             input = scan.nextInt();
             scan.nextLine();
+
+            if(input == -1){
+                System.out.println("Returning..\n");
+                return supplierID;
+            }
 
             Result<Boolean> r = service.updateSupplierID(supplierID, input);
 
@@ -427,8 +454,14 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert the new bunk number please.");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
             input = scan.nextInt();
             scan.nextLine();
+
+            if(input == -1){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             Result<Boolean> r = service.updateSupplierBankNumber(supplierID, input);
 
@@ -449,7 +482,13 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert the new address please.");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
             input = scan.nextLine();
+
+            if(input.equals("-1")){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             Result<Boolean> r = service.updateSupplierAddress(supplierID, input);
 
@@ -470,7 +509,13 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert the new name please.");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
             input = scan.nextLine();
+
+            if(input.equals("-1")){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             Result<Boolean> r = service.updateSupplierName(supplierID, input);
 
@@ -491,7 +536,13 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert the new paying agreement please.");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
             input = scan.nextLine();
+
+            if(input.equals("-1")){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             Result<Boolean> r = service.updateSupplierPayingAgreement(supplierID, input);
 
@@ -623,8 +674,15 @@ public class CLI {
 
         System.out.println("Insert the new days of delivery");
 
+        System.out.println("If you want to go back, please insert \"-1\".\n");
+
         while(!correctInput){
             input = scan.nextLine();
+
+            if(input.equals("-1")){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             if(input.length() > 0){
                 Result<Boolean> r = service.setDaysOfDelivery(supplierID, input);
@@ -650,8 +708,15 @@ public class CLI {
 
         System.out.println("Insert the new days of delivery you wish to add");
 
+        System.out.println("If you want to go back, please insert \"-1\".\n");
+
         while(!correctInput){
             input = scan.nextLine();
+
+            if(input.equals("-1")){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             if(input.length() > 0){
                 Result<Boolean> r = service.addDaysOfDelivery(supplierID, input);
@@ -674,9 +739,16 @@ public class CLI {
 
         System.out.println("Insert the number of days you wish to remove");
 
+        System.out.println("If you want to go back, please insert \"-1\".\n");
+
         while(!correctInput){
             input = scan.nextInt();
             scan.nextLine();
+
+            if(input == -1){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             Result<Boolean> r = service.removeDayOfDelivery(supplierID, input);
 
@@ -699,6 +771,10 @@ public class CLI {
         }
 
         List<ServiceItemObject> list = r.getValue();
+
+        if(list.isEmpty()){
+            System.out.println("[NO ITEMS ARE IN THE AGREEMENT]");
+        }
 
         for(ServiceItemObject item : list){
             System.out.println(item.toString() + "\n");
@@ -723,11 +799,18 @@ public class CLI {
             bulkMap = new HashMap<>();
             correctInput = false;
 
-            System.out.println("Insert the details, press \"Enter\" to continue:");
+            System.out.println("Insert the details, press \"Enter\" to continue.");
+            System.out.println("If you want to go back, please insert \"-1\" instead of the ID.\n");
 
             System.out.println("ID:");
             id = scan.nextInt();
             scan.nextLine();
+
+            if(id == -1){
+                System.out.println("Returning..\n");
+                return;
+            }
+
             System.out.println("Name:");
             name = scan.nextLine();
             System.out.println("Manufacturer:");
@@ -810,8 +893,16 @@ public class CLI {
             System.out.println("Insert the ID of the item you wish to remove:");
 
             while(!correctInput){
+
+                System.out.println("If you want to go back, please insert \"-1\".\n");
+
                 input = scan.nextInt();
                 scan.nextLine();
+
+                if(input == -1){
+                    System.out.println("Returning..\n");
+                    return;
+                }
 
                 Result<Boolean> r = service.deleteItemFromAgreement(supplierID, input);
 
@@ -857,10 +948,16 @@ public class CLI {
         while(_continue){
             correctInput = false;
             System.out.println("Insert the ID of the item you wish to view.");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
 
             while(!correctInput){
                 input = scan.nextInt();
                 scan.nextLine();
+
+                if(input == -1){
+                    System.out.println("Returning..\n");
+                    return;
+                }
 
                 Result<ServiceItemObject> r = service.getItem(supplierID, input);
 
@@ -947,9 +1044,15 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert the new ID:");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
 
             input = scan.nextInt();
             scan.nextLine();
+
+            if(input == -1){
+                System.out.println("Returning..\n");
+                return itemID;
+            }
 
             Result<Boolean> r = service.updateItemId(supID, itemID, input);
 
@@ -973,8 +1076,14 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert the new Name:");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
 
             input = scan.nextLine();
+
+            if(input.equals("-1")){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             Result<Boolean> r = service.updateItemName(supID, itemID, input);
 
@@ -995,8 +1104,14 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert the new manufacturer:");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
 
             input = scan.nextLine();
+
+            if(input.equals("-1")){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             Result<Boolean> r = service.updateItemManufacturer(supID, itemID, input);
 
@@ -1017,9 +1132,15 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert the new price:");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
 
             input = scan.nextFloat();
             scan.nextLine();
+
+            if(input == -1f){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             Result<Boolean> r = service.updatePricePerUnitForItem(supID, itemID, input);
 
@@ -1040,8 +1161,14 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert quantity:");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
             quantity = scan.nextInt();
             scan.nextLine();
+
+            if(quantity == -1){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             System.out.println("Insert discount:");
             discount = scan.nextInt();
@@ -1066,8 +1193,14 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert quantity:");
+            System.out.println("If you want to go back insert \"-1\".\n");
             quantity = scan.nextInt();
             scan.nextLine();
+
+            if(quantity == -1){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             System.out.println("Insert discount:");
             discount = scan.nextInt();
@@ -1092,8 +1225,14 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert quantity to order:");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
             input = scan.nextInt();
             scan.nextLine();
+
+            if(input == -1){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             Result<Double> r = service.calculatePriceForItemOrder(supID, itemID, input);
 
@@ -1115,8 +1254,14 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert quantity:");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
             quantity = scan.nextInt();
             scan.nextLine();
+
+            if(quantity == -1){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             Result<Boolean> r = service.removeBulkPriceForItem(supID, itemID, quantity);
 
@@ -1141,9 +1286,15 @@ public class CLI {
             System.out.println("1) Routine agreement");
             System.out.println("2) By order agreement");
             System.out.println("3) Self-Transport agreement");
+            System.out.println("4) Back");
 
             input = scan.nextInt();
             scan.nextLine();
+
+            if(input == 4){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             if(input == 1 || input == 2 || input == 3){
                 if(input == 1){
@@ -1263,9 +1414,15 @@ public class CLI {
 
         while(!correctInput){
             System.out.println("Insert the number of days until delivery:");
+            System.out.println("If you want to go back, please insert \"-1\".\n");
 
             input = scan.nextInt();
             scan.nextLine();
+
+            if(input == -1){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             if(service.changeDaysUntilDelivery(supID, input).isOk()){
                 correctInput = true;
@@ -1342,11 +1499,17 @@ public class CLI {
         System.out.println("1) Routine delivery");
         System.out.println("2) By order delivery");
         System.out.println("3) Self-transport");
+        System.out.println("4) Back");
 
 
         while(!correctInput){
             input = scan.nextInt();
             scan.nextLine();
+
+            if(input == 4){
+                System.out.println("Returning..\n\n");
+                return;
+            }
 
             if(input == 1 || input == 2 || input == 3){
                 correctInput = true;
@@ -1437,8 +1600,16 @@ public class CLI {
 
         while(_continue){
             System.out.println("Please insert the following details:");
+            System.out.println("(If you want to go back, please insert \"-1\".)\n");
             System.out.println("Name:");
             name = scan.nextLine();
+
+            if(name.equals("-1")){
+                System.out.println("Returning..\n");
+                return;
+            }
+
+
             System.out.println("Phone-Number:");
             phone = scan.nextLine();
 
@@ -1486,7 +1657,13 @@ public class CLI {
             correctInput = false;
 
             System.out.println("Insert the name of the contact you want to remove:");
+            System.out.println("(If you want to go back, please insert \"-1\".)\n");
             contact = scan.nextLine();
+
+            if(contact.equals("-1")){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             Result<Boolean> result = service.removeContact(supID, contact);
             if(result.isOk()){
@@ -1583,8 +1760,14 @@ public class CLI {
 
         while(_continue){
             System.out.println("Insert the new manufacturer's name:");
+            System.out.println("(If you want to go back, please insert \"-1\".)\n");
 
             manufacturer = scan.nextLine();
+
+            if(manufacturer.equals("-1")){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             if(service.addSupplierManufacturer(supID, manufacturer).isOk()){
                 System.out.println("The new manufacturer was added successfully.\n");
@@ -1626,8 +1809,14 @@ public class CLI {
 
         while(_continue){
             System.out.println("Insert the manufacturer's name you wish to remove:");
+            System.out.println("(If you want to go back, please insert \"-1\".)\n");
 
             manufacturer = scan.nextLine();
+
+            if(manufacturer.equals("-1")){
+                System.out.println("Returning..\n");
+                return;
+            }
 
             if(service.removeManufacturer(supID, manufacturer).isOk()){
                 System.out.println("The manufacturer was removed successfully.\n");
