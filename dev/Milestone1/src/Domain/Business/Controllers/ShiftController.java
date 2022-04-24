@@ -39,8 +39,8 @@ public class ShiftController {
         shifts.put(workday, new HashMap<>());
         for (ShiftTypes type: ShiftTypes.values()){
             switch (type){
-                case Morning -> shifts.get(workday).put(type, new MorningShift(workday));
-                case Evening -> shifts.get(workday).put(type, new EveningShift(workday));
+                case Morning : shifts.get(workday).put(type, new MorningShift(workday)); break;
+                case Evening : shifts.get(workday).put(type, new EveningShift(workday));
             }
         }
     }

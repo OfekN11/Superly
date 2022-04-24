@@ -69,8 +69,8 @@ public class Carrier extends Employee{
             }
         }
         switch (ans) {
-            case 1 -> addLicenses(curr);
-            case 2 -> removeLicenses(curr);
+            case 1 : addLicenses(curr);break;
+            case 2 : removeLicenses(curr);
         }
         System.out.println("New licenses:");
         for (String license: curr)

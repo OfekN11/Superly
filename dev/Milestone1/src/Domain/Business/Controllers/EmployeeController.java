@@ -9,17 +9,16 @@ import Domain.DAL.Objects.DEmployee;
 import java.util.*;
 
 public class EmployeeController {
-    private static final String EmployeeNotFoundErrorMsg ="Employee id %f could not be found";
+    private static final String EmployeeNotFoundErrorMsg ="Employee id %s could not be found";
 
     // properties
     private final Map<String,Employee> employees = new HashMap<>();
     private final DEmployeeController dEmployeeController = new DEmployeeController();
-    private final Map<Date,Map<ShiftTypes, Set<Integer>>> constraints = new HashMap<>();
     private final BusinessEmployeeFactory employeeFactory= new BusinessEmployeeFactory();
 
-    public Set<Employee> getEmployees(Set<Integer> workersId) {
+    public Set<Employee> getEmployees(Set<String> workersId) {
         Set<Employee> output = new HashSet<>();
-        for (Integer id : workersId) {
+        for (String id : workersId) {
             Employee employee = this.employees.get(id);
             if (employee == null)
                 throw new RuntimeException(String.format(EmployeeNotFoundErrorMsg,id));
@@ -28,7 +27,7 @@ public class EmployeeController {
         return output;
     }
 
-    public Employee getEmployee(int employeeID){
+    public Employee getEmployee(String employeeID){
         Employee output =employees.get(employeeID);
         if (output== null)
             throw new RuntimeException(String.format(EmployeeNotFoundErrorMsg,employeeID));
@@ -59,53 +58,58 @@ public class EmployeeController {
         if (employees.containsKey(id))
             throw new Exception(String.format("An employee with ID: %o already exists: %s", id, employees.get(id).getName()));
         switch (title) {
-            case Carrier ->
+            case Carrier :
                     employees.put(id, new Carrier(id, name, bankDetails, salary, employmentConditions, startingDate, certifications, new HashSet<>()));
-            case Cashier ->
+                    break;
+            case Cashier :
                     employees.put(id, new Cashier(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
-            case HR_Manager ->
+                    break;
+            case HR_Manager :
                     employees.put(id, new HR_Manager(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
-            case Storekeeper ->
+                    break;
+            case Storekeeper :
                     employees.put(id, new Storekeeper(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
-            case Logistics_Manager ->
+                    break;
+            case Logistics_Manager :
                     employees.put(id, new Logistics_Manager(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
-            case Sorter ->
+                    break;
+            case Sorter :
                     employees.put(id, new Sorter(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
         }
     }
 
-    public void editEmployeeName(int id, String name) throws Exception {
+    public void editEmployeeName(String id, String name) throws Exception {
         checkIDValidity(id);
         employees.get(id).setName(name);
     }
 
-    public void editEmployeeBankDetails(int id, String bankDetails) throws Exception {
+    public void editEmployeeBankDetails(String id, String bankDetails) throws Exception {
         checkIDValidity(id);
         employees.get(id).setBankDetails(bankDetails);
     }
 
-    public void editEmployeeEmployementConditions(int id, String employementCondition) throws Exception {
+    public void editEmployeeEmployementConditions(String id, String employementCondition) throws Exception {
         checkIDValidity(id);
         employees.get(id).setEmploymentConditions(employementCondition);
     }
 
-    public void editEmployeeCertifications(int id, Set<Certifications> certifications) throws Exception {
+    public void editEmployeeCertifications(String id, Set<Certifications> certifications) throws Exception {
         checkIDValidity(id);
         employees.get(id).setCertifications(certifications);
     }
 
-    public void editCarrierLicenses(int id, Set<String> licences) throws Exception {
+    public void editCarrierLicenses(String id, Set<String> licences) throws Exception {
         checkIDValidity(id);
         if (!(employees.get(id) instanceof Carrier))
             throw new Exception(String.format("Emplyee: %s, ID: %s, is not a carrier", employees.get(id).getName(), id));
         ((Carrier)employees.get(id)).setLicences(licences);
     }
 
-    public void removeEmployee(int id) throws Exception {
+    public void removeEmployee(String id) throws Exception {
         checkIDValidity(id);
         employees.remove(id);
     }
-    private void checkIDValidity(int id) throws Exception{
+    private void checkIDValidity(String id) throws Exception{
         if (!employees.containsKey(id))
             throw new Exception(String.format("No such employee with ID: ", id));
     }
