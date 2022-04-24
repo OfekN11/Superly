@@ -498,26 +498,6 @@ public class SupplierService {
         }
     }
 
-    public Result<Boolean> removeOrder(int supId, int orderId){
-        try{
-            controller.removeOrder(supId, orderId);
-            return Result.makeOk(true);
-        }
-        catch(Exception e){
-            return Result.makeError(e.getMessage());
-        }
-    }
-
-    public Result<Boolean> removeItemFromOrder(int supId, int orderId, int itemId){
-        try{
-            controller.removeItemFromOrder(supId, orderId, itemId);
-            return Result.makeOk(true);
-        }
-        catch(Exception e){
-            return Result.makeError(e.getMessage());
-        }
-    }
-
     public Result<ServiceOrderObject> getOrder(int supId, int orderId){
         try{
             List<String> result = controller.getOrder(supId, orderId);

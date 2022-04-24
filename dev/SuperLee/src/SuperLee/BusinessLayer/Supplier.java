@@ -375,7 +375,7 @@ public class Supplier {
             float ppu = Float.parseFloat(itemsFullInfo.get(i+3));
             int discount = Integer.parseInt(itemsFullInfo.get(i+4));
             float finalPrice = Float.parseFloat(itemsFullInfo.get(i+5));
-            orders.get(orderId).addOrder(id, name, quantity, ppu, discount, finalPrice);
+            orders.get(orderId).addItem(id, name, quantity, ppu, discount, finalPrice);
         }
 
     }
@@ -395,7 +395,7 @@ public class Supplier {
         float ppu = currItem.getPricePerUnit();
         int discount = agreement.getItem(itemId).getDiscount(itemQuantity);
         Double finalPrice = agreement.getItem(itemId).calculateTotalPrice(itemQuantity);
-        orders.get(orderId).addOrder(itemId, itemName, itemQuantity, ppu, discount, finalPrice);
+        orders.get(orderId).addItem(itemId, itemName, itemQuantity, ppu, discount, finalPrice);
 
     }
 

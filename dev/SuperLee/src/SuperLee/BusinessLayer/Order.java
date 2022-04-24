@@ -21,7 +21,7 @@ public class Order {
     }
 
 
-    public void addOrder(int id, String name, int quantity, float ppu, int discount, Double finalPrice) {
+    public void addItem(int id, String name, int quantity, float ppu, int discount, Double finalPrice) {
         orderItems.add(new OrderItem(id, name, quantity, ppu, discount, finalPrice));
     }
 

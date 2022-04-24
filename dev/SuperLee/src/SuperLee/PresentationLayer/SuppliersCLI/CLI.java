@@ -129,7 +129,9 @@ public class CLI {
             System.out.println("3) New agreement");
             System.out.println("4) View contacts");
             System.out.println("5) View represented manufacturers");
-            System.out.println("6) Back to home page\n");
+            System.out.println("6) Make a new order");
+            System.out.println("7) View an order");
+            System.out.println("8) Back to home page\n");
             correctInput = false;
 
             while (!correctInput){
@@ -158,6 +160,14 @@ public class CLI {
                         correctInput = true;
                     }
                     case 6 -> {
+                        makeOrder(supplierID);
+                        correctInput = true;
+                    }
+                    case 7 -> {
+                        viewOrder(supplierID);
+                        correctInput = true;
+                    }
+                    case 8 -> {
                         correctInput = true;
                         _continue = false;
                         System.out.println("Returning\n\n");
@@ -168,6 +178,15 @@ public class CLI {
 
             System.out.println("\n\n");
         }
+
+    }
+
+    private void makeOrder(int supplierID){
+
+    }
+
+    private void viewOrder(int supplierID){
+        System.out.println("Insert the ID of the new order:");
 
     }
 
