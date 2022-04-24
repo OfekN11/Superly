@@ -7,42 +7,120 @@ import java.util.Date;
 import java.util.Set;
 
 public abstract class DShift extends DTO {
-
     // properties
-    private Date date;
-    private String type;
-    private Set<Integer> employeesId;
+    private Date workday;
     private int shiftManagerId;
-    private DEmployeeShiftController employeeShiftController;
+    private DEmployeeShiftController dEmployeeShiftController;
+
+    private int carrierCount;
+    private int cashierCount;
+    private int storekeeperCount;
+    private int sorterCount;
+    private int hr_managersCount;
+    private int logistics_managersCount;
+    private Set<Integer> employeesId;
 
     // constructor
-    public DShift(String tableName,Date date, String type, Set<Integer> workers,int shiftManagerId) {
-        super(0, tableName); // no id to Shifts
-        this.date = date;
-        this.type = type;
-        this.employeesId = workers;
-        this.employeeShiftController = new DEmployeeShiftController();
+
+
+    public DShift(Date workday,int shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,Set<Integer> employeesId) {
+        super(0, "tableName"); //no id to shift
+        this.workday = workday;
         this.shiftManagerId = shiftManagerId;
+        this.dEmployeeShiftController = new DEmployeeShiftController();
+        this.carrierCount = carrierCount;
+        this.cashierCount = cashierCount;
+        this.storekeeperCount = storekeeperCount;
+        this.sorterCount = sorterCount;
+        this.hr_managersCount = hr_managersCount;
+        this.logistics_managersCount = logistics_managersCount;
+        this.employeesId = employeesId;
+    }
+    public DShift(Date workday,int shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount) {
+        super(0, "tableName"); //no id to shift
+        this.workday = workday;
+        this.shiftManagerId = shiftManagerId;
+        this.dEmployeeShiftController = new DEmployeeShiftController();
+        this.carrierCount = carrierCount;
+        this.cashierCount = cashierCount;
+        this.storekeeperCount = storekeeperCount;
+        this.sorterCount = sorterCount;
+        this.hr_managersCount = hr_managersCount;
+        this.logistics_managersCount = logistics_managersCount;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setEmployeesId(Set<Integer> employeesId) {
+        if (isPersist())
+            dEmployeeShiftController.replaceSetOfEmployees(this,employeesId);
+        this.employeesId = employeesId;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setCarrierCount(int carrierCount) {
+        update("CarrierCount",carrierCount);
+        this.carrierCount = carrierCount;
+    }
+
+    public void setCashierCount(int cashierCount) {
+        update("CashierCount",cashierCount);
+        this.cashierCount = cashierCount;
+    }
+
+    public void setStorekeeperCount(int storekeeperCount) {
+        update("StoreKeeperCount",storekeeperCount);
+        this.storekeeperCount = storekeeperCount;
+    }
+
+    public void setSorterCount(int sorterCount) {
+        update("SorterCount",sorterCount);
+        this.sorterCount = sorterCount;
+    }
+
+    public void setHr_ManagersCount(int hr_managersCount) {
+        update("Hr_ManagersCount",hr_managersCount);
+        this.hr_managersCount = hr_managersCount;
+    }
+
+    public void setLogistics_ManagersCount(int logistics_managersCount) {
+        update("Logistics_ManagersCount",logistics_managersCount);
+        this.logistics_managersCount = logistics_managersCount;
+    }
+
+    public void setWorkday(Date workday) {
+        update("Workday",workday);
+        this.workday = workday;
     }
 
     public void setShiftManagerId(int shiftManagerId) {
+        update("ShiftManagerId",shiftManagerId);
         this.shiftManagerId = shiftManagerId;
     }
 
-    public Date getDate() {
-        return date;
+    public int getCarrierCount() {
+        return carrierCount;
     }
 
-    public String getType() {
-        return type;
+    public int getCashierCount() {
+        return cashierCount;
+    }
+
+    public int getStorekeeperCount() {
+        return storekeeperCount;
+    }
+
+    public int getSorterCount() {
+        return sorterCount;
+    }
+
+    public int getHr_managersCount() {
+        return hr_managersCount;
+    }
+
+    public int getLogistics_managersCount() {
+        return logistics_managersCount;
+    }
+
+    public Date getWorkday() {
+        return workday;
     }
 
     public Set<Integer> getEmployeesId() {
@@ -55,14 +133,14 @@ public abstract class DShift extends DTO {
 
     public void addEmployee(int employeeId){
         if (isPersist()) {
-            employeeShiftController.addEmployee(getDate(), getType(), employeeId);
+            dEmployeeShiftController.addEmployee(this, employeeId);
         }
         employeesId.add(employeeId);
     }
 
     public void removeEmployee(int employeeId){
         if (isPersist()) {
-            employeeShiftController.removeEmployee(getDate(), getType(), employeeId);
+            dEmployeeShiftController.removeEmployee(this, employeeId);
         }
         employeesId.remove(employeeId);
     }
