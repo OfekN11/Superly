@@ -1,9 +1,11 @@
 package Presentation.Screens;
 
 import Domain.Service.Objects.Employee;
+import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
 import javax.sound.midi.Soundbank;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -186,8 +188,7 @@ public class EmployeesMenu extends Screen {
                     System.out.println("Please enter a non-negative integer");
                 else {
                     System.out.println("Entered ID: " + id);
-                    if (areYouSure())
-                        success = true;
+                    success = areYouSure();
                 }
             }
             catch (InputMismatchException ex){
@@ -215,8 +216,7 @@ public class EmployeesMenu extends Screen {
                 }
                 else {
                     System.out.println("Entered name: " + name);
-                    if (areYouSure())
-                        success = true;
+                        success = areYouSure();
                 }
             }
             catch (Exception ex){
@@ -240,8 +240,7 @@ public class EmployeesMenu extends Screen {
                 }
                 else {
                     System.out.println("Entered bank details: " + bankDetails);
-                    if (areYouSure())
-                        success = true;
+                        success = areYouSure();
                 }
             }
             catch (Exception ex){
@@ -264,12 +263,12 @@ public class EmployeesMenu extends Screen {
                 if (ordinal == -1) {
                     System.out.println("Operation Canceled");
                     return;
-                }
+                } else if (ordinal < 1 || ordinal > JobTitles.values().length)
+                    System.out.println("Please enter an integer between 1 and " + JobTitles.values().length);
                 else {
-                    jobTitle = JobTitles.values()[ordinal];
+                    jobTitle = JobTitles.values()[ordinal - 1];
                     System.out.println("Entered job title: " + jobTitle);
-                    if (areYouSure())
-                        success = true;
+                    success = areYouSure();
                 }
             }
             catch (InputMismatchException ex){
@@ -284,28 +283,118 @@ public class EmployeesMenu extends Screen {
         }
         System.out.println("Chosen job title: " + jobTitle);
 
-        Employement Conditions;
-
         //Starting Date
-        Date startingDate = null;
+        Date startingDate = new Date();
         success = false;
         while (!success){
             System.out.println("\nEnter " + name +"'s starting date");
+            while (!success){
+                System.out.println("Enter day");
+                try {
+                    int day = scanner.nextInt();
+                    if (day == -1) {
+                        System.out.println("Operation Canceled");
+                        return;
+                    }
+                    else if (day < 1 || day > 31) {
+                        System.out.println("Enter valid day");
+                    }
+                    else {
+                        startingDate.setDate(day);
+                        success = true;
+                    }
+                }
+                catch (InputMismatchException ex){
+                    System.out.println("Please enter an integer between 1 and 31");
+                    scanner.next();
+                }
+                catch (Exception ex){
+                    System.out.println("Unexpected error occurred");
+                    System.out.println("Please try again");
+                    scanner.next();
+                }
+            }
+            success = false;
+            while (!success){
+                System.out.println("Enter month");
+                try {
+                    int month = scanner.nextInt();
+                    if (month == -1) {
+                        System.out.println("Operation Canceled");
+                        return;
+                    }
+                    else if (month < 1 || month > 12) {
+                        System.out.println("Enter valid month");
+                    }
+                    else {
+                        startingDate.setMonth(month-1);
+                        success = true;
+                    }
+                }
+                catch (InputMismatchException ex){
+                    System.out.println("Please enter an integer between 1 and 12");
+                    scanner.next();
+                }
+                catch (Exception ex){
+                    System.out.println("Unexpected error occurred");
+                    System.out.println("Please try again");
+                    scanner.next();
+                }
+            }
+            success = false;
+            while (!success){
+                System.out.println("Enter year");
+                try {
+                    int year = scanner.nextInt();
+                    if (year == -1) {
+                        System.out.println("Operation Canceled");
+                        return;
+                    }
+                    else if (year < 1900 || year > 2030) {
+                        System.out.println("Enter valid year");
+                    }
+                    else {
+                        startingDate.setYear(year-1900);
+                        success = true;
+                    }
+                }
+                catch (InputMismatchException ex){
+                    System.out.println("Please enter an integer between 1900 and 2030");
+                    scanner.next();
+                }
+                catch (Exception ex){
+                    System.out.println("Unexpected error occurred");
+                    System.out.println("Please try again");
+                    scanner.next();
+                }
+            }
+            success = false;
+            System.out.println("Entered date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate));
+            success = areYouSure();
+        }
+        System.out.println("Chosen starting date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate));
+
+        //salary
+        Integer salary = null;
+        success = false;
+        while (!success){
+            System.out.println("\nEnter " + name +"'s salary per shift");
             try {
-                int ordinal = scanner.nextInt();
-                if (ordinal == -1) {
+                salary = scanner.nextInt();
+                if (salary == -1) {
                     System.out.println("Operation Canceled");
                     return;
                 }
+                else if (salary < 0){
+                    System.out.println("Enter a valid salary");
+                }
                 else {
-                    jobTitle = JobTitles.values()[ordinal];
-                    System.out.println("Entered job title: " + jobTitle);
-                    if (areYouSure())
-                        success = true;
+                    System.out.println("Entered salary title: " + salary);
+                    success = areYouSure();
                 }
             }
             catch (InputMismatchException ex){
-                System.out.println("Please enter an integer between 1 and " + JobTitles.values().length);
+                System.out.println("Please enter an non-negative integer");
                 scanner.next();
             }
             catch (Exception ex){
@@ -314,6 +403,60 @@ public class EmployeesMenu extends Screen {
                 scanner.next();
             }
         }
-        System.out.println("Chosen job title: " + jobTitle);
+        System.out.println("Chosen salary: " + jobTitle);
+
+        //certifications
+        Set<Certifications> certifications = new HashSet<>();
+        success = false;
+        while (!success){
+            System.out.println("\nEnter " + name +"'s certifications");
+            int ordinal = -1;
+            while (ordinal != 0) {
+                System.out.println("0 -- stop adding certifications");
+                for (int i = 0; i < Certifications.values().length; i++)
+                    System.out.println((i + 1) + " -- " + Certifications.values()[i]);
+                try {
+                    ordinal = scanner.nextInt();
+                    if (ordinal == -1) {
+                        System.out.println("Operation Canceled");
+                        return;
+                    } else if (ordinal < 0 || ordinal > Certifications.values().length) {
+                        System.out.println("Please enter an integer between 0 and " + Certifications.values().length);
+                    } else if (ordinal != 0){
+                        certifications.add(Certifications.values()[ordinal-1]);
+                    }
+                } catch (InputMismatchException ex) {
+                    System.out.println("Please enter an integer between 0 and " + Certifications.values().length);
+                    scanner.next();
+                } catch (Exception ex) {
+                    System.out.println("Unexpected error occurred");
+                    System.out.println("Please try again");
+                    scanner.next();
+                }
+            }
+            System.out.print("Entered certifications: ");
+            for (Certifications c : certifications)
+                System.out.print(c + ", ");
+            System.out.println();
+            success = areYouSure();
+        }
+        System.out.print("Chosen certifications: ");
+        for (Certifications c : certifications)
+            System.out.print(c + ", ");
+
+        String employmentConditions =
+                "Name: " + name
+                + "\nID: " + id
+                + "\nJob title: " + jobTitle
+                + "\nStarting date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate)
+                + "\nSalary per shift: " + salary;
+        try {
+            controller.addEmployee(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
+            System.out.println(employmentConditions + "\nHas been successfully added");
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(employmentConditions + "\nHasn't been added. Please try again");
+        }
     }
 }

@@ -2,7 +2,9 @@ package Presentation;
 
 import Domain.Service.Objects.Employee;
 import Domain.Service.Services.*;
+import Globals.Enums.Certifications;
 
+import java.util.Date;
 import java.util.Set;
 
 public class BackendController {
@@ -52,5 +54,8 @@ public class BackendController {
     }
 
     public void checkUnusedEmployeeID() {
+    }
+
+    public void addEmployee(Integer id, String name, String bankDetails, Integer salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
     }
 }
