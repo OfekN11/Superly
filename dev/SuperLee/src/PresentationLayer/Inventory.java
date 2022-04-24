@@ -64,6 +64,20 @@ public class Inventory {
         return scanner.nextInt();
     }
 
+    private static void listCategoryIDs() {
+        List<Integer> cIDs = getCatIDs();
+        System.out.println("Current category IDs are:");
+        System.out.println(cIDs);
+    }
+
+    private static List<Integer> getCatIDs() {
+        List<Integer> cIDs = new ArrayList<>();
+        List<Category> c = is.getCategories().getValue();
+        for (Category cat: c) {
+            cIDs.add(cat.getID());
+        }
+        return cIDs;
+    }
     private static void isUnderMin(int store, int product) {
         Result<Boolean> r = is.isUnderMin(store, product);
         if (r.isError())
@@ -151,9 +165,26 @@ public class Inventory {
     }
 
     private static void storeStockReport() {
-        int store = getStoreID();
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<List<StockReport>> r = is.storeStockReport(store);
+        System.out.println("Please insert store IDs, separated by commas without spaces");
+        System.out.println("Current store IDs are:");
+        System.out.println(is.getStoreIDs().getValue());
+        System.out.println("If you would like all stores, you can enter a blank list");
+        String input = scanner.nextLine();
+        List<Integer> storeIDs;
+        if (input.equals(""))
+            storeIDs = is.getStoreIDs().getValue();
+        else
+            storeIDs = Arrays.asList(input.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        System.out.println("Please insert category IDs, separated by commas without spaces");
+        listCategoryIDs();
+        System.out.println("If you would like all categories, you can enter a blank list");
+        input = scanner.nextLine();
+        List<Integer> categoryIDs;
+        if (input.equals(""))
+            categoryIDs = is.getStoreIDs().getValue();
+        else
+            categoryIDs = Arrays.asList(input.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        Result<List<StockReport>> r = is.storeStockReport(storeIDs, categoryIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -959,12 +990,6 @@ public class Inventory {
     private static void listProductsByCategory() {
         System.out.println("Which categories would you like to examine? (Please insert categories IDs separated by ',' without spaces)");
         System.out.println("Current categories IDs are:");
-        List<Integer> cIDs = new ArrayList<>();
-        List<Category> c = is.getCategories().getValue();
-        for (Category cat: c) {
-            cIDs.add(cat.getID());
-        }
-        System.out.println(cIDs);
         List<Integer> categories = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         Result<List<Product>> r = is.getProductsFromCategory(categories);
         if (r.isError())
@@ -1056,7 +1081,7 @@ public class Inventory {
 
         System.out.println();
         System.out.printf("%-30.30s %-30s\n", "min stock report", "prints stock report of items under the min amount");
-        System.out.printf("%-30.30s %-30s\n", "store stock report", "report of stock in specified store");
+        System.out.printf("%-30.30s %-30s\n", "store stock report", "report of stock in specified stores and categories");
         System.out.printf("%-30.30s %-30s\n", "sale history by product", "see history of sales on a specific product");
         System.out.printf("%-30.30s %-30s\n", "sale history by category", "see history of sales on a specific category");
         System.out.printf("%-30.30s %-30s\n", "purchase from supplier history", "see history of all purchases from suppliers");

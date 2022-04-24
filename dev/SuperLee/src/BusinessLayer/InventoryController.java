@@ -429,14 +429,16 @@ public class InventoryController {
         return p.getInStore(store)+p.getInWarehouse(store);
     }
 
-    public List<StockReport> getStockReport(int store) {
+    public List<StockReport> getStockReport(List<Integer> stores, List<Integer> categoryIDs) {
         List<StockReport> stock = new ArrayList<>();
-        for (Product p : products.values()) {
-            try {
-                stock.add(new StockReport(store, p.getId(), p.getName(), p.getInStore(store), p.getInWarehouse(store), p.getInStore(store) + p.getInWarehouse(store), p.getMinInStore(store), p.getMaxInStore(store)));
+        for (Integer store : stores) {
+            for (Integer catID : categoryIDs) {
+                Category category = categories.get(catID);
+                for (Product p : category.getAllProductsInCategory()) {
+                    stock.add(new StockReport(store, p.getId(), p.getName(), p.getInStore(store), p.getInWarehouse(store), p.getInStore(store) + p.getInWarehouse(store), p.getMinInStore(store), p.getMaxInStore(store)));
+                }
             }
-            catch (Exception e) {}
-            }
+        }
         return stock;
     }
 
