@@ -7,12 +7,14 @@ import java.util.List;
 public class DestinationDocument extends Document{
     private static int incSN = 0;
     private int destDocumentSN = 0;
+    private int destID;
     private List<String> providedProducts;
 
-    public DestinationDocument(List<String> providedProducts) {
+    public DestinationDocument(int destID, List<String> providedProducts) {
         destDocumentSN = incSN;
         this.providedProducts = providedProducts;
         incSN += 1;
+        this.destID = destID;
     }
 
     public int getDestDocumentSN() {

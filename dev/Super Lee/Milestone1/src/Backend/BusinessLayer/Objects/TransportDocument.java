@@ -7,7 +7,6 @@ import java.util.List;
 
 public class TransportDocument extends Document{
     private Date date;
-    //private Time timeDeparture;
     private int truckNumber;
     private String driverName;
     private String sources;

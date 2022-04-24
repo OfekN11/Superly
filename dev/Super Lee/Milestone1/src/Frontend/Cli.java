@@ -2,8 +2,10 @@ package Frontend;
 
 import java.util.Scanner;
 
+import Backend.BusinessLayer.Objects.Transport;
 import Backend.Globals.Enums.LicenseTypes;
 import Backend.ServiceLayer.Service;
+import Frontend.Objects.TransportOrder;
 import Frontend.Objects.Truck;
 
 public class Cli {
@@ -62,8 +64,10 @@ public class Cli {
             Transport Manager menu:
             1. Transport Management
             2. Truck system management
+            3. Document system management
+            4. Back...
             """);
-        return getChoice(1, 2);
+        return getChoice(1, 3);
     }
 
     private void transportManager()
@@ -76,6 +80,9 @@ public class Cli {
             case 2:
                 truckSystemManagement();
                 break;
+            case 3:
+                //documentSystemManagement();
+                break;
             default:
         }
     }
@@ -85,7 +92,7 @@ public class Cli {
         System.out.println("""
             Transport Manager menu:
             1. Transport Order
-            2. Truck system management
+            2. Transport system management
             """);
         return getChoice(1, 2);
     }
@@ -94,20 +101,86 @@ public class Cli {
         switch (menuTM())
         {
             case 1:
-                //TODO: Transport Management
+                getTransportOrder();
+                break;
+            case 2:
+                transportManagment();
                 break;
             default:
         }
     }
+    private void transportManagment()
+    {
+        //TODO
+    }
+    private TransportOrder getTransportOrder()
+    {
+        //TODO: Check validation of the input and enable to get input of many dests and srcs
+        System.out.println("Get new transport order:");
+        System.out.println("Enter source ID:");
+        int srcID = reader.nextInt();
+        System.out.println("Enter destination ID:");
+        int dstID = reader.nextInt();
+        TransportOrder to = new TransportOrder(srcID, dstID);
+        getProductsList(to);
+        if(to.isValidOrder())
+        {
+            return to;
+        }
+        System.out.println("The order of the shipment is invalid!");
+        return null;
+    }
+    private void getProductsAndCount(TransportOrder to)
+    {
+        System.out.print("Enter the product name: ");
+        String productName = reader.next();
+        System.out.print("Enter the required quantity of the product: ");
+        int productCount = reader.nextInt();
+        //TODO: add input validation
+        to.addProduct(productName, productCount);
+    }
+    private int productListMenu()
+    {
+        System.out.println("""
+                    Product lists:
+                    1. Add product
+                    2. Remove product
+                    3. Update product quantity
+                    4. Close order
+                    """);
+        return getChoice(1, 4);
+    }
+    private void getProductsList(TransportOrder to)
+    {
+        boolean close = false;
+        do {
+            switch (productListMenu())
+            {
+                case 1:
+                    getProductsAndCount(to);
+                    break;
+                case 2:
+                    //TODO: Feature - getProductsAndCount(to);
+                    break;
+                case 3:
+                    //TODO: Feature - getProductsAndCount(to);
+                    break;
+                case 4:
+                    close = true;
+                    break;
+                default:
+            }
+        }while(!close);
+    }
+
     private int menuTSM()
     {
         System.out.println("""
             Truck System Manager menu:
             1. Add new truck
             2. Remove truck
-            3. Update truck
             """);
-        return getChoice(1, 3);
+        return getChoice(1, 2);
     }
     private void truckSystemManagement()
     {
@@ -117,10 +190,7 @@ public class Cli {
                 addTruck();
                 break;
             case 2:
-                //TODO: Transport Management
-                break;
-            case 3:
-                //TODO: Update truck implement later
+                removeTruck();
                 break;
             default:
         }
@@ -128,7 +198,6 @@ public class Cli {
     private void addTruck()
     {
         //TODO: Check validation of the input
-        System.out.println("Enter data about the new truck:");
         System.out.println("Enter truck license number:");
         int licenseNumber = reader.nextInt();
         LicenseTypes truckModel = getTruckModel();
@@ -137,6 +206,14 @@ public class Cli {
         System.out.println("Enter the maximum weight that a truck can load:");
         int maxCapacityWeight = reader.nextInt();
         service.addTruck(licenseNumber, truckModel, netWeight, maxCapacityWeight);
+        //TODO: Take the result
+    }
+    private void removeTruck()
+    {
+        //TODO: Check validation of the input
+        System.out.println("Enter truck license number:");
+        int licenseNumber = reader.nextInt();
+        service.removeTruck(licenseNumber);
         //TODO: Take the result
     }
     private LicenseTypes getTruckModel()

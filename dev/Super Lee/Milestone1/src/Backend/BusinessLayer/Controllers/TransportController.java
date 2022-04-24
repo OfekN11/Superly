@@ -1,23 +1,26 @@
 package Backend.BusinessLayer.Controllers;
 
+import Backend.BusinessLayer.Objects.DestinationDocument;
 import Backend.BusinessLayer.Objects.Transport;
 import Backend.BusinessLayer.Objects.TransportDocument;
+import Backend.BusinessLayer.Objects.TransportOrder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TransportController {
-    List<Transport> waitingTransports;
-    List<Transport> InProgressTransports;
-    List<Transport> DoneTransports;
-    HashMap<Integer, TransportDocument> transportDocuments;
+    private List<Transport> waitingTransports;
+    private List<Transport> InProgressTransports;
+    private List<Transport> DoneTransports;
+    private HashMap<Integer, TransportDocument> transportDocuments;
+    private HashMap<Integer, DestinationDocument> destinationDocuments;
+    private Queue<TransportOrder> orderQueue;
 
     public TransportController() {
         waitingTransports =  new ArrayList<>();
         InProgressTransports =  new ArrayList<>();
         DoneTransports =  new ArrayList<>();
         transportDocuments = new HashMap<>();
+        orderQueue = new PriorityQueue<>();
     }
 
     public TransportDocument getTransportDocuments(int transportDocumentSN)
@@ -27,6 +30,19 @@ public class TransportController {
             return transportDocuments.get(transportDocumentSN);
         }
         return null;
+    }
+    public DestinationDocument getDestinationDocuments(int destinationDocumentSN)
+    {
+        if(destinationDocuments.containsKey(destinationDocumentSN))
+        {
+            return destinationDocuments.get(destinationDocumentSN);
+        }
+        return null;
+    }
+
+    public void addTransportOrder(TransportOrder transportOrder)
+    {
+        orderQueue.add(transportOrder);
     }
 
     public boolean placeDriver(int transportSN, String driverName)
