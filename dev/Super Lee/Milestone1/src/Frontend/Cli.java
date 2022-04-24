@@ -2,10 +2,14 @@ package Frontend;
 
 import java.util.Scanner;
 
-public class Cli {
-    static Scanner reader = new Scanner(System.in);
+import Backend.Globals.Enums.LicenseTypes;
+import Backend.ServiceLayer.Service;
+import Frontend.Objects.Truck;
 
-    private static void login()
+public class Cli {
+    Scanner reader = new Scanner(System.in);
+    Service service = new Service();
+    private void login()
     {
         System.out.println("Login:");
         System.out.println("Please enter your details:");
@@ -16,32 +20,164 @@ public class Cli {
 
     }
 
-    private static int mainMenu()
+    private int mainMenu()
     {
-        int choice = 0;
-        do {
-            System.out.println("""
-                Main menu:
-                1. Transport Management
-                2. Truck system management
-                """);
-            choice = reader.nextInt();
-        }while(choice > 2 | choice < 1);
-        return choice;
+        System.out.println("""
+            Main menu:
+            1. Transport Manager
+            2. Truck Driver
+            """);
+        return getChoice(1, 2);
     }
 
-    public static void main(String[] args)
+
+    public void main(String[] args)
     {
-        login();
+        //login();
         switch (mainMenu())
         {
             case 1:
-                //TODO: Transport Management
+                transportManager();
                 break;
             case 2:
                 //TODO: Truck system management
                 break;
             default:
         }
+    }
+
+    private int getChoice(int a, int b)
+    {
+        int choice = 0;
+        do {
+            System.out.println("Enter a value in the range between " + a + "and " + b);
+            choice = reader.nextInt();
+        }while(choice > b | choice < a);
+        return choice;
+    }
+
+    private int mainMenuTM()
+    {
+        System.out.println("""
+            Transport Manager menu:
+            1. Transport Management
+            2. Truck system management
+            """);
+        return getChoice(1, 2);
+    }
+
+    private void transportManager()
+    {
+        switch (mainMenuTM())
+        {
+            case 1:
+                transportManagement();
+                break;
+            case 2:
+                truckSystemManagement();
+                break;
+            default:
+        }
+    }
+
+    private int menuTM()
+    {
+        System.out.println("""
+            Transport Manager menu:
+            1. Transport Order
+            2. Truck system management
+            """);
+        return getChoice(1, 2);
+    }
+    private void transportManagement()
+    {
+        switch (menuTM())
+        {
+            case 1:
+                //TODO: Transport Management
+                break;
+            default:
+        }
+    }
+    private int menuTSM()
+    {
+        System.out.println("""
+            Truck System Manager menu:
+            1. Add new truck
+            2. Remove truck
+            3. Update truck
+            """);
+        return getChoice(1, 3);
+    }
+    private void truckSystemManagement()
+    {
+        switch (menuTSM())
+        {
+            case 1:
+                addTruck();
+                break;
+            case 2:
+                //TODO: Transport Management
+                break;
+            case 3:
+                //TODO: Update truck implement later
+                break;
+            default:
+        }
+    }
+    private void addTruck()
+    {
+        //TODO: Check validation of the input
+        System.out.println("Enter data about the new truck:");
+        System.out.println("Enter truck license number:");
+        int licenseNumber = reader.nextInt();
+        LicenseTypes truckModel = getTruckModel();
+        System.out.println("Enter the weight of the truck:");
+        int netWeight = reader.nextInt();
+        System.out.println("Enter the maximum weight that a truck can load:");
+        int maxCapacityWeight = reader.nextInt();
+        service.addTruck(licenseNumber, truckModel, netWeight, maxCapacityWeight);
+        //TODO: Take the result
+    }
+    private LicenseTypes getTruckModel()
+    {
+        String[] truckModel = {"B", "C1", "C", "CE"};
+        System.out.println("""
+            Enter truck model:
+            1. B
+            2. C1
+            3. C
+            4. C+E
+            """);
+
+        return LicenseTypes.valueOf(truckModel[getChoice(1, 4) - 1]);
+    }
+    private int mainMenuTD()
+    {
+        System.out.println("""
+            Truck driver menu:
+            1. Weight report
+            2. 
+            """);
+        return getChoice(1, 1);
+    }
+    private void truckDriver()
+    {
+        switch (mainMenuTD())
+        {
+            case 1:
+                weightReport();
+                break;
+            case 2:
+                //TODO: Truck system management
+                break;
+            default:
+        }
+    }
+    private void weightReport()
+    {
+        System.out.println("""
+            Please 
+            """);
     }
 }

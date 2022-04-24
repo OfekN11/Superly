@@ -1,4 +1,4 @@
-package Backend.BusinessLayer.Objects;
+package Frontend.Objects;
 
 import Backend.Globals.Enums.LicenseTypes;
 
@@ -7,56 +7,43 @@ public class Truck {
     private LicenseTypes model;
     private int netWeight;
     private int maxCapacityWeight;
-    private int currWeight;
 
     public Truck(int licenseNumber, LicenseTypes model, int netWeight, int maxCapacityWeight) {
         this.licenseNumber = licenseNumber;
         this.model = model;
         this.netWeight = netWeight;
         this.maxCapacityWeight = maxCapacityWeight;
-        currWeight = 0;
-    }
-
-    public boolean unloading() {
-        return true;
-    }
-
-    public boolean loading() {
-        return true;
-    }
-
-    public boolean weighing(int weight) {
-        if (weight > maxCapacityWeight)
-        {
-            return false;
-        }
-        currWeight =  weight;
-        return true;
-    }
-
-
-    public boolean driverPlacement(Driver driver) {
-        if (model.compareTo(driver.getLicenseTypes()) == -1)
-        {
-            return false;
-        }
-        //this.driver = driver;
-        return true;
     }
 
     public int getLicenseNumber() {
         return licenseNumber;
     }
 
+    public void setLicenseNumber(int licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
+
     public LicenseTypes getModel() {
         return model;
+    }
+
+    public void setModel(LicenseTypes model) {
+        this.model = model;
     }
 
     public int getNetWeight() {
         return netWeight;
     }
 
+    public void setNetWeight(int netWeight) {
+        this.netWeight = netWeight;
+    }
+
     public int getMaxCapacityWeight() {
         return maxCapacityWeight;
+    }
+
+    public void setMaxCapacityWeight(int maxCapacityWeight) {
+        this.maxCapacityWeight = maxCapacityWeight;
     }
 }
