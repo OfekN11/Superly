@@ -181,7 +181,7 @@ public class Inventory {
         input = scanner.nextLine();
         List<Integer> categoryIDs;
         if (input.equals(""))
-            categoryIDs = is.getStoreIDs().getValue();
+            categoryIDs = getCatIDs();
         else
             categoryIDs = Arrays.asList(input.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         Result<List<StockReport>> r = is.storeStockReport(storeIDs, categoryIDs);
@@ -1054,7 +1054,7 @@ public class Inventory {
         System.out.printf("%-30.30s %-30s\n", "list products in category", "list all products in specified category/ies");
 
         System.out.println();
-        System.out.printf("%-30.30s %-30s\n", "add items", "add items to a store");
+        System.out.printf("%-30.30s %-30s\n", "add items", "add items to a store/receive delivery from supplier");
         System.out.printf("%-30.30s %-30s\n", "move items", "move product's items from the warehouse to the store");
         System.out.printf("%-30.30s %-30s\n", "buy items", "buy items from a store");
         System.out.printf("%-30.30s %-30s\n", "return items", "return a previously purchased product's items to the store");

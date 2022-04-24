@@ -48,14 +48,9 @@ public class InventoryController {
         }
         return removableSales;
     }
-    public SaleToCustomer addSale(List<Integer> categoriesList, List<Integer> productIDs, int percent, Date start, Date end) {
-        /*if (!start.before(end)) //could add more restrictions regarding adding past sales but would be problematic for tests
-            throw new IllegalArgumentException("Illegal dates. start must be before end");
-        if (!(percent>0 && percent<100))
-            throw new IllegalArgumentException("Percent sale must be between 1 and 99. Received: " + percent);*/
-        if (categoriesList.isEmpty()&&productIDs.isEmpty())
-            throw new IllegalArgumentException("Must specify categories and/or products for the sale to apply to");
-        //remove redundant products and categories
+
+    private void redundantCategories (List<Integer> categoriesList) {
+        //remove redundant categories
         List<Integer> redundantCategories = new ArrayList<>();
         //search forward
         for (Integer i : categoriesList) {
@@ -72,8 +67,10 @@ public class InventoryController {
                 }
             }
         }
-
         categoriesList.removeAll(redundantCategories);
+    }
+
+    private void redundantProducts(List<Integer> productIDs, List<Integer> categoriesList) {
         //search products
         List<Integer> redundantProducts = new ArrayList<>();
         for (Integer i : productIDs) {
@@ -86,7 +83,16 @@ public class InventoryController {
             }
         }
         productIDs.removeAll(redundantProducts);
-
+    }
+    public SaleToCustomer addSale(List<Integer> categoriesList, List<Integer> productIDs, int percent, Date start, Date end) {
+        /*if (!start.before(end)) //could add more restrictions regarding adding past sales but would be problematic for tests
+            throw new IllegalArgumentException("Illegal dates. start must be before end");
+        if (!(percent>0 && percent<100))
+            throw new IllegalArgumentException("Percent sale must be between 1 and 99. Received: " + percent);*/
+        if (categoriesList.isEmpty()&&productIDs.isEmpty())
+            throw new IllegalArgumentException("Must specify categories and/or products for the sale to apply to");
+        redundantCategories(categoriesList);
+        redundantProducts(productIDs, categoriesList);
         SaleToCustomer sale = new SaleToCustomer(saleID++, start, end, percent, categoriesList, productIDs);
         sales.add(sale);
 
@@ -430,6 +436,7 @@ public class InventoryController {
     }
 
     public List<StockReport> getStockReport(List<Integer> stores, List<Integer> categoryIDs) {
+        redundantCategories(categoryIDs);
         List<StockReport> stock = new ArrayList<>();
         for (Integer store : stores) {
             for (Integer catID : categoryIDs) {
