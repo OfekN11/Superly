@@ -3,6 +3,8 @@ import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DCarrier;
 import javafx.util.Pair;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -19,8 +21,13 @@ public class DCarrierController extends DalController<DCarrier> {
     @Override
     public Set<DCarrier> loadData() {
         Set<DCarrier> output = new HashSet<>();
-        for (int i=0; i<10; i++)
-            output.add(new DCarrier(i,"Carrier "+ i+1,"bd",i,"con" +i,  Time.valueOf("14/07/1998")));
+        for (int i=0; i<10; i++) {
+            try {
+                output.add(new DCarrier(i,"Carrier "+ i+1,"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         updateLicenses(output);
         return output;
     }

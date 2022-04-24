@@ -1,12 +1,12 @@
 package Domain.DAL.Controllers;
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DShift;
-import java.util.HashSet;
-import java.util.Set;
+import Globals.Enums.ShiftTypes;
+
+import java.util.*;
 
 public class  DShiftController extends DalController<DShift> {
     // properties
-    private DEmployeeController dEmployeeController;
     private DEmployeeShiftController dEmployeeShiftController;
     private DMorningShiftController dMorningShiftController;
     private DEveningShiftController dEveningShiftController;
@@ -14,7 +14,6 @@ public class  DShiftController extends DalController<DShift> {
     // constructor
     public DShiftController() {
         super("placeHolder");
-        this.dEmployeeController = new DEmployeeController();
         this.dEmployeeShiftController = new DEmployeeShiftController();
         this.dMorningShiftController = new DMorningShiftController();
         this.dEveningShiftController = new DEveningShiftController();
@@ -29,7 +28,21 @@ public class  DShiftController extends DalController<DShift> {
         Set<? extends DShift> eveningShifts = dEveningShiftController.loadData();
         shifts.addAll(morningShifts);
         shifts.addAll(eveningShifts);
+        loadEmployees(morningShifts,ShiftTypes.Morning);
+        loadEmployees(eveningShifts,ShiftTypes.Evening);
+        persistShifts(shifts);
         return shifts;
+    }
+
+    private void persistShifts(Set<DShift> shifts) {
+        shifts.forEach((dShift -> dShift.setPersist(true)));
+    }
+
+    private void loadEmployees(Set<? extends DShift> shifts,ShiftTypes type) {
+        Map<Date,DShift> shiftsMap = new HashMap<>();
+        for(DShift shift:shifts)
+            shiftsMap.put(shift.getWorkday(),shift);
+        dEmployeeShiftController.loadData().stream().filter((pair)->pair.getKey().getValue().equals(type)).forEach((pair)->shiftsMap.get(pair.getKey().getKey()).setEmployeesId(pair.getValue()));
     }
 
     @Override

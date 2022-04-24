@@ -75,7 +75,7 @@ public abstract class Shift {
     public Shift(DShift dShift) {
         this.dShift = dShift;
 
-        this.workday = dShift.getDate();
+        this.workday = dShift.getWorkday();
         this.shiftManagerId = dShift.getShiftManagerId();
 
         this.carrierCount = dShift.getCarrierCount();

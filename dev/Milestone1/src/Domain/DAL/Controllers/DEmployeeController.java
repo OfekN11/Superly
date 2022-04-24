@@ -4,7 +4,6 @@ import Domain.DAL.Objects.DEmployee;
 import Globals.Enums.Certifications;
 import javafx.util.Pair;
 
-import java.sql.Time;
 import java.util.*;
 
 public class DEmployeeController extends DalController<DEmployee> {
@@ -40,11 +39,16 @@ public class DEmployeeController extends DalController<DEmployee> {
         employees.addAll(dLogistics_managerController.loadData());
         employees.addAll(dSorterController.loadData());
         employees.addAll(dStorekeeperController.loadData());
-        updateCertifications(employees);
+        loadCertifications(employees);
+        persistEmployees(employees);
         return employees;
     }
 
-    private void updateCertifications(Set<DEmployee> employees) {
+    private void persistEmployees(Set<DEmployee> employees) {
+        employees.forEach((employee)-> employee.setPersist(true));
+    }
+
+    private void loadCertifications(Set<DEmployee> employees) {
         Dictionary<Integer,DEmployee> dEmployeeDictionary =new Hashtable<>();
         for(DEmployee employee : employees)
             dEmployeeDictionary.put(employee.getId(), employee);
