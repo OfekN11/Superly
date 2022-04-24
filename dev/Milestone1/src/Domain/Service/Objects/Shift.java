@@ -1,8 +1,7 @@
 package Domain.Service.Objects;
 
-import Globals.Enums.ShiftTypes;
+import Presentation.Screens.ScreenShiftFactory;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
@@ -55,10 +54,5 @@ public abstract class Shift {
                 bShift.getCarrierIDs(), bShift.getCashierIDs(), bShift.getStorekeeperIDs(), bShift.getSorterIDs(), bShift.getHr_managerIDs(), bShift.getLogistics_managerIDs());
     }
 
-    public abstract ShiftTypes getType() ;
-
-    @Override
-    public String toString() {
-        return getType() + " shift. " + new SimpleDateFormat("dd-MM-yyyy").format(date);
-    }
+    public abstract Presentation.Screens.Shift accept(ScreenShiftFactory screenShiftFactory);
 }

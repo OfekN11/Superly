@@ -11,7 +11,7 @@ import java.util.Set;
  * Abstract class representing employee for service purposes
  */
 public abstract class Employee {
-    public final int id;
+    public final String id;
     public final String name;
     public final String bankDetails;
     public final int salary;
@@ -30,7 +30,7 @@ public abstract class Employee {
      * @param startingDate Employee's work starting date
      * @param certifications Employee's certifications
      */
-    private Employee(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications){
+    private Employee(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications){
         this.id = id;
         this.name = name;
         this.bankDetails = bankDetails;

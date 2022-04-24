@@ -59,14 +59,16 @@ public abstract class Screen implements Runnable{
     protected void endRun(){
         if (caller != null)
             new Thread(caller).start();
+        else
+            System.out.println("Thanks for using software by Group_L!\nBye bye!");
     }
 
-    protected boolean areYouSure(){
+    protected static boolean areYouSure(){
         System.out.println("Are you sure?");
         return yesOrNo();
     }
 
-    protected boolean yesOrNo(){
+    protected static boolean yesOrNo(){
         int ans = 0;
         while (ans != 1 && ans != 2){
             System.out.println("1 -- yes\n2 -- no");

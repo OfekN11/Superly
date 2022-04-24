@@ -5,8 +5,6 @@ import Domain.Service.Objects.Shift;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
-import Globals.Interfaces.Visited;
-import Globals.Interfaces.Visitor;
 import Globals.util.ConstraintComparator;
 import Globals.util.ShiftComparator;
 
@@ -26,7 +24,7 @@ public abstract class Employee extends Screen {
             "Print upcoming shifts"         //8
     };
 
-     protected final int id;
+     protected final String id;
      protected String name;
      protected String bankDetails;
      protected int salary;

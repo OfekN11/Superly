@@ -1,8 +1,6 @@
 package Presentation.Screens;
 
 import Globals.Enums.JobTitles;
-import Globals.Interfaces.Visitor;
-
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Set;

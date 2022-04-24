@@ -50,7 +50,7 @@ public class BackendController {
     public Set<Employee> getAllLogistics_Managers() {
     }
 
-    public void removeEmployee(int id) {
+    public void removeEmployee(String id) {
     }
 
     public Employee getEmployee(String id) {
@@ -81,16 +81,37 @@ public class BackendController {
     public void editCarrierLicenses(Carrier carrier, Set<String> curr) {
     }
 
-    public Set<Shift> getEmployeeShiftsBetween(int id, Date start, Date end) {
+    public Set<Shift> getEmployeeShiftsBetween(String id, Date start, Date end) {
         return null;
     }
 
-    public Set<Constraint> getEmployeeConstraintsBetween(int id, Date today, Date nextMonth) {
+    public Set<Constraint> getEmployeeConstraintsBetween(String id, Date today, Date nextMonth) {
     }
 
-    public void registerToConstraint(int id, Date date, ShiftTypes shift) {
+    public void registerToConstraint(String id, Date date, ShiftTypes shift) {
     }
 
-    public void unregisterToConstraint(int id, Date date, ShiftTypes shift) {
+    public void unregisterToConstraint(String id, Date date, ShiftTypes shift) {
+    }
+
+    public Set<Shift> getShiftsBetween(Date start, Date end) {
+    }
+
+    public void createShift(Date date, ShiftTypes type, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) {
+    }
+
+    public Constraint getConstraint(Date date, ShiftTypes type) {
+    }
+
+    public Set<Employee> getEmployees(Set<String> employeeIDs) {
+    }
+
+    public String getEmployeeWorkDetailsForCurrentMonth(String id) {
+    }
+
+    public Shift getShift(Date date, ShiftTypes type) {
+    }
+
+    public void removeShift(Shift shift) {
     }
 }
