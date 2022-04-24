@@ -45,4 +45,19 @@ public class Truck {
         return true;
     }
 
+    public int getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public LicenseTypes getModel() {
+        return model;
+    }
+
+    public int getNetWeight() {
+        return netWeight;
+    }
+
+    public int getMaxCapacityWeight() {
+        return maxCapacityWeight;
+    }
 }
