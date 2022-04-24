@@ -21,6 +21,16 @@ public class CLI {
         terminateSystem = false;
     }
 
+    public void init(SupplierService service){
+        this.service = service;
+        boolean terminateSystem = false;
+
+        System.out.println("Welcome to Suppliers Management!\n");
+        System.out.println("When you have the ability to choose one out of several options, insert the number of the option and press \"Enter\"\n\n");
+
+        homePage();
+    }
+
     public void init(){
         service = new SupplierService();
         boolean terminateSystem = false;
