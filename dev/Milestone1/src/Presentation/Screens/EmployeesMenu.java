@@ -125,21 +125,15 @@ public class EmployeesMenu extends Screen {
         while (option != 1 && option != 3 && option != 5) {
             option = runMenu();
             switch (option) {
-                case 1:
-                    new Thread(new EmployeesViewer(this)).start();
-                    break;
-                case 2:
-                    addEmployee();
-                    break;
-                case 3:
-                    manageEmployee();
-                    break;
-                case 4:
-                    removeEmployee();
-                    break;
-                case 5:
-                    endRun();
-                    break;
+                case 1 : new Thread(new EmployeesViewer(this)).start();
+                break;
+                case 2 : addEmployee();
+                break;
+                case 3 : manageEmployee();
+                break;
+                case 4 : removeEmployee();
+                break;
+                case 5 : endRun();
             }
         }
     }

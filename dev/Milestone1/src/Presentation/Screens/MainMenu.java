@@ -24,13 +24,12 @@ public class MainMenu extends Screen{
         switch (runMenu()) {
             case 1:
                 new Thread(new EmployeesMenu(this)).start();
-                break;
+            break;
             case 2:
                 new Thread(new ShiftsMenu(this)).start();
-                break;
+            break;
             case 3:
                 endRun();
-                break;
         }
     }
 }
