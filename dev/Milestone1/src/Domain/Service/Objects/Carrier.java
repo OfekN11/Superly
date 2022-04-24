@@ -1,5 +1,6 @@
 package Domain.Service.Objects;
 
+import Globals.Enums.JobTitles;
 import Presentation.Screens.ScreenEmployeeFactory;
 
 import java.util.Collections;
@@ -19,5 +20,10 @@ public class Carrier extends Employee {
     @Override
     public Presentation.Screens.Employee accept(ScreenEmployeeFactory screenEmployeeFactory) {
         return screenEmployeeFactory.createScreenEmployee(this);
+    }
+
+    @Override
+    public JobTitles getType() {
+        return JobTitles.Carrier;
     }
 }

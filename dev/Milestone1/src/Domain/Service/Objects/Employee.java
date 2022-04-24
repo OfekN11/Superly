@@ -1,6 +1,7 @@
 package Domain.Service.Objects;
 
 import Globals.Enums.Certifications;
+import Globals.Enums.JobTitles;
 import Presentation.Screens.ScreenEmployeeFactory;
 
 import java.util.Collections;
@@ -50,4 +51,6 @@ public abstract class Employee {
     }
 
     public abstract Presentation.Screens.Employee accept(ScreenEmployeeFactory screenEmployeeFactory);
+
+    public abstract JobTitles getType();
 }

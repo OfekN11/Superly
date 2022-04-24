@@ -1,5 +1,6 @@
 package Domain.Service.Objects;
 
+import Globals.Enums.JobTitles;
 import Presentation.Screens.ScreenEmployeeFactory;
 
 /**
@@ -13,5 +14,10 @@ public class Sorter extends Employee{
     @Override
     public Presentation.Screens.Employee accept(ScreenEmployeeFactory screenEmployeeFactory) {
         return screenEmployeeFactory.createScreenEmployee(this);
+    }
+
+    @Override
+    public JobTitles getType() {
+        return JobTitles.Sorter;
     }
 }

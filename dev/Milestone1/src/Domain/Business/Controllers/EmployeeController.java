@@ -65,18 +65,24 @@ public class EmployeeController {
         if (employees.containsKey(id))
             throw new Exception(String.format("An employee with ID: %o already exists: %s", id, employees.get(id).getName()));
         switch (title) {
-            case Carrier ->
-                    employees.put(id, new Carrier(id, name, bankDetails, salary, employmentConditions, startingDate, certifications, new HashSet<>()));
-            case Cashier ->
-                    employees.put(id, new Cashier(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
-            case HR_Manager ->
-                    employees.put(id, new HR_Manager(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
-            case Storekeeper ->
-                    employees.put(id, new Storekeeper(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
-            case Logistics_Manager ->
-                    employees.put(id, new Logistics_Manager(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
-            case Sorter ->
-                    employees.put(id, new Sorter(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+            case Carrier:
+                employees.put(id, new Carrier(id, name, bankDetails, salary, employmentConditions, startingDate, certifications, new HashSet<>()));
+                break;
+            case Cashier:
+                employees.put(id, new Cashier(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                break;
+            case HR_Manager:
+                employees.put(id, new HR_Manager(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                break;
+            case Storekeeper:
+                employees.put(id, new Storekeeper(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                break;
+            case Logistics_Manager:
+                employees.put(id, new Logistics_Manager(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                break;
+            case Sorter:
+                employees.put(id, new Sorter(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                break;
         }
     }
 
