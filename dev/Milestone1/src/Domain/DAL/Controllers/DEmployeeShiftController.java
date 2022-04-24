@@ -1,9 +1,7 @@
 package Domain.DAL.Controllers;
 
-import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DShift;
 import Globals.Enums.ShiftTypes;
-import javafx.util.Pair;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

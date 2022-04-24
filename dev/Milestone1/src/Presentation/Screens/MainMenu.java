@@ -22,9 +22,15 @@ public class MainMenu extends Screen{
     public void run() {
         System.out.println("\nWelcome to the Main Menu!");
         switch (runMenu()) {
-            case 1 -> new Thread(new EmployeesMenu(this)).start();
-            case 2 -> new Thread(new ShiftsMenu(this)).start();
-            case 3 -> endRun();
+            case 1:
+                new Thread(new EmployeesMenu(this)).start();
+                break;
+            case 2:
+                new Thread(new ShiftsMenu(this)).start();
+                break;
+            case 3:
+                endRun();
+                break;
         }
     }
 }
