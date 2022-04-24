@@ -34,22 +34,28 @@ public class ShiftsMenu extends Screen {
         int option = 0;
         while (option != 4 && option != 5) {
             option = runMenu();
-            switch (option) {
-                case 1:
-                    viewShifts();
-                    break;
-                case 2:
-                    addShifts();
-                    break;
-                case 3:
-                    removeShifts();
-                    break;
-                case 4:
-                    manageShift();
-                    break;
-                case 5:
-                    endRun();
-                    break;
+            try {
+                switch (option) {
+                    case 1:
+                        viewShifts();
+                        break;
+                    case 2:
+                        addShifts();
+                        break;
+                    case 3:
+                        removeShifts();
+                        break;
+                    case 4:
+                        manageShift();
+                        break;
+                    case 5:
+                        endRun();
+                        break;
+                }
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println("Please try again");
             }
         }
     }
@@ -76,7 +82,7 @@ public class ShiftsMenu extends Screen {
         }
     }
 
-    private void addShifts() {
+    private void addShifts() throws Exception {
         while (true) {
             System.out.println("Enter details to create shift (enter -1 at any point to stop the process)");
 
@@ -274,9 +280,8 @@ public class ShiftsMenu extends Screen {
             System.out.println("Chosen logistics manager count: " + logistics_managerCount);
 
             //Shift Manager
-            Constraint constraint = controller.getConstraint(date, type);
-            Set<Employee> employees = controller.getEmployees(constraint.employeeIDs);
-            List<Employee> managers = employees.stream().filter((x) -> x.certifications.contains(Certifications.ShiftManagement)).collect(Collectors.toList());
+            List<Employee> managers = controller.getEmployees(controller.getConstraint(date, type).employeeIDs)
+                    .stream().filter((x) -> x.certifications.contains(Certifications.ShiftManagement)).collect(Collectors.toList());
             if (managers.size() == 0) {
                 System.out.println("No employee who is certified to manage shifts has filled a possibility to work at this shift.");
                 System.out.println("Cannot assign a shift manager. Operation Cancelled");
@@ -321,7 +326,7 @@ public class ShiftsMenu extends Screen {
         }
     }
 
-    private void removeShifts() {
+    private void removeShifts() throws Exception {
         while (true) {
             System.out.println("Enter details of the shift you want to remove (enter -1 at any point to stop the process)");
             System.out.println("Be aware that this process is irreversible");
@@ -369,20 +374,15 @@ public class ShiftsMenu extends Screen {
             }
             System.out.println("Chosen shift type: " + type);
 
-            try {
-                Shift shift = controller.getShift(date, type);
-                System.out.println("We are about to delete");
-                System.out.println(shift);
-                if (areYouSure())
-                    controller.removeShift(shift);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                System.out.println("Please try again");
-            }
+            Shift shift = controller.getShift(date, type);
+            System.out.println("We are about to delete");
+            System.out.println(shift);
+            if (areYouSure())
+                controller.removeShift(shift);
         }
     }
 
-    private void manageShift() {
+    private void manageShift() throws Exception {
         System.out.println("\nEnter details of the shift you want to manage");
 
         //Date
@@ -417,11 +417,6 @@ public class ShiftsMenu extends Screen {
             }
         }
 
-        try {
             new Thread(factory.createScreenShift(this, controller.getShift(date, type))).start();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println("Please try again");
-        }
     }
 }

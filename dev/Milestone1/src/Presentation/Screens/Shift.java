@@ -2,8 +2,6 @@ package Presentation.Screens;
 
 import Domain.Service.Objects.Constraint;
 import Domain.Service.Objects.Employee;
-import Domain.Service.Objects.Logistics_Manager;
-import Domain.Service.Objects.Sorter;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
@@ -13,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class Shift extends Screen{
+public abstract class Shift extends Screen {
 
     private static final String[] menuOptions = {
             "Print shift details",          //1
@@ -58,7 +56,7 @@ public abstract class Shift extends Screen{
         logistics_managerIDs = new HashSet<>(sShift.logistics_managerIDs);
     }
 
-    protected void handleBaseOptions(int option){
+    protected void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
                 printDetails();
@@ -72,10 +70,9 @@ public abstract class Shift extends Screen{
         }
     }
 
-    private void assignEmployees() {
+    private void assignEmployees() throws Exception {
         System.out.println("Which type of employee would you like to assign for this shift?");
-        JobTitles type = null;
-        while (type == null){
+        while (true) {
             System.out.println("1 -- ShiftManager");
             for (int i = 0; i < JobTitles.values().length; i++)
                 System.out.println((i + 2) + " -- " + JobTitles.values()[i]);
@@ -90,64 +87,72 @@ public abstract class Shift extends Screen{
                     assignShiftManager();
                     return;
                 } else {
-                    type = JobTitles.values()[ordinal - 2];
+                    assignEmployee(JobTitles.values()[ordinal - 2]);
+                    return;
                 }
             } catch (InputMismatchException ex) {
                 System.out.println("Please enter an integer between 1 and " + (JobTitles.values().length + 1));
                 scanner.next();
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-                scanner.next();
             }
         }
-        assignEmployee(type);
     }
 
-    private void assignEmployee(JobTitles type) {
+    private void assignEmployee(JobTitles type) throws Exception {
         Set<Employee> curr = controller.getEmployees(getIDsByType(type));
         System.out.println("\nCurrent " + type + "s assigned to this shift:");
-        for (Employee employee: curr)
-            System.out.println(employee.id + " - " + employee.name + " : " +controller.getEmployeeWorkDetailsForCurrentMonth(employee.id));
+        for (Employee employee : curr)
+            System.out.println(employee.id + " - " + employee.name + " : " + controller.getEmployeeWorkDetailsForCurrentMonth(employee.id));
         Set<Employee> available = controller.getEmployees(controller.getConstraint(date, getType()).employeeIDs)
                 .stream().filter((x) -> x.getType() == type).filter((x) -> !x.id.equals(shiftManagerId)).collect(Collectors.toSet());
         Set<String> newGroup = null;
         boolean success = false;
-        while (!success){
+        while (!success) {
             System.out.println("Please create a group of " + getCountByType(type) + " out of the following candidates");
             for (Employee employee : available)
-                System.out.println(employee.id + " - " + employee.name + " : " +controller.getEmployeeWorkDetailsForCurrentMonth(employee.id));
+                System.out.println(employee.id + " - " + employee.name + " : " + controller.getEmployeeWorkDetailsForCurrentMonth(employee.id));
             System.out.println("Enter ONLY the ID of the wanted employees!");
             newGroup = new HashSet<>();
-            while (newGroup.size() < Math.min(getCountByType(type), available.size())){
+            while (newGroup.size() < Math.min(getCountByType(type), available.size())) {
                 try {
                     newGroup.add(scanner.nextLine());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     System.out.println("Unexpected error occurred. Please try again");
                 }
             }
             System.out.println("Do you want to save the following IDs?");
-            for (String id : newGroup){
+            for (String id : newGroup) {
                 System.out.print(id + ", ");
             }
             success = yesOrNo();
         }
-        try {
-            setSorterIDs(newGroup);
-            System.out.println("Chosen group saved successfully");
-            if (newGroup.size() < getCountByType(type)) {
-                System.out.println("Notice that the number of assigned employees doesn't meet the requirement of " + getCountByType(type) + " " + type + "s");
-                System.out.println("Please make sure more employees register to the constraint of this shift");
-            }
+        switch (type) {
+            case Sorter:
+                setSorterIDs(newGroup);
+                break;
+            case Storekeeper:
+                setStorekeeperIDs(newGroup);
+                break;
+            case Carrier:
+                setCarrierIDs(newGroup);
+                break;
+            case Cashier:
+                setCashierIDs(newGroup);
+                break;
+            case HR_Manager:
+                setHr_managerIDs(newGroup);
+                break;
+            case Logistics_Manager:
+                setLogistics_managerIDs(newGroup);
+                break;
         }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-            System.out.println("Please try again");
+        System.out.println("Chosen group saved successfully");
+        if (newGroup.size() < getCountByType(type)) {
+            System.out.println("Notice that the number of assigned employees doesn't meet the requirement of " + getCountByType(type) + " " + type + "s");
+            System.out.println("Please make sure more employees register to the constraint of this shift");
         }
     }
 
-    private void assignShiftManager() {
+    private void assignShiftManager() throws Exception {
         Employee currManager = controller.getEmployee(shiftManagerId);
         System.out.println("\nCurrent shift manager: " + currManager.name + ", ID: " + currManager.id);
         Constraint constraint = controller.getConstraint(date, getType());
@@ -188,17 +193,16 @@ public abstract class Shift extends Screen{
         try {
             setShiftManagerId(manager.id);
             System.out.println("Successfully assigned " + manager.name + " as manager of this shift");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Please try again");
         }
     }
 
-    private void updateCount() {
+    private void updateCount() throws Exception {
         System.out.println("\nWhich type of count would you like to update?");
         JobTitles type = null;
-        while (type == null){
+        while (type == null) {
             for (int i = 0; i < JobTitles.values().length; i++)
                 System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
             try {
@@ -224,7 +228,7 @@ public abstract class Shift extends Screen{
 
         System.out.println("How many " + type + "s do you need for this shift?");
         int newCount = -2;
-        while (newCount < 0){
+        while (newCount < 0) {
             try {
                 newCount = scanner.nextInt();
                 if (newCount == -1) {
@@ -242,98 +246,92 @@ public abstract class Shift extends Screen{
             }
         }
 
-        try {
-            switch (type) {
-                case Carrier:
-                    setCarrierCount(newCount);
-                    break;
-                case Cashier:
-                    setCashierCount(newCount);
-                    break;
-                case Storekeeper:
-                    setStorekeeperCount(newCount);
-                    break;
-                case Sorter:
-                    setSorterCount(newCount);
-                    break;
-                case HR_Manager:
-                    setHr_managersCount(newCount);
-                    break;
-                case Logistics_Manager:
-                    setLogistics_managersCount(newCount);
-                    break;
-            }
-            System.out.println(type + " count successfully set to " + newCount);
+        switch (type) {
+            case Carrier:
+                setCarrierCount(newCount);
+                break;
+            case Cashier:
+                setCashierCount(newCount);
+                break;
+            case Storekeeper:
+                setStorekeeperCount(newCount);
+                break;
+            case Sorter:
+                setSorterCount(newCount);
+                break;
+            case HR_Manager:
+                setHr_managersCount(newCount);
+                break;
+            case Logistics_Manager:
+                setLogistics_managersCount(newCount);
+                break;
         }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-            System.out.println("Please try again");
-        }
+        System.out.println(type + " count successfully set to " + newCount);
     }
 
-    protected void setShiftManagerId(String shiftManagerId) {
-            controller.editShiftManagerID(this, shiftManagerId);
-            this.shiftManagerId = shiftManagerId;
+    protected void setShiftManagerId(String shiftManagerId) throws Exception {
+        controller.editShiftManagerID(this, shiftManagerId);
+        this.shiftManagerId = shiftManagerId;
     }
 
-    protected void setCarrierCount(int carrierCount) {
-            controller.editShiftCarrierCount(this, carrierCount);
-            this.carrierCount = carrierCount;
+    protected void setCarrierCount(int carrierCount) throws Exception {
+        controller.editShiftCarrierCount(this, carrierCount);
+        this.carrierCount = carrierCount;
     }
 
-    protected void setCashierCount(int cashierCount) {
-            controller.editShiftCashierCount(this, cashierCount);
-            this.cashierCount = cashierCount;
+    protected void setCashierCount(int cashierCount) throws Exception {
+        controller.editShiftCashierCount(this, cashierCount);
+        this.cashierCount = cashierCount;
     }
 
-    protected void setStorekeeperCount(int storekeeperCount) {
-            controller.editShiftStorekeeperCount(this, storekeeperCount);
-            this.storekeeperCount = storekeeperCount;
+    protected void setStorekeeperCount(int storekeeperCount) throws Exception {
+        controller.editShiftStorekeeperCount(this, storekeeperCount);
+        this.storekeeperCount = storekeeperCount;
     }
 
-    protected void setSorterCount(int sorterCount) {
-            controller.editShiftSorterCount(this, sorterCount);
-            this.sorterCount = sorterCount;
+    protected void setSorterCount(int sorterCount) throws Exception {
+        controller.editShiftSorterCount(this, sorterCount);
+        this.sorterCount = sorterCount;
     }
 
-    protected void setHr_managersCount(int hr_managersCount) {
-            controller.editShiftHR_ManagerCount(this, hr_managersCount);
-            this.hr_managersCount = hr_managersCount;
+    protected void setHr_managersCount(int hr_managersCount) throws Exception {
+        controller.editShiftHR_ManagerCount(this, hr_managersCount);
+        this.hr_managersCount = hr_managersCount;
     }
 
-    protected void setLogistics_managersCount(int logistics_managersCount) {
-            controller.editShiftLogistics_ManagerCount(this, logistics_managersCount);
-            this.logistics_managersCount = logistics_managersCount;
+    protected void setLogistics_managersCount(int logistics_managersCount) throws Exception {
+        controller.editShiftLogistics_ManagerCount(this, logistics_managersCount);
+        this.logistics_managersCount = logistics_managersCount;
     }
 
-    protected void setCarrierIDs(Set<String> carrierIDs) {
-            controller.editShiftCarrierIDs(this, carrierIDs);
-            this.carrierIDs = new HashSet<>(carrierIDs);
+    protected void setCarrierIDs(Set<String> carrierIDs) throws Exception {
+        controller.editShiftCarrierIDs(this, carrierIDs);
+        this.carrierIDs = new HashSet<>(carrierIDs);
     }
 
-    protected void setCashierIDs(Set<String> cashierIDs) {
-            controller.editShiftCashierIDs(this, cashierIDs);
-            this.cashierIDs = new HashSet<>(cashierIDs);
+    protected void setCashierIDs(Set<String> cashierIDs) throws Exception {
+        controller.editShiftCashierIDs(this, cashierIDs);
+        this.cashierIDs = new HashSet<>(cashierIDs);
     }
 
-    protected void setStorekeeperIDs(Set<String> storekeeperIDs) {
-            controller.editShiftStorekeeperIDs(this, storekeeperIDs);
-            this.storekeeperIDs = new HashSet<>(storekeeperIDs);
+    protected void setStorekeeperIDs(Set<String> storekeeperIDs) throws Exception {
+        controller.editShiftStorekeeperIDs(this, storekeeperIDs);
+        this.storekeeperIDs = new HashSet<>(storekeeperIDs);
     }
 
-    protected void setSorterIDs(Set<String> sorterIDs) {
-            controller.editShiftSorterIDs(this, sorterIDs);
-            this.sorterIDs = new HashSet<>(sorterIDs);
+    protected void setSorterIDs(Set<String> sorterIDs) throws Exception {
+        controller.editShiftSorterIDs(this, sorterIDs);
+        this.sorterIDs = new HashSet<>(sorterIDs);
     }
 
-    protected void setHr_managerIDs(Set<String> hr_managerIDs) {
-            controller.editShiftHR_ManagerIDs(this, hr_managerIDs);
-            this.hr_managerIDs = new HashSet<>(hr_managerIDs);
+    protected void setHr_managerIDs(Set<String> hr_managerIDs) throws Exception {
+        controller.editShiftHR_ManagerIDs(this, hr_managerIDs);
+        this.hr_managerIDs = new HashSet<>(hr_managerIDs);
     }
 
-    protected void setLogistics_managerIDs(Set<String> logistics_managerIDs) {
-            controller.editShiftLogistics_ManagerIDs(this, logistics_managerIDs);
-            this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
+    protected void setLogistics_managerIDs(Set<String> logistics_managerIDs) throws Exception {
+        controller.editShiftLogistics_ManagerIDs(this, logistics_managerIDs);
+        this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
     }
 
     protected int getCountByType(JobTitles type) {
@@ -355,7 +353,7 @@ public abstract class Shift extends Screen{
         }
     }
 
-    protected Set<String> getIDsByType(JobTitles type){
+    protected Set<String> getIDsByType(JobTitles type) {
         switch (type) {
             case Sorter:
                 return sorterIDs;
@@ -374,21 +372,24 @@ public abstract class Shift extends Screen{
         }
     }
 
-    protected void printEmployeesByType(JobTitles type){
+    protected void printEmployeesByType(JobTitles type) throws Exception {
         System.out.println(type + "s (" + getCountByType(type) + ")");
-        for (Employee employee : controller.getEmployees(getIDsByType(type)))
-            System.out.println(employee.id + " - " + employee.name);
+        EmployeesMenu.EmployeesViewer.printEmployees(controller.getEmployees(getIDsByType(type)));
     }
 
-    protected abstract ShiftTypes getType();
+    public abstract ShiftTypes getType();
 
-    protected void printDetails(){
+    protected void printDetails() throws Exception {
         System.out.println(getType() + " shift");
         System.out.println("Date: " + new SimpleDateFormat("dd-MM-yyyy").format(date));
         System.out.println("Shift Manager: " + shiftManagerId + " - " + controller.getEmployee(shiftManagerId).name);
-        for (JobTitles type: JobTitles.values()) {
+        for (JobTitles type : JobTitles.values()) {
             printEmployeesByType(type);
             System.out.println();
         }
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

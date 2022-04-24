@@ -29,21 +29,27 @@ public class Carrier extends Employee{
         int option = 0;
         while (option != 10) {
             option = runMenu();
-            if (option <= 8)
-                handleBaseOptions(option);
-            else if (option == 9)
-                updateLicenses();
-            else if (option == 10)
-                endRun();
+            try {
+                if (option <= 8)
+                    handleBaseOptions(option);
+                else if (option == 9)
+                    updateLicenses();
+                else if (option == 10)
+                    endRun();
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println("Please try again");
+            }
         }
     }
 
-    private void setLicenses(Set<String> curr) {
-        licenses = new HashSet<>(curr);
+    private void setLicenses(Set<String> curr) throws Exception {
         controller.editCarrierLicenses(this, curr);
+        licenses = new HashSet<>(curr);
     }
 
-    private void updateLicenses() {
+    private void updateLicenses() throws Exception {
         Set<String> curr = new HashSet<>(licenses);
         System.out.println(name + "'s current licenses:");
         for (String license: curr)
