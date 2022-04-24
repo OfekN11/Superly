@@ -12,7 +12,7 @@ public class DocumentService {
     public Result getDestinationDocument(int destinationDocumentSN)
     {
         try {
-            controller.getDestinationDocument(destinationDocumentSN);
+            //controller.getDestinationDocument(destinationDocumentSN);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

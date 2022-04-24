@@ -40,7 +40,7 @@ public class Truck {
         {
             return false;
         }
-        this.driver = driver;
+        //this.driver = driver;
         return true;
     }
 

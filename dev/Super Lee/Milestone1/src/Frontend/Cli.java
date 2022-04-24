@@ -3,6 +3,7 @@ package Frontend;
 import java.util.Scanner;
 
 import Backend.Globals.Enums.LicenseTypes;
+import Backend.ServiceLayer.Service;
 import Frontend.Objects.Truck;
 
 public class Cli {
@@ -113,7 +114,7 @@ public class Cli {
         switch (menuTSM())
         {
             case 1:
-                service.addTruck(createTruck());
+                addTruck();
                 break;
             case 2:
                 //TODO: Transport Management
@@ -124,7 +125,7 @@ public class Cli {
             default:
         }
     }
-    private Truck createTruck()
+    private void addTruck()
     {
         //TODO: Check validation of the input
         System.out.println("Enter data about the new truck:");
@@ -135,7 +136,8 @@ public class Cli {
         int netWeight = reader.nextInt();
         System.out.println("Enter the maximum weight that a truck can load:");
         int maxCapacityWeight = reader.nextInt();
-        return new Truck(licenseNumber, truckModel, netWeight, maxCapacityWeight);
+        service.addTruck(licenseNumber, truckModel, netWeight, maxCapacityWeight);
+        //TODO: Take the result
     }
     private LicenseTypes getTruckModel()
     {
