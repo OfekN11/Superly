@@ -4,13 +4,11 @@ import Domain.Service.Objects.Employee;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
-import javax.sound.midi.Soundbank;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class EmployeesMenu extends Screen {
-    private static class EmployeesViewer extends Screen {
+    public static class EmployeesViewer extends Screen {
         private static final String[] menuOptions = {
                 "Print all Employees",          //1
                 "Print all Cashiers",           //2
@@ -32,71 +30,41 @@ public class EmployeesMenu extends Screen {
             int option = 0;
             while (option != 8) {
                 option = runMenu();
-                switch (option) {
-                    case 1:
-                        System.out.println("Printing all employees:\n");
-                        try {
-                            TimeUnit.SECONDS.sleep(1);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        printEmployees(controller.getAllEmployees());
-                    case 2:
-                        System.out.println("Printing all cashiers:\n");
-                        try {
-                            TimeUnit.SECONDS.sleep(1);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        printEmployees(controller.getAllCashiers());
-                    case 3:
-                        System.out.println("Printing all carriers:\n");
-                        try {
-                            TimeUnit.SECONDS.sleep(1);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        printEmployees(controller.getAllCarriers());
-                    case 4:
-                        System.out.println("Printing all storekeepers:\n");
-                        try {
-                            TimeUnit.SECONDS.sleep(1);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        printEmployees(controller.getAllStorekeepers());
-                    case 5:
-                        System.out.println("Printing all sorters:\n");
-                        try {
-                            TimeUnit.SECONDS.sleep(1);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        printEmployees(controller.getAllSorters());
-                    case 6:
-                        System.out.println("Printing all HR managers:\n");
-                        try {
-                            TimeUnit.SECONDS.sleep(1);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        printEmployees(controller.getAllHR_Managers());
-                    case 7:
-                        System.out.println("Printing all logistics managers:\n");
-                        try {
-                            TimeUnit.SECONDS.sleep(1);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        printEmployees(controller.getAllLogistics_Managers());
-                    case 8:
-                        endRun();
-                        break;
+                try {
+                    switch (option) {
+                        case 1:
+                            System.out.println("\nPrinting all employees:");
+                            printEmployees(controller.getAllEmployees());
+                        case 2:
+                            System.out.println("\nPrinting all cashiers:");
+                            printEmployees(controller.getAllCashiers());
+                        case 3:
+                            System.out.println("\nPrinting all carriers:");
+                            printEmployees(controller.getAllCarriers());
+                        case 4:
+                            System.out.println("\nPrinting all storekeepers:");
+                            printEmployees(controller.getAllStorekeepers());
+                        case 5:
+                            System.out.println("\nPrinting all sorters:");
+                            printEmployees(controller.getAllSorters());
+                        case 6:
+                            System.out.println("\nPrinting all HR managers:");
+                            printEmployees(controller.getAllHR_Managers());
+                        case 7:
+                            System.out.println("\nPrinting all logistics managers:");
+                            printEmployees(controller.getAllLogistics_Managers());
+                        case 8:
+                            endRun();
+                            break;
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Please try again");
                 }
             }
         }
 
-        private void printEmployees(Set<Employee> employees) {
+        public static void printEmployees(Set<Employee> employees) {
             for (Employee e : employees) {
                 System.out.println(e.id + " - " + e.name);
             }
@@ -124,76 +92,68 @@ public class EmployeesMenu extends Screen {
         int option = 0;
         while (option != 1 && option != 3 && option != 5) {
             option = runMenu();
-            switch (option) {
-                case 1:
-                    new Thread(new EmployeesViewer(this)).start();
-                    break;
-                case 2:
-                    addEmployee();
-                    break;
-                case 3:
-                    manageEmployee();
-                    break;
-                case 4:
-                    removeEmployee();
-                    break;
-                case 5:
-                    endRun();
-                    break;
-            }
-        }
-    }
-
-    private void manageEmployee() {
-        System.out.println("\nEnter ID of the employee you would like to manage:");
-        String id = null;
-        while (id == null) {
             try {
-                id = scanner.nextLine();
-                if (id.equals("-1")) {
-                    System.out.println("Operation Canceled");
-                    return;
+                switch (option) {
+                    case 1:
+                        new Thread(new EmployeesViewer(this)).start();
+                        break;
+                    case 2:
+                        addEmployee();
+                        break;
+                    case 3:
+                        manageEmployee();
+                        break;
+                    case 4:
+                        removeEmployee();
+                        break;
+                    case 5:
+                        endRun();
+                        break;
                 }
-                new Thread(factory.createScreenEmployee(this, controller.getEmployee(id))).start();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }
         }
     }
 
-    private void removeEmployee() {
+    private void manageEmployee() throws Exception {
+        System.out.println("\nEnter ID of the employee you would like to manage:");
+        String id = null;
+        while (id == null) {
+            id = scanner.nextLine();
+            if (id.equals("-1")) {
+                System.out.println("Operation Canceled");
+                return;
+            }
+            new Thread(factory.createScreenEmployee(this, controller.getEmployee(id))).start();
+        }
+    }
+
+    private void removeEmployee() throws Exception {
         System.out.println("\nYou are choosing to remove an employee from the system. \nBe aware that this process is irreversible");
         boolean success = false;
         String id = null;
         while (!success) {
             System.out.println("Please enter ID of the employee you wish to remove (enter -1 to cancel this action)");
-            try {
-                id = scanner.nextLine();
-                if (!id.equals("-1")) {
-                    try {
-                        Employee toBeRemoved = controller.getEmployee(id);
-                        System.out.println("Employee " + toBeRemoved.name + ", ID: " + toBeRemoved.id + " is about to be removed");
-                        if (areYouSure()) {
-                            controller.removeEmployee(toBeRemoved.id);
-                            success = true;
-                            System.out.println(toBeRemoved.name + " has been successfully removed from the system\n");
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                        System.out.println("Please try again");
-                    }
-                } else
-                    success = true;
-            } catch (Exception ex) {
-                System.out.println("An unexpected error happened. Please try again");
-                scanner.next();
+            id = scanner.nextLine();
+            if (id.equals("-1")) {
+                System.out.println("Operation Canceled");
+                return;
+            }
+            Employee toBeRemoved = controller.getEmployee(id);
+            System.out.println("Employee " + toBeRemoved.name + ", ID: " + toBeRemoved.id + " is about to be removed");
+            if (areYouSure()) {
+                controller.removeEmployee(toBeRemoved.id);
+                success = true;
+                System.out.println(toBeRemoved.name + " has been successfully removed from the system\n");
             }
         }
     }
 
-    private void addEmployee() {
-        System.out.println("Lets add a new employee! (you can cancel this action at any point by entering -1");
+    private void addEmployee() throws Exception {
+        System.out.println("\nLets add a new employee! (you can cancel this action at any point by entering -1");
 
         //ID
         Integer id = null;
@@ -215,10 +175,6 @@ public class EmployeesMenu extends Screen {
                 }
             } catch (InputMismatchException ex) {
                 System.out.println("Please enter a non-negative integer");
-                scanner.next();
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-                System.out.println("Please try again");
                 scanner.next();
             }
         }
@@ -383,12 +339,7 @@ public class EmployeesMenu extends Screen {
                         + "\nJob title: " + jobTitle
                         + "\nStarting date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate)
                         + "\nSalary per shift: " + salary;
-        try {
-            controller.addEmployee(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
-            System.out.println(employmentConditions + "\nHas been successfully added");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println(employmentConditions + "\nHasn't been added. Please try again");
-        }
+        controller.addEmployee(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
+        System.out.println(employmentConditions + "\nHas been successfully added");
     }
 }

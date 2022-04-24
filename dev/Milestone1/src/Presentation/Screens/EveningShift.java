@@ -23,10 +23,16 @@ public class EveningShift extends Shift{
         int option = 0;
         while (option != 4) {
             option = runMenu();
-            if (option < 4)
-                handleBaseOptions(option);
-            else if (option == 4)
-                endRun();
+            try {
+                if (option < 4)
+                    handleBaseOptions(option);
+                else if (option == 4)
+                    endRun();
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println("Please try again");
+            }
         }
     }
 }

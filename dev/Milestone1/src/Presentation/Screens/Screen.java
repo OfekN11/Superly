@@ -30,7 +30,7 @@ public abstract class Screen implements Runnable{
     }
 
     protected int runMenu(){
-        System.out.println("What would you like to do?");
+        System.out.println("\nWhat would you like to do?");
         int option = 0;
         while (option <= 0 || option > menuOptions.length){
             printMenu();

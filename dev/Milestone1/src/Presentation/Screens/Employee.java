@@ -43,7 +43,7 @@ public abstract class Employee extends Screen {
         certifications = new HashSet<>(sEmployee.certifications);
     }
 
-    protected void handleBaseOptions(int option){
+    protected void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
                 System.out.println(employmentConditions);
@@ -72,29 +72,29 @@ public abstract class Employee extends Screen {
         }
     }
 
-    protected void setName(String name) {
-        this.name = name;
+    protected void setName(String name) throws Exception {
         controller.editEmployeeName(this, name);
+        this.name = name;
         updateEmploymentConditions();
     }
 
-    protected void setBankDetails(String bankDetails) {
-        this.bankDetails = bankDetails;
+    protected void setBankDetails(String bankDetails) throws Exception {
         controller.editEmployeeBankDetails(this, bankDetails);
+        this.bankDetails = bankDetails;
     }
 
-    protected void setSalary(int salary) {
-        this.salary = salary;
+    protected void setSalary(int salary) throws Exception {
         controller.editEmployeeSalary(this, salary);
+        this.salary = salary;
         updateEmploymentConditions();
     }
 
-    protected void setCertifications(Set<Certifications> certifications) {
-        this.certifications = certifications;
+    protected void setCertifications(Set<Certifications> certifications) throws Exception {
         controller.editEmployeeCertifications(this, certifications);
+        this.certifications = certifications;
     }
 
-    protected void updateEmploymentConditions(){
+    protected void updateEmploymentConditions() throws Exception {
         this.employmentConditions =
                 "Name: " + name
                         + "\nID: " + id
@@ -106,7 +106,7 @@ public abstract class Employee extends Screen {
 
     abstract JobTitles getJobTitle();
 
-    private void updateName() {
+    private void updateName() throws Exception {
         String name = null;
         boolean success = false;
         while (!success){
@@ -132,7 +132,7 @@ public abstract class Employee extends Screen {
         setName(name);
     }
 
-    private void updateBankDetails() {
+    private void updateBankDetails() throws Exception {
         String bankDetails = null;
         boolean success = false;
         while (!success){
@@ -158,7 +158,7 @@ public abstract class Employee extends Screen {
         setBankDetails(bankDetails);
     }
 
-    private void updateSalary() {
+    private void updateSalary() throws Exception {
         Integer salary = null;
         boolean success = false;
         while (!success){
@@ -191,7 +191,7 @@ public abstract class Employee extends Screen {
         setSalary(salary);
     }
 
-    private void updateCertifications() {
+    private void updateCertifications() throws Exception {
         Set<Certifications> curr = new HashSet<>(certifications);
         System.out.println(name + "'s current certifications:");
         for (Certifications c: curr)
@@ -288,7 +288,7 @@ public abstract class Employee extends Screen {
         }
     }
 
-    private void calculateSalary() {
+    private void calculateSalary() throws Exception {
         System.out.println("Enter date to start calculating from: ");
         Date start = buildDate();
         if (start == null)
@@ -305,7 +305,7 @@ public abstract class Employee extends Screen {
         System.out.println("Calculated salary between these date is: " + (numOfShifts * salary));
     }
 
-    private void manageConstraints() {
+    private void manageConstraints() throws Exception {
         Date today = new Date();
         Date nextMonth = new Date();
             nextMonth.setMonth(nextMonth.getMonth() + 1);
@@ -345,7 +345,7 @@ public abstract class Employee extends Screen {
         }
     }
 
-    private void removeConstraints() {
+    private void removeConstraints() throws Exception {
         while (true) {
             System.out.println("When can't you work? (enter -1 to stop adding constraints)");
             Date date = buildDate();
@@ -376,7 +376,7 @@ public abstract class Employee extends Screen {
         }
     }
 
-    private void addConstraints() {
+    private void addConstraints() throws Exception {
         while (true) {
             System.out.println("When can you work? (enter -1 to stop adding constraints)");
             Date date = buildDate();
@@ -407,7 +407,7 @@ public abstract class Employee extends Screen {
         }
     }
 
-    private void printUpcomingShifts() {
+    private void printUpcomingShifts() throws Exception {
         Date today = new Date();
         Date nextWeek = new Date();
         nextWeek.setDate(nextWeek.getDate()+7);

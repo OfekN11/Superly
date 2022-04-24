@@ -2,6 +2,7 @@ package Presentation;
 
 import Domain.Service.Objects.Constraint;
 import Domain.Service.Objects.Employee;
+import Domain.Service.Objects.Result;
 import Domain.Service.Objects.Shift;
 import Domain.Service.Services.*;
 import Globals.Enums.Certifications;
@@ -29,128 +30,289 @@ public class BackendController {
     }
 
 
-    public Set<Employee> getAllEmployees() {
+    public Set<Employee> getAllEmployees() throws Exception {
+        Result<Set<Employee>> result = employeeService.getAllEmployees();
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Set<Employee> getAllCashiers() {
+    public Set<Employee> getAllCashiers() throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Set<Employee> getAllCarriers() {
+    public Set<Employee> getAllCarriers() throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Set<Employee> getAllStorekeepers() {
+    public Set<Employee> getAllStorekeepers() throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Set<Employee> getAllSorters() {
+    public Set<Employee> getAllSorters() throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Set<Employee> getAllHR_Managers() {
+    public Set<Employee> getAllHR_Managers() throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Set<Employee> getAllLogistics_Managers() {
+    public Set<Employee> getAllLogistics_Managers() throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void removeEmployee(String id) {
+    public void removeEmployee(String id) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Employee getEmployee(String id) {
-        return null;
+    public Employee getEmployee(String id) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void checkUnusedEmployeeID() {
+    public void checkUnusedEmployeeID() throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void addEmployee(Integer id, String name, String bankDetails, Integer salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
+    public void addEmployee(Integer id, String name, String bankDetails, Integer salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editEmployeeName(Presentation.Screens.Employee employee, String newName) {
+    public void editEmployeeName(Presentation.Screens.Employee employee, String newName) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editEmployeeBankDetails(Presentation.Screens.Employee employee, String newNankDetails) {
+    public void editEmployeeBankDetails(Presentation.Screens.Employee employee, String newNankDetails) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editEmployeeSalary(Presentation.Screens.Employee employee, int newSalary) {
+    public void editEmployeeSalary(Presentation.Screens.Employee employee, int newSalary) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editEmployeeCertifications(Presentation.Screens.Employee employee, Set<Certifications> newCertifications) {
+    public void editEmployeeCertifications(Presentation.Screens.Employee employee, Set<Certifications> newCertifications) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editEmployeeEmploymentConditions(Presentation.Screens.Employee employee, String newEmploymentConditions) {
+    public void editEmployeeEmploymentConditions(Presentation.Screens.Employee employee, String newEmploymentConditions) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editCarrierLicenses(Carrier carrier, Set<String> curr) {
+    public void editCarrierLicenses(Carrier carrier, Set<String> curr) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Set<Shift> getEmployeeShiftsBetween(String id, Date start, Date end) {
-        return null;
+    public Set<Shift> getEmployeeShiftsBetween(String id, Date start, Date end) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Set<Constraint> getEmployeeConstraintsBetween(String id, Date today, Date nextMonth) {
+    public Set<Constraint> getEmployeeConstraintsBetween(String id, Date today, Date nextMonth) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void registerToConstraint(String id, Date date, ShiftTypes shift) {
+    public void registerToConstraint(String id, Date date, ShiftTypes shift) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void unregisterToConstraint(String id, Date date, ShiftTypes shift) {
+    public void unregisterToConstraint(String id, Date date, ShiftTypes shift) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Set<Shift> getShiftsBetween(Date start, Date end) {
+    public Set<Shift> getShiftsBetween(Date start, Date end) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void createShift(Date date, ShiftTypes type, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) {
+    public void createShift(Date date, ShiftTypes type, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Constraint getConstraint(Date date, ShiftTypes type) {
+    public Constraint getConstraint(Date date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Set<Employee> getEmployees(Set<String> employeeIDs) {
+    public Set<Employee> getEmployees(Set<String> employeeIDs) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public String getEmployeeWorkDetailsForCurrentMonth(String id) {
+    public String getEmployeeWorkDetailsForCurrentMonth(String id) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public Shift getShift(Date date, ShiftTypes type) {
+    public Shift getShift(Date date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void removeShift(Shift shift) {
+    public void removeShift(Shift shift) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftManagerID(Presentation.Screens.Shift shift, String shiftManagerId) {
+    public void editShiftManagerID(Presentation.Screens.Shift shift, String shiftManagerId) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftCarrierCount(Presentation.Screens.Shift shift, int carrierCount) {
+    public void editShiftCarrierCount(Presentation.Screens.Shift shift, int carrierCount) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftCashierCount(Presentation.Screens.Shift shift, int cashierCount) {
+    public void editShiftCashierCount(Presentation.Screens.Shift shift, int cashierCount) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftStorekeeperCount(Presentation.Screens.Shift shift, int storekeeperCount) {
+    public void editShiftStorekeeperCount(Presentation.Screens.Shift shift, int storekeeperCount) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftSorterCount(Presentation.Screens.Shift shift, int sorterCount) {
+    public void editShiftSorterCount(Presentation.Screens.Shift shift, int sorterCount) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftHR_ManagerCount(Presentation.Screens.Shift shift, int hr_managersCount) {
+    public void editShiftHR_ManagerCount(Presentation.Screens.Shift shift, int hr_managersCount) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftLogistics_ManagerCount(Presentation.Screens.Shift shift, int logistics_managersCount) {
+    public void editShiftLogistics_ManagerCount(Presentation.Screens.Shift shift, int logistics_managersCount) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftCarrierIDs(Presentation.Screens.Shift shift, Set<String> carrierIDs) {
+    public void editShiftCarrierIDs(Presentation.Screens.Shift shift, Set<String> carrierIDs) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftCashierIDs(Presentation.Screens.Shift shift, Set<String> cashierIDs) {
+    public void editShiftCashierIDs(Presentation.Screens.Shift shift, Set<String> cashierIDs) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftStorekeeperIDs(Presentation.Screens.Shift shift, Set<String> storekeeperIDs) {
+    public void editShiftStorekeeperIDs(Presentation.Screens.Shift shift, Set<String> storekeeperIDs) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftSorterIDs(Presentation.Screens.Shift shift, Set<String> sorterIDs) {
+    public void editShiftSorterIDs(Presentation.Screens.Shift shift, Set<String> sorterIDs) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
-    public void editShiftHR_ManagerIDs(Presentation.Screens.Shift shift, Set<String> hr_managerIDs) {
+    public void editShiftHR_ManagerIDs(Presentation.Screens.Shift shift, Set<String> hr_managerIDs) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftLogistics_ManagerIDs(Presentation.Screens.Shift shift, Set<String> logistics_managerIDs) {
+    public void editShiftLogistics_ManagerIDs(Presentation.Screens.Shift shift, Set<String> logistics_managerIDs) throws Exception {
+        Result<Set<Employee>> result = null;
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 }
