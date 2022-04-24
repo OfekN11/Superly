@@ -22,7 +22,7 @@ class SupplierControllerTest {
         manufacturers = new ArrayList<>();
         manufacturers.add("Osem");
         manufacturers.add("Elit");
-        contacts.add(new Pair<String,String>("name", "phone"));
+        contacts.add(new Pair<String,String>("name", "0508644177"));
         try {
             controller.addSupplier(1, "name", 1, "address", "credit card", contacts, manufacturers);
             controller.addSupplier(2, "name", 2, "address", "credit card", contacts, manufacturers);

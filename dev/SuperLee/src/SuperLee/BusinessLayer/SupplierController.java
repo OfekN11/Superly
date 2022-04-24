@@ -1,5 +1,7 @@
 package SuperLee.BusinessLayer;
 
+import SuperLee.ServiceLayer.ServiceOrderObject;
+
 import java.util.*;
 
 public class SupplierController {
@@ -359,5 +361,53 @@ public class SupplierController {
         }
 
         return suppliers.get(supID).hasAgreement();
+    }
+
+    public void addNewOrder(int supId, int orderId) throws Exception {
+        if(!supplierExist(supId)){
+            throw new Exception("The supplier does not exists!");
+        }
+        suppliers.get(supId).addNewOrder(orderId);
+    }
+
+    public void addItemsToOrder(int supId, int orderId, List<String> itemsString) throws Exception {
+        if(!supplierExist(supId)){
+            throw new Exception("The supplier does not exists!");
+        }
+        for(int i = 0; i < itemsString.size(); i+=3 ){
+            if(itemsString.size() <= i+2)
+               throw new Exception("Some information is missing!");
+            suppliers.get(supId).addOneItemToOrder(orderId , Integer.parseInt(itemsString.get(i)) , itemsString.get(i+1) , Integer.parseInt(itemsString.get(i+2)));
+        }
+        //suppliers.get(supId).addItemsToOrder(orderId, itemsString);
+    }
+
+    public void addItemToOrder(int supId, int orderId, int itemId, String itemName, int itemQuantity) throws Exception {
+        if(!supplierExist(supId)){
+            throw new Exception("The supplier does not exists!");
+        }
+        suppliers.get(supId).addOneItemToOrder(orderId, itemId, itemName, itemQuantity);
+    }
+
+    public void removeOrder(int supId, int orderId) throws Exception {
+        if(!supplierExist(supId)){
+            throw new Exception("The supplier does not exists!");
+        }
+        suppliers.get(supId).removeOrder(orderId);
+    }
+
+    public void removeItemFromOrder(int supId, int orderId, int itemId) throws Exception {
+        if(!supplierExist(supId)){
+            throw new Exception("The supplier does not exists!");
+        }
+        suppliers.get(supId).removeItemFromOrder(orderId, itemId);
+    }
+
+
+    public List<String> getOrder(int supId, int orderId) throws Exception {
+        if(!supplierExist(supId)){
+            throw new Exception("The supplier does not exists!");
+        }
+        return suppliers.get(supId).getOrder(orderId);
     }
 }

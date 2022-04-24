@@ -146,4 +146,10 @@ public class AgreementItem {
             return toReturn;
         return toReturn.substring(0, toReturn.length()-2);
     }
+
+    public int getDiscount(int quantity) {
+        return 4;
+    }
+
+
 }

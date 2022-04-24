@@ -3,6 +3,8 @@ package SuperLee.ServiceLayer;
 import SuperLee.BusinessLayer.Pair;
 import SuperLee.BusinessLayer.SupplierController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -462,6 +464,89 @@ public class SupplierService {
         catch(Exception e){
             return Result.makeError(e.getMessage());
         }
+    }
+
+    public Result<Boolean> order(int supId, int orderId){
+        try{
+            controller.addNewOrder(supId, orderId);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+
+    // Format :  "  id1, name1, quantity1 , id2, name2 , quantity2 ..."
+    public Result<Boolean> addItemsToOrder(int supId, int orderId, List<String> itemsString){
+        try{
+            controller.addItemsToOrder(supId, orderId, itemsString);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> addItemToOrder(int supId, int orderId, int itemId, String itemName, int itemQuantity){
+        try{
+            controller.addItemToOrder(supId, orderId, itemId, itemName, itemQuantity);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> removeOrder(int supId, int orderId){
+        try{
+            controller.removeOrder(supId, orderId);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> removeItemFromOrder(int supId, int orderId, int itemId){
+        try{
+            controller.removeItemFromOrder(supId, orderId, itemId);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<ServiceOrderObject> getOrder(int supId, int orderId){
+        try{
+            List<String> result = controller.getOrder(supId, orderId);
+            return Result.makeOk(createServiceOrderObject(result));
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    //Format : " orderId , orderDate , item1string, item2String ... "
+    private ServiceOrderObject createServiceOrderObject(List<String> result) throws ParseException {
+
+        int orderId = Integer.parseInt(result.get(0));
+        String sDate1= result.get(1) ;
+        Date orderDate =new SimpleDateFormat("MM/dd/yyyy").parse(sDate1);
+
+        List<ServiceOrderItemObject> items = new ArrayList<>();
+
+        for(int i = 2; i < result.size(); i+=6){
+            int id = Integer.parseInt(result.get(i));
+            String name = result.get(i+1);
+            int quantity = Integer.parseInt(result.get(i+2));
+            float ppu = Float.parseFloat(result.get(i+3));
+            int discount = Integer.parseInt(result.get(i+4));
+            Double finalPrice = Double.parseDouble(result.get(i+5));
+            items.add(new ServiceOrderItemObject(id, name, quantity, ppu, discount, finalPrice));
+        }
+        return new ServiceOrderObject(orderId, orderDate, items);
     }
 
 }

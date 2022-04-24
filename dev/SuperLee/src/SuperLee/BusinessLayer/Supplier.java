@@ -5,10 +5,8 @@ import SuperLee.BusinessLayer.Agreement.ByOrderAgreement;
 import SuperLee.BusinessLayer.Agreement.NotTransportingAgreement;
 import SuperLee.BusinessLayer.Agreement.RoutineAgreement;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Supplier {
 
@@ -20,6 +18,7 @@ public class Supplier {
     private String payingAgreement;
     private Agreement agreement;
     private ArrayList<String> manufacturers;
+    private HashMap<Integer, Order> orders;
 
     private final int ROUTINE  = 1;
     private final int BY_ORDER  = 2;
@@ -35,6 +34,7 @@ public class Supplier {
         this.payingAgreement = payingAgreement;
         this.contacts = contacts;
         this.manufacturers = manufacturers;
+        this.orders = new HashMap<>();
         agreement = null;
 
         //this.agreement = new Agreement();
@@ -316,4 +316,119 @@ public class Supplier {
         return agreement != null;
     }
 
+    public void addNewOrder(int orderId) throws Exception {
+        if(orders.containsKey(orderId)){
+            throw new Exception("This order Id already exists!");
+        }
+        orders.put(orderId, new Order(orderId));
+    }
+
+
+    /*
+    public void addItemsToOrder(int orderId, List<String> itemsString) throws Exception {
+        if(!orders.containsKey(orderId)){
+            throw new Exception("This order Id already exists!");
+        }
+        ArrayList<String> itemsFullInfo = new ArrayList<>();
+        for(int i = 0; i < itemsString.size(); i+=3 ){
+
+            if(!itemsString.get(i).matches("\\d+"))  //if its a number
+                throw new Exception("You gave bad ID!");
+            if(i >= itemsString.size())
+                throw new Exception("Something is missing");
+
+            int currId = Integer.parseInt(itemsString.get(i));
+            if(!agreement.itemExists(currId))
+                throw new Exception(String.format("Item with ID: %d does not Exists!", currId));
+
+            //ID
+            AgreementItem currItem = agreement.getItem(currId);
+            itemsFullInfo.add(String.valueOf(currItem.getId()));
+
+            if(!itemsString.get(i+2).trim().equals(currItem.getName()))
+                throw new Exception(String.format("Item with name: %s does not match the id you gave!", itemsString.get(i+2)));
+
+            //Name
+            itemsFullInfo.add(currItem.getName());
+
+            //Quantity
+            int quantity = Integer.parseInt(itemsString.get(i+2));
+            itemsFullInfo.add(itemsString.get(i+2));
+
+            //PPU
+            itemsFullInfo.add(String.valueOf(currItem.getPricePerUnit()));
+
+            //Discount
+            int discount = agreement.getItem(currId).getDiscount(quantity);
+            itemsFullInfo.add(String.valueOf(discount));
+
+            //FinalPrice
+            itemsFullInfo.add(String.valueOf(agreement.getItem(currId).calculateTotalPrice(quantity)));
+
+        }
+
+        //Finish the first loop to make sure all the items are Ok!
+        for(int i = 0; i < itemsFullInfo.size(); i+=6){
+            int id = Integer.parseInt(itemsFullInfo.get(i));
+            String name = itemsFullInfo.get(i+1);
+            int quantity = Integer.parseInt(itemsFullInfo.get(i+2));
+            float ppu = Float.parseFloat(itemsFullInfo.get(i+3));
+            int discount = Integer.parseInt(itemsFullInfo.get(i+4));
+            float finalPrice = Float.parseFloat(itemsFullInfo.get(i+5));
+            orders.get(orderId).addOrder(id, name, quantity, ppu, discount, finalPrice);
+        }
+
+    }
+     */
+
+    public void addOneItemToOrder(int orderId, int itemId, String itemName, int itemQuantity) throws Exception {
+
+        if(!agreement.itemExists(itemId))
+            throw new Exception(String.format("Item with ID: %d does not Exists!", itemId));
+        if(!orders.containsKey(orderId))
+            throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
+        AgreementItem currItem = agreement.getItem(itemId);
+
+        if(!itemName.trim().equals(currItem.getName()))
+            throw new Exception(String.format("Item with name: %s does not match the id you gave!", itemName));
+
+        float ppu = currItem.getPricePerUnit();
+        int discount = agreement.getItem(itemId).getDiscount(itemQuantity);
+        Double finalPrice = agreement.getItem(itemId).calculateTotalPrice(itemQuantity);
+        orders.get(orderId).addOrder(itemId, itemName, itemQuantity, ppu, discount, finalPrice);
+
+    }
+
+    public void removeOrder(int orderId) throws Exception {
+        if(!orders.containsKey(orderId))
+            throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
+        orders.remove(orderId);
+    }
+
+    public void removeItemFromOrder(int orderId, int itemId) throws Exception {
+        if(!orders.containsKey(orderId))
+            throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
+        if(!orders.get(orderId).itemExists(itemId))
+            throw new Exception("Item with this ID does not exist in thins order!");
+        orders.get(orderId).removeItem(itemId);
+    }
+
+
+    public List<String> getOrder(int orderId) throws Exception {
+        if(!orders.containsKey(orderId))
+            throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
+        Order currOrder = orders.get(orderId);
+        List<String> result = new ArrayList<>();
+        result.add(String.valueOf(currOrder.getId()));
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        String strDate = formatter.format(currOrder.getDate());
+        result.add(strDate);
+
+        List<OrderItem> items = currOrder.getOrderItems();
+        for(OrderItem item : items){
+            result.add(item.getStringInfo());
+        }
+        return result;
+    }
 }
