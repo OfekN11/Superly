@@ -114,4 +114,43 @@ public class BackendController {
 
     public void removeShift(Shift shift) {
     }
+
+    public void editShiftManagerID(Presentation.Screens.Shift shift, String shiftManagerId) {
+    }
+
+    public void editShiftCarrierCount(Presentation.Screens.Shift shift, int carrierCount) {
+    }
+
+    public void editShiftCashierCount(Presentation.Screens.Shift shift, int cashierCount) {
+    }
+
+    public void editShiftStorekeeperCount(Presentation.Screens.Shift shift, int storekeeperCount) {
+    }
+
+    public void editShiftSorterCount(Presentation.Screens.Shift shift, int sorterCount) {
+    }
+
+    public void editShiftHR_ManagerCount(Presentation.Screens.Shift shift, int hr_managersCount) {
+    }
+
+    public void editShiftLogistics_ManagerCount(Presentation.Screens.Shift shift, int logistics_managersCount) {
+    }
+
+    public void editShiftCarrierIDs(Presentation.Screens.Shift shift, Set<String> carrierIDs) {
+    }
+
+    public void editShiftCashierIDs(Presentation.Screens.Shift shift, Set<String> cashierIDs) {
+    }
+
+    public void editShiftStorekeeperIDs(Presentation.Screens.Shift shift, Set<String> storekeeperIDs) {
+    }
+
+    public void editShiftSorterIDs(Presentation.Screens.Shift shift, Set<String> sorterIDs) {
+    }
+
+    public void editShiftHR_ManagerIDs(Presentation.Screens.Shift shift, Set<String> hr_managerIDs) {
+    }
+
+    public void editShiftLogistics_ManagerIDs(Presentation.Screens.Shift shift, Set<String> logistics_managerIDs) {
+    }
 }

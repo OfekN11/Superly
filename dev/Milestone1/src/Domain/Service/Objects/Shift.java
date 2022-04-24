@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public abstract class Shift {
     public final Date date;
-    public final int shiftManagerId;
+    public final String shiftManagerId;
 
     public final int carrierCount;
     public final int cashierCount;
@@ -20,16 +20,16 @@ public abstract class Shift {
     public final int hr_managersCount;
     public final int logistics_managersCount;
 
-    public final Set<Integer> carrierIDs;
-    public final Set<Integer> cashierIDs;
-    public final Set<Integer> storekeeperIDs;
-    public final Set<Integer> sorterIDs;
-    public final Set<Integer> hr_managerIDs;
-    public final Set<Integer> logistics_managerIDs;
+    public final Set<String> carrierIDs;
+    public final Set<String> cashierIDs;
+    public final Set<String> storekeeperIDs;
+    public final Set<String> sorterIDs;
+    public final Set<String> hr_managerIDs;
+    public final Set<String> logistics_managerIDs;
 
-    private Shift(Date date, int shiftManagerId,
+    private Shift(Date date, String shiftManagerId,
                   int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,
-                  Set<Integer> carrierIDs, Set<Integer> cashierIDs, Set<Integer> storekeeperIDs, Set<Integer> sorterIDs, Set<Integer> hr_managerIDs, Set<Integer> logistics_managerIDs){
+                  Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs){
         this.date = date;
         this.shiftManagerId = shiftManagerId;
 

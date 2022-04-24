@@ -45,14 +45,30 @@ public abstract class Employee extends Screen {
 
     protected void handleBaseOptions(int option){
         switch (option) {
-            case 1 -> System.out.println(employmentConditions);
-            case 2 -> updateName();
-            case 3 -> updateBankDetails();
-            case 4 -> updateSalary();
-            case 5 -> updateCertifications();
-            case 6 -> calculateSalary();
-            case 7 -> manageConstraints();
-            case 8 -> printUpcomingShifts();
+            case 1:
+                System.out.println(employmentConditions);
+                break;
+            case 2:
+                updateName();
+                break;
+            case 3:
+                updateBankDetails();
+                break;
+            case 4:
+                updateSalary();
+                break;
+            case 5:
+                updateCertifications();
+                break;
+            case 6:
+                calculateSalary();
+                break;
+            case 7:
+                manageConstraints();
+                break;
+            case 8:
+                printUpcomingShifts();
+                break;
         }
     }
 
@@ -201,8 +217,12 @@ public abstract class Employee extends Screen {
             }
         }
         switch (ans) {
-            case 1 -> addCertifications(curr);
-            case 2 -> removeCertifications(curr);
+            case 1:
+                addCertifications(curr);
+                break;
+            case 2:
+                removeCertifications(curr);
+                break;
         }
         System.out.println("New certifications:");
         for (Certifications c: curr)
@@ -316,8 +336,12 @@ public abstract class Employee extends Screen {
             }
         }
         switch (ans) {
-            case 1 -> addConstraints();
-            case 2 -> removeConstraints();
+            case 1:
+                addConstraints();
+                break;
+            case 2:
+                removeConstraints();
+                break;
         }
     }
 

@@ -35,11 +35,21 @@ public class ShiftsMenu extends Screen {
         while (option != 4 && option != 5) {
             option = runMenu();
             switch (option) {
-                case 1 -> viewShifts();
-                case 2 -> addShifts();
-                case 3 -> removeShifts();
-                case 4 -> manageShift();
-                case 5 -> endRun();
+                case 1:
+                    viewShifts();
+                    break;
+                case 2:
+                    addShifts();
+                    break;
+                case 3:
+                    removeShifts();
+                    break;
+                case 4:
+                    manageShift();
+                    break;
+                case 5:
+                    endRun();
+                    break;
             }
         }
     }
@@ -266,7 +276,7 @@ public class ShiftsMenu extends Screen {
             //Shift Manager
             Constraint constraint = controller.getConstraint(date, type);
             Set<Employee> employees = controller.getEmployees(constraint.employeeIDs);
-            List<Employee> managers = employees.stream().filter((x) -> x.certifications.contains(Certifications.ShiftManagement)).toList();
+            List<Employee> managers = employees.stream().filter((x) -> x.certifications.contains(Certifications.ShiftManagement)).collect(Collectors.toList());
             if (managers.size() == 0) {
                 System.out.println("No employee who is certified to manage shifts has filled a possibility to work at this shift.");
                 System.out.println("Cannot assign a shift manager. Operation Cancelled");

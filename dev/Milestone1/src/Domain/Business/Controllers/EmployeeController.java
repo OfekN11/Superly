@@ -75,6 +75,7 @@ public class EmployeeController {
                     break;
             case Sorter :
                     employees.put(id, new Sorter(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                    break;
         }
     }
 
