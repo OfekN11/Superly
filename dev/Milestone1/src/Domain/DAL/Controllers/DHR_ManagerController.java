@@ -1,4 +1,5 @@
 package Domain.DAL.Controllers;
+import Domain.DAL.Abstract.DTOControllers;
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DHR_Manager;
 import java.sql.Time;
@@ -7,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DHR_ManagerController extends DalController<DHR_Manager> {
+public class DHR_ManagerController extends DTOControllers<DHR_Manager> {
     public DHR_ManagerController() {
         super("tableName");
     }

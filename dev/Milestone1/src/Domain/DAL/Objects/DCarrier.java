@@ -1,5 +1,7 @@
 package Domain.DAL.Objects;
 
+import Domain.Business.BusinessEmployeeFactory;
+import Domain.Business.Objects.Employee;
 import Domain.DAL.Controllers.DCarrierLicensesController;
 
 import java.util.Date;
@@ -20,6 +22,10 @@ public class DCarrier extends DEmployee{
     @Override
     public void save() {
 
+    }
+    @Override
+    public Employee accept(BusinessEmployeeFactory businessEmployeeFactory) {
+        return businessEmployeeFactory.createBusinessEmployee(this);
     }
 
     public void setLicenses(Set<String> licenses) {

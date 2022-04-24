@@ -36,7 +36,7 @@ public abstract class Employee {
      * @param startingDate Employee's Starting date
      * @param certifications Employees Certifications
      */
-    public Employee(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
+    public Employee(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications,DEmployee dEmployee) {
         this.id = id;
         this.name = name;
         this.bankDetails = bankDetails;
@@ -44,7 +44,9 @@ public abstract class Employee {
         this.employmentConditions = employmentConditions;
         this.startingDate = startingDate;
         this.certifications = certifications;
-        this.dEmployee = new DEmployee(id,name,bankDetails,salary,employmentConditions,startingDate,getJobTitle().toString());
+        this.dEmployee =dEmployee;
+        dEmployee.setCertifications(certifications);
+        dEmployee.save();
         constraints = new HashSet<>();
     }
 
@@ -76,6 +78,7 @@ public abstract class Employee {
     }
 
     public void setName(String name) {
+        dEmployee.setName(name);
         this.name = name;
     }
 

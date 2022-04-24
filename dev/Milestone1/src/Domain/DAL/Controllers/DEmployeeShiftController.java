@@ -4,8 +4,6 @@ import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DShift;
 import Globals.Enums.ShiftTypes;
 import javafx.util.Pair;
-import jdk.nashorn.internal.objects.Global;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,12 +17,12 @@ public class DEmployeeShiftController extends DalController<Pair<Pair<Date,Shift
         super("tablename");
     }
 
-    public void addEmployee(DShift dShift, int employeeId) {
+    public void addEmployee(DShift dShift, String employeeId) {
         // code to update the DB
         // use visitorPattern
     }
 
-    public void removeEmployee(DShift dShift, int employeeId) {
+    public void removeEmployee(DShift dShift, String employeeId) {
         // code to update the DB
         // use visitorPattern
     }
@@ -57,7 +55,7 @@ public class DEmployeeShiftController extends DalController<Pair<Pair<Date,Shift
 
     public void deleteAll(){}
 
-    public void replaceSetOfEmployees(DShift dShift, Set<Integer> employeesId) {
-
+    public void replaceSetOfEmployees(DShift dShift, Set<String> oldSet,Set<String> newSet) {
+        //code to replace the sets
     }
 }

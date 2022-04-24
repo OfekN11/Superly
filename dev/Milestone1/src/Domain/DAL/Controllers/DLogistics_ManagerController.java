@@ -1,4 +1,5 @@
 package Domain.DAL.Controllers;
+import Domain.DAL.Abstract.DTOControllers;
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DLogistics_Manager;
 
@@ -8,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DLogistics_ManagerController extends DalController<DLogistics_Manager> {
+public class DLogistics_ManagerController extends DTOControllers<DLogistics_Manager> {
     public DLogistics_ManagerController() {
         super("tableName");
     }

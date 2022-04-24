@@ -1,5 +1,6 @@
 package Domain.DAL.Controllers;
 
+import Domain.DAL.Abstract.DTOControllers;
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DConstraint;
 import Globals.Enums.ShiftTypes;
@@ -9,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DConstraintController extends DalController<DConstraint> {
+public class DConstraintController extends DTOControllers<DConstraint> {
 
     // properties
 
@@ -38,7 +39,7 @@ public class DConstraintController extends DalController<DConstraint> {
             employees.add("49");
             employees.add("27");
             output.add(new DConstraint(new SimpleDateFormat("dd-MM-yyyy").parse("13-07-2012"), ShiftTypes.Evening,employees));
-
+            persistAll(output);
             return output;
         } catch (ParseException e) {
             e.printStackTrace();

@@ -1,4 +1,5 @@
 package Domain.DAL.Controllers;
+import Domain.DAL.Abstract.DTOControllers;
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DEmployee;
 import Globals.Enums.Certifications;
@@ -6,7 +7,7 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class DEmployeeController extends DalController<DEmployee> {
+public class DEmployeeController extends DTOControllers<DEmployee> {
 
     // properties
     private DCarrierController dCarrierController;
@@ -40,13 +41,10 @@ public class DEmployeeController extends DalController<DEmployee> {
         employees.addAll(dSorterController.loadData());
         employees.addAll(dStorekeeperController.loadData());
         loadCertifications(employees);
-        persistEmployees(employees);
+        persistAll(employees);
         return employees;
     }
 
-    private void persistEmployees(Set<DEmployee> employees) {
-        employees.forEach((employee)-> employee.setPersist(true));
-    }
 
     private void loadCertifications(Set<DEmployee> employees) {
         Dictionary<String,DEmployee> dEmployeeDictionary =new Hashtable<>();

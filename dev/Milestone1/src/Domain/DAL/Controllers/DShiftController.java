@@ -1,11 +1,12 @@
 package Domain.DAL.Controllers;
+import Domain.DAL.Abstract.DTOControllers;
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DShift;
 import Globals.Enums.ShiftTypes;
 
 import java.util.*;
 
-public class  DShiftController extends DalController<DShift> {
+public class  DShiftController extends DTOControllers<DShift> {
     // properties
     private DEmployeeShiftController dEmployeeShiftController;
     private DMorningShiftController dMorningShiftController;
@@ -30,12 +31,8 @@ public class  DShiftController extends DalController<DShift> {
         shifts.addAll(eveningShifts);
         loadEmployees(morningShifts,ShiftTypes.Morning);
         loadEmployees(eveningShifts,ShiftTypes.Evening);
-        persistShifts(shifts);
+        persistAll(shifts);
         return shifts;
-    }
-
-    private void persistShifts(Set<DShift> shifts) {
-        shifts.forEach((dShift -> dShift.setPersist(true)));
     }
 
     private void loadEmployees(Set<? extends DShift> shifts,ShiftTypes type) {

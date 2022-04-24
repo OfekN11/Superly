@@ -1,5 +1,6 @@
 package Domain.DAL.Controllers;
 
+import Domain.DAL.Abstract.DTOControllers;
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DSorter;
 import Domain.DAL.Objects.DStorekeeper;
@@ -10,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DStorekeeperController extends DalController<DStorekeeper> {
+public class DStorekeeperController extends DTOControllers<DStorekeeper> {
     public DStorekeeperController() {
         super("tableName");
     }

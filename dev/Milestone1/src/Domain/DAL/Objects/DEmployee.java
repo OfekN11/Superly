@@ -1,4 +1,6 @@
 package Domain.DAL.Objects;
+import Domain.Business.BusinessEmployeeFactory;
+import Domain.Business.Objects.Employee;
 import Domain.DAL.Abstract.DTO;
 import Domain.DAL.Controllers.DEmployeeCertificationController;
 import Globals.Enums.Certifications;
@@ -28,6 +30,7 @@ public abstract class DEmployee extends DTO {
         this.startingDate = startingDate;
         this.certifications = new HashSet<>();
         this.dEmployeeCertificationController = new DEmployeeCertificationController();
+
     }
 
     // functions
@@ -87,10 +90,14 @@ public abstract class DEmployee extends DTO {
     }
 
     public void setCertifications(Set<Certifications> certifications) {
+        if (isPersist())
+            dEmployeeCertificationController.replaceCertification(this,certifications);
         this.certifications = certifications;
     }
 
     public void addCertification(Certifications certification){
         dEmployeeCertificationController.add(getId(),certification);
     }
+
+    public abstract Employee accept(BusinessEmployeeFactory businessEmployeeFactory);
 }

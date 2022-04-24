@@ -1,4 +1,5 @@
 package Domain.DAL.Controllers;
+import Domain.DAL.Abstract.DTOControllers;
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DCarrier;
 import javafx.util.Pair;
@@ -10,7 +11,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
-public class DCarrierController extends DalController<DCarrier> {
+public class DCarrierController extends DTOControllers<DCarrier> {
     private DCarrierLicensesController dCarrierLicensesController;
 
     public DCarrierController() {

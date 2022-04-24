@@ -1,5 +1,6 @@
 package Domain.DAL.Controllers;
 
+import Domain.DAL.Abstract.DTOControllers;
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DLogistics_Manager;
 import Domain.DAL.Objects.DSorter;
@@ -10,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DSorterController extends DalController<DSorter> {
+public class DSorterController extends DTOControllers<DSorter> {
     public DSorterController() {
         super("tableName");
     }

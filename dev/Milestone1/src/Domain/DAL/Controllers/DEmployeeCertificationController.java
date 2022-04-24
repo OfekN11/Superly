@@ -1,6 +1,7 @@
 package Domain.DAL.Controllers;
 
 import Domain.DAL.Abstract.DalController;
+import Domain.DAL.Objects.DEmployee;
 import Globals.Enums.Certifications;
 import javafx.util.Pair;
 
@@ -40,4 +41,7 @@ public class DEmployeeCertificationController extends DalController<Pair<Integer
     }
 
     public void deleteAll(){}
+
+    public void replaceCertification(DEmployee dEmployee, Set<Certifications> certifications) {
+    }
 }

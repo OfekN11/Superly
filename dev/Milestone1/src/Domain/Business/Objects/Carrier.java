@@ -1,5 +1,6 @@
 package Domain.Business.Objects;
 
+import Domain.DAL.Objects.DCashier;
 import Domain.DAL.Objects.DEmployee;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
@@ -15,8 +16,8 @@ import java.util.Set;
 public class Carrier extends Employee {
     private Set<String> licenses;
 
-    public Carrier(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications, Set<String> licenses) {
-        super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
+    public Carrier(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications, Set<String> licenses) {
+        super(id, name, bankDetails, salary, employmentConditions, startingDate,certifications,new DCashier(id,name,bankDetails,salary,employmentConditions,startingDate));
         this.licenses = licenses;
     }
 

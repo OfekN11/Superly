@@ -1,5 +1,8 @@
 package Domain.DAL.Objects;
 
+import Domain.Business.BusinessEmployeeFactory;
+import Domain.Business.Objects.Employee;
+
 import java.util.Date;
 
 public class DSorter extends DEmployee{
@@ -10,5 +13,10 @@ public class DSorter extends DEmployee{
     @Override
     public void save() {
 
+    }
+
+    @Override
+    public Employee accept(BusinessEmployeeFactory businessEmployeeFactory) {
+        return businessEmployeeFactory.createBusinessEmployee(this);
     }
 }

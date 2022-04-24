@@ -1,6 +1,7 @@
 package Domain.Business.Objects;
 
 import Domain.DAL.Objects.DEmployee;
+import Domain.DAL.Objects.DStorekeeper;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
@@ -13,8 +14,8 @@ import java.util.Set;
  */
 public class Storekeeper extends Employee {
 
-    public Storekeeper(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
-        super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
+    public Storekeeper(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
+        super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications,new DStorekeeper(id,name,bankDetails,salary,employmentConditions,startingDate));
     }
 
     public Storekeeper(DEmployee dEmployee) {

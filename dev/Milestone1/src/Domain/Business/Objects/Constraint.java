@@ -2,6 +2,7 @@ package Domain.Business.Objects;
 import Domain.DAL.Objects.DConstraint;
 import Globals.Enums.ShiftTypes;
 
+import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,13 +12,14 @@ public class Constraint {
     // properties
     private Date date;
     private ShiftTypes type; // morning evening
-    private Set<Integer> employees;
+    private Set<String> employees;
 
-    public Constraint(Date date, ShiftTypes type, Set<Integer> employees) {
+    public Constraint(Date date, ShiftTypes type, Set<String> employees) {
         this.date = date;
         this.type = type;
         this.employees = new HashSet<>(employees);
-        dConstraint = new DConstraint();
+        dConstraint = new DConstraint(date,type,employees);
+        dConstraint.save();
     }
 
     public Constraint(DConstraint dConstraint){
@@ -35,15 +37,15 @@ public class Constraint {
         return type;
     }
 
-    public Set<Integer> getEmployees() {
+    public Set<String> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Set<Integer> employees) {
+    public void setEmployees(Set<String> employees) {
         this.employees = new HashSet<>(employees);
     }
 
-    public void register(int id) {
+    public void register(String id) {
         employees.add(id);
     }
 

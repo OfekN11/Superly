@@ -1,16 +1,19 @@
 package Domain.DAL.Objects;
 
+import Domain.Business.BusinessShiftFactory;
+import Domain.Business.Objects.Shift;
 import Domain.DAL.Abstract.DTO;
 import Domain.DAL.Controllers.DEmployeeShiftController;
 import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class DShift extends DTO {
     // properties
     private Date workday;
-    private int shiftManagerId;
+    private String shiftManagerId;
     private DEmployeeShiftController dEmployeeShiftController;
 
     private int carrierCount;
@@ -19,12 +22,12 @@ public abstract class DShift extends DTO {
     private int sorterCount;
     private int hr_managersCount;
     private int logistics_managersCount;
-    private Set<Integer> employeesId;
+    private Set<String> employeesId;
 
     // constructor
 
 
-    public DShift(Date workday, ShiftTypes type, int shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount, Set<Integer> employeesId) {
+    public DShift(Date workday, ShiftTypes type, String shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount, Set<String> employeesId) {
         super(workday.toString()+ type.toString(), "tableName"); //no id to shift
         this.workday = workday;
         this.shiftManagerId = shiftManagerId;
@@ -37,7 +40,7 @@ public abstract class DShift extends DTO {
         this.logistics_managersCount = logistics_managersCount;
         this.employeesId = employeesId;
     }
-    public DShift(Date workday,ShiftTypes type, int shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount) {
+    public DShift(Date workday,ShiftTypes type, String shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount) {
         super(workday.toString()+type.toString(), "tableName"); //no id to shift
         this.workday = workday;
         this.shiftManagerId = shiftManagerId;
@@ -50,11 +53,6 @@ public abstract class DShift extends DTO {
         this.logistics_managersCount = logistics_managersCount;
     }
 
-    public void setEmployeesId(Set<Integer> employeesId) {
-        if (isPersist())
-            dEmployeeShiftController.replaceSetOfEmployees(this,employeesId);
-        this.employeesId = employeesId;
-    }
 
     public void setCarrierCount(int carrierCount) {
         update("CarrierCount",carrierCount);
@@ -91,7 +89,7 @@ public abstract class DShift extends DTO {
         this.workday = workday;
     }
 
-    public void setShiftManagerId(int shiftManagerId) {
+    public void setShiftManagerId(String shiftManagerId) {
         update("ShiftManagerId",shiftManagerId);
         this.shiftManagerId = shiftManagerId;
     }
@@ -124,22 +122,22 @@ public abstract class DShift extends DTO {
         return workday;
     }
 
-    public Set<Integer> getEmployeesId() {
+    public Set<String> getEmployeesId() {
         return employeesId;
     }
 
-    public int getShiftManagerId() {
+    public String getShiftManagerId() {
         return shiftManagerId;
     }
 
-    public void addEmployee(int employeeId){
+    public void addEmployee(String employeeId){
         if (isPersist()) {
             dEmployeeShiftController.addEmployee(this, employeeId);
         }
         employeesId.add(employeeId);
     }
 
-    public void removeEmployee(int employeeId){
+    public void removeEmployee(String employeeId){
         if (isPersist()) {
             dEmployeeShiftController.removeEmployee(this, employeeId);
         }
@@ -150,4 +148,13 @@ public abstract class DShift extends DTO {
     public void delete(){
         //need to overwrite the delete because there is no id
     }
+
+    public void replaceEmployeeSet(Set<String> oldSet, Set<String>newSet ) {
+        if (isPersist())
+            dEmployeeShiftController.replaceSetOfEmployees(this,oldSet,newSet);
+        employeesId = employeesId.stream().filter((t)->!oldSet.contains(t)).collect(Collectors.toSet());
+        employeesId.addAll(newSet);
+    }
+
+    public abstract Shift accept(BusinessShiftFactory businessShiftFactory);
 }

@@ -11,7 +11,7 @@ public class EmployeeController {
     private static final String EmployeeNotFoundErrorMsg ="Employee id %f could not be found";
 
     // properties
-    private final Map<Integer,Employee> employees = new HashMap<>();
+    private final Map<String,Employee> employees = new HashMap<>();
     private final DEmployeeController dEmployeeController = new DEmployeeController();
     private final Map<Date,Map<ShiftTypes, Set<Integer>>> constraints = new HashMap<>();
 
@@ -34,7 +34,7 @@ public class EmployeeController {
         return output;
     }
 
-    public void createFakeEmployees() {
+    public void loadData() {
         Set<DEmployee> dEmployees = dEmployeeController.loadData();
         for (DEmployee dEmployee : dEmployees) {
             Employee employee = switch (dEmployee.getJob()) {
@@ -61,7 +61,7 @@ public class EmployeeController {
     public void deleteData() {
     }
 
-    public void registerEmployee(JobTitles title, int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
+    public void registerEmployee(JobTitles title, String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
         if (employees.containsKey(id))
             throw new Exception(String.format("An employee with ID: %o already exists: %s", id, employees.get(id).getName()));
         switch (title) {
