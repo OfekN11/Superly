@@ -153,7 +153,19 @@ public class AgreementItem {
     }
 
     public int getDiscount(int quantity) {
-        return 4;
+        int closerQuantity = 0;
+
+        for(int q : bulkPrices.keySet()){
+            if(q <= quantity && q > closerQuantity){
+                closerQuantity = q;
+            }
+        }
+
+        if(closerQuantity > 0){
+            return bulkPrices.get(closerQuantity);
+        }
+
+        return 0;
     }
 
 
