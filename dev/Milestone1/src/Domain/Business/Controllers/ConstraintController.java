@@ -2,6 +2,7 @@ package Domain.Business.Controllers;
 
 import Domain.Business.Objects.Constraint;
 import Domain.DAL.Controllers.DConstraintController;
+import Domain.DAL.Objects.DConstraint;
 import Globals.Enums.ShiftTypes;
 
 import java.util.*;
@@ -11,6 +12,13 @@ public class ConstraintController {
     private final DConstraintController dConstraintController = new DConstraintController();
 
     public void loadData() {
+        Set<DConstraint> dConstraints = dConstraintController.loadData();
+        for(DConstraint dConstraint: dConstraints){
+            if (!constraints.containsKey(dConstraint.getDate()))
+                constraints.put(dConstraint.getDate(),new HashMap<>());
+            constraints.get(dConstraint.getDate()).put(dConstraint.getShiftType(),new Constraint(dConstraint));
+        }
+
     }
 
     public void deleteData() {
