@@ -17,33 +17,20 @@ public class TruckController {
         trucks = new HashMap<>();
     }
 
-    public boolean addTruck(Truck newTruck)
-    {
-        if(!trucks.containsKey(newTruck.getLicenseNumber()))
-        {
-            trucks.put(newTruck.getLicenseNumber(), newTruck);
-            return true;
-        }
-        return false;
-    }
 
-    public boolean removeTruck(int truckLN)
-    {
+    public void removeTruck(int truckLN) throws Exception {
         if(trucks.containsKey(truckLN))
         {
             trucks.remove(truckLN);
-            return true;
         }
-        return false;
+        else {
+            throw new Exception("Truck does not exist");
+        }
     }
 
     public boolean updateTruck(Truck updatedTruck)
     {
-        if(trucks.containsKey(updatedTruck.getLicenseNumber()))
-        {
-            trucks.replace(updatedTruck.getLicenseNumber(), updatedTruck);
-            return true;
-        }
+        //TODO: Implement in future
         return false;
     }
 
@@ -53,4 +40,13 @@ public class TruckController {
         return null;
     }
 
+    public void addTruck(int licenseNumber, LicenseTypes model, int netWeight, int maxCapacityWeight) throws Exception {
+        if(!trucks.containsKey(licenseNumber))
+        {
+            trucks.put(licenseNumber, new Truck(licenseNumber, model, netWeight, maxCapacityWeight));
+        }
+        else {
+            throw new Exception("A truck with this license number already exists");
+        }
+    }
 }
