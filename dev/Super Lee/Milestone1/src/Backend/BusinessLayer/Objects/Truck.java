@@ -7,7 +7,6 @@ public class Truck {
     private LicenseTypes model;
     private int netWeight;
     private int maxCapacityWeight;
-    private Driver driver;
     private int currWeight;
 
     public Truck(int licenseNumber, LicenseTypes model, int netWeight, int maxCapacityWeight) {
@@ -41,7 +40,6 @@ public class Truck {
         {
             return false;
         }
-        this.driver = driver;
         return true;
     }
 
