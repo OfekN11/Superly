@@ -5,7 +5,6 @@ import Domain.Service.Objects.*;
 import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 public class ConstraintService {
@@ -34,7 +33,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Object> registerToConstraint(int id, Date workday, ShiftTypes shift) {
+    public Result<Object> registerToConstraint(String id, Date workday, ShiftTypes shift) {
         try {
             controller.registerToConstraint(id, workday, shift);
         }
@@ -44,7 +43,7 @@ public class ConstraintService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> unregisterFromConstraint(int id, Date workday, ShiftTypes shift) {
+    public Result<Object> unregisterFromConstraint(String id, Date workday, ShiftTypes shift) {
         try {
             controller.unregisterFromConstraint(id, workday, shift);
         }

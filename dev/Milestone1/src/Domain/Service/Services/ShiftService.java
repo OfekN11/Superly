@@ -72,7 +72,7 @@ public class ShiftService {
         }
     }
 
-    public Result<Object> editShiftManagerID(Date workday, ShiftTypes type, int managerID){
+    public Result<Object> editShiftManagerID(Date workday, ShiftTypes type, String managerID){
         try {
             controller.editShiftManagerID(workday, type, managerID);
         }
@@ -142,7 +142,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftCarrierIDs(Date workday, ShiftTypes type, Set<Integer> ids){
+    public Result<Object> editShiftCarrierIDs(Date workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftCarrierIDs(workday,type, ids);
         }
@@ -152,7 +152,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftCashierIDs(Date workday, ShiftTypes type, Set<Integer> ids){
+    public Result<Object> editShiftCashierIDs(Date workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftCashierIDs(workday,type, ids);
         }
@@ -162,7 +162,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftStorekeeperIDs(Date workday, ShiftTypes type, Set<Integer> ids){
+    public Result<Object> editShiftStorekeeperIDs(Date workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftStorekeeperIDs(workday,type, ids);
         }
@@ -172,7 +172,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftSorterIDs(Date workday, ShiftTypes type, Set<Integer> ids){
+    public Result<Object> editShiftSorterIDs(Date workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftSorterIDs(workday,type, ids);
         }
@@ -182,7 +182,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftHR_ManagerIDs(Date workday, ShiftTypes type, Set<Integer> ids){
+    public Result<Object> editShiftHR_ManagerIDs(Date workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftHR_ManagerIDs(workday,type, ids);
         }
@@ -192,7 +192,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftLogistics_ManagerIDs(Date workday, ShiftTypes type, Set<Integer> ids){
+    public Result<Object> editShiftLogistics_ManagerIDs(Date workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftLogistics_ManagerIDs(workday,type, ids);
         }

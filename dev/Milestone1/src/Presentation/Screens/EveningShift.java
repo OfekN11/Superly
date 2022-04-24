@@ -13,7 +13,7 @@ public class EveningShift extends Shift{
     }
 
     @Override
-    protected ShiftTypes getType() {
+    public ShiftTypes getType() {
         return ShiftTypes.Evening;
     }
 

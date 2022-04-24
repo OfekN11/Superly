@@ -33,7 +33,7 @@ public class MorningShift extends Shift{
     }
 
     @Override
-    protected ShiftTypes getType() {
+    public ShiftTypes getType() {
         return ShiftTypes.Morning;
     }
 }

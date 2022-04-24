@@ -5,11 +5,9 @@ import Domain.Service.Objects.*;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
-import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Service controller for employee operations
@@ -63,7 +61,7 @@ public class EmployeeService {
      * @param certifications All of the employee's certifications
      * @return Result detailing process' success
      */
-    public Result<Object> registerEmployee(JobTitles title, int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications){
+    public Result<Object> registerEmployee(JobTitles title, String  id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications){
         try {
             controller.registerEmployee(title, id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
         }
@@ -79,7 +77,7 @@ public class EmployeeService {
      * @param id ID of the employee we want to get
      * @return Result holding requested employee of error message if failed
      */
-    public Result<Employee> getEmployee(int id){
+    public Result<Employee> getEmployee(String id){
         try {
             return Result.makeOk(factory.createServiceEmployee(controller.getEmployee(id)));
         }
@@ -95,7 +93,7 @@ public class EmployeeService {
      * @param name Employee's new name
      * @return Result detailing process' success
      */
-    public Result<Object> editEmployeeName(int id, String name){
+    public Result<Object> editEmployeeName(String id, String name){
         try {
             controller.editEmployeeName(id, name);
         }
@@ -105,7 +103,7 @@ public class EmployeeService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editEmployeeBankDetails(int id, String bankDetails){
+    public Result<Object> editEmployeeBankDetails(String id, String bankDetails){
         try {
             controller.editEmployeeBankDetails(id, bankDetails);
         }
@@ -115,7 +113,7 @@ public class EmployeeService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editEmployeeEmployementCondidions(int id, String employementCondition){
+    public Result<Object> editEmployeeEmployementCondidions(String id, String employementCondition){
         try {
             controller.editEmployeeEmployementConditions(id, employementCondition);
         }
@@ -125,7 +123,7 @@ public class EmployeeService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editEmployeeCertifications(int id, Set<Certifications> certifications){
+    public Result<Object> editEmployeeCertifications(String id, Set<Certifications> certifications){
         try {
             controller.editEmployeeCertifications(id, certifications);
         }
@@ -135,7 +133,7 @@ public class EmployeeService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editCarrierLicenses(int id, Set<String> Licences){
+    public Result<Object> editCarrierLicenses(String id, Set<String> Licences){
         try {
             controller.editCarrierLicenses(id, Licences);
         }
@@ -145,7 +143,7 @@ public class EmployeeService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> removeEmployee(int id){
+    public Result<Object> removeEmployee(String id){
         try {
             controller.removeEmployee(id);
         }

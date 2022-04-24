@@ -418,4 +418,7 @@ public abstract class Employee extends Screen {
             System.out.println(shift);
     }
 
+    public String getID() {
+        return id;
+    }
 }

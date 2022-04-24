@@ -156,27 +156,18 @@ public class EmployeesMenu extends Screen {
         System.out.println("\nLets add a new employee! (you can cancel this action at any point by entering -1");
 
         //ID
-        Integer id = null;
+        String id = null;
         boolean success = false;
         while (!success) {
             System.out.println("\nEnter new employee's ID");
-            try {
-                id = scanner.nextInt();
-                if (id == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                }
-                controller.checkUnusedEmployeeID();
-                if (id < 0)
-                    System.out.println("Please enter a non-negative integer");
-                else {
-                    System.out.println("Entered ID: " + id);
-                    success = areYouSure();
-                }
-            } catch (InputMismatchException ex) {
-                System.out.println("Please enter a non-negative integer");
-                scanner.next();
+            id = scanner.nextLine();
+            if (id.equals("-1")) {
+                System.out.println("Operation Canceled");
+                return;
             }
+            controller.checkUnusedEmployeeID(id);
+            System.out.println("Entered ID: " + id);
+            success = areYouSure();
         }
         System.out.println("Chosen ID: " + id);
 
@@ -339,7 +330,7 @@ public class EmployeesMenu extends Screen {
                         + "\nJob title: " + jobTitle
                         + "\nStarting date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate)
                         + "\nSalary per shift: " + salary;
-        controller.addEmployee(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
+        controller.addEmployee(jobTitle, id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
         System.out.println(employmentConditions + "\nHas been successfully added");
     }
 }

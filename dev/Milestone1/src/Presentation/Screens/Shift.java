@@ -377,7 +377,7 @@ public abstract class Shift extends Screen {
         EmployeesMenu.EmployeesViewer.printEmployees(controller.getEmployees(getIDsByType(type)));
     }
 
-    protected abstract ShiftTypes getType();
+    public abstract ShiftTypes getType();
 
     protected void printDetails() throws Exception {
         System.out.println(getType() + " shift");
@@ -387,5 +387,9 @@ public abstract class Shift extends Screen {
             printEmployeesByType(type);
             System.out.println();
         }
+    }
+
+    public Date getDate() {
+        return date;
     }
 }
