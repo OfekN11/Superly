@@ -745,4 +745,47 @@ public class InventoryService {
             return Result.makeError(e.getMessage());
         }
     }
+
+    /**
+     * Delete a category
+     * @param catID = ID of category to remove
+     * @return Result detailing success of operation
+     */
+    public Result<Object> deleteCategory(int catID) {
+        try {
+            controller.deleteCategory(catID);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
+    }
+
+    /**
+     * change the min amount of product in specified store before warnings will occur
+     *
+     * @return Result detailing success of operation, containing the edited product
+     */
+    public Result<Product> changeProductMin(int store, int product, int min) {
+        try {
+            return Result.makeOk(new Product(controller.changeProductMin(store, product, min)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * change the max recommended amount of product in specified store
+     *
+     * @return Result detailing success of operation, containing the edited product
+     */
+    public Result<Product> changeProductMax(int store, int product, int max) {
+        try {
+            return Result.makeOk(new Product(controller.changeProductMax(store, product, max)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
 }

@@ -100,10 +100,16 @@ public class Inventory {
             changeProductName();
         else if (command.equals("change product price"))
             changeProductPrice();
+        else if (command.equals("change product min"))
+            changeProductMin();
+        else if (command.equals("change product min"))
+            changeProductMax();
         else if (command.equals("delete product"))
             deleteProduct();
         else if (command.equals("add category"))
             addCategory();
+        else if (command.equals("delete category"))
+            deleteCategory();
         else if (command.equals("change category parent"))
             changeCatParent();
         else if (command.equals("change category name"))
@@ -162,6 +168,53 @@ public class Inventory {
             System.out.println("Persistence Layer is not implemented yet");
         else
             System.out.println("Command not found. please use 'help' for info or 'q' to quit");
+    }
+
+    private static void deleteCategory() {
+        System.out.println("What category would you like to delete?");
+        listCategoryIDs();
+        int catID = scanner.nextInt();
+        scanner.nextLine(); //to remove extra \n
+        Result r = is.deleteCategory(catID);
+        if (r.isError()) {
+            System.out.println(r.getError());
+        }
+        else
+            System.out.println("Category deleted successfully");
+    }
+
+    private static void changeProductMin() {
+        System.out.println("What Product would you like to edit?");
+        int product = scanner.nextInt();
+        int store = getStoreID();
+        System.out.println("What would you like the new min amount to be?");
+        int min = scanner.nextInt();
+        scanner.nextLine(); //to remove extra \n
+        Result<Product> r = is.changeProductMin(store, product, min);
+        if (r.isError()) {
+            System.out.println(r.getError());
+        }
+        else {
+            System.out.println("Min changed successfully");
+            System.out.println(r.getValue());
+        }
+    }
+
+    private static void changeProductMax() {
+        System.out.println("What Product would you like to edit?");
+        int product = scanner.nextInt();
+        int store = getStoreID();
+        System.out.println("What would you like the new max amount to be?");
+        int max = scanner.nextInt();
+        scanner.nextLine(); //to remove extra \n
+        Result<Product> r = is.changeProductMin(store, product, max);
+        if (r.isError()) {
+            System.out.println(r.getError());
+        }
+        else {
+            System.out.println("Max changed successfully");
+            System.out.println(r.getValue());
+        }
     }
 
     private static void storeStockReport() {
@@ -1072,9 +1125,12 @@ public class Inventory {
         System.out.printf("%-30.30s %-30s\n", "delete product", "delete product from catalog");
         System.out.printf("%-30.30s %-30s\n", "change product name", "change product name");
         System.out.printf("%-30.30s %-30s\n", "change product price", "change product price");
+        System.out.printf("%-30.30s %-30s\n", "change product min", "change min amount of product in a store before warning");
+        System.out.printf("%-30.30s %-30s\n", "change product max", "change max recommended amount of product in a store");
 
         System.out.println();
         System.out.printf("%-30.30s %-30s\n", "add category", "create a new category");
+        System.out.printf("%-30.30s %-30s\n", "delete category", "delete an existing category");
         System.out.printf("%-30.30s %-30s\n", "change category parent", "change a category's \"parent\" category");
         System.out.printf("%-30.30s %-30s\n", "change category name", "change a category's name");
         System.out.printf("%-30.30s %-30s\n", "change product category", "move a product to a new category");

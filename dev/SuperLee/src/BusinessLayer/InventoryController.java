@@ -560,4 +560,28 @@ public class InventoryController {
         Product product = getProduct(productID);
         product.reportDefectiveForTest(storeID, amount, employeeID, description, defect, date);
     }
+
+    public void deleteCategory(int catID) {
+        Category categoryToRemove = categories.get(catID);
+        if (categoryToRemove==null)
+            throw new IllegalArgumentException("There is no category with id " + catID);
+        if (!categoryToRemove.getSubcategories().isEmpty())
+            throw new IllegalArgumentException("Cannot delete a category that has subcategories");
+        if (!categoryToRemove.getAllProductsInCategory().isEmpty())
+            throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
+        categoryToRemove.changeParentCategory(null);
+        categories.remove(catID);
+    }
+
+    public Product changeProductMin(int store, int product, int min) {
+        Product p = getProduct(product);
+        p.changeProductMin(store, min);
+        return p;
+    }
+
+    public Product changeProductMax(int store, int product, int max) {
+        Product p = getProduct(product);
+        p.changeProductMin(store, max);
+        return p;
+    }
 }

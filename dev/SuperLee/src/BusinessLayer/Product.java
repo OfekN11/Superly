@@ -67,12 +67,12 @@ public class Product {
     }
 
     public Integer getMinInStore(int store) {
-        if (inStore.get(store)==null)
+        if (minAmounts.get(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store);
         return minAmounts.get(store);
     }
     public int getMaxInStore(int store) {
-        if (inStore.get(store)==null)
+        if (minAmounts.get(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store);
         return maxAmounts.get(store);
     }
@@ -303,5 +303,25 @@ public class Product {
 
     public boolean belongsToCategory(Category category) {
         return (this.category==category || this.category.belongsToCategory(category));
+    }
+
+    public void changeProductMin(int store, int min) {
+        if (minAmounts.get(store)==null)
+            throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no min");
+        if (min<1)
+            throw new IllegalArgumentException("New min value must be positive");
+        if (min>maxAmounts.get(store))
+            throw new IllegalArgumentException("New min cannot be greater than max. Max is currently " + maxAmounts.get(store));
+        minAmounts.put(store, min);
+    }
+
+    public void changeProductMax(int store, int max) {
+        if (maxAmounts.get(store)==null)
+            throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no min");
+        if (max<1)
+            throw new IllegalArgumentException("New max value must be positive");
+        if (max>minAmounts.get(store))
+            throw new IllegalArgumentException("New max cannot be less than min. Min is currently " + minAmounts.get(store));
+        maxAmounts.put(store, max);
     }
 }
