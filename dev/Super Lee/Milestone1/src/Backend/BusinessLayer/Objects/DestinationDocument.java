@@ -1,12 +1,17 @@
 package Backend.BusinessLayer.Objects;
 
-import Backend.ServiceLayer.Factory.ServiceDocumentFactory;
-
 import java.util.List;
 
 public class DestinationDocument extends Document{
-    private static int destDocumentSN;
+    private static int incSN = 0;
+    private int destDocumentSN = 0;
     private List<String> providedProducts;
+
+    public DestinationDocument(List<String> providedProducts) {
+        destDocumentSN = incSN;
+        this.providedProducts = providedProducts;
+        incSN += 1;
+    }
 
     @Override
     public Backend.ServiceLayer.Objects.Document accept(ServiceDocumentFactory factory) {

@@ -11,6 +11,7 @@ public class Driver {
         this.licenseTypes = licenseTypes;
     }
 
+
     public String getName() {
         return name;
     }
@@ -26,4 +27,6 @@ public class Driver {
     public void setLicenseTypes(LicenseTypes licenseTypes) {
         this.licenseTypes = licenseTypes;
     }
+
+
 }
