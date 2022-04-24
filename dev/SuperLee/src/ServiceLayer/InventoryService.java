@@ -11,9 +11,9 @@ import ServiceLayer.Objects.*;
 import java.util.*;
 
 /**
- * Service controller for employee operations
+ * Service controller for Inventory management operations
  *
- * All EmployeeService's methods return Results detailing the success. encapsulating values/error messages
+ * All InventoryService's methods return Results detailing the success. encapsulating values/error messages
  */
 public class InventoryService {
 
@@ -41,7 +41,7 @@ public class InventoryService {
     /**
      * gets store ids of existing stores
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, holding list of store ids
      */
     public Result<List<Integer>> getStoreIDs(){
         try {
@@ -51,6 +51,12 @@ public class InventoryService {
             return Result.makeError(e.getMessage());
         }
     }
+
+    /**
+     * gets List of sales which are current or upcoming
+     *
+     * @return Result detailing success of operation, holding list of sales
+     */
     public Result<List<Sale>> getRemovableSales(){
         try {
             List<SaleToCustomer> removableSales = controller.getRemovableSales();
@@ -64,6 +70,7 @@ public class InventoryService {
             return Result.makeError(e.getMessage());
         }
     }
+
     /**
      * Loads data from persistence layer
      *
@@ -82,7 +89,7 @@ public class InventoryService {
     /**
      * Adds new product to catalog
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the new Product
      */
     public Result<Product> newProduct(String name, int categoryID, int weight, double price, Map<Integer, Integer> suppliers, int manufacturerID){
         try {
@@ -112,7 +119,7 @@ public class InventoryService {
     /**
      * add sale on specified categories and/or items
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the new sale
      */
     public Result<Sale> addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end){
         try {
@@ -125,7 +132,7 @@ public class InventoryService {
     }
 
     /**
-     * add sale on specified categories and/or items
+     * delete an upcoming or current sale
      *
      * @return Result detailing success of operation
      */
@@ -140,9 +147,9 @@ public class InventoryService {
     }
 
     /**
-     * add Discount from supplier on product
+     * add product to the items the specified store sells
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the specified product
      */
     public Result<Product> addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int maxAmount){
         try {
@@ -155,9 +162,9 @@ public class InventoryService {
     }
 
     /**
-     * add Discount from supplier on product
+     * remove product from items that the specified store sells
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the specified product
      */
     public Result<Product> removeProductFromStore(int storeID, int productID){
         try {
@@ -170,9 +177,9 @@ public class InventoryService {
     }
 
     /**
-     * add Discount from supplier on product
+     * add purchase from supplier on specified product to a store
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the info on the purchase
      */
     public Result<PurchaseFromSupplierReport> addItems(int storeID, int productID, int supplierID, String description, int amountBought, int pricePaid, int originalPrice){
         try {
@@ -185,9 +192,9 @@ public class InventoryService {
     }
 
     /**
-     * Get History of all discounts from the different suppliers on specified product
+     * Get History of all purchase from the different suppliers on specified product
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the info on the purchase
      */
     public Result<List<PurchaseFromSupplierReport>> getPurchaseFromSupplierHistory(int productId){
         try {
@@ -205,7 +212,7 @@ public class InventoryService {
     /**
      * Get History of all discounts from the different suppliers on specified product
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the info on the discounts
      */
     public Result<List<PurchaseFromSupplierReport>> getDiscountFromSupplierHistory(int productId){
         try {
@@ -221,9 +228,9 @@ public class InventoryService {
     }
 
     /**
-     * Get History of all sales on a specific product
+     * Get History of all sales the store had on a specific product
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the list of the sales
      */
     public Result<List<Sale>> getSaleHistoryByProduct(int productId){
         try {
@@ -240,9 +247,9 @@ public class InventoryService {
     }
 
     /**
-     * Get History of all sales on a specific category
+     * Get History of all sales the store had on a specific category
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the list of the sales
      */
     public Result<List<Sale>> getSaleHistoryByCategory(int categoryID){
         try {
@@ -259,9 +266,9 @@ public class InventoryService {
     }
 
     /**
-     * Get History of recent damaged and expired items
+     * Get History of reported damaged and expired items, in the time range specified, in specified stores
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the list of the reports
      */
     public Result<List<DefectiveItemReport>> getDefectiveItemsByStore(Date start, Date end, List<Integer> storeIDs){
         try {
@@ -277,9 +284,9 @@ public class InventoryService {
     }
 
     /**
-     * Get History of recent damaged and expired items
+     * Get History of reported damaged and expired items, in the time range specified, in specified categories
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the list of the reports
      */
     public Result<List<DefectiveItemReport>> getDefectiveItemsByCategory(Date start, Date end, List<Integer> categoryIDs){
         try {
@@ -293,10 +300,11 @@ public class InventoryService {
             return Result.makeError(e.getMessage());
         }
     }
+
     /**
-     * Get History of recent damaged and expired items
+     * Get History of reported damaged and expired items, in the time range specified, of specified products
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the list of the reports
      */
     public Result<List<DefectiveItemReport>> getDefectiveItemsByProduct(Date start, Date end, List<Integer> productIDs){
         try {
@@ -314,7 +322,7 @@ public class InventoryService {
     /**
      * Get list of all products in catalog
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing list of the products
      */
     public Result<List<Product>> getProducts(){
         try {
@@ -331,9 +339,9 @@ public class InventoryService {
     }
 
     /**
-     * Get list of all products in a category
+     * Get list of all products in specified categories
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing list of the productsv
      */
     public Result<List<Product>> getProductsFromCategory(List<Integer> categoryIDs){
         try {
@@ -352,7 +360,7 @@ public class InventoryService {
     /**
      * Get list of all Categories in the store
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing list of the categories
      */
     public Result<List<Category>> getCategories(){
         try {
@@ -369,9 +377,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage or expired items from the store
+     * buy items from specified store
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing price of the products
      */
     public Result<Double> buyItems(int storeID, int productID, int amount){
         try {
@@ -383,9 +391,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage or expired items from the store
+     * Stock report of all items under the defined minimum amount per store
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, with list of stockreports
      */
     public Result<List<StockReport>> getMinStockReport(){
         try {
@@ -401,9 +409,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage or expired items from the store
+     * Stock report of all items under the defined minimum amount in specified store
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, with list of stockreports
      */
     public Result<List<StockReport>> storeStockReport(int store){
         try {
@@ -419,9 +427,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage or expired items from the store
+     * Query as to whether specified item is under defined minimum in store
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, with boolean true if the amount in the store is under the defined minimum
      */
     public Result<Boolean> isUnderMin(int store, int product){
         try {
@@ -433,9 +441,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage items from the store
+     * Report and remove damage items from the store
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the report details
      */
     public Result<DefectiveItemReport> reportDamaged(int storeID, int productID, int amount, int employeeID, String description){
         try {
@@ -447,9 +455,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage items from the store
+     * Report and remove expired items from the store
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the report details
      */
     public Result<DefectiveItemReport> reportExpired(int storeID, int productID, int amount, int employeeID, String description){
         try {
@@ -461,9 +469,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage items from the store
+     * Query of all damaged items from specified stores in the date range
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing a list of the reports
      */
     public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(Date start, Date end, List<Integer> storeIDs){
         try {
@@ -479,9 +487,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage items from the store
+     * Query of all damaged items from specified categories in the date range
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing a list of the reports
      */
     public Result<List<DefectiveItemReport>> getDamagedItemsReportByCategory(Date start, Date end, List<Integer> categoryIDs){
         try {
@@ -497,9 +505,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage items from the store
+     * Query of all damaged items of specified products in the date range
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing a list of the reports
      */
     public Result<List<DefectiveItemReport>> getDamagedItemsReportByProduct(Date start, Date end, List<Integer> productIDs){
         try {
@@ -515,9 +523,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage items from the store
+     * Query of all expired items from specified stores in the date range
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing a list of the reports
      */
     public Result<List<DefectiveItemReport>> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeIDs){
         try {
@@ -533,9 +541,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage items from the store
+     * Query of all expired items from specified categories in the date range
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing a list of the reports
      */
     public Result<List<DefectiveItemReport>> getExpiredItemReportsByCategory(Date start, Date end, List<Integer> categoryIDs){
         try {
@@ -551,9 +559,9 @@ public class InventoryService {
     }
 
     /**
-     * Remove damage items from the store
+     * Query of all expired items of specified products in the date range
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing a list of the reports
      */
     public Result<List<DefectiveItemReport>> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productIDs){
         try {
@@ -584,9 +592,9 @@ public class InventoryService {
     }
 
     /**
-     * Get list of all products in a category
+     * Customer returns items to a store
      *
-     * @return Result detailing success of operation
+     * @return Result detailing success of operation, containing the price the customer paid for the items
      */
     public Result<Double> returnItems(int storeID, int productID, int amount, Date dateBought){
         try {
@@ -598,7 +606,7 @@ public class InventoryService {
     }
 
     /**
-     * Get list of all products in a category
+     * Add a new store to the system
      *
      * @return Result detailing success of operation
      */
@@ -612,7 +620,7 @@ public class InventoryService {
     }
 
     /**
-     * Get list of all products in a category
+     * Remove a store from the system
      *
      * @return Result detailing success of operation
      */
@@ -629,7 +637,7 @@ public class InventoryService {
     /**
      * Change product Price
      *
-     * @return Result detailing success of operation holding the renewed Product
+     * @return Result detailing success of operation, containing the edited Product
      */
     public Result<Product> editProductPrice(int productID, double newPrice){
         try {
@@ -643,7 +651,7 @@ public class InventoryService {
     /**
      * Change product Name
      *
-     * @return Result detailing success of operation holding the renewed Product
+     * @return Result detailing success of operation, containing the edited Product
      */
     public Result<Product> editProductName(int productID, String newName){
         try {
@@ -657,7 +665,7 @@ public class InventoryService {
     /**
      * Move Product to new Category
      *
-     * @return Result detailing success of operation holding the renewed Product
+     * @return Result detailing success of operation, containing the edited Product
      */
     public Result<Product> moveProductToCategory(int productID, int newCatID){
         try {
@@ -671,7 +679,7 @@ public class InventoryService {
     /**
      * Change Category Name
      *
-     * @return Result detailing success of operation holding the renewed Product
+     * @return Result detailing success of operation, containing the edited Category
      */
     public Result<Category> editCategoryName(int categoryID, String newName){
         try {
@@ -683,9 +691,9 @@ public class InventoryService {
     }
 
     /**
-     * Change Category Name
+     * Change Category parent/super-category
      *
-     * @return Result detailing success of operation holding the renewed Product
+     * @return Result detailing success of operation, containing the edited Category
      */
     public Result<Category> changeCategoryParent(int categoryID, int parentID){
         try {
@@ -697,9 +705,9 @@ public class InventoryService {
     }
 
     /**
-     * Change Category Name
+     * add new category
      *
-     * @return Result detailing success of operation holding the renewed Product
+     * @return Result detailing success of operation, containing the new Category
      */
     public Result<Category> addNewCategory(String name, int parentCategoryID){
         try {
@@ -711,9 +719,9 @@ public class InventoryService {
     }
 
     /**
-     * Change Category Name
+     * Add supplier to list of suppliers who sell specified product
      *
-     * @return Result detailing success of operation holding the renewed Product
+     * @return Result detailing success of operation, containing the edited Product
      */
     public Result<Product> addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier){
         try {
@@ -725,9 +733,9 @@ public class InventoryService {
     }
 
     /**
-     * Change Category Name
+     * Remove supplier from list of suppliers who sell specified product
      *
-     * @return Result detailing success of operation holding the renewed Product
+     * @return Result detailing success of operation, containing the edited Product
      */
     public Result<Product> removeSupplierFromProduct(int productID, int supplierID){
         try {

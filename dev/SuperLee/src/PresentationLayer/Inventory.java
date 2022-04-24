@@ -258,7 +258,6 @@ public class Inventory {
         if (r.isError())
             System.out.println(r.getError());
         else {
-            System.out.printf("%-30.30s %-30s\n", "Store ID", "Product");
             List<StockReport> stockReports = r.getValue();
             for (StockReport s : stockReports)
                 System.out.println(s);
