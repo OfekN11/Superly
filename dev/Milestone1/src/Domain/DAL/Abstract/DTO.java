@@ -34,8 +34,9 @@ public abstract class DTO {
     }
 
     public abstract void save(); // need to set persistent to true
+
     public void delete(){
-        //delete this object from DB code
+
     }
 
 

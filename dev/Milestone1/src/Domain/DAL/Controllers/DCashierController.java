@@ -31,4 +31,9 @@ public class DCashierController extends DTOControllers<DCashier> {
     public void deleteAll() {
 
     }
+
+    @Override
+    public void delete(DCashier toDelete) {
+
+    }
 }

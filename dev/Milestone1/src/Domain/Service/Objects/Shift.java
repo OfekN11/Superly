@@ -49,7 +49,7 @@ public abstract class Shift {
     }
 
     public Shift(Domain.Business.Objects.Shift bShift){
-        this(bShift.getDate(), bShift.getShiftManagerId(),
+        this(bShift.getWorkday(), bShift.getShiftManagerId(),
                 bShift.getCarrierCount(), bShift.getCashierCount(), bShift.getStorekeeperCount(), bShift.getSorterCount(), bShift.getHr_managersCount(), bShift.getLogistics_managersCount(),
                 bShift.getCarrierIDs(), bShift.getCashierIDs(), bShift.getStorekeeperIDs(), bShift.getSorterIDs(), bShift.getHr_managerIDs(), bShift.getLogistics_managerIDs());
     }

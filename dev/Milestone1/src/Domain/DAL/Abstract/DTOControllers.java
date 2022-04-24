@@ -9,4 +9,5 @@ public abstract class DTOControllers<T extends DTO> extends DalController<T> {
     public void persistAll(Set<T> toPersist){
         toPersist.forEach((t -> t.setPersist(true)));
     }
+    public abstract void delete(T toDelete);
 }

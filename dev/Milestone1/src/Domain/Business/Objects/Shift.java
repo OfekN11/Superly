@@ -18,9 +18,9 @@ public abstract class Shift {
     private static final int MIN_SORTERS = 1;
     private static final int MIN_HR_MANAGERS = 0;
     private static final int MIN_LOGISTICS_MANAGERS = 0;
-    private final DShift dShift; // represent of this object in the DAL
+    private DShift dShift; // represent of this object in the DAL
     // properties
-    private final Date workday;
+    private Date workday;
     private String shiftManagerId;
     private int carrierCount;
     private int cashierCount;
@@ -39,7 +39,7 @@ public abstract class Shift {
     // constructors
     public Shift(Date workday, String shiftManagerId,
                  int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,
-                 Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs,DShift dShift) throws Exception {
+                 Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs) throws Exception {
         this.workday = workday;
         this.shiftManagerId = shiftManagerId;
 
@@ -63,7 +63,7 @@ public abstract class Shift {
         this.hr_managerIDs = new HashSet<>(hr_managerIDs);
         this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
 
-        this.dShift = dShift;
+        this.dShift = createDShift();
         Set<String> employeesId = new HashSet<>(carrierIDs);
         employeesId.addAll(cashierIDs);
         employeesId.addAll(hr_managerIDs);
@@ -75,12 +75,12 @@ public abstract class Shift {
     }
 
     public Shift(Date workday) throws Exception {
-        this(workday, -1,
+        this(workday, "-1",
                 MIN_CARRIERS, MIN_CASHIERS, MIN_STOREKEEPERS, MIN_SORTERS, MIN_HR_MANAGERS, MIN_LOGISTICS_MANAGERS,
                 new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
-    public Shift(DShift dShift) {
+    public Shift(DShift dShift,Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs) {
         this.dShift = dShift;
 
         this.workday = dShift.getWorkday();
@@ -93,15 +93,15 @@ public abstract class Shift {
         this.hr_managersCount = dShift.getHr_managersCount();
         this.logistics_managersCount = dShift.getLogistics_managersCount();
 
-        this.carrierIDs = new HashSet<>(dShift.getCarrierIDs());
-        this.cashierIDs = new HashSet<>(dShift.getCashierIDs());
-        this.storekeeperIDs = new HashSet<>(dShift.getStorekeeperIDs());
-        this.sorterIDs = new HashSet<>(dShift.getSorterIDs);
-        this.hr_managerIDs = new HashSet<>(dShift.getHr_managerIDs());
-        this.logistics_managerIDs = new HashSet<>(dShift.getLogistics_managerIDs());
+        this.carrierIDs = carrierIDs;
+        this.cashierIDs = cashierIDs;
+        this.storekeeperIDs = storekeeperIDs;
+        this.sorterIDs =sorterIDs;
+        this.hr_managerIDs = hr_managerIDs;
+        this.logistics_managerIDs =logistics_managerIDs;
     }
 
-    public Date getDate() {
+    public Date getWorkday() {
         return workday;
     }
 
@@ -255,5 +255,5 @@ public abstract class Shift {
         if (count < size)
             throw new Exception("A shift can't hold more employees more than configured count");
     }
-
+    public abstract DShift createDShift();
 }

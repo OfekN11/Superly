@@ -31,4 +31,9 @@ public class DMorningShiftController extends DTOControllers<DMorningShift> {
     public void deleteAll() {
 
     }
+
+    @Override
+    public void delete(DMorningShift toDelete) {
+
+    }
 }

@@ -1,5 +1,6 @@
 package Domain.Business.Controllers;
 
+import Domain.Business.BusinessEmployeeFactory;
 import Domain.Business.Objects.*;
 import Globals.Enums.*;
 import Domain.DAL.Controllers.DEmployeeController;
@@ -14,6 +15,7 @@ public class EmployeeController {
     private final Map<String,Employee> employees = new HashMap<>();
     private final DEmployeeController dEmployeeController = new DEmployeeController();
     private final Map<Date,Map<ShiftTypes, Set<Integer>>> constraints = new HashMap<>();
+    private final BusinessEmployeeFactory employeeFactory= new BusinessEmployeeFactory();
 
     public Set<Employee> getEmployees(Set<Integer> workersId) {
         Set<Employee> output = new HashSet<>();
@@ -37,11 +39,7 @@ public class EmployeeController {
     public void loadData() {
         Set<DEmployee> dEmployees = dEmployeeController.loadData();
         for (DEmployee dEmployee : dEmployees) {
-            Employee employee = switch (dEmployee.getJob()) {
-                case "Carrier" -> new Carrier(dEmployee);
-                case "Cashier" -> new Cashier(dEmployee);
-                default -> new Storekeeper(dEmployee);
-            };
+            Employee employee = employeeFactory.createBusinessEmployee(dEmployee);
             employees.put(employee.getId(), employee);
         }
     }
@@ -54,10 +52,6 @@ public class EmployeeController {
 
         return output;
     }
-
-    public void loadData() {
-    }
-
     public void deleteData() {
     }
 
@@ -114,5 +108,15 @@ public class EmployeeController {
     private void checkIDValidity(int id) throws Exception{
         if (!employees.containsKey(id))
             throw new Exception(String.format("No such employee with ID: ", id));
+    }
+
+    public Map<Integer,Set<String>> mapByJob(Set<String> employeesToCheck){
+        Map<Integer,Set<String>> output = new HashMap<>();
+        for(JobTitles titles :JobTitles.values())
+            output.put(titles.ordinal(),new HashSet<>());
+        for (String employee: employeesToCheck)
+            output.get(employees.get(employee).getJobTitle().ordinal()).add(employee);
+
+        return output;
     }
 }

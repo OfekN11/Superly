@@ -1,8 +1,10 @@
 package Domain.Business.Controllers;
 
+import Domain.Business.BusinessShiftFactory;
 import Domain.Business.Objects.*;
 import Domain.DAL.Controllers.DShiftController;
 import Domain.DAL.Objects.DShift;
+import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
 
 import java.text.SimpleDateFormat;
@@ -18,55 +20,16 @@ public class ShiftController {
     EmployeeController employeeController;
 
     private final Map<Date,Map<ShiftTypes,Shift>> shifts = new HashMap<>();
-
-    public void CreateFakeShifts(){
-        for (DShift dShift: dShiftController.loadData()) {
-            if (dShift.type.equals(ShiftTypes.Morning.toString()))
-                dayShifts.put(dShift.date.toString() ,new MorningShift(dShift,employeeController.getEmployees(dShift.workersId)));
-            else
-                nightShifts.put(dShift.date.toString(),new EveningShift(dShift,employeeController.getEmployees(dShift.workersId)));
-        }
-    }
-
-    public EveningShift CreateNewNightShift(Date date, Cashier shiftManager){
-
-        EveningShift newShift =new EveningShift(date,shiftManager);
-        nightShifts.put(date.toString(),newShift);
-        return newShift;
-    }
-
-    public MorningShift CreateNewDayShift(Date date, Cashier shiftManager){
-        MorningShift newShift =new MorningShift(date,shiftManager);
-        dayShifts.put(date.toString(), newShift);
-        return newShift;
-    }
-
-    public void AddEmployeeToShift(Date date, ShiftTypes shiftType,Employee employee){
-        if(shiftType == ShiftTypes.Morning){
-            MorningShift morningShift = dayShifts.get(date.toString());
-            if(morningShift != null) {
-                morningShift.AddEmployee(employee);
-                return;
-            }
-        }else {
-            EveningShift eveningShift = nightShifts.get(date.toString());
-            if(eveningShift != null) {
-                eveningShift.AddEmployee(employee);
-                return;
-            }
-        }
-
-        throw new RuntimeException(shiftNotFoundErrorMsg);
-    }
-
-    public void removeEmployeeFromShift(Date shiftDate, ShiftTypes shiftType,int employeeId){
-        if(shiftType == ShiftTypes.Morning)
-            dayShifts.get(shiftDate.toString()).removeEmployee(employeeController.getEmployee(employeeId)) ;
-        else
-            nightShifts.get(shiftDate.toString()).removeEmployee(employeeController.getEmployee(employeeId));
-    }
+    private final BusinessShiftFactory shiftFactory = new BusinessShiftFactory();
 
     public void loadData() {
+        Set<DShift> dShifts = dShiftController.loadData();
+        for(DShift dShift : dShifts) {
+            Map<Integer, Set<String>> employeeJobMap = employeeController.mapByJob(dShift.getEmployeesId());
+            if (!shifts.containsKey(dShift.getWorkday()))
+                shifts.put(dShift.getWorkday(),new HashMap<>());
+            shifts.get(dShift.getWorkday()).put(dShift.getType(),shiftFactory.createServiceShift(dShift,employeeJobMap.get(JobTitles.Carrier.ordinal()),employeeJobMap.get(JobTitles.Cashier.ordinal()),employeeJobMap.get(JobTitles.Storekeeper.ordinal()),employeeJobMap.get(JobTitles.Sorter.ordinal()),employeeJobMap.get(JobTitles.HR_Manager.ordinal()),employeeJobMap.get(JobTitles.Logistics_Manager.ordinal())));
+        }
     }
 
     public void deleteData() {
@@ -92,7 +55,7 @@ public class ShiftController {
         return shifts.get(workday).get(type);
     }
 
-    public void editShiftManagerID(Date workday, ShiftTypes type, int managerID) throws Exception {
+    public void editShiftManagerID(Date workday, ShiftTypes type, String managerID) throws Exception {
         validateWorkday(workday);
         shifts.get(workday).get(type).setShiftManagerId(managerID);
     }
@@ -127,32 +90,32 @@ public class ShiftController {
         shifts.get(workday).get(type).setLogistics_managersCount(logistics_managerCount);
     }
 
-    public void editShiftCarrierIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+    public void editShiftCarrierIDs(Date workday, ShiftTypes type, Set<String> ids) throws Exception {
         validateWorkday(workday);
         shifts.get(workday).get(type).setCarrierIDs(ids);
     }
 
-    public void editShiftCashierIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+    public void editShiftCashierIDs(Date workday, ShiftTypes type, Set<String> ids) throws Exception {
         validateWorkday(workday);
         shifts.get(workday).get(type).setCashierIDs(ids);
     }
 
-    public void editShiftStorekeeperIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+    public void editShiftStorekeeperIDs(Date workday, ShiftTypes type, Set<String> ids) throws Exception {
         validateWorkday(workday);
         shifts.get(workday).get(type).setStorekeeperIDs(ids);
     }
 
-    public void editShiftSorterIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+    public void editShiftSorterIDs(Date workday, ShiftTypes type, Set<String> ids) throws Exception {
         validateWorkday(workday);
         shifts.get(workday).get(type).setSorterIDs(ids);
     }
 
-    public void editShiftHR_ManagerIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+    public void editShiftHR_ManagerIDs(Date workday, ShiftTypes type, Set<String> ids) throws Exception {
         validateWorkday(workday);
         shifts.get(workday).get(type).setHr_managerIDs(ids);
     }
 
-    public void editShiftLogistics_ManagerIDs(Date workday, ShiftTypes type, Set<Integer> ids) throws Exception {
+    public void editShiftLogistics_ManagerIDs(Date workday, ShiftTypes type, Set<String> ids) throws Exception {
         validateWorkday(workday);
         shifts.get(workday).get(type).setLogistics_managerIDs(ids);
     }

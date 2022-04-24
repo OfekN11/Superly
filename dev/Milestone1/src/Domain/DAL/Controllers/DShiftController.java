@@ -39,11 +39,16 @@ public class  DShiftController extends DTOControllers<DShift> {
         Map<Date,DShift> shiftsMap = new HashMap<>();
         for(DShift shift:shifts)
             shiftsMap.put(shift.getWorkday(),shift);
-        dEmployeeShiftController.loadData().stream().filter((pair)->pair.getKey().getValue().equals(type)).forEach((pair)->shiftsMap.get(pair.getKey().getKey()).setEmployeesId(pair.getValue()));
+        dEmployeeShiftController.loadData().stream().filter((pair)->pair.getKey().getValue().equals(type)).forEach((pair)->shiftsMap.get(pair.getKey().getKey()).setEmployees(pair.getValue()));
     }
 
     @Override
     public void deleteAll() {
+
+    }
+
+    @Override
+    public void delete(DShift toDelete) {
 
     }
 }
