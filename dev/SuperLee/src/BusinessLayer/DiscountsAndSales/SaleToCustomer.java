@@ -11,8 +11,8 @@ public class SaleToCustomer {
     private Date startDate;
     private Date endDate;
     private int percent;
-    private List<Integer> categories;
-    private List<Integer> products;
+    private List<Integer> categoryIDs;
+    private List<Integer> productIDs;
 
     public SaleToCustomer(int id, Date startDate, Date endDate, int percent, List<Integer> categoriesList, List<Integer> products) {
         if (percent>=100 || percent<=0)
@@ -21,8 +21,8 @@ public class SaleToCustomer {
             throw new IllegalArgumentException("SaleToCustomer: Constructor: end date is before the start date");
         this.id = id;
         this.percent = percent;
-        this.categories = categoriesList;
-        this.products = products;
+        this.categoryIDs = categoriesList;
+        this.productIDs = products;
         this.startDate = startDate;
         //add 1 day to the endDate in order to include the endDate's day in the sale.
         Calendar c = Calendar.getInstance();
@@ -38,11 +38,11 @@ public class SaleToCustomer {
     }
 
     public List<Integer> getCategories() {
-        return categories;
+        return categoryIDs;
     }
 
     public List<Integer> getProducts() {
-        return products;
+        return productIDs;
     }
     public Date getStartDate() {
         return startDate;
