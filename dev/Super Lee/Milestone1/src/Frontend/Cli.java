@@ -2,11 +2,9 @@ package Frontend;
 
 import java.util.Scanner;
 
-import Backend.BusinessLayer.Objects.Transport;
 import Backend.Globals.Enums.LicenseTypes;
 import Backend.ServiceLayer.Service;
 import Frontend.Objects.TransportOrder;
-import Frontend.Objects.Truck;
 
 public class Cli {
     Scanner reader = new Scanner(System.in);
@@ -101,15 +99,16 @@ public class Cli {
         switch (menuTM())
         {
             case 1:
-                getTransportOrder();
+                TransportOrder to = getTransportOrder();
+                service.addTransportOrder(to.getSrcID(), to.getDstID(), to.getProductList());
                 break;
             case 2:
-                transportManagment();
+                transportSystemManagement();
                 break;
             default:
         }
     }
-    private void transportManagment()
+    private void transportSystemManagement()
     {
         //TODO
     }

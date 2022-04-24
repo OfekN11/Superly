@@ -40,10 +40,6 @@ public class TransportController {
         return null;
     }
 
-    public void addTransportOrder(TransportOrder transportOrder)
-    {
-        orderQueue.add(transportOrder);
-    }
 
     public boolean placeDriver(int transportSN, String driverName)
     {
@@ -67,4 +63,8 @@ public class TransportController {
         return false;
     }
 
+    public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) {
+        TransportOrder transportOrder = null;//new TransportOrder(srcID, dstID, productList);
+        orderQueue.add(transportOrder);
+    }
 }

@@ -15,6 +15,7 @@ public class TransportOrder {
         this.dstID = dstID;
         productList = new HashMap<>();
     }
+
     public boolean isValidOrder()
     {
         return productList.size() > 0;
@@ -47,5 +48,29 @@ public class TransportOrder {
         else {
             System.out.println("The product does not exist!");
         }
+    }
+
+    public int getSrcID() {
+        return srcID;
+    }
+
+    public void setSrcID(int srcID) {
+        this.srcID = srcID;
+    }
+
+    public int getDstID() {
+        return dstID;
+    }
+
+    public void setDstID(int dstID) {
+        this.dstID = dstID;
+    }
+
+    public HashMap<String, Integer> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(HashMap<String, Integer> productList) {
+        this.productList = productList;
     }
 }

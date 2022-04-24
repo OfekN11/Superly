@@ -3,6 +3,9 @@ package Backend.ServiceLayer;
 
 import Backend.Globals.Enums.LicenseTypes;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class Service {
     private TruckService truckSer;
     private TransportService transportSer;
@@ -82,4 +85,7 @@ public class Service {
     }
 
 
+    public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) {
+        transportSer.addTransportOrder(srcID, dstID, productList);
+    }
 }
