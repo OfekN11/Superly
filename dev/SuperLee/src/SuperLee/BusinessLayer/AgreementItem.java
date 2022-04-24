@@ -132,14 +132,19 @@ public class AgreementItem {
     }
     //Format : " id , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
     public String toString(){
-        return "" + id + ", " + name + ", " + manufacturer + ", " + pricePerUnit + ", " + printBulkMap();
+        if(bulkPrices.isEmpty()){
+            return "" + id + ", " + name + ", " + manufacturer + ", " + pricePerUnit + ", [NO BULK PRICES]";
+        }
+        else{
+            return "" + id + ", " + name + ", " + manufacturer + ", " + pricePerUnit + ", " + printBulkMap();
+        }
     }
 
     private String printBulkMap(){
         String toReturn = "";
 
         for(Integer key : bulkPrices.keySet()){
-            toReturn += (key + ", " + bulkPrices.get(key) + ", ");
+            toReturn += ("quantity: " + key + ", " + " discount in percent: " + bulkPrices.get(key) + ", ");
         }
 
         if(toReturn.length() == 0)

@@ -1534,8 +1534,13 @@ public class CLI {
 
             List<String> list = r.getValue();
 
-            for(String s : list){
-                System.out.println(s);
+            if(list.isEmpty()){
+                System.out.println("[THERE ARE NO REPRESENTED MANUFACTURERS BY THIS SUPPLIER]");
+            }
+            else{
+                for(String s : list){
+                    System.out.println(s);
+                }
             }
 
             System.out.println("\n\n");
