@@ -55,13 +55,12 @@ public class InventoryController {
             throw new IllegalArgumentException("Percent sale must be between 1 and 99. Received: " + percent);*/
         if (categoriesList.isEmpty()&&productIDs.isEmpty())
             throw new IllegalArgumentException("Must specify categories and/or products for the sale to apply to");
-
         //remove redundant products and categories
         List<Integer> redundantCategories = new ArrayList<>();
         //search forward
-        for (Integer i : categories.keySet()) {
+        for (Integer i : categoriesList) {
             Category category1 = categories.get(i);
-            for (Integer j : categories.keySet()) {
+            for (Integer j :categoriesList) {
                 if (j!=i) {
                     Category category2 = categories.get(j);
                     if (category2.belongsToCategory(category1)) {
@@ -73,6 +72,7 @@ public class InventoryController {
                 }
             }
         }
+
         categoriesList.removeAll(redundantCategories);
         //search products
         List<Integer> redundantProducts = new ArrayList<>();
@@ -508,7 +508,7 @@ public class InventoryController {
         List<Integer> categories = new ArrayList<>();
         List<Integer> products = new ArrayList<>();
         List<Integer> empty = new ArrayList<>();
-        //small milk,       medium milk,         toothpaste,         health
+        //small milk,       medium milk,         yogurt,         Dairy
         categories.add(1); categories.add(5); categories.add(8); categories.add(9);
         //crest             tara1L          tnuva1L         organic tomato  organic strawberry
         products.add(6); products.add(7); products.add(8); products.add(2); products.add(3);
@@ -523,6 +523,7 @@ public class InventoryController {
 
         addSale(categories, products, 15, threeDaysAgo, tomorrow);
         addSale(categories, empty, 20, threeDaysAgo, yesterday);
+        products.add(7); products.add(8);
         addSale(empty, products, 5, today, tomorrow);
         addSale(categories, products, 12, tomorrow, threeDays);
         addSale(categories, empty, 17, twoDaysAgo, twoDays);

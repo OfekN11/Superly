@@ -989,7 +989,7 @@ public class Inventory {
 
     private static void listProductsByCategory() {
         System.out.println("Which categories would you like to examine? (Please insert categories IDs separated by ',' without spaces)");
-        System.out.println("Current categories IDs are:");
+        listCategoryIDs();
         List<Integer> categories = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         Result<List<Product>> r = is.getProductsFromCategory(categories);
         if (r.isError())

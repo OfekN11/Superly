@@ -89,7 +89,7 @@ public class Category {
         else
             result = parentCategory.getSaleHistory();
         for (SaleToCustomer sale : sales) {
-            if (sale.isPassed())
+            if (sale.isPassed() || sale.isActive())
                 result.add(sale);
         }
         return result;

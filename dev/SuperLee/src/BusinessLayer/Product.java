@@ -28,6 +28,7 @@ public class Product {
     private List<PurchaseFromSupplier> purchaseFromSupplierList;
     public int getId() { return id; }
     public String getName() { return name; }
+    public int getCategoryID() {return category.getID();}
     public double getOriginalPrice() { return price; }
     public void setName(String name) { this.name = name; }
     public void setPrice(double price) { this.price = price; }
@@ -55,6 +56,14 @@ public class Product {
         expiredItemReport = new ArrayList<>();
         purchaseFromSupplierList = new ArrayList<>();
         locations = new ArrayList<>();
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public int getManufacturerID() {
+        return manufacturerID;
     }
 
     public Integer getMinInStore(int store) {
@@ -250,7 +259,7 @@ public class Product {
     public List<SaleToCustomer> getSaleHistory() {
         List<SaleToCustomer> result = category.getSaleHistory();
         for (SaleToCustomer sale : sales) {
-            if (sale.isPassed())
+            if (sale.isPassed() || sale.isActive())
                 result.add(sale);
         }
         return result;
