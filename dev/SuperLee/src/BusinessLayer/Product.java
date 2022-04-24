@@ -118,7 +118,7 @@ public class Product {
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
         if (inStore.get(storeId)+inWarehouse.get(storeId)+amountBought>maxAmounts.get(storeId))
             throw new IllegalArgumentException("Can not add more items than the max capacity in the store");
-        PurchaseFromSupplier p = new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, date, supplierID, description, amountBought, pricePaid, originalPrice);
+        PurchaseFromSupplier p = new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, storeId, id, date, supplierID, description, amountBought, pricePaid, originalPrice);
         inWarehouse.put(storeId, inWarehouse.get(storeId)+amountBought);
         purchaseFromSupplierList.add(p);
         return p;

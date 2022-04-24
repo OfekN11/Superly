@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class PurchaseFromSupplier {
     private int id;
+    private int storeID;
+    private int productID;
     private Date date;
     private int supplierID;
     private String description;
@@ -37,8 +39,19 @@ public class PurchaseFromSupplier {
     public int getOriginalPrice() {
         return originalPrice;
     }
-    public PurchaseFromSupplier(int id, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
+
+    public int getStoreID() {
+        return storeID;
+    }
+
+    public int getProductID() {
+        return productID;
+    }
+
+    public PurchaseFromSupplier(int id, int storeID, int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
         this.id = id;
+        this.storeID = storeID;
+        this.productID = productID;
         this.date = date;
         this.supplierID = supplierID;
         this.description = description;
