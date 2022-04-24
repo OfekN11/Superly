@@ -62,4 +62,7 @@ public class ConstraintService {
         }
         return Result.makeOk(null);
     }
+
+    public Result<Set<Constraint>> getEmployeeConstraintsBetween(String id, Date today, Date nextMonth) {
+    }
 }

@@ -152,4 +152,22 @@ public class EmployeeService {
         }
         return Result.makeOk(null);
     }
+
+    public Result<Set<Employee>> getAllEmployees() {
+    }
+
+    public Result<Object> checkUnusedEmployeeID(String id) {
+    }
+
+    public Result<Object> validateID(String id) {
+    }
+
+    public Result<Object> validateIDs(Set<String> ids) {
+    }
+
+    public Result<Object> editEmployeeSalary(String id, int newSalary) {
+    }
+
+    public Result<Set<Employee>> getEmployees(Set<String> employeeIDs) {
+    }
 }

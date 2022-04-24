@@ -201,4 +201,19 @@ public class ShiftService {
         }
         return Result.makeOk(null);
     }
+
+    public Result<Set<Shift>> getEmployeeShiftsBetween(String id, Date start, Date end) {
+    }
+
+    public Result<Set<Shift>> getShiftsBetween(Date start, Date end) {
+    }
+
+    public Result<Object> createShift(Date date, ShiftTypes type, String managerId, int carrierCount, int carrierCount1, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) {
+    }
+
+    public Result<String> getEmployeeWorkDetailsForCurrentMonth(String id) {
+    }
+
+    public Result<Object> removeShift(Date date, ShiftTypes type) {
+    }
 }
