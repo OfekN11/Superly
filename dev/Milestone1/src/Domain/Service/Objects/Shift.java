@@ -1,5 +1,8 @@
 package Domain.Service.Objects;
 
+import Globals.Enums.ShiftTypes;
+
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
@@ -50,5 +53,12 @@ public abstract class Shift {
         this(bShift.getDate(), bShift.getShiftManagerId(),
                 bShift.getCarrierCount(), bShift.getCashierCount(), bShift.getStorekeeperCount(), bShift.getSorterCount(), bShift.getHr_managersCount(), bShift.getLogistics_managersCount(),
                 bShift.getCarrierIDs(), bShift.getCashierIDs(), bShift.getStorekeeperIDs(), bShift.getSorterIDs(), bShift.getHr_managerIDs(), bShift.getLogistics_managerIDs());
+    }
+
+    public abstract ShiftTypes getType() ;
+
+    @Override
+    public String toString() {
+        return getType() + " shift. " + new SimpleDateFormat("dd-MM-yyyy").format(date);
     }
 }

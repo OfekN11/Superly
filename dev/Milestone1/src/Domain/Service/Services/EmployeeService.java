@@ -154,35 +154,4 @@ public class EmployeeService {
         }
         return Result.makeOk(null);
     }
-
-    public Result<Object> addEmployeeConstraint(int id, Date workday, ShiftTypes shift){
-        try{
-            controller.addEmployeeConstraint(id, workday, shift);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
-
-    public Result<Object> removeEmployeeConstraint(int id, Date workday, ShiftTypes shift){
-        try{
-            controller.removeEmployeeConstraint(id, workday, shift);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
-
-    public Result<Set<Employee>> getEmployeesForWork(Date workday, ShiftTypes shift){
-        try{
-            return Result.makeOk(
-                controller.getEmployeesForWork(workday, shift).stream().map(factory::createServiceEmployee).collect(Collectors.toSet())
-            );
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-    }
 }

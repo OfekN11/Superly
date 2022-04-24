@@ -1,6 +1,7 @@
 package Domain.Service.Objects;
 
 import Globals.Enums.Certifications;
+import Presentation.Screens.ScreenEmployeeFactory;
 
 import java.util.Collections;
 import java.util.Date;
@@ -47,4 +48,6 @@ public abstract class Employee {
     public Employee(Domain.Business.Objects.Employee bEmployee){
         this(bEmployee.getId(), bEmployee.getName(), bEmployee.getBankDetails(), bEmployee.getSalary(), bEmployee.getEmploymentConditions(), bEmployee.getStartingDate(), bEmployee.getCertifications());
     }
+
+    public abstract Presentation.Screens.Employee accept(ScreenEmployeeFactory screenEmployeeFactory);
 }

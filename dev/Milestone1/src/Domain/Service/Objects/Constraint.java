@@ -2,6 +2,7 @@ package Domain.Service.Objects;
 
 import Globals.Enums.ShiftTypes;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Constraint {
@@ -16,5 +17,10 @@ public class Constraint {
     public Constraint(Domain.Business.Objects.Constraint constraint){
         date = constraint.getDate();
         shift = constraint.getType();
+    }
+
+    @Override
+    public String toString() {
+        return "Date: " + new SimpleDateFormat("dd-MM-yyyy").format(date) +", Shift: " + shift;
     }
 }

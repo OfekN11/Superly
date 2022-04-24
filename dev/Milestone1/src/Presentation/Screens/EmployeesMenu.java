@@ -107,10 +107,12 @@ public class EmployeesMenu extends Screen {
     private static final String[] menuOptions = {
             "View Employees",                                       //1
             "Add Employee",                                         //2
-            "Edit Employee (this includes managing constraints)",   //3
+            "Manage Employee (this includes managing constraints)", //3
             "Remove Employee",                                      //4
             "Exit"                                                  //5
     };
+
+    private static final ScreenEmployeeFactory factory = new ScreenEmployeeFactory();
 
     public EmployeesMenu(Screen caller) {
         super(caller, menuOptions);
@@ -125,9 +127,24 @@ public class EmployeesMenu extends Screen {
             switch (option) {
                 case 1 -> new Thread(new EmployeesViewer(this)).start();
                 case 2 -> addEmployee();
-                case 3 -> new Thread(new Employee());
+                case 3 -> manageEmployee();
                 case 4 -> removeEmployee();
                 case 5 -> endRun();
+            }
+        }
+    }
+
+    private void manageEmployee() {
+        System.out.println("\nEnter ID of the employee you would like to manage:");
+        String id = null;
+        while (id == null){
+            try {
+                id = scanner.nextLine();
+                new Thread(factory.createScreenEmployee(this, controller.getEmployee(id))).start();
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+                System.out.println("Please try again");
             }
         }
     }
@@ -135,12 +152,12 @@ public class EmployeesMenu extends Screen {
     private void removeEmployee() {
         System.out.println("\nYou are choosing to remove an employee from the system. \nBe aware that this process is irreversible");
         boolean success = false;
-        int id = 0;
+        String id = null;
         while (!success){
             System.out.println("Please enter ID of the employee you wish to remove (enter -1 to cancel this action)");
             try {
-                id = scanner.nextInt();
-                if (id != -1){
+                id = scanner.nextLine();
+                if (!id.equals("-1")){
                    try {
                        Employee toBeRemoved = controller.getEmployee(id);
                        System.out.println("Employee " + toBeRemoved.name + ", ID: " + toBeRemoved.id + " is about to be removed");
@@ -157,10 +174,6 @@ public class EmployeesMenu extends Screen {
                 }
                 else
                     success = true;
-            }
-            catch (InputMismatchException ex){
-                System.out.println("Please enter a valid id");
-                scanner.next();
             }
             catch (Exception ex){
                 System.out.println("An unexpected error happened. Please try again");
@@ -284,91 +297,13 @@ public class EmployeesMenu extends Screen {
         System.out.println("Chosen job title: " + jobTitle);
 
         //Starting Date
-        Date startingDate = new Date();
+        Date startingDate = null;
         success = false;
         while (!success){
             System.out.println("\nEnter " + name +"'s starting date");
-            while (!success){
-                System.out.println("Enter day");
-                try {
-                    int day = scanner.nextInt();
-                    if (day == -1) {
-                        System.out.println("Operation Canceled");
-                        return;
-                    }
-                    else if (day < 1 || day > 31) {
-                        System.out.println("Enter valid day");
-                    }
-                    else {
-                        startingDate.setDate(day);
-                        success = true;
-                    }
-                }
-                catch (InputMismatchException ex){
-                    System.out.println("Please enter an integer between 1 and 31");
-                    scanner.next();
-                }
-                catch (Exception ex){
-                    System.out.println("Unexpected error occurred");
-                    System.out.println("Please try again");
-                    scanner.next();
-                }
-            }
-            success = false;
-            while (!success){
-                System.out.println("Enter month");
-                try {
-                    int month = scanner.nextInt();
-                    if (month == -1) {
-                        System.out.println("Operation Canceled");
-                        return;
-                    }
-                    else if (month < 1 || month > 12) {
-                        System.out.println("Enter valid month");
-                    }
-                    else {
-                        startingDate.setMonth(month-1);
-                        success = true;
-                    }
-                }
-                catch (InputMismatchException ex){
-                    System.out.println("Please enter an integer between 1 and 12");
-                    scanner.next();
-                }
-                catch (Exception ex){
-                    System.out.println("Unexpected error occurred");
-                    System.out.println("Please try again");
-                    scanner.next();
-                }
-            }
-            success = false;
-            while (!success){
-                System.out.println("Enter year");
-                try {
-                    int year = scanner.nextInt();
-                    if (year == -1) {
-                        System.out.println("Operation Canceled");
-                        return;
-                    }
-                    else if (year < 1900 || year > 2030) {
-                        System.out.println("Enter valid year");
-                    }
-                    else {
-                        startingDate.setYear(year-1900);
-                        success = true;
-                    }
-                }
-                catch (InputMismatchException ex){
-                    System.out.println("Please enter an integer between 1900 and 2030");
-                    scanner.next();
-                }
-                catch (Exception ex){
-                    System.out.println("Unexpected error occurred");
-                    System.out.println("Please try again");
-                    scanner.next();
-                }
-            }
-            success = false;
+            startingDate = buildDate();
+            if (startingDate == null)
+                return;
             System.out.println("Entered date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate));
             success = areYouSure();
         }
@@ -403,7 +338,7 @@ public class EmployeesMenu extends Screen {
                 scanner.next();
             }
         }
-        System.out.println("Chosen salary: " + jobTitle);
+        System.out.println("Chosen salary: " + salary);
 
         //certifications
         Set<Certifications> certifications = new HashSet<>();
