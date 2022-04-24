@@ -24,7 +24,7 @@ public class Constraint {
         this.dConstraint = dConstraint;
         date = dConstraint.getDate();
         type = dConstraint.getShiftType();
-        employees = new HashSet<>(dConstraint.getEmployees())
+        employees = new HashSet<>(dConstraint.getEmployees());
     }
 
     public Date getDate() {

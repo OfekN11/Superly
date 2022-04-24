@@ -19,7 +19,7 @@ public abstract class DEmployee extends DTO {
     private DEmployeeCertificationController dEmployeeCertificationController;
 
     // constructor
-    public DEmployee(String tableName,int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate) {
+    public DEmployee(String tableName,String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate) {
         super(id,tableName);
         this.name = name;
         this.bankDetails = bankDetails;

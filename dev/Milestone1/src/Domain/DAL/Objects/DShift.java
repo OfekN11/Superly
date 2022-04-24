@@ -2,6 +2,7 @@ package Domain.DAL.Objects;
 
 import Domain.DAL.Abstract.DTO;
 import Domain.DAL.Controllers.DEmployeeShiftController;
+import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
 import java.util.Set;
@@ -23,8 +24,8 @@ public abstract class DShift extends DTO {
     // constructor
 
 
-    public DShift(Date workday,int shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,Set<Integer> employeesId) {
-        super(0, "tableName"); //no id to shift
+    public DShift(Date workday, ShiftTypes type, int shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount, Set<Integer> employeesId) {
+        super(workday.toString()+ type.toString(), "tableName"); //no id to shift
         this.workday = workday;
         this.shiftManagerId = shiftManagerId;
         this.dEmployeeShiftController = new DEmployeeShiftController();
@@ -36,8 +37,8 @@ public abstract class DShift extends DTO {
         this.logistics_managersCount = logistics_managersCount;
         this.employeesId = employeesId;
     }
-    public DShift(Date workday,int shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount) {
-        super(0, "tableName"); //no id to shift
+    public DShift(Date workday,ShiftTypes type, int shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount) {
+        super(workday.toString()+type.toString(), "tableName"); //no id to shift
         this.workday = workday;
         this.shiftManagerId = shiftManagerId;
         this.dEmployeeShiftController = new DEmployeeShiftController();

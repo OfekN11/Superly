@@ -1,5 +1,7 @@
 package Domain.DAL.Abstract;
 
+import Domain.DAL.Objects.DConstraint;
+
 import java.util.Set;
 
 public abstract class DalController<T> {

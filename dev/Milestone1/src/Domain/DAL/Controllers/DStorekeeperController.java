@@ -20,7 +20,7 @@ public class DStorekeeperController extends DalController<DStorekeeper> {
         Set<DStorekeeper> output = new HashSet<>();
         for (int i=50; i<60; i++) {
             try {
-                output.add(new DStorekeeper(i,"HR_Manager " + (i-39),"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
+                output.add(new DStorekeeper(""+i,"HR_Manager " + (i-39),"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

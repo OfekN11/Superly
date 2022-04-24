@@ -23,7 +23,7 @@ public class DCarrierController extends DalController<DCarrier> {
         Set<DCarrier> output = new HashSet<>();
         for (int i=0; i<10; i++) {
             try {
-                output.add(new DCarrier(i,"Carrier "+ i+1,"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
+                output.add(new DCarrier(""+i,"Carrier "+ i+1,"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -33,7 +33,7 @@ public class DCarrierController extends DalController<DCarrier> {
     }
 
     private void updateLicenses(Set<DCarrier> dCarriers) {
-        Dictionary <Integer,DCarrier> dCarrierDictionary = new Hashtable<>();
+        Dictionary <String,DCarrier> dCarrierDictionary = new Hashtable<>();
         for(DCarrier dCarrier : dCarriers)
             dCarrierDictionary.put(dCarrier.getId(),dCarrier);
         for(Pair<Integer, Set<String>> pair :dCarrierLicensesController.loadData())

@@ -18,7 +18,7 @@ public class DLogistics_ManagerController extends DalController<DLogistics_Manag
         Set<DLogistics_Manager> output = new HashSet<>();
         for (int i=30; i<40; i++) {
             try {
-                output.add(new DLogistics_Manager(i,"HR_Manager " + (i-29),"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
+                output.add(new DLogistics_Manager(""+i,"HR_Manager " + (i-29),"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

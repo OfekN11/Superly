@@ -2,6 +2,7 @@ package Domain.DAL.Controllers;
 
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DConstraint;
+import Globals.Enums.ShiftTypes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +24,21 @@ public class DConstraintController extends DalController<DConstraint> {
     public Set<DConstraint> loadData() {
         try {
             Set<DConstraint> output = new HashSet<>();
-            output.add(new DConstraint(new SimpleDateFormat("dd-MM-yyyy").parse("14-07-2012"),"Day",10));
+            Set<String> employees = new HashSet<>();
+            employees.add("10");
+            employees.add("15");
+            employees.add("30");
+            employees.add("28");
+            employees.add("18");
+            output.add(new DConstraint(new SimpleDateFormat("dd-MM-yyyy").parse("14-07-2012"), ShiftTypes.Morning,employees));
+            employees =new HashSet<>();
+            employees.add("13");
+            employees.add("19");
+            employees.add("29");
+            employees.add("49");
+            employees.add("27");
+            output.add(new DConstraint(new SimpleDateFormat("dd-MM-yyyy").parse("13-07-2012"), ShiftTypes.Evening,employees));
+
             return output;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -34,5 +49,13 @@ public class DConstraintController extends DalController<DConstraint> {
     @Override
     public void deleteAll() {
 
+    }
+
+    public void removeEmployeeToConstraint(DConstraint dConstraint, String employeeId) {
+        //code to remove
+    }
+
+    public void addEmployeeToConstraint(DConstraint dConstraint, String employeeId) {
+        // code to add
     }
 }

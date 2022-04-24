@@ -15,7 +15,7 @@ import java.util.Set;
  */
 public abstract class Employee {
     // properties
-    private final int id;
+    private final String id;
     private String name;
     private String bankDetails;
     private int salary;
@@ -36,7 +36,7 @@ public abstract class Employee {
      * @param startingDate Employee's Starting date
      * @param certifications Employees Certifications
      */
-    public Employee(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
+    public Employee(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
         this.id = id;
         this.name = name;
         this.bankDetails = bankDetails;
@@ -67,7 +67,7 @@ public abstract class Employee {
         return dEmployee;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -113,10 +113,6 @@ public abstract class Employee {
 
     public Set<Constraint> getConstraints() {
         return constraints;
-    }
-
-    public void addConstraint(Date date, ShiftTypes type){
-        constraints.add(new Constraint(date, type));
     }
 
     public boolean isAvailable(Date date,ShiftTypes shiftType){

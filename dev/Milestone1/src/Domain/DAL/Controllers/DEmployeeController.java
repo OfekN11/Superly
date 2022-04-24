@@ -49,7 +49,7 @@ public class DEmployeeController extends DalController<DEmployee> {
     }
 
     private void loadCertifications(Set<DEmployee> employees) {
-        Dictionary<Integer,DEmployee> dEmployeeDictionary =new Hashtable<>();
+        Dictionary<String,DEmployee> dEmployeeDictionary =new Hashtable<>();
         for(DEmployee employee : employees)
             dEmployeeDictionary.put(employee.getId(), employee);
         for(Pair<Integer,Set<Certifications>> employeeCertificationPair : dEmployeeCertificationController.loadData())

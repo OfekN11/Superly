@@ -15,7 +15,7 @@ public class DEmployeeCertificationController extends DalController<Pair<Integer
         super("tableName");
     }
 
-    public void add(int employeeID, Certifications certification) {
+    public void add(String employeeID, Certifications certification) {
         // code to update the DB
     }
 

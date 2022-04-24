@@ -10,7 +10,7 @@ public class DCarrier extends DEmployee{
     private Set<String> licenses;
     private DCarrierLicensesController dCarrierLicensesController;
 
-    public DCarrier(int id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate) {
+    public DCarrier(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate) {
         super("Place HOlder", id, name, bankDetails, salary, employmentConditions, startingDate);
         this.licenses = licenses;
         this.dCarrierLicensesController = new DCarrierLicensesController();

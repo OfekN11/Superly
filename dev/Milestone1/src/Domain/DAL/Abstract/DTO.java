@@ -3,14 +3,14 @@ package Domain.DAL.Abstract;
 public abstract class DTO {
 
     // properties
-    private int id;
+    private String id;
     private boolean persist; //true if and only if this object is saved in the DB
     private String tableName; // this field will be valid if we will save data in tables
 
     // constructors
 
 
-    public DTO(int id, String tableName) {
+    public DTO(String id, String tableName) {
         this.id = id;
         this.persist = false;
         this.tableName = tableName;
@@ -21,7 +21,7 @@ public abstract class DTO {
         this.persist = persist;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

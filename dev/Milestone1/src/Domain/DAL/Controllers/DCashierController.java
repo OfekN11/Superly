@@ -18,7 +18,7 @@ public class DCashierController extends DalController<DCashier> {
         Set<DCashier> output = new HashSet<>();
         for (int i=10; i<20; i++) {
             try {
-                output.add(new DCashier(i,"Cashier " + (i-9),"bd",i,"con" +i, new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
+                output.add(new DCashier(""+i,"Cashier " + (i-9),"bd",i,"con" +i, new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
