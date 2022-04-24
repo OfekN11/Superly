@@ -1,7 +1,7 @@
-package BusinessLayer;
+package Domain.BusinessLayer;
 
-import BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
-import BusinessLayer.DiscountsAndSales.SaleToCustomer;
+import Domain.BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
+import Domain.BusinessLayer.DiscountsAndSales.SaleToCustomer;
 import Globals.Defect;
 
 import java.util.*;

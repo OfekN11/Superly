@@ -1,4 +1,4 @@
-package ServiceLayer.Objects;
+package Domain.ServiceLayer.Objects;
 
 public class StockReport {
 
@@ -12,7 +12,7 @@ public class StockReport {
     private final int maxAmountInStore;
 
 
-    public StockReport(BusinessLayer.StockReport stockReport) {
+    public StockReport(Domain.BusinessLayer.StockReport stockReport) {
         this.storeID = stockReport.getStoreID();
         this.productID = stockReport.getProductID();
         this.productName = stockReport.getProductName();

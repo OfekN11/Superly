@@ -1,10 +1,8 @@
-package BusinessLayer.DiscountsAndSales;
+package Domain.BusinessLayer.DiscountsAndSales;
 
-import BusinessLayer.Product;
 //import jdk.jshell.spi.ExecutionControl;
 
 import java.util.Date;
-import java.util.Map;
 
 public class PurchaseFromSupplier {
     private int id;

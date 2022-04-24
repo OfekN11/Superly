@@ -1,4 +1,4 @@
-package ServiceLayer.Objects;
+package Domain.ServiceLayer.Objects;
 
 public class Product {
     private final int id;
@@ -8,7 +8,7 @@ public class Product {
     private final double currentPrice;
     private double weight;
     private int manufacturerID;
-    public Product(BusinessLayer.Product p) {
+    public Product(Domain.BusinessLayer.Product p) {
         this.id = p.getId();
         this.name = p.getName();
         this.categoryID = p.getCategoryID();

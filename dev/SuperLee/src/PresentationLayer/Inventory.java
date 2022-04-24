@@ -1,8 +1,8 @@
 package PresentationLayer;
 
-import ServiceLayer.InventoryService;
-import ServiceLayer.Objects.*;
-import ServiceLayer.Result;
+import Domain.ServiceLayer.InventoryService;
+import Domain.ServiceLayer.Objects.*;
+import Domain.ServiceLayer.Result;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -1,6 +1,6 @@
-package ServiceLayer.Objects;
+package Domain.ServiceLayer.Objects;
 
-import BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
+import Domain.BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
 
 import java.util.Date;
 

@@ -1,10 +1,8 @@
 package BusinessTests;
 
-import BusinessLayer.Category;
-import BusinessLayer.DiscountsAndSales.SaleToCustomer;
-import BusinessLayer.Location;
-import BusinessLayer.Product;
-import org.junit.jupiter.api.BeforeAll;
+import Domain.BusinessLayer.Category;
+import Domain.BusinessLayer.DiscountsAndSales.SaleToCustomer;
+import Domain.BusinessLayer.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;

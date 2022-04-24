@@ -1,4 +1,4 @@
-package ServiceLayer.Objects;
+package Domain.ServiceLayer.Objects;
 
 import Globals.Defect;
 
@@ -12,7 +12,7 @@ public class DefectiveItemReport {
     private final String description;
     private final Date date;
     private final Defect defect;
-    public DefectiveItemReport(BusinessLayer.DefectiveItems report) {
+    public DefectiveItemReport(Domain.BusinessLayer.DefectiveItems report) {
         this.productID=report.getProductID();
         this.storeID=report.getStoreID();
         this.amount=report.getAmount();

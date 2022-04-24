@@ -1,7 +1,4 @@
-package BusinessLayer.DiscountsAndSales;
-
-import BusinessLayer.Category;
-import BusinessLayer.Product;
+package Domain.BusinessLayer.DiscountsAndSales;
 
 import java.util.*;
 

@@ -1,6 +1,6 @@
-package BusinessLayer;
+package Domain.BusinessLayer;
 
-import BusinessLayer.DiscountsAndSales.SaleToCustomer;
+import Domain.BusinessLayer.DiscountsAndSales.SaleToCustomer;
 
 import java.util.*;
 

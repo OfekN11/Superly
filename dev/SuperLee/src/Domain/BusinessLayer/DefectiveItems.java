@@ -1,4 +1,4 @@
-package BusinessLayer;
+package Domain.BusinessLayer;
 
 import Globals.Defect;
 
