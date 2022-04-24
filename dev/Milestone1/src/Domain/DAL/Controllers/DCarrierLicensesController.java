@@ -1,9 +1,7 @@
 package Domain.DAL.Controllers;
 
 import Domain.DAL.Abstract.DalController;
-import javafx.util.Pair;
-
-import java.util.Dictionary;
+import Globals.Pair;
 import java.util.HashSet;
 import java.util.Set;
 

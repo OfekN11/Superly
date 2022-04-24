@@ -1,9 +1,7 @@
 package Domain.DAL.Controllers;
 import Domain.DAL.Abstract.DTOControllers;
-import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DCarrier;
-import javafx.util.Pair;
-import java.sql.Time;
+import Globals.Pair;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Dictionary;

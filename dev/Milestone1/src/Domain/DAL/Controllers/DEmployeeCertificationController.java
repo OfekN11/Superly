@@ -3,7 +3,7 @@ package Domain.DAL.Controllers;
 import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DEmployee;
 import Globals.Enums.Certifications;
-import javafx.util.Pair;
+import Globals.Pair;
 
 import java.util.Date;
 import java.util.Dictionary;
