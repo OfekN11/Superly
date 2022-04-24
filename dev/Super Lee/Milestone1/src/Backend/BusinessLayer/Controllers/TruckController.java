@@ -28,11 +28,6 @@ public class TruckController {
         }
     }
 
-    public boolean updateTruck(Truck updatedTruck)
-    {
-        //TODO: Implement in future
-        return false;
-    }
 
     public List<Truck> getAvailableTrucks(LocalDateTime time, LicenseTypes model)
     {

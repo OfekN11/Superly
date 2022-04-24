@@ -6,39 +6,59 @@ import Backend.Globals.Enums.LicenseTypes;
 public class Service {
     private TruckService truckSer;
     private TransportService transportSer;
+    private DocumentService documentSer;
     public Service() {
+        truckSer = new TruckService();
+        transportSer = new TransportService();
+        documentSer = new DocumentService();
     }
-
+    //Truck:
     public Result addTruck(int licenseNumber, LicenseTypes model, int netWeight, int maxCapacityWeight)
     {
-        //TODO: implement
-        return null;
-    }
-    public Result updateTruck(int licenseNumber, LicenseTypes model, int netWeight, int maxCapacityWeight)
-    {
-        //TODO: implement
-        return null;
+        return truckSer.addTruck(licenseNumber, model, netWeight, maxCapacityWeight);
     }
     public Result removeTruck(int licenseNumber)
     {
-        //TODO: implement
-        return null;
+        return truckSer.removeTruck(licenseNumber);
+    }
+    //Document:
+    public Result getDestinationDocument(int destinationDocumentSN)
+    {
+        return truckSer.removeTruck(destinationDocumentSN);
     }
     public Result getTransportDocument(int transportDocumentSN)
     {
-        //TODO: implement
-        return null;
+        return truckSer.removeTruck(transportDocumentSN);
     }
-    public Result weightTruck(int transportSN)
-    {
-        //TODO: implement
-        return null;
-    }
+    //Transport:
     public Result inviteTransport()
     {
         //TODO: implement
         return null;
     }
+    public Result getInProgressTransports()
+    {
+        //TODO: implement
+        return null;
+    }
+    public Result getWaitingTransports()
+    {
+        //TODO: implement
+        return null;
+    }
+    public Result getPastTransports()
+    {
+        //TODO: implement
+        return null;
+    }
+
+    //-----------------------------------
+    public Result weightTruck(int transportSN)
+    {
+        //TODO: implement
+        return null;
+    }
+
     //Maybe driver and truck will be together
     public Result getAvailableTrucks()
     {
@@ -60,25 +80,6 @@ public class Service {
         //TODO: implement
         return null;
     }
-    public Result getInProgressTransports()
-    {
-        //TODO: implement
-        return null;
-    }
-    public Result getWaitingTransports()
-    {
-        //TODO: implement
-        return null;
-    }
-    public Result getPastTransports()
-    {
-        //TODO: implement
-        return null;
-    }
-    public Result getDestinationDocument(int destinationDocumentSN)
-    {
-        //TODO: implement
-        return null;
-    }
+
 
 }
