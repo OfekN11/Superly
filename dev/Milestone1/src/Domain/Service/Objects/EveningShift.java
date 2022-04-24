@@ -1,7 +1,6 @@
 package Domain.Service.Objects;
 
 import Globals.Enums.ShiftTypes;
-import Presentation.Screens.Employee;
 import Presentation.Screens.ScreenShiftFactory;
 
 import java.text.SimpleDateFormat;
@@ -19,5 +18,10 @@ public class EveningShift extends Shift{
     @Override
     public Presentation.Screens.Shift accept(ScreenShiftFactory screenShiftFactory) {
         return screenShiftFactory.createScreenShift(this);
+    }
+
+    @Override
+    public ShiftTypes getType() {
+        return ShiftTypes.Evening;
     }
 }

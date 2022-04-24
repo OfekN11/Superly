@@ -1,5 +1,6 @@
 package Domain.Service.Objects;
 
+import Globals.Enums.ShiftTypes;
 import Presentation.Screens.ScreenShiftFactory;
 
 import java.util.Collections;
@@ -55,4 +56,6 @@ public abstract class Shift {
     }
 
     public abstract Presentation.Screens.Shift accept(ScreenShiftFactory screenShiftFactory);
+
+    public abstract ShiftTypes getType();
 }
