@@ -35,24 +35,31 @@ public class EmployeesMenu extends Screen {
                         case 1:
                             System.out.println("\nPrinting all employees:");
                             printEmployees(controller.getAllEmployees());
+                            break;
                         case 2:
                             System.out.println("\nPrinting all cashiers:");
                             printEmployees(controller.getAllCashiers());
+                            break;
                         case 3:
                             System.out.println("\nPrinting all carriers:");
                             printEmployees(controller.getAllCarriers());
+                            break;
                         case 4:
                             System.out.println("\nPrinting all storekeepers:");
                             printEmployees(controller.getAllStorekeepers());
+                            break;
                         case 5:
                             System.out.println("\nPrinting all sorters:");
                             printEmployees(controller.getAllSorters());
+                            break;
                         case 6:
                             System.out.println("\nPrinting all HR managers:");
                             printEmployees(controller.getAllHR_Managers());
+                            break;
                         case 7:
                             System.out.println("\nPrinting all logistics managers:");
                             printEmployees(controller.getAllLogistics_Managers());
+                            break;
                         case 8:
                             endRun();
                             break;
@@ -188,7 +195,6 @@ public class EmployeesMenu extends Screen {
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         System.out.println("Chosen name: " + name);
@@ -210,7 +216,6 @@ public class EmployeesMenu extends Screen {
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         System.out.println("Chosen bank details: " + bankDetails);
@@ -223,7 +228,7 @@ public class EmployeesMenu extends Screen {
             for (int i = 0; i < JobTitles.values().length; i++)
                 System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
             try {
-                int ordinal = scanner.nextInt();
+                int ordinal = Integer.parseInt(scanner.nextLine());
                 if (ordinal == -1) {
                     System.out.println("Operation Canceled");
                     return;
@@ -234,13 +239,11 @@ public class EmployeesMenu extends Screen {
                     System.out.println("Entered job title: " + jobTitle);
                     success = areYouSure();
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer between 1 and " + JobTitles.values().length);
-                scanner.next();
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         System.out.println("Chosen job title: " + jobTitle);
@@ -264,7 +267,7 @@ public class EmployeesMenu extends Screen {
         while (!success) {
             System.out.println("\nEnter " + name + "'s salary per shift");
             try {
-                salary = scanner.nextInt();
+                salary = Integer.parseInt(scanner.nextLine());
                 if (salary == -1) {
                     System.out.println("Operation Canceled");
                     return;
@@ -274,13 +277,11 @@ public class EmployeesMenu extends Screen {
                     System.out.println("Entered salary title: " + salary);
                     success = areYouSure();
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an non-negative integer");
-                scanner.next();
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         System.out.println("Chosen salary: " + salary);
@@ -296,7 +297,7 @@ public class EmployeesMenu extends Screen {
                 for (int i = 0; i < Certifications.values().length; i++)
                     System.out.println((i + 1) + " -- " + Certifications.values()[i]);
                 try {
-                    ordinal = scanner.nextInt();
+                    ordinal = Integer.parseInt(scanner.nextLine());
                     if (ordinal == -1) {
                         System.out.println("Operation Canceled");
                         return;
@@ -305,13 +306,11 @@ public class EmployeesMenu extends Screen {
                     } else if (ordinal != 0) {
                         certifications.add(Certifications.values()[ordinal - 1]);
                     }
-                } catch (InputMismatchException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Please enter an integer between 0 and " + Certifications.values().length);
-                    scanner.next();
                 } catch (Exception ex) {
                     System.out.println("Unexpected error occurred");
                     System.out.println("Please try again");
-                    scanner.next();
                 }
             }
             System.out.print("Entered certifications: ");

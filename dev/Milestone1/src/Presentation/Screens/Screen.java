@@ -35,17 +35,15 @@ public abstract class Screen implements Runnable{
         while (option <= 0 || option > menuOptions.length){
             printMenu();
             try {
-                option = scanner.nextInt();
+                option = Integer.parseInt(scanner.nextLine());
                 if (option <= 0 || option >menuOptions.length)
                     System.out.println("Please enter an integer value between 1 and " + menuOptions.length);
             }
-            catch (InputMismatchException ex){
+            catch (NumberFormatException ex){
                 System.out.println("Please enter an integer value between 1 and " + menuOptions.length);
-                scanner.next();
             }
             catch (Exception ex){
                 System.out.println("An unexpected error happened. Please try again");
-                scanner.next();
             }
             try {
                 TimeUnit.SECONDS.sleep(1);
@@ -73,15 +71,13 @@ public abstract class Screen implements Runnable{
         while (ans != 1 && ans != 2){
             System.out.println("1 -- yes\n2 -- no");
             try {
-                ans = scanner.nextInt();
+                ans = Integer.parseInt(scanner.nextLine());
             }
-            catch (InputMismatchException ex){
+            catch (NumberFormatException ex){
                 System.out.println("Please enter an integer value (1 or 2)");
-                scanner.next();
             }
             catch (Exception ex){
                 System.out.println("An unexpected error happened. Please try again");
-                scanner.next();
             }
         }
         return ans == 1;
@@ -93,7 +89,7 @@ public abstract class Screen implements Runnable{
         while (!success) {
             System.out.println("Enter day");
             try {
-                int day = scanner.nextInt();
+                int day = Integer.parseInt(scanner.nextLine());
                 if (day == -1) {
                     System.out.println("Operation Canceled");
                     return null;
@@ -103,20 +99,18 @@ public abstract class Screen implements Runnable{
                     date.setDate(day);
                     success = true;
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer between 1 and 31");
-                scanner.next();
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         success = false;
         while (!success) {
             System.out.println("Enter month");
             try {
-                int month = scanner.nextInt();
+                int month = Integer.parseInt(scanner.nextLine());
                 if (month == -1) {
                     System.out.println("Operation Canceled");
                     return null;
@@ -126,20 +120,18 @@ public abstract class Screen implements Runnable{
                     date.setMonth(month - 1);
                     success = true;
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer between 1 and 12");
-                scanner.next();
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         success = false;
         while (!success) {
             System.out.println("Enter year");
             try {
-                int year = scanner.nextInt();
+                int year = Integer.parseInt(scanner.nextLine());
                 if (year == -1) {
                     System.out.println("Operation Canceled");
                     return null;
@@ -149,13 +141,11 @@ public abstract class Screen implements Runnable{
                     date.setYear(year - 1900);
                     success = true;
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer between 1900 and 2030");
-                scanner.next();
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         return date;

@@ -2,7 +2,6 @@ package Presentation.Screens;
 
 import Globals.Enums.JobTitles;
 import java.util.HashSet;
-import java.util.InputMismatchException;
 import java.util.Set;
 
 public class Carrier extends Employee{
@@ -59,19 +58,17 @@ public class Carrier extends Employee{
         while (ans != 1 && ans != 2){
             System.out.println("1 -- add\n2 -- remove");
             try {
-                ans = scanner.nextInt();
+                ans = Integer.parseInt(scanner.nextLine());
                 if (ans == -1) {
                     System.out.println("Operation Canceled");
                     return;
                 }
             }
-            catch (InputMismatchException ex){
+            catch (NumberFormatException ex){
                 System.out.println("Please enter an integer value (1 or 2)");
-                scanner.next();
             }
             catch (Exception ex){
                 System.out.println("An unexpected error happened. Please try again");
-                scanner.next();
             }
         }
         switch (ans) {
@@ -103,7 +100,6 @@ public class Carrier extends Employee{
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
     }
@@ -121,7 +117,6 @@ public class Carrier extends Employee{
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
     }
