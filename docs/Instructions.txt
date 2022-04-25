@@ -1,7 +1,0 @@
-When you are asked to insert a value, insert and then press "Enter".
-
-When you are asked to choose from several options, insert the number of the option and then press "Enter".
-
-If you wish to load to the system data for example, in the begining choose "1", otherwise choose "2", as the program says.
-
-The software is very interactive and will guide you.
