@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class Cashier extends Employee {
 
-    public Cashier(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
+    public Cashier(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications, new DCashier(id,name,bankDetails,salary,employmentConditions,startingDate));
     }
 

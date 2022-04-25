@@ -139,5 +139,6 @@ public class EmployeeController {
     public void checkUnusedEmployeeID(String id) throws Exception {
         if (employees.containsKey(id))
             throw new Exception(String.format("employee with ID: %s is already taken", id));
+        Employee.validateLegalID(id);
     }
 }

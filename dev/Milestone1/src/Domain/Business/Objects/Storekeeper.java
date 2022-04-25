@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class Storekeeper extends Employee {
 
-    public Storekeeper(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
+    public Storekeeper(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications,new DStorekeeper(id,name,bankDetails,salary,employmentConditions,startingDate));
     }
 

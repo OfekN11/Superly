@@ -13,7 +13,7 @@ import java.util.Set;
  * Business model of the Sorter
  */
 public class Sorter extends Employee{
-    public Sorter(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
+    public Sorter(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications,new DSorter(id,name,bankDetails,salary,employmentConditions,startingDate));
     }
 

@@ -13,7 +13,7 @@ import java.util.Set;
  * Business model of the Logistics Manager
  */
 public class Logistics_Manager extends Employee{
-    public Logistics_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
+    public Logistics_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications,new DLogistics_Manager(id,name,bankDetails,salary,employmentConditions,startingDate));
     }
 

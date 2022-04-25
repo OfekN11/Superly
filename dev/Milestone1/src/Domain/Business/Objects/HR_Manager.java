@@ -13,7 +13,7 @@ import java.util.Set;
  * Business model of the HR Manager
  */
 public class HR_Manager extends Employee{
-    public HR_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) {
+    public HR_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications,new DHR_Manager(id,name,bankDetails,salary,employmentConditions,startingDate));
     }
 

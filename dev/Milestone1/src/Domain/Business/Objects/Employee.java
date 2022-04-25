@@ -14,7 +14,9 @@ import java.util.Set;
  * Abstract class representing Employee for business purposes
  */
 public abstract class Employee {
-    private static String SALARY_MOST_BE_POSITIVE_ERROR_MSG = "Salary most be positive, entered %f";
+    private static String SALARY_MOST_BE_POSITIVE_ERROR_MSG = "Salary must be positive, entered %f";
+    private static String ID_VALIDATING_REGEX = "[0-9]+";
+
     // properties
     private final String id;
     private String name;
@@ -36,7 +38,8 @@ public abstract class Employee {
      * @param startingDate Employee's Starting date
      * @param certifications Employees Certifications
      */
-    public Employee(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications,DEmployee dEmployee) {
+    public Employee(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications,DEmployee dEmployee) throws Exception {
+        validateLegalID(id);
         this.id = id;
         this.name = name;
         this.bankDetails = bankDetails;
@@ -127,5 +130,10 @@ public abstract class Employee {
             throw new IllegalArgumentException(String.format(SALARY_MOST_BE_POSITIVE_ERROR_MSG,salary));
         dEmployee.setSalary(newSalary);
         this.salary=newSalary;
+    }
+
+    public static void validateLegalID(String id) throws Exception {
+        if (!id.matches(ID_VALIDATING_REGEX))
+            throw new Exception("ID has to be a non-empty string consisting ONLY of numbers!");
     }
 }
