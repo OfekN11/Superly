@@ -6,13 +6,16 @@ import Domain.DAL.Controllers.DShiftController;
 import Domain.DAL.Objects.DShift;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
+import Globals.Pair;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ShiftController {
     private static final String shiftNotFoundErrorMsg = "This shift Could not be found";
-
+    private static final String SHIFT_ALREADY_EXIST = "The shift in date: %s type: %s already exist";
+    private static final String SHIFT_DOES_NOT_EXIST = "There is no shift in date: %s type: %s";
     // properties
     //Map<String, EveningShift> nightShifts; // string representing the date
     //Map<String, MorningShift> dayShifts;// string representing the date
@@ -123,5 +126,97 @@ public class ShiftController {
     private void validateWorkday(Date workday) throws Exception{
         if (!shifts.containsKey(workday))
             throw new Exception(String.format("The workday %s is not registered!", new SimpleDateFormat("dd-MM-yyyy").format(workday)));
+    }
+
+    public Set<Shift> getShiftsBetween(Date start, Date end) {
+        Set<Date> dates = getDatesBetween(start, end);
+        Set<Shift> output = new HashSet<>();
+        for (Date date : dates)
+            if (shifts.containsKey(date))
+                output.addAll(shifts.get(date).values());
+
+        return output;
+    }
+
+    public Set<Shift> getEmployeeShiftsBetween(String id, Date start, Date end) {
+        return getShiftsBetween(start,end).stream().filter((shift -> shift.isIdInclude(id))).collect(Collectors.toSet());
+    }
+
+    private Set<Date> getDatesBetween(Date today,Date nextMonth){
+        Set<Date> datesInRange = new HashSet<>();
+        Calendar calendar = getCalendarWithoutTime(today);
+        Calendar endCalendar = getCalendarWithoutTime(nextMonth);
+        endCalendar.add(Calendar.DATE, 1);
+
+        while (calendar.before(endCalendar)) {
+            Date result = calendar.getTime();
+            datesInRange.add(result);
+            calendar.add(Calendar.DATE, 1);
+        }
+
+        return datesInRange;
+    }
+
+    private Calendar getCalendarWithoutTime(Date date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar;
+    }
+
+    public void createShift(Date date, ShiftTypes type, String managerId, int carrierCount,int cashierCount, int storekeeperCount,int sorterCount, int hr_managerCount, int logistics_managerCount) throws Exception {
+        if (isShiftExist(date,type))
+            throw new IllegalArgumentException(String.format(SHIFT_ALREADY_EXIST,date.toString(),type.toString()));
+        if (!shifts.containsKey(date))
+            shifts.put(date,new HashMap<>());
+        switch (type){
+            case Evening:
+                shifts.get(date).put(ShiftTypes.Evening,new EveningShift(date,managerId,carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount));
+                break;
+            case Morning:
+                shifts.get(date).put(ShiftTypes.Evening,new MorningShift(date,managerId,carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount));
+        }
+    }
+
+    private boolean isShiftExist(Date date, ShiftTypes type) {
+        return shifts.containsKey(date) && shifts.get(date).containsKey(type) && shifts.get(date).get(type)!=null ;
+    }
+
+    public void removeShift(Date date, ShiftTypes type) {
+        if (!isShiftExist(date,type))
+            throw new IllegalArgumentException(String.format(SHIFT_DOES_NOT_EXIST,date.toString(),type.toString()));
+        shifts.get(date).remove(type);
+    }
+
+    public String getEmployeeWorkDetailsForCurrentMonth(String id) {
+        Pair<Date,Date> firstLastPair = getMonthDatesEdges();
+        Set<Shift> employeeShift = getEmployeeShiftsBetween(id,firstLastPair.getKey(),firstLastPair.getValue());
+        String workingDays = "";
+        for (Shift shift :employeeShift){
+            workingDays = workingDays + shift.printDayAndType() + ", ";
+        }
+        workingDays = workingDays.substring(0,workingDays.length()-2);
+        String month = getThisMonthAsString();
+        return "Shifts during " + month +": " + workingDays;
+    }
+
+    private String getThisMonthAsString() {
+        Calendar cal = Calendar.getInstance();
+        return new SimpleDateFormat("MMM").format(cal.getTime());
+    }
+
+    private Pair<Date,Date> getMonthDatesEdges() {
+        Set<Date> dates = new HashSet<>();        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, Calendar. getInstance(). get(Calendar. MONTH));
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date firstDayOfTheMonth = cal.getTime();
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date lastDayOfTheMonth = cal.getTime();
+
+        return new Pair<>(firstDayOfTheMonth,lastDayOfTheMonth);
     }
 }

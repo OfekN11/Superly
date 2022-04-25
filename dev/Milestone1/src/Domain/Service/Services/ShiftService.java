@@ -8,6 +8,7 @@ import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ShiftService {
     private final ShiftController controller = new ShiftController();
@@ -203,17 +204,46 @@ public class ShiftService {
     }
 
     public Result<Set<Shift>> getEmployeeShiftsBetween(String id, Date start, Date end) {
+        try {
+            return Result.makeOk(controller.getEmployeeShiftsBetween(id, start, end).stream().map(factory::createServiceShift).collect(Collectors.toSet()));
+        }catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 
     public Result<Set<Shift>> getShiftsBetween(Date start, Date end) {
+        try {
+            return Result.makeOk(controller.getShiftsBetween(start, end).stream().map(factory::createServiceShift).collect(Collectors.toSet()));
+        }catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 
-    public Result<Object> createShift(Date date, ShiftTypes type, String managerId, int carrierCount, int carrierCount1, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) {
+    public Result<Object> createShift(Date date, ShiftTypes type, String managerId, int carrierCount,int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) {
+        try {
+            controller.createShift(date,type, managerId, carrierCount,cashierCount, storekeeperCount,sorterCount, hr_managerCount, logistics_managerCount);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
     }
 
     public Result<String> getEmployeeWorkDetailsForCurrentMonth(String id) {
+        try {
+            return Result.makeOk(controller.getEmployeeWorkDetailsForCurrentMonth(id));
+        }catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 
     public Result<Object> removeShift(Date date, ShiftTypes type) {
+        try {
+            controller.removeShift(date,type);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
     }
 }

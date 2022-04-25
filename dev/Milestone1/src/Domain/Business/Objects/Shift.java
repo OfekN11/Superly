@@ -3,6 +3,7 @@ package Domain.Business.Objects;
 import Domain.DAL.Objects.DShift;
 import Domain.Service.ServiceShiftFactory;
 import Globals.Enums.JobTitles;
+import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -99,6 +100,11 @@ public abstract class Shift {
         this.sorterIDs =sorterIDs;
         this.hr_managerIDs = hr_managerIDs;
         this.logistics_managerIDs =logistics_managerIDs;
+    }
+
+    public Shift(Date date, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) throws Exception {
+        this(date,managerId,carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount,new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
+
     }
 
     public Date getWorkday() {
@@ -255,5 +261,16 @@ public abstract class Shift {
         if (count < size)
             throw new Exception("A shift can't hold more employees more than configured count");
     }
+
+    public boolean isIdInclude(String id){
+        return carrierIDs.contains(id) ||
+        cashierIDs.contains(id) ||
+                storekeeperIDs.contains(id) ||
+        sorterIDs.contains(id) ||
+                hr_managerIDs.contains(id) ||
+        logistics_managerIDs.contains(id);
+    }
+
     public abstract DShift createDShift();
+    public abstract String printDayAndType();
 }

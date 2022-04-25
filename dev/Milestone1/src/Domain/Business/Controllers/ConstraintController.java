@@ -74,6 +74,7 @@ public class ConstraintController {
         Set<Date> datesInRange = new HashSet<>();
         Calendar calendar = getCalendarWithoutTime(today);
         Calendar endCalendar = getCalendarWithoutTime(nextMonth);
+        endCalendar.add(Calendar.DATE, 1);
 
         while (calendar.before(endCalendar)) {
             Date result = calendar.getTime();
@@ -84,7 +85,7 @@ public class ConstraintController {
         return datesInRange;
     }
 
-    private static Calendar getCalendarWithoutTime(Date date) {
+    private Calendar getCalendarWithoutTime(Date date) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.set(Calendar.HOUR, 0);

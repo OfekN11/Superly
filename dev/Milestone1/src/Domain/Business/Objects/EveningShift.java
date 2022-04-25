@@ -24,6 +24,10 @@ public  class EveningShift extends Shift {
         super(dShift,carrierIDs,cashierIDs,storekeeperIDs,sorterIDs,hr_managerIDs,logistics_managerIDs);
     }
 
+    public EveningShift(Date date, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) throws Exception {
+        super(date, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount);
+    }
+
     public ShiftTypes getType() {
         return ShiftTypes.Evening;
     }
@@ -53,5 +57,10 @@ public  class EveningShift extends Shift {
     private void validateManagerialCount(int count) throws Exception {
         if (count > 0)
             throw new Exception("Evening shifts don't have managerial slots");
+    }
+
+    @Override
+    public String printDayAndType() {
+        return "Evening- " + getWorkday().getDate();
     }
 }
