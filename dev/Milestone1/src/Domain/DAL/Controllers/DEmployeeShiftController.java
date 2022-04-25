@@ -42,10 +42,10 @@ public class DEmployeeShiftController extends DalController<Pair<Pair<Date,Shift
             shiftEmployee.add(new Pair<>(new Pair<>(new SimpleDateFormat("dd-MM-yyyy").parse("23-07-1198"),ShiftTypes.Evening),employees));
             employees = new HashSet<>(employees);
             employees.add("6");
-            shiftEmployee.add(new Pair<>(new Pair<>(new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198"),ShiftTypes.Evening),employees));
+            shiftEmployee.add(new Pair<>(new Pair<>(new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198"),ShiftTypes.Morning),employees));
             employees = new HashSet<>(employees);
             employees.add("4");
-            shiftEmployee.add(new Pair<>(new Pair<>(new SimpleDateFormat("dd-MM-yyyy").parse("18-06-1198"),ShiftTypes.Evening),employees));
+            shiftEmployee.add(new Pair<>(new Pair<>(new SimpleDateFormat("dd-MM-yyyy").parse("18-06-1198"),ShiftTypes.Morning),employees));
             return shiftEmployee;
 
         } catch (ParseException e) {

@@ -40,4 +40,18 @@ public class ShiftManagementTest {
 
     }
 
+    @org.junit.Test
+    public void RemoveWorkDay() {
+        ShiftController shiftController = new ShiftController();
+        shiftController.loadData();
+        try {
+            shiftController.createShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-1998"),ShiftTypes.Morning,"5",6,6,6,4,4,4);
+            shiftController.removeShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-1998"),ShiftTypes.Morning);
+            shiftController.getShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-1998"),ShiftTypes.Morning);
+            fail();
+        } catch (Exception e) {
+            assertTrue(true);
+        }
+    }
+
 }
