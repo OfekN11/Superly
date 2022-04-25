@@ -18,7 +18,7 @@ public class DHR_ManagerController extends DTOControllers<DHR_Manager> {
         Set<DHR_Manager> output = new HashSet<>();
         for (int i=20; i<30; i++) {
             try {
-                output.add(new DHR_Manager(""+i,"HR_Manager " + (i-19),"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
+                output.add(new DHR_Manager(""+i,"HR_Manager " + i,"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
