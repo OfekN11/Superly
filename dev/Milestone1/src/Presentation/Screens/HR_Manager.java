@@ -15,7 +15,7 @@ public class HR_Manager extends Employee{
     public void run() {
         System.out.println("\nWelcome to the Management Menu of " + name + "!");
         int option = 0;
-        while (option != 10) {
+        while (option != 9) {
             option = runMenu();
             try {
                 if (option <= 8)

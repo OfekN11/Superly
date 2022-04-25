@@ -20,7 +20,7 @@ public class Storekeeper extends Employee{
     public void run() {
         System.out.println("\nWelcome to the Management Menu of " + name + "!");
         int option = 0;
-        while (option != 10) {
+        while (option != 9) {
             try {
                 option = runMenu();
                 if (option <= 8)
