@@ -7,6 +7,7 @@ import Domain.DAL.Controllers.DEmployeeShiftController;
 import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,7 @@ public abstract class DShift extends DTO {
         this.sorterCount = sorterCount;
         this.hr_managersCount = hr_managersCount;
         this.logistics_managersCount = logistics_managersCount;
+        this.employeesId = new HashSet<>();
     }
 
 
