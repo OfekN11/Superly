@@ -1,6 +1,5 @@
 package Domain.Service.Services;
 
-import Domain.Business.Controllers.ShiftController;
 import Domain.Service.Objects.Shift;
 import Globals.Enums.ShiftTypes;
 import org.junit.Test;
