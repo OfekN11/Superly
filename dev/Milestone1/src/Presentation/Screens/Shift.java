@@ -77,7 +77,7 @@ public abstract class Shift extends Screen {
             for (int i = 0; i < JobTitles.values().length; i++)
                 System.out.println((i + 2) + " -- " + JobTitles.values()[i]);
             try {
-                int ordinal = scanner.nextInt();
+                int ordinal = Integer.parseInt(scanner.nextLine());
                 if (ordinal == -1) {
                     System.out.println("Operation Canceled");
                     return;
@@ -90,9 +90,8 @@ public abstract class Shift extends Screen {
                     assignEmployee(JobTitles.values()[ordinal - 2]);
                     return;
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer between 1 and " + (JobTitles.values().length + 1));
-                scanner.next();
             }
         }
     }
@@ -170,7 +169,7 @@ public abstract class Shift extends Screen {
             for (int i = 0; i < managers.size(); i++)
                 System.out.println((i + 1) + " -- " + managers.get(i).name + ": " + controller.getEmployeeWorkDetailsForCurrentMonth(managers.get(i).id));
             try {
-                int ordinal = scanner.nextInt();
+                int ordinal = Integer.parseInt(scanner.nextLine());
                 if (ordinal == -1) {
                     System.out.println("Operation Canceled");
                     return;
@@ -181,13 +180,11 @@ public abstract class Shift extends Screen {
                     System.out.println("Entered manager: " + manager.name);
                     success = areYouSure();
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer between 1 and " + managers.size());
-                scanner.next();
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         try {
@@ -206,7 +203,7 @@ public abstract class Shift extends Screen {
             for (int i = 0; i < JobTitles.values().length; i++)
                 System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
             try {
-                int ordinal = scanner.nextInt();
+                int ordinal = Integer.parseInt(scanner.nextLine());
                 if (ordinal == -1) {
                     System.out.println("Operation Canceled");
                     return;
@@ -215,13 +212,11 @@ public abstract class Shift extends Screen {
                 else {
                     type = JobTitles.values()[ordinal - 1];
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer between 1 and " + JobTitles.values().length);
-                scanner.next();
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         System.out.println("\nCurrent " + type + " count: " + getCountByType(type));
@@ -230,19 +225,17 @@ public abstract class Shift extends Screen {
         int newCount = -2;
         while (newCount < 0) {
             try {
-                newCount = scanner.nextInt();
+                newCount = Integer.parseInt(scanner.nextLine());
                 if (newCount == -1) {
                     System.out.println("Operation Canceled");
                     return;
                 } else if (newCount < 0)
                     System.out.println("Please enter a non-negative integer");
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter a non-negative integer");
-                scanner.next();
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
 

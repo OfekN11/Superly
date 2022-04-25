@@ -107,7 +107,7 @@ public class ShiftsMenu extends Screen {
                 for (int i = 0; i < ShiftTypes.values().length; i++)
                     System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
                 try {
-                    int ordinal = scanner.nextInt();
+                    int ordinal = Integer.parseInt(scanner.nextLine());
                     if (ordinal == -1) {
                         System.out.println("Operation Canceled");
                         return;
@@ -118,13 +118,11 @@ public class ShiftsMenu extends Screen {
                         System.out.println("Entered type: " + type);
                         success = areYouSure();
                     }
-                } catch (InputMismatchException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Please enter an integer between 1 and " + ShiftTypes.values().length);
-                    scanner.next();
                 } catch (Exception ex) {
                     System.out.println("Unexpected error occurred");
                     System.out.println("Please try again");
-                    scanner.next();
                 }
             }
             System.out.println("Chosen shift type: " + type);
@@ -135,7 +133,7 @@ public class ShiftsMenu extends Screen {
             while (!success) {
                 System.out.println("\nHow many carriers do you need for this shift?");
                 try {
-                    carrierCount = scanner.nextInt();
+                    carrierCount = Integer.parseInt(scanner.nextLine());
                     if (carrierCount == -1) {
                         System.out.println("Operation Canceled");
                         return;
@@ -143,13 +141,11 @@ public class ShiftsMenu extends Screen {
                         System.out.println("Entered count: " + carrierCount);
                         success = areYouSure();
                     }
-                } catch (InputMismatchException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Please enter a non-negative integer");
-                    scanner.next();
                 } catch (Exception ex) {
                     System.out.println("Unexpected error occurred");
                     System.out.println("Please try again");
-                    scanner.next();
                 }
             }
             System.out.println("Chosen carrier count: " + carrierCount);
@@ -160,7 +156,7 @@ public class ShiftsMenu extends Screen {
             while (!success) {
                 System.out.println("\nHow many cashiers do you need for this shift?");
                 try {
-                    cashierCount = scanner.nextInt();
+                    cashierCount = Integer.parseInt(scanner.nextLine());
                     if (cashierCount == -1) {
                         System.out.println("Operation Canceled");
                         return;
@@ -168,13 +164,11 @@ public class ShiftsMenu extends Screen {
                         System.out.println("Entered count: " + cashierCount);
                         success = areYouSure();
                     }
-                } catch (InputMismatchException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Please enter a non-negative integer");
-                    scanner.next();
                 } catch (Exception ex) {
                     System.out.println("Unexpected error occurred");
                     System.out.println("Please try again");
-                    scanner.next();
                 }
             }
             System.out.println("Chosen cashier count: " + cashierCount);
@@ -185,7 +179,7 @@ public class ShiftsMenu extends Screen {
             while (!success) {
                 System.out.println("\nHow many storekeepers do you need for this shift?");
                 try {
-                    storekeeperCount = scanner.nextInt();
+                    storekeeperCount = Integer.parseInt(scanner.nextLine());
                     if (storekeeperCount == -1) {
                         System.out.println("Operation Canceled");
                         return;
@@ -193,13 +187,11 @@ public class ShiftsMenu extends Screen {
                         System.out.println("Entered count: " + storekeeperCount);
                         success = areYouSure();
                     }
-                } catch (InputMismatchException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Please enter a non-negative integer");
-                    scanner.next();
                 } catch (Exception ex) {
                     System.out.println("Unexpected error occurred");
                     System.out.println("Please try again");
-                    scanner.next();
                 }
             }
             System.out.println("Chosen storekeeper count: " + storekeeperCount);
@@ -210,7 +202,7 @@ public class ShiftsMenu extends Screen {
             while (!success) {
                 System.out.println("\nHow many sorters do you need for this shift?");
                 try {
-                    sorterCount = scanner.nextInt();
+                    sorterCount = Integer.parseInt(scanner.nextLine());
                     if (sorterCount == -1) {
                         System.out.println("Operation Canceled");
                         return;
@@ -218,13 +210,11 @@ public class ShiftsMenu extends Screen {
                         System.out.println("Entered count: " + sorterCount);
                         success = areYouSure();
                     }
-                } catch (InputMismatchException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Please enter a non-negative integer");
-                    scanner.next();
                 } catch (Exception ex) {
                     System.out.println("Unexpected error occurred");
                     System.out.println("Please try again");
-                    scanner.next();
                 }
             }
             System.out.println("Chosen sorter count: " + sorterCount);
@@ -235,7 +225,7 @@ public class ShiftsMenu extends Screen {
             while (!success) {
                 System.out.println("\nHow many HR managers do you need for this shift?");
                 try {
-                    hr_managerCount = scanner.nextInt();
+                    hr_managerCount = Integer.parseInt(scanner.nextLine());
                     if (hr_managerCount == -1) {
                         System.out.println("Operation Canceled");
                         return;
@@ -243,13 +233,11 @@ public class ShiftsMenu extends Screen {
                         System.out.println("Entered count: " + hr_managerCount);
                         success = areYouSure();
                     }
-                } catch (InputMismatchException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Please enter a non-negative integer");
-                    scanner.next();
                 } catch (Exception ex) {
                     System.out.println("Unexpected error occurred");
                     System.out.println("Please try again");
-                    scanner.next();
                 }
             }
             System.out.println("Chosen HR manager count: " + hr_managerCount);
@@ -260,7 +248,7 @@ public class ShiftsMenu extends Screen {
             while (!success) {
                 System.out.println("\nHow many logistics managers do you need for this shift?");
                 try {
-                    logistics_managerCount = scanner.nextInt();
+                    logistics_managerCount = Integer.parseInt(scanner.nextLine());
                     if (logistics_managerCount == -1) {
                         System.out.println("Operation Canceled");
                         return;
@@ -268,13 +256,11 @@ public class ShiftsMenu extends Screen {
                         System.out.println("Entered count: " + logistics_managerCount);
                         success = areYouSure();
                     }
-                } catch (InputMismatchException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Please enter a non-negative integer");
-                    scanner.next();
                 } catch (Exception ex) {
                     System.out.println("Unexpected error occurred");
                     System.out.println("Please try again");
-                    scanner.next();
                 }
             }
             System.out.println("Chosen logistics manager count: " + logistics_managerCount);
@@ -294,7 +280,7 @@ public class ShiftsMenu extends Screen {
                 for (int i = 0; i < managers.size(); i++)
                     System.out.println((i + 1) + " -- " + managers.get(i).name + ": " + controller.getEmployeeWorkDetailsForCurrentMonth(managers.get(i).id));
                 try {
-                    int ordinal = scanner.nextInt();
+                    int ordinal = Integer.parseInt(scanner.nextLine());
                     if (ordinal == -1) {
                         System.out.println("Operation Canceled");
                         return;
@@ -305,13 +291,11 @@ public class ShiftsMenu extends Screen {
                         System.out.println("Entered manager: " + manager.name);
                         success = areYouSure();
                     }
-                } catch (InputMismatchException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Please enter an integer between 1 and " + managers.size());
-                    scanner.next();
                 } catch (Exception ex) {
                     System.out.println("Unexpected error occurred");
                     System.out.println("Please try again");
-                    scanner.next();
                 }
             }
             System.out.println("Chosen shift manager: " + manager.name);
@@ -352,7 +336,7 @@ public class ShiftsMenu extends Screen {
                 for (int i = 0; i < ShiftTypes.values().length; i++)
                     System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
                 try {
-                    int ordinal = scanner.nextInt();
+                    int ordinal = Integer.parseInt(scanner.nextLine());
                     if (ordinal == -1) {
                         System.out.println("Operation Canceled");
                         return;
@@ -363,13 +347,11 @@ public class ShiftsMenu extends Screen {
                         System.out.println("Entered type: " + type);
                         success = areYouSure();
                     }
-                } catch (InputMismatchException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Please enter an integer between 1 and " + ShiftTypes.values().length);
-                    scanner.next();
                 } catch (Exception ex) {
                     System.out.println("Unexpected error occurred");
                     System.out.println("Please try again");
-                    scanner.next();
                 }
             }
             System.out.println("Chosen shift type: " + type);
@@ -398,7 +380,7 @@ public class ShiftsMenu extends Screen {
             for (int i = 0; i < ShiftTypes.values().length; i++)
                 System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
             try {
-                int ordinal = scanner.nextInt();
+                int ordinal = Integer.parseInt(scanner.nextLine());
                 if (ordinal == -1) {
                     System.out.println("Operation Canceled");
                     return;
@@ -407,13 +389,11 @@ public class ShiftsMenu extends Screen {
                 else {
                     type = ShiftTypes.values()[ordinal - 1];
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer between 1 and " + ShiftTypes.values().length);
-                scanner.next();
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
 

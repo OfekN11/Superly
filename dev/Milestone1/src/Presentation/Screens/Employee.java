@@ -117,7 +117,6 @@ public abstract class Employee extends Screen {
             catch (Exception ex){
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         System.out.println("Updated name: " + name);
@@ -143,7 +142,6 @@ public abstract class Employee extends Screen {
             catch (Exception ex){
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         System.out.println("Updated bank details: " + bankDetails);
@@ -156,7 +154,7 @@ public abstract class Employee extends Screen {
         while (!success){
             System.out.println("\nEnter " + name +"'s salary per shift");
             try {
-                salary = scanner.nextInt();
+                salary = Integer.parseInt(scanner.nextLine());
                 if (salary == -1) {
                     System.out.println("Operation Canceled");
                     return;
@@ -169,14 +167,12 @@ public abstract class Employee extends Screen {
                     success = areYouSure();
                 }
             }
-            catch (InputMismatchException ex){
+            catch (NumberFormatException ex){
                 System.out.println("Please enter an non-negative integer");
-                scanner.next();
             }
             catch (Exception ex){
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
         System.out.println("Updated salary: " + salary);
@@ -193,19 +189,17 @@ public abstract class Employee extends Screen {
         while (ans != 1 && ans != 2){
             System.out.println("1 -- add\n2 -- remove");
             try {
-                ans = scanner.nextInt();
+                ans = Integer.parseInt(scanner.nextLine());
                 if (ans == -1) {
                     System.out.println("Operation Canceled");
                     return;
                 }
             }
-            catch (InputMismatchException ex){
+            catch (NumberFormatException ex){
                 System.out.println("Please enter an integer value (1 or 2)");
-                scanner.next();
             }
             catch (Exception ex){
                 System.out.println("An unexpected error happened. Please try again");
-                scanner.next();
             }
         }
         switch (ans) {
@@ -229,7 +223,7 @@ public abstract class Employee extends Screen {
             for (int i = 0; i < Certifications.values().length; i++)
                 System.out.println((i + 1) + " -- " + Certifications.values()[i]);
             try {
-                ordinal = scanner.nextInt();
+                ordinal = Integer.parseInt(scanner.nextLine());
                 if (ordinal == -1) {
                     System.out.println("Operation Canceled");
                     return;
@@ -238,13 +232,11 @@ public abstract class Employee extends Screen {
                 } else if (ordinal != 0){
                     curr.add(Certifications.values()[ordinal-1]);
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer between 0 and " + Certifications.values().length);
-                scanner.next();
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
     }
@@ -257,7 +249,7 @@ public abstract class Employee extends Screen {
             for (int i = 0; i < Certifications.values().length; i++)
                 System.out.println((i + 1) + " -- " + Certifications.values()[i]);
             try {
-                ordinal = scanner.nextInt();
+                ordinal = Integer.parseInt(scanner.nextLine());
                 if (ordinal == -1) {
                     System.out.println("Operation Canceled");
                     return;
@@ -266,13 +258,11 @@ public abstract class Employee extends Screen {
                 } else if (ordinal != 0){
                     curr.remove(Certifications.values()[ordinal-1]);
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer between 0 and " + Certifications.values().length);
-                scanner.next();
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
-                scanner.next();
             }
         }
     }
@@ -309,19 +299,17 @@ public abstract class Employee extends Screen {
         while (ans != 1 && ans != 2){
             System.out.println("1 -- add\n2 -- remove");
             try {
-                ans = scanner.nextInt();
+                ans = Integer.parseInt(scanner.nextLine());
                 if (ans == -1) {
                     System.out.println("Operation Canceled");
                     return;
                 }
             }
-            catch (InputMismatchException ex){
+            catch (NumberFormatException ex){
                 System.out.println("Please enter an integer value (1 or 2)");
-                scanner.next();
             }
             catch (Exception ex){
                 System.out.println("An unexpected error happened. Please try again");
-                scanner.next();
             }
         }
         switch (ans) {
@@ -342,19 +330,17 @@ public abstract class Employee extends Screen {
             while (ans != 1 && ans != 2){
                 System.out.println("1 -- Morning\n2 -- Evening");
                 try {
-                    ans = scanner.nextInt();
+                    ans = Integer.parseInt(scanner.nextLine());
                     if (ans == -1) {
                         System.out.println("Operation Canceled");
                         return;
                     }
                 }
-                catch (InputMismatchException ex){
+                catch (NumberFormatException ex){
                     System.out.println("Please enter an integer value (1 or 2)");
-                    scanner.next();
                 }
                 catch (Exception ex){
                     System.out.println("An unexpected error happened. Please try again");
-                    scanner.next();
                 }
             }
             ShiftTypes shift = ans == 1 ? ShiftTypes.Morning : ShiftTypes.Evening;
@@ -373,19 +359,17 @@ public abstract class Employee extends Screen {
             while (ans != 1 && ans != 2){
                 System.out.println("1 -- Morning\n2 -- Evening");
                 try {
-                    ans = scanner.nextInt();
+                    ans = Integer.parseInt(scanner.nextLine());
                     if (ans == -1) {
                         System.out.println("Operation Canceled");
                         return;
                     }
                 }
-                catch (InputMismatchException ex){
+                catch (NumberFormatException ex){
                     System.out.println("Please enter an integer value (1 or 2)");
-                    scanner.next();
                 }
                 catch (Exception ex){
                     System.out.println("An unexpected error happened. Please try again");
-                    scanner.next();
                 }
             }
             ShiftTypes shift = ans == 1 ? ShiftTypes.Morning : ShiftTypes.Evening;
