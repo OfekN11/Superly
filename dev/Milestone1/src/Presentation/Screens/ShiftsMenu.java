@@ -105,7 +105,7 @@ public class ShiftsMenu extends Screen {
             while (!success) {
                 System.out.println("\nEnter shift's type");
                 for (int i = 0; i < ShiftTypes.values().length; i++)
-                    System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
+                    System.out.println((i + 1) + " -- " + ShiftTypes.values()[i]);
                 try {
                     int ordinal = Integer.parseInt(scanner.nextLine());
                     if (ordinal == -1) {
