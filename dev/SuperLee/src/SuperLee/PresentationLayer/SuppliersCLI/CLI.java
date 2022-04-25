@@ -204,11 +204,90 @@ public class CLI {
     }
 
     private void makeOrder(int supplierID){
+        int input;
+        boolean correctInput = false;
+
+        System.out.println("Insert the ID of the new order:");
+        System.out.println("If you wish to return, please insert \"-1\"");
+
+        input = scan.nextInt();
+
+        if(input == -1){
+            System.out.println("Returning..\n");
+            return;
+        }
+
+        Result<Boolean> r = service.order(supplierID, input);
+
+        if(r.isError()){
+            System.out.println(r.getValue());
+            System.out.println("Returning, please try again.\n");
+            return;
+        }
+
+        addItemsToOrder(supplierID, input);
+
+        System.out.println("Order was placed successfully, returning.\n");
+
+    }
+
+    private void addItemsToOrder(int supplierID, int orderId){
+        boolean _continue = true, correctInput;
+        int itemID, quantity, input;
+
+        System.out.println("Now we shall add items to your new order.");
+        System.out.println("PLEASE NOTICE: the order must contain at least one item.\n");
+
+        while (_continue){
+            System.out.println("Please insert the following details:");
+            System.out.println("ID:");
+
+            itemID = scan.nextInt();
+
+            System.out.println("Quantity:");
+
+            quantity = scan.nextInt();
+
+            Result<Boolean> r = service.addItemToOrder(supplierID, orderId, itemID, quantity);
+
+            if(r.isOk()){
+                System.out.println("Choose:");
+                System.out.println("1) Add another item");
+                System.out.println("2) Back");
+
+                correctInput = false;
+
+                while(!correctInput){
+                    input = scan.nextInt();
+
+                    switch (input){
+                        case 1: {
+                            correctInput = true;
+                            break;
+                        }
+                        case 2: {
+                            _continue = false;
+                            correctInput = true;
+                            break;
+                        }
+                        default: {
+                            System.out.println("Wrong value was inserted, please try again.");
+                        }
+                    }
+                }
+            }
+            else{
+                System.out.println(r.getValue() + "\n");
+                System.out.println("Please try again.\n");
+            }
+
+
+        }
 
     }
 
     private void viewOrder(int supplierID){
-        System.out.println("Insert the ID of the new order:");
+
 
     }
 

@@ -370,7 +370,7 @@ public class SupplierController {
         suppliers.get(supId).addNewOrder(orderId);
     }
 
-    public void addItemsToOrder(int supId, int orderId, List<String> itemsString) throws Exception {
+    /*public void addItemsToOrder(int supId, int orderId, List<String> itemsString) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
@@ -380,13 +380,13 @@ public class SupplierController {
             suppliers.get(supId).addOneItemToOrder(orderId , Integer.parseInt(itemsString.get(i)) , itemsString.get(i+1) , Integer.parseInt(itemsString.get(i+2)));
         }
         //suppliers.get(supId).addItemsToOrder(orderId, itemsString);
-    }
+    }*/
 
-    public void addItemToOrder(int supId, int orderId, int itemId, String itemName, int itemQuantity) throws Exception {
+    public void addItemToOrder(int supId, int orderId, int itemId, int itemQuantity) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliers.get(supId).addOneItemToOrder(orderId, itemId, itemName, itemQuantity);
+        suppliers.get(supId).addOneItemToOrder(orderId, itemId, itemQuantity);
     }
 
     public void removeOrder(int supId, int orderId) throws Exception {

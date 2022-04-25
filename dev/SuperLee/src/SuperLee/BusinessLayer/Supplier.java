@@ -381,21 +381,22 @@ public class Supplier {
     }
      */
 
-    public void addOneItemToOrder(int orderId, int itemId, String itemName, int itemQuantity) throws Exception {
+    public void addOneItemToOrder(int orderId, int itemId, int itemQuantity) throws Exception {
 
         if(!agreement.itemExists(itemId))
             throw new Exception(String.format("Item with ID: %d does not Exists!", itemId));
         if(!orders.containsKey(orderId))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
-        AgreementItem currItem = agreement.getItem(itemId);
 
-        if(!itemName.trim().equals(currItem.getName()))
-            throw new Exception(String.format("Item with name: %s does not match the id you gave!", itemName));
+        if(itemQuantity == 0){
+            throw new Exception("Can't add 0 items to the order!");
+        }
+        AgreementItem currItem = agreement.getItem(itemId);
 
         float ppu = currItem.getPricePerUnit();
         int discount = agreement.getItem(itemId).getDiscount(itemQuantity);
         Double finalPrice = agreement.getItem(itemId).calculateTotalPrice(itemQuantity);
-        orders.get(orderId).addItem(itemId, itemName, itemQuantity, ppu, discount, finalPrice);
+        orders.get(orderId).addItem(itemId, agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice);
 
     }
 
