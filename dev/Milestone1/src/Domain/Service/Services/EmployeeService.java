@@ -164,12 +164,18 @@ public class EmployeeService {
     }
 
     public Result<Object> checkUnusedEmployeeID(String id) {
-
+        try {
+            controller.checkUnusedEmployeeID(id);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
     }
 
     public Result<Object> validateID(String id) {
         try {
-            controller.v(id);
+            controller.validateID(id);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -178,6 +184,13 @@ public class EmployeeService {
     }
 
     public Result<Object> validateIDs(Set<String> ids) {
+        try {
+            controller.validateIDs(ids);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
     }
 
     public Result<Object> editEmployeeSalary(String id, int newSalary) {
@@ -191,5 +204,11 @@ public class EmployeeService {
     }
 
     public Result<Set<Employee>> getEmployees(Set<String> employeeIDs) {
+        try {
+            return Result.makeOk(controller.getEmployees(employeeIDs).stream().map(factory::createServiceEmployee).collect(Collectors.toSet()));
+        }catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+
     }
 }

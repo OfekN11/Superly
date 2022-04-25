@@ -134,4 +134,18 @@ public class EmployeeController {
         checkIDValidity(id);
         employees.get(id).setSalary(newSalary);
     }
+
+    public void validateID(String id) throws Exception {
+        checkIDValidity(id);
+    }
+
+    public void validateIDs(Set<String> ids) throws Exception {
+        for (String id:ids)
+            checkIDValidity(id);
+    }
+
+    public void checkUnusedEmployeeID(String id) throws Exception {
+        if (employees.containsKey(id))
+            throw new Exception(String.format("employee with ID: %s is already taken", id));
+    }
 }
