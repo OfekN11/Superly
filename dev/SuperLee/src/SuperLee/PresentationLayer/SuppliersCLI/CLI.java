@@ -144,7 +144,7 @@ public class CLI {
 
         while(_continue){
 
-            System.out.println("Insert the supplier ID you wish to view, then press \"Enter\" to continue.\n");
+            System.out.println("Insert the supplier ID you wish to view, then press \"Enter\" to continue..\n");
             System.out.println("If you wish to return, type \"-1\" and press \"Enter\"");
 
             correctInput = false;
