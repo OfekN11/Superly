@@ -38,6 +38,46 @@ public class CLI {
         homePage();
     }
 
+    private int getInput(){
+        boolean stopWait = true;
+        int input = -1;
+
+        while(stopWait){
+            if(scan.hasNextInt()) {
+                input = scan.nextInt();
+                stopWait = false;
+            }
+            else{
+                System.out.println("Enter an integer please!");
+                scan.nextLine();
+
+            }
+        }
+        scan.nextLine();
+
+        return input;
+    }
+
+    private float getInputFloat(){
+        boolean stopWait = true;
+        float input = -1;
+
+        while(stopWait){
+            if(scan.hasNextFloat()) {
+                input = scan.nextFloat();
+                stopWait = false;
+            }
+            else{
+                System.out.println("Enter an integer please!");
+                scan.nextLine();
+
+            }
+        }
+        scan.nextLine();
+
+        return input;
+    }
+
     private void homePage(){
         int input;
         boolean correctInput;
@@ -53,8 +93,7 @@ public class CLI {
             correctInput = false;
 
            while(!correctInput){
-               input = scan.nextInt();
-               scan.nextLine();
+               input = getInput();
 
                switch (input){ // temporary
                    case 1 : {
@@ -111,8 +150,7 @@ public class CLI {
             correctInput = false;
 
             while(!correctInput){
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 if(input == -1){
                     System.out.println("\n\n");
@@ -146,8 +184,7 @@ public class CLI {
             correctInput = false;
 
             while (!correctInput){
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 switch (input){
                     case 1 : {
@@ -207,7 +244,7 @@ public class CLI {
         System.out.println("Insert the ID of the new order:");
         System.out.println("If you wish to return, please insert \"-1\"");
 
-        input = scan.nextInt();
+        input = getInput();
 
         if(input == -1){
             System.out.println("Returning..\n");
@@ -217,7 +254,7 @@ public class CLI {
         Result<Boolean> r = service.order(supplierID, input);
 
         if(r.isError()){
-            System.out.println(r.getValue());
+            System.out.println(r.getError());
             System.out.println("Returning, please try again.\n");
             return;
         }
@@ -239,11 +276,11 @@ public class CLI {
             System.out.println("Please insert the following details:");
             System.out.println("ID:");
 
-            itemID = scan.nextInt();
+            itemID = getInput();
 
             System.out.println("Quantity:");
 
-            quantity = scan.nextInt();
+            quantity = getInput();
 
             Result<Boolean> r = service.addItemToOrder(supplierID, orderId, itemID, quantity);
 
@@ -255,7 +292,7 @@ public class CLI {
                 correctInput = false;
 
                 while(!correctInput){
-                    input = scan.nextInt();
+                    input = getInput();
 
                     switch (input){
                         case 1: {
@@ -274,7 +311,7 @@ public class CLI {
                 }
             }
             else{
-                System.out.println(r.getValue() + "\n");
+                System.out.println(r.getError() + "\n");
                 System.out.println("Please try again.\n");
             }
 
@@ -291,7 +328,7 @@ public class CLI {
             System.out.println("Insert the ID of the order you wish to watch.");
             System.out.println("If you want to return, insert \"-1\"");
 
-            input = scan.nextInt();
+            input = getInput();
 
             if(input == -1){
                 System.out.println("Returning..\n");
@@ -312,7 +349,7 @@ public class CLI {
                 correctInput = false;
 
                 while(!correctInput){
-                    input = scan.nextInt();
+                    input = getInput();
 
                     switch (input){
                         case 1: {
@@ -363,8 +400,7 @@ public class CLI {
             manufacturers = new ArrayList<>();
 
             System.out.println("ID: ");
-            id = scan.nextInt();
-            scan.nextLine();
+            id = getInput();
 
             if(id == -1){
                 System.out.println("Returning..\n\n");
@@ -374,8 +410,7 @@ public class CLI {
             System.out.println("Name: ");
             name = scan.nextLine();
             System.out.println("Bank number: ");
-            bankNumber = scan.nextInt();
-            scan.nextLine();
+            bankNumber = getInput();
             System.out.println("Address: ");
             address = scan.nextLine();
             System.out.println("Paying agreement: ");
@@ -434,8 +469,7 @@ public class CLI {
             System.out.println("3) Back\n");
 
             while(!correctInput){
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 switch (input){
                     case 1 : {
@@ -476,8 +510,7 @@ public class CLI {
 
             while(!done){
                 correctInput = false;
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 if(input == -1){
                     System.out.println("Returning..\n");
@@ -493,8 +526,7 @@ public class CLI {
                     System.out.println("2) Back to home Page");
 
                     while(!correctInput) {
-                        input = scan.nextInt();
-                        scan.nextLine();
+                        input = getInput();
 
                         switch (input) {
                             case 1 : {
@@ -530,8 +562,7 @@ public class CLI {
             System.out.println("1) ID\n2) Bank number\n3) Address\n4) Name\n5) Paying agreement\n6) Back\n");
 
             while(!correctInput){
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 switch (input){
                     case 1 : {
@@ -574,8 +605,7 @@ public class CLI {
             correctInput = false;
 
             while(!correctInput){
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 switch(input){
                     case 1 : {
@@ -604,8 +634,7 @@ public class CLI {
             System.out.println("Insert the new id please.");
 
             System.out.println("If you want to go back, please insert \"-1\".\n");
-            input = scan.nextInt();
-            scan.nextLine();
+            input = getInput();
 
             if(input == -1){
                 System.out.println("Returning..\n");
@@ -635,8 +664,7 @@ public class CLI {
         while(!correctInput){
             System.out.println("Insert the new bunk number please.");
             System.out.println("If you want to go back, please insert \"-1\".\n");
-            input = scan.nextInt();
-            scan.nextLine();
+            input = getInput();
 
             if(input == -1){
                 System.out.println("Returning..\n");
@@ -785,8 +813,7 @@ public class CLI {
             System.out.println("9) Back");
 
             while(!correctInput){
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 switch (input){
                     case 1 : {
@@ -929,8 +956,7 @@ public class CLI {
         System.out.println("If you want to go back, please insert \"-1\".\n");
 
         while(!correctInput){
-            input = scan.nextInt();
-            scan.nextLine();
+            input = getInput();
 
             if(input == -1){
                 System.out.println("Returning..\n");
@@ -990,8 +1016,7 @@ public class CLI {
             System.out.println("If you want to go back, please insert \"-1\" instead of the ID.\n");
 
             System.out.println("ID:");
-            id = scan.nextInt();
-            scan.nextLine();
+            id = getInput();
 
             if(id == -1){
                 System.out.println("Returning..\n");
@@ -1003,8 +1028,7 @@ public class CLI {
             System.out.println("Manufacturer:");
             manufacturer = scan.nextLine();
             System.out.println("Price per unit:");
-            pricePerUnit = scan.nextFloat();
-            scan.nextLine();
+            pricePerUnit = getInputFloat();
 
             System.out.println("Now, let's insert the bulk prices in the following format:");
             System.out.println("quantity, price, quantity, price, quantity, price ...");
@@ -1046,8 +1070,7 @@ public class CLI {
                 correctInput = false;
 
                 while(!correctInput){
-                    input = scan.nextInt();
-                    scan.nextLine();
+                    input = getInput();
 
                     switch (input){
                         case 1 : {
@@ -1085,8 +1108,7 @@ public class CLI {
 
                 System.out.println("If you want to go back, please insert \"-1\".\n");
 
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 if(input == -1){
                     System.out.println("Returning..\n");
@@ -1111,8 +1133,7 @@ public class CLI {
             correctInput = false;
 
             while(!correctInput){
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 switch(input){
                     case 1 : {
@@ -1142,8 +1163,7 @@ public class CLI {
             System.out.println("If you want to go back, please insert \"-1\".\n");
 
             while(!correctInput){
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 if(input == -1){
                     System.out.println("Returning..\n");
@@ -1179,8 +1199,7 @@ public class CLI {
             correctInput = false;
 
             while(!correctInput){
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 switch (input){
                     case 1 : {
@@ -1247,8 +1266,7 @@ public class CLI {
             System.out.println("Insert the new ID:");
             System.out.println("If you want to go back, please insert \"-1\".\n");
 
-            input = scan.nextInt();
-            scan.nextLine();
+            input = getInput();
 
             if(input == -1){
                 System.out.println("Returning..\n");
@@ -1335,8 +1353,7 @@ public class CLI {
             System.out.println("Insert the new price:");
             System.out.println("If you want to go back, please insert \"-1\".\n");
 
-            input = scan.nextFloat();
-            scan.nextLine();
+            input = getInputFloat();
 
             if(input == -1f){
                 System.out.println("Returning..\n");
@@ -1363,8 +1380,7 @@ public class CLI {
         while(!correctInput){
             System.out.println("Insert quantity:");
             System.out.println("If you want to go back, please insert \"-1\".\n");
-            quantity = scan.nextInt();
-            scan.nextLine();
+            quantity = getInput();
 
             if(quantity == -1){
                 System.out.println("Returning..\n");
@@ -1372,8 +1388,7 @@ public class CLI {
             }
 
             System.out.println("Insert discount:");
-            discount = scan.nextInt();
-            scan.nextLine();
+            discount = getInput();
 
             Result<Boolean> r = service.addBulkPriceForItem(supID, itemID, quantity, discount);
 
@@ -1395,8 +1410,7 @@ public class CLI {
         while(!correctInput){
             System.out.println("Insert quantity:");
             System.out.println("If you want to go back insert \"-1\".\n");
-            quantity = scan.nextInt();
-            scan.nextLine();
+            quantity = getInput();
 
             if(quantity == -1){
                 System.out.println("Returning\n");
@@ -1404,8 +1418,7 @@ public class CLI {
             }
 
             System.out.println("Insert discount:");
-            discount = scan.nextInt();
-            scan.nextLine();
+            discount = getInput();
 
             Result<Boolean> r = service.editBulkPriceForItem(supID, itemID, quantity, discount);
 
@@ -1427,8 +1440,7 @@ public class CLI {
         while(!correctInput){
             System.out.println("Insert quantity to order:");
             System.out.println("If you want to go back, please insert \"-1\".\n");
-            input = scan.nextInt();
-            scan.nextLine();
+            input = getInput();
 
             if(input == -1){
                 System.out.println("Returning..\n");
@@ -1456,8 +1468,7 @@ public class CLI {
         while(!correctInput){
             System.out.println("Insert quantity:");
             System.out.println("If you want to go back, please insert \"-1\".\n");
-            quantity = scan.nextInt();
-            scan.nextLine();
+            quantity = getInput();
 
             if(quantity == -1){
                 System.out.println("Returning..\n");
@@ -1489,8 +1500,7 @@ public class CLI {
             System.out.println("3) Self-Transport agreement");
             System.out.println("4) Back");
 
-            input = scan.nextInt();
-            scan.nextLine();
+            input = getInput();
 
             if(input == 4){
                 System.out.println("Returning..\n");
@@ -1567,8 +1577,7 @@ public class CLI {
             System.out.println("7) Back");
 
             while (!correctInput) {
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 switch (input) {
                     case 1 : {
@@ -1623,8 +1632,7 @@ public class CLI {
             System.out.println("Insert the number of days until delivery:");
             System.out.println("If you want to go back, please insert \"-1\".\n");
 
-            input = scan.nextInt();
-            scan.nextLine();
+            input = getInput();
 
             if(input == -1){
                 System.out.println("Returning..\n");
@@ -1659,8 +1667,7 @@ public class CLI {
             System.out.println("6) Back");
 
             while (!correctInput) {
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 switch (input) {
                     case 1 : {
@@ -1715,8 +1722,7 @@ public class CLI {
 
 
         while(!correctInput){
-            input = scan.nextInt();
-            scan.nextLine();
+            input = getInput();
 
             if(input == 4){
                 System.out.println("Returning..\n\n");
@@ -1783,8 +1789,7 @@ public class CLI {
             correctInput = false;
 
             while(!correctInput){
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 switch(input){
                     case 1 : {
@@ -1838,8 +1843,7 @@ public class CLI {
                 correctInput = false;
 
                 while(!correctInput){
-                    input = scan.nextInt();
-                    scan.nextLine();
+                    input = getInput();
 
                     switch (input){
                         case 1 : {
@@ -1890,8 +1894,7 @@ public class CLI {
                 System.out.println("2) Return");
 
                 while(!correctInput){
-                    input = scan.nextInt();
-                    scan.nextLine();
+                    input = getInput();
 
                     switch(input){
                         case 1 : {
@@ -1949,8 +1952,7 @@ public class CLI {
             correctInput = false;
 
             while(!correctInput){
-                input = scan.nextInt();
-                scan.nextLine();
+                input = getInput();
 
                 switch(input){
                     case 1 : {
@@ -2000,8 +2002,7 @@ public class CLI {
                 correctInput = false;
 
                 while(!correctInput){
-                    input = scan.nextInt();
-                    scan.nextLine();
+                    input = getInput();
 
                     switch(input){
                         case 1 : {
@@ -2051,8 +2052,7 @@ public class CLI {
                 correctInput = false;
 
                 while(!correctInput){
-                    input = scan.nextInt();
-                    scan.nextLine();
+                    input = getInput();
 
                     switch(input){
                         case 1 : {
