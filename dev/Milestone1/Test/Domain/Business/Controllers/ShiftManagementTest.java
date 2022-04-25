@@ -15,11 +15,11 @@ public class ShiftManagementTest {
         ShiftController shiftController = new ShiftController();
         shiftController.loadData();
         try {
-            Shift shift = shiftController.getShift(new SimpleDateFormat("dd-MM-yyyy").parse("19-06-1198"), ShiftTypes.Evening);
+            Shift shift = shiftController.getShift(new SimpleDateFormat("dd-MM-yyyy").parse("19-06-2021"), ShiftTypes.Evening);
             Set<String> prevCarrierIDs = shift.getCarrierIDs();
             Set<String> newCarrierIds = new HashSet<>(prevCarrierIDs);
             newCarrierIds.add("28");
-            shiftController.editShiftCarrierIDs(new SimpleDateFormat("dd-MM-yyyy").parse("19-06-1198"), ShiftTypes.Evening, newCarrierIds);
+            shiftController.editShiftCarrierIDs(new SimpleDateFormat("dd-MM-yyyy").parse("19-06-2021"), ShiftTypes.Evening, newCarrierIds);
             assertNotEquals(prevCarrierIDs, newCarrierIds);
         } catch (Exception e) {
             e.printStackTrace();
