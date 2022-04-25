@@ -30,7 +30,7 @@ public class EmployeeManagementTest {
         String preConditions =employee.getEmploymentConditions();
         try {
             employeeController.editEmployeeEmployementConditions("2","New Conditions");
-            assertEquals(preConditions,employee.getEmploymentConditions());
+            assertNotEquals(preConditions,employee.getEmploymentConditions());
         } catch (Exception e) {
             e.printStackTrace();
         }
