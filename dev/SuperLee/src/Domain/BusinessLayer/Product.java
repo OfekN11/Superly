@@ -13,10 +13,7 @@ public class Product {
     private int id;
     private String name;
     private Category category;
-    private Map<Integer, Integer> minAmounts; //<storeID, minAmount in total>
-    private Map<Integer, Integer> maxAmounts; //<storeID, maxAmount in total>
-    private Map<Integer, Integer> inStore; //current amount in store.
-    private Map<Integer, Integer> inWarehouse; //current amount in warehouse.
+    private Map<Integer, StockReport> stockreports; //<storeID, stockReports>
     private List<Location> locations;
     private List<DefectiveItems> damagedItemReport;
     private List<DefectiveItems> expiredItemReport;
@@ -47,15 +44,12 @@ public class Product {
         this.price = price;
         this.manufacturerID = manufacturerID;
         this.supplierIdToProductIdOfTheSupplier = suppliers;
-        inStore = new HashMap<Integer, Integer>(); //needs to filled with all stores locations.
-        inWarehouse = new HashMap<Integer, Integer>(); //needs to filled with all warehouses locations.
         sales = new ArrayList<>();
-        minAmounts = new HashMap<>();
-        maxAmounts = new HashMap<>();
         damagedItemReport = new ArrayList<>();
         expiredItemReport = new ArrayList<>();
         purchaseFromSupplierList = new ArrayList<>();
         locations = new ArrayList<>();
+        stockreports = new HashMap<>();
     }
 
     public double getWeight() {
@@ -67,25 +61,25 @@ public class Product {
     }
 
     public Integer getMinInStore(int store) {
-        if (minAmounts.get(store)==null)
+        if (stockreports.get(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store);
-        return minAmounts.get(store);
+        return stockreports.get(store).getMinAmountInStore();
     }
     public int getMaxInStore(int store) {
-        if (minAmounts.get(store)==null)
+        if (stockreports.get(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store);
-        return maxAmounts.get(store);
+        return stockreports.get(store).getMaxAmountInStore();
     }
 
     public Integer getInStore(int store) {
 //        if (inStore.get(store)==null)
 //            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
-        return inStore.get(store);
+        return stockreports.get(store).getAmountInStore();
     }
     public Integer getInWarehouse(int store) {
 //        if (inWarehouse.get(store)==null)
 //            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
-        return inWarehouse.get(store);
+        return stockreports.get(store).getAmountInWarehouse();
     }
 
     public double getCurrentPrice() {
@@ -107,37 +101,30 @@ public class Product {
         sales.add(sale);
     }
 
-    public void removeItems(int storeID, int amount) { //bought or thrown=
-        if (!inStore.containsKey(storeID))
+    public void removeItems(int storeID, int amount) { //bought
+        if (!stockreports.containsKey(storeID))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
-        if (inStore.get(storeID)+inWarehouse.get(storeID)-amount<0)
-            throw new IllegalArgumentException("Can not buy or remove more items than in the store - please check amount");
-        inStore.put(storeID, inStore.get(storeID)-amount);
+        stockreports.get(storeID).removeItemsFromStore(amount);
     }
+
     public void moveItems(int storeID, int amount) { //from warehouse to store
-        if (!inStore.containsKey(storeID))
+        if (!stockreports.containsKey(storeID))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
-        if (inWarehouse.get(storeID)-amount<0)
-            throw new IllegalArgumentException("Can not move more items than in the warehouse");
-        inWarehouse.put(storeID, inWarehouse.get(storeID)-amount);
-        inStore.put(storeID, inStore.get(storeID)+amount);
+        stockreports.get(storeID).moveItems(amount);
     }
     public PurchaseFromSupplier addItems(int storeId, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
-        if (!inStore.containsKey(storeId))
+        if (!stockreports.containsKey(storeId))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
-        if (inStore.get(storeId)+inWarehouse.get(storeId)+amountBought>maxAmounts.get(storeId))
-            throw new IllegalArgumentException("Can not add more items than the max capacity in the store");
+        stockreports.get(storeId).addItems(amountBought);
         PurchaseFromSupplier p = new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, storeId, id, date, supplierID, description, amountBought, pricePaid, originalPrice);
-        inWarehouse.put(storeId, inWarehouse.get(storeId)+amountBought);
         purchaseFromSupplierList.add(p);
         return p;
+
     }
-    public double returnItems(int storeID, int amount, Date dateBought) { //from customer to store
-        if (!inStore.containsKey(storeID))
+    public double returnItems(int storeId, int amount, Date dateBought) { //from customer to store
+        if (!stockreports.containsKey(storeId))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
-        if (inStore.get(storeID)+inWarehouse.get(storeID)+amount>maxAmounts.get(storeID))
-            throw new IllegalArgumentException("Can not return more items than the max capacity in the store");
-        inStore.put(storeID, inStore.get(storeID)+amount);
+        stockreports.get(storeId).returnItems(amount);
         return amount*getPriceOnDate(dateBought);
     }
 
@@ -235,19 +222,17 @@ public class Product {
     public void addLocation(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int minAmount, int maxAmount) {
         Location storeLocation = new Location(storeID, false, shelvesInStore);
         Location warehouseLocation = new Location(storeID, true, shelvesInWarehouse);
-        minAmounts.put(storeID, minAmount);
-        maxAmounts.put(storeID, maxAmount);
-        inStore.put(storeID, 0);
-        inWarehouse.put(storeID, 0);
+        if (stockreports.containsKey(storeID))
+            throw new IllegalArgumentException("Product " + name + " is already sold at store " + storeID);
+        stockreports.put(storeID, new StockReport(storeID, id, name, 0, 0, minAmount, maxAmount));
         locations.add(storeLocation);
         locations.add(warehouseLocation);
     }
 
-    public void removeLocation(int storeID) {
-        minAmounts.remove(storeID);
-        maxAmounts.remove(storeID);
-        inStore.remove(storeID);
-        inWarehouse.remove(storeID);
+    public void removeLocation(Integer storeID) {
+        if (!stockreports.containsKey(storeID))
+            throw new IllegalArgumentException("Product " + name + " is not being sold at store " + storeID);
+        stockreports.remove(storeID);
         for (int i=0; i<locations.size(); i++) {
             if (locations.get(i).getStoreID()==storeID) {
                 locations.remove(i);
@@ -278,7 +263,7 @@ public class Product {
     }
 
     public boolean isLow(int storeID) {
-        return inStore.get(storeID)+inWarehouse.get(storeID)<minAmounts.get(storeID);
+        return stockreports.get(storeID).isLow();
     }
 
     public void removeSale(SaleToCustomer sale) {
@@ -297,31 +282,23 @@ public class Product {
         supplierIdToProductIdOfTheSupplier.remove(supplierID);
     }
 
-    public boolean isUnderMin(int store) {
-        return (inStore.get(store)+inWarehouse.get(store)<minAmounts.get(store));
-    }
-
     public boolean belongsToCategory(Category category) {
         return (this.category==category || this.category.belongsToCategory(category));
     }
 
     public void changeProductMin(int store, int min) {
-        if (minAmounts.get(store)==null)
+        if (stockreports.get(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no min");
-        if (min<1)
-            throw new IllegalArgumentException("New min value must be positive");
-        if (min>maxAmounts.get(store))
-            throw new IllegalArgumentException("New min cannot be greater than max. Max is currently " + maxAmounts.get(store));
-        minAmounts.put(store, min);
+        stockreports.get(store).changeMin(min);
     }
 
     public void changeProductMax(int store, int max) {
-        if (maxAmounts.get(store)==null)
+        if (stockreports.get(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no min");
-        if (max<1)
-            throw new IllegalArgumentException("New max value must be positive");
-        if (max>minAmounts.get(store))
-            throw new IllegalArgumentException("New max cannot be less than min. Min is currently " + minAmounts.get(store));
-        maxAmounts.put(store, max);
+        stockreports.get(store).changeMax(max);
+    }
+
+    public StockReport getStockReport(Integer store) {
+        return stockreports.get(store);
     }
 }

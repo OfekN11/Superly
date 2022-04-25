@@ -405,7 +405,7 @@ public class InventoryController {
         for (Product p : products.values()) {
             for (int i : storeIds) {
                 if (p.isLow(i))
-                    lowOnStock.add(new StockReport(i, p.getId(), p.getName(), p.getInStore(i), p.getInWarehouse(i), p.getInStore(i)+p.getInWarehouse(i), p.getMinInStore(i), p.getMaxInStore(i)));
+                    lowOnStock.add(p.getStockReport(i));
             }
         }
         return lowOnStock;
@@ -424,7 +424,7 @@ public class InventoryController {
     }
 
     public boolean isUnderMin(int store, int product) {
-        return getProduct(product).isUnderMin(store);
+        return getProduct(product).isLow(store);
     }
 
     public int getAmountInStore(int store, int productID) {
@@ -441,7 +441,7 @@ public class InventoryController {
             for (Integer catID : categoryIDs) {
                 Category category = categories.get(catID);
                 for (Product p : category.getAllProductsInCategory()) {
-                    stock.add(new StockReport(store, p.getId(), p.getName(), p.getInStore(store), p.getInWarehouse(store), p.getInStore(store) + p.getInWarehouse(store), p.getMinInStore(store), p.getMaxInStore(store)));
+                    stock.add(p.getStockReport(store));
                 }
             }
         }
@@ -580,7 +580,7 @@ public class InventoryController {
 
     public Product changeProductMax(int store, int product, int max) {
         Product p = getProduct(product);
-        p.changeProductMin(store, max);
+        p.changeProductMax(store, max);
         return p;
     }
 }
