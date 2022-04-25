@@ -35,8 +35,14 @@ public class Order {
     }
 
     public void removeItem(int itemId) {
-        orderItems.removeIf(order -> order.getId() == itemId);
+        for(OrderItem orderItem : orderItems){
+            if(orderItem.getId() == itemId){
+                orderItems.remove(orderItem);
+                return;
+            }
+        }
     }
+
 
     public Date getDate() {
         return date;

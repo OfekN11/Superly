@@ -23,10 +23,10 @@ public class Main {
 
 
         switch (input) { // temporary
-            case 1 -> {
+            case 1 : {
                 initWithData(cli);
             }
-            case 2 -> {
+            case 2 : {
                 System.out.println("Init without data");
                 cli.init();
             }

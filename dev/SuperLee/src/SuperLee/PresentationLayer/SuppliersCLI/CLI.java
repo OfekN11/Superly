@@ -60,23 +60,27 @@ public class CLI {
                scan.nextLine();
 
                switch (input){ // temporary
-                   case 1 -> {
+                   case 1 : {
                        supplierCard();
                        correctInput = true ;
+                       break;
                    }
-                   case 2 -> {
+                   case 2 : {
                        addSupplier();
                        correctInput = true ;
+                       break;
                    }
-                   case 3 -> {
+                   case 3 : {
                        removeSupplier();
                        correctInput = true ;
+                       break;
                    }
-                   case 4 -> {
+                   case 4 : {
                        terminateSystem = true;
                        correctInput = true ;
+                       break;
                    }
-                   default -> System.out.println("You inserted wrong value, please try again.");
+                   default : System.out.println("You inserted wrong value, please try again.");
                }
            }
 
@@ -149,40 +153,48 @@ public class CLI {
                 scan.nextLine();
 
                 switch (input){
-                    case 1 -> {
+                    case 1 : {
                         editCard(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         viewAgreement(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 3 -> {
+                    case 3 : {
                         newAgreement(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 4 -> {
+                    case 4 : {
                         viewContacts(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 5 -> {
+                    case 5 : {
                         viewRepresentedManufacturers(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 6 -> {
+                    case 6 : {
                         makeOrder(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 7 -> {
+                    case 7 : {
                         viewOrder(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 8 -> {
+                    case 8 : {
                         correctInput = true;
                         _continue = false;
                         System.out.println("Returning\n\n");
+                        break;
                     }
-                    default -> System.out.println("You inserted wrong value, please try again.");
+                    default : System.out.println("You inserted wrong value, please try again.");
                 }
             }
 
@@ -299,20 +311,23 @@ public class CLI {
                 scan.nextLine();
 
                 switch (input){
-                    case 1 -> {
+                    case 1 : {
                         newAgreement(id);
                         correctInput = true;
                         _continue = false;
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         correctInput = true;
+                        break;
                     }
-                    case 3 -> {
+                    case 3 : {
                         correctInput = true;
                         System.out.println("Returning\n\n");
                         _continue = false;
+                        break;
                     }
-                    default -> System.out.println("You inserted wrong value, please try again.");
+                    default : System.out.println("You inserted wrong value, please try again.");
                 }
             }
         }
@@ -355,16 +370,18 @@ public class CLI {
                         scan.nextLine();
 
                         switch (input) {
-                            case 1 -> {
+                            case 1 : {
                                 correctInput = true;
                                 System.out.print("\n\n");
+                                break;
                             }
-                            case 2 -> {
+                            case 2 : {
                                 correctInput = true;
                                 _continue = false;
                                 System.out.print("Returning\n\n");
+                                break;
                             }
-                            default -> System.out.println("You inserted wrong value, please try again.");
+                            default : System.out.println("You inserted wrong value, please try again.");
                         }
                     }
                 }
@@ -390,31 +407,36 @@ public class CLI {
                 scan.nextLine();
 
                 switch (input){
-                    case 1 -> {
+                    case 1 : {
                         supplierID = editID(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         editBunkNumber(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 3 -> {
+                    case 3 : {
                         editAddress(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 4 -> {
+                    case 4 : {
                         editName(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 5 -> {
+                    case 5 : {
                         editPayingAgreement(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 6 -> {
+                    case 6 : {
                         System.out.println("Returning..");
                         return;
                     }
-                    default -> System.out.println("You inserted wrong value, please try again.");
+                    default : System.out.println("You inserted wrong value, please try again.");
                 }
             }
 
@@ -429,14 +451,16 @@ public class CLI {
                 scan.nextLine();
 
                 switch(input){
-                    case 1 -> {
+                    case 1 : {
                         correctInput = true;
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         _continue = false;
                         correctInput = true;
+                        break;
                     }
-                    default -> System.out.println("You inserted wrong value, please try again.");
+                    default : System.out.println("You inserted wrong value, please try again.");
                 }
             }
         }
@@ -638,45 +662,52 @@ public class CLI {
                 scan.nextLine();
 
                 switch (input){
-                    case 1 -> {
+                    case 1 : {
                         changeDaysOfDelivery(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         addDaysOfDelivery(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 3 -> {
+                    case 3 : {
                         removeDayOfDelivery(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 4 -> {
+                    case 4 : {
                         viewAllItems(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 5 -> {
+                    case 5 : {
                         addItemToAgreement(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 6 -> {
+                    case 6 : {
                         removeItemFromAgreement(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 7 -> {
+                    case 7 : {
                         viewItem(supplierID);
                         correctInput = true;
                     }
-                    case 8 -> {
+                    case 8 : {
                         changeAgreementType(supplierID);
                         correctInput = true;
                         return;
                     }
-                    case 9 -> {
+                    case 9 : {
                         correctInput = true;
                         _continue = false;
                         System.out.println("Returning..\n\n");
+                        break;
                     }
-                    default -> System.out.println("You inserted wrong value, please try again.");
+                    default : System.out.println("You inserted wrong value, please try again.");
 
                 }
             }
@@ -892,16 +923,18 @@ public class CLI {
                     scan.nextLine();
 
                     switch (input){
-                        case 1 -> {
+                        case 1 : {
                             correctInput = true;
                             System.out.println("\n\n");
+                            break;
                         }
-                        case 2 -> {
+                        case 2 : {
                             correctInput = true;
                             _continue = false;
                             System.out.println("Returning..");
+                            break;
                         }
-                        default -> System.out.println("You inserted wrong value, please try again.");
+                        default : System.out.println("You inserted wrong value, please try again.");
                     }
                 }
             }
@@ -955,15 +988,17 @@ public class CLI {
                 scan.nextLine();
 
                 switch(input){
-                    case 1 -> {
+                    case 1 : {
                         correctInput = true;
                         System.out.println("\n\n");
+                        break;
                     }
-                    case 2-> {
+                    case 2: {
                         correctInput = true;
                         _continue = false;
+                        break;
                     }
-                    default -> System.out.println("You inserted wrong value, please try again.");
+                    default : System.out.println("You inserted wrong value, please try again.");
                 }
             }
         }
@@ -1021,47 +1056,57 @@ public class CLI {
                 scan.nextLine();
 
                 switch (input){
-                    case 1 -> {
+                    case 1 : {
                         correctInput = true;
                         item.setId(changeItemID(supplierID, item.getId()));
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         correctInput = true;
                         changeItemName(supplierID, item.getId());
+                        break;
                     }
-                    case 3 -> {
+                    case 3 : {
                         correctInput = true;
                         changeItemManufacturer(supplierID, item.getId());
+                        break;
                     }
-                    case 4 -> {
+                    case 4 : {
                         correctInput = true;
                         changeItemPricePerUnit(supplierID, item.getId());
+                        break;
                     }
-                    case 5 -> {
+                    case 5 : {
                         correctInput = true;
                         addBulkPrice(supplierID, item.getId());
+                        break;
                     }
-                    case 6 -> {
+                    case 6 : {
                         correctInput = true;
                         removeBulkPrice(supplierID, item.getId());
+                        break;
                     }
-                    case 7 -> {
+                    case 7 : {
                         correctInput = true;
                         changeDiscountForBulkPrice(supplierID, item.getId());
+                        break;
                     }
-                    case 8 -> {
+                    case 8 : {
                         correctInput = true;
                         calculatePrice(supplierID, item.getId());
+                        break;
                     }
-                    case 9 -> {
+                    case 9 : {
                         correctInput = true;
+                        break;
                     }
-                    case 10 -> {
+                    case 10 : {
                         correctInput = true;
                         _continue = false;
                         System.out.println("Returning..\n\n");
+                        break;
                     }
-                    default -> System.out.println("You inserted wrong value, please try again.");
+                    default : System.out.println("You inserted wrong value, please try again.");
                 }
             }
         }
@@ -1227,7 +1272,7 @@ public class CLI {
             scan.nextLine();
 
             if(quantity == -1){
-                System.out.println("Returning..\n");
+                System.out.println("Returning\n");
                 return;
             }
 
@@ -1399,36 +1444,42 @@ public class CLI {
                 scan.nextLine();
 
                 switch (input) {
-                    case 1 -> {
+                    case 1 : {
                         changeDaysUntilDelivery(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         viewAllItems(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 3 -> {
+                    case 3 : {
                         addItemToAgreement(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 4 -> {
+                    case 4 : {
                         removeItemFromAgreement(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 5 -> {
+                    case 5 : {
                         viewItem(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 6 -> {
+                    case 6 : {
                         changeAgreementType(supplierID);
                         correctInput = true;
                         return;
                     }
-                    case 7 -> {
+                    case 7 : {
                         correctInput = true;
                         _continue = false;
+                        break;
                     }
-                    default -> System.out.println("You inserted wrong value, please try again.");
+                    default : System.out.println("You inserted wrong value, please try again.");
 
                 }
             }
@@ -1485,32 +1536,37 @@ public class CLI {
                 scan.nextLine();
 
                 switch (input) {
-                    case 1 -> {
+                    case 1 : {
                         viewAllItems(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         addItemToAgreement(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 3 -> {
+                    case 3 : {
                         removeItemFromAgreement(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 4 -> {
+                    case 4 : {
                         viewItem(supplierID);
                         correctInput = true;
+                        break;
                     }
-                    case 5 -> {
+                    case 5 : {
                         changeAgreementType(supplierID);
                         correctInput = true;
                         return;
                     }
-                    case 6 -> {
+                    case 6 : {
                         correctInput = true;
                         _continue = false;
+                        break;
                     }
-                    default -> System.out.println("You inserted wrong value, please try again.");
+                    default : System.out.println("You inserted wrong value, please try again.");
 
                 }
             }
@@ -1604,19 +1660,22 @@ public class CLI {
                 scan.nextLine();
 
                 switch(input){
-                    case 1 -> {
+                    case 1 : {
                         correctInput = true;
                         addContact(supID);
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         correctInput = true;
                         removeContact(supID);
+                        break;
                     }
-                    case 3 -> {
+                    case 3 : {
                         correctInput = true;
                         _continue = false;
+                        break;
                     }
-                    default -> System.out.println("You inserted wrong value, please try again.");
+                    default : System.out.println("You inserted wrong value, please try again.");
                 }
             }
         }
@@ -1656,15 +1715,17 @@ public class CLI {
                     scan.nextLine();
 
                     switch (input){
-                        case 1 -> {
+                        case 1 : {
                             System.out.println("Contact was added successfully.\n\n");
                             correctInput = true;
+                            break;
                         }
-                        case 2 -> {
+                        case 2 : {
                             _continue = false;
                             correctInput = true;
+                            break;
                         }
-                        default -> System.out.println("You inserted wrong value, please try again.");
+                        default : System.out.println("You inserted wrong value, please try again.");
                     }
                 }
             }
@@ -1706,16 +1767,18 @@ public class CLI {
                     scan.nextLine();
 
                     switch(input){
-                        case 1 -> {
+                        case 1 : {
                             System.out.println("\n\n");
                             correctInput = true;
+                            break;
                         }
-                        case 2 -> {
+                        case 2 : {
                             System.out.println("Returning..\n\n");
                             correctInput = true;
                             _continue = false;
+                            break;
                         }
-                        default -> System.out.println("You inserted wrong value, please try again.");
+                        default : System.out.println("You inserted wrong value, please try again.");
                     }
                 }
             }
@@ -1763,20 +1826,23 @@ public class CLI {
                 scan.nextLine();
 
                 switch(input){
-                    case 1 -> {
+                    case 1 : {
                         correctInput = true;
                         addManufacturer(supID);
+                        break;
                     }
-                    case 2 -> {
+                    case 2 : {
                         correctInput = true;
                         removeManufacturer(supID);
+                        break;
                     }
-                    case 3 -> {
+                    case 3 : {
                         correctInput = true;
                         _continue = false;
                         System.out.println("Returning..\n\n");
+                        break;
                     }
-                    default -> System.out.println("You inserted wrong value, please try again.");
+                    default : System.out.println("You inserted wrong value, please try again.");
                 }
             }
         }
@@ -1811,16 +1877,18 @@ public class CLI {
                     scan.nextLine();
 
                     switch(input){
-                        case 1 -> {
+                        case 1 : {
                             System.out.println("\n");
                             correctInput = true;
+                            break;
                         }
-                        case 2 -> {
+                        case 2 : {
                             System.out.println("Returning..\n\n");
                             correctInput = true;
                             _continue = false;
+                            break;
                         }
-                        default -> System.out.println("You inserted wrong value, please try again.");
+                        default : System.out.println("You inserted wrong value, please try again.");
                     }
                 }
             }
@@ -1860,16 +1928,18 @@ public class CLI {
                     scan.nextLine();
 
                     switch(input){
-                        case 1 -> {
+                        case 1 : {
                             System.out.println("\n\n\n");
                             correctInput = true;
+                            break;
                         }
-                        case 2 -> {
+                        case 2 : {
                             System.out.println("Returning..\n\n");
                             correctInput = true;
                             _continue = false;
+                            break;
                         }
-                        default -> System.out.println("You inserted wrong value, please try again.");
+                        default : System.out.println("You inserted wrong value, please try again.");
                     }
                 }
             }

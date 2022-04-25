@@ -150,7 +150,10 @@ public class SupplierService {
         for(String currItem : result) {
             List<String> temp =  Arrays.asList(currItem.split(","));
             ArrayList<String> info = new ArrayList<>();
-            temp.forEach( (curr) -> info.add(curr.trim()) );
+            for(String curr : temp){
+                info.add(curr.trim());
+            }
+
 
             int id = Integer.parseInt(info.get(0));
             String name = info.get(1);

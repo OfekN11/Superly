@@ -180,9 +180,9 @@ public class Supplier {
 
     private void createAgreement(int agreementType, String agreementDays){
         switch(agreementType){
-            case ROUTINE -> agreement = new RoutineAgreement(agreementDays);
-            case BY_ORDER -> agreement = new ByOrderAgreement(Integer.parseInt(agreementDays));
-            case NOT_TRANSPORTING -> agreement = new NotTransportingAgreement();
+            case ROUTINE : agreement = new RoutineAgreement(agreementDays);
+            case BY_ORDER : agreement = new ByOrderAgreement(Integer.parseInt(agreementDays));
+            case NOT_TRANSPORTING : agreement = new NotTransportingAgreement();
         }
     }
 
