@@ -5,7 +5,10 @@ import Domain.Service.Objects.Shift;
 import Globals.Enums.ShiftTypes;
 import org.junit.Test;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -30,6 +33,19 @@ public class ShiftServiceTest {
     }
 
     @Test
-    public void createIllegalShiftTest() {
+    public void createAndManageShift() {
+        ShiftService shiftService = new ShiftService();
+        try {
+            if (shiftService.createShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-2021"), ShiftTypes.Morning,"5",6,6,6,4,4,4).isError())
+                fail();
+            Set<String> ids = new HashSet<>();
+            ids.add("6");
+            ids.add("20");
+            if(shiftService.editShiftCarrierIDs(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-2021"),ShiftTypes.Morning,ids).isError())
+                fail();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }
