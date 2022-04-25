@@ -16,8 +16,8 @@ public class MorningShift extends Shift {
         super(workday, shiftManagerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managersCount, logistics_managersCount, carrierIDs, cashierIDs, storekeeperIDs, sorterIDs, hr_managerIDs, logistics_managerIDs);
     }
 
-    public MorningShift(Date workday) throws Exception {
-        super(workday);
+    public MorningShift(Date workday, String managerID) throws Exception {
+        super(workday, managerID);
     }
 
     public MorningShift(DShift dShift,Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs) {

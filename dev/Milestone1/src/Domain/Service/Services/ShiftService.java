@@ -44,16 +44,6 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> registerWorkday(Date workday){
-        try {
-            controller.registerWorkday(workday);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
-
     public Result<Object> removeWorkday(Date workday){
         try {
             controller.removeWorkday(workday);

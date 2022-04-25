@@ -16,8 +16,8 @@ public  class EveningShift extends Shift {
         validateManagerialCount(logistics_managersCount);
     }
 
-    public EveningShift(Date workday) throws Exception {
-        super(workday);
+    public EveningShift(Date workday, String managerID) throws Exception {
+        super(workday, managerID);
     }
 
     public EveningShift(DShift dShift,Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs) {
