@@ -27,7 +27,12 @@ public class Product {
     public String getName() { return name; }
     public int getCategoryID() {return category.getID();}
     public double getOriginalPrice() { return price; }
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+        for (StockReport s : stockreports.values()) {
+            s.changeName(name);
+        }
+    }
     public void setPrice(double price) { this.price = price; }
     public void setCategory(Category category) {
         if (category!=null)

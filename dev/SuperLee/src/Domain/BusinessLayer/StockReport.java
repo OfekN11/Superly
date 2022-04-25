@@ -81,4 +81,8 @@ public class StockReport {
             throw new IllegalArgumentException("New max cannot be less than min. Min is currently " + minAmountInStore);
         maxAmountInStore=max;
     }
+
+    public void changeName(String name) {
+        productName=name;
+    }
 }
