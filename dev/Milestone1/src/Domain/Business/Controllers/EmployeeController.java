@@ -116,16 +116,6 @@ public class EmployeeController {
             throw new Exception(String.format("No such employee with ID: %s", id));
     }
 
-    public Map<Integer,Set<String>> mapByJob(Set<String> employeesToCheck){
-        Map<Integer,Set<String>> output = new HashMap<>();
-        for(JobTitles titles :JobTitles.values())
-            output.put(titles.ordinal(),new HashSet<>());
-        for (String employee: employeesToCheck)
-            output.get(employees.get(employee).getJobTitle().ordinal()).add(employee);
-
-        return output;
-    }
-
     public Set<Employee> getAllEmployees() {
         return new HashSet<>(employees.values());
     }
