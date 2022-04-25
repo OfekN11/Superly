@@ -129,32 +129,23 @@ public class ShiftController {
     }
 
     public Set<Shift> getShiftsBetween(Date start, Date end) {
-        Set<Date> dates = getDatesBetween(start, end);
-        Set<Shift> output = new HashSet<>();
-        for (Date date : dates)
-            if (shifts.containsKey(date))
-                output.addAll(shifts.get(date).values());
-
-        return output;
+        Set<Shift> shifts = new HashSet<>();
+        for (Date date : getDatesBetween(start, end)) {
+            for (ShiftTypes type : ShiftTypes.values())
+                shifts.add(this.shifts.get(date).get(type));
+        }
+        return shifts;
     }
 
     public Set<Shift> getEmployeeShiftsBetween(String id, Date start, Date end) {
-        return getShiftsBetween(start,end).stream().filter((shift -> shift.isIdInclude(id))).collect(Collectors.toSet());
+        return getShiftsBetween(start,end).stream()
+                .filter((shift) -> shift.isIdInclude(id)).collect(Collectors.toSet());
     }
 
-    private Set<Date> getDatesBetween(Date today,Date nextMonth){
-        Set<Date> datesInRange = new HashSet<>();
-        Calendar calendar = getCalendarWithoutTime(today);
-        Calendar endCalendar = getCalendarWithoutTime(nextMonth);
-        endCalendar.add(Calendar.DATE, 1);
-
-        while (calendar.before(endCalendar)) {
-            Date result = calendar.getTime();
-            datesInRange.add(result);
-            calendar.add(Calendar.DATE, 1);
-        }
-
-        return datesInRange;
+    private Set<Date> getDatesBetween(Date start, Date end){
+        return shifts.keySet().stream()
+                .filter((d) -> d.after(start))
+                .filter((d) -> d.before(end)).collect(Collectors.toSet());
     }
 
     private Calendar getCalendarWithoutTime(Date date) {
@@ -194,29 +185,28 @@ public class ShiftController {
 
     public String getEmployeeWorkDetailsForCurrentMonth(String id) {
         Pair<Date,Date> firstLastPair = getMonthDatesEdges();
-        Set<Shift> employeeShift = getEmployeeShiftsBetween(id,firstLastPair.getKey(),firstLastPair.getValue());
-        String workingDays = "";
-        for (Shift shift :employeeShift){
-            workingDays = workingDays + shift.printDayAndType() + ", ";
+        String workDetails = "";
+        Set<Date> dates = getDatesBetween(firstLastPair.getKey(), firstLastPair.getValue());
+        for (ShiftTypes type: ShiftTypes.values()) {
+            Set<Shift> shifts = new HashSet<>();
+            for (Date date : dates)
+                shifts.add(this.shifts.get(date).get(type));
+            workDetails = workDetails + type + " - " + shifts.stream().filter(shift -> shift.isIdInclude(id)).count() + ", ";
         }
-        workingDays = workingDays.substring(0,workingDays.length()-2);
-        String month = getThisMonthAsString();
-        return "Shifts during " + month +": " + workingDays;
-    }
-
-    private String getThisMonthAsString() {
-        Calendar cal = Calendar.getInstance();
-        return new SimpleDateFormat("MMM").format(cal.getTime());
+        return "Shifts during " + new SimpleDateFormat("MMM").format(Calendar.getInstance().getTime()) + ": " +
+                workDetails;
     }
 
     private Pair<Date,Date> getMonthDatesEdges() {
-        Set<Date> dates = new HashSet<>();        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MONTH, Calendar. getInstance(). get(Calendar. MONTH));
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        Date firstDayOfTheMonth = cal.getTime();
-        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-        Date lastDayOfTheMonth = cal.getTime();
-
+        Date firstDayOfTheMonth = new Date();
+        firstDayOfTheMonth.setHours(0);
+        firstDayOfTheMonth.setMinutes(0);
+        firstDayOfTheMonth.setDate(1);
+        Date lastDayOfTheMonth = new Date(firstDayOfTheMonth.getTime());
+        lastDayOfTheMonth.setMonth(lastDayOfTheMonth.getMonth()+1);
+        lastDayOfTheMonth.setDate(1);
+        lastDayOfTheMonth.setSeconds(-1);
+        firstDayOfTheMonth.setSeconds(-1);
         return new Pair<>(firstDayOfTheMonth,lastDayOfTheMonth);
     }
 }
