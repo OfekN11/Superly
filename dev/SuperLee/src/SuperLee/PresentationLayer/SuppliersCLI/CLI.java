@@ -323,6 +323,7 @@ public class CLI {
                         case 2:{
                             System.out.println("Returning..\n\n");
                             _continue = false;
+                            correctInput = true;
                             break;
                         }
                         default:{

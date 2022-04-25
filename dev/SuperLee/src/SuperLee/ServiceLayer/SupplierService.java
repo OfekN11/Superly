@@ -481,7 +481,7 @@ public class SupplierService {
 
 
     // Format :  <id1, name1, quantity1> , <id2, name2 , quantity2> , ...
-    /*public Result<Boolean> addItemsToOrder(int supId, int orderId, List<String> itemsString){
+    public Result<Boolean> addItemsToOrder(int supId, int orderId, List<String> itemsString){
         try{
             controller.addItemsToOrder(supId, orderId, itemsString);
             return Result.makeOk(true);
@@ -489,7 +489,7 @@ public class SupplierService {
         catch(Exception e){
             return Result.makeError(e.getMessage());
         }
-    }*/
+    }
 
     public Result<Boolean> addItemToOrder(int supId, int orderId, int itemId, int itemQuantity){
         try{
