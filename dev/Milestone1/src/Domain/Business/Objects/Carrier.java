@@ -1,5 +1,6 @@
 package Domain.Business.Objects;
 
+import Domain.DAL.Objects.DCarrier;
 import Domain.DAL.Objects.DCashier;
 import Domain.DAL.Objects.DEmployee;
 import Domain.Service.ServiceEmployeeFactory;
@@ -17,12 +18,13 @@ public class Carrier extends Employee {
     private Set<String> licenses;
 
     public Carrier(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications, Set<String> licenses) {
-        super(id, name, bankDetails, salary, employmentConditions, startingDate,certifications,new DCashier(id,name,bankDetails,salary,employmentConditions,startingDate));
+        super(id, name, bankDetails, salary, employmentConditions, startingDate,certifications,new DCarrier(id,name,bankDetails,salary,employmentConditions,startingDate, licenses));
         this.licenses = licenses;
     }
 
-    public Carrier(DEmployee dEmployee) {
+    public Carrier(DCarrier dEmployee) {
         super(dEmployee);
+        this.licenses = new HashSet<>(dEmployee.getLicenses());
     }
 
     @Override

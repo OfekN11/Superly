@@ -44,14 +44,6 @@ public class EmployeeController {
         }
     }
 
-    public Set<Employee> availableEmployeeForShift(Date date, ShiftTypes type){
-        Set<Employee> output = new HashSet<>();
-        for(Employee employee: employees.values())
-            if(employee.isAvailable(date, type))
-                output.add(employee);
-
-        return output;
-    }
     public void deleteData() {
     }
 

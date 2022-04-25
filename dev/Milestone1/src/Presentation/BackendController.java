@@ -281,4 +281,9 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
+    public void loadData() {
+        employeeService.loadData();
+        constraintService.loadData();
+        shiftService.loadData();
+    }
 }

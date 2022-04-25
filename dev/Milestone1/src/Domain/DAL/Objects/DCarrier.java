@@ -12,7 +12,7 @@ public class DCarrier extends DEmployee{
     private Set<String> licenses;
     private DCarrierLicensesController dCarrierLicensesController;
 
-    public DCarrier(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate) {
+    public DCarrier(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<String> licenses) {
         super("Place HOlder", id, name, bankDetails, salary, employmentConditions, startingDate);
         this.licenses = licenses;
         this.dCarrierLicensesController = new DCarrierLicensesController();
@@ -30,5 +30,9 @@ public class DCarrier extends DEmployee{
 
     public void setLicenses(Set<String> licenses) {
         this.licenses = licenses;
+    }
+
+    public Set<String> getLicenses() {
+        return licenses;
     }
 }

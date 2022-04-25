@@ -99,5 +99,9 @@ public abstract class DEmployee extends DTO {
         dEmployeeCertificationController.add(getId(),certification);
     }
 
+    public Set<Certifications> getCertifications() {
+        return certifications;
+    }
+
     public abstract Employee accept(BusinessEmployeeFactory businessEmployeeFactory);
 }

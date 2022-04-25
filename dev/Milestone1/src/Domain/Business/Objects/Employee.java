@@ -23,7 +23,6 @@ public abstract class Employee {
     private String employmentConditions;
     private Date startingDate;
     private Set<Certifications> certifications;
-    private Set<Constraint> constraints;
     private DEmployee dEmployee; // represent of this object in the DAL
 
     /**
@@ -45,10 +44,9 @@ public abstract class Employee {
         this.employmentConditions = employmentConditions;
         this.startingDate = startingDate;
         this.certifications = certifications;
-        this.dEmployee =dEmployee;
+        this.dEmployee = dEmployee;
         dEmployee.setCertifications(certifications);
         dEmployee.save();
-        constraints = new HashSet<>();
     }
 
     /**
@@ -63,6 +61,7 @@ public abstract class Employee {
         this.salary = dEmployee.getSalary();
         this.employmentConditions = dEmployee.getEmploymentConditions();
         this.startingDate = dEmployee.getStartingDate();
+        this.certifications = new HashSet<>(dEmployee.getCertifications());
         this.dEmployee = dEmployee;
     }
 
@@ -113,17 +112,6 @@ public abstract class Employee {
 
     public void setCertifications(Set<Certifications> certifications) {
         this.certifications = new HashSet<>(certifications);
-    }
-
-    public Set<Constraint> getConstraints() {
-        return constraints;
-    }
-
-    public boolean isAvailable(Date date,ShiftTypes shiftType){
-        for(Constraint constraint: constraints)
-            if (constraint.getDate().getTime()==date.getTime() && constraint.getType() == shiftType)
-                return false;
-        return true;
     }
 
     public DEmployee getdEmployee() {

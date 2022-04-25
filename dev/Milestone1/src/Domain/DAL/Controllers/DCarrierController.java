@@ -22,7 +22,9 @@ public class DCarrierController extends DTOControllers<DCarrier> {
         Set<DCarrier> output = new HashSet<>();
         for (int i=0; i<10; i++) {
             try {
-                output.add(new DCarrier(""+i,"Carrier "+ i+1,"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
+                Set<String> licenses = new HashSet<>();
+                licenses.add(String.valueOf(i));
+                output.add(new DCarrier(""+i,"Carrier "+ i+1,"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198"), licenses));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

@@ -159,6 +159,7 @@ public class EmployeeService {
             return Result.makeOk(controller.getAllEmployees().stream().map((factory::createServiceEmployee)).collect(Collectors.toSet()));
         }
         catch (Exception e){
+            e.printStackTrace();
             return Result.makeError(e.getMessage());
         }
     }
