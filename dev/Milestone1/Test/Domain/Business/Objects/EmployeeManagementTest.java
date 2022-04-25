@@ -15,7 +15,7 @@ public class EmployeeManagementTest {
         String preName =employee.getName();
         try {
             employeeController.editEmployeeName("2","Roi");
-            assertEquals(preName,employee.getName());
+            assertNotEquals(preName,employee.getName());
         } catch (Exception e) {
             e.printStackTrace();
         }
