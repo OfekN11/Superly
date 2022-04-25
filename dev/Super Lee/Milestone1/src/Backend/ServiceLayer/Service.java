@@ -2,6 +2,7 @@ package Backend.ServiceLayer;
 
 
 import Backend.Globals.Enums.LicenseTypes;
+import Backend.Globals.Enums.ShippingAreas;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ public class Service {
         transportSer = new TransportService();
         documentSer = new DocumentService();
     }
+
     //Truck:
     public Result addTruck(int licenseNumber, LicenseTypes model, int netWeight, int maxCapacityWeight)
     {
@@ -24,6 +26,7 @@ public class Service {
     {
         return truckSer.removeTruck(licenseNumber);
     }
+
     //Document:
     public Result getDestinationDocument(int destinationDocumentSN)
     {
@@ -33,29 +36,41 @@ public class Service {
     {
         return truckSer.removeTruck(transportDocumentSN);
     }
+
     //Transport:
-    public Result inviteTransport()
+    public Result getTransportOrders()
     {
-        //TODO: implement
-        return null;
+        return transportSer.getTransportOrders();
+    }
+    public Result getTransportOrders(ShippingAreas areas)
+    {
+        return transportSer.getTransportOrders(areas);
     }
     public Result getInProgressTransports()
     {
-        //TODO: implement
-        return null;
+        return transportSer.getInProgressTransports();
     }
     public Result getWaitingTransports()
     {
-        //TODO: implement
-        return null;
+        return transportSer.getWaitingTransports();
     }
     public Result getPastTransports()
     {
-        //TODO: implement
-        return null;
+        return transportSer.getPastTransports();
     }
 
+
+
+
+
+
+
+
     //-----------------------------------
+    public Result inviteTransport()
+    {
+        return null;//transportSer.inviteTransport();
+    }
     public Result weightTruck(int transportSN)
     {
         //TODO: implement

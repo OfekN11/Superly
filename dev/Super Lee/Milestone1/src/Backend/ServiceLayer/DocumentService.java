@@ -12,17 +12,20 @@ public class DocumentService {
     public Result getDestinationDocument(int destinationDocumentSN)
     {
         try {
-            //controller.getDestinationDocument(destinationDocumentSN);
+            return Result.makeOk(controller.getDestinationDocument(destinationDocumentSN));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
     }
 
     public Result getTransportDocument(int transportDocumentSN)
     {
-        //TODO: implement
-        return null;
+        try {
+            return Result.makeOk(controller.getTransportDocument(transportDocumentSN));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 }

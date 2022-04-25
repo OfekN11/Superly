@@ -7,31 +7,9 @@ import Backend.ServiceLayer.Service;
 import Frontend.Objects.TransportOrder;
 
 public class Cli {
-    Scanner reader = new Scanner(System.in);
-    Service service = new Service();
-    private void login()
-    {
-        System.out.println("Login:");
-        System.out.println("Please enter your details:");
-        System.out.print("Username: ");
-        String username = reader.next();
-        System.out.println("Password: ");
-        String password = reader.next();
-
-    }
-
-    private int mainMenu()
-    {
-        System.out.println("""
-            Main menu:
-            1. Transport Manager
-            2. Truck Driver
-            """);
-        return getChoice(1, 2);
-    }
-
-
-    public void main(String[] args)
+    private static Scanner reader = new Scanner(System.in);
+    private static Service service = new Service();
+    public static void main(String[] args)
     {
         //login();
         switch (mainMenu())
@@ -45,18 +23,41 @@ public class Cli {
             default:
         }
     }
+    private void login()
+    {
+        System.out.println("Login:");
+        System.out.println("Please enter your details:");
+        System.out.print("Username: ");
+        String username = reader.next();
+        System.out.println("Password: ");
+        String password = reader.next();
 
-    private int getChoice(int a, int b)
+    }
+
+    private static int mainMenu()
+    {
+        System.out.println("""
+            Main menu:
+            1. Transport Manager
+            2. Truck Driver
+            """);
+        return getChoice(1, 2);
+    }
+
+
+
+
+    private static int getChoice(int a, int b)
     {
         int choice = 0;
         do {
-            System.out.println("Enter a value in the range between " + a + "and " + b);
+            System.out.println("Enter a value in the range between " + a + " and " + b);
             choice = reader.nextInt();
         }while(choice > b | choice < a);
         return choice;
     }
 
-    private int mainMenuTM()
+    private static int mainMenuTM()
     {
         System.out.println("""
             Transport Manager menu:
@@ -68,7 +69,7 @@ public class Cli {
         return getChoice(1, 3);
     }
 
-    private void transportManager()
+    private static void transportManager()
     {
         switch (mainMenuTM())
         {
@@ -85,7 +86,7 @@ public class Cli {
         }
     }
 
-    private int menuTM()
+    private static int menuTM()
     {
         System.out.println("""
             Transport Manager menu:
@@ -94,7 +95,7 @@ public class Cli {
             """);
         return getChoice(1, 2);
     }
-    private void transportManagement()
+    private static void transportManagement()
     {
         switch (menuTM())
         {
@@ -108,11 +109,11 @@ public class Cli {
             default:
         }
     }
-    private void transportSystemManagement()
+    private static void transportSystemManagement()
     {
         //TODO
     }
-    private TransportOrder getTransportOrder()
+    private static TransportOrder getTransportOrder()
     {
         //TODO: Check validation of the input and enable to get input of many dests and srcs
         System.out.println("Get new transport order:");
@@ -129,16 +130,16 @@ public class Cli {
         System.out.println("The order of the shipment is invalid!");
         return null;
     }
-    private void getProductsAndCount(TransportOrder to)
+    private static void getProductsAndCount(TransportOrder to)
     {
-        System.out.print("Enter the product name: ");
+        System.out.println("Enter the product name: ");
         String productName = reader.next();
-        System.out.print("Enter the required quantity of the product: ");
+        System.out.println("Enter the required quantity of the product: ");
         int productCount = reader.nextInt();
         //TODO: add input validation
         to.addProduct(productName, productCount);
     }
-    private int productListMenu()
+    private static int productListMenu()
     {
         System.out.println("""
                     Product lists:
@@ -149,7 +150,7 @@ public class Cli {
                     """);
         return getChoice(1, 4);
     }
-    private void getProductsList(TransportOrder to)
+    private static void getProductsList(TransportOrder to)
     {
         boolean close = false;
         do {
@@ -172,7 +173,7 @@ public class Cli {
         }while(!close);
     }
 
-    private int menuTSM()
+    private static int menuTSM()
     {
         System.out.println("""
             Truck System Manager menu:
@@ -181,7 +182,7 @@ public class Cli {
             """);
         return getChoice(1, 2);
     }
-    private void truckSystemManagement()
+    private static void truckSystemManagement()
     {
         switch (menuTSM())
         {
@@ -194,7 +195,7 @@ public class Cli {
             default:
         }
     }
-    private void addTruck()
+    private static void addTruck()
     {
         //TODO: Check validation of the input
         System.out.println("Enter truck license number:");
@@ -207,7 +208,7 @@ public class Cli {
         service.addTruck(licenseNumber, truckModel, netWeight, maxCapacityWeight);
         //TODO: Take the result
     }
-    private void removeTruck()
+    private static void removeTruck()
     {
         //TODO: Check validation of the input
         System.out.println("Enter truck license number:");
@@ -215,7 +216,7 @@ public class Cli {
         service.removeTruck(licenseNumber);
         //TODO: Take the result
     }
-    private LicenseTypes getTruckModel()
+    private static LicenseTypes getTruckModel()
     {
         String[] truckModel = {"B", "C1", "C", "CE"};
         System.out.println("""

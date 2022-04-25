@@ -1,5 +1,7 @@
 package Backend.BusinessLayer.Objects;
 
+import Backend.Globals.Enums.ShippingAreas;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,6 +68,11 @@ public class TransportOrder {
     public DestinationDocument toDocument()
     {
         return new DestinationDocument(dst.getId(), getProductsNameList());
+    }
+
+    public boolean isInThisArea(ShippingAreas area)
+    {
+        return area == src.getAddress().getShippingArea() || area == src.getAddress().getShippingArea();
     }
 
 }

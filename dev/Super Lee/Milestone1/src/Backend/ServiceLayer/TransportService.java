@@ -1,18 +1,76 @@
 package Backend.ServiceLayer;
 
 import Backend.BusinessLayer.Controllers.TransportController;
+import Backend.Globals.Enums.ShippingAreas;
+import Backend.ServiceLayer.Objects.Transport;
 import Frontend.Objects.TransportOrder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TransportService {
-    private TransportController tc;
+    private TransportController controller;
 
     public TransportService() {
-        this.tc = new TransportController();
+        this.controller = new TransportController();
     }
 
     public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) {
-        tc.addTransportOrder(srcID, dstID, productList);
+        controller.addTransportOrder(srcID, dstID, productList);
+    }
+    private List<Transport> toServiceTransports(List<Backend.BusinessLayer.Objects.Transport> transports)
+    {
+        List<Transport> transportList = new ArrayList<>();
+        for (Backend.BusinessLayer.Objects.Transport transport: transports) {
+            transportList.add(new Transport(transport));
+        }
+        return transportList;
+    }
+    public Result getInProgressTransports() {
+        try {
+            return Result.makeOk(toServiceTransports(controller.getInProgressTransports()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result getWaitingTransports() {
+        try {
+            return Result.makeOk(toServiceTransports(controller.getWaitingTransports()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result getPastTransports() {
+        try {
+            return Result.makeOk(toServiceTransports(controller.getPastTransports()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result getTransportOrders() {
+        try {
+            //Todo: casting to service object
+            return Result.makeOk(controller.getTransportOrders());
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result getTransportOrders(ShippingAreas areas) {
+        try {
+            //Todo: casting to service object
+            return Result.makeOk(controller.getTransportOrders(areas));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 }

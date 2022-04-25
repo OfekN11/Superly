@@ -138,4 +138,36 @@ public class Transport {
         //TODO: I dont think that have something to change maybe check the valid truck by the tour
         driverName = driver.getName();
     }
+
+    public LocalDateTime getStartTime() {
+        return startTime.plusHours(0);
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime.plusHours(0);
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public int getTruckNumber() {
+        return truckNumber;
+    }
+
+    public int getTruckWeight() {
+        return truckWeight;
+    }
+
+    public List<Source> getSources() {
+        return sources;
+    }
+
+    public List<Destination> getDestinations() {
+        return destinations;
+    }
+
+    public HashMap<ShippingAreas, Integer> getShippingAreas() {
+        return shippingAreas;
+    }
 }
