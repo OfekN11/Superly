@@ -54,16 +54,6 @@ public class ConstraintService {
         return Result.makeOk(null);
     }
 
-    public Result<Set<Integer>> getConstraintEmployees(Date workday, ShiftTypes shift){
-        try {
-            controller.getConstraintEmployees(workday, shift);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
-
     public Result<Set<Constraint>> getEmployeeConstraintsBetween(String id, Date today, Date nextMonth) {
         try {
             Set<Constraint> constraints = controller.getEmployeeConstraintsBetween(id, today, nextMonth).stream().map(Constraint::new).collect(Collectors.toSet());
