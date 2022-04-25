@@ -20,7 +20,7 @@ public class ShiftController {
     //Map<String, EveningShift> nightShifts; // string representing the date
     //Map<String, MorningShift> dayShifts;// string representing the date
     private final DShiftController dShiftController = new DShiftController();
-    EmployeeController employeeController;
+    private final EmployeeController employeeController = new EmployeeController();
 
     private final Map<Date,Map<ShiftTypes,Shift>> shifts = new HashMap<>();
     private final BusinessShiftFactory shiftFactory = new BusinessShiftFactory();
@@ -28,10 +28,9 @@ public class ShiftController {
     public void loadData() {
         Set<DShift> dShifts = dShiftController.loadData();
         for(DShift dShift : dShifts) {
-            Map<Integer, Set<String>> employeeJobMap = employeeController.mapByJob(dShift.getEmployeesId());
             if (!shifts.containsKey(dShift.getWorkday()))
                 shifts.put(dShift.getWorkday(),new HashMap<>());
-            shifts.get(dShift.getWorkday()).put(dShift.getType(),shiftFactory.createServiceShift(dShift,employeeJobMap.get(JobTitles.Carrier.ordinal()),employeeJobMap.get(JobTitles.Cashier.ordinal()),employeeJobMap.get(JobTitles.Storekeeper.ordinal()),employeeJobMap.get(JobTitles.Sorter.ordinal()),employeeJobMap.get(JobTitles.HR_Manager.ordinal()),employeeJobMap.get(JobTitles.Logistics_Manager.ordinal())));
+            shifts.get(dShift.getWorkday()).put(dShift.getType(),shiftFactory.createBusinessShift(dShift));
         }
     }
 

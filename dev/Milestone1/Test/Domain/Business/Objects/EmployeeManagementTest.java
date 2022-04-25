@@ -15,7 +15,7 @@ public class EmployeeManagementTest {
         String preName =employee.getName();
         try {
             employeeController.editEmployeeName("2","Roi");
-            assertEquals(preName,employee.getName());
+            assertNotEquals(preName,employee.getName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,7 +30,7 @@ public class EmployeeManagementTest {
         String preConditions =employee.getEmploymentConditions();
         try {
             employeeController.editEmployeeEmployementConditions("2","New Conditions");
-            assertEquals(preConditions,employee.getEmploymentConditions());
+            assertNotEquals(preConditions,employee.getEmploymentConditions());
         } catch (Exception e) {
             e.printStackTrace();
         }

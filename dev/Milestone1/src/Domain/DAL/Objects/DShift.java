@@ -23,24 +23,16 @@ public abstract class DShift extends DTO {
     private int sorterCount;
     private int hr_managersCount;
     private int logistics_managersCount;
-    private Set<String> employeesId;
+
+    private Set<String> carrierIDs;
+    private Set<String> cashierIDs;
+    private Set<String> storekeeperIDs;
+    private Set<String> sorterIDs;
+    private Set<String> hr_managerIDs;
+    private Set<String> logistics_managerIDs;
 
     // constructor
 
-
-    public DShift(Date workday, ShiftTypes type, String shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount, Set<String> employeesId) {
-        super(workday.toString()+ type.toString(), "tableName"); //no id to shift
-        this.workday = workday;
-        this.shiftManagerId = shiftManagerId;
-        this.dEmployeeShiftController = new DEmployeeShiftController();
-        this.carrierCount = carrierCount;
-        this.cashierCount = cashierCount;
-        this.storekeeperCount = storekeeperCount;
-        this.sorterCount = sorterCount;
-        this.hr_managersCount = hr_managersCount;
-        this.logistics_managersCount = logistics_managersCount;
-        this.employeesId = employeesId;
-    }
     public DShift(Date workday,ShiftTypes type, String shiftManagerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount) {
         super(workday.toString()+type.toString(), "tableName"); //no id to shift
         this.workday = workday;
@@ -52,7 +44,13 @@ public abstract class DShift extends DTO {
         this.sorterCount = sorterCount;
         this.hr_managersCount = hr_managersCount;
         this.logistics_managersCount = logistics_managersCount;
-        this.employeesId = new HashSet<>();
+
+        this.carrierIDs = new HashSet<>();
+        this.cashierIDs = new HashSet<>();
+        this.storekeeperIDs = new HashSet<>();
+        this.sorterIDs = new HashSet<>();
+        this.hr_managerIDs = new HashSet<>();
+        this.logistics_managerIDs = new HashSet<>();
     }
 
 
@@ -124,45 +122,87 @@ public abstract class DShift extends DTO {
         return workday;
     }
 
-    public Set<String> getEmployeesId() {
-        return employeesId;
-    }
-
     public String getShiftManagerId() {
         return shiftManagerId;
     }
-
-    public void addEmployee(String employeeId){
-        if (isPersist()) {
-            dEmployeeShiftController.addEmployee(this, employeeId);
-        }
-        employeesId.add(employeeId);
-    }
-
-    public void removeEmployee(String employeeId){
-        if (isPersist()) {
-            dEmployeeShiftController.removeEmployee(this, employeeId);
-        }
-        employeesId.remove(employeeId);
-    }
-
 
     public void delete(){
         //need to overwrite the delete because there is no id
     }
 
-    public void replaceEmployeeSet(Set<String> oldSet, Set<String>newSet ) {
+    public void setHr_managersCount(int hr_managersCount) {
+        update("Hr_ManagersCount",hr_managersCount);
+        this.hr_managersCount = hr_managersCount;
+    }
+
+    public void setLogistics_managersCount(int logistics_managersCount) {
+        update("Logistics_ManagersCount",logistics_managersCount);
+        this.logistics_managersCount = logistics_managersCount;
+    }
+
+    public void setCarrierIDs(Set<String> carrierIDs) {
         if (isPersist())
-            dEmployeeShiftController.replaceSetOfEmployees(this,oldSet,newSet);
-        employeesId = employeesId.stream().filter((t)->!oldSet.contains(t)).collect(Collectors.toSet());
-        employeesId.addAll(newSet);
+            //do code to save changes
+        this.carrierIDs = new HashSet<>(carrierIDs);
     }
 
-    public abstract Shift accept(BusinessShiftFactory businessShiftFactory, Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs);
-
-    public void setEmployees(Set<String> employeesId) {
-        replaceEmployeeSet(this.employeesId,employeesId);
+    public void setCashierIDs(Set<String> cashierIDs) {
+        if (isPersist())
+            //do code to save changes
+        this.cashierIDs = new HashSet<>(cashierIDs);
     }
+
+    public void setStorekeeperIDs(Set<String> storekeeperIDs) {
+        if (isPersist())
+            //do code to save changes
+        this.storekeeperIDs = new HashSet<>(storekeeperIDs);
+    }
+
+    public void setSorterIDs(Set<String> sorterIDs) {
+        if (isPersist())
+            //do code to save changes
+        this.sorterIDs = new HashSet<>(sorterIDs);
+    }
+
+    public void setHr_managerIDs(Set<String> hr_managerIDs){
+        if (isPersist())
+            //do code to save changes
+        this.hr_managerIDs = new HashSet<>(hr_managerIDs);
+    }
+
+    public void setLogistics_managerIDs(Set<String> logistics_managerIDs) {
+        if (isPersist())
+            //do code to save changes
+        this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
+    }
+
+    public Set<String> getCarrierIDs() {
+        return carrierIDs;
+    }
+
+    public Set<String> getCashierIDs() {
+        return cashierIDs;
+    }
+
+    public Set<String> getStorekeeperIDs() {
+        return storekeeperIDs;
+    }
+
+    public Set<String> getSorterIDs() {
+        return sorterIDs;
+    }
+
+    public Set<String> getHr_managerIDs() {
+        return hr_managerIDs;
+    }
+
+    public Set<String> getLogistics_managerIDs() {
+        return logistics_managerIDs;
+    }
+
+    public abstract Shift accept(BusinessShiftFactory businessShiftFactory);
 
     public abstract ShiftTypes getType();
+
+
 }
