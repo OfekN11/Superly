@@ -50,7 +50,7 @@ public class DEmployeeController extends DTOControllers<DEmployee> {
         Dictionary<String,DEmployee> dEmployeeDictionary =new Hashtable<>();
         for(DEmployee employee : employees)
             dEmployeeDictionary.put(employee.getId(), employee);
-        for(Pair<Integer,Set<Certifications>> employeeCertificationPair : dEmployeeCertificationController.loadData())
+        for(Pair<String,Set<Certifications>> employeeCertificationPair : dEmployeeCertificationController.loadData())
             dEmployeeDictionary.get(employeeCertificationPair.getKey()).setCertifications(employeeCertificationPair.getValue());
     }
 

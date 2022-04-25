@@ -35,7 +35,7 @@ public class DCarrierController extends DTOControllers<DCarrier> {
         Dictionary <String,DCarrier> dCarrierDictionary = new Hashtable<>();
         for(DCarrier dCarrier : dCarriers)
             dCarrierDictionary.put(dCarrier.getId(),dCarrier);
-        for(Pair<Integer, Set<String>> pair :dCarrierLicensesController.loadData())
+        for(Pair<String, Set<String>> pair :dCarrierLicensesController.loadData())
             dCarrierDictionary.get(pair.getKey()).setLicenses(pair.getValue());
     }
 

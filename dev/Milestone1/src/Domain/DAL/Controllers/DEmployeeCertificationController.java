@@ -10,7 +10,7 @@ import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DEmployeeCertificationController extends DalController<Pair<Integer,Set<Certifications>>> {
+public class DEmployeeCertificationController extends DalController<Pair<String,Set<Certifications>>> {
 
     public DEmployeeCertificationController() {
         super("tableName");
@@ -29,13 +29,13 @@ public class DEmployeeCertificationController extends DalController<Pair<Integer
     }
 
     @Override
-    public Set<Pair<Integer, Set<Certifications>>> loadData() {
-        Set<Pair<Integer, Set<Certifications>>> output = new HashSet<>();
+    public Set<Pair<String, Set<Certifications>>> loadData() {
+        Set<Pair<String, Set<Certifications>>> output = new HashSet<>();
         for(int i=0; i<10; i++){
             Set<Certifications> licenses = new HashSet<>();
             if (i%2==0)
                 licenses.add(Certifications.ShiftManagement);
-            output.add(new Pair<>(i,licenses));
+            output.add(new Pair<>(""+i,licenses));
         }
         return output;
     }

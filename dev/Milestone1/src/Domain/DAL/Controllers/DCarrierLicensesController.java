@@ -5,7 +5,7 @@ import Globals.Pair;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DCarrierLicensesController extends DalController<Pair<Integer, Set<String>>> {
+public class DCarrierLicensesController extends DalController<Pair<String, Set<String>>> {
     // dict of employeeID and its Licenses
     public DCarrierLicensesController() {
         super("tableName");
@@ -13,12 +13,12 @@ public class DCarrierLicensesController extends DalController<Pair<Integer, Set<
 
 
     @Override
-    public Set<Pair<Integer, Set<String>>> loadData() {
-        Set<Pair<Integer, Set<String>>> output = new HashSet<>();
+    public Set<Pair<String, Set<String>>> loadData() {
+        Set<Pair<String, Set<String>>> output = new HashSet<>();
         for(int i=0; i<10; i++){
             Set<String> licenses = new HashSet<>();
             licenses.add("licens "+ i);
-            output.add(new Pair<>(i,licenses));
+            output.add(new Pair<>(""+i,licenses));
         }
         return output;
     }
