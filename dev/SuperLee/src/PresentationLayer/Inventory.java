@@ -207,7 +207,7 @@ public class Inventory {
         System.out.println("What would you like the new max amount to be?");
         int max = scanner.nextInt();
         scanner.nextLine(); //to remove extra \n
-        Result<Product> r = is.changeProductMin(store, product, max);
+        Result<Product> r = is.changeProductMax(store, product, max);
         if (r.isError()) {
             System.out.println(r.getError());
         }
