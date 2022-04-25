@@ -28,17 +28,40 @@ public class  DShiftController extends DTOControllers<DShift> {
         Set<? extends DShift> eveningShifts = dEveningShiftController.loadData();
         shifts.addAll(morningShifts);
         shifts.addAll(eveningShifts);
-        loadEmployees(morningShifts,ShiftTypes.Morning);
-        loadEmployees(eveningShifts,ShiftTypes.Evening);
+        loadEmployees(morningShifts);
+        loadEmployees(eveningShifts);
         persistAll(shifts);
         return shifts;
     }
 
-    private void loadEmployees(Set<? extends DShift> shifts,ShiftTypes type) {
-        Map<Date,DShift> shiftsMap = new HashMap<>();
-        for(DShift shift:shifts)
-            shiftsMap.put(shift.getWorkday(),shift);
-        dEmployeeShiftController.loadData().stream().filter((pair)->pair.getLeft().getRight().equals(type)).forEach((pair)->shiftsMap.get(pair.getLeft().getLeft()).setEmployees(pair.getRight()));
+    private void loadEmployees(Set<? extends DShift> shifts) {
+        Set<String > carriers = new HashSet<>();
+        Set<String > cashier = new HashSet<>();
+        Set<String > hrManager = new HashSet<>();
+        Set<String > logistic = new HashSet<>();
+        Set<String > sorters = new HashSet<>();
+        Set<String > storekeepers = new HashSet<>();
+        carriers.add("2");
+        carriers.add("4");
+        carriers.add("6");
+        carriers.add("8");
+        for(int i=0; i<2;i++){
+            carriers.add(""+i);
+            cashier.add(""+(i+10));
+            hrManager.add(""+(i+20));
+            logistic.add(""+(i+30));
+            sorters.add(""+(i+40));
+            storekeepers.add(""+(i+50));
+        }
+        for (DShift shift : shifts){
+            shift.setCarrierIDs(carriers);
+            shift.setCashierIDs(cashier);
+            shift.setHr_managerIDs(hrManager);
+            shift.setLogistics_managerIDs(logistic);
+            shift.setSorterIDs(sorters);
+            shift.setStorekeeperIDs(storekeepers);
+        }
+        // here should be a code to get from each typeShiftController
     }
 
     @Override
