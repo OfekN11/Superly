@@ -2,7 +2,6 @@ package Domain.Business.Objects;
 import Domain.DAL.Objects.DConstraint;
 import Globals.Enums.ShiftTypes;
 
-import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,10 +45,12 @@ public class Constraint {
     }
 
     public void register(String id) {
+        dConstraint.register(id);
         employees.add(id);
     }
 
-    public void unregister(int id) {
+    public void unregister(String id) {
+        dConstraint.unregister(id);
         employees.remove(id);
     }
 

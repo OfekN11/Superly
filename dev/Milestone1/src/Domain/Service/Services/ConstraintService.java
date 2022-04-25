@@ -6,6 +6,7 @@ import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ConstraintService {
 
@@ -64,5 +65,11 @@ public class ConstraintService {
     }
 
     public Result<Set<Constraint>> getEmployeeConstraintsBetween(String id, Date today, Date nextMonth) {
+        try {
+            Set<Constraint> constraints = controller.getConstraintsBetween(id, today, nextMonth).stream().map(Constraint::new).collect(Collectors.toSet());
+            return Result.makeOk(constraints);
+        }catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 }

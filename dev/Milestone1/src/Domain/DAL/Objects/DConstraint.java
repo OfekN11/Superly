@@ -36,13 +36,13 @@ public class DConstraint extends DTO {
 
     // functions
 
-    public void addEmployee(String employeeId){
+    public void register(String employeeId){
         if (isPersist())
             dConstraintController.addEmployeeToConstraint(this,employeeId);
         employees.add(employeeId);
     }
 
-    public void removeEmployee(String employeeId){
+    public void unregister(String employeeId){
         if (isPersist())
             dConstraintController.removeEmployeeToConstraint(this,employeeId);
         employees.remove(employeeId);

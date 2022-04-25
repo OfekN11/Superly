@@ -37,7 +37,7 @@ public class ConstraintController {
         constraint.register(id);
     }
 
-    public void unregisterFromConstraint(int id, Date workday, ShiftTypes shift) {
+    public void unregisterFromConstraint(String id, Date workday, ShiftTypes shift) {
         if (!constraints.containsKey(workday) || !constraints.get(workday).containsKey(shift))
             return;
         Constraint constraint = getConstraint(workday, shift);
@@ -55,4 +55,44 @@ public class ConstraintController {
             return new HashSet<>();
         return constraints.get(workday).get(shift).getEmployees();
     }
+
+
+    public Set<Constraint> getConstraintsBetween(String id, Date today, Date nextMonth) {
+        Set<Date> dates = getDatesBetween(today,nextMonth);
+        Set<Constraint> output = new HashSet<>();
+        for(Date date : dates){
+            if (constraints.containsKey(date)){
+                for(Constraint constraint: constraints.get(date).values())
+                    if (constraint.getEmployees().contains(id))
+                        output.add(constraint);
+            }
+        }
+        return output;
+    }
+
+    private Set<Date> getDatesBetween(Date today,Date nextMonth){
+        Set<Date> datesInRange = new HashSet<>();
+        Calendar calendar = getCalendarWithoutTime(today);
+        Calendar endCalendar = getCalendarWithoutTime(nextMonth);
+
+        while (calendar.before(endCalendar)) {
+            Date result = calendar.getTime();
+            datesInRange.add(result);
+            calendar.add(Calendar.DATE, 1);
+        }
+
+        return datesInRange;
+    }
+
+    private static Calendar getCalendarWithoutTime(Date date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar;
+    }
+
 }
