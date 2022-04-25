@@ -1,5 +1,6 @@
 package Domain.Service.Services;
 
+import Domain.Service.Objects.Result;
 import Domain.Service.Objects.Shift;
 import Globals.Enums.ShiftTypes;
 import org.junit.Test;
@@ -16,7 +17,10 @@ public class ShiftServiceTest {
         shiftService.loadData();
         try {
             assertTrue(shiftService.createShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-1998"), ShiftTypes.Morning,"5",6,6,6,4,4,4).isOk());
-            Shift shift = shiftService.getShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-1998"), ShiftTypes.Morning).getValue();
+            Result<Shift> result = shiftService.getShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-1998"), ShiftTypes.Morning);
+            if (result.isError())
+                fail(result.getError());
+            Shift shift = result.getValue();
             assertTrue(shift.cashierIDs.size()>0);
             assertNotNull(shift.shiftManagerId);
             assertNotEquals("",shift.shiftManagerId);

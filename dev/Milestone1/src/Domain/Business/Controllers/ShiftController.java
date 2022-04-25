@@ -158,7 +158,7 @@ public class ShiftController {
                 shifts.get(date).put(ShiftTypes.Evening,new EveningShift(date,managerId,carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount));
                 break;
             case Morning:
-                shifts.get(date).put(ShiftTypes.Evening,new MorningShift(date,managerId,carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount));
+                shifts.get(date).put(ShiftTypes.Morning,new MorningShift(date,managerId,carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount));
         }
     }
 
