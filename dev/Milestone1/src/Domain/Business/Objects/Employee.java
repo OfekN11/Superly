@@ -14,6 +14,7 @@ import java.util.Set;
  * Abstract class representing Employee for business purposes
  */
 public abstract class Employee {
+    private static String SALARY_MOST_BE_POSITIVE_ERROR_MSG = "Salary most be positive, entered %f";
     // properties
     private final String id;
     private String name;
@@ -132,4 +133,11 @@ public abstract class Employee {
     public abstract JobTitles getJobTitle();
 
     public abstract Domain.Service.Objects.Employee accept(ServiceEmployeeFactory factory);
+
+    public void setSalary(int newSalary) {
+        if (salary<=0)
+            throw new IllegalArgumentException(String.format(SALARY_MOST_BE_POSITIVE_ERROR_MSG,salary));
+        dEmployee.setSalary(newSalary);
+        this.salary=newSalary;
+    }
 }

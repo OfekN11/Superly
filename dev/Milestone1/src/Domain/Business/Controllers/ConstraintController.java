@@ -57,7 +57,7 @@ public class ConstraintController {
     }
 
 
-    public Set<Constraint> getConstraintsBetween(String id, Date today, Date nextMonth) {
+    public Set<Constraint> getEmployeeConstraintsBetween(String id, Date today, Date nextMonth) {
         Set<Date> dates = getDatesBetween(today,nextMonth);
         Set<Constraint> output = new HashSet<>();
         for(Date date : dates){

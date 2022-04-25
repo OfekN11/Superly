@@ -8,6 +8,7 @@ import Globals.Enums.JobTitles;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Service controller for employee operations
@@ -154,18 +155,39 @@ public class EmployeeService {
     }
 
     public Result<Set<Employee>> getAllEmployees() {
+        try {
+            return Result.makeOk(controller.getAllEmployees().stream().map((factory::createServiceEmployee)).collect(Collectors.toSet()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 
     public Result<Object> checkUnusedEmployeeID(String id) {
+
     }
 
     public Result<Object> validateID(String id) {
+        try {
+            controller.v(id);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
     }
 
     public Result<Object> validateIDs(Set<String> ids) {
     }
 
     public Result<Object> editEmployeeSalary(String id, int newSalary) {
+        try {
+            controller.editEmployeeSalary(id,newSalary);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
     }
 
     public Result<Set<Employee>> getEmployees(Set<String> employeeIDs) {

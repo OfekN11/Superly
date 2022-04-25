@@ -7,6 +7,7 @@ import Domain.DAL.Controllers.DEmployeeController;
 import Domain.DAL.Objects.DEmployee;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EmployeeController {
     private static final String EmployeeNotFoundErrorMsg ="Employee id %s could not be found";
@@ -112,7 +113,7 @@ public class EmployeeController {
     }
     private void checkIDValidity(String id) throws Exception{
         if (!employees.containsKey(id))
-            throw new Exception(String.format("No such employee with ID: ", id));
+            throw new Exception(String.format("No such employee with ID: %s", id));
     }
 
     public Map<Integer,Set<String>> mapByJob(Set<String> employeesToCheck){
@@ -123,5 +124,14 @@ public class EmployeeController {
             output.get(employees.get(employee).getJobTitle().ordinal()).add(employee);
 
         return output;
+    }
+
+    public Set<Employee> getAllEmployees() {
+        return new HashSet<>(employees.values());
+    }
+
+    public void editEmployeeSalary(String id, int newSalary) throws Exception {
+        checkIDValidity(id);
+        employees.get(id).setSalary(newSalary);
     }
 }
