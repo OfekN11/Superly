@@ -266,8 +266,9 @@ public class ShiftsMenu extends Screen {
             System.out.println("Chosen logistics manager count: " + logistics_managerCount);
 
             //Shift Manager
-            List<Employee> managers = controller.getEmployees(controller.getConstraint(date, type).employeeIDs)
-                    .stream().filter((x) -> x.certifications.contains(Certifications.ShiftManagement)).collect(Collectors.toList());
+            List<Employee> managers = new ArrayList<>(controller.getAllEmployees()).stream().filter(employee -> employee.certifications.contains(Certifications.ShiftManagement)).collect(Collectors.toList());
+            Set<String> cantWorkEmployees = controller.getConstraint(date, type).employeeIDs;
+            managers = managers.stream().filter(employee -> !cantWorkEmployees.contains(employee.id)).collect(Collectors.toList());
             if (managers.size() == 0) {
                 System.out.println("No employee who is certified to manage shifts has filled a possibility to work at this shift.");
                 System.out.println("Cannot assign a shift manager. Operation Cancelled");
@@ -287,7 +288,7 @@ public class ShiftsMenu extends Screen {
                     } else if (ordinal < 1 || ordinal > managers.size())
                         System.out.println("Please enter an integer between 1 and " + managers.size());
                     else {
-                        manager = managers.get(ordinal);
+                        manager = managers.get(ordinal-1);
                         System.out.println("Entered manager: " + manager.name);
                         success = areYouSure();
                     }
