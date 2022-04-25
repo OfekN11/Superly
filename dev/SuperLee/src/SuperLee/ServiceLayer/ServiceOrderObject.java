@@ -32,4 +32,18 @@ public class ServiceOrderObject {
     public Date getDate() {
         return date;
     }
+
+    public String toString(){
+        return "Order's ID: " + id + "\nDate: " + date + "\nOrderItems:\n" + printItems();
+    }
+
+    private String printItems(){
+        String items = "";
+
+        for (ServiceOrderItemObject item : orderItems){
+            items += (item.toString() + "\n");
+        }
+
+        return items;
+    }
 }

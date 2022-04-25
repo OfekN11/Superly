@@ -1,10 +1,7 @@
 package SuperLee.PresentationLayer.SuppliersCLI;
 
 import SuperLee.BusinessLayer.Pair;
-import SuperLee.ServiceLayer.Result;
-import SuperLee.ServiceLayer.ServiceItemObject;
-import SuperLee.ServiceLayer.ServiceSupplierObject;
-import SuperLee.ServiceLayer.SupplierService;
+import SuperLee.ServiceLayer.*;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -287,7 +284,57 @@ public class CLI {
     }
 
     private void viewOrder(int supplierID){
+        int input;
+        boolean correctInput, _continue = true;
 
+        while(_continue){
+            System.out.println("Insert the ID of the order you wish to watch.");
+            System.out.println("If you want to return, insert \"-1\"");
+
+            input = scan.nextInt();
+
+            if(input == -1){
+                System.out.println("Returning..\n");
+                return;
+            }
+
+            Result<ServiceOrderObject> r = service.getOrder(supplierID, input);
+
+            if(r.isOk()){
+                ServiceOrderObject order = r.getValue();
+                System.out.println(order.toString());
+                System.out.println("\n");
+
+                System.out.println("Choose:");
+                System.out.println("1) View another order");
+                System.out.println("2) Back");
+
+                correctInput = false;
+
+                while(!correctInput){
+                    input = scan.nextInt();
+
+                    switch (input){
+                        case 1: {
+                            System.out.println("\n");
+                            correctInput = true;
+                            break;
+                        }
+                        case 2:{
+                            System.out.println("Returning..\n\n");
+                            _continue = false;
+                            break;
+                        }
+                        default:{
+                            System.out.println("You inserted wrong value, please try again.");
+                        }
+                    }
+                }
+            }
+            else{
+                System.out.println("You inserted wrong value, please try again.\n");
+            }
+        }
 
     }
 
