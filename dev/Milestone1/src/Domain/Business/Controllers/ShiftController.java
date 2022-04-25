@@ -176,7 +176,7 @@ public class ShiftController {
     public String getEmployeeWorkDetailsForCurrentMonth(String id) {
         Pair<Date,Date> firstLastPair = getMonthDatesEdges();
         String workDetails = "";
-        Set<Date> dates = getDatesBetween(firstLastPair.getKey(), firstLastPair.getValue());
+        Set<Date> dates = getDatesBetween(firstLastPair.getLeft(), firstLastPair.getRight());
         for (ShiftTypes type: ShiftTypes.values()) {
             Set<Shift> shifts = new HashSet<>();
             for (Date date : dates)

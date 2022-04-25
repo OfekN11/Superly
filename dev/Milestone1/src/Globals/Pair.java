@@ -1,26 +1,26 @@
 package Globals;
 
 public class Pair <K,V>{
-    private K key;
-    private V value;
-    public Pair(K key,V value){
-        this.key =key;
-        this.value = value;
+    private K left;
+    private V right;
+    public Pair(K left, V right){
+        this.left = left;
+        this.right = right;
     }
 
-    public K getKey() {
-        return key;
+    public K getLeft() {
+        return left;
     }
 
-    public V getValue() {
-        return value;
+    public V getRight() {
+        return right;
     }
 
-    public void setKey(K key) {
-        this.key = key;
+    public void setLeft(K left) {
+        this.left = left;
     }
 
-    public void setValue(V value) {
-        this.value = value;
+    public void setRight(V right) {
+        this.right = right;
     }
 }

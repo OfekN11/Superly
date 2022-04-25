@@ -1,6 +1,5 @@
 package Domain.DAL.Controllers;
 import Domain.DAL.Abstract.DTOControllers;
-import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DEmployee;
 import Globals.Enums.Certifications;
 import Globals.Pair;
@@ -51,7 +50,7 @@ public class DEmployeeController extends DTOControllers<DEmployee> {
         for(DEmployee employee : employees)
             dEmployeeDictionary.put(employee.getId(), employee);
         for(Pair<String,Set<Certifications>> employeeCertificationPair : dEmployeeCertificationController.loadData())
-            dEmployeeDictionary.get(employeeCertificationPair.getKey()).setCertifications(employeeCertificationPair.getValue());
+            dEmployeeDictionary.get(employeeCertificationPair.getLeft()).setCertifications(employeeCertificationPair.getRight());
     }
 
     public Set<Certifications> getCertificationOfEmployee(int employeeId){

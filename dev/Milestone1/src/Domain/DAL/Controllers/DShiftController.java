@@ -1,6 +1,5 @@
 package Domain.DAL.Controllers;
 import Domain.DAL.Abstract.DTOControllers;
-import Domain.DAL.Abstract.DalController;
 import Domain.DAL.Objects.DShift;
 import Globals.Enums.ShiftTypes;
 
@@ -39,7 +38,7 @@ public class  DShiftController extends DTOControllers<DShift> {
         Map<Date,DShift> shiftsMap = new HashMap<>();
         for(DShift shift:shifts)
             shiftsMap.put(shift.getWorkday(),shift);
-        dEmployeeShiftController.loadData().stream().filter((pair)->pair.getKey().getValue().equals(type)).forEach((pair)->shiftsMap.get(pair.getKey().getKey()).setEmployees(pair.getValue()));
+        dEmployeeShiftController.loadData().stream().filter((pair)->pair.getLeft().getRight().equals(type)).forEach((pair)->shiftsMap.get(pair.getLeft().getLeft()).setEmployees(pair.getRight()));
     }
 
     @Override
