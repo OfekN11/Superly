@@ -120,8 +120,10 @@ public class ShiftController {
     public Set<Shift> getShiftsBetween(Date start, Date end) {
         Set<Shift> shifts = new HashSet<>();
         for (Date date : getDatesBetween(start, end)) {
-            for (ShiftTypes type : ShiftTypes.values())
-                shifts.add(this.shifts.get(date).get(type));
+            if(this.shifts.containsKey(date))
+                for (ShiftTypes type : ShiftTypes.values())
+                    if (this.shifts.get(date).containsKey(type))
+                        shifts.add(this.shifts.get(date).get(type));
         }
         return shifts;
     }
