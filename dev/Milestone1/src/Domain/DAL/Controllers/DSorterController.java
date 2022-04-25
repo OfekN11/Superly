@@ -21,7 +21,7 @@ public class DSorterController extends DTOControllers<DSorter> {
         Set<DSorter> output = new HashSet<>();
         for (int i=40; i<50; i++) {
             try {
-                output.add(new DSorter(""+i,"HR_Manager " + (i-39),"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
+                output.add(new DSorter(""+i,"Sorter " + (i-39),"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

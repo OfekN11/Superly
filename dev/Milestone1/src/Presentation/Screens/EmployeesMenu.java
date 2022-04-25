@@ -3,9 +3,11 @@ package Presentation.Screens;
 import Domain.Service.Objects.Employee;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
+import Globals.util.EmployeeComparator;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EmployeesMenu extends Screen {
     public static class EmployeesViewer extends Screen {
@@ -72,8 +74,8 @@ public class EmployeesMenu extends Screen {
         }
 
         public static void printEmployees(Set<Employee> employees) {
-            for (Employee e : employees) {
-                System.out.println(e.id + " - " + e.name);
+            for (Employee e : employees.stream().sorted(new EmployeeComparator()).collect(Collectors.toList())) {
+                System.out.println("ID: " + e.id + " , Name :" + e.name);
             }
             System.out.println();
         }
