@@ -187,13 +187,14 @@ public class Cli {
         while(!back) {
             switch (menuCNT()) {
                 case 1:
-                    //TODO: service.placeDriver();
+                    placeDriver();
                     break;
                 case 2:
-                    //TODO: service.placeTruck();
+                    placeTruck();
                     break;
                 case 3:
-                    //TODO: service.startTransport();
+                    //TODO: Change that
+                    startTransport(0);
                     break;
                 case 4:
                     back = true;
@@ -204,18 +205,34 @@ public class Cli {
         }
     }
 
+    private static void startTransport(int transportSN) {
+        Result res = service.startTransport(transportSN);
+        if(res.isError())
+        {
+            System.out.println(res.getError());
+        }
+    }
+
+    private static void placeTruck() {
+        //TODO: service.placeTruck();
+    }
+
+    private static void placeDriver() {
+        //TODO: service.placeDriver();
+    }
+
     private static void createNewTransport() {
         boolean back = false;
         while(!back) {
             switch (menuCNT()) {
                 case 1:
-                    //TODO: service.getOrders();
+                    getOrders();
                     break;
                 case 2:
-                    //TODO: service.getOrdersInTransportArea();
+                    getOrdersInTransportArea();
                     break;
                 case 3:
-                    //TODO: service.addOrderToTransport();
+                    addOrderToTransport();
                     break;
                 case 4:
                     back = true;
@@ -224,6 +241,18 @@ public class Cli {
                     System.out.println("Invalid input!");
             }
         }
+    }
+
+    private static void addOrderToTransport() {
+        //TODO: service.addOrderToTransport();
+    }
+
+    private static void getOrdersInTransportArea() {
+        //TODO: service.getOrdersInTransportArea();
+    }
+
+    private static void getOrders() {
+        //TODO: service.getOrders();
     }
 
     private static int menuCNT() {
@@ -406,38 +435,4 @@ public class Cli {
         return LicenseTypes.valueOf(truckModel[getChoice(1, 4) - 1]);
     }
 
-
-    //-----------------------------------------------------
-    /*
-
-
-
-
-
-
-
-    private int mainMenuTD()
-    {
-        System.out.println("Truck driver menu:\n" +
-                "1. Weight report");
-        return getChoice(1, 1);
-    }
-    private void truckDriver()
-    {
-        switch (mainMenuTD())
-        {
-            case 1:
-                weightReport();
-                break;
-            case 2:
-                //TODO: Truck system management
-                break;
-            default:
-        }
-    }
-    private void weightReport()
-    {
-
-    }
-    */
 }

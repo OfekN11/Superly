@@ -24,11 +24,11 @@ public class TransportService {
             return Result.makeError(e.getMessage());
         }
     }
-    private List<Transport> toServiceTransports(List<Backend.BusinessLayer.Objects.Transport> transports)
+    private HashMap<Integer, Transport> toServiceTransports(HashMap<Integer, Backend.BusinessLayer.Objects.Transport> transports)
     {
-        List<Transport> transportList = new ArrayList<>();
-        for (Backend.BusinessLayer.Objects.Transport transport: transports) {
-            transportList.add(new Transport(transport));
+        HashMap<Integer, Transport> transportList = new HashMap<>();
+        for (Integer transportKey: transports.keySet()) {
+            transportList.put(transportKey, new Transport(transports.get(transportKey)));
         }
         return transportList;
     }
@@ -80,8 +80,13 @@ public class TransportService {
     }
 
     public Result startTransport(int transportSN) {
-        //TODO
-        return  null;
+        try {
+            controller.startTransport(transportSN);
+            return Result.makeOk(null);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 
     public Result getRedesignTransports() {

@@ -9,15 +9,15 @@ import Backend.Globals.Enums.ShippingAreas;
 import java.util.*;
 
 public class TransportController {
-    private List<Transport> waitingTransports;
-    private List<Transport> inProgressTransports;
-    private List<Transport> pastTransports;
+    private HashMap<Integer, Transport> waitingTransports;
+    private HashMap<Integer, Transport> inProgressTransports;
+    private HashMap<Integer, Transport> pastTransports;
     private Queue<TransportOrder> orderQueue;
 
     public TransportController() {
-        waitingTransports =  new ArrayList<>();
-        inProgressTransports =  new ArrayList<>();
-        pastTransports =  new ArrayList<>();
+        waitingTransports =  new HashMap<>();
+        inProgressTransports =  new HashMap<>();
+        pastTransports =  new HashMap<>();
         orderQueue = new PriorityQueue<>();
     }
 
@@ -38,15 +38,15 @@ public class TransportController {
         orderQueue.add(transportOrder);
     }
 
-    public List<Transport> getInProgressTransports() {
+    public HashMap<Integer, Transport> getInProgressTransports() {
         return inProgressTransports;
     }
 
-    public List<Transport> getWaitingTransports() {
+    public HashMap<Integer, Transport> getWaitingTransports() {
         return waitingTransports;
     }
 
-    public List<Transport> getPastTransports() {
+    public HashMap<Integer, Transport> getPastTransports() {
         return pastTransports;
     }
 
@@ -64,5 +64,17 @@ public class TransportController {
             }
         }
         return orders;
+    }
+
+    public void startTransport(int transportSN) throws Exception {
+        if(waitingTransports.containsKey(transportSN))//TODO: add redesign?
+        {
+            Transport transport = waitingTransports.get(transportSN);
+            if(!transport.readyToGo())
+            {
+                throw new Exception("The transport can not start!");
+            }
+        }
+        throw new Exception("The transport can not start!");
     }
 }
