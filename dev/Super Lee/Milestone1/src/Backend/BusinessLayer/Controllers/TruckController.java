@@ -10,13 +10,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TruckController {
-    HashMap<Integer, Truck> trucks;
-    //Maybe part to type
+    private HashMap<Integer, Truck> trucks;
 
     public TruckController() {
         trucks = new HashMap<>();
     }
 
+    public HashMap<Integer, Truck> getTrucks() {
+        return trucks;
+    }
 
     public void removeTruck(int truckLN) throws Exception {
         if(trucks.containsKey(truckLN))
@@ -28,12 +30,6 @@ public class TruckController {
         }
     }
 
-
-    public List<Truck> getAvailableTrucks(LocalDateTime time, LicenseTypes model)
-    {
-        //TODO: implement
-        return null;
-    }
 
     public void addTruck(int licenseNumber, LicenseTypes model, int netWeight, int maxCapacityWeight) throws Exception {
         if(!trucks.containsKey(licenseNumber))

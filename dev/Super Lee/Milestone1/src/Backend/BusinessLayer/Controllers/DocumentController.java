@@ -29,4 +29,12 @@ public class DocumentController {
         }
         throw new Exception("The document you requested does not exist!");
     }
+
+    public HashMap<Integer, TransportDocument> getTransportDocuments() {
+        return transportDocuments;
+    }
+
+    public HashMap<Integer, DestinationDocument> getDestinationDocuments() {
+        return destinationDocuments;
+    }
 }

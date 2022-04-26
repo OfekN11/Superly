@@ -80,6 +80,12 @@ public class TransportService {
     }
 
     public Result startTransport(int transportSN) {
+        //TODO
         return  null;
+    }
+
+    public Result getRedesignTransports() {
+        //TODO:
+        return null;
     }
 }

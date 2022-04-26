@@ -10,10 +10,12 @@ public class Service {
     private TruckService truckSer;
     private TransportService transportSer;
     private DocumentService documentSer;
+    private DriverService driverSer;
     public Service() {
         truckSer = new TruckService();
         transportSer = new TransportService();
         documentSer = new DocumentService();
+        driverSer = new DriverService();
     }
 
     //Truck:
@@ -41,6 +43,9 @@ public class Service {
     }
 
     //Transport:
+    public Result getRedesignTransports() {
+        return transportSer.getRedesignTransports();
+    }
     public Result getTransportOrders()
     {
         return transportSer.getTransportOrders();
@@ -98,27 +103,10 @@ public class Service {
         //TODO: implement
         return null;
     }
-
-
-
-
-    //-----------------------------------
-
-    public Result weightTruck(int transportSN)
-    {
-        //TODO: implement
-        return null;
+    //Driver:
+    public Result addDriver(String name, LicenseTypes licenseTypes) {
+        return driverSer.addDriver(name, licenseTypes);
     }
-
-    //Maybe driver and truck will be together
-
-
-    public Result getAvailableDrivers()
-    {
-        //TODO: implement
-        return null;
-    }
-
 
 
 }

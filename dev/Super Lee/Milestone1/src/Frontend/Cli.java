@@ -1,8 +1,11 @@
 package Frontend;
 
+import java.util.List;
 import java.util.Scanner;
 
 import Backend.Globals.Enums.LicenseTypes;
+import Backend.ServiceLayer.Objects.Transport;
+import Backend.ServiceLayer.Result;
 import Backend.ServiceLayer.Service;
 import Frontend.Objects.TransportOrder;
 
@@ -41,19 +44,19 @@ public class Cli {
         while(!back) {
             switch (menuTransSM()) {
                 case 1:
-                    //TODO: service.addTransportOrder();
+                    addTransportOrder();
                     break;
                 case 2:
                     createNewTransport();
                     break;
                 case 3:
-                    //TODO: service.getWaitingTransports();
+                    getWaitingTransports();
                     break;
                 case 4:
-                    //TODO: service.getInProgressTransports();
+                    getInProgressTransports();
                     break;
                 case 5:
-                    //TODO: service.getRedesignTransports();
+                    getRedesignTransports();
                     break;
                 case 6:
                     updateTransport();
@@ -67,6 +70,118 @@ public class Cli {
         }
     }
 
+    private static void getRedesignTransports() {
+        Result result = service.getRedesignTransports();
+        if(result.isError())
+        {
+            System.out.println(result.getError());
+        }
+        else
+        {
+            System.out.println("Redesign Transports:");
+            //TODO: casting
+            printTransport((List<Transport>) result.getValue());
+        }
+    }
+
+    private static void getInProgressTransports() {
+        Result result = service.getInProgressTransports();
+        if(result.isError())
+        {
+            System.out.println(result.getError());
+        }
+        else
+        {
+            System.out.println("In Progress Transports:");
+            //TODO: casting
+            printTransport((List<Transport>) result.getValue());
+        }
+    }
+
+    private static void getWaitingTransports() {
+        Result result = service.getWaitingTransports();
+        if(result.isError())
+        {
+            System.out.println(result.getError());
+        }
+        else
+        {
+            System.out.println("Waiting Transports:");
+            //TODO: casting
+            printTransport((List<Transport>) result.getValue());
+        }
+    }
+
+    private static void printTransport(List<Transport> value) {
+        for(Transport transport: value)
+        {
+            System.out.println(transport.toString());
+        }
+    }
+
+    private static void addTransportOrder() {
+        TransportOrder to = getTransportOrder();
+        service.addTransportOrder(to.getSrcID(), to.getDstID(), to.getProductList());
+    }
+    private static TransportOrder getTransportOrder()
+    {
+        //TODO: Check validation of the input and enable to get input of many dests and srcs
+        System.out.println("Get new transport order:");
+        System.out.println("Enter source ID:");
+        int srcID = reader.nextInt();
+        System.out.println("Enter destination ID:");
+        int dstID = reader.nextInt();
+        TransportOrder to = new TransportOrder(srcID, dstID);
+        getProductsList(to);
+        if(to.isValidOrder())
+        {
+            return to;
+        }
+        System.out.println("The order of the shipment is invalid!");
+        return null;
+    }
+
+    private static void getProductsAndCount(TransportOrder to)
+    {
+        System.out.println("Enter the product name: ");
+        String productName = reader.next();
+        System.out.println("Enter the required quantity of the product: ");
+        int productCount = reader.nextInt();
+        //TODO: add input validation
+        to.addProduct(productName, productCount);
+    }
+    private static int productListMenu()
+    {
+        System.out.println("Product lists:\n" +
+                "1. Add product\n" +
+                "2. Remove product\n" +
+                "3. Update product quantity\n" +
+                "4. Close order");
+        return getChoice(1, 4);
+    }
+    private static void getProductsList(TransportOrder to)
+    {
+        //TODO:Later
+        boolean close = false;
+        do {
+            switch (productListMenu())
+            {
+                case 1:
+                    getProductsAndCount(to);
+                    break;
+                case 2:
+                    //TODO: Feature - getProductsAndCount(to);
+                    break;
+                case 3:
+                    //TODO: Feature - getProductsAndCount(to);
+                    break;
+                case 4:
+                    close = true;
+                    break;
+                default:
+            }
+        }while(!close);
+    }
     private static void updateTransport() {
         boolean back = false;
         while(!back) {
@@ -167,22 +282,34 @@ public class Cli {
         while(!back) {
             switch (menuDSM()) {
                 case 1:
-                    //TODO: service.addDriver();
+                    addDriver();
                     break;
                 case 2:
-                    //TODO: service.removeDriver();
+                    removeDriver();
                     break;
                 case 3:
-                    //TODO: service.updateDriver();
+                    updateDriver();
                     break;
                 case 4:
                     back = true;
                     break;
                 default:
-                    //TODO:
                     System.out.println("Invalid input!");
             }
         }
+    }
+
+    private static void updateDriver() {
+        //TODO: service.updateDriver();
+    }
+
+    private static void removeDriver() {
+        //TODO: service.removeDriver();
+    }
+
+    private static void addDriver() {
+        //TODO: Get input from the user
+        service.addDriver("Example", LicenseTypes.B);
     }
 
     private static int mainMenu()
@@ -282,79 +409,9 @@ public class Cli {
 
     //-----------------------------------------------------
     /*
-    private static void transportManagement()
-    {
 
-        switch (1)
-        {
-            case 1:
-                TransportOrder to = getTransportOrder();
-                service.addTransportOrder(to.getSrcID(), to.getDstID(), to.getProductList());
-                break;
-            case 2:
-                transportSystemManagement();
-                break;
-            default:
-        }
-    }
 
-    private static TransportOrder getTransportOrder()
-    {
-        //TODO: Check validation of the input and enable to get input of many dests and srcs
-        System.out.println("Get new transport order:");
-        System.out.println("Enter source ID:");
-        int srcID = reader.nextInt();
-        System.out.println("Enter destination ID:");
-        int dstID = reader.nextInt();
-        TransportOrder to = new TransportOrder(srcID, dstID);
-        getProductsList(to);
-        if(to.isValidOrder())
-        {
-            return to;
-        }
-        System.out.println("The order of the shipment is invalid!");
-        return null;
-    }
-    private static void getProductsAndCount(TransportOrder to)
-    {
-        System.out.println("Enter the product name: ");
-        String productName = reader.next();
-        System.out.println("Enter the required quantity of the product: ");
-        int productCount = reader.nextInt();
-        //TODO: add input validation
-        to.addProduct(productName, productCount);
-    }
-    private static int productListMenu()
-    {
-        System.out.println("Product lists:\n" +
-                "1. Add product\n" +
-                "2. Remove product\n" +
-                "3. Update product quantity\n" +
-                "4. Close order");
-        return getChoice(1, 4);
-    }
-    private static void getProductsList(TransportOrder to)
-    {
-        boolean close = false;
-        do {
-            switch (productListMenu())
-            {
-                case 1:
-                    getProductsAndCount(to);
-                    break;
-                case 2:
-                    //TODO: Feature - getProductsAndCount(to);
-                    break;
-                case 3:
-                    //TODO: Feature - getProductsAndCount(to);
-                    break;
-                case 4:
-                    close = true;
-                    break;
-                default:
-            }
-        }while(!close);
-    }
+
 
 
 
