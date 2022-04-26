@@ -36,11 +36,7 @@ public class Cli {
 
     private static int mainMenu()
     {
-        System.out.println("""
-            Main menu:
-            1. Transport Manager
-            2. Truck Driver
-            """);
+        System.out.println("Main menu:\n1. Transport Manager\n2. Truck Driver");
         return getChoice(1, 2);
     }
 
@@ -59,13 +55,8 @@ public class Cli {
 
     private static int mainMenuTM()
     {
-        System.out.println("""
-            Transport Manager menu:
-            1. Transport Management
-            2. Truck system management
-            3. Document system management
-            4. Back...
-            """);
+        System.out.println("Transport Manager menu:\n1. Transport Management\n" +
+                "2. Truck system management\n3. Document system management\n4. Back...");
         return getChoice(1, 3);
     }
 
@@ -88,11 +79,7 @@ public class Cli {
 
     private static int menuTM()
     {
-        System.out.println("""
-            Transport Manager menu:
-            1. Transport Order
-            2. Transport system management
-            """);
+        System.out.println("Transport Manager menu:\n1. Transport Order\n2. Transport system management");
         return getChoice(1, 2);
     }
     private static void transportManagement()
@@ -141,13 +128,11 @@ public class Cli {
     }
     private static int productListMenu()
     {
-        System.out.println("""
-                    Product lists:
-                    1. Add product
-                    2. Remove product
-                    3. Update product quantity
-                    4. Close order
-                    """);
+        System.out.println("Product lists:\n" +
+                "1. Add product\n" +
+                "2. Remove product\n" +
+                "3. Update product quantity\n" +
+                "4. Close order");
         return getChoice(1, 4);
     }
     private static void getProductsList(TransportOrder to)
@@ -175,11 +160,9 @@ public class Cli {
 
     private static int menuTSM()
     {
-        System.out.println("""
-            Truck System Manager menu:
-            1. Add new truck
-            2. Remove truck
-            """);
+        System.out.println("Truck System Manager menu:\n" +
+                "1. Add new truck\n" +
+                "2. Remove truck");
         return getChoice(1, 2);
     }
     private static void truckSystemManagement()
@@ -219,23 +202,18 @@ public class Cli {
     private static LicenseTypes getTruckModel()
     {
         String[] truckModel = {"B", "C1", "C", "CE"};
-        System.out.println("""
-            Enter truck model:
-            1. B
-            2. C1
-            3. C
-            4. C+E
-            """);
+        System.out.println("Enter truck model:\n" +
+                "1. B\n" +
+                "2. C1\n" +
+                "3. C\n" +
+                "4. C+E");
 
         return LicenseTypes.valueOf(truckModel[getChoice(1, 4) - 1]);
     }
     private int mainMenuTD()
     {
-        System.out.println("""
-            Truck driver menu:
-            1. Weight report
-            2. 
-            """);
+        System.out.println("Truck driver menu:\n" +
+                "1. Weight report");
         return getChoice(1, 1);
     }
     private void truckDriver()
@@ -253,8 +231,6 @@ public class Cli {
     }
     private void weightReport()
     {
-        System.out.println("""
-            Please 
-            """);
+        
     }
 }

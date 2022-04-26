@@ -62,7 +62,7 @@ public class TransportOrder {
     }
 
     public List<String> getProductsNameList() {
-        return productList.keySet().stream().toList();
+        return new ArrayList<>(productList.keySet());
     }
 
     public DestinationDocument toDocument()

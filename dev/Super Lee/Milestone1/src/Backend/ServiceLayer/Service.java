@@ -5,7 +5,6 @@ import Backend.Globals.Enums.LicenseTypes;
 import Backend.Globals.Enums.ShippingAreas;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Service {
     private TruckService truckSer;
@@ -26,7 +25,11 @@ public class Service {
     {
         return truckSer.removeTruck(licenseNumber);
     }
-
+    public Result getAvailableTrucks()
+    {
+        //TODO: implement
+        return null;
+    }
     //Document:
     public Result getDestinationDocument(int destinationDocumentSN)
     {
@@ -58,31 +61,33 @@ public class Service {
     {
         return transportSer.getPastTransports();
     }
-
-
-
-
-
-
-
-
-    //-----------------------------------
+    public Result addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) {
+        return transportSer.addTransportOrder(srcID, dstID, productList);
+    }
+    public Result startTransport(int transportSN)
+    {
+        return transportSer.startTransport(transportSN);
+    }
+    public Result advanceTransportSite(int transportSN)
+    {
+        //TODO: Impl
+        return null;
+    }
+    public Result redesignTransport(int transportSN)
+    {
+        //TODO: Impl
+        return null;
+    }
+    public Result weighingTransportInSource(int transportSN, int weight)
+    {
+        //TODO: Impl
+        return null;
+    }
     public Result inviteTransport()
     {
         return null;//transportSer.inviteTransport();
     }
-    public Result weightTruck(int transportSN)
-    {
-        //TODO: implement
-        return null;
-    }
 
-    //Maybe driver and truck will be together
-    public Result getAvailableTrucks()
-    {
-        //TODO: implement
-        return null;
-    }
     public Result placeDriver()
     {
         //TODO: implement
@@ -93,6 +98,21 @@ public class Service {
         //TODO: implement
         return null;
     }
+
+
+
+
+    //-----------------------------------
+
+    public Result weightTruck(int transportSN)
+    {
+        //TODO: implement
+        return null;
+    }
+
+    //Maybe driver and truck will be together
+
+
     public Result getAvailableDrivers()
     {
         //TODO: implement
@@ -100,7 +120,5 @@ public class Service {
     }
 
 
-    public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) {
-        transportSer.addTransportOrder(srcID, dstID, productList);
-    }
+
 }

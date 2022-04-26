@@ -95,7 +95,7 @@ public class Transport {
     public List<ShippingAreas> getTransportAreas()
     {
         //TODO: Check this
-        return shippingAreas.keySet().stream().toList();
+        return new ArrayList<>(shippingAreas.keySet());
     }
 
     public boolean readyToGo()

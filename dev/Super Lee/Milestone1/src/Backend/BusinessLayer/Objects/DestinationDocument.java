@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DestinationDocument extends Document{
     private static int incSN = 0;
-    private int destDocumentSN = 0;
+    private int destDocumentSN;
     private int destID;
     private List<String> providedProducts;
 

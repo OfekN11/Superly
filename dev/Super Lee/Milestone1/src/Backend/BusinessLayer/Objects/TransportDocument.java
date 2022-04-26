@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 public class TransportDocument extends Document{
+    private static int incSN = 0;
+    private int transDocSN;
     private Date date;
     private int truckNumber;
     private String driverName;
@@ -13,6 +15,10 @@ public class TransportDocument extends Document{
     private String destinations;
     private List<Integer> destsSN;
 
+    public TransportDocument() {
+        transDocSN = incSN;
+        incSN += 1;
+    }
 
     @Override
     public Backend.ServiceLayer.Objects.Document accept(ServiceDocumentFactory factory) {

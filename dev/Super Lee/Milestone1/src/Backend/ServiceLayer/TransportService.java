@@ -3,7 +3,6 @@ package Backend.ServiceLayer;
 import Backend.BusinessLayer.Controllers.TransportController;
 import Backend.Globals.Enums.ShippingAreas;
 import Backend.ServiceLayer.Objects.Transport;
-import Frontend.Objects.TransportOrder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,8 +15,14 @@ public class TransportService {
         this.controller = new TransportController();
     }
 
-    public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) {
-        controller.addTransportOrder(srcID, dstID, productList);
+    public Result addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) {
+        try {
+            controller.addTransportOrder(srcID, dstID, productList);
+            return Result.makeOk(null);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
     private List<Transport> toServiceTransports(List<Backend.BusinessLayer.Objects.Transport> transports)
     {
@@ -72,5 +77,9 @@ public class TransportService {
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
+    }
+
+    public Result startTransport(int transportSN) {
+        return  null;
     }
 }

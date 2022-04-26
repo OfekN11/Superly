@@ -12,55 +12,24 @@ public class TransportController {
     private List<Transport> waitingTransports;
     private List<Transport> inProgressTransports;
     private List<Transport> pastTransports;
-    private HashMap<Integer, TransportDocument> transportDocuments;
-    private HashMap<Integer, DestinationDocument> destinationDocuments;
     private Queue<TransportOrder> orderQueue;
 
     public TransportController() {
         waitingTransports =  new ArrayList<>();
         inProgressTransports =  new ArrayList<>();
         pastTransports =  new ArrayList<>();
-        transportDocuments = new HashMap<>();
         orderQueue = new PriorityQueue<>();
     }
 
-    public TransportDocument getTransportDocuments(int transportDocumentSN)
-    {
-        if(transportDocuments.containsKey(transportDocumentSN))
-        {
-            return transportDocuments.get(transportDocumentSN);
-        }
-        return null;
-    }
-    public DestinationDocument getDestinationDocuments(int destinationDocumentSN)
-    {
-        if(destinationDocuments.containsKey(destinationDocumentSN))
-        {
-            return destinationDocuments.get(destinationDocumentSN);
-        }
-        return null;
-    }
-
-
     public boolean placeDriver(int transportSN, String driverName)
     {
-        if(transportDocuments.containsKey(transportSN))
-        {
-            //Test if It's available to place the driver
-            //TODO:Decide how to implication
-            return true;
-        }
+
         return false;
     }
 
     public boolean placeTruck(int transportSN, String driverName)
     {
-        if(transportDocuments.containsKey(transportSN))
-        {
-            //Test if It's available to place the driver
-            //TODO:Decide how to implication
-            return true;
-        }
+
         return false;
     }
 
