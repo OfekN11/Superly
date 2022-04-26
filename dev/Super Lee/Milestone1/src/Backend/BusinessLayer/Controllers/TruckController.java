@@ -1,43 +1,62 @@
 package Backend.BusinessLayer.Controllers;
 
-import Backend.BusinessLayer.Objects.Transport;
 import Backend.BusinessLayer.Objects.Truck;
-import Backend.Globals.Enums.LicenseTypes;
+import Globals.Enums.TruckModel;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TruckController {
-    private HashMap<Integer, Truck> trucks;
-
-    public TruckController() {
-        trucks = new HashMap<>();
+    private HashMap<TruckModel, HashMap<Integer, Truck>> trucksFleet;
+    private static TruckController instance = null;
+    private TruckController() {
+        trucksFleet = new HashMap<>();
     }
 
-    public HashMap<Integer, Truck> getTrucks() {
-        return trucks;
+    public static TruckController getInstance(){
+        if (instance == null) {
+            instance = new TruckController();
+        }
+        return instance;
     }
 
-    public void removeTruck(int truckLN) throws Exception {
-        if(trucks.containsKey(truckLN))
+    public void removeTruck(int licenseNumber) throws Exception {
+        boolean deleted = false;
+        for(TruckModel tm: trucksFleet.keySet())
         {
-            trucks.remove(truckLN);
+            if(trucksFleet.get(tm).containsKey(licenseNumber))
+            {
+                trucksFleet.get(tm).remove(licenseNumber);
+                deleted = true;
+            }
+        }
+        if(!deleted){
+            throw new Exception("The truck doesn't exist in the truck fleet!");
+        }
+    }
+
+
+    public void addTruck(int licenseNumber, TruckModel model, int netWeight, int maxCapacityWeight) throws Exception {
+        if (!trucksFleet.containsKey(model))
+        {
+            trucksFleet.put(model, new HashMap<>());
+        }
+        if(!trucksFleet.get(model).containsKey(licenseNumber))
+        {
+            trucksFleet.get(model).put(licenseNumber, new Truck(licenseNumber, model, netWeight, maxCapacityWeight));
         }
         else {
-            throw new Exception("Truck does not exist");
+            throw new Exception("The truck fleet contain the truck!");
         }
     }
 
-
-    public void addTruck(int licenseNumber, LicenseTypes model, int netWeight, int maxCapacityWeight) throws Exception {
-        if(!trucks.containsKey(licenseNumber))
+    public Truck getTruck(int truckNumber) throws Exception {
+        for(TruckModel tm: trucksFleet.keySet())
         {
-            trucks.put(licenseNumber, new Truck(licenseNumber, model, netWeight, maxCapacityWeight));
+            if(trucksFleet.get(tm).containsKey(truckNumber))
+            {
+                return trucksFleet.get(tm).get(truckNumber);
+            }
         }
-        else {
-            throw new Exception("A truck with this license number already exists");
-        }
+        throw new Exception("The truck doesn't exist!");
     }
 }

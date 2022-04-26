@@ -1,48 +1,34 @@
 package Backend.BusinessLayer.Objects;
 
-import Backend.Globals.Enums.ShippingAreas;
+import Backend.BusinessLayer.Objects.Document.DestinationDocument;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class TransportOrder {
-    //private boolean status;
+    private static int incID = 0;
+    private int ID;
     private Source src;
     private Destination dst;
     private HashMap<String, Integer> productList;
 
     public TransportOrder(Source src, Destination dst) {
+        ID = incID++;
         this.src = src;
         this.dst = dst;
-        productList = new HashMap<>();
+        this.productList = new HashMap<>();
     }
 
-    public void addProduct(String productName, int countOfProduct) throws Exception {
-        if(!productList.containsKey(productName))
-        {
-            productList.put(productName, countOfProduct);
-        }
-        throw new Exception("The product is already on the list!");
-
+    public TransportOrder(Source src, Destination dst, HashMap<String, Integer> productList) {
+        ID = incID++;
+        this.src = src;
+        this.dst = dst;
+        this.productList = productList;
     }
 
-    public void removeProduct(String productName) throws Exception {
-        if(productList.containsKey(productName))
-        {
-            productList.remove(productName);
-        }
-        throw new Exception("The product does not exist!");
-
-    }
-
-    public void updateProduct(String productName, int countOfProduct) throws Exception {
-        if(productList.containsKey(productName))
-        {
-            productList.replace(productName, countOfProduct);
-        }
-        throw new Exception("The product does not exist!");
-
+    public int getID() {
+        return ID;
     }
 
     public Source getSrc() {
@@ -61,18 +47,52 @@ public class TransportOrder {
         this.dst = dst;
     }
 
-    public List<String> getProductsNameList() {
-        return new ArrayList<>(productList.keySet());
+    public HashMap<String, Integer> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(HashMap<String, Integer> productList) {
+        this.productList = productList;
+    }
+
+    private HashMap<String, Integer> splitProductList()
+    {
+        HashMap<String, Integer> newProductList = new HashMap<>();
+        for (String item: productList.keySet()) {
+            if (productList.size() / 2 > newProductList.size())
+            {
+                newProductList.put(item, productList.get(item));
+            }
+        }
+        productList.remove(newProductList);
+        return newProductList;
+    }
+
+    public TransportOrder splitOrder()
+    {
+        if(productList.size() == 0)
+        {
+            return null;
+        }
+        else {
+            TransportOrder newOrder = new TransportOrder(src, dst);
+            newOrder.productList = splitProductList();
+            return newOrder;
+        }
+    }
+
+    private List<String> getProductNameList()
+    {
+        List<String> pl = new ArrayList<>();
+        for(String product: productList.keySet())
+        {
+            pl.add(product);
+        }
+        return pl;
     }
 
     public DestinationDocument toDocument()
     {
-        return new DestinationDocument(dst.getId(), getProductsNameList());
+        return new DestinationDocument(dst.getId(), getProductNameList());
     }
-
-    public boolean isInThisArea(ShippingAreas area)
-    {
-        return area == src.getAddress().getShippingArea() || area == src.getAddress().getShippingArea();
-    }
-
 }

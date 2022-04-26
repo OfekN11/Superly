@@ -1,95 +1,246 @@
 package Backend.BusinessLayer.Controllers;
 
-import Backend.BusinessLayer.Objects.Transport;
-import Backend.BusinessLayer.Objects.TransportOrder;
-import Backend.Globals.Enums.ShippingAreas;
+import Backend.BusinessLayer.Objects.*;
+import Globals.Enums.ShippingAreas;
 
 import java.util.*;
 
 public class TransportController {
-    private HashMap<Integer, Transport> waitingTransports;
+    private static TransportController instance = null;
+    private HashMap<Integer, Transport> pendingTransports;
     private HashMap<Integer, Transport> inProgressTransports;
-    private HashMap<Integer, Transport> pastTransports;
-    private Queue<TransportOrder> orderQueue;
+    private HashMap<Integer, Transport> redesignTransports;
+    private HashMap<Integer, Transport> completedTransports;
+    private HashMap<Integer, TransportOrder> orders;
+    private TruckController truckController;
+    private DriverController driverController;
+    private DocumentController documentController;
+    private SiteController siteController;
 
-    public TransportController() {
-        waitingTransports =  new HashMap<>();
+    private TransportController() {
+        pendingTransports =  new HashMap<>();
         inProgressTransports =  new HashMap<>();
-        pastTransports =  new HashMap<>();
-        orderQueue = new PriorityQueue<>();
+        redesignTransports =  new HashMap<>();
+        completedTransports =  new HashMap<>();
+        orders = new HashMap<>();
+        truckController = TruckController.getInstance();
+        driverController = DriverController.getInstance();
     }
 
-    public boolean placeDriver(int transportSN, String driverName)
-    {
-        if(waitingTransports.containsKey(transportSN))
+    public static TransportController getInstance(){
+        if (instance == null) {
+            instance = new TransportController();
+        }
+        return instance;
+    }
+
+    public Transport getTransport(int transportSN) throws Exception {
+        if (pendingTransports.containsKey(transportSN))
         {
-            Transport transport = waitingTransports.get(transportSN);
-            if(transport.truckPlaced())
+            return pendingTransports.get(transportSN);
+        }
+        else if (inProgressTransports.containsKey(transportSN))
+        {
+            return inProgressTransports.get(transportSN);
+        }
+        else if (redesignTransports.containsKey(transportSN))
+        {
+            return redesignTransports.get(transportSN);
+        }
+        else if (completedTransports.containsKey(transportSN))
+        {
+            return completedTransports.get(transportSN);
+        }
+        else {
+            throw new Exception("The transport doesn't exist!");
+        }
+    }
+
+    public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) throws Exception {
+        Source src = siteController.getSource(srcID);
+        Destination dst = siteController.getDestination(dstID);
+        TransportOrder transportOrder = new TransportOrder(src, dst, productList);
+        orders.put(transportOrder.getID(), transportOrder);
+    }
+
+    public void placeTruck(int transportSN, int licenseNumber) throws Exception {
+        if(pendingTransports.containsKey(transportSN))
+        {
+            Transport transport = pendingTransports.get(transportSN);
+            if(!transport.placeTruck(licenseNumber))
             {
-                //TODO: DriverController.getInstance().canPlaceDriver();
-                return true;
+                throw new Exception("Can't place this truck to the transport!");
             }
         }
-        return false;
-    }
-
-    public void placeTruck(int transportSN, int truckLN) throws Exception {
-        if(waitingTransports.containsKey(transportSN))
-        {
-            Transport transport = waitingTransports.get(transportSN);
-            /*
-            if(truckController.getInstance().canPlaceTruck())
-            {
-                transport.placeTruck(truckLN);
-            }
-            */
-            throw new Exception("Can't place the truck");
+        else {
+            throw new Exception("The transport is not on the list of pending transport!");
         }
-        throw new Exception("The transport doesn't exist!");
     }
 
-    public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) {
-        TransportOrder transportOrder = null;//new TransportOrder(srcID, dstID, productList);
-        orderQueue.add(transportOrder);
+    public void placeDrive(int transportSN, String driverName) throws Exception {
+        if(pendingTransports.containsKey(transportSN))
+        {
+            Transport transport = pendingTransports.get(transportSN);
+            Truck truck = truckController.getTruck(transport.getTruckNumber());
+            //throw new Exception("First, a truck must be place for transport!");
+            Driver driver = driverController.getDriver(driverName);
+            if(truck.canDriveOn(driver.getLicenseTypes()))
+            {
+                transport.placeDriver(driverName);
+            }
+            else {
+                throw new Exception("The driver can't drive on this truck!");
+            }
+        }
+        else {
+            throw new Exception("The transport is not on the list of pending transport!");
+        }
+    }
+
+    public void startTransport(int transportSN) throws Exception {
+        if(pendingTransports.containsKey(transportSN))
+        {
+            Transport transport = pendingTransports.get(transportSN);
+            if(transport.readyToGo())
+            {
+                inProgressTransports.put(transportSN, transport);
+                pendingTransports.remove(transportSN);
+            }
+            else {
+                throw new Exception("Transport not ready to go!");
+            }
+        }
+        else {
+            throw new Exception("The transport is not on the list of pending transport!");
+        }
+    }
+
+    public void endTransport(int transportSN) throws Exception {
+        if(inProgressTransports.containsKey(transportSN))
+        {
+            Transport transport = inProgressTransports.get(transportSN);
+            if(true)//transport.end())
+            {
+                completedTransports.put(transportSN, transport);
+                inProgressTransports.remove(transportSN);
+                transport.toDocument();
+            }
+            else {
+                throw new Exception("Transport not ready to go!");
+            }
+        }
+        else {
+            throw new Exception("The transport is not on the list of in progress transport!");
+        }
+    }
+
+    public void redesignTransport(int transportSN) throws Exception {
+        if(inProgressTransports.containsKey(transportSN))
+        {
+            Transport transport = redesignTransports.get(transportSN);
+            if(true)
+            {
+                //TODO: 1. Place another truck with bigger capacity by the transport wight
+            }
+            else if(true)
+            {
+                //TODO: 2. Split the transport orders
+            }
+            else if (false){
+                //TODO: 3. Transport order number is 1 -> split transport order product list
+            }
+        }
+        else {
+            throw new Exception("The transport is not on the list of redesign transport!");
+        }
+    }
+
+    public HashMap<Integer, Transport> getPendingTransports() {
+        return pendingTransports;
     }
 
     public HashMap<Integer, Transport> getInProgressTransports() {
         return inProgressTransports;
     }
 
-    public HashMap<Integer, Transport> getWaitingTransports() {
-        return waitingTransports;
+    public HashMap<Integer, Transport> getRedesignTransports() {
+        return redesignTransports;
     }
 
-    public HashMap<Integer, Transport> getPastTransports() {
-        return pastTransports;
+    public HashMap<Integer, Transport> getCompletedTransports() {
+        return completedTransports;
     }
 
-    public Queue<TransportOrder> getTransportOrders() {
-        return orderQueue;
-    }
-
-    public Queue<TransportOrder> getTransportOrders(ShippingAreas area) {
-        Queue<TransportOrder> orders = new PriorityQueue<>();
-        for(TransportOrder transportOrder: orderQueue)
+    private TransportOrder getTransportOrder(int orderID) throws Exception {
+        if(orders.containsKey(orderID))
         {
-            if(transportOrder.isInThisArea(area))
+            return orders.get(orderID);
+        }
+        else {
+            throw new Exception("The transport order doesn't exist!");
+        }
+    }
+    public void addOrderToTransport(int transportSN, int orderID) throws Exception {
+        if(pendingTransports.containsKey(transportSN))
+        {
+            Transport transport = pendingTransports.get(transportSN);
+            TransportOrder order = getTransportOrder(orderID);
+            transport.addOrder(order);
+            orders.remove(orderID);
+        }
+        else {
+            throw new Exception("The transport is not on the list of pending transport!");
+        }
+    }
+
+    private List<TransportOrder> getTransportOrderInSameArea(List<ShippingAreas> as) throws Exception {
+        List<TransportOrder> orderList = new ArrayList<>();
+        for (Integer orderID: orders.keySet())
+        {
+            //TODO: Update
+            if(as.contains(null))
             {
-                orders.add(transportOrder);
+                orderList.add(orders.get(orderID));
             }
         }
-        return orders;
+        return orderList;
     }
 
-    public void startTransport(int transportSN) throws Exception {
-        if(waitingTransports.containsKey(transportSN))//TODO: add redesign?
+    public List<TransportOrder> getTransportOrderInSameArea(int transportSN) throws Exception {
+        if(pendingTransports.containsKey(transportSN))
         {
-            Transport transport = waitingTransports.get(transportSN);
-            if(!transport.readyToGo())
+            Transport transport = pendingTransports.get(transportSN);
+            //TODO: return getTransportOrderInSameArea(transport.getSA());
+            return null;
+        }
+        else {
+            throw new Exception("The transport is not on the list of pending transport!");
+        }
+    }
+
+    public void updateWeight(int transportSN,int newWeight) throws Exception {
+        if(inProgressTransports.containsKey(transportSN))
+        {
+            Transport transport = inProgressTransports.get(transportSN);
+            Truck truck = truckController.getTruck(transport.getTruckNumber());
+            if(!transport.updateWeight(newWeight, truck.getMaxCapacityWeight()))
             {
-                throw new Exception("The transport can not start!");
+                inProgressTransports.remove(transportSN);
+                redesignTransports.put(transportSN, transport);
+                throw new Exception("Weight Warning!");
             }
         }
-        throw new Exception("The transport can not start!");
+        else{
+            throw new Exception("The transport can not start!");
+        }
+
+    }
+    public List<TransportOrder> getTransportOrders() {
+        List<TransportOrder> orderList = new ArrayList<>();
+        for(int orderID: orders.keySet())
+        {
+            orderList.add(orders.get(orderID));
+        }
+        return orderList;
     }
 }

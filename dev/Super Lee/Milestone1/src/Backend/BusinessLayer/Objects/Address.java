@@ -1,22 +1,22 @@
 package Backend.BusinessLayer.Objects;
 
-import Backend.Globals.Enums.ShippingAreas;
+import Globals.Enums.ShippingAreas;
 
 public class Address {
-    private ShippingAreas shippingArea;
+    private ShippingAreas shippingAreas;
     private String exactAddress;
 
-    public Address(ShippingAreas shippingArea, String exactAddress) {
-        this.shippingArea = shippingArea;
+    public Address(ShippingAreas shippingAreas, String exactAddress) {
+        this.shippingAreas = shippingAreas;
         this.exactAddress = exactAddress;
     }
 
-    public ShippingAreas getShippingArea() {
-        return shippingArea;
+    public ShippingAreas getShippingAreas() {
+        return shippingAreas;
     }
 
-    public void setShippingArea(ShippingAreas shippingArea) {
-        this.shippingArea = shippingArea;
+    public void setShippingAreas(ShippingAreas shippingAreas) {
+        this.shippingAreas = shippingAreas;
     }
 
     public String getExactAddress() {

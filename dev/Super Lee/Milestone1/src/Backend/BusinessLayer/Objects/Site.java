@@ -1,14 +1,17 @@
 package Backend.BusinessLayer.Objects;
 
-abstract public class Site {
+public abstract class Site {
     private static int incID = 0;
     private int id;
     private Address address;
+    private String contactName;
+    private String phoneNumber;
 
-    public Site(Address address) {
-        id = incID;
-        incID++;
+    public Site(Address address, String contactName, String phoneNumber) {
+        id = incID++;
         this.address = address;
+        this.contactName = contactName;
+        this.phoneNumber = phoneNumber;
     }
 
     public int getId() {

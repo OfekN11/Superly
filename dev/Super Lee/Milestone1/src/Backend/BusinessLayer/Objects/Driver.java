@@ -1,11 +1,10 @@
 package Backend.BusinessLayer.Objects;
 
-import Backend.Globals.Enums.LicenseTypes;
+import Globals.Enums.LicenseTypes;
 
 public class Driver {
     private String name;
     private LicenseTypes licenseTypes;
-
     public Driver(String name, LicenseTypes licenseTypes) {
         this.name = name;
         this.licenseTypes = licenseTypes;
@@ -27,6 +26,4 @@ public class Driver {
     public void setLicenseTypes(LicenseTypes licenseTypes) {
         this.licenseTypes = licenseTypes;
     }
-
-
 }
