@@ -93,4 +93,24 @@ public class TransportService {
         //TODO:
         return null;
     }
+
+    public Result placeDriver(int transportSN, String driverName) {
+        try {
+            controller.placeDriver(transportSN, driverName);
+            return Result.makeOk(null);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result placeTruck(int transportSN, int truckLN) {
+        try {
+            controller.placeTruck(transportSN, truckLN);
+            return Result.makeOk(null);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
 }

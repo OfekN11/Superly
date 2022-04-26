@@ -93,15 +93,13 @@ public class Service {
         return null;//transportSer.inviteTransport();
     }
 
-    public Result placeDriver()
+    public Result placeDriver(int transportSN, String driverName)
     {
-        //TODO: implement
-        return null;
+        return transportSer.placeDriver(transportSN, driverName);
     }
-    public Result placeTruck()
+    public Result placeTruck(int transportSN, int truckLN)
     {
-        //TODO: implement
-        return null;
+        return transportSer.placeTruck(transportSN, truckLN);
     }
     //Driver:
     public Result addDriver(String name, LicenseTypes licenseTypes) {
@@ -109,4 +107,11 @@ public class Service {
     }
 
 
+    public Result removeDriver(String driverName) {
+        return driverSer.removeDriver(driverName);
+    }
+
+    public Result updateDriver(String driverName, LicenseTypes driverLicenseType) {
+        return driverSer.updateDriver(driverName, driverLicenseType);
+    }
 }

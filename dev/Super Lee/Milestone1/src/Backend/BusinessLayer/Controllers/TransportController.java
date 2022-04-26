@@ -1,8 +1,6 @@
 package Backend.BusinessLayer.Controllers;
 
-import Backend.BusinessLayer.Objects.DestinationDocument;
 import Backend.BusinessLayer.Objects.Transport;
-import Backend.BusinessLayer.Objects.TransportDocument;
 import Backend.BusinessLayer.Objects.TransportOrder;
 import Backend.Globals.Enums.ShippingAreas;
 
@@ -23,14 +21,31 @@ public class TransportController {
 
     public boolean placeDriver(int transportSN, String driverName)
     {
-
+        if(waitingTransports.containsKey(transportSN))
+        {
+            Transport transport = waitingTransports.get(transportSN);
+            if(transport.truckPlaced())
+            {
+                //TODO: DriverController.getInstance().canPlaceDriver();
+                return true;
+            }
+        }
         return false;
     }
 
-    public boolean placeTruck(int transportSN, String driverName)
-    {
-
-        return false;
+    public void placeTruck(int transportSN, int truckLN) throws Exception {
+        if(waitingTransports.containsKey(transportSN))
+        {
+            Transport transport = waitingTransports.get(transportSN);
+            /*
+            if(truckController.getInstance().canPlaceTruck())
+            {
+                transport.placeTruck(truckLN);
+            }
+            */
+            throw new Exception("Can't place the truck");
+        }
+        throw new Exception("The transport doesn't exist!");
     }
 
     public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) {

@@ -25,6 +25,7 @@ public class Transport {
         destinations = new ArrayList<>();
     }
 
+
     public boolean startTransport()
     {
         if (startTime == null)
@@ -97,10 +98,17 @@ public class Transport {
         //TODO: Check this
         return new ArrayList<>(shippingAreas.keySet());
     }
-
+    public boolean driverPlaced()
+    {
+        return driverName != null;
+    }
+    public boolean truckPlaced()
+    {
+        return driverName != null;
+    }
     public boolean readyToGo()
     {
-        return !sources.isEmpty() && !destinations.isEmpty() && driverName != null && truckNumber != -1 && truckWeight != -1;
+        return !sources.isEmpty() && !destinations.isEmpty() && driverPlaced() && truckPlaced() && truckWeight != -1;
     }
 
     private void addShippingArea(ShippingAreas sa)
@@ -126,17 +134,15 @@ public class Transport {
         }
     }
 
-    private void placeTruck(Truck truck)
+    private void placeTruck(int truckLN)
     {
-        //TODO: I dont think that have something to change maybe check the valid truck by the tour
-        //Update the truck available
-        truckNumber = truck.getLicenseNumber();
+        truckNumber = truckLN;
     }
 
-    private void placeDriver(Driver driver)
+    private void placeDriver(String driverName)
     {
         //TODO: I dont think that have something to change maybe check the valid truck by the tour
-        driverName = driver.getName();
+        driverName = driverName;
     }
 
     public LocalDateTime getStartTime() {

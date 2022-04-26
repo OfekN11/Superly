@@ -184,17 +184,18 @@ public class Cli {
     }
     private static void updateTransport() {
         boolean back = false;
+        System.out.println("Please enter transport serial number to update:");
+        int transportSN = reader.nextInt();;
         while(!back) {
             switch (menuCNT()) {
                 case 1:
-                    placeDriver();
+                    placeDriver(transportSN);
                     break;
                 case 2:
-                    placeTruck();
+                    placeTruck(transportSN);
                     break;
                 case 3:
-                    //TODO: Change that
-                    startTransport(0);
+                    startTransport(transportSN);
                     break;
                 case 4:
                     back = true;
@@ -213,12 +214,24 @@ public class Cli {
         }
     }
 
-    private static void placeTruck() {
-        //TODO: service.placeTruck();
+    private static void placeTruck(int transportSN) {
+        System.out.println("Please enter truck license number to place:");
+        int truckLN = reader.nextInt();
+        Result res = service.placeTruck(transportSN, truckLN);
+        if(res.isError())
+        {
+            System.out.println(res.getError());
+        }
     }
 
-    private static void placeDriver() {
-        //TODO: service.placeDriver();
+    private static void placeDriver(int transportSN) {
+        System.out.println("Please enter driver name to place:");
+        String driverName = reader.next();
+        Result res = service.placeDriver(transportSN, driverName);
+        if(res.isError())
+        {
+            System.out.println(res.getError());
+        }
     }
 
     private static void createNewTransport() {
@@ -329,18 +342,42 @@ public class Cli {
     }
 
     private static void updateDriver() {
-        //TODO: service.updateDriver();
+        System.out.println("Please enter driver name:");
+        String driverName = reader.next();
+        Result  result = service.updateDriver(driverName, getDriverLicenseType());
+        printIfError(result);
     }
 
     private static void removeDriver() {
-        //TODO: service.removeDriver();
+        System.out.println("Please enter driver name:");
+        String driverName = reader.next();
+        Result  result = service.removeDriver(driverName);
+        printIfError(result);
     }
-
+    private static void printIfError(Result res)
+    {
+        if(res.isError())
+        {
+            System.out.println(res.getError());
+        }
+    }
     private static void addDriver() {
-        //TODO: Get input from the user
-        service.addDriver("Example", LicenseTypes.B);
+        System.out.println("Please enter driver name:");
+        String driverName = reader.next();
+        Result  result = service.addDriver(driverName, getDriverLicenseType());
+        printIfError(result);
     }
+    private static LicenseTypes getDriverLicenseType()
+    {
+        String[] truckModel = {"B", "C1", "C", "CE"};
+        System.out.println("Enter driver license type:\n" +
+                "1. B\n" +
+                "2. C1\n" +
+                "3. C\n" +
+                "4. C+E");
 
+        return LicenseTypes.valueOf(truckModel[getChoice(1, 4) - 1]);
+    }
     private static int mainMenu()
     {
         System.out.println("Welcome to Transport's system\n" +
