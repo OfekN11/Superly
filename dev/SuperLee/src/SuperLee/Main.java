@@ -1,7 +1,9 @@
 package SuperLee;
 
 import SuperLee.BusinessLayer.Pair;
-import SuperLee.PresentationLayer.SuppliersCLI.CLI;
+import SuperLee.PresentationLayer.BackendController;
+import SuperLee.PresentationLayer.CLI;
+import SuperLee.PresentationLayer.Screens.SuppliersMenu;
 import SuperLee.ServiceLayer.SupplierService;
 
 import java.util.ArrayList;
@@ -16,6 +18,10 @@ public class Main {
     public static void main(String[] args) {
 
 
+        BackendController controller = new BackendController(initWithData());
+        new Thread(new SuppliersMenu(controller)).start();
+
+        /*
         System.out.println("Choose 1 for init with data or 2 for init with no data: ");
         int input = scan.nextInt();
         scan.nextLine();
@@ -33,9 +39,12 @@ public class Main {
 
         }
 
+         */
+
     }
 
-    private static void initWithData(CLI cli) {
+  //private static SupplierService initWithData(CLI cli) {
+    private static SupplierService initWithData() {
         System.out.println("Init with data");
         SupplierService service = new SupplierService();
 
@@ -59,8 +68,8 @@ public class Main {
         itemsToOrder.add("1");  itemsToOrder.add("bamba");   itemsToOrder.add("100");  itemsToOrder.add("2");  itemsToOrder.add("Halva");  itemsToOrder.add("50");
         service.addItemsToOrder(1, 1, itemsToOrder);
 
-
-        cli.init(service);
+        return service;
+        //cli.init(service);
 
     }
 }

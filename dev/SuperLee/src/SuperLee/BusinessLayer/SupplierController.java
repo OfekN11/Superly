@@ -410,4 +410,8 @@ public class SupplierController {
         }
         return suppliers.get(supId).getOrder(orderId);
     }
+
+    public boolean doesSupplierExists(int id) {
+        return suppliers.containsKey(id);
+    }
 }

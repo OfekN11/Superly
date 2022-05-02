@@ -1,4 +1,4 @@
-package SuperLee.PresentationLayer.SuppliersCLI;
+package SuperLee.PresentationLayer;
 
 import SuperLee.BusinessLayer.Pair;
 import SuperLee.ServiceLayer.*;

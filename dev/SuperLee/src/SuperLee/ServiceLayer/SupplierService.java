@@ -532,4 +532,13 @@ public class SupplierService {
         return new ServiceOrderObject(orderId, orderDate, items);
     }
 
+    public Result<Boolean> supplierExists(int id) {
+        try{
+            boolean result = controller.doesSupplierExists(id);
+            return Result.makeOk(result);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
 }
