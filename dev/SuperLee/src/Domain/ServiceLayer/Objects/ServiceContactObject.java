@@ -1,4 +1,4 @@
-package SuperLee.ServiceLayer;
+package Domain.ServiceLayer.Objects;
 
 public class ServiceContactObject {
 

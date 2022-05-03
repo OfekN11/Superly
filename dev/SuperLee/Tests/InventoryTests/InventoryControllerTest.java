@@ -1,4 +1,4 @@
-package BusinessTests;
+package InventoryTests;
 
 import Domain.BusinessLayer.InventoryController;
 import org.junit.jupiter.api.BeforeEach;

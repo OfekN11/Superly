@@ -1,8 +1,4 @@
-package SuperLee.BusinessLayer.Agreement;
-
-import SuperLee.BusinessLayer.AgreementItem;
-
-import java.util.List;
+package Domain.BusinessLayer.Agreement;
 
 public class NotTransportingAgreement extends Agreement {
 

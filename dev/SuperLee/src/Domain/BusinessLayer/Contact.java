@@ -1,4 +1,4 @@
-package SuperLee.BusinessLayer;
+package Domain.BusinessLayer;
 
 public class Contact {
 

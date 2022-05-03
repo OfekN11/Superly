@@ -1,4 +1,4 @@
-package BusinessTests;
+package InventoryTests;
 
 import Domain.BusinessLayer.DiscountsAndSales.SaleToCustomer;
 import org.junit.jupiter.api.BeforeEach;

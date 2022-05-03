@@ -1,10 +1,12 @@
-package SuperLee.ServiceLayer;
+package Domain.ServiceLayer;
 
-import SuperLee.BusinessLayer.Pair;
-import SuperLee.BusinessLayer.SupplierController;
+import Domain.ServiceLayer.Objects.ServiceContactObject;
+import Domain.ServiceLayer.Objects.ServiceItemObject;
+import Domain.ServiceLayer.Objects.ServiceSupplierObject;
+import Domain.BusinessLayer.Pair;
+import Domain.BusinessLayer.SupplierController;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 
 public class SupplierService {
@@ -243,7 +245,7 @@ public class SupplierService {
         }
     }
 
-    public Result<Boolean> changeAgreementType(int supplierId,  int agreementType, String agreementDays) {
+    public Result<Boolean> changeAgreementType(int supplierId, int agreementType, String agreementDays) {
         try {
             controller.updateAgreementType(supplierId, agreementType, agreementDays);
             return Result.makeOk(true);

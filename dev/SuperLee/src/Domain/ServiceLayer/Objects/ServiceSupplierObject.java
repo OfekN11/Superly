@@ -1,7 +1,4 @@
-package SuperLee.ServiceLayer;
-
-import SuperLee.BusinessLayer.Agreement.Agreement;
-import SuperLee.BusinessLayer.Contact;
+package Domain.ServiceLayer.Objects;
 
 import java.util.ArrayList;
 

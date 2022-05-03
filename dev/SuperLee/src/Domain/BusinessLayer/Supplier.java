@@ -1,9 +1,9 @@
-package SuperLee.BusinessLayer;
+package Domain.BusinessLayer;
 
-import SuperLee.BusinessLayer.Agreement.Agreement;
-import SuperLee.BusinessLayer.Agreement.ByOrderAgreement;
-import SuperLee.BusinessLayer.Agreement.NotTransportingAgreement;
-import SuperLee.BusinessLayer.Agreement.RoutineAgreement;
+import Domain.BusinessLayer.Agreement.Agreement;
+import Domain.BusinessLayer.Agreement.ByOrderAgreement;
+import Domain.BusinessLayer.Agreement.NotTransportingAgreement;
+import Domain.BusinessLayer.Agreement.RoutineAgreement;
 
 import java.util.ArrayList;
 import java.util.List;

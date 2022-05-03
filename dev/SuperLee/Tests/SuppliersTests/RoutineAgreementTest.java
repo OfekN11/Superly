@@ -1,20 +1,12 @@
 package SuppliersTests;
 
-import SuperLee.BusinessLayer.Agreement.Agreement;
-import SuperLee.BusinessLayer.Agreement.NotTransportingAgreement;
-import SuperLee.BusinessLayer.Agreement.RoutineAgreement;
+import Domain.BusinessLayer.Agreement.RoutineAgreement;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-import SuperLee.BusinessLayer.Agreement.Agreement;
-import SuperLee.BusinessLayer.Agreement.NotTransportingAgreement;
-import SuperLee.BusinessLayer.AgreementItem;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class RoutineAgreementTest {

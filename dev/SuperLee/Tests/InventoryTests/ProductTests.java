@@ -1,4 +1,4 @@
-package BusinessTests;
+package InventoryTests;
 
 import Domain.BusinessLayer.Category;
 import Domain.BusinessLayer.DiscountsAndSales.SaleToCustomer;

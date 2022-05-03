@@ -1,6 +1,6 @@
-package SuperLee;
+package PresentationLayer;
 
-import SuperLee.PresentationLayer.SuppliersCLI.CLI;
+import PresentationLayer.CLI;
 
 public class Main {
 

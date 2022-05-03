@@ -1,10 +1,8 @@
 package SuppliersTests;
 
-import SuperLee.BusinessLayer.Agreement.Agreement;
-import SuperLee.BusinessLayer.Agreement.NotTransportingAgreement;
-import SuperLee.BusinessLayer.Contact;
-import SuperLee.BusinessLayer.Pair;
-import SuperLee.BusinessLayer.Supplier;
+import Domain.BusinessLayer.Agreement.Agreement;
+import Domain.BusinessLayer.Contact;
+import Domain.BusinessLayer.Supplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

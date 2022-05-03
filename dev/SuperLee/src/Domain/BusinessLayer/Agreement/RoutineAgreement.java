@@ -1,6 +1,4 @@
-package SuperLee.BusinessLayer.Agreement;
-
-import SuperLee.BusinessLayer.AgreementItem;
+package Domain.BusinessLayer.Agreement;
 
 import java.util.*;
 

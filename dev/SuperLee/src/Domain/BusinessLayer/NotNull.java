@@ -1,4 +1,4 @@
-package SuperLee.BusinessLayer;
+package Domain.BusinessLayer;
 
 /**
  * A service class, its sole purpose is to check whether

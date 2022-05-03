@@ -1,10 +1,10 @@
-package SuperLee.PresentationLayer.SuppliersCLI;
+package PresentationLayer;
 
-import SuperLee.BusinessLayer.Pair;
-import SuperLee.ServiceLayer.Result;
-import SuperLee.ServiceLayer.ServiceItemObject;
-import SuperLee.ServiceLayer.ServiceSupplierObject;
-import SuperLee.ServiceLayer.SupplierService;
+import Domain.ServiceLayer.Result;
+import Domain.BusinessLayer.Pair;
+import Domain.ServiceLayer.Objects.ServiceItemObject;
+import Domain.ServiceLayer.Objects.ServiceSupplierObject;
+import Domain.ServiceLayer.SupplierService;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;

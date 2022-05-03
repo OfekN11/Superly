@@ -1,4 +1,4 @@
-package SuperLee.ServiceLayer;
+package Domain.ServiceLayer.Objects;
 
 import java.util.HashMap;
 import java.util.Map;
