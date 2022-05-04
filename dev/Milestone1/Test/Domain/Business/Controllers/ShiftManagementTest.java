@@ -47,8 +47,7 @@ public class ShiftManagementTest {
         try {
             shiftController.createShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-1998"),ShiftTypes.Morning,"5",6,6,6,4,4,4);
             shiftController.removeShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-1998"),ShiftTypes.Morning);
-            shiftController.getShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-1998"),ShiftTypes.Morning);
-            fail();
+            assertNull(shiftController.getShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-1998"),ShiftTypes.Morning));
         } catch (Exception e) {
             assertTrue(true);
         }

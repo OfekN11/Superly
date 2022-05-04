@@ -157,7 +157,7 @@ public class BackendController {
     }
 
     public void createShift(Date date, ShiftTypes type, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) throws Exception {
-        Result<Object> result = shiftService.createShift(date, type, managerId, carrierCount, carrierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount);
+        Result<Object> result = shiftService.createShift(date, type, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }

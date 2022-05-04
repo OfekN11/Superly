@@ -33,8 +33,7 @@ public class DEmployeeCertificationController extends DalController<Pair<String,
         Set<Pair<String, Set<Certifications>>> output = new HashSet<>();
         for(int i=0; i<10; i++){
             Set<Certifications> licenses = new HashSet<>();
-            if (i%2==0)
-                licenses.add(Certifications.ShiftManagement);
+            licenses.add(Certifications.ShiftManagement);
             output.add(new Pair<>(""+i,licenses));
         }
         return output;

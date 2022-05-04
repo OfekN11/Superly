@@ -19,7 +19,7 @@ public class DLogistics_ManagerController extends DTOControllers<DLogistics_Mana
         Set<DLogistics_Manager> output = new HashSet<>();
         for (int i=30; i<40; i++) {
             try {
-                output.add(new DLogistics_Manager(""+i,"Logistics_Manager " + i,"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("15-06-1198")));
+                output.add(new DLogistics_Manager(""+i,"Logistics_Manager " + i,"bd",i,"con" +i,  new SimpleDateFormat("dd-MM-yyyy").parse("25-07-2022")));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

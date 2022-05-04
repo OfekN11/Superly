@@ -19,8 +19,8 @@ public class DEveningShiftController extends DTOControllers<DEveningShift> {
     public Set<DEveningShift> loadData() {
         Set<DEveningShift> morningShifts = new HashSet<>();
         try {
-            morningShifts.add(new DEveningShift(new SimpleDateFormat("dd-MM-yyyy").parse("19-06-2021"),""+8,15,12,12,12,12,12));
-            morningShifts.add(new DEveningShift(new SimpleDateFormat("dd-MM-yyyy").parse("23-07-2021"),""+2,12,7,12,12,12,12));
+            morningShifts.add(new DEveningShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-2022"),""+8,15,12,12,12,12,12));
+            morningShifts.add(new DEveningShift(new SimpleDateFormat("dd-MM-yyyy").parse("282-07-2022"),""+2,12,7,12,12,12,12));
         } catch (ParseException e) {
             e.printStackTrace();
         }
