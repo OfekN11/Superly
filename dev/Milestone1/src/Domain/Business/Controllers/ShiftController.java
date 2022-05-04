@@ -36,11 +36,6 @@ public class ShiftController {
     public void deleteData() {
     }
 
-    public void removeWorkday(Date workday) throws Exception {
-        validateWorkday(workday);
-        shifts.remove(workday);
-    }
-
     public Shift getShift(Date workday, ShiftTypes type) throws Exception {
         validateWorkday(workday);
         return shifts.get(workday).get(type);
