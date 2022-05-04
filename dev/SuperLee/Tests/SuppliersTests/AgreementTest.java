@@ -1,12 +1,11 @@
 package SuppliersTests;
 
-import SuperLee.BusinessLayer.Agreement.Agreement;
-import SuperLee.BusinessLayer.Agreement.NotTransportingAgreement;
-import SuperLee.BusinessLayer.AgreementItem;
+import Domain.BusinerssLayer.Supplier.Agreement.Agreement;
+import Domain.BusinerssLayer.Supplier.Agreement.NotTransportingAgreement;
+import Domain.BusinerssLayer.Supplier.AgreementItem;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
 import java.util.HashMap;
