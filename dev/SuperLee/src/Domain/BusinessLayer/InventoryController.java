@@ -1,7 +1,11 @@
 package Domain.BusinessLayer;
 
-import Domain.BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
-import Domain.BusinessLayer.DiscountsAndSales.SaleToCustomer;
+import Domain.BusinessLayer.Inventory.Category;
+import Domain.BusinessLayer.Inventory.DefectiveItems;
+import Domain.BusinessLayer.Inventory.DiscountsAndSales.PurchaseFromSupplier;
+import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
+import Domain.BusinessLayer.Inventory.Product;
+import Domain.BusinessLayer.Inventory.StockReport;
 import Globals.Defect;
 
 import java.util.*;

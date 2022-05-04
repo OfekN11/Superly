@@ -2,8 +2,80 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14db89f2-b157-448b-aea3-2353a64a0cb5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Catalogs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Category.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/MainMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Product.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Register.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Sales.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Screen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Store.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/CategoryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/CategoryTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/ProductTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/ProductTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/SaleToCustomerTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/SaleToCustomerTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/SuppliersTests/AgreementItemTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/SuppliersTests/AgreementItemTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/SuppliersTests/AgreementTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/SuppliersTests/AgreementTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/SuppliersTests/ByOrderAgreementTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/SuppliersTests/ByOrderAgreementTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/SuppliersTests/RoutineAgreementTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/SuppliersTests/RoutineAgreementTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/SuppliersTests/SupplierControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/SuppliersTests/SupplierControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/SuppliersTests/SupplierTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/SuppliersTests/SupplierTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinerssLayer/Supplier/Agreement/Agreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Supplier/Agreement/Agreement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinerssLayer/Supplier/Agreement/ByOrderAgreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Supplier/Agreement/ByOrderAgreement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinerssLayer/Supplier/Agreement/NotTransportingAgreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Supplier/Agreement/NotTransportingAgreement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinerssLayer/Supplier/Agreement/RoutineAgreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Supplier/Agreement/RoutineAgreement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinerssLayer/Supplier/AgreementItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Supplier/AgreementItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinerssLayer/Supplier/Contact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Supplier/Contact.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinerssLayer/Supplier/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Supplier/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinerssLayer/Supplier/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Supplier/OrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinerssLayer/Supplier/Supplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Supplier/Supplier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinerssLayer/Supplier/SupplierController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/SupplierController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Inventory/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/DefectiveItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Inventory/DefectiveItems.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/DiscountsAndSales/PurchaseFromSupplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Inventory/DiscountsAndSales/PurchaseFromSupplier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/DiscountsAndSales/SaleToCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Inventory/DiscountsAndSales/SaleToCustomer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Inventory/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Inventory/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/StockReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Inventory/StockReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryObjects/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/DefectiveItemReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryObjects/DefectiveItemReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryObjects/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/PurchaseFromSupplierReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryObjects/PurchaseFromSupplierReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/Sale.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryObjects/Sale.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/StockReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryObjects/StockReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Suppliers/ServiceContactObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/SupplierObjects/ServiceContactObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Suppliers/ServiceItemObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/SupplierObjects/ServiceItemObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Suppliers/ServiceOrderItemObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/SupplierObjects/ServiceOrderItemObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Suppliers/ServiceOrderObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/SupplierObjects/ServiceOrderObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Suppliers/ServiceSupplierObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/SupplierObjects/ServiceSupplierObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Suppliers/SupplierService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/SupplierService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PresentationLayer/BackendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/BackendController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/CLI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/CLI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Inventory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/Catalogs.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/Category.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/MainMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/Product.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/Register.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/Reports.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/Sales.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/Screen.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/Store.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/EditCardScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/EditCardScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ManageSupplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ManageSupplier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/SuppliersMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/SuppliersMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewAgreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewAgreement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewByOrderAgreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewByOrderAgreement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewContacts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewContacts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewManufacturers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewManufacturers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewNotTransportingAgreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewNotTransportingAgreement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewRoutineAgreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewRoutineAgreement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewSuppliersMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewSuppliersMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../docs/Instructions.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/Instructions.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -68,10 +140,11 @@
       <recent name="C:\Tomer\שנה ב\סמסטר ד\ניתוצ\עבודה\adss_group_l\dev\SuperLee\Tests\InventoryTests" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="Domain.BusinessLayer" />
+      <recent name="Domain.BusinerssLayer" />
+      <recent name="Domain.ServiceLayer" />
+      <recent name="PresentationLayer.Screens.InventorySreens" />
       <recent name="Domain" />
-      <recent name="BusinessLayer" />
-      <recent name="BusinessLayer.DiscountsAndSales" />
-      <recent name="BusinessLayer.DefectiveItems" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="BusinessLayer" />
@@ -556,7 +629,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java</url>
-          <line>53</line>
+          <line>57</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

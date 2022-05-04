@@ -1,7 +1,7 @@
 package PresentationLayer;
 
 import Domain.ServiceLayer.InventoryService;
-import Domain.ServiceLayer.Objects.*;
+import Domain.ServiceLayer.InventoryObjects.*;
 import Domain.ServiceLayer.Result;
 
 import java.text.ParseException;

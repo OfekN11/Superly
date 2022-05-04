@@ -1,6 +1,6 @@
 package PresentationLayer.Screens.SupplierScreens;
 
-import PresentationLayer.Screens.Screen;
+import PresentationLayer.Screens.InventorySreens.Screen;
 
 public class ViewByOrderAgreement extends ViewAgreement {
 

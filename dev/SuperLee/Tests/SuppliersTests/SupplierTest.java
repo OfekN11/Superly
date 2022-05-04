@@ -1,8 +1,8 @@
 package SuppliersTests;
 
-import Domain.BusinerssLayer.Supplier.Agreement.Agreement;
-import Domain.BusinerssLayer.Supplier.Contact;
-import Domain.BusinerssLayer.Supplier.Supplier;
+import Domain.BusinessLayer.Supplier.Agreement.Agreement;
+import Domain.BusinessLayer.Supplier.Contact;
+import Domain.BusinessLayer.Supplier.Supplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

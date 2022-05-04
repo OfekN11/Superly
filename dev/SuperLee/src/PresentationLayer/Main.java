@@ -2,7 +2,7 @@ package PresentationLayer;
 
 import Globals.Pair;
 import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
-import Domain.ServiceLayer.Suppliers.SupplierService;
+import Domain.ServiceLayer.SupplierService;
 
 import java.util.ArrayList;
 import java.util.Scanner;

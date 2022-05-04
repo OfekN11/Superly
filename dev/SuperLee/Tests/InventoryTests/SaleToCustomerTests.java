@@ -1,6 +1,6 @@
 package InventoryTests;
 
-import Domain.BusinessLayer.DiscountsAndSales.SaleToCustomer;
+import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;

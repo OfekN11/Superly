@@ -1,7 +1,7 @@
 package PresentationLayer.Screens.SupplierScreens;
 
-import PresentationLayer.Screens.Screen;
-import Domain.ServiceLayer.Suppliers.ServiceSupplierObject;
+import PresentationLayer.Screens.InventorySreens.Screen;
+import Domain.ServiceLayer.SupplierObjects.ServiceSupplierObject;
 
 import java.util.HashMap;
 import java.util.Map;

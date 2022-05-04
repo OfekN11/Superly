@@ -1,7 +1,7 @@
 package SuppliersTests;
 
 import Globals.Pair;
-import Domain.BusinerssLayer.Supplier.SupplierController;
+import Domain.BusinessLayer.SupplierController;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;

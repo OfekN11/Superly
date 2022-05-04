@@ -1,11 +1,11 @@
 package Domain.ServiceLayer;
 
 
-import Domain.BusinessLayer.DefectiveItems;
-import Domain.BusinessLayer.DiscountsAndSales.SaleToCustomer;
-import Domain.BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
+import Domain.BusinessLayer.Inventory.DefectiveItems;
+import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
+import Domain.BusinessLayer.Inventory.DiscountsAndSales.PurchaseFromSupplier;
 import Domain.BusinessLayer.InventoryController;
-import Domain.ServiceLayer.Objects.*;
+import Domain.ServiceLayer.InventoryObjects.*;
 
 import java.util.*;
 
@@ -92,7 +92,7 @@ public class InventoryService {
      */
     public Result<Product> newProduct(String name, int categoryID, int weight, double price, Map<Integer, Integer> suppliers, int manufacturerID){
         try {
-            Domain.BusinessLayer.Product p = controller.newProduct(name, categoryID, weight, price, suppliers, manufacturerID);
+            Domain.BusinessLayer.Inventory.Product p = controller.newProduct(name, categoryID, weight, price, suppliers, manufacturerID);
             return Result.makeOk(new Product(p));
         }
         catch (Exception e){
@@ -152,7 +152,7 @@ public class InventoryService {
      */
     public Result<Product> addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int maxAmount){
         try {
-            Domain.BusinessLayer.Product p = controller.addProductToStore(storeID, shelvesInStore, shelvesInWarehouse, productID, minAmount, maxAmount);
+            Domain.BusinessLayer.Inventory.Product p = controller.addProductToStore(storeID, shelvesInStore, shelvesInWarehouse, productID, minAmount, maxAmount);
             return Result.makeOk(new Product(p));
         }
         catch (Exception e){
@@ -167,7 +167,7 @@ public class InventoryService {
      */
     public Result<Product> removeProductFromStore(int storeID, int productID){
         try {
-            Domain.BusinessLayer.Product p = controller.removeProductFromStore(storeID, productID);
+            Domain.BusinessLayer.Inventory.Product p = controller.removeProductFromStore(storeID, productID);
             return Result.makeOk(new Product(p));
         }
         catch (Exception e){
@@ -273,7 +273,7 @@ public class InventoryService {
         try {
             List<DefectiveItems> dirs = controller.getDefectiveItemsByStore(start, end, storeIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
-            for (Domain.BusinessLayer.DefectiveItems dir : dirs)
+            for (Domain.BusinessLayer.Inventory.DefectiveItems dir : dirs)
                 SLdirs.add(new DefectiveItemReport(dir));
             return Result.makeOk(SLdirs);
         }
@@ -291,7 +291,7 @@ public class InventoryService {
         try {
             List<DefectiveItems> dirs = controller.getDefectiveItemsByCategory(start, end, categoryIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
-            for (Domain.BusinessLayer.DefectiveItems dir : dirs)
+            for (Domain.BusinessLayer.Inventory.DefectiveItems dir : dirs)
                 SLdirs.add(new DefectiveItemReport(dir));
             return Result.makeOk(SLdirs);
         }
@@ -309,7 +309,7 @@ public class InventoryService {
         try {
             List<DefectiveItems> dirs = controller.getDefectiveItemsByProduct(start, end, productIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
-            for (Domain.BusinessLayer.DefectiveItems dir : dirs)
+            for (Domain.BusinessLayer.Inventory.DefectiveItems dir : dirs)
                 SLdirs.add(new DefectiveItemReport(dir));
             return Result.makeOk(SLdirs);
         }
@@ -325,9 +325,9 @@ public class InventoryService {
      */
     public Result<List<Product>> getProducts(){
         try {
-            Collection<Domain.BusinessLayer.Product> products = controller.getProducts();
+            Collection<Domain.BusinessLayer.Inventory.Product> products = controller.getProducts();
             List<Product> productList = new ArrayList<>();
-            for (Domain.BusinessLayer.Product p : products) {
+            for (Domain.BusinessLayer.Inventory.Product p : products) {
                 productList.add(new Product(p));
             }
             return Result.makeOk(productList);
@@ -344,9 +344,9 @@ public class InventoryService {
      */
     public Result<List<Product>> getProductsFromCategory(List<Integer> categoryIDs){
         try {
-            Collection<Domain.BusinessLayer.Product> products = controller.getProductsFromCategory(categoryIDs);
+            Collection<Domain.BusinessLayer.Inventory.Product> products = controller.getProductsFromCategory(categoryIDs);
             List<Product> productList = new ArrayList<>();
-            for (Domain.BusinessLayer.Product p : products) {
+            for (Domain.BusinessLayer.Inventory.Product p : products) {
                 productList.add(new Product(p));
             }
             return Result.makeOk(productList);
@@ -363,9 +363,9 @@ public class InventoryService {
      */
     public Result<List<Category>> getCategories(){
         try {
-            Collection<Domain.BusinessLayer.Category> categories = controller.getCategories();
+            Collection<Domain.BusinessLayer.Inventory.Category> categories = controller.getCategories();
             List<Category> categoryList = new ArrayList<>();
-            for (Domain.BusinessLayer.Category c : categories) {
+            for (Domain.BusinessLayer.Inventory.Category c : categories) {
                 categoryList.add(new Category(c));
             }
             return Result.makeOk(categoryList);
@@ -396,9 +396,9 @@ public class InventoryService {
      */
     public Result<List<StockReport>> getMinStockReport(){
         try {
-            List<Domain.BusinessLayer.StockReport> minStock = controller.getMinStockReport();
+            List<Domain.BusinessLayer.Inventory.StockReport> minStock = controller.getMinStockReport();
             List<StockReport> stockReports = new ArrayList<>();
-            for (Domain.BusinessLayer.StockReport s : minStock)
+            for (Domain.BusinessLayer.Inventory.StockReport s : minStock)
                 stockReports.add(new StockReport(s));
             return Result.makeOk(stockReports);
         }
@@ -414,9 +414,9 @@ public class InventoryService {
      */
     public Result<List<StockReport>> storeStockReport(List<Integer> stores, List<Integer> categories){
         try {
-            List<Domain.BusinessLayer.StockReport> stock = controller.getStockReport(stores, categories);
+            List<Domain.BusinessLayer.Inventory.StockReport> stock = controller.getStockReport(stores, categories);
             List<StockReport> stockReports = new ArrayList<>();
-            for (Domain.BusinessLayer.StockReport s : stock)
+            for (Domain.BusinessLayer.Inventory.StockReport s : stock)
                 stockReports.add(new StockReport(s));
             return Result.makeOk(stockReports);
         }
@@ -474,9 +474,9 @@ public class InventoryService {
      */
     public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(Date start, Date end, List<Integer> storeIDs){
         try {
-            List<Domain.BusinessLayer.DefectiveItems> dirs = controller.getDamagedItemReportsByStore(start, end, storeIDs);
+            List<Domain.BusinessLayer.Inventory.DefectiveItems> dirs = controller.getDamagedItemReportsByStore(start, end, storeIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
-            for (Domain.BusinessLayer.DefectiveItems dir : dirs)
+            for (Domain.BusinessLayer.Inventory.DefectiveItems dir : dirs)
                 SLdirs.add(new DefectiveItemReport(dir));
             return Result.makeOk(SLdirs);
         }
@@ -492,9 +492,9 @@ public class InventoryService {
      */
     public Result<List<DefectiveItemReport>> getDamagedItemsReportByCategory(Date start, Date end, List<Integer> categoryIDs){
         try {
-            List<Domain.BusinessLayer.DefectiveItems> dirs = controller.getDamagedItemReportsByCategory(start, end, categoryIDs);
+            List<Domain.BusinessLayer.Inventory.DefectiveItems> dirs = controller.getDamagedItemReportsByCategory(start, end, categoryIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
-            for (Domain.BusinessLayer.DefectiveItems dir : dirs)
+            for (Domain.BusinessLayer.Inventory.DefectiveItems dir : dirs)
                 SLdirs.add(new DefectiveItemReport(dir));
             return Result.makeOk(SLdirs);
         }
@@ -510,9 +510,9 @@ public class InventoryService {
      */
     public Result<List<DefectiveItemReport>> getDamagedItemsReportByProduct(Date start, Date end, List<Integer> productIDs){
         try {
-            List<Domain.BusinessLayer.DefectiveItems> dirs = controller.getDamagedItemReportsByProduct(start, end, productIDs);
+            List<Domain.BusinessLayer.Inventory.DefectiveItems> dirs = controller.getDamagedItemReportsByProduct(start, end, productIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
-            for (Domain.BusinessLayer.DefectiveItems dir : dirs)
+            for (Domain.BusinessLayer.Inventory.DefectiveItems dir : dirs)
                 SLdirs.add(new DefectiveItemReport(dir));
             return Result.makeOk(SLdirs);
         }
@@ -528,9 +528,9 @@ public class InventoryService {
      */
     public Result<List<DefectiveItemReport>> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeIDs){
         try {
-            List<Domain.BusinessLayer.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByStore(start, end, storeIDs);
+            List<Domain.BusinessLayer.Inventory.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByStore(start, end, storeIDs);
             List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
-            for (Domain.BusinessLayer.DefectiveItems eir : expiredItemReports)
+            for (Domain.BusinessLayer.Inventory.DefectiveItems eir : expiredItemReports)
                 expiredItemReportList.add(new DefectiveItemReport(eir));
             return Result.makeOk(expiredItemReportList);
         }
@@ -546,9 +546,9 @@ public class InventoryService {
      */
     public Result<List<DefectiveItemReport>> getExpiredItemReportsByCategory(Date start, Date end, List<Integer> categoryIDs){
         try {
-            List<Domain.BusinessLayer.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByCategory(start, end, categoryIDs);
+            List<Domain.BusinessLayer.Inventory.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByCategory(start, end, categoryIDs);
             List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
-            for (Domain.BusinessLayer.DefectiveItems eir : expiredItemReports)
+            for (Domain.BusinessLayer.Inventory.DefectiveItems eir : expiredItemReports)
                 expiredItemReportList.add(new DefectiveItemReport(eir));
             return Result.makeOk(expiredItemReportList);
         }
@@ -564,9 +564,9 @@ public class InventoryService {
      */
     public Result<List<DefectiveItemReport>> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productIDs){
         try {
-            List<Domain.BusinessLayer.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByProduct(start, end, productIDs);
+            List<Domain.BusinessLayer.Inventory.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByProduct(start, end, productIDs);
             List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
-            for (Domain.BusinessLayer.DefectiveItems eir : expiredItemReports)
+            for (Domain.BusinessLayer.Inventory.DefectiveItems eir : expiredItemReports)
                 expiredItemReportList.add(new DefectiveItemReport(eir));
             return Result.makeOk(expiredItemReportList);
         }

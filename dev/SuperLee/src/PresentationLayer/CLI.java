@@ -1,6 +1,7 @@
 package PresentationLayer;
 
-import Domain.ServiceLayer.Suppliers.*;
+import Domain.ServiceLayer.SupplierService;
+import Domain.ServiceLayer.SupplierObjects.*;
 import Globals.Pair;
 
 import java.util.*;

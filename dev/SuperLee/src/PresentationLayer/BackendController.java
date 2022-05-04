@@ -1,22 +1,19 @@
 package PresentationLayer;
 
-import Domain.ServiceLayer.Suppliers.*;
+import Domain.ServiceLayer.SupplierService;
+import Domain.ServiceLayer.SupplierObjects.*;
 import Globals.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import Domain.BusinessLayer.DefectiveItems;
-import Domain.BusinessLayer.DiscountsAndSales.PurchaseFromSupplier;
-import Domain.BusinessLayer.DiscountsAndSales.SaleToCustomer;
+
 import Domain.ServiceLayer.InventoryService;
-import Domain.ServiceLayer.Objects.*;
+import Domain.ServiceLayer.InventoryObjects.*;
 import Domain.ServiceLayer.Result;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
+
 public class BackendController {
 
     //private final SupplierService supplierService = new SupplierService();
