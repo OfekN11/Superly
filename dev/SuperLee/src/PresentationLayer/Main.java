@@ -1,6 +1,5 @@
 package PresentationLayer;
 
-<<<<<<< HEAD
 import Globals.Pair;
 import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
 import Domain.ServiceLayer.Suppliers.SupplierService;
@@ -15,9 +14,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-
-
-        BackendController controller = new BackendController(initWithData());
+        BackendController controller = new BackendController();
         new Thread(new SuppliersMenu(controller)).start();
 
         /*
@@ -71,15 +68,4 @@ public class Main {
         //cli.init(service);
 
     }
-=======
-import PresentationLayer.Screens.MainMenu;
-
-public class Main {
-    public static void main(String[] args) {
-        BackendController controller = new BackendController();
-        controller.loadData();
-        new Thread(new MainMenu(controller)).start();
-    }
-
->>>>>>> tomerScreens
 }

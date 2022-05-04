@@ -2,104 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14db89f2-b157-448b-aea3-2353a64a0cb5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../adss_group_l.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/InventoryTests/CategoryTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/InventoryTests/InventoryControllerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/InventoryTests/ProductTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/InventoryTests/SaleToCustomerTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/DefectiveItems.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/DiscountsAndSales/PurchaseFromSupplier.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/DiscountsAndSales/SaleToCustomer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Location.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Product.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/StockReport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/DefectiveItemReport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/Product.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/PurchaseFromSupplierReport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/Sale.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/Objects/StockReport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Globals/Defect.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Inventory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/Catalogs.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/MainMenu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/Product.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/Register.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/Reports.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/Sales.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/Store.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../dev.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/BusinessLayer/Category.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/BusinessLayer/DefectiveItems.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/BusinessLayer/DiscountsAndSales/PurchaseFromSupplier.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/BusinessLayer/DiscountsAndSales/SaleToCustomer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/BusinessLayer/InventoryController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/BusinessLayer/Location.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/BusinessLayer/Product.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/BusinessLayer/StockReport.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/ServiceLayer/InventoryService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/ServiceLayer/Objects/Category.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/ServiceLayer/Objects/DefectiveItemReport.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/ServiceLayer/Objects/Product.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/ServiceLayer/Objects/PurchaseFromSupplierReport.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/ServiceLayer/Objects/Sale.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/ServiceLayer/Objects/StockReport.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Domain/ServiceLayer/Result.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/Globals/Defect.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/BackendController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/Inventory.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/Main.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/Screens/Catalogs.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/Screens/Category.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/Screens/MainMenu.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/Screens/Product.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/Screens/Register.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/Screens/Reports.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/Screens/Sales.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/Screens/Screen.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../out/production/dev/PresentationLayer/Screens/Store.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../docs/instructions.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/BusinessLayer/Category.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/BusinessLayer/DefectiveItems.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/BusinessLayer/DiscountsAndSales/PurchaseFromSupplier.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/BusinessLayer/DiscountsAndSales/SaleToCustomer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/BusinessLayer/InventoryController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/BusinessLayer/Location.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/BusinessLayer/Product.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/BusinessLayer/StockReport.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/Globals/Defect.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/PresentationLayer/Inventory.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/ServiceLayer/InventoryService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/ServiceLayer/Objects/Category.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/ServiceLayer/Objects/DefectiveItemReport.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/ServiceLayer/Objects/Product.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/ServiceLayer/Objects/PurchaseFromSupplierReport.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/ServiceLayer/Objects/Sale.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/ServiceLayer/Objects/StockReport.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/production/adss_group_l/ServiceLayer/Result.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/test/adss_group_l/BusinessTests/CategoryTests.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/test/adss_group_l/BusinessTests/InventoryControllerTest.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/test/adss_group_l/BusinessTests/ProductTests.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../out/test/adss_group_l/BusinessTests/SaleToCustomerTests.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../release/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../release/adss_v0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Suppliers/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/Result.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/Suppliers/SupplierService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/Suppliers/SupplierService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PresentationLayer/BackendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/BackendController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/Screen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/Screen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../docs/Instructions.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/Instructions.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../docs/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/readme.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../release/adss2020_v01.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../../release/adss2020_v01.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,6 +63,9 @@
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Tomer\שנה ב\סמסטר ד\ניתוצ\עבודה\adss_group_l\dev\SuperLee\Tests\InventoryTests" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="Domain" />

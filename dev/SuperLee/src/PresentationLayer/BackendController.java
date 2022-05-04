@@ -24,9 +24,9 @@ public class BackendController {
     private InventoryService inventoryService = new InventoryService();
 
     //For testing
-    public BackendController(SupplierService supplierService, InventoryService inventoryService){
-        this.supplierService = supplierService;
-        this.inventoryService = inventoryService;
+    public BackendController(){
+        this.supplierService = new SupplierService();
+        this.inventoryService = new InventoryService();
     }
 
 
