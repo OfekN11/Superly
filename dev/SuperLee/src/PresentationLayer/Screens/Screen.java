@@ -1,8 +1,10 @@
 package PresentationLayer.Screens;
 
-
+import Domain.ServiceLayer.Result;
 import PresentationLayer.BackendController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -11,7 +13,6 @@ public abstract class Screen implements Runnable{
     protected final BackendController controller;
     private final String[] menuOptions;
     private final Screen caller;
-
 
     //For init with data
     public Screen(BackendController controller, String[] menuOptions){
@@ -154,8 +155,6 @@ public abstract class Screen implements Runnable{
     }
 
 
-
-
     //Input returns only for int!
     protected int getInput(){
         boolean stopWait = true;
@@ -197,6 +196,55 @@ public abstract class Screen implements Runnable{
 
         return input;
     }
+
+    public Date getDate() {
+        while (true) {
+            try {
+                System.out.println("Please insert date in format: DD/MM/YYYY");
+                String dateInput = scanner.nextLine();
+                if (dateInput.equals("c")) {
+                    System.out.println("Cancelling command");
+                    return null;
+                }
+                return new SimpleDateFormat("dd/MM/yyyy").parse(dateInput);
+            } catch (ParseException p) {
+                System.out.println("Date in wrong format! please try again. c to cancel command");
+            }
+        }
+    }
+
+    public int getStoreID() {
+        System.out.println("Please insert store ID of store you are interested in.");
+        System.out.println("Current store IDs are:");
+        System.out.println(controller.getStoreIDs().getValue());
+        return scanner.nextInt();
+    }
+
+    public void listCategoryIDs() {
+        List<Integer> cIDs = getCatIDs();
+        System.out.println("Current category IDs are:");
+        System.out.println(cIDs);
+    }
+
+    public List<Integer> getCatIDs() {
+        List<Integer> cIDs = new ArrayList<>();
+        List<Domain.ServiceLayer.Objects.Category> c = controller.getCategories().getValue();
+        for (Domain.ServiceLayer.Objects.Category cat: c) {
+            cIDs.add(cat.getID());
+        }
+        return cIDs;
+    }
+    public void isUnderMin(int store, int product) {
+        Result<Boolean> r = controller.isUnderMin(store, product);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("WARNING: product with ID " + product + " is in low stock in store " + store);
+        }
+    }
+
+    public double round(double price) {
+        price = (int)(price*100);
+        return price/100;
+    }
 }
-
-

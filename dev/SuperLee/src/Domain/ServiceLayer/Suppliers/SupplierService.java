@@ -1,5 +1,6 @@
 package Domain.ServiceLayer.Suppliers;
 
+import Domain.ServiceLayer.Result;
 import Globals.Pair;
 import Domain.BusinerssLayer.Supplier.SupplierController;
 

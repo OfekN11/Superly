@@ -1,4 +1,4 @@
-package Domain.ServiceLayer.Suppliers;
+package Domain.ServiceLayer;
 
 import java.util.Optional;
 
