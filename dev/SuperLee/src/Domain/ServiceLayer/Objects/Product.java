@@ -18,7 +18,31 @@ public class Product {
         this.manufacturerID = p.getManufacturerID();
     }
 
-    private String getWeight() {
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCategoryID() {
+        return categoryID;
+    }
+
+    public double getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public double getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public int getManufacturerID() {
+        return manufacturerID;
+    }
+
+    public String getWeight() {
         if (weight>0)
             return String.valueOf(weight);
         return "N/A";
