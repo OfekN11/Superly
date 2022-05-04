@@ -2,6 +2,8 @@ package Presentation.Screens;
 
 import Presentation.BackendController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -83,20 +85,21 @@ public abstract class Screen implements Runnable{
         return ans == 1;
     }
 
-    public static Date buildDate() {
-        Date date = new Date();
+    public static Date buildDate()  {
         boolean success = false;
+        int day =0;
+        int month =0;
+        int year =0;
         while (!success) {
             System.out.println("Enter day");
             try {
-                int day = Integer.parseInt(scanner.nextLine());
+                day = Integer.parseInt(scanner.nextLine());
                 if (day == -1) {
                     System.out.println("Operation Canceled");
                     return null;
                 } else if (day < 1 || day > 31) {
                     System.out.println("Enter valid day");
                 } else {
-                    date.setDate(day);
                     success = true;
                 }
             } catch (NumberFormatException ex) {
@@ -110,14 +113,13 @@ public abstract class Screen implements Runnable{
         while (!success) {
             System.out.println("Enter month");
             try {
-                int month = Integer.parseInt(scanner.nextLine());
+                month = Integer.parseInt(scanner.nextLine());
                 if (month == -1) {
                     System.out.println("Operation Canceled");
                     return null;
                 } else if (month < 1 || month > 12) {
                     System.out.println("Enter valid month");
                 } else {
-                    date.setMonth(month - 1);
                     success = true;
                 }
             } catch (NumberFormatException ex) {
@@ -131,14 +133,13 @@ public abstract class Screen implements Runnable{
         while (!success) {
             System.out.println("Enter year");
             try {
-                int year = Integer.parseInt(scanner.nextLine());
+                year = Integer.parseInt(scanner.nextLine());
                 if (year == -1) {
                     System.out.println("Operation Canceled");
                     return null;
                 } else if (year < 1900 || year > 2030) {
                     System.out.println("Enter valid year");
                 } else {
-                    date.setYear(year - 1900);
                     success = true;
                 }
             } catch (NumberFormatException ex) {
@@ -148,6 +149,12 @@ public abstract class Screen implements Runnable{
                 System.out.println("Please try again");
             }
         }
-        return date;
+
+        try {
+            return  new SimpleDateFormat("dd-MM-yyyy").parse(String.format("%d-%d-%d",day,month,year));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null; // should never get here
     }
 }
