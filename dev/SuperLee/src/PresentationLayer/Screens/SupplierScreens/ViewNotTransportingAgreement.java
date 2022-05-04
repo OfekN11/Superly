@@ -1,6 +1,6 @@
 package PresentationLayer.Screens.SupplierScreens;
 
-import PresentationLayer.Screens.InventorySreens.Screen;
+import PresentationLayer.Screens.Screen;
 
 public class ViewNotTransportingAgreement extends ViewAgreement {
 

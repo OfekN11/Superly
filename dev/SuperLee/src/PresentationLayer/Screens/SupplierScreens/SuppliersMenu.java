@@ -1,7 +1,7 @@
 package PresentationLayer.Screens.SupplierScreens;
 
 import PresentationLayer.BackendController;
-import PresentationLayer.Screens.InventorySreens.Screen;
+import PresentationLayer.Screens.Screen;
 
 public class SuppliersMenu extends Screen {
 

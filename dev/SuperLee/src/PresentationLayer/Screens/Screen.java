@@ -1,4 +1,4 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens;
 
 import Domain.ServiceLayer.Result;
 import PresentationLayer.BackendController;

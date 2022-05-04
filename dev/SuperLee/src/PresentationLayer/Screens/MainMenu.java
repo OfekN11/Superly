@@ -1,21 +1,23 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens;
 
 import PresentationLayer.BackendController;
+import PresentationLayer.Screens.InventorySreens.Reports;
+import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
 
-public class MainMenu extends Screen{
+public class MainMenu extends Screen {
 
     private static final String[] menuOptions = {
-            "Manage Employees", //1
-            "Manage Shifts",    //2
+            "Manage Suppliers", //1
+            "Manage Inventory",    //2
             "Exit"              //3
     };
 
     public MainMenu(BackendController controller) {
-        super(controller, menuOptions, "Main Menu");
+        super(controller, menuOptions);
     }
 
     public MainMenu(Screen caller) {
-        super(caller, menuOptions, "Main Menu");
+        super(caller, menuOptions);
     }
 
     @Override
@@ -23,7 +25,7 @@ public class MainMenu extends Screen{
         System.out.println("\nWelcome to the Main Menu!");
         switch (runMenu()) {
             case 1:
-                new Thread(new Catalogs(this, new String[]{})).start();
+                new Thread(new SuppliersMenu(this)).start();
                 break;
             case 2:
                 new Thread(new Reports(this, new String[]{})).start();

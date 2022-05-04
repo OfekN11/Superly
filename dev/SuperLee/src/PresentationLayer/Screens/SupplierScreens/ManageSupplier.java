@@ -1,7 +1,7 @@
 package PresentationLayer.Screens.SupplierScreens;
 
 import Globals.Pair;
-import PresentationLayer.Screens.InventorySreens.Screen;
+import PresentationLayer.Screens.Screen;
 
 import java.util.ArrayList;
 import java.util.Objects;

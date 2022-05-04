@@ -3,13 +3,14 @@ package PresentationLayer.Screens.InventorySreens;
 import Domain.ServiceLayer.InventoryObjects.Category;
 import Domain.ServiceLayer.InventoryObjects.Product;
 import Domain.ServiceLayer.Result;
+import PresentationLayer.Screens.Screen;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Catalogs extends Screen{
+public class Catalogs extends Screen {
 
     private static final String[] menuOptions = {
             "Print employment conditions",  //1
@@ -23,11 +24,11 @@ public class Catalogs extends Screen{
     };
 
     public Catalogs(Screen caller, String[] extraMenuOptions) {
-        super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new), "Sale Management");
+        super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
     }
 
     public void run() {
-        System.out.println("\nWelcome to the Management Menu of " + name + "!");
+        System.out.println("\nWelcome to the Management Menu of Catalog!");
         int option = 0;
         while (option != 9) {
             option = runMenu();

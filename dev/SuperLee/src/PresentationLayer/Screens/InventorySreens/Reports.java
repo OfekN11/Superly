@@ -4,6 +4,7 @@ import Domain.ServiceLayer.InventoryObjects.DefectiveItemReport;
 import Domain.ServiceLayer.InventoryObjects.PurchaseFromSupplierReport;
 import Domain.ServiceLayer.InventoryObjects.StockReport;
 import Domain.ServiceLayer.Result;
+import PresentationLayer.Screens.Screen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Reports extends Screen{
+public class Reports extends Screen {
 
     private static final String[] menuOptions = {
             "Print employment conditions",  //1
@@ -26,11 +27,11 @@ public class Reports extends Screen{
     };
 
     public Reports(Screen caller, String[] extraMenuOptions) {
-        super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new), "Sale Management");
+        super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
     }
 
     public void run() {
-        System.out.println("\nWelcome to the Management Menu of " + name + "!");
+        System.out.println("\nWelcome to the Management Menu of Sale Management");
         int option = 0;
         while (option != 9) {
             option = runMenu();

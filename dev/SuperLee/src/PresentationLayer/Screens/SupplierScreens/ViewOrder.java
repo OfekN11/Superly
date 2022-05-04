@@ -1,6 +1,6 @@
 package PresentationLayer.Screens.SupplierScreens;
 
-import PresentationLayer.Screens.InventorySreens.Screen;
+import PresentationLayer.Screens.Screen;
 import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
 
 public class ViewOrder extends Screen {

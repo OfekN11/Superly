@@ -2,12 +2,13 @@ package PresentationLayer.Screens.InventorySreens;
 
 import Domain.ServiceLayer.InventoryObjects.Sale;
 import Domain.ServiceLayer.Result;
+import PresentationLayer.Screens.Screen;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Sales extends Screen{
+public class Sales extends Screen {
 
     private static final String[] menuOptions = {
             "Print employment conditions",  //1
@@ -20,12 +21,12 @@ public class Sales extends Screen{
             "Print upcoming shifts"         //8
     };
 
-    public Sales(Screen caller, Domain.ServiceLayer.InventoryObjects.Sale sProduct, String[] extraMenuOptions) {
-        super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new), "Sale Management");
+    public Sales(Screen caller, String[] extraMenuOptions) {
+        super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
     }
 
     public void run() {
-        System.out.println("\nWelcome to the Management Menu of " + name + "!");
+        System.out.println("\nWelcome to the Management Menu of Sales");
         int option = 0;
         while (option != 9) {
             option = runMenu();

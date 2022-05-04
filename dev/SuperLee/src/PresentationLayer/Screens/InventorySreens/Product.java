@@ -2,12 +2,13 @@ package PresentationLayer.Screens.InventorySreens;
 
 import Domain.ServiceLayer.InventoryObjects.*;
 import Domain.ServiceLayer.Result;
+import PresentationLayer.Screens.Screen;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Product extends Screen{
+public class Product extends Screen {
     private static final String[] menuOptions = {
             "Print employment conditions",  //1
             "Update name",                  //2

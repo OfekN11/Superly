@@ -1,11 +1,12 @@
 package PresentationLayer.Screens.InventorySreens;
 
 import Domain.ServiceLayer.Result;
+import PresentationLayer.Screens.Screen;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class Register extends Screen{
+public class Register extends Screen {
     private static final String[] menuOptions = {
             "Print employment conditions",  //1
             "Update name",                  //2
@@ -18,11 +19,11 @@ public class Register extends Screen{
     };
 
     public Register(Screen caller, String[] extraMenuOptions) {
-        super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new), "Register");
+        super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
     }
 
     public void run() {
-        System.out.println("\nWelcome to the Management Menu of " + name + "!");
+        System.out.println("\nWelcome to the Management Menu of Register");
         int option = 0;
         while (option != 9) {
             option = runMenu();
