@@ -47,8 +47,7 @@ public class ViewOrder extends Screen {
         int input;
         boolean correctInput = false;
 
-        System.out.println("Insert the ID of the new order:");
-        System.out.println("If you wish to return, please insert \"-1\"");
+        System.out.println("If you wish to return, please insert \"-1\", otherwise, insert \"1\".");
 
         input = getInput();
 
@@ -59,7 +58,7 @@ public class ViewOrder extends Screen {
 
         boolean r = false;
         try {
-            r = controller.order(supplierId, input);
+            r = controller.order(supplierId);
         } catch (Exception e) {
             System.out.println(e.getMessage());;
         }

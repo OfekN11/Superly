@@ -10,7 +10,7 @@ public class ViewSuppliersMenu extends Screen {
 
 
     //FOR TESTING!!
-    private int supplierId = -1;
+    private int supplierId = -2; // first time in the window
 
     private static final String[] menuOptions = {
             "View Information",     //1
@@ -32,6 +32,8 @@ public class ViewSuppliersMenu extends Screen {
 
     @Override
     public void run() {
+        boolean correctInput = false, _continue = true;
+
         System.out.println("\nHere you can view all the Supplier's info\n");
 
         try {
@@ -45,18 +47,41 @@ public class ViewSuppliersMenu extends Screen {
             System.out.println("Something went wrong, please try again");
         }
 
-        System.out.println("If you want to return, please insert \"-1\" and then press \"Enter\".\n");
 
-        supplierId = scanner.nextInt();
-        scanner.nextLine();
 
-        if(supplierId == -1) {
-            endRun();
-            return;
+        while(!correctInput){
+
+            if(supplierId == -2){
+                System.out.println("If you want to return, please insert \"-1\" and then press \"Enter\".\n");
+                supplierId = getInput();
+            }
+            else{
+                System.out.println("Supplier number: " + supplierId);
+            }
+
+
+            if(supplierId == -1) {
+                endRun();
+                return;
+            }
+
+            try{
+                if(controller.doesSupplierExists(supplierId)){
+                    correctInput = true;
+                }
+                else{
+                    System.out.println("No such supplier, please try again.\n");
+                }
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+                System.out.println("\n\nPlease try again.\n");
+            }
+
         }
 
         int option = 0;
-        while ( option != 2 && option != 3 && option != 5 && option != 6 && option != 7 && option != 8) {
+        while (_continue) {
             option = runMenu();
             try {
                 switch (option) {
@@ -64,25 +89,28 @@ public class ViewSuppliersMenu extends Screen {
                         printSupplierInfo();
                         break;
                     case 2:
-                        //Passing the id in the constructor, need to check what happens if we change the ID!!
                         new Thread(new EditCardScreen(this, supplierId)).start();
                         break;
                     case 3:
-                        viewAgreement();
+                        _continue = viewAgreement();
                         break;
                     case 4:
                         addNewAgreement(supplierId);
                         break;
                     case 5:
                         new Thread(new ViewContacts(this, supplierId)).start();
+                        _continue = false;
                         break;
                     case 6:
                         new Thread( new ViewManufacturers(this, supplierId)).start();
+                        _continue = false;
                         break;
                     case 7:
                         new Thread( new ViewOrder(this, supplierId)).start();
+                        _continue = false;
                         break;
                     case 8:
+                        _continue = false;
                         endRun();
                         break;
                 }
@@ -93,12 +121,12 @@ public class ViewSuppliersMenu extends Screen {
         }
     }
 
-    private void viewAgreement() {
+    private boolean viewAgreement() {
         try {
             if(!controller.hasAgreement(supplierId)){
                 System.out.println("No agreement with this supplier, press \"Enter\" to return.");
                 scanner.nextLine();
-                return;
+                return true;
             }
             if(controller.isRoutineAgreement(supplierId)){
                 new Thread ( new ViewRoutineAgreement(this, supplierId)).start();
@@ -116,6 +144,7 @@ public class ViewSuppliersMenu extends Screen {
             System.out.println(e.getMessage());
         }
 
+        return false;
     }
 
 
@@ -235,6 +264,7 @@ public class ViewSuppliersMenu extends Screen {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
     }
 
     private void addItemToAgreement() {

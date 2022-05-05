@@ -26,6 +26,11 @@ public class BackendController {
         this.inventoryService = new InventoryService();
     }
 
+    //For testing
+    public BackendController(SupplierService service){
+        this.supplierService = service;
+        this.inventoryService = new InventoryService();
+    }
 
     private boolean getValueFromBooleanResult(Result<Boolean> result) throws Exception {
         if (result.isError())
@@ -121,8 +126,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public boolean order(int supplierId, int input) throws Exception {
-        Result<Boolean> result = supplierService.order(supplierId, input);
+    public boolean order(int supplierId) throws Exception {
+        Result<Boolean> result = supplierService.order(supplierId);
         return getValueFromBooleanResult(result);
     }
 

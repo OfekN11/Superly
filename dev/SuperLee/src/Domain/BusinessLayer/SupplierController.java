@@ -116,12 +116,12 @@ public class SupplierController {
     }
 
 
-    public Map<String, List<String>> itemsFromAllSuppliers(){
+    /*public Map<String, List<String>> itemsFromAllSuppliers() throws Exception {
         HashMap<String, List<String>> items = new HashMap<>();
         for (Supplier supplier : suppliers.values())
             items.put(supplier.getName(), supplier.getOrderedItems());
         return items;
-    }
+    }*/
 
     public List<String> itemsFromOneSupplier(int id) throws Exception {
         if(!supplierExist(id))
@@ -365,11 +365,11 @@ public class SupplierController {
         return suppliers.get(supID).hasAgreement();
     }
 
-    public void addNewOrder(int supId, int orderId) throws Exception {
+    public void addNewOrder(int supId) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliers.get(supId).addNewOrder(orderId);
+        suppliers.get(supId).addNewOrder();
     }
 
     public void addItemsToOrder(int supId, int orderId, List<String> itemsString) throws Exception {
@@ -403,6 +403,14 @@ public class SupplierController {
             throw new Exception("The supplier does not exists!");
         }
         suppliers.get(supId).removeItemFromOrder(orderId, itemId);
+    }
+
+    public void updateItemQuantityInOrder(int supID, int orderID, int itemID, int quantity) throws Exception {
+        if(!supplierExist(supID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        suppliers.get(supID).updateOrder(orderID, itemID, quantity);
     }
 
 

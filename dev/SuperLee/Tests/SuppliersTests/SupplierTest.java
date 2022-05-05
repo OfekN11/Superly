@@ -32,22 +32,25 @@ class SupplierTest {
     void isTransporting() {
         try {
             supplier.addAgreement(1, "2");  //transporting
+            assertTrue(supplier.isTransporting());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assertTrue(supplier.isTransporting());
+
         try {
             supplier.addAgreement(2, "2");  //transporting
+            assertTrue(supplier.isTransporting());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assertTrue(supplier.isTransporting());
+
         try {
             supplier.addAgreement(3, "");   //not transporting
+            assertFalse(supplier.isTransporting());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assertFalse(supplier.isTransporting());
+
 
     }
 }

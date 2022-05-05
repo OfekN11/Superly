@@ -56,4 +56,20 @@ public class OrderItem {
         result.add(String.valueOf(finalPrice));
         return result;
     }
+
+    public void setQuantity(int q){
+        quantity = q;
+    }
+
+    public void setPricePerUnit(float p){
+        ppu = p;
+    }
+
+    public void setDiscount(int d){
+        discount = d;
+    }
+
+    public void setFinalPrice(double fp){
+        finalPrice = fp;
+    }
 }
