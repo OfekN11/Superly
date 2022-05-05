@@ -116,12 +116,12 @@ public class SupplierController {
     }
 
 
-    public Map<String, List<String>> itemsFromAllSuppliers(){
+    /*public Map<String, List<String>> itemsFromAllSuppliers() throws Exception {
         HashMap<String, List<String>> items = new HashMap<>();
         for (Supplier supplier : suppliers.values())
             items.put(supplier.getName(), supplier.getOrderedItems());
         return items;
-    }
+    }*/
 
     public List<String> itemsFromOneSupplier(int id) throws Exception {
         if(!supplierExist(id))

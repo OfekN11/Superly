@@ -38,6 +38,31 @@ public class RoutineAgreement extends Agreement {
         return list;
     }
 
+    public static boolean hasDays(String days){
+        List<Integer> list = new LinkedList<>();
+        int d = 0;
+
+        for(int i=0; i<days.length(); i++){
+
+            while(i<days.length() && days.charAt(i) == ' '){
+                i++;
+            }
+
+            d = days.charAt(i)-'0';
+
+            // if the given number is 0 or more than 7 we ignore it
+            if(d>=1 && d<=7){
+                list.add(d);
+            }
+
+            i++;
+        }
+
+        Collections.sort(list);
+
+        return list.size() != 0;
+    }
+
     @Override
     public boolean isTransporting() {
         return true;

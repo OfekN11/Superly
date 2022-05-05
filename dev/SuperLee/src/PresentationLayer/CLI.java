@@ -253,7 +253,7 @@ public class CLI {
             return;
         }
 
-        Result<Boolean> r = service.order(supplierID, input);
+        Result<Boolean> r = service.order(supplierID); // Result<Boolean> r = service.order(supplierID, input);
 
         if(r.isError()){
             System.out.println(r.getError());

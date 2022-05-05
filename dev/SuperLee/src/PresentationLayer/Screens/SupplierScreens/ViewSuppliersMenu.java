@@ -10,7 +10,7 @@ public class ViewSuppliersMenu extends Screen {
 
 
     //FOR TESTING!!
-    private int supplierId = -1;
+    private int supplierId = -2; // first time in the window
 
     private static final String[] menuOptions = {
             "View Information",     //1
@@ -47,10 +47,18 @@ public class ViewSuppliersMenu extends Screen {
             System.out.println("Something went wrong, please try again");
         }
 
-        System.out.println("If you want to return, please insert \"-1\" and then press \"Enter\".\n");
+
 
         while(!correctInput){
-            supplierId = getInput();
+
+            if(supplierId == -2){
+                System.out.println("If you want to return, please insert \"-1\" and then press \"Enter\".\n");
+                supplierId = getInput();
+            }
+            else{
+                System.out.println("Supplier number: " + supplierId);
+            }
+
 
             if(supplierId == -1) {
                 endRun();
@@ -84,19 +92,22 @@ public class ViewSuppliersMenu extends Screen {
                         new Thread(new EditCardScreen(this, supplierId)).start();
                         break;
                     case 3:
-                        viewAgreement();
+                        _continue = viewAgreement();
                         break;
                     case 4:
                         addNewAgreement(supplierId);
                         break;
                     case 5:
                         new Thread(new ViewContacts(this, supplierId)).start();
+                        _continue = false;
                         break;
                     case 6:
                         new Thread( new ViewManufacturers(this, supplierId)).start();
+                        _continue = false;
                         break;
                     case 7:
                         new Thread( new ViewOrder(this, supplierId)).start();
+                        _continue = false;
                         break;
                     case 8:
                         _continue = false;
@@ -110,12 +121,12 @@ public class ViewSuppliersMenu extends Screen {
         }
     }
 
-    private void viewAgreement() {
+    private boolean viewAgreement() {
         try {
             if(!controller.hasAgreement(supplierId)){
                 System.out.println("No agreement with this supplier, press \"Enter\" to return.");
                 scanner.nextLine();
-                return;
+                return true;
             }
             if(controller.isRoutineAgreement(supplierId)){
                 new Thread ( new ViewRoutineAgreement(this, supplierId)).start();
@@ -133,6 +144,7 @@ public class ViewSuppliersMenu extends Screen {
             System.out.println(e.getMessage());
         }
 
+        return false;
     }
 
 
@@ -252,6 +264,7 @@ public class ViewSuppliersMenu extends Screen {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
     }
 
     private void addItemToAgreement() {

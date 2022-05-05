@@ -44,6 +44,12 @@ public class Supplier {
         return id;
     }
 
+    private void agreementExists() throws Exception {
+        if(agreement == null){
+            throw new Exception("You have no agreement with this supplier!");
+        }
+    }
+
     public String getAddress() {
         return address;
     }
@@ -94,7 +100,11 @@ public class Supplier {
         //If we add this payingAgreement to the agreement,  need to update there too
     }
 
-    public void addManufacturer(String manufacturer) {
+    public void addManufacturer(String manufacturer) throws Exception {
+        if(manufacturers.contains(manufacturer)){
+            throw new Exception("This manufacturer already exists in the system!");
+        }
+
         manufacturers.add(manufacturer);
     }
 
@@ -102,19 +112,23 @@ public class Supplier {
         return name;
     }
 
-    public List<String> getOrderedItems() {
+    public List<String> getOrderedItems() throws Exception {
+        agreementExists();
         return agreement.getItemsInMapFormat();
     }
 
     public void updateBulkPriceForItem(int itemID, Map<Integer, Integer> newBulkPrices) throws Exception {
+        agreementExists();
         agreement.getItem(itemID).setBulkPrices(newBulkPrices);
     }
 
     public void updatePricePerUnitForItem(int itemID, float newPrice) throws Exception {
+        agreementExists();
         agreement.getItem(itemID).setPrice(newPrice);
     }
 
     public void addItem(int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+        agreementExists();
         if(agreement.itemExists(itemId))
             throw new Exception("item with this ID already exists!");
         agreement.addItem(new AgreementItem(itemId, itemName, itemManu, itemPrice, bulkPrices));
@@ -124,6 +138,7 @@ public class Supplier {
     }
 
     public void deleteItem(int itemId) throws Exception {
+        agreementExists();
         String manu = agreement.getItem(itemId).getManufacturer();
 
         agreement.removeItem(itemId);
@@ -133,7 +148,8 @@ public class Supplier {
         }
     }
 
-    public boolean isTransporting() {
+    public boolean isTransporting() throws Exception {
+        agreementExists();
         return agreement.isTransporting();
     }
 
@@ -143,15 +159,18 @@ public class Supplier {
     }*/
 
     public void updateItemId(int oldItemId, int newItemId) throws Exception {
+        agreementExists();
         agreement.setItemId(oldItemId, newItemId);
     }
 
 
     public void updateItemName(int itemId, String newName) throws Exception {
+        agreementExists();
         agreement.getItem(itemId).setName(newName);
     }
 
     public void updateItemManufacturer(int itemId, String manufacturer) throws Exception {
+        agreementExists();
         String manu = agreement.getItem(itemId).getManufacturer();
 
         agreement.getItem(itemId).setManufacturer(manufacturer);
@@ -163,6 +182,7 @@ public class Supplier {
     }
 
     public void addAgreementItems(List<String> itemsString) throws Exception {
+        agreementExists();
         agreement.setItemsFromString(itemsString);
 
         manufacturers = new ArrayList<>();
@@ -173,14 +193,18 @@ public class Supplier {
     }
 
     public void updateAgreementType( int agreementType, String agreementDays) throws Exception {
+        agreementExists();
         List<AgreementItem> items = agreement.getItems();
         createAgreement(agreementType, agreementDays);
         agreement.setItems(items);
     }
 
-    private void createAgreement(int agreementType, String agreementDays){
+    private void createAgreement(int agreementType, String agreementDays) throws Exception {
         switch(agreementType){
             case ROUTINE :
+                if(!RoutineAgreement.hasDays(agreementDays)){
+                    throw new Exception("You provided no days!");
+                }
                 agreement = new RoutineAgreement(agreementDays);
                 break;
             case BY_ORDER :
@@ -226,23 +250,28 @@ public class Supplier {
         return result;
     }
 
-    public int daysToDelivery(){
+    public int daysToDelivery() throws Exception {
+        agreementExists();
         return agreement.daysToDelivery();
     }
 
-    public boolean isRoutineAgreement(){
+    public boolean isRoutineAgreement() throws Exception {
+        agreementExists();
         return agreement instanceof RoutineAgreement;
     }
 
-    public boolean isByOrderAgreement(){
+    public boolean isByOrderAgreement() throws Exception {
+        agreementExists();
         return agreement instanceof ByOrderAgreement;
     }
 
-    public boolean isNotTransportingAgreement(){
+    public boolean isNotTransportingAgreement() throws Exception {
+        agreementExists();
         return agreement instanceof NotTransportingAgreement;
     }
 
     public void setDaysOfDelivery(String days) throws Exception{
+        agreementExists();
         if(!(agreement instanceof RoutineAgreement)){
             throw new Exception("The supplier's agreement is not Routine agreement");
         }
@@ -251,6 +280,7 @@ public class Supplier {
     }
 
     public void setDaysUntilDelivery(int days) throws Exception{
+        agreementExists();
         if(!(agreement instanceof ByOrderAgreement)){
             throw new Exception("The supplier's agreement is not Routine agreement");
         }
@@ -259,6 +289,7 @@ public class Supplier {
     }
 
     public void addDaysOfDelivery(String days) throws Exception {
+        agreementExists();
         if(!(agreement instanceof RoutineAgreement)){
             throw new Exception("The supplier's agreement is not Routine agreement");
         }
@@ -267,6 +298,7 @@ public class Supplier {
     }
 
     public void removeDayOfDelivery(int day) throws Exception {
+        agreementExists();
         if(!(agreement instanceof RoutineAgreement)){
             throw new Exception("The supplier's agreement is not Routine agreement");
         }
@@ -275,6 +307,7 @@ public class Supplier {
     }
 
     public AgreementItem getItem(int itemId) throws Exception {
+        agreementExists();
         return agreement.getItem(itemId);
     }
 
@@ -301,7 +334,7 @@ public class Supplier {
         boolean found = false;
 
         for(String s : manufacturers){
-            if(Objects.equals(s, name)){
+            if(s.equals(name)){
                 found = true;
                 break;
             }
@@ -311,7 +344,7 @@ public class Supplier {
             throw new Exception("This manufacturer is not represented by the current supplier!");
         }
 
-        if(agreement.isManufacturerRepresented(name)){
+        if(agreement != null && agreement.isManufacturerRepresented(name)){
             throw new Exception("This manufacturer is selling items to the supplier, remove them first!");
         }
 
@@ -323,6 +356,8 @@ public class Supplier {
     }
 
     public void addNewOrder() throws Exception {
+        agreementExists();
+
         Order order = new Order(agreement.daysToDelivery());
         orders.put(order.getId(), order);
     }
@@ -386,7 +421,7 @@ public class Supplier {
      */
 
     public void addOneItemToOrder(int orderId, int itemId, int itemQuantity) throws Exception {
-
+        agreementExists();
         if(!agreement.itemExists(itemId))
             throw new Exception(String.format("Item with ID: %d does not Exists!", itemId));
         if(!orders.containsKey(orderId))
@@ -420,6 +455,7 @@ public class Supplier {
     }
 
     public void updateOrder(int orderID,int itemID, int quantity) throws Exception {
+        agreementExists();
         if(!orders.containsKey(orderID)){
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderID));
         }

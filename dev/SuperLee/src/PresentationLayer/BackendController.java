@@ -26,6 +26,11 @@ public class BackendController {
         this.inventoryService = new InventoryService();
     }
 
+    //For testing
+    public BackendController(SupplierService service){
+        this.supplierService = service;
+        this.inventoryService = new InventoryService();
+    }
 
     private boolean getValueFromBooleanResult(Result<Boolean> result) throws Exception {
         if (result.isError())

@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        BackendController controller = new BackendController();
+        BackendController controller = new BackendController(initWithData());
         new Thread(new SuppliersMenu(controller)).start();
 
         /*
@@ -45,7 +45,7 @@ public class Main {
         ArrayList<String> manufacturers = new ArrayList<>();
         manufacturers.add("Osem") ; manufacturers.add("Elit");
         service.addSupplier(1, "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
-        service.addAgreement(1 ,1 , "2 3 4");
+        /*service.addAgreement(1 ,1 , "2 3 4");
 
         ArrayList<String> items = new ArrayList<>();
         items.add("1 , bamba , Osem , 5 , 100 , 20 , 200 , 50 ");
@@ -53,12 +53,12 @@ public class Main {
         items.add("3 , Chocolate , Elit , 10 , 100 , 20 , 200 , 50 ");
         service.addAgreementItems(1, items);
 
-        service.order(1,1);
+        service.order(1);
 
         ArrayList<String> itemsToOrder = new ArrayList<>();
         itemsToOrder.add("1");  itemsToOrder.add("bamba");   itemsToOrder.add("100");  itemsToOrder.add("2");  itemsToOrder.add("Halva");  itemsToOrder.add("50");
         service.addItemsToOrder(1, 1, itemsToOrder);
-
+*/
         return service;
         //cli.init(service);
 
