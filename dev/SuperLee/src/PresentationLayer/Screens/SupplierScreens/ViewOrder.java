@@ -232,14 +232,140 @@ public class ViewOrder extends Screen {
     }
 
     private void addItemToOrder(int supplierID, int orderId){
+        boolean _continue = true, correctInput;
+        int itemID, quantity, input;
 
+
+        while (_continue){
+            System.out.println("Please insert the following details:");
+            System.out.println("If you want to return, please insert \"-1\" instead od the ID");
+            System.out.println("ID:");
+
+            itemID = getInput();
+
+            if(itemID == -1){
+                System.out.println("Returning");
+                return;
+            }
+
+            System.out.println("Quantity:");
+
+            quantity = getInput();
+
+            boolean r = false;
+            try {
+                r = controller.addItemToOrder(supplierID, orderId, itemID, quantity);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            if(r){
+                System.out.println("Choose:");
+                System.out.println("1) Add another item");
+                System.out.println("2) Back");
+
+                correctInput = false;
+
+                while(!correctInput){
+                    input = getInput();
+
+                    switch (input){
+                        case 1: {
+                            correctInput = true;
+                            break;
+                        }
+                        case 2: {
+                            _continue = false;
+                            correctInput = true;
+                            break;
+                        }
+                        default: {
+                            System.out.println("Wrong value was inserted, please try again.");
+                        }
+                    }
+                }
+            }
+            else{
+                System.out.println("Please try again.\n");
+            }
+        }
     }
 
     private void removeItemFromOrder(int supplierID, int orderId){
+        boolean _continue = true, correctInput;
+        int itemID, input;
 
+
+        while (_continue){
+            System.out.println("Please insert the ID of the item to remove:");
+            System.out.println("If you want to return, please insert \"-1\" instead od the ID");
+
+            itemID = getInput();
+
+            if(itemID == -1){
+                System.out.println("Returning");
+                return;
+            }
+
+            Result<Boolean> r = controller.removeItemFromOrder(supplierID, orderId, itemID);;
+
+            if(r.isOk()){
+                System.out.println("Choose:");
+                System.out.println("1) Remove another item");
+                System.out.println("2) Back");
+
+                correctInput = false;
+
+                while(!correctInput){
+                    input = getInput();
+
+                    switch (input){
+                        case 1: {
+                            correctInput = true;
+                            break;
+                        }
+                        case 2: {
+                            _continue = false;
+                            correctInput = true;
+                            break;
+                        }
+                        default: {
+                            System.out.println("Wrong value was inserted, please try again.");
+                        }
+                    }
+                }
+            }
+            else{
+                System.out.println("Please try again.\n");
+            }
+        }
     }
 
     private void changeQuantityOfItem(int supplierID, int orderId){
+        int itemID, input, quantity;
 
+        System.out.println("Please insert the ID of the item to change it's quantity:");
+        System.out.println("If you want to return, please insert \"-1\" instead od the ID");
+
+        itemID = getInput();
+
+        if(itemID == -1){
+            System.out.println("Returning");
+            return;
+        }
+
+        System.out.println("Quantity:");
+        quantity = getInput();
+
+        Result<Boolean> r = controller.updateItemQuantityInOrder(supplierID, orderId, itemID, quantity);
+
+        if(r.isOk()){
+            System.out.println("Changes saved.");
+        }
+        else{
+            System.out.println("Something went wrong, please try again.");
+        }
+
+        System.out.println("Returning..\n");
     }
 }

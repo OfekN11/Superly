@@ -501,7 +501,6 @@ public class SupplierService {
             return Result.makeError(e.getMessage());
         }
     }
-    // TODO: USE THIS METHOD
     public Result<Boolean> removeItemFromOrder(int supId, int orderId, int itemId){
         try{
             controller.removeItemFromOrder(supId, orderId, itemId);

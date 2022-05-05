@@ -487,4 +487,12 @@ public class BackendController {
     public Result<Boolean> orderExists(int supID, int orderID){
         return supplierService.orderExists(supID, orderID);
     }
+
+    public Result<Boolean> removeItemFromOrder(int supID, int orderID, int itemID){
+        return supplierService.removeItemFromOrder(supID, orderID, itemID);
+    }
+
+    public Result<Boolean> updateItemQuantityInOrder(int supID, int orderID, int itemID, int quantity){
+        return supplierService.updateItemQuantityInOrder(supID, orderID, itemID, quantity);
+    }
 }
