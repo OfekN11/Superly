@@ -38,13 +38,22 @@ public class ViewSuppliersMenu extends Screen {
             if(controller.isSuppliersEmpty()){
                 System.out.println("NO SUPPLIERS ARE AVAILABLE!\nPress \"Enter\" to return.");
                 scanner.nextLine();
+                endRun();
                 return;
             }
         } catch (Exception e) {
             System.out.println("Something went wrong, please try again");
         }
-        if(supplierId == -1)
-            getSupplierId();
+
+        System.out.println("If you want to return, please insert \"-1\" and then press \"Enter\".\n");
+
+        supplierId = scanner.nextInt();
+        scanner.nextLine();
+
+        if(supplierId == -1) {
+            endRun();
+            return;
+        }
 
         int option = 0;
         while ( option != 2 && option != 3 && option != 5 && option != 6 && option != 7 && option != 8) {

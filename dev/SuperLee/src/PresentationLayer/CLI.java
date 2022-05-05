@@ -1,5 +1,6 @@
 package PresentationLayer;
 
+import Domain.ServiceLayer.Result;
 import Domain.ServiceLayer.SupplierService;
 import Domain.ServiceLayer.SupplierObjects.*;
 import Globals.Pair;
