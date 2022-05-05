@@ -20,7 +20,7 @@ public class StockReport {
         this.amountInWarehouse = stockReport.getAmountInWarehouse();
         this.amountInTotal = stockReport.getAmountInTotal();
         this.minAmountInStore = stockReport.getMinAmountInStore();
-        this.maxAmountInStore = stockReport.getMaxAmountInStore();
+        this.maxAmountInStore = stockReport.getTargetAmountInStore();
     }
 
     @Override

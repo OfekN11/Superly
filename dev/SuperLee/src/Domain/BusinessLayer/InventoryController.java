@@ -59,7 +59,7 @@ public class InventoryController {
         for (Integer i : categoriesList) {
             Category category1 = categories.get(i);
             for (Integer j :categoriesList) {
-                if (j!=i) {
+                if (!(i.equals(j))) {
                     Category category2 = categories.get(j);
                     if (category2.belongsToCategory(category1)) {
                         redundantCategories.add(j);
@@ -99,13 +99,13 @@ public class InventoryController {
         SaleToCustomer sale = new SaleToCustomer(saleID++, start, end, percent, categoriesList, productIDs);
         sales.add(sale);
 
-        Product product = null;
+        Product product;
         for (Integer pID: productIDs) {
             //should we throw error if only one of them is illegal
             product = getProduct(pID);
             product.addSale(sale);
         }
-        Category category = null;
+        Category category;
         for (Integer cID: categoriesList) {
             category = categories.get(cID);
             if (category!=null)
@@ -120,25 +120,25 @@ public class InventoryController {
         endOfToday.setSeconds(-1);
         SaleToCustomer newSale = new SaleToCustomer(saleID++, sale.getStartDate(), endOfToday, sale.getPercent(), sale.getCategories(), sale.getProducts());
         sales.add(newSale);
-        Product product = null;
+        Product product;
         for (Integer pID: newSale.getProducts()) {
             //should we throw error if only one of them is illegal
             product = getProduct(pID);
             product.addSale(newSale);
         }
-        Category category = null;
+        Category category;
         for (Integer cID: newSale.getCategories()) {
             category = categories.get(cID);
             if (category!=null)
                 category.addSale(newSale);        }
     }
     private void removeSaleFromProductsAndCategories(SaleToCustomer sale) {
-        Product product = null;
+        Product product;
         for (Integer pID: sale.getProducts()) {
             product = getProduct(pID);
             product.removeSale(sale);
         }
-        Category category = null;
+        Category category;
         for (Integer cID: sale.getCategories()) {
             category = categories.get(cID);
             if (category!=null)
@@ -249,7 +249,7 @@ public class InventoryController {
         for (int i : products.keySet()) {
             removeProductFromStore(storeID, i);
         }
-        storeIds.remove(storeIds.indexOf(storeID));
+        storeIds.remove(storeID);
     }
 
     public Product addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int maxAmount) { //affect 4 maps in product.
@@ -284,11 +284,36 @@ public class InventoryController {
 
     public DefectiveItems reportDamaged(int storeID, int productID, int amount, int employeeID, String description) {
         Product product = getProduct(productID);
-        return product.reportDamaged(storeID, amount, employeeID, description);
+        DefectiveItems DI = product.reportDamaged(storeID, amount, employeeID, description);
+        if (product.gotUnderMinimum(storeID, amount))
+        {
+            //order - minimum alert
+
+        }
+        return DI;
     }
+
     public DefectiveItems reportExpired(int storeID, int productID, int amount, int employeeID, String description) {
         Product product = getProduct(productID);
-        return product.reportExpired(storeID, amount, employeeID, description);
+        DefectiveItems DI = product.reportExpired(storeID, amount, employeeID, description);
+        if (product.gotUnderMinimum(storeID, amount))
+        {
+            //order - minimum alert
+
+        }
+        return DI;
+    }
+
+    public Double buyItems(int storeID, int productID, int amount) {
+        Product product = getProduct(productID);
+        double price = product.getCurrentPrice()*amount;
+        product.removeItems(storeID, amount);
+        if (product.gotUnderMinimum(storeID, amount))
+        {
+            //order - minimum alert
+
+        }
+        return price;
     }
 
     private void checkDates(Date start, Date end) {
@@ -354,13 +379,6 @@ public class InventoryController {
 
     public List<Integer> getStoreIDs() {
         return storeIds;
-    }
-
-    public Double buyItems(int storeID, int productID, int amount) {
-        Product product = getProduct(productID);
-        double price = product.getCurrentPrice()*amount;
-        product.removeItems(storeID, amount);
-        return price;
     }
 
     public Product editProductPrice(int productID, double newPrice) {
@@ -584,7 +602,11 @@ public class InventoryController {
 
     public Product changeProductMax(int store, int product, int max) {
         Product p = getProduct(product);
-        p.changeProductMax(store, max);
+        p.changeProductTarget(store, max);
         return p;
+    }
+
+    public int getAmountForOrder(int storeID, int productID) { //Periodically
+        return getProduct(productID).getAmountForOrder(storeID);
     }
 }
