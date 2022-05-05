@@ -1,5 +1,6 @@
 package Domain.ServiceLayer.SupplierObjects;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +31,8 @@ public class ServiceOrderObject {
     }
 
     public String toString(){
-        return "Order's ID: " + id + "\nDate: "  + "\nOrderItems:\n" + printItems();
+        SimpleDateFormat d = new SimpleDateFormat("dd/MM/YY");
+        return "Order's ID: " + id + "\nDate: " + d.format(date) + "\nOrderItems:\n" + printItems();
     }
 
     private String printItems(){

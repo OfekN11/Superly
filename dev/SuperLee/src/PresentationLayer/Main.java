@@ -45,7 +45,7 @@ public class Main {
         ArrayList<String> manufacturers = new ArrayList<>();
         manufacturers.add("Osem") ; manufacturers.add("Elit");
         service.addSupplier(1, "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
-        /*service.addAgreement(1 ,1 , "2 3 4");
+        service.addAgreement(1 ,1 , "2 3 4");
 
         ArrayList<String> items = new ArrayList<>();
         items.add("1 , bamba , Osem , 5 , 100 , 20 , 200 , 50 ");
@@ -58,7 +58,7 @@ public class Main {
         ArrayList<String> itemsToOrder = new ArrayList<>();
         itemsToOrder.add("1");  itemsToOrder.add("bamba");   itemsToOrder.add("100");  itemsToOrder.add("2");  itemsToOrder.add("Halva");  itemsToOrder.add("50");
         service.addItemsToOrder(1, 1, itemsToOrder);
-*/
+
         return service;
         //cli.init(service);
 
