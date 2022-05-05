@@ -21,6 +21,7 @@ public class ViewNotTransportingAgreement extends ViewAgreement {
         System.out.println("\nWelcome to the Management Menu of Not Transporting Agreement.");
         int option = 0;
         while (option != 4 && option != 5 && option != 6) {
+            showInfo();
             option = runMenu();
             try {
                 if (option <= 5)

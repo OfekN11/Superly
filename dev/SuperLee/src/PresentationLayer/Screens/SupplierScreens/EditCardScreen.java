@@ -15,7 +15,6 @@ public class EditCardScreen extends Screen {
             "Exit",        //6
     };
 
-//            System.out.println("1) ID\n2) Bank number\n3) Address\n4) Name\n5) Paying agreement\n6) Back\n");
 
     public EditCardScreen(Screen caller, int id) {
         super(caller, menuOptions);

@@ -21,8 +21,8 @@ public class ViewByOrderAgreement extends ViewAgreement {
         System.out.println("\nWelcome to the Management Menu of By Order Agreement.");
         int option = 0;
 
-        showInfo();
         while (option != 4 && option != 5 && option != 7) {
+            showInfo();
             option = runMenu();
             try {
                 if (option <= 5)

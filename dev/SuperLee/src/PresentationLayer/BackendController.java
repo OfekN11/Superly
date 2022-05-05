@@ -17,7 +17,7 @@ import java.util.*;
 public class BackendController {
 
     //private final SupplierService supplierService = new SupplierService();
-    private SupplierService supplierService = new SupplierService();  //FOR TESTING!!!!
+    private SupplierService supplierService ; // = new SupplierService();  //FOR TESTING!!!!
     private InventoryService inventoryService = new InventoryService();
 
     //For testing

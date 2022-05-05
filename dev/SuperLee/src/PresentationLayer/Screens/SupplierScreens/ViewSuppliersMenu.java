@@ -57,6 +57,7 @@ public class ViewSuppliersMenu extends Screen {
             }
             else{
                 System.out.println("Supplier number: " + supplierId);
+
             }
 
 
@@ -90,6 +91,7 @@ public class ViewSuppliersMenu extends Screen {
                         break;
                     case 2:
                         new Thread(new EditCardScreen(this, supplierId)).start();
+                        _continue = false;
                         break;
                     case 3:
                         _continue = viewAgreement();

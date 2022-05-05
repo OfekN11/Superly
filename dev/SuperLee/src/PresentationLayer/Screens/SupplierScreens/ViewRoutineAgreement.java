@@ -22,10 +22,9 @@ public class ViewRoutineAgreement extends ViewAgreement {
     public void run() {
         System.out.println("\nWelcome to the Management Menu of Routine Agreement.");
 
-        showInfo();
-
         int option = 0;
         while (option != 4 && option != 5 && option != 9) {
+            showInfo();
             option = runMenu();
             try {
                 if (option <= 5)

@@ -3,7 +3,7 @@ package PresentationLayer.Screens.SupplierScreens;
 import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+//import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class ViewOrder extends Screen {
 
@@ -153,7 +153,6 @@ public class ViewOrder extends Screen {
         try {
             ServiceOrderObject r = controller.getOrder(supplierId, input);
             if(r != null){
-                System.out.println("\n");
                 System.out.println(r.toString());
             }
             else{

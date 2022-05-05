@@ -21,7 +21,7 @@ public class ManageSupplier extends Screen {
     @Override
     public void run() {
 
-        System.out.println("\nManagement Suppliers");
+        System.out.println("\nSuppliers Management");
         int option = 0;
         while (option != 3) {
             option = runMenu();
@@ -69,7 +69,7 @@ public class ManageSupplier extends Screen {
         id = getInput();
 
         if(id == -1){
-            System.out.println("Returning..\n\n");
+            System.out.println("Returning..\n");
             return;
         }
 
@@ -99,9 +99,7 @@ public class ManageSupplier extends Screen {
             }
         }
 
-        System.out.println("\n\n");
-
-        System.out.println("At last, please enter the names of the manufacturers represented by the supplier. To end the insertion, write \"Done\" and press \"Enter\":\n");
+        System.out.println("\nAt last, please enter the names of the manufacturers represented by the supplier. To end the insertion, write \"Done\" and press \"Enter\":\n");
 
         done = false;
 
@@ -120,7 +118,7 @@ public class ManageSupplier extends Screen {
 
         try {
             if(controller.addSupplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers)){
-                System.out.println("\nThe new supplier was added successfully to the data base.\n\n");
+                System.out.println("\nThe new supplier was added successfully to the data base.\n");
             }
             else{
                 System.out.println("Supplier wasn't added!");
@@ -148,7 +146,7 @@ public class ManageSupplier extends Screen {
         }
         try {
             if(controller.removeSupplier(input)){
-                System.out.println("Supplier " + input + " removed successfully");
+                System.out.println("\nSupplier " + input + " removed successfully");
             }
             else{
                 System.out.println("Supplier wasn't removed!");
