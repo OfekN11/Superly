@@ -32,6 +32,8 @@ public class ViewSuppliersMenu extends Screen {
 
     @Override
     public void run() {
+        boolean correctInput = false, _continue = true;
+
         System.out.println("\nHere you can view all the Supplier's info\n");
 
         try {
@@ -47,16 +49,31 @@ public class ViewSuppliersMenu extends Screen {
 
         System.out.println("If you want to return, please insert \"-1\" and then press \"Enter\".\n");
 
-        supplierId = scanner.nextInt();
-        scanner.nextLine();
+        while(!correctInput){
+            supplierId = getInput();
 
-        if(supplierId == -1) {
-            endRun();
-            return;
+            if(supplierId == -1) {
+                endRun();
+                return;
+            }
+
+            try{
+                if(controller.doesSupplierExists(supplierId)){
+                    correctInput = true;
+                }
+                else{
+                    System.out.println("No such supplier, please try again.\n");
+                }
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+                System.out.println("\n\nPlease try again.\n");
+            }
+
         }
 
         int option = 0;
-        while ( option != 2 && option != 3 && option != 5 && option != 6 && option != 7 && option != 8) {
+        while (_continue) {
             option = runMenu();
             try {
                 switch (option) {
@@ -64,7 +81,6 @@ public class ViewSuppliersMenu extends Screen {
                         printSupplierInfo();
                         break;
                     case 2:
-                        //Passing the id in the constructor, need to check what happens if we change the ID!!
                         new Thread(new EditCardScreen(this, supplierId)).start();
                         break;
                     case 3:
@@ -83,6 +99,7 @@ public class ViewSuppliersMenu extends Screen {
                         new Thread( new ViewOrder(this, supplierId)).start();
                         break;
                     case 8:
+                        _continue = false;
                         endRun();
                         break;
                 }

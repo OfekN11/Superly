@@ -365,11 +365,11 @@ public class SupplierController {
         return suppliers.get(supID).hasAgreement();
     }
 
-    public void addNewOrder(int supId, int orderId) throws Exception {
+    public void addNewOrder(int supId) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliers.get(supId).addNewOrder(orderId);
+        suppliers.get(supId).addNewOrder();
     }
 
     public void addItemsToOrder(int supId, int orderId, List<String> itemsString) throws Exception {

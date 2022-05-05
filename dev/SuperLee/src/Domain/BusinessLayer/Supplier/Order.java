@@ -12,9 +12,12 @@ public class Order {
     private Date date;
     private ArrayList<OrderItem> orderItems;
 
+    private static int globalID = 1;
 
-    public Order(int id){
-        this.id = id;
+
+    public Order(){
+        this.id = globalID;
+        globalID++;
         date = new Date();
         date = Calendar.getInstance().getTime();
         this.orderItems = new ArrayList<>();

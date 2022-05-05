@@ -470,9 +470,9 @@ public class SupplierService {
         }
     }
 
-    public Result<Boolean> order(int supId, int orderId){
+    public Result<Boolean> order(int supId){
         try{
-            controller.addNewOrder(supId, orderId);
+            controller.addNewOrder(supId);
             return Result.makeOk(true);
         }
         catch(Exception e){

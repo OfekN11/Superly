@@ -322,11 +322,9 @@ public class Supplier {
         return agreement != null;
     }
 
-    public void addNewOrder(int orderId) throws Exception {
-        if(orders.containsKey(orderId)){
-            throw new Exception("This order Id already exists!");
-        }
-        orders.put(orderId, new Order(orderId));
+    public void addNewOrder() throws Exception {
+        Order order = new Order();
+        orders.put(order.getId(), order);
     }
 
 
