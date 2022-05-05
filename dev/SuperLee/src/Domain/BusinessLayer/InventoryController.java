@@ -10,8 +10,6 @@ import Globals.Defect;
 
 import java.util.*;
 
-import static java.util.Collections.max;
-
 public class InventoryController {
     private List<Integer> storeIds;
     private Map<Integer, Category> categories;
@@ -252,9 +250,9 @@ public class InventoryController {
         storeIds.remove(storeID);
     }
 
-    public Product addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int maxAmount) { //affect 4 maps in product.
+    public Product addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int targetAmount) { //affect 4 maps in product.
         Product product = getProduct(productID);
-        product.addLocation(storeID, shelvesInStore, shelvesInWarehouse, minAmount, maxAmount);
+        product.addLocation(storeID, shelvesInStore, shelvesInWarehouse, minAmount, targetAmount);
         return product;
     }
 
@@ -600,9 +598,9 @@ public class InventoryController {
         return p;
     }
 
-    public Product changeProductMax(int store, int product, int max) {
+    public Product changeProductTarget(int store, int product, int target) {
         Product p = getProduct(product);
-        p.changeProductTarget(store, max);
+        p.changeProductTarget(store, target);
         return p;
     }
 

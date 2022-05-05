@@ -781,7 +781,7 @@ public class InventoryService {
      */
     public Result<Product> changeProductMax(int store, int product, int max) {
         try {
-            return Result.makeOk(new Product(controller.changeProductMax(store, product, max)));
+            return Result.makeOk(new Product(controller.changeProductTarget(store, product, max)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

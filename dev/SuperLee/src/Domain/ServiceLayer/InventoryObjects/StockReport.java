@@ -9,7 +9,7 @@ public class StockReport {
     private final int amountInWarehouse;
     private final int amountInTotal;
     private final int minAmountInStore;
-    private final int maxAmountInStore;
+    private final int targetAmountInStore;
 
 
     public StockReport(Domain.BusinessLayer.Inventory.StockReport stockReport) {
@@ -20,7 +20,7 @@ public class StockReport {
         this.amountInWarehouse = stockReport.getAmountInWarehouse();
         this.amountInTotal = stockReport.getAmountInTotal();
         this.minAmountInStore = stockReport.getMinAmountInStore();
-        this.maxAmountInStore = stockReport.getTargetAmountInStore();
+        this.targetAmountInStore = stockReport.getTargetAmountInStore();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class StockReport {
                 ", amountInWarehouse=" + amountInWarehouse +
                 ", amountInTotal=" + amountInTotal +
                 ", minAmountInStore=" + minAmountInStore +
-                ", maxAmountInStore=" + maxAmountInStore +
+                ", targetAmountInStore=" + targetAmountInStore +
                 '}';
     }
 }
