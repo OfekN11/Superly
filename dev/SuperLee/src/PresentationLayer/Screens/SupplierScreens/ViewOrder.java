@@ -1,7 +1,9 @@
 package PresentationLayer.Screens.SupplierScreens;
 
+import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class ViewOrder extends Screen {
 
@@ -9,7 +11,8 @@ public class ViewOrder extends Screen {
     private static final String[] menuOptions = {
             "View Order",     //1
             "Make new Order",     //2
-            "Exit"            //3
+            "Edit order",         //3
+            "Exit"           //4
     };
 
     public ViewOrder(Screen caller, int supplierId) {
@@ -21,7 +24,7 @@ public class ViewOrder extends Screen {
     public void run() {
         System.out.println("\nHere you can view Orders and make new Ones!");
         int option = 0;
-        while (option != 3) {
+        while (option != 4) {
             option = runMenu();
             try {
                 switch (option) {
@@ -32,6 +35,9 @@ public class ViewOrder extends Screen {
                         makeOrder();
                         break;
                     case 3:
+                        editOrder();
+                        break;
+                    case 4:
                         endRun();
                         break;
                 }
@@ -158,6 +164,82 @@ public class ViewOrder extends Screen {
 
         }
 
+
+    }
+
+    private void editOrder(){
+        boolean _continue = true, correctInput;
+        int input, orderId = -1;
+
+        while(_continue){
+
+            correctInput = false;
+
+            System.out.println("Insert the number of order you want to edit.");
+            System.out.println("If you wish to return please insert \"-1\"");
+
+            while(!correctInput){
+                orderId = getInput();
+
+                if(orderId == -1){
+                    return;
+                }
+
+                Result<Boolean> r = controller.orderExists(supplierId, orderId);
+
+                if(r.isOk() && r.getValue()){
+                    correctInput = true;
+                }
+                else{
+                    System.out.println(r.getError());
+                }
+            }
+
+            System.out.println("Choose an option:");
+            System.out.println("1) Add an item to the order");
+            System.out.println("2) Remove an item from the order");
+            System.out.println("3) Change the quantity of an item in the order");
+            System.out.println("4) Back");
+
+            correctInput = false;
+
+            while(!correctInput){
+                input = getInput();
+                switch (input){
+                    case 1:
+                        correctInput = true;
+                        addItemToOrder(supplierId, orderId);
+                        break;
+                    case 2:
+                        correctInput = true;
+                        removeItemFromOrder(supplierId, orderId);
+                        break;
+                    case 3:
+                        correctInput = true;
+                        changeQuantityOfItem(supplierId, orderId);
+                        break;
+                    case 4:
+                        correctInput = true;
+                        _continue = false;
+                        break;
+                    default:
+                        System.out.println("Wrong value, please try again.\n");
+                }
+            }
+        }
+
+        System.out.println("Returning..");
+    }
+
+    private void addItemToOrder(int supplierID, int orderId){
+
+    }
+
+    private void removeItemFromOrder(int supplierID, int orderId){
+
+    }
+
+    private void changeQuantityOfItem(int supplierID, int orderId){
 
     }
 }

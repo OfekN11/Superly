@@ -497,4 +497,8 @@ public class Supplier {
         }
         return result;
     }
+
+    public boolean orderExists(int id){
+        return orders.containsKey(id);
+    }
 }

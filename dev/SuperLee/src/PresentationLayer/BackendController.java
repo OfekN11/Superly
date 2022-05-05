@@ -483,4 +483,8 @@ public class BackendController {
     public Result<Product> changeProductMax(int store, int product, int max) {
         return inventoryService.changeProductMax(store, product, max);
     }
+
+    public Result<Boolean> orderExists(int supID, int orderID){
+        return supplierService.orderExists(supID, orderID);
+    }
 }

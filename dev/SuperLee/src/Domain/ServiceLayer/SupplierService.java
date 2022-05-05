@@ -565,4 +565,14 @@ public class SupplierService {
             return Result.makeError(e.getMessage());
         }
     }
+
+    public Result<Boolean> orderExists(int supID, int orderID) {
+        try{
+            boolean result = controller.orderExists(supID, orderID);
+            return Result.makeOk(result);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
 }

@@ -424,4 +424,12 @@ public class SupplierController {
     public boolean doesSupplierExists(int id) {
         return suppliers.containsKey(id);
     }
+
+    public boolean orderExists(int supID, int orderID) throws Exception {
+        if(!supplierExist(supID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        return suppliers.get(supID).orderExists(orderID);
+    }
 }
