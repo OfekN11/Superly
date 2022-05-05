@@ -23,6 +23,7 @@ public class Product {
     private double price;
     private List<SaleToCustomer> sales;
     private List<PurchaseFromSupplier> purchaseFromSupplierList;
+
     public int getId() { return id; }
     public String getName() { return name; }
     public int getCategoryID() {return category.getID();}
@@ -65,17 +66,6 @@ public class Product {
         return manufacturerID;
     }
 
-    public Integer getMinInStore(int store) {
-        if (stockreports.get(store)==null)
-            throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store);
-        return stockreports.get(store).getMinAmountInStore();
-    }
-    public int getMaxInStore(int store) {
-        if (stockreports.get(store)==null)
-            throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store);
-        return stockreports.get(store).getMaxAmountInStore();
-    }
-
     public Integer getInStore(int store) {
 //        if (inStore.get(store)==null)
 //            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
@@ -97,7 +87,7 @@ public class Product {
     private SaleToCustomer getCurrentSale() {
         SaleToCustomer currentSale = null;
         for (SaleToCustomer sale: sales)
-            if ((sale.isActive() && currentSale==null) || (sale.isActive() && currentSale.getPercent()<sale.getPercent()))
+            if ((sale.isActive() && currentSale==null) || (sale.isActive() && currentSale!=null && currentSale.getPercent()<sale.getPercent()))
                 currentSale = sale;
         return category.findCurrentBestSale(currentSale);
     }
@@ -106,7 +96,7 @@ public class Product {
         sales.add(sale);
     }
 
-    public void removeItems(int storeID, int amount) { //bought
+    public void removeItems(int storeID, int amount) { //bought or thrown.
         if (!stockreports.containsKey(storeID))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
         stockreports.get(storeID).removeItemsFromStore(amount);
@@ -224,12 +214,12 @@ public class Product {
         return eirList;
     }
 
-    public void addLocation(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int minAmount, int maxAmount) {
+    public void addLocation(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int minAmount, int targetAmount) {
         Location storeLocation = new Location(storeID, false, shelvesInStore);
         Location warehouseLocation = new Location(storeID, true, shelvesInWarehouse);
         if (stockreports.containsKey(storeID))
             throw new IllegalArgumentException("Product " + name + " is already sold at store " + storeID);
-        stockreports.put(storeID, new StockReport(storeID, id, name, 0, 0, minAmount, maxAmount));
+        stockreports.put(storeID, new StockReport(storeID, id, name, 0, 0, minAmount, targetAmount));
         locations.add(storeLocation);
         locations.add(warehouseLocation);
     }
@@ -297,13 +287,21 @@ public class Product {
         stockreports.get(store).changeMin(min);
     }
 
-    public void changeProductMax(int store, int max) {
+    public void changeProductTarget(int store, int target) {
         if (stockreports.get(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no min");
-        stockreports.get(store).changeMax(max);
+        stockreports.get(store).changeTarget(target);
     }
 
     public StockReport getStockReport(Integer store) {
         return stockreports.get(store);
+    }
+
+    public int getAmountForOrder(int storeID) {
+        return stockreports.get(storeID).getAmountForOrder();
+    }
+
+    public boolean gotUnderMinimum(int storeID, int amount) {
+        return stockreports.get(storeID).gotUnderMinimum(amount);
     }
 }
