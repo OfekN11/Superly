@@ -405,6 +405,14 @@ public class SupplierController {
         suppliers.get(supId).removeItemFromOrder(orderId, itemId);
     }
 
+    public void updateItemQuantityInOrder(int supID, int orderID, int itemID, int quantity) throws Exception {
+        if(!supplierExist(supID)){
+            throw new Exception("The supplier does not exists!");
+        }
+
+        suppliers.get(supID).updateOrder(orderID, itemID, quantity);
+    }
+
 
     public List<String> getOrder(int supId, int orderId) throws Exception {
         if(!supplierExist(supId)){

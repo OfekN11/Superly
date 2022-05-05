@@ -501,6 +501,29 @@ public class SupplierService {
             return Result.makeError(e.getMessage());
         }
     }
+    // TODO: USE THIS METHOD
+    public Result<Boolean> removeItemFromOrder(int supId, int orderId, int itemId){
+        try{
+            controller.removeItemFromOrder(supId, orderId, itemId);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    // TODO: USE THIS METHOD
+    public Result<Boolean> updateItemQuantityInOrder(int supId, int orderId, int itemId, int quantity){
+        try{
+            controller.updateItemQuantityInOrder(supId, orderId, itemId, quantity);
+            return Result.makeOk(true);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+
 
     public Result<ServiceOrderObject> getOrder(int supId, int orderId){
         try{

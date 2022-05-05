@@ -323,7 +323,7 @@ public class Supplier {
     }
 
     public void addNewOrder() throws Exception {
-        Order order = new Order();
+        Order order = new Order(agreement.daysToDelivery());
         orders.put(order.getId(), order);
     }
 
@@ -395,6 +395,10 @@ public class Supplier {
         if(itemQuantity == 0){
             throw new Exception("Can't add 0 items to the order!");
         }
+
+        if(!orders.get(orderId).changeable()){
+            throw new Exception("Can't change order: time exception.");
+        }
         AgreementItem currItem = agreement.getItem(itemId);
 
         float ppu = currItem.getPricePerUnit();
@@ -407,7 +411,28 @@ public class Supplier {
     public void removeOrder(int orderId) throws Exception {
         if(!orders.containsKey(orderId))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
+
+        if(!orders.get(orderId).changeable()){
+            throw new Exception("Can't change order: time exception.");
+        }
+
         orders.remove(orderId);
+    }
+
+    public void updateOrder(int orderID,int itemID, int quantity) throws Exception {
+        if(!orders.containsKey(orderID)){
+            throw new Exception(String.format("Order with ID: %d does not Exists!", orderID));
+        }
+
+        if(!orders.get(orderID).changeable()){
+            throw new Exception("Can't change order: time exception.");
+        }
+
+        if(!agreement.itemExists(itemID)){
+            throw new Exception(String.format("Item with ID: %d does not Exists!", itemID));
+        }
+
+        orders.get(orderID).updateItemQuantity(itemID, quantity, agreement.getItem(itemID).getDiscount(quantity), agreement.getOrderPrice(itemID, quantity));
     }
 
     public void removeItemFromOrder(int orderId, int itemId) throws Exception {
