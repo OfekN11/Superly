@@ -1,41 +1,42 @@
 package PresentationLayer.Screens.InventorySreens;
 
-import Domain.ServiceLayer.InventoryObjects.Category;
-import Domain.ServiceLayer.InventoryObjects.Product;
 import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Catalogs extends Screen {
 
     private static final String[] menuOptions = {
-            "Print employment conditions",  //1
-            "Update name",                  //2
-            "Update bank details",          //3
-            "Update salary per shift",      //4
-            "Update certifications",        //5
-            "Calculate Salary",             //6
-            "Manage work constraints",      //7
-            "Print upcoming shifts"         //8
+            "View Products",  //1
+            "View Products By Category",  //2
+            "Manage Products", //3
+            "View Categories",                  //4
+            "Manage Categories", //5
+            "Add new Category", //6
+            "Add new Product", //7
+            "exit"        //8
     };
 
     public Catalogs(Screen caller, String[] extraMenuOptions) {
         super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
     }
-
+    private int option;
     public void run() {
-        System.out.println("\nWelcome to the Management Menu of Catalog!");
-        int option = 0;
-        while (option != 9) {
+        System.out.println("\nWelcome to the Catalog!");
+        option=0;
+        List<Integer> leadToNextScreen = Arrays.asList(new Integer[]{3, 5, 8});
+        while (!leadToNextScreen.contains(option)) {
             option = runMenu();
             try {
                 if (option <= 8)
                     handleBaseOptions(option);
-                else if (option == 9)
+                else if (option == 6)
                     endRun();
             }
             catch (Exception e){
@@ -49,28 +50,88 @@ public class Catalogs extends Screen {
     protected void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
-//                System.out.println(employmentConditions);
+                listProducts();
                 break;
             case 2:
-//                updateName();
+                listProductsByCategory();
                 break;
             case 3:
-//                updateBankDetails();
+                manageProducts();
                 break;
             case 4:
-//                updateSalary();
+                listCategories();
                 break;
             case 5:
-//                updateCertifications();
+                manageCategories();
                 break;
             case 6:
-//                calculateSalary();
+                addCategory();
                 break;
             case 7:
-//                manageConstraints();
+                addProduct();
                 break;
             case 8:
-//                printUpcomingShifts();
+                endRun();
+        }
+    }
+
+    public void addProduct() {
+        System.out.println("Please insert product name, categoryID, weight, price, List of <supplierID><space><productID> with spaces between entries, and manufacturerID. Separated by commas, no spaces");
+        String[] info = scanner.nextLine().split(",");
+        Map<Integer, Integer> suppliersMap = new HashMap<>();
+        String[] suppliersStringArray = info[4].split(" ");
+        for (int i=0; i< suppliersStringArray.length; i=i+2) {
+            suppliersMap.put(Integer.parseInt(suppliersStringArray[i]), Integer.parseInt(suppliersStringArray[i + 1]));
+        }
+        Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]), Double.parseDouble(info[3]), suppliersMap, Integer.parseInt(info[5]));
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            Domain.ServiceLayer.InventoryObjects.Product p = r.getValue();
+            System.out.println(p);
+        }
+    }
+
+    public void addCategory() {
+        System.out.println("Please insert category name");
+        String name = scanner.nextLine();
+        System.out.println("Please insert parent category ID, or 0 if there is none");
+        int parent = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
+        Result<Domain.ServiceLayer.InventoryObjects.Category> r = controller.addNewCategory(name, parent);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            Domain.ServiceLayer.InventoryObjects.Category c = r.getValue();
+            System.out.println(c);
+        }
+    }
+
+    private void manageCategories() {
+        System.out.println("Please insert category ID you would like to edit");
+        int category = scanner.nextInt();
+        scanner.nextLine();
+        Result<Domain.ServiceLayer.InventoryObjects.Category> c = controller.getCategory(category);
+        if (c.isOk())
+            new Thread(new Category(this, new String[]{}, c.getValue())).start();
+        else if (c.isError()) {
+            System.out.println("Error occured:\n"+c.getError());
+            System.out.println("Please try again");
+            option=0;
+        }
+    }
+
+    private void manageProducts() {
+        System.out.println("Please insert Product ID you would like to edit");
+        int product = scanner.nextInt();
+        scanner.nextLine();
+        Result<Domain.ServiceLayer.InventoryObjects.Product> p = controller.getProduct(product);
+        if (p.isOk())
+            new Thread(new Product(this, new String[]{}, p.getValue())).start();
+        else if (p.isError()) {
+            System.out.println("Error occured:\n"+p.getError());
+            System.out.println("Please try again");
+            option=0;
         }
     }
 
@@ -87,24 +148,11 @@ public class Catalogs extends Screen {
         }
     }
 
-    public void listCategories() {
-        Result<List<Category>> r = controller.getCategories();
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            List<Category> categoryList = r.getValue();
-            for (Category c : categoryList)
-                System.out.println(c);
-            if (categoryList.isEmpty())
-                System.out.println("there are no categories in the system");
-        }
-    }
-
     public void listProductsByCategory() {
         System.out.println("Which categories would you like to examine? (Please insert categories IDs separated by ',' without spaces)");
         listCategoryIDs();
         List<Integer> categories = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
-        Result<List<Product>> r = controller.getProductsFromCategory(categories);
+        Result<List<Domain.ServiceLayer.InventoryObjects.Product>> r = controller.getProductsFromCategory(categories);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -113,6 +161,19 @@ public class Catalogs extends Screen {
                 System.out.println(p);
             if (productList.isEmpty())
                 System.out.println("there are no products in specified categories");
+        }
+    }
+
+    public void listCategories() {
+        Result<List<Domain.ServiceLayer.InventoryObjects.Category>> r = controller.getCategories();
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<Domain.ServiceLayer.InventoryObjects.Category> categoryList = r.getValue();
+            for (Domain.ServiceLayer.InventoryObjects.Category c : categoryList)
+                System.out.println(c);
+            if (categoryList.isEmpty())
+                System.out.println("there are no categories in the system");
         }
     }
 }

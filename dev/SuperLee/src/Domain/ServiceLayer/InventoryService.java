@@ -185,7 +185,7 @@ public class InventoryService {
     public Result<ServiceOrderObject> orderArrived(int orderID){
         try {
             Order order = controller.orderArrived(orderID);
-            return Result.makeOk(new ServiceOrderObject(order));
+            return Result.makeOk(new ServiceOrderObject(orderID, new Date(), new ArrayList<>()));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -784,6 +784,29 @@ public class InventoryService {
     public Result<Product> changeProductMax(int store, int product, int max) {
         try {
             return Result.makeOk(new Product(controller.changeProductTarget(store, product, max)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    /**
+     * get a specified category
+     *
+     * @return Result detailing success of operation, containing the category
+     */
+    public Result<Category> getCategory(int categoryID) {
+        try {
+            return Result.makeOk(new Category(controller.getCategory(categoryID)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Product> getProduct(int product) {
+        try {
+            return Result.makeOk(new Product(controller.getProduct(product)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

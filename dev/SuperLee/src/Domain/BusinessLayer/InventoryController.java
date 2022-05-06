@@ -170,22 +170,23 @@ public class InventoryController {
     }
 
     public Order orderArrived(int orderID) {
-        Order arrivedOrder = supplierController.getOrder(orderID);
-        supplierController.orderHasArrived(orderID);
-        int storeID = arrivedOrder.getStoreID();
-        int supplierID = arrivedOrder.getSupplierID();
-        int amount;
-        double pricePaid;
-        double originalPrice;
-        Product product;
-        for (OrderItem orderItem: arrivedOrder.getOrderItems()) {
-            product = getProduct(orderItem.getProdectID());
-            amount = orderItem.getQuantity();
-            pricePaid = orderItem.getFinalPrice();
-            originalPrice = orderItem.getOriginalPrice();
-            product.addItems(storeID, new Date(), supplierID, amount, pricePaid, originalPrice, orderID);
-        }
-        return arrivedOrder;
+        return null;
+//        Order arrivedOrder = supplierController.getOrder(orderID);
+//        supplierController.orderHasArrived(orderID);
+//        int storeID = arrivedOrder.getStoreID();
+//        int supplierID = arrivedOrder.getSupplierID();
+//        int amount;
+//        double pricePaid;
+//        double originalPrice;
+//        Product product;
+//        for (OrderItem orderItem: arrivedOrder.getOrderItems()) {
+//            product = getProduct(orderItem.getProdectID());
+//            amount = orderItem.getQuantity();
+//            pricePaid = orderItem.getFinalPrice();
+//            originalPrice = orderItem.getOriginalPrice();
+//            product.addItems(storeID, new Date(), supplierID, amount, pricePaid, originalPrice, orderID);
+//        }
+//        return arrivedOrder;
     }
 
     public List<PurchaseFromSupplier> getPurchaseFromSupplierHistory(int productID) {
@@ -196,7 +197,7 @@ public class InventoryController {
         return getProduct(productID).getDiscountFromSupplierHistory();
     }
 
-    private Product getProduct(int productID) {
+    public Product getProduct(int productID) {
         Product output = products.get(productID);
         if (output==null)
             throw new IllegalArgumentException("Product ID Invalid: " + productID);
@@ -635,5 +636,9 @@ public class InventoryController {
     private void ordersOnTheWay(int storeID) {
         //daily, check what routine orders are otw
         supplierController.getOrdersOnTheWay(storeID);
+    }
+
+    public Category getCategory(int categoryID) {
+        return categories.get(categoryID);
     }
 }

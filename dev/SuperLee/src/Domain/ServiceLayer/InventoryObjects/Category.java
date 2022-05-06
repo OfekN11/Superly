@@ -20,6 +20,23 @@ public class Category {
         this.numOfProducts=c.getAllProductsInCategory().size();
     }
     public int getID() { return ID; }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getParentCategory() {
+        return parentCategory;
+    }
+
+    public List<Category> getSubCategories() {
+        return subCategories;
+    }
+
+    public int getNumOfProducts() {
+        return numOfProducts;
+    }
+
     @Override
     public String toString() {
         return "Category{" +
