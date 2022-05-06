@@ -10,10 +10,9 @@ public class PurchaseFromSupplier {
     private int productID;
     private Date date;
     private int supplierID;
-    private String description;
     private int amountBought;
-    private int pricePaid;
-    private int originalPrice;
+    private double pricePaid;
+    private double originalPrice;
     public Date getDate() {
         return date;
     }
@@ -22,19 +21,15 @@ public class PurchaseFromSupplier {
         return supplierID;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public int getAmountBought() {
         return amountBought;
     }
 
-    public int getPricePaid() {
+    public double getPricePaid() {
         return pricePaid;
     }
 
-    public int getOriginalPrice() {
+    public double getOriginalPrice() {
         return originalPrice;
     }
 
@@ -46,13 +41,12 @@ public class PurchaseFromSupplier {
         return productID;
     }
 
-    public PurchaseFromSupplier(int id, int storeID, int productID, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
+    public PurchaseFromSupplier(int id, int storeID, int productID, Date date, int supplierID, int amountBought, double pricePaid, double originalPrice) {
         this.id = id;
         this.storeID = storeID;
         this.productID = productID;
         this.date = date;
         this.supplierID = supplierID;
-        this.description = description;
         this.amountBought = amountBought;
         this.pricePaid = pricePaid;
         this.originalPrice = originalPrice;
