@@ -6,6 +6,8 @@ import Domain.BusinessLayer.Inventory.DiscountsAndSales.PurchaseFromSupplier;
 import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
 import Domain.BusinessLayer.Inventory.Product;
 import Domain.BusinessLayer.Inventory.StockReport;
+import Domain.BusinessLayer.Supplier.Order;
+import Domain.BusinessLayer.Supplier.OrderItem;
 import Globals.Defect;
 
 import java.util.*;
@@ -163,14 +165,26 @@ public class InventoryController {
     }
 
     //needs to be deleted
-    public PurchaseFromSupplier addItems(int storeID, int productID, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
-        return  getProduct(productID).addItems(storeID, new Date(), supplierID, description, amountBought, pricePaid, originalPrice);
+    private PurchaseFromSupplier addItems(int storeID, int productID, int supplierID, int amountBought, double pricePaid, double originalPrice, int orderID) {
+        return  getProduct(productID).addItems(storeID, new Date(), supplierID, amountBought, pricePaid, originalPrice, orderID);
     }
 
     public PurchaseFromSupplier orderArrived(int orderID) {
-//        int store = supplierController.getOrder(orderID);
+        Order arrivedOrder = supplierController.getOrder(orderID);
         supplierController.orderHasArrived(orderID);
-        //for each product add amount to warehouse
+        int storeID = arrivedOrder.getStoreID();
+        int supplierID = arrivedOrder.getSupplierID();
+        int amount;
+        double pricePaid;
+        double originalPrice;
+        Product product;
+        for (OrderItem orderItem: arrivedOrder.getOrderItems()) {
+            product = getProduct(orderItem.getProdectID());
+            amount = orderItem.getQuantity();
+            pricePaid = orderItem.getFinalPrice();
+            originalPrice = orderItem.getOriginalPrice();
+            product.addItems(storeID, new Date(), supplierID, amount, pricePaid, originalPrice, orderID);
+        }
         return null;
     }
 
@@ -535,7 +549,7 @@ public class InventoryController {
             shelves.add(2*i); shelves.add(2*i+1);
             for (int p : products.keySet()) {
                 addProductToStore(i, shelves, shelves, p, 10*shelves.get(1), 30*shelves.get(1));
-                addItems(i, p,3,"load test data", 37, 37*10/10*shelves.get(1), 37*10/10*shelves.get(1));
+                addItems(i, p,3, 37, 37*10/10*shelves.get(1), 37*10/10*shelves.get(1), 1);
             }
         }
     }

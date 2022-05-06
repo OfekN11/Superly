@@ -8,11 +8,10 @@ public class PurchaseFromSupplierReport {
     private final int storeID;
     private final int productID;
     private final int amountBought;
-    private final int originalPrice;
-    private final int finalPrice;
+    private final double originalPrice;
+    private final double finalPrice;
     private final Date date;
     private final int supplierID;
-    private final String description;
 
     public PurchaseFromSupplierReport(PurchaseFromSupplier d) {
         this.storeID = d.getStoreID();
@@ -22,7 +21,6 @@ public class PurchaseFromSupplierReport {
         this.date = d.getDate();
         this.supplierID = d.getSupplierID();
         this.amountBought = d.getAmountBought();
-        this.description = d.getDescription();
     }
 
     @Override
@@ -34,8 +32,7 @@ public class PurchaseFromSupplierReport {
                 ", originalPrice=" + originalPrice +
                 ", finalPrice=" + finalPrice +
                 ", date=" + date +
-                ", supplierID=" + supplierID +
-                ", description='" + description + '\'' +
+                ", supplierID=" + supplierID + '\'' +
                 '}';
     }
 }

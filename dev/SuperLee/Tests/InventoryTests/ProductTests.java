@@ -1,4 +1,4 @@
-package InventoryTests;
+package Tests.InventoryTests;
 
 import Domain.BusinessLayer.Inventory.Category;
 import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
@@ -45,16 +45,16 @@ public class ProductTests {
         Assertions.assertEquals(0, product0.getInWarehouse(2));
         Assertions.assertEquals(0, product1.getInStore(1));
         Assertions.assertEquals(0, product1.getInWarehouse(1));
-        product0.addItems(1, new Date(), 1, "", 100, 5, 5);
+        product0.addItems(1, new Date(), 1, 100, 5, 5, 3);
         Assertions.assertEquals(0, product0.getInStore(1));
         Assertions.assertEquals(100, product0.getInWarehouse(1));
         Assertions.assertEquals(0, product0.getInStore(2));
         Assertions.assertEquals(0, product0.getInWarehouse(2));
         Assertions.assertEquals(0, product1.getInStore(1));
         Assertions.assertEquals(0, product1.getInWarehouse(1));
-        product0.addItems(1, new Date(), 1, "", 40, 5, 5);
-        product0.addItems(2, new Date(), 1, "", 30, 5, 5);
-        product1.addItems(1, new Date(), 1, "", 99, 5, 5);
+        product0.addItems(1, new Date(), 1, 40, 5, 5, 4);
+        product0.addItems(2, new Date(), 1, 30, 5, 5, 5);
+        product1.addItems(1, new Date(), 1, 99, 5, 5, 6);
         Assertions.assertEquals(0, product0.getInStore(1));
         Assertions.assertEquals(140, product0.getInWarehouse(1));
         Assertions.assertEquals(0, product0.getInStore(2));
@@ -70,7 +70,7 @@ public class ProductTests {
         Assertions.assertEquals(0, product0.getInWarehouse(2));
         Assertions.assertEquals(0, product1.getInStore(1));
         Assertions.assertEquals(0, product1.getInWarehouse(1));
-        product0.addItems(1, new Date(), 1, "", 100, 5, 5);
+        product0.addItems(1, new Date(), 1, 100, 5, 5, 7);
         product0.moveItems(1, 58);
         Assertions.assertEquals(58, product0.getInStore(1));
         Assertions.assertEquals(42, product0.getInWarehouse(1));
@@ -78,9 +78,9 @@ public class ProductTests {
         Assertions.assertEquals(0, product0.getInWarehouse(2));
         Assertions.assertEquals(0, product1.getInStore(1));
         Assertions.assertEquals(0, product1.getInWarehouse(1));
-        product0.addItems(1, new Date(), 1, "", 40, 5, 5);
-        product0.addItems(2, new Date(), 1, "", 30, 5, 5);
-        product1.addItems(1, new Date(), 1, "", 99, 5, 5);
+        product0.addItems(1, new Date(), 1, 40, 5, 5, 6);
+        product0.addItems(2, new Date(), 1, 30, 5, 5, 8);
+        product1.addItems(1, new Date(), 1, 99, 5, 5, 9);
         product0.moveItems(1, 40);
         product0.moveItems(2, 25);
         product1.moveItems(1, 18);
@@ -99,7 +99,7 @@ public class ProductTests {
         Assertions.assertEquals(0, product0.getInWarehouse(2));
         Assertions.assertEquals(0, product1.getInStore(1));
         Assertions.assertEquals(0, product1.getInWarehouse(1));
-        product0.addItems(1, new Date(), 1, "", 100, 5, 5);
+        product0.addItems(1, new Date(), 1, 100, 5, 5, 8);
         product0.moveItems(1, 58);
         product0.removeItems(1, 37);
         Assertions.assertEquals(21, product0.getInStore(1));
@@ -108,9 +108,9 @@ public class ProductTests {
         Assertions.assertEquals(0, product0.getInWarehouse(2));
         Assertions.assertEquals(0, product1.getInStore(1));
         Assertions.assertEquals(0, product1.getInWarehouse(1));
-        product0.addItems(1, new Date(), 1, "", 40, 5, 5);
-        product0.addItems(2, new Date(), 1, "", 30, 5, 5);
-        product1.addItems(1, new Date(), 1, "", 99, 5, 5);
+        product0.addItems(1, new Date(), 1, 40, 5, 5, 3);
+        product0.addItems(2, new Date(), 1, 30, 5, 5, 5);
+        product1.addItems(1, new Date(), 1, 99, 5, 5, 1);
         product0.moveItems(1, 40);
         product0.moveItems(2, 25);
         product1.moveItems(1, 18);

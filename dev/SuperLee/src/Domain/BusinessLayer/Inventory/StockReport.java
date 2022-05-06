@@ -1,5 +1,8 @@
 package Domain.BusinessLayer.Inventory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class StockReport {
 
     private int storeID;
@@ -7,7 +10,7 @@ public class StockReport {
     private String productName;
     private int amountInStore;
     private int amountInWarehouse;
-    private int amountInDelivery;
+    private Map<Integer, Integer> amountInDeliveries; //orderID, amount
     private int minAmountInStore;
     private int targetAmountInStore;
 
@@ -17,7 +20,7 @@ public class StockReport {
         this.productName = productName;
         this.amountInStore = amountInStore;
         this.amountInWarehouse = amountInWarehouse;
-        this.amountInDelivery = 0;
+        this.amountInDeliveries = new HashMap<>();
         this.minAmountInStore = minAmountInStore;
         this.targetAmountInStore = targetAmountInStore;
     }
@@ -38,7 +41,7 @@ public class StockReport {
         return minAmountInStore;
     }
     public int getTargetAmountInStore() { return targetAmountInStore; }
-    public int getAmountInDelivery() { return amountInDelivery; }
+    public Map<Integer, Integer> getAmountInDeliveries() { return amountInDeliveries; }
 
     public void removeItemsFromStore(int amount) {
         if (amountInStore+amountInWarehouse-amount<0)
@@ -53,8 +56,9 @@ public class StockReport {
         amountInStore+=amount;
     }
 
-    public void addItems(int amount) {
+    public void addItems(int amount, int orderID) {
         amountInWarehouse+=amount;
+        amountInDeliveries.remove(orderID);
     }
 
     public void returnItems(int amount) {
@@ -85,11 +89,16 @@ public class StockReport {
         productName=name;
     }
 
-    private int getTotalAmount() { return amountInDelivery+amountInStore+amountInWarehouse;}
+    private int getTotalAmountInDeliveries() {
+        int total = 0;
+        for (int amount: amountInDeliveries.values())
+            total += amount;
+        return total;
+    }
+    private int getTotalAmount() { return getTotalAmountInDeliveries()+amountInStore+amountInWarehouse;}
     public int getAmountForOrder() {
         return targetAmountInStore - getTotalAmount();
     }
-
     public boolean gotUnderMinimum(int amount) {
         return (minAmountInStore > getTotalAmount()) && (minAmountInStore <= getTotalAmount()+amount);
     }

@@ -107,11 +107,11 @@ public class Product {
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
         stockreports.get(storeID).moveItems(amount);
     }
-    public PurchaseFromSupplier addItems(int storeId, Date date, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
+    public PurchaseFromSupplier addItems(int storeId, Date date, int supplierID, int amountBought, double pricePaid, double originalPrice, int orderID) {
         if (!stockreports.containsKey(storeId))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
-        stockreports.get(storeId).addItems(amountBought);
-        PurchaseFromSupplier p = new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, storeId, id, date, supplierID, description, amountBought, pricePaid, originalPrice);
+        stockreports.get(storeId).addItems(amountBought, orderID);
+        PurchaseFromSupplier p = new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, storeId, id, date, supplierID, amountBought, pricePaid, originalPrice);
         purchaseFromSupplierList.add(p);
         return p;
 
