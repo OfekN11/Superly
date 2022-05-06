@@ -162,14 +162,16 @@ public class InventoryController {
         }
     }
 
+    //needs to be deleted
     public PurchaseFromSupplier addItems(int storeID, int productID, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
         return  getProduct(productID).addItems(storeID, new Date(), supplierID, description, amountBought, pricePaid, originalPrice);
     }
 
-    public PurchaseFromSupplier receiveOrder(int orderID) {
+    public PurchaseFromSupplier orderArrived(int orderID) {
+//        int store = supplierController.getOrder(orderID);
         supplierController.orderHasArrived(orderID);
+        //for each product add amount to warehouse
         return null;
-        //
     }
 
     public List<PurchaseFromSupplier> getPurchaseFromSupplierHistory(int productID) {

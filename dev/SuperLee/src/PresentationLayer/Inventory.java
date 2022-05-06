@@ -411,14 +411,14 @@ public class Inventory {
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert a general description of the purchase");
         String description = scanner.nextLine();
-        Result<PurchaseFromSupplierReport> r = is.addItems(storeID, productID, supplier, description, amount, finalPrice, originalPrice);
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            PurchaseFromSupplierReport dr = r.getValue();
-            System.out.println("Purchase added to system successfully");
-            System.out.println(dr);
-        }
+//        Result<PurchaseFromSupplierReport> r = is.orderArrived(storeID, productID, supplier, description, amount, finalPrice, originalPrice);
+//        if (r.isError())
+//            System.out.println(r.getError());
+//        else {
+//            PurchaseFromSupplierReport dr = r.getValue();
+//            System.out.println("Purchase added to system successfully");
+//            System.out.println(dr);
+//        }
     }
 
     private static void reportExpired() {

@@ -332,8 +332,8 @@ public class BackendController {
         return inventoryService.removeProductFromStore(storeID, productID);
     }
 
-    public Result<PurchaseFromSupplierReport> addItems(int storeID, int productID, int supplierID, String description, int amountBought, int pricePaid, int originalPrice){
-        return inventoryService.addItems(storeID, productID, supplierID, description, amountBought, pricePaid, originalPrice);
+    public Result<PurchaseFromSupplierReport> addItems(int orderID){
+        return inventoryService.orderArrived(orderID);
     }
 
     public Result<List<PurchaseFromSupplierReport>> getPurchaseFromSupplierHistory(int productId){

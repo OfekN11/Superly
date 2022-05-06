@@ -239,7 +239,7 @@ public class Product extends Screen {
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert a general description of the purchase");
         String description = scanner.nextLine();
-        Result<PurchaseFromSupplierReport> r = controller.addItems(storeID, productID, supplier, description, amount, finalPrice, originalPrice);
+        Result<PurchaseFromSupplierReport> r = controller.addItems(storeID); //needs to be changed to orderID
         if (r.isError())
             System.out.println(r.getError());
         else {

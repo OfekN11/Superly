@@ -180,9 +180,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the info on the purchase
      */
-    public Result<PurchaseFromSupplierReport> addItems(int storeID, int productID, int supplierID, String description, int amountBought, int pricePaid, int originalPrice){
+    public Result<PurchaseFromSupplierReport> orderArrived(int orderID){
         try {
-            PurchaseFromSupplier dr = controller.addItems(storeID, productID, supplierID, description, amountBought, pricePaid, originalPrice);
+            PurchaseFromSupplier dr = controller.orderArrived(orderID);
             return Result.makeOk(new PurchaseFromSupplierReport(dr));
         }
         catch (Exception e){
