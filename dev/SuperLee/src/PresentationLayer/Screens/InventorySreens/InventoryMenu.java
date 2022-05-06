@@ -8,7 +8,7 @@ public class InventoryMenu extends Screen {
     private static final String[] menuOptions = {
             "View/Manage Catalog", //1
             "View/Add Reports",    //2
-            "Manage Stock",    //3
+            "Manage Store (sales, warehouse)",    //3
             "Exit"              //4
     };
 

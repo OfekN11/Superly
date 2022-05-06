@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="14db89f2-b157-448b-aea3-2353a64a0cb5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/InventoryMenu.java" afterDir="false" />
+    <list default="true" id="14db89f2-b157-448b-aea3-2353a64a0cb5" name="Default Changelist" comment="small plchanges">
+      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/DefectiveItemReports.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/ReportDefective.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/StockReports.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperLee.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SuperLee.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/CategoryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/CategoryTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/ProductTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/ProductTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryObjects/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryObjects/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/BackendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/BackendController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Catalogs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Catalogs.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/MainMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/InventoryMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/InventoryMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Register.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Register.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Reports.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Sales.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Sales.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Screen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/Screen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Store.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/EditCardScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/EditCardScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ManageSupplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ManageSupplier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/SuppliersMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/SuppliersMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewAgreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewAgreement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewByOrderAgreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewByOrderAgreement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewContacts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewContacts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewManufacturers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewManufacturers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewNotTransportingAgreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewNotTransportingAgreement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewOrder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewRoutineAgreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewRoutineAgreement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewSuppliersMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/SupplierScreens/ViewSuppliersMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../docs/Instructions.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/Instructions.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,11 +72,12 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="create.test.in.the.same.root" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Tests/InventoryTests" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.13089007" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/Tests" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Tests" />
+    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.proportion" value="0.112359524" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.excludes" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
@@ -99,9 +97,9 @@
       <recent name="BusinessLayer" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.BusinessTests in SuperLee">
-    <configuration name="Inventory" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="PresentationLayer.Inventory" />
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="PresentationLayer.Main" />
       <module name="SuperLee" />
       <extension name="coverage">
         <pattern>
@@ -113,24 +111,32 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="All in SuperLee" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AgreementItemTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="SuperLee" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="SuppliersTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="SuppliersTests" />
+      <option name="MAIN_CLASS_NAME" value="SuppliersTests.AgreementItemTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BusinessTests in SuperLee" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CategoryTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="SuperLee" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="BusinessTests.*" />
+          <option name="PATTERN" value="InventoryTests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="BusinessTests" />
-      <option name="TEST_OBJECT" value="package" />
+      <option name="PACKAGE_NAME" value="InventoryTests" />
+      <option name="MAIN_CLASS_NAME" value="InventoryTests.CategoryTests" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -169,11 +175,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.CategoryTests" />
+        <item itemvalue="JUnit.AgreementItemTest" />
         <item itemvalue="JUnit.InventoryControllerTest.removeStore" />
         <item itemvalue="JUnit.InventoryControllerTest.getExpiredItemReportsByProductIllegalEntries" />
-        <item itemvalue="JUnit.BusinessTests in SuperLee" />
-        <item itemvalue="JUnit.All in SuperLee" />
-        <item itemvalue="Application.Inventory" />
       </list>
     </recent_temporary>
   </component>
@@ -185,34 +191,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1650207572858</updated>
-    </task>
-    <task id="LOCAL-00004" summary="result class">
-      <created>1650433530327</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1650433530327</updated>
-    </task>
-    <task id="LOCAL-00005" summary="change service and controller">
-      <created>1650443617688</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1650443617688</updated>
-    </task>
-    <task id="LOCAL-00006" summary="change service and controller">
-      <created>1650445078356</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1650445078357</updated>
-    </task>
-    <task id="LOCAL-00007" summary="created service objects and starting interface">
-      <created>1650447776031</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1650447776031</updated>
     </task>
     <task id="LOCAL-00008" summary="created service objects and starting interface">
       <created>1650448401799</created>
@@ -529,7 +507,35 @@
       <option name="project" value="LOCAL" />
       <updated>1650896923117</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="small changes in screens">
+      <created>1651678575822</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1651678575822</updated>
+    </task>
+    <task id="LOCAL-00054" summary="BL contracts">
+      <created>1651823984208</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1651823984209</updated>
+    </task>
+    <task id="LOCAL-00055" summary="changes with amir after zoom with everyone">
+      <created>1651826092388</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1651826092388</updated>
+    </task>
+    <task id="LOCAL-00056" summary="small plchanges">
+      <created>1651833030822</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1651833030823</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -545,10 +551,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="tests, and some small changes" />
-    <MESSAGE value="stock reports" />
-    <MESSAGE value="add sale for tests&#10;fixed addSale function to remove redundant copies" />
-    <MESSAGE value="add discount -&gt; add purchase" />
     <MESSAGE value="small changes" />
     <MESSAGE value="add product in test" />
     <MESSAGE value="list products in category" />
@@ -570,7 +572,11 @@
     <MESSAGE value="printing additions" />
     <MESSAGE value="change product max" />
     <MESSAGE value="change product name in stock reports" />
-    <option name="LAST_COMMIT_MESSAGE" value="change product name in stock reports" />
+    <MESSAGE value="small changes in screens" />
+    <MESSAGE value="BL contracts" />
+    <MESSAGE value="changes with amir after zoom with everyone" />
+    <MESSAGE value="small plchanges" />
+    <option name="LAST_COMMIT_MESSAGE" value="small plchanges" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -578,12 +584,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java</url>
-          <line>57</line>
+          <line>53</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryService.java</url>
-          <line>416</line>
+          <line>418</line>
           <option name="timeStamp" value="63" />
         </line-breakpoint>
       </breakpoints>

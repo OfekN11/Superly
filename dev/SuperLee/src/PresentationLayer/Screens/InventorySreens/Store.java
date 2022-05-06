@@ -1,21 +1,23 @@
 package PresentationLayer.Screens.InventorySreens;
 
+import Domain.ServiceLayer.InventoryObjects.PurchaseFromSupplierReport;
 import Domain.ServiceLayer.Result;
+import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
 import PresentationLayer.Screens.Screen;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.stream.Stream;
 
 public class Store extends Screen {
     private static final String[] menuOptions = {
-            "Print employment conditions",  //1
-            "Update name",                  //2
-            "Update bank details",          //3
-            "Update salary per shift",      //4
-            "Update certifications",        //5
-            "Calculate Salary",             //6
-            "Manage work constraints",      //7
-            "Print upcoming shifts"         //8
+            "Manage Sales",  //1
+            "Sell Items",                  //2
+            "Return Items",          //3
+            "Order Arrived",      //4
+            "Add Store",        //5
+            "Remove Store",             //6
+            "exit",      //7
     };
 
     public Store(Screen caller, String[] extraMenuOptions) {
@@ -25,10 +27,10 @@ public class Store extends Screen {
     public void run() {
         System.out.println("\nWelcome to the Management Menu of Store!");
         int option = 0;
-        while (option != 9) {
+        while (option != 7 && option != 1) {
             option = runMenu();
             try {
-                if (option <= 8)
+                if (option <= 7)
                     handleBaseOptions(option);
                 else if (option == 9)
                     endRun();
@@ -44,28 +46,25 @@ public class Store extends Screen {
     protected void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
-//                System.out.println(employmentConditions);
+                new Thread(new Sales(this, new String[]{})).start();
                 break;
             case 2:
-//                updateName();
+                buyItems();
                 break;
             case 3:
-//                updateBankDetails();
+                returnItems();
                 break;
             case 4:
-//                updateSalary();
+                addItems();
                 break;
             case 5:
-//                updateCertifications();
+                addStore();
                 break;
             case 6:
-//                calculateSalary();
+                removeStore();
                 break;
             case 7:
-//                manageConstraints();
-                break;
-            case 8:
-//                printUpcomingShifts();
+                endRun();
         }
     }
     public void removeStore() {
@@ -87,6 +86,55 @@ public class Store extends Screen {
         else {
             int id = r.getValue();
             System.out.println("new store created, ID is: " + id);
+        }
+    }
+
+    public void addItems() {
+        System.out.println("Which Order arrived? (insert ID)");
+        int orderID = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
+        Result<ServiceOrderObject> r = controller.orderArrived(orderID); //needs to be changed to orderID
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            ServiceOrderObject dr = r.getValue();
+            System.out.println("Order inserted into system successfully");
+            System.out.println(dr);
+        }
+    }
+
+    private void buyItems() {
+        int storeID = getStoreID();
+        System.out.println("Please insert product ID of product you would like to buy");
+        int productId = scanner.nextInt();
+        System.out.println("Please insert amount of product you would like to buy");
+        int amount = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
+        Result<Double> r = controller.buyItems(storeID, productId, amount);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("Purchase successful! Total price is " + round(r.getValue()) + "NIS");
+            isUnderMin(storeID, productId);
+        }
+    }
+
+    private void returnItems() {
+        int storeID = getStoreID();
+        System.out.println("Please insert product ID of the product's items you would like to return");
+        int productId = scanner.nextInt();
+        System.out.println("Please insert amount of items you would like to return");
+        int amount = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
+        System.out.println("Please insert the date the items were bought");
+        Date dateBought = getDate();
+        if (dateBought==null)
+            return;
+        Result<Double> r = controller.returnItems(storeID, productId, amount, dateBought);
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            System.out.println("Total refund is " + round(r.getValue()) + "NIS");
         }
     }
 }

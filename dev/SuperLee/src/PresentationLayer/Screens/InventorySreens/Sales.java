@@ -4,21 +4,21 @@ import Domain.ServiceLayer.InventoryObjects.Sale;
 import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Sales extends Screen {
 
     private static final String[] menuOptions = {
-            "Print employment conditions",  //1
-            "Update name",                  //2
-            "Update bank details",          //3
-            "Update salary per shift",      //4
-            "Update certifications",        //5
-            "Calculate Salary",             //6
-            "Manage work constraints",      //7
-            "Print upcoming shifts"         //8
+            "Add Sale",  //1
+            "Remove Sale",                  //2
+            "Sale History by Product",          //3
+            "Sale History by Category",      //4
+            "exit",       //5
     };
 
     public Sales(Screen caller, String[] extraMenuOptions) {
@@ -28,10 +28,10 @@ public class Sales extends Screen {
     public void run() {
         System.out.println("\nWelcome to the Management Menu of Sales");
         int option = 0;
-        while (option != 9) {
+        while (option != 5) {
             option = runMenu();
             try {
-                if (option <= 8)
+                if (option <= 5)
                     handleBaseOptions(option);
                 else if (option == 9)
                     endRun();
@@ -47,29 +47,49 @@ public class Sales extends Screen {
     protected void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
-//                System.out.println(employmentConditions);
+                addSale();
                 break;
             case 2:
-//                updateName();
+                removeSale();
                 break;
             case 3:
-//                updateBankDetails();
+                saleHistoryByProduct();
                 break;
             case 4:
-//                updateSalary();
+                saleHistoryByCategory();
                 break;
             case 5:
-//                updateCertifications();
-                break;
-            case 6:
-//                calculateSalary();
-                break;
-            case 7:
-//                manageConstraints();
-                break;
-            case 8:
-//                printUpcomingShifts();
+                endRun();
         }
+    }
+
+    private void addSale() {
+        List<Integer> categories;
+        List<Integer> products;
+        System.out.println("Please insert category IDs, separated by ',' without spaces");
+        try {
+            categories = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        } catch (Exception e) { categories = new ArrayList<>(); }
+        System.out.println("Please insert product IDs, separated by ',' without spaces");
+        try {
+            products = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        } catch (Exception e) { products = new ArrayList<>(); }
+        System.out.println("Please insert percent of sale: (more than 0, less than 100)");
+        int percent = scanner.nextInt();
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
+        System.out.println("Please insert start date");
+        Date start = getDate();
+        if (start==null)
+            return;
+        System.out.println("Please insert end date");
+        Date end = getDate();
+        if (end==null)
+            return;
+        Result<Sale> r = controller.addSale(categories, products, percent, start, end);
+        if (r.isError())
+            System.out.println(r.getError());
+        else
+            System.out.println(r.getValue());
     }
 
     public void removeSale() {

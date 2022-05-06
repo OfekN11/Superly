@@ -4,29 +4,36 @@ import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class Category extends Screen {
 
     private static final String[] menuOptions = {
-            "Print employment conditions",  //1
-            "Update name",                  //2
-            "Update bank details",          //3
-            "Update salary per shift",      //4
-            "Update certifications",        //5
-            "Calculate Salary",             //6
-            "Manage work constraints",      //7
-            "Print upcoming shifts"         //8
+            "Update name",                  //1
+            "Update Parent Category",          //2
+            "Delete Category",      //3
+            "exit", //4
     };
 
-    public Category(Screen caller, Domain.ServiceLayer.InventoryObjects.Sale sProduct, String[] extraMenuOptions) {
+    private int id;
+    private String name;
+    private String parentCategory;
+    private List<Domain.ServiceLayer.InventoryObjects.Category> subCategories;
+    private int numOfProducts;
+    public Category(Screen caller, String[] extraMenuOptions, Domain.ServiceLayer.InventoryObjects.Category category) {
         super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
+        id = category.getID();
+        name = category.getName();
+        parentCategory = category.getParentCategory();
+        subCategories = category.getSubCategories();
+        numOfProducts = category.getNumOfProducts();
     }
 
     public void run() {
-        System.out.println("\nWelcome to the Management Menu of Catalog!");
+        System.out.println("\nWelcome to the Management Menu of the category: " + name);
         int option = 0;
-        while (option != 9) {
+        while (option != 4) {
             option = runMenu();
             try {
                 if (option <= 8)
@@ -45,49 +52,22 @@ public class Category extends Screen {
     protected void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
-//                System.out.println(employmentConditions);
+                changeCatName();
                 break;
             case 2:
-//                updateName();
+                changeCatParent();
                 break;
             case 3:
-//                updateBankDetails();
+                deleteCategory();
                 break;
             case 4:
-//                updateSalary();
-                break;
-            case 5:
-//                updateCertifications();
-                break;
-            case 6:
-//                calculateSalary();
-                break;
-            case 7:
-//                manageConstraints();
-                break;
-            case 8:
-//                printUpcomingShifts();
+                endRun();
         }
     }
 
-    public void addCategory() {
-        System.out.println("Please insert category name");
-        String name = scanner.nextLine();
-        System.out.println("Please insert parent category ID, or 0 if there is none");
-        int parent = scanner.nextInt();
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<Domain.ServiceLayer.InventoryObjects.Category> r = controller.addNewCategory(name, parent);
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            Domain.ServiceLayer.InventoryObjects.Category c = r.getValue();
-            System.out.println(c);
-        }
-    }
+
 
     public void changeCatParent() {
-        System.out.println("Which category would you like to edit?");
-        int id = scanner.nextInt();
         System.out.println("Please insert new category parent ID");
         int parent = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
@@ -101,9 +81,6 @@ public class Category extends Screen {
     }
 
     public void changeCatName() {
-        System.out.println("Which category would you like to edit?");
-        int id = scanner.nextInt();
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert new category name");
         String name = scanner.nextLine();
         Result<Domain.ServiceLayer.InventoryObjects.Category> r = controller.editCategoryName(id, name);
@@ -116,11 +93,7 @@ public class Category extends Screen {
     }
 
     public void deleteCategory() {
-        System.out.println("What category would you like to delete?");
-        listCategoryIDs();
-        int catID = scanner.nextInt();
-        scanner.nextLine(); //to remove extra \n
-        Result r = controller.deleteCategory(catID);
+        Result r = controller.deleteCategory(id);
         if (r.isError()) {
             System.out.println(r.getError());
         }

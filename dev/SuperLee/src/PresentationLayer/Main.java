@@ -1,6 +1,7 @@
 package PresentationLayer;
 
 import Globals.Pair;
+import PresentationLayer.Screens.MainMenu;
 import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
 import Domain.ServiceLayer.SupplierService;
 
@@ -10,7 +11,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         BackendController controller = new BackendController(initWithData());
-        new Thread(new SuppliersMenu(controller)).start();
+        new Thread(new MainMenu(controller)).start();
 
         /*
         System.out.println("Choose 1 for init with data or 2 for init with no data: ");

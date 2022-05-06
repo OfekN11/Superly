@@ -30,6 +30,7 @@ public class BackendController {
     public BackendController(SupplierService service){
         this.supplierService = service;
         this.inventoryService = new InventoryService();
+        inventoryService.loadTestData();
     }
 
     private boolean getValueFromBooleanResult(Result<Boolean> result) throws Exception {
@@ -333,7 +334,8 @@ public class BackendController {
     }
 
     public Result<PurchaseFromSupplierReport> addItems(int orderID){
-        return inventoryService.orderArrived(orderID);
+        return null;
+//        return inventoryService.orderArrived(orderID);
     }
 
     public Result<List<PurchaseFromSupplierReport>> getPurchaseFromSupplierHistory(int productId){
@@ -374,6 +376,10 @@ public class BackendController {
 
     public Result<List<Category>> getCategories(){
         return inventoryService.getCategories();
+    }
+
+    public Result<Category> getCategory(int categoryID){
+        return inventoryService.getCategory(categoryID);
     }
 
     public Result<Double> buyItems(int storeID, int productID, int amount){
@@ -494,5 +500,13 @@ public class BackendController {
 
     public Result<Boolean> updateItemQuantityInOrder(int supID, int orderID, int itemID, int quantity){
         return supplierService.updateItemQuantityInOrder(supID, orderID, itemID, quantity);
+    }
+
+    public Result<Product> getProduct(int product) {
+        return inventoryService.getProduct(product);
+    }
+
+    public Result<ServiceOrderObject> orderArrived(int orderID) {
+        return inventoryService.orderArrived(orderID);
     }
 }
