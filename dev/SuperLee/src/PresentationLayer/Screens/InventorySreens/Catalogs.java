@@ -13,14 +13,10 @@ import java.util.stream.Stream;
 public class Catalogs extends Screen {
 
     private static final String[] menuOptions = {
-            "Print employment conditions",  //1
-            "Update name",                  //2
-            "Update bank details",          //3
-            "Update salary per shift",      //4
-            "Update certifications",        //5
-            "Calculate Salary",             //6
-            "Manage work constraints",      //7
-            "Print upcoming shifts"         //8
+            "View Products",  //1
+            "View Products By Category",  //2
+            "View Categories",                  //3
+            "exit"        //4
     };
 
     public Catalogs(Screen caller, String[] extraMenuOptions) {
@@ -28,7 +24,7 @@ public class Catalogs extends Screen {
     }
 
     public void run() {
-        System.out.println("\nWelcome to the Management Menu of Catalog!");
+        System.out.println("\nWelcome to the Catalog Menu!");
         int option = 0;
         while (option != 9) {
             option = runMenu();
@@ -49,28 +45,16 @@ public class Catalogs extends Screen {
     protected void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
-//                System.out.println(employmentConditions);
+                listProducts();
                 break;
             case 2:
-//                updateName();
+                listProductsByCategory();
                 break;
             case 3:
-//                updateBankDetails();
+                listCategories();
                 break;
             case 4:
-//                updateSalary();
-                break;
-            case 5:
-//                updateCertifications();
-                break;
-            case 6:
-//                calculateSalary();
-                break;
-            case 7:
-//                manageConstraints();
-                break;
-            case 8:
-//                printUpcomingShifts();
+                endRun();
         }
     }
 
@@ -87,19 +71,6 @@ public class Catalogs extends Screen {
         }
     }
 
-    public void listCategories() {
-        Result<List<Category>> r = controller.getCategories();
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            List<Category> categoryList = r.getValue();
-            for (Category c : categoryList)
-                System.out.println(c);
-            if (categoryList.isEmpty())
-                System.out.println("there are no categories in the system");
-        }
-    }
-
     public void listProductsByCategory() {
         System.out.println("Which categories would you like to examine? (Please insert categories IDs separated by ',' without spaces)");
         listCategoryIDs();
@@ -113,6 +84,19 @@ public class Catalogs extends Screen {
                 System.out.println(p);
             if (productList.isEmpty())
                 System.out.println("there are no products in specified categories");
+        }
+    }
+
+    public void listCategories() {
+        Result<List<Category>> r = controller.getCategories();
+        if (r.isError())
+            System.out.println(r.getError());
+        else {
+            List<Category> categoryList = r.getValue();
+            for (Category c : categoryList)
+                System.out.println(c);
+            if (categoryList.isEmpty())
+                System.out.println("there are no categories in the system");
         }
     }
 }

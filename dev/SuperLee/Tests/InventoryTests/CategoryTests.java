@@ -1,7 +1,7 @@
 package InventoryTests;
 
 import Domain.BusinessLayer.Inventory.Category;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import java.util.HashSet;
 import java.util.LinkedList;

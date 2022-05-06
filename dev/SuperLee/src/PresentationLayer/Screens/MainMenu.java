@@ -1,6 +1,7 @@
 package PresentationLayer.Screens;
 
 import PresentationLayer.BackendController;
+import PresentationLayer.Screens.InventorySreens.InventoryMenu;
 import PresentationLayer.Screens.InventorySreens.Reports;
 import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
 
@@ -28,7 +29,7 @@ public class MainMenu extends Screen {
                 new Thread(new SuppliersMenu(this)).start();
                 break;
             case 2:
-                new Thread(new Reports(this, new String[]{})).start();
+                new Thread(new InventoryMenu(this)).start();
                 break;
             case 3:
                 endRun();

@@ -12,10 +12,6 @@ public class InventoryMenu extends Screen {
             "Exit"              //4
     };
 
-    public InventoryMenu(BackendController controller) {
-        super(controller, menuOptions);
-    }
-
     public InventoryMenu(Screen caller) {
         super(caller, menuOptions);
     }
