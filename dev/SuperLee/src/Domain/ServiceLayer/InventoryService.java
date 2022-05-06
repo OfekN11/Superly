@@ -5,7 +5,9 @@ import Domain.BusinessLayer.Inventory.DefectiveItems;
 import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
 import Domain.BusinessLayer.Inventory.DiscountsAndSales.PurchaseFromSupplier;
 import Domain.BusinessLayer.InventoryController;
+import Domain.BusinessLayer.Supplier.Order;
 import Domain.ServiceLayer.InventoryObjects.*;
+import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
 
 import java.util.*;
 
@@ -180,10 +182,10 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the info on the purchase
      */
-    public Result<PurchaseFromSupplierReport> orderArrived(int orderID){
+    public Result<ServiceOrderObject> orderArrived(int orderID){
         try {
-            PurchaseFromSupplier dr = controller.orderArrived(orderID);
-            return Result.makeOk(new PurchaseFromSupplierReport(dr));
+            Order order = controller.orderArrived(orderID);
+            return Result.makeOk(new ServiceOrderObject(order));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

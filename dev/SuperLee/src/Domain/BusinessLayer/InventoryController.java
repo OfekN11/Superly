@@ -169,7 +169,7 @@ public class InventoryController {
         return  getProduct(productID).addItems(storeID, new Date(), supplierID, amountBought, pricePaid, originalPrice, orderID);
     }
 
-    public PurchaseFromSupplier orderArrived(int orderID) {
+    public Order orderArrived(int orderID) {
         Order arrivedOrder = supplierController.getOrder(orderID);
         supplierController.orderHasArrived(orderID);
         int storeID = arrivedOrder.getStoreID();
@@ -185,7 +185,7 @@ public class InventoryController {
             originalPrice = orderItem.getOriginalPrice();
             product.addItems(storeID, new Date(), supplierID, amount, pricePaid, originalPrice, orderID);
         }
-        return null;
+        return arrivedOrder;
     }
 
     public List<PurchaseFromSupplier> getPurchaseFromSupplierHistory(int productID) {
