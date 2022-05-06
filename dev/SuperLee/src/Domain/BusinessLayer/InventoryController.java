@@ -19,6 +19,7 @@ public class InventoryController {
     private int catID;
     private int productID;
     private int storeID;
+    private SupplierController supplierController;
     public InventoryController() {
         storeIds = new ArrayList<>();
         categories = new HashMap<>();
@@ -28,6 +29,7 @@ public class InventoryController {
         saleID=1;
         catID=1;
         productID=1;
+        supplierController = new SupplierController();
     }
 
     public void loadTestData() {
@@ -162,6 +164,12 @@ public class InventoryController {
 
     public PurchaseFromSupplier addItems(int storeID, int productID, int supplierID, String description, int amountBought, int pricePaid, int originalPrice) {
         return  getProduct(productID).addItems(storeID, new Date(), supplierID, description, amountBought, pricePaid, originalPrice);
+    }
+
+    public PurchaseFromSupplier receiveOrder(int orderID) {
+        supplierController.orderHasArrived(orderID);
+        return null;
+        //
     }
 
     public List<PurchaseFromSupplier> getPurchaseFromSupplierHistory(int productID) {
@@ -309,7 +317,7 @@ public class InventoryController {
         if (product.gotUnderMinimum(storeID, amount))
         {
             //order - minimum alert
-
+            supplierController.makeOrderBecauseOfMinimum(storeID, productID, getAmountForOrder(storeID, productID));
         }
         return price;
     }
@@ -604,7 +612,12 @@ public class InventoryController {
         return p;
     }
 
-    public int getAmountForOrder(int storeID, int productID) { //Periodically
+    private int getAmountForOrder(int storeID, int productID) { //Periodically
         return getProduct(productID).getAmountForOrder(storeID);
+    }
+
+    private void ordersOnTheWay(int storeID) {
+        //daily, check what routine orders are otw
+        supplierController.getOrdersOnTheWay(storeID);
     }
 }

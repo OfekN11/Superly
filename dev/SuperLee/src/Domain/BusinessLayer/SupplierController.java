@@ -1,6 +1,7 @@
 package Domain.BusinessLayer;
 
 import Domain.BusinessLayer.Supplier.Contact;
+import Domain.BusinessLayer.Supplier.Order;
 import Domain.BusinessLayer.Supplier.Supplier;
 import Globals.Pair;
 
@@ -410,7 +411,6 @@ public class SupplierController {
         if(!supplierExist(supID)){
             throw new Exception("The supplier does not exists!");
         }
-
         suppliersDAO.getSupplier(supID).updateOrder(orderID, itemID, quantity);
     }
 
@@ -432,5 +432,22 @@ public class SupplierController {
         }
 
         return suppliersDAO.getSupplier(supID).orderExists(orderID);
+    }
+
+    public Order makeOrderBecauseOfMinimum(int storeID, int productID, int amount) {
+        //find what the soonest/cheapest supplier is
+        //return the order (might be an updated routine and might be a new order)
+        //minimum - up to 2 days, otherwise ASAP
+        //if there is a discount pretty close (within 10 or X% of the items or price) round up
+        return null;
+    }
+
+    public List<Order> getOrdersOnTheWay(int storeID) {
+        //return all orders on the way tomorrow
+        return null;
+    }
+
+    public void orderHasArrived(int orderID) {
+        //order has arrived, can be moved from current to past
     }
 }

@@ -9,6 +9,7 @@ public class Order {
 
 
     private int id;
+    private int supplierID;
     private Date date;
     private Date arrivalTime;
     private ArrayList<OrderItem> orderItems;
