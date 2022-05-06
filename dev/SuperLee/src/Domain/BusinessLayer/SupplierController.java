@@ -21,16 +21,22 @@ public class SupplierController {
     public void addSupplier(int id, String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
         if(supplierExist(id))
             throw new Exception("Supplier with same Id already exists");
+
+        ArrayList<Contact> contacts = createContacts(contactPairs);
+        Supplier supplier = new Supplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers);
+        suppliersDAO.addSupplier(supplier);
+    }
+
+    private ArrayList<Contact> createContacts(ArrayList<Pair<String, String>> contactPairs) throws Exception {
         ArrayList<Contact> contacts = new ArrayList<>();
         for(Pair<String,String> curr : contactPairs){
             if(!validPhoneNumber(curr.getSecond()))
                 throw new Exception("Invalid phone number!");
             contacts.add(new Contact( curr.getFirst(), curr.getSecond()));
         }
-
-        Supplier supplier = new Supplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers);
-        suppliersDAO.addSupplier(supplier);
+        return contacts;
     }
+
 
     public void removeSupplier(int id) throws Exception {
         if(!supplierExist(id))
