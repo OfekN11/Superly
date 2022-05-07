@@ -327,7 +327,7 @@ public class InventoryController {
         return DI;
     }
 
-    public Double buyItems(int storeID, int productID, int amount) {
+    public Double buyItems(int storeID, int productID, int amount) throws Exception {
         Product product = getProduct(productID);
         double price = product.getCurrentPrice()*amount;
         product.removeItems(storeID, amount);

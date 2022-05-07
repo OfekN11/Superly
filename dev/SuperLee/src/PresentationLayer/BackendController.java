@@ -1,5 +1,6 @@
 package PresentationLayer;
 
+import Domain.BusinessLayer.SupplierController;
 import Domain.ServiceLayer.SupplierService;
 import Domain.ServiceLayer.SupplierObjects.*;
 import Globals.Pair;
@@ -16,11 +17,16 @@ import java.util.*;
 
 public class BackendController {
 
-    //private final SupplierService supplierService = new SupplierService();
-    private SupplierService supplierService ; // = new SupplierService();  //FOR TESTING!!!!
+    private SupplierService supplierService ;
     private InventoryService inventoryService = new InventoryService();
 
-    //For testing
+    // TODO: 07/05/2022  //For testing
+    /*
+    public SupplierController getController(){
+        return supplierService.getController();
+    }
+     */
+
     public BackendController(){
         this.supplierService = new SupplierService();
         this.inventoryService = new InventoryService();

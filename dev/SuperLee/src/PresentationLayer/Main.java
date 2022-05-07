@@ -1,15 +1,19 @@
 package PresentationLayer;
 
+import Domain.BusinessLayer.SupplierController;
 import Globals.Pair;
 import PresentationLayer.Screens.MainMenu;
 import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
 import Domain.ServiceLayer.SupplierService;
+import SuperLee.BusinessLayer.Order;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
+
         BackendController controller = new BackendController(initWithData());
         new Thread(new MainMenu(controller)).start();
 
@@ -33,6 +37,17 @@ public class Main {
 
          */
 
+
+        /*
+        BackendController controller = new BackendController(initWithData());
+        SupplierController controller1 = controller.getController();
+        try {
+            var order = controller1.makeOrderBecauseOfMinimum(1, 1, 102);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+
     }
 
   //private static SupplierService initWithData(CLI cli) {
@@ -46,19 +61,31 @@ public class Main {
         ArrayList<String> manufacturers = new ArrayList<>();
         manufacturers.add("Osem") ; manufacturers.add("Elit");
         service.addSupplier(1, "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
-        service.addAgreement(1 ,1 , "2 3 4");
+        service.addSupplier(2, "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
+
+        service.addAgreement(1 ,1 , "2 4 5");
+
 
         ArrayList<String> items = new ArrayList<>();
         items.add("1 , bamba , Osem , 5 , 100 , 20 , 200 , 50 ");
         items.add("2 , Halva , Elit , 10 , 100 , 20 , 200 , 50");
         items.add("3 , Chocolate , Elit , 10 , 100 , 20 , 200 , 50 ");
         service.addAgreementItems(1, items);
-
         service.order(1);
+
 
         ArrayList<String> itemsToOrder = new ArrayList<>();
         itemsToOrder.add("1");  itemsToOrder.add("bamba");   itemsToOrder.add("100");  itemsToOrder.add("2");  itemsToOrder.add("Halva");  itemsToOrder.add("50");
         service.addItemsToOrder(1, 1, itemsToOrder);
+
+        /*
+        service.addAgreement(2 ,2 , "2");
+        ArrayList<String> items2 = new ArrayList<>();
+        items2.add("1 , bamba , Osem , 4 , 100 , 20 , 200 , 50 ");
+        service.addAgreementItems(2, items2);
+        service.order(2);
+        service.addItemsToOrder(2, 2, itemsToOrder);
+         */
 
         return service;
         //cli.init(service);

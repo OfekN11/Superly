@@ -17,7 +17,8 @@ public class Order {
     private static int globalID = 1;
 
 
-    public Order(int daysToArrival){
+    public Order(int daysToArrival, int supplierID){
+        this.supplierID = supplierID;
         this.id = globalID;
         globalID++;
         date = new Date();
@@ -29,6 +30,9 @@ public class Order {
         arrivalTime = cal.getTime();
     }
 
+    public void updateSupplierID(int newId){
+        supplierID = newId;
+    }
 
     public void addItem(int id, String name, int quantity, float ppu, int discount, Double finalPrice) throws Exception {
         if(!changeable()){
@@ -96,5 +100,30 @@ public class Order {
 
     public boolean changeable(){
         return arrivalTime.after(Calendar.getInstance().getTime());
+    }
+
+    public int getSupplierId() {
+        return supplierID;
+    }
+
+    public boolean hasEnoughItemQuantity(int productID, int amount) {
+        OrderItem currOrderItem = getOrderItem(productID);
+        if(currOrderItem != null)
+            return currOrderItem.getQuantity() >= amount;
+        return false;
+    }
+
+    private OrderItem getOrderItem(int productID) {
+        for(OrderItem orderItem : orderItems) {
+            if (orderItem.getId() == productID) {
+                return orderItem;
+            }
+        }
+        return null;
+    }
+
+    public int getDaysUntillOrder(Date currDate) {
+        long diff = arrivalTime.getTime() - currDate.getTime();
+        return (int) (diff / (1000*60*60*24));
     }
 }

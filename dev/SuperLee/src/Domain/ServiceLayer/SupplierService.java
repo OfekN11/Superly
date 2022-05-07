@@ -574,4 +574,12 @@ public class SupplierService {
             return Result.makeError(e.getMessage());
         }
     }
+
+
+    // TODO: 07/05/2022  //For testing
+    /*
+    public SupplierController getController() {
+        return controller;
+    }
+     */
 }
