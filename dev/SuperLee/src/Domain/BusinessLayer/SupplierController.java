@@ -400,6 +400,7 @@ public class SupplierController {
         suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity);
     }
 
+
     public void removeOrder(int supId, int orderId) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
@@ -513,6 +514,7 @@ public class SupplierController {
 
     public List<Order> getOrdersOnTheWay(int storeID) {
         //return all orders on the way tomorrow
+        //check if supplier should move the order from one list to another
         return null;
     }
 

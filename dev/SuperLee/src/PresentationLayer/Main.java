@@ -5,7 +5,7 @@ import Globals.Pair;
 import PresentationLayer.Screens.MainMenu;
 import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
 import Domain.ServiceLayer.SupplierService;
-import SuperLee.BusinessLayer.Order;
+import Domain.BusinessLayer.Supplier.Order;
 
 import java.util.ArrayList;
 import java.util.Scanner;
