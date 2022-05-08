@@ -1,5 +1,4 @@
 package Domain.DAL.Controllers;
-import Domain.DAL.Abstract.DTOControllers;
 import Domain.DAL.Objects.DEmployee;
 import Globals.Enums.Certifications;
 import Globals.Pair;
@@ -9,9 +8,9 @@ import java.util.*;
 public class DEmployeeController extends DTOControllers<DEmployee> {
 
     // properties
-    private DCarrierController dCarrierController;
+    private CarrierDataMapper carrierDataMapper;
     private CashierDataMapper cashierDataMapper;
-    private DEmployeeCertificationController dEmployeeCertificationController;
+    private EmployeeCertificationDAO employeeCertificationDAO;
     private DHR_ManagerController dhr_managerController;
     private DLogistics_ManagerController dLogistics_managerController;
     private DSorterController dSorterController;
@@ -20,8 +19,8 @@ public class DEmployeeController extends DTOControllers<DEmployee> {
     // constructor
     public DEmployeeController() {
         super("PlaceHolder");
-        dEmployeeCertificationController = new DEmployeeCertificationController();
-        dCarrierController = new DCarrierController();
+        employeeCertificationDAO = new EmployeeCertificationDAO();
+        carrierDataMapper = new CarrierDataMapper();
         cashierDataMapper = new CashierDataMapper();
         dhr_managerController = new DHR_ManagerController();
         dLogistics_managerController = new DLogistics_ManagerController();
@@ -33,7 +32,7 @@ public class DEmployeeController extends DTOControllers<DEmployee> {
     @Override
     public Set<DEmployee> loadData() {
         Set<DEmployee> employees= new HashSet<>();
-        employees.addAll(dCarrierController.loadData());
+        employees.addAll(carrierDataMapper.loadData());
         employees.addAll(cashierDataMapper.loadData());
         employees.addAll(dhr_managerController.loadData());
         employees.addAll(dLogistics_managerController.loadData());
@@ -49,12 +48,12 @@ public class DEmployeeController extends DTOControllers<DEmployee> {
         Dictionary<String,DEmployee> dEmployeeDictionary =new Hashtable<>();
         for(DEmployee employee : employees)
             dEmployeeDictionary.put(employee.getId(), employee);
-        for(Pair<String,Set<Certifications>> employeeCertificationPair : dEmployeeCertificationController.loadData())
+        for(Pair<String,Set<Certifications>> employeeCertificationPair : employeeCertificationDAO.loadData())
             dEmployeeDictionary.get(employeeCertificationPair.getLeft()).setCertifications(employeeCertificationPair.getRight());
     }
 
     public Set<Certifications> getCertificationOfEmployee(int employeeId){
-        return dEmployeeCertificationController.selectCertificationsOfEmployee(employeeId);
+        return employeeCertificationDAO.selectCertificationsOfEmployee(employeeId);
     }
 
     @Override

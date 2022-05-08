@@ -1,26 +1,22 @@
 package Domain.DAL.Controllers;
 
 import Domain.Business.Objects.Constraint;
-import Domain.DAL.Abstract.DTOControllers;
 import Domain.DAL.Abstract.DataMapper;
-import Domain.DAL.Objects.DConstraint;
 import Globals.Enums.ShiftTypes;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
-public class ConstraintDataMap extends DataMapper {
+public class ConstraintDataMapper extends DataMapper {
     private final static Map<String, Constraint> CONSTRAINT_IDENTITY_MAP = new HashMap<>();
     // properties
 
 
     //constructor
-    public ConstraintDataMap() {
+    public ConstraintDataMapper() {
         super("Constraints");
     }
 

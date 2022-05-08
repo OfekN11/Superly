@@ -2,7 +2,7 @@ package Domain.DAL.Objects;
 
 import Domain.Business.BusinessEmployeeFactory;
 import Domain.Business.Objects.Employee;
-import Domain.DAL.Controllers.DCarrierLicensesController;
+import Domain.DAL.Controllers.CarrierLicensesDAO;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -10,12 +10,12 @@ import java.util.Set;
 
 public class DCarrier extends DEmployee{
     private Set<String> licenses;
-    private DCarrierLicensesController dCarrierLicensesController;
+    private CarrierLicensesDAO carrierLicensesDAO;
 
     public DCarrier(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<String> licenses) {
         super("Place HOlder", id, name, bankDetails, salary, employmentConditions, startingDate);
         this.licenses = licenses;
-        this.dCarrierLicensesController = new DCarrierLicensesController();
+        this.carrierLicensesDAO = new CarrierLicensesDAO();
         this.licenses = new HashSet<>();
     }
 

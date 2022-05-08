@@ -2,20 +2,18 @@ package Domain.DAL.Objects;
 
 import Domain.Business.BusinessShiftFactory;
 import Domain.Business.Objects.Shift;
-import Domain.DAL.Abstract.DTO;
-import Domain.DAL.Controllers.DEmployeeShiftController;
+import Domain.DAL.Controllers.EmployeeShiftMapper;
 import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public abstract class DShift extends DTO {
     // properties
     private Date workday;
     private String shiftManagerId;
-    private DEmployeeShiftController dEmployeeShiftController;
+    private EmployeeShiftMapper employeeShiftMapper;
 
     private int carrierCount;
     private int cashierCount;
@@ -37,7 +35,7 @@ public abstract class DShift extends DTO {
         super(workday.toString()+type.toString(), "tableName"); //no id to shift
         this.workday = workday;
         this.shiftManagerId = shiftManagerId;
-        this.dEmployeeShiftController = new DEmployeeShiftController();
+        this.employeeShiftMapper = new EmployeeShiftMapper();
         this.carrierCount = carrierCount;
         this.cashierCount = cashierCount;
         this.storekeeperCount = storekeeperCount;

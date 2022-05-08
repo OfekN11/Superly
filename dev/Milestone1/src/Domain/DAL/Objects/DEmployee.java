@@ -1,8 +1,7 @@
 package Domain.DAL.Objects;
 import Domain.Business.BusinessEmployeeFactory;
 import Domain.Business.Objects.Employee;
-import Domain.DAL.Abstract.DTO;
-import Domain.DAL.Controllers.DEmployeeCertificationController;
+import Domain.DAL.Controllers.EmployeeCertificationDAO;
 import Globals.Enums.Certifications;
 
 import java.util.Date;
@@ -18,7 +17,7 @@ public abstract class DEmployee extends DTO {
     private String employmentConditions;
     private Date startingDate;
     private Set<Certifications> certifications;
-    private DEmployeeCertificationController dEmployeeCertificationController;
+    private EmployeeCertificationDAO employeeCertificationDAO;
 
     // constructor
     public DEmployee(String tableName,String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate) {
@@ -29,7 +28,7 @@ public abstract class DEmployee extends DTO {
         this.employmentConditions = employmentConditions;
         this.startingDate = startingDate;
         this.certifications = new HashSet<>();
-        this.dEmployeeCertificationController = new DEmployeeCertificationController();
+        this.employeeCertificationDAO = new EmployeeCertificationDAO();
 
     }
 
@@ -91,12 +90,12 @@ public abstract class DEmployee extends DTO {
 
     public void setCertifications(Set<Certifications> certifications) {
         if (isPersist())
-            dEmployeeCertificationController.replaceCertification(this,certifications);
+            employeeCertificationDAO.updateCertificationOfEmployee(this,certifications);
         this.certifications = certifications;
     }
 
     public void addCertification(Certifications certification){
-        dEmployeeCertificationController.add(getId(),certification);
+        employeeCertificationDAO.addCertification(getId(),certification);
     }
 
     public Set<Certifications> getCertifications() {
