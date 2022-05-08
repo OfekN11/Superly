@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class DataMapper {
-    private final static String dbName= ""; // need to be change!
+    private final static String dbName= "RioTheRuler.db"; // need to be change!
     String url = String.format("jdbc:sqlite:%s\\%s",System.getProperty("user.dir"),dbName);
     private final static String SELECT_QUERY = "SELECT %s from %s where %s";
     private final static String INSERT_QUERY = "INSERT INTO %s VALUES (%s)";
@@ -32,7 +32,7 @@ public abstract class DataMapper {
         tableColumnNames = new LinkedList<>();
         try (Connection connection = getConnection()){
 
-            ResultSetMetaData setMetaData = executeQuery(connection,"select * from " + tableName).getMetaData();
+            ResultSetMetaData setMetaData = executeQuery(connection,String.format(SELECT_QUERY,"*",tableName,"true")).getMetaData();
             for (int i =0; i < setMetaData.getColumnCount();i++)
                 tableColumnNames.add(setMetaData.getColumnLabel(i+1));
         }
@@ -111,30 +111,31 @@ public abstract class DataMapper {
     /**
      * gets all the rows which withstands the constraints from {@param column } = {@param value}
      * @param connection a connection to the DB, should be close from the calling function when finish to read the result!
-     * @param columns the columns names in the db, which are going to be the conditions in the "where" statement.
+     * @param columnsLocation the columns location in the db, starting with 1 which are going to be the conditions in the "where" statement.
      * @param values the conditions value to the column you want to get from the DB
      * @return ResultSet witch contains the row where column=value
      * @throws SQLException
      */
-    public ResultSet select(Connection connection, List<String> columns, List<Object> values) throws SQLException {
-        validateColumnsNames(columns);
-        validateColumnValueRatio(columns,values);
-        return executeQuery(connection,String.format(SELECT_QUERY,'*',tableName, makeColumnEqualsQuestionMarkString(columns,"AND")),values);
+    public ResultSet select(Connection connection, List<Integer> columnsLocation, List<Object> values) throws SQLException {
+        validateColumnsNames(columnsLocation);
+        validateColumnValueRatio(columnsLocation,values);
+        return executeQuery(connection,String.format(SELECT_QUERY,'*',tableName, makeColumnEqualsQuestionMarkString(columnsLocation,"AND")),values);
     }
 
     /**
      * gets all the rows which withstands the constraints from {@param column } = {@param value}
      * @param connection a connection to the DB, should be close from the calling function when finish to read the result!
-     * @param selectColumns the columns names in the db, which you want to have in your result
-     * @param whereColumns the columns names of the condition you want to get AKA column=value
+     * @param selectColumnsLocation the columns location in the table, starting with 1, which you want to have in your result
+     * @param whereColumnsLocation the columns location in the table (starting with 1), of the condition you want to get AKA column=value
      * @param values the conditions value to the column you want to get from the DB
      * @return ResultSet contains only the {@param selectColumns} of the row where column=value
      * @throws SQLException
      */
-    public ResultSet select(Connection connection,List<String> selectColumns, List<String> whereColumns, List<Object> values) throws SQLException {
-        validateColumnsNames(selectColumns);
-        validateColumnsNames(whereColumns);
-        return executeQuery(connection,String.format(SELECT_QUERY,String.join(", ",selectColumns),tableName, makeColumnEqualsQuestionMarkString(whereColumns,"AND")),values);
+    public ResultSet select(Connection connection,List<Integer> selectColumnsLocation, List<Integer> whereColumnsLocation, List<Object> values) throws SQLException {
+        validateColumnsNames(selectColumnsLocation);
+        validateColumnsNames(whereColumnsLocation);
+        String selectColumnsString = selectColumnsLocation.stream().map(this::getColumnName).collect(Collectors.joining(", "));
+        return executeQuery(connection,String.format(SELECT_QUERY,selectColumnsString,tableName, makeColumnEqualsQuestionMarkString(whereColumnsLocation,"AND")),values);
     }
 
     /**
@@ -160,46 +161,47 @@ public abstract class DataMapper {
 
     /**
      *
-     * @param columnsNames the columns names in the db, which are going to be the conditions in the "where" statement.
+     * @param columnsLocation the columns location in the table (starting with 1), which are going to be the conditions in the "where" statement.
      * @param values the conditions value to the column you want to get from the DB
      * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
      * @throws SQLException
      */
-    public int remove(List<String> columnsNames,List<Object> values) throws SQLException {
-        validateColumnsNames(columnsNames);
-        validateColumnValueRatio(columnsNames,values);
-        return executeNonQuery(String.format(DELETE_QUERY,tableName, makeColumnEqualsQuestionMarkString(columnsNames,"AND")),values);
+    public int remove(List<Integer> columnsLocation,List<Object> values) throws SQLException {
+        validateColumnsNames(columnsLocation);
+        validateColumnValueRatio(columnsLocation,values);
+        return executeNonQuery(String.format(DELETE_QUERY,tableName, makeColumnEqualsQuestionMarkString(columnsLocation,"AND")),values);
     }
 
     /**
      *
-     * @param columnsNamesToUpdate columns name u want to update
+     * @param columnsLocationToUpdate columns location in the table (starting with 1), which u want to update
      * @param valuesToUpdate new values u want to update to, must be at the right order of the {@param columnsNamesToUpdate}
-     * @param conditionColumnNames the column names for the condition of where u want to update
+     * @param conditionColumnLocation the column location in the table (starting with 1), for the conditions of where u want to update
      * @param conditionValues values u want to be in the condition must be at the right order of the {@param conditionColumnNames}
      * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
      * @throws SQLException
      */
-    public int update(List<String> columnsNamesToUpdate,List<Object> valuesToUpdate,List<String> conditionColumnNames,List<Object> conditionValues) throws SQLException {
-        validateColumnsNames(columnsNamesToUpdate);
-        validateColumnsNames(conditionColumnNames);
-        validateColumnValueRatio(columnsNamesToUpdate,valuesToUpdate);
-        validateColumnValueRatio(conditionColumnNames,conditionValues);
-        return executeNonQuery(String.format(UPDATE_QUERY,tableName, makeColumnEqualsQuestionMarkString(columnsNamesToUpdate,","), makeColumnEqualsQuestionMarkString(conditionColumnNames,"AND"))
+    public int update(List<Integer> columnsLocationToUpdate,List<Object> valuesToUpdate,List<Integer> conditionColumnLocation,List<Object> conditionValues) throws SQLException {
+        validateColumnsNames(columnsLocationToUpdate);
+        validateColumnsNames(conditionColumnLocation);
+        validateColumnValueRatio(columnsLocationToUpdate,valuesToUpdate);
+        validateColumnValueRatio(conditionColumnLocation,conditionValues);
+        return executeNonQuery(String.format(UPDATE_QUERY,tableName, makeColumnEqualsQuestionMarkString(columnsLocationToUpdate,","), makeColumnEqualsQuestionMarkString(conditionColumnLocation,"AND"))
                 , Stream.concat(valuesToUpdate.stream(), conditionValues.stream())
                         .collect(Collectors.toList()));
     }
 
     /**
      * this function create a String in the format "ColumnName1 = ? delimiter ColumnName2 = ? ...)
-     * @param columnsNames to columns name to be place in the condition of the "where"
+     * @param columnsNames columns location in the table (starting with 1), to be to join
+     * @param delimiter the delimiter to use.
      * @return A String from the format "<columnName> = ? AND <columnName> = ? AND ..."
      */
-    private String makeColumnEqualsQuestionMarkString(List<String> columnsNames,String delimiter) {
+    private String makeColumnEqualsQuestionMarkString(List<Integer> columnsNames,String delimiter) {
         StringBuilder builder = new StringBuilder();
-        Iterator<String> iterator = columnsNames.listIterator();;
+        Iterator<Integer> iterator = columnsNames.listIterator();;
         while (iterator.hasNext()){
-            builder.append(iterator.next()).append(" = ?");
+            builder.append(getColumnName(iterator.next())).append(" = ?");
             if (iterator.hasNext())
                 builder.append(String.format(" %s ",delimiter));
         }
@@ -261,13 +263,14 @@ public abstract class DataMapper {
         return  DriverManager.getConnection(url);
     }
 
-    private void validateColumnsNames(List<String> columns) {
-        if (!tableColumnNames.containsAll(columns))
-            throw new IllegalArgumentException("columns does not exist in the table");
+    private void validateColumnsNames(List<Integer> columnsLocations) {
+        for(Integer i: columnsLocations)
+            if (i<1 | i> tableColumnNames.size())
+                throw new IllegalArgumentException("columns does not exist in the table");
     }
 
 
-    private void validateColumnValueRatio(List<String> columnsNames, List<Object> values) {
+    private void validateColumnValueRatio(List<Integer> columnsNames, List<Object> values) {
         if (columnsNames.size() != values.size())
             throw new IllegalArgumentException("columns and values must be on the same size");
     }

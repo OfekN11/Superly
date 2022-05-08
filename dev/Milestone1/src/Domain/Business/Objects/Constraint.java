@@ -3,7 +3,6 @@ import Domain.DAL.Objects.DConstraint;
 import Globals.Enums.ShiftTypes;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +18,10 @@ public class Constraint {
         this.employees = new HashSet<>(employees);
     }
 
+    public Constraint(DConstraint dConstraint){
+        type = dConstraint.getShiftType();
+        employees = new HashSet<>(dConstraint.getEmployees());
+    }
 
     public LocalDate getDate() {
         return date;

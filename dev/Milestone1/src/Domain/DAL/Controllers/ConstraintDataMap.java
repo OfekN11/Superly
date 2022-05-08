@@ -21,7 +21,7 @@ public class ConstraintDataMap extends DataMapper {
 
     //constructor
     public ConstraintDataMap() {
-        super("placeHolder");
+        super("Constraints");
     }
 
 
@@ -40,7 +40,7 @@ public class ConstraintDataMap extends DataMapper {
             return constraint;
 
         try(Connection connection = getConnection()) {
-            ResultSet result = select(connection,Arrays.asList(getColumnName(1),getColumnName(2)),Arrays.asList(date,shiftType));
+            ResultSet result = select(connection,Arrays.asList(1,2),Arrays.asList(date,shiftType));
             if (!result.next()){
                 return null;
             }
@@ -73,7 +73,7 @@ public class ConstraintDataMap extends DataMapper {
 
     public void updateEmployeeForConstraint(Constraint constraint){
         try {
-            remove(Arrays.asList(getColumnName(1),getColumnName(2)),Arrays.asList(constraint.getDate(),constraint.getType()));
+            remove(Arrays.asList(1,2),Arrays.asList(constraint.getDate(),constraint.getType()));
 
             for (String id : constraint.getEmployees())
                 insert(Arrays.asList(constraint.getDate(),constraint.getType(),id));

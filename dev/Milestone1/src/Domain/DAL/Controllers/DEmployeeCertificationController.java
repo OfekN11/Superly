@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DEmployeeCertificationController extends DataMapper<Pair<String,Set<Certifications>>> {
+public class DEmployeeCertificationController extends DataMapper {
 
     public DEmployeeCertificationController() {
         super("tableName");
@@ -41,5 +41,8 @@ public class DEmployeeCertificationController extends DataMapper<Pair<String,Set
     public void deleteAll(){}
 
     public void replaceCertification(DEmployee dEmployee, Set<Certifications> certifications) {
+    }
+
+    public Set<Certifications> get(String id) {
     }
 }

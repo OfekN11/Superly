@@ -1,18 +1,25 @@
 package Domain.DAL.Controllers;
 import Domain.Business.Objects.Cashier;
 import Domain.DAL.Abstract.DataMapper;
+import Globals.Enums.Certifications;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CashierDataMapper extends DataMapper {
-    private static Map<String, Cashier> CASHIER_IDENTITY_MAP = new HashMap<>();
+    //static fields
+    private final static Map<String, Cashier> CASHIER_IDENTITY_MAP = new HashMap<>();
+
+    // fields
+    private final DEmployeeCertificationController employeeCertificationController;
+
+    //constructor
 
     public CashierDataMapper() {
-        super("tableName");
+        super("Cashiers");
+        employeeCertificationController = new DEmployeeCertificationController();
     }
 
     public Cashier get(String id){
@@ -21,11 +28,18 @@ public class CashierDataMapper extends DataMapper {
             return output;
 
         try(Connection connection = getConnection()) {
-            ResultSet resultSet = select(connection,id);
-            resultSet.next();
-            output = new Cashier(resultSet.getString(1),resultSet.ge)
+            ResultSet instanceResult = select(connection,id);
+            if (!instanceResult.next())
+                return null;
+
+            Set<Certifications> certifications= employeeCertificationController.get(id);
+            output = new Cashier(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getString(5),instanceResult.getDate(6).toLocalDate(),certifications);
+            CASHIER_IDENTITY_MAP.put(id,output);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        throw new RuntimeException("something went wrong in Cashier DataMapper");
     }
 }
