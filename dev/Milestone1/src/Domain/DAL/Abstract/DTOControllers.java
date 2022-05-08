@@ -2,7 +2,7 @@ package Domain.DAL.Abstract;
 
 import java.util.Set;
 
-public abstract class DTOControllers<T extends DTO> extends DalController<T> {
+public abstract class DTOControllers<T extends DTO> extends DataMapper{
     public DTOControllers(String tableName) {
         super(tableName);
     }

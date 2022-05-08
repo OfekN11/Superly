@@ -1,6 +1,6 @@
 package Domain.DAL.Controllers;
 
-import Domain.DAL.Abstract.DalController;
+import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Objects.DShift;
 import Globals.Enums.ShiftTypes;
 import Globals.Pair;
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DEmployeeShiftController extends DalController<Pair<Pair<Date,ShiftTypes>,Set<String>>> {
+public class DEmployeeShiftController extends DataMapper<Pair<Pair<Date,ShiftTypes>,Set<String>>> {
 
     // properties
     public DEmployeeShiftController() {
