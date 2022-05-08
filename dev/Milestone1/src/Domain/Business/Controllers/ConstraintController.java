@@ -1,7 +1,7 @@
 package Domain.Business.Controllers;
 
 import Domain.Business.Objects.Constraint;
-import Domain.DAL.Controllers.DConstraintController;
+import Domain.DAL.Controllers.ConstraintDataMap;
 import Domain.DAL.Objects.DConstraint;
 import Globals.Enums.ShiftTypes;
 
@@ -9,10 +9,10 @@ import java.util.*;
 
 public class ConstraintController {
     private final Map<Date, Map<ShiftTypes, Constraint>> constraints = new HashMap<>();
-    private final DConstraintController dConstraintController = new DConstraintController();
+    private final ConstraintDataMap constraintDataMap = new ConstraintDataMap();
 
     public void loadData() {
-        Set<DConstraint> dConstraints = dConstraintController.loadData();
+        Set<DConstraint> dConstraints = constraintDataMap.loadData();
         for(DConstraint dConstraint: dConstraints){
             if (!constraints.containsKey(dConstraint.getDate()))
                 constraints.put(dConstraint.getDate(),new HashMap<>());
@@ -43,7 +43,7 @@ public class ConstraintController {
         Constraint constraint = getConstraint(workday, shift);
         constraint.unregister(id);
         if (constraint.getEmployees().isEmpty()) {
-            dConstraintController.delete(constraint.getdConstraint());
+            constraintDataMap.delete(constraint.getdConstraint());
             constraints.get(workday).remove(shift);
             if (constraints.get(workday).isEmpty())
                 constraints.remove(workday);
@@ -55,7 +55,6 @@ public class ConstraintController {
             return new HashSet<>();
         return constraints.get(workday).get(shift).getEmployees();
     }
-
 
     public Set<Constraint> getEmployeeConstraintsBetween(String id, Date today, Date nextMonth) {
         Set<Date> dates = getDatesBetween(today,nextMonth);

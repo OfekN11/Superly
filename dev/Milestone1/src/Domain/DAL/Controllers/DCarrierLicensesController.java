@@ -1,11 +1,11 @@
 package Domain.DAL.Controllers;
 
-import Domain.DAL.Abstract.DalController;
+import Domain.DAL.Abstract.DataMapper;
 import Globals.Pair;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DCarrierLicensesController extends DalController<Pair<String, Set<String>>> {
+public class DCarrierLicensesController extends DataMapper<Pair<String, Set<String>>> {
     // dict of employeeID and its Licenses
     public DCarrierLicensesController() {
         super("tableName");

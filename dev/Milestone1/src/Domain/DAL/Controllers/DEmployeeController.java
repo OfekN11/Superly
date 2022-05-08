@@ -10,7 +10,7 @@ public class DEmployeeController extends DTOControllers<DEmployee> {
 
     // properties
     private DCarrierController dCarrierController;
-    private DCashierController dCashierController;
+    private CashierDataMapper cashierDataMapper;
     private DEmployeeCertificationController dEmployeeCertificationController;
     private DHR_ManagerController dhr_managerController;
     private DLogistics_ManagerController dLogistics_managerController;
@@ -22,7 +22,7 @@ public class DEmployeeController extends DTOControllers<DEmployee> {
         super("PlaceHolder");
         dEmployeeCertificationController = new DEmployeeCertificationController();
         dCarrierController = new DCarrierController();
-        dCashierController = new DCashierController();
+        cashierDataMapper = new CashierDataMapper();
         dhr_managerController = new DHR_ManagerController();
         dLogistics_managerController = new DLogistics_ManagerController();
         dSorterController = new DSorterController();
@@ -34,7 +34,7 @@ public class DEmployeeController extends DTOControllers<DEmployee> {
     public Set<DEmployee> loadData() {
         Set<DEmployee> employees= new HashSet<>();
         employees.addAll(dCarrierController.loadData());
-        employees.addAll(dCashierController.loadData());
+        employees.addAll(cashierDataMapper.loadData());
         employees.addAll(dhr_managerController.loadData());
         employees.addAll(dLogistics_managerController.loadData());
         employees.addAll(dSorterController.loadData());
