@@ -87,7 +87,7 @@ public class EmployeeController {
         employees.get(id).setCertifications(certifications);
     }
 
-    public void editCarrierLicenses(String id, Set<String> licences) throws Exception {
+    public void editCarrierLicenses(String id, Set<LicenseTypes> licences) throws Exception {
         checkIDValidity(id);
         if (!(employees.get(id) instanceof Carrier))
             throw new Exception(String.format("Emplyee: %s, ID: %s, is not a carrier", employees.get(id).getName(), id));

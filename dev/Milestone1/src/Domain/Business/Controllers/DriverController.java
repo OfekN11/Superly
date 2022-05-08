@@ -1,7 +1,5 @@
-package Backend.BusinessLayer.Controllers;
+package Domain.Business.Controllers;
 
-import Backend.BusinessLayer.Objects.Driver;
-import Backend.BusinessLayer.Objects.Truck;
 import Globals.Enums.LicenseTypes;
 import Globals.Enums.TruckModel;
 

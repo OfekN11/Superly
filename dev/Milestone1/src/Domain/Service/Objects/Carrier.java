@@ -1,6 +1,7 @@
 package Domain.Service.Objects;
 
 import Globals.Enums.JobTitles;
+import Globals.Enums.LicenseTypes;
 import Presentation.Screens.ScreenEmployeeFactory;
 
 import java.util.Collections;
@@ -10,7 +11,7 @@ import java.util.Set;
  * Service model of the Carrier
  */
 public class Carrier extends Employee {
-    public final Set<String> licenses;
+    public final Set<LicenseTypes> licenses;
 
     public Carrier(Domain.Business.Objects.Carrier bCarrier){
         super(bCarrier);

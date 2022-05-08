@@ -1,4 +1,4 @@
-package Backend.BusinessLayer.Objects;
+package Domain.Business.Objects;
 
 import Globals.Enums.ShippingAreas;
 

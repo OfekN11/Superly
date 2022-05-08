@@ -1,6 +1,8 @@
 package Presentation.Screens;
 
 import Globals.Enums.JobTitles;
+import Globals.Enums.LicenseTypes;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,7 +12,7 @@ public class Carrier extends Employee{
             "Exit"              //10
     };
 
-    private Set<String> licenses;
+    private Set<LicenseTypes> licenses;
 
     public Carrier(Screen caller, Domain.Service.Objects.Carrier sCarrier) {
         super(caller, sCarrier, extraMenuOptions);
@@ -38,15 +40,15 @@ public class Carrier extends Employee{
         }
     }
 
-    private void setLicenses(Set<String> curr) throws Exception {
+    private void setLicenses(Set<LicenseTypes> curr) throws Exception {
         controller.editCarrierLicenses(this, curr);
         licenses = new HashSet<>(curr);
     }
 
     private void updateLicenses() throws Exception {
-        Set<String> curr = new HashSet<>(licenses);
+        Set<LicenseTypes> curr = new HashSet<>(licenses);
         System.out.println(name + "'s current licenses:");
-        for (String license: curr)
+        for (LicenseTypes license: curr)
             System.out.println(license);
         System.out.println("Would you like to add or remove licenses?");
         int ans = 0;
@@ -75,23 +77,30 @@ public class Carrier extends Employee{
                 break;
         }
         System.out.println("New licenses:");
-        for (String license: curr)
+        for (LicenseTypes license: curr)
             System.out.println(license);
         System.out.println("Would you like to save?");
         if (yesOrNo())
             setLicenses(curr);
     }
 
-    private void addLicenses(Set<String> curr) {
+    private void addLicenses(Set<LicenseTypes> curr) {
         while (true) {
             System.out.println("\nEnter license to add (enter -1 to stop)");
+            for (int i = 0; i < LicenseTypes.values().length; i++)
+                System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
             try {
-                String license = scanner.nextLine();
-                if (license.equals("-1")) {
+                int ordinal = Integer.parseInt(scanner.nextLine());
+                if (ordinal == -1) {
                     System.out.println("Stopping");
                     return;
+                } else if (ordinal < 1 || ordinal > JobTitles.values().length)
+                    System.out.println("Please enter an integer between 1 and " + JobTitles.values().length);
+                else {
+                    curr.add(LicenseTypes.values()[ordinal]);
                 }
-                curr.add(license);
+            } catch (NumberFormatException ex) {
+                System.out.println("Please enter an integer between 1 and " + JobTitles.values().length);
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");
@@ -99,16 +108,21 @@ public class Carrier extends Employee{
         }
     }
 
-    private void removeLicenses(Set<String> curr) {
+    private void removeLicenses(Set<LicenseTypes> curr) {
         while (true) {
             System.out.println("\nEnter license to remove (enter -1 to stop)");
+            for (int i = 0; i < LicenseTypes.values().length; i++)
+                System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
             try {
-                String license = scanner.nextLine();
-                if (license.equals("-1")) {
+                int ordinal = Integer.parseInt(scanner.nextLine());
+                if (ordinal == -1) {
                     System.out.println("Stopping");
                     return;
+                } else if (ordinal < 1 || ordinal > JobTitles.values().length)
+                    System.out.println("Please enter an integer between 1 and " + JobTitles.values().length);
+                else {
+                    curr.remove(LicenseTypes.values()[ordinal]);
                 }
-                curr.remove(license);
             } catch (Exception ex) {
                 System.out.println("Unexpected error occurred");
                 System.out.println("Please try again");

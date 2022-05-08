@@ -7,6 +7,7 @@ import Domain.Service.Objects.Shift;
 import Domain.Service.Services.*;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
+import Globals.Enums.LicenseTypes;
 import Globals.Enums.ShiftTypes;
 import Presentation.Screens.Carrier;
 
@@ -111,7 +112,7 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editCarrierLicenses(Carrier carrier, Set<String> newLicenses) throws Exception {
+    public void editCarrierLicenses(Carrier carrier, Set<LicenseTypes> newLicenses) throws Exception {
         Result<Object> result = employeeService.editCarrierLicenses(carrier.getID(), newLicenses);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());

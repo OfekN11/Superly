@@ -4,6 +4,7 @@ import Domain.DAL.Objects.DCarrier;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
+import Globals.Enums.LicenseTypes;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -13,9 +14,9 @@ import java.util.Set;
  * Business model of the Carrier
  */
 public class Carrier extends Employee {
-    private Set<String> licenses;
+    private Set<LicenseTypes> licenses;
 
-    public Carrier(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications, Set<String> licenses) throws Exception {
+    public Carrier(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications, Set<LicenseTypes> licenses) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate,certifications,new DCarrier(id,name,bankDetails,salary,employmentConditions,startingDate, licenses));
         this.licenses = licenses;
     }
@@ -34,11 +35,11 @@ public class Carrier extends Employee {
         return factory.createServiceEmployee(this);
     }
 
-    public Set<String> getLicenses() {
+    public Set<LicenseTypes> getLicenses() {
         return licenses;
     }
 
-    public void setLicences(Set<String> licences) {
+    public void setLicences(Set<LicenseTypes> licences) {
         this.licenses = new HashSet<>(licences);
     }
 }

@@ -1,4 +1,4 @@
-package Backend.BusinessLayer.Objects;
+package Domain.Business.Objects;
 
 public abstract class Site {
     private static int incID = 0;

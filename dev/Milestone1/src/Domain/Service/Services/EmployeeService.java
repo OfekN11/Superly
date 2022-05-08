@@ -5,6 +5,7 @@ import Domain.Service.Objects.*;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
+import Globals.Enums.LicenseTypes;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -124,7 +125,7 @@ public class EmployeeService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editCarrierLicenses(String id, Set<String> Licences){
+    public Result<Object> editCarrierLicenses(String id, Set<LicenseTypes> Licences){
         try {
             controller.editCarrierLicenses(id, Licences);
         }
