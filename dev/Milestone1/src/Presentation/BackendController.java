@@ -1,15 +1,13 @@
 package Presentation;
 
-import Domain.Service.Objects.Constraint;
-import Domain.Service.Objects.Employee;
-import Domain.Service.Objects.Result;
-import Domain.Service.Objects.Shift;
+import Domain.Service.Objects.*;
 import Domain.Service.Services.*;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.LicenseTypes;
 import Globals.Enums.ShiftTypes;
 import Presentation.Screens.Carrier;
+import jdk.internal.org.objectweb.asm.Handle;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -28,27 +26,27 @@ public class BackendController {
     }
 
     public Set<Employee> getAllCashiers() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x.getType() == JobTitles.Cashier).collect(Collectors.toSet());
+        return getAllEmployees().stream().filter((x) -> x instanceof Cashier).collect(Collectors.toSet());
     }
 
     public Set<Employee> getAllCarriers() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x.getType() == JobTitles.Carrier).collect(Collectors.toSet());
+        return getAllEmployees().stream().filter((x) -> x instanceof Domain.Service.Objects.Carrier).collect(Collectors.toSet());
     }
 
     public Set<Employee> getAllStorekeepers() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x.getType() == JobTitles.Storekeeper).collect(Collectors.toSet());
+        return getAllEmployees().stream().filter((x) -> x instanceof Storekeeper).collect(Collectors.toSet());
     }
 
     public Set<Employee> getAllSorters() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x.getType() == JobTitles.Sorter).collect(Collectors.toSet());
+        return getAllEmployees().stream().filter((x) -> x instanceof Sorter).collect(Collectors.toSet());
     }
 
     public Set<Employee> getAllHR_Managers() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x.getType() == JobTitles.HR_Manager).collect(Collectors.toSet());
+        return getAllEmployees().stream().filter((x) -> x instanceof HR_Manager).collect(Collectors.toSet());
     }
 
     public Set<Employee> getAllLogistics_Managers() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x.getType() == JobTitles.Logistics_Manager).collect(Collectors.toSet());
+        return getAllEmployees().stream().filter((x) -> x instanceof Logistics_Manager).collect(Collectors.toSet());
     }
 
     public void removeEmployee(String id) throws Exception {
