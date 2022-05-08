@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Constraint {
-    private final DConstraint dConstraint;
     // properties
     private LocalDate date;
     private ShiftTypes type; // morning evening
@@ -17,13 +16,9 @@ public class Constraint {
         this.date = date;
         this.type = type;
         this.employees = new HashSet<>(employees);
-        dConstraint = new DConstraint(date,type,employees);
-        dConstraint.save();
     }
 
     public Constraint(DConstraint dConstraint){
-        this.dConstraint = dConstraint;
-        date = dConstraint.getDate();
         type = dConstraint.getShiftType();
         employees = new HashSet<>(dConstraint.getEmployees());
     }
@@ -45,16 +40,10 @@ public class Constraint {
     }
 
     public void register(String id) {
-        dConstraint.register(id);
         employees.add(id);
     }
 
     public void unregister(String id) {
-        dConstraint.unregister(id);
         employees.remove(id);
-    }
-
-    public DConstraint getdConstraint() {
-        return dConstraint;
     }
 }

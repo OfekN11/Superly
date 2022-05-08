@@ -1,16 +1,15 @@
 package Domain.DAL.Controllers;
 
-import Domain.DAL.Abstract.DalController;
+import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Objects.DEmployee;
 import Globals.Enums.Certifications;
 import Globals.Pair;
 
 import java.util.Date;
-import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DEmployeeCertificationController extends DalController<Pair<String,Set<Certifications>>> {
+public class DEmployeeCertificationController extends DataMapper {
 
     public DEmployeeCertificationController() {
         super("tableName");
@@ -42,5 +41,8 @@ public class DEmployeeCertificationController extends DalController<Pair<String,
     public void deleteAll(){}
 
     public void replaceCertification(DEmployee dEmployee, Set<Certifications> certifications) {
+    }
+
+    public Set<Certifications> get(String id) {
     }
 }
