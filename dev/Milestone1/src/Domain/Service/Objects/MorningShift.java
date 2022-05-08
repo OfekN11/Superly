@@ -19,9 +19,4 @@ public class MorningShift extends Shift{
     public Presentation.Screens.Shift accept(ScreenShiftFactory screenShiftFactory) {
         return screenShiftFactory.createScreenShift(this);
     }
-
-    @Override
-    public ShiftTypes getType() {
-        return ShiftTypes.Morning;
-    }
 }

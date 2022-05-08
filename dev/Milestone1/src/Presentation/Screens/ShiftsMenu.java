@@ -1,16 +1,16 @@
 package Presentation.Screens;
 
-import Domain.Service.Objects.Constraint;
 import Domain.Service.Objects.Employee;
 import Domain.Service.Objects.Shift;
 import Globals.Enums.Certifications;
-import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
 import Globals.util.ShiftComparator;
 
-import javax.sound.midi.Soundbank;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ShiftsMenu extends Screen {
@@ -63,15 +63,13 @@ public class ShiftsMenu extends Screen {
     private void viewShifts() {
         System.out.println("Enter first and last dates to see shifts between the dates");
         System.out.println("Enter first date");
-        Date start = buildDate();
+        LocalDate start = buildDate();
         if (start == null)
             return;
-        start.setSeconds(start.getSeconds() - 1);
         System.out.println("Enter ending date");
-        Date end = buildDate();
+        LocalDate end = buildDate();
         if (end == null)
             return;
-        end.setSeconds(end.getSeconds() + 1);
         try {
             List<Shift> shifts = new ArrayList<>(controller.getShiftsBetween(start, end));
             shifts.sort(new ShiftComparator());
@@ -87,7 +85,7 @@ public class ShiftsMenu extends Screen {
             System.out.println("Enter details to create shift (enter -1 at any point to stop the process)");
 
             //Date
-            Date date = null;
+            LocalDate date = null;
             boolean success = false;
             while (!success) {
                 System.out.println("\nEnter shift's date");
@@ -317,7 +315,7 @@ public class ShiftsMenu extends Screen {
             System.out.println("Be aware that this process is irreversible");
 
             //Date
-            Date date = null;
+            LocalDate date = null;
             boolean success = false;
             while (!success) {
                 System.out.println("\nEnter shift's date");
@@ -361,7 +359,7 @@ public class ShiftsMenu extends Screen {
             System.out.println("We are about to delete");
             System.out.println(shift);
             if (areYouSure())
-                controller.removeShift(shift);
+                controller.removeShift(date, type);
         }
     }
 
@@ -370,7 +368,7 @@ public class ShiftsMenu extends Screen {
 
         //Date
         System.out.println("\nEnter shift's date");
-        Date date = buildDate();
+        LocalDate date = buildDate();
         if (date == null)
             return;
 

@@ -6,8 +6,8 @@ import Globals.Enums.*;
 import Domain.DAL.Controllers.DEmployeeController;
 import Domain.DAL.Objects.DEmployee;
 
+import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class EmployeeController {
     private static final String EmployeeNotFoundErrorMsg ="Employee id %s could not be found";
@@ -47,7 +47,7 @@ public class EmployeeController {
     public void deleteData() {
     }
 
-    public void registerEmployee(JobTitles title, String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
+    public void registerEmployee(JobTitles title, String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         if (employees.containsKey(id))
             throw new Exception(String.format("An employee with ID: %o already exists: %s", id, employees.get(id).getName()));
         switch (title) {
@@ -80,11 +80,6 @@ public class EmployeeController {
     public void editEmployeeBankDetails(String id, String bankDetails) throws Exception {
         checkIDValidity(id);
         employees.get(id).setBankDetails(bankDetails);
-    }
-
-    public void editEmployeeEmployementConditions(String id, String employementCondition) throws Exception {
-        checkIDValidity(id);
-        employees.get(id).setEmploymentConditions(employementCondition);
     }
 
     public void editEmployeeCertifications(String id, Set<Certifications> certifications) throws Exception {
@@ -130,5 +125,10 @@ public class EmployeeController {
         if (employees.containsKey(id))
             throw new Exception(String.format("employee with ID: %s is already taken", id));
         Employee.validateLegalID(id);
+    }
+
+    public String getEmploymentConditionsOf(String id) throws Exception {
+        validateID(id);
+        return employees.get(id).getEmploymentConditions();
     }
 }

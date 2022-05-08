@@ -10,7 +10,7 @@ import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
 import Presentation.Screens.Carrier;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -81,7 +81,7 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void addEmployee(JobTitles jobTitle, String id, String name, String bankDetails, Integer salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
+    public void addEmployee(JobTitles jobTitle, String id, String name, String bankDetails, Integer salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         Result<Object> result = employeeService.registerEmployee(jobTitle, id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
@@ -111,58 +111,52 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editEmployeeEmploymentConditions(Presentation.Screens.Employee employee, String newEmploymentConditions) throws Exception {
-        Result<Object> result = employeeService.editEmployeeEmployementCondidions(employee.getID(), newEmploymentConditions);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-    }
-
     public void editCarrierLicenses(Carrier carrier, Set<String> newLicenses) throws Exception {
         Result<Object> result = employeeService.editCarrierLicenses(carrier.getID(), newLicenses);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public Set<Shift> getEmployeeShiftsBetween(String id, Date start, Date end) throws Exception {
+    public Set<Shift> getEmployeeShiftsBetween(String id, LocalDate start, LocalDate end) throws Exception {
         Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(id, start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Constraint> getEmployeeConstraintsBetween(String id, Date today, Date nextMonth) throws Exception {
+    public Set<Constraint> getEmployeeConstraintsBetween(String id, LocalDate today, LocalDate nextMonth) throws Exception {
         Result<Set<Constraint>> result = constraintService.getEmployeeConstraintsBetween(id, today, nextMonth);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public void registerToConstraint(String id, Date date, ShiftTypes shift) throws Exception {
+    public void registerToConstraint(String id, LocalDate date, ShiftTypes shift) throws Exception {
         Result<Object> result = constraintService.registerToConstraint(id, date, shift);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void unregisterToConstraint(String id, Date date, ShiftTypes shift) throws Exception {
+    public void unregisterToConstraint(String id, LocalDate date, ShiftTypes shift) throws Exception {
         Result<Object> result = constraintService.unregisterFromConstraint(id, date, shift);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public Set<Shift> getShiftsBetween(Date start, Date end) throws Exception {
+    public Set<Shift> getShiftsBetween(LocalDate start, LocalDate end) throws Exception {
         Result<Set<Shift>> result = shiftService.getShiftsBetween(start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public void createShift(Date date, ShiftTypes type, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) throws Exception {
+    public void createShift(LocalDate date, ShiftTypes type, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) throws Exception {
         Result<Object> result = shiftService.createShift(date, type, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public Constraint getConstraint(Date date, ShiftTypes type) throws Exception {
+    public Constraint getConstraint(LocalDate date, ShiftTypes type) throws Exception {
         Result<Constraint> result = constraintService.getConstraint(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
@@ -183,15 +177,15 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Shift getShift(Date date, ShiftTypes type) throws Exception {
+    public Shift getShift(LocalDate date, ShiftTypes type) throws Exception {
         Result<Shift> result = shiftService.getShift(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public void removeShift(Shift shift) throws Exception {
-        Result<Object> result = shiftService.removeShift(shift.date, shift.getType());
+    public void removeShift(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Object> result = shiftService.removeShift(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
@@ -285,5 +279,12 @@ public class BackendController {
         employeeService.loadData();
         constraintService.loadData();
         shiftService.loadData();
+    }
+
+    public String getEmploymentConditionsOf(String id) throws Exception {
+        Result<String> result = employeeService.getEmploymentConditionsOf(id);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 }

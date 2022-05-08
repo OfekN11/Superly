@@ -3,7 +3,7 @@ package Domain.Service.Objects;
 import Globals.Enums.ShiftTypes;
 import Presentation.Screens.ScreenShiftFactory;
 
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 public class EveningShift extends Shift{
     public EveningShift(Domain.Business.Objects.EveningShift bShift) {
@@ -12,16 +12,11 @@ public class EveningShift extends Shift{
 
     @Override
     public String toString() {
-        return "Evening shift: " + new SimpleDateFormat("dd-MM-yyyy").format(date);
+        return "Evening shift: " + date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }
 
     @Override
     public Presentation.Screens.Shift accept(ScreenShiftFactory screenShiftFactory) {
         return screenShiftFactory.createScreenShift(this);
-    }
-
-    @Override
-    public ShiftTypes getType() {
-        return ShiftTypes.Evening;
     }
 }

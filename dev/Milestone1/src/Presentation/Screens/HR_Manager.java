@@ -29,9 +29,4 @@ public class HR_Manager extends Employee{
             }
         }
     }
-
-    @Override
-    JobTitles getJobTitle() {
-        return JobTitles.HR_Manager;
-    }
 }

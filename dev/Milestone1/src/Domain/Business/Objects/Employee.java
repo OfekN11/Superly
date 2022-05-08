@@ -4,9 +4,9 @@ import Domain.DAL.Objects.DEmployee;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
-import Globals.Enums.ShiftTypes;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,7 +23,7 @@ public abstract class Employee {
     private String bankDetails;
     private int salary;
     private String employmentConditions;
-    private Date startingDate;
+    private LocalDate startingDate;
     private Set<Certifications> certifications;
     private DEmployee dEmployee; // represent of this object in the DAL
 
@@ -38,7 +38,7 @@ public abstract class Employee {
      * @param startingDate Employee's Starting date
      * @param certifications Employees Certifications
      */
-    public Employee(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications,DEmployee dEmployee) throws Exception {
+    public Employee(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications,DEmployee dEmployee) throws Exception {
         validateLegalID(id);
         this.id = id;
         this.name = name;
@@ -81,8 +81,11 @@ public abstract class Employee {
     }
 
     public void setName(String name) {
-        dEmployee.setName(name);
+        if (name == null)
+            throw new NullPointerException("Name Cannot be null");
         this.name = name;
+        dEmployee.setName(this.name);
+        updateEmploymentConditions();
     }
 
     public String getBankDetails() {
@@ -90,6 +93,8 @@ public abstract class Employee {
     }
 
     public void setBankDetails(String bankDetails) {
+        if (name == null)
+            throw new NullPointerException("Bank Details Cannot be null");
         this.bankDetails = bankDetails;
     }
 
@@ -97,15 +102,31 @@ public abstract class Employee {
         return salary;
     }
 
+    public void setSalary(int newSalary) {
+        if (salary<=0)
+            throw new IllegalArgumentException(String.format(SALARY_MOST_BE_POSITIVE_ERROR_MSG,salary));
+        dEmployee.setSalary(newSalary);
+        this.salary=newSalary;
+        updateEmploymentConditions();
+    }
+
     public String getEmploymentConditions() {
         return employmentConditions;
     }
 
-    public void setEmploymentConditions(String employmentConditions) {
-        this.employmentConditions = employmentConditions;
+    protected void updateEmploymentConditions(JobTitles title){
+        this.employmentConditions =
+                "Name: " + name
+                        + "\nID: " + id
+                        + "\nJob title: " + title
+                        + "\nStarting date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate)
+                        + "\nSalary per shift: " + salary;
+        dEmployee.setEmploymentConditions(this.employmentConditions);
     }
 
-    public Date getStartingDate() {
+    abstract protected void updateEmploymentConditions();
+
+    public LocalDate getStartingDate() {
         return startingDate;
     }
 
@@ -121,16 +142,7 @@ public abstract class Employee {
         return dEmployee;
     }
 
-    public abstract JobTitles getJobTitle();
-
     public abstract Domain.Service.Objects.Employee accept(ServiceEmployeeFactory factory);
-
-    public void setSalary(int newSalary) {
-        if (salary<=0)
-            throw new IllegalArgumentException(String.format(SALARY_MOST_BE_POSITIVE_ERROR_MSG,salary));
-        dEmployee.setSalary(newSalary);
-        this.salary=newSalary;
-    }
 
     public static void validateLegalID(String id) throws Exception {
         if (!id.matches(ID_VALIDATING_REGEX))

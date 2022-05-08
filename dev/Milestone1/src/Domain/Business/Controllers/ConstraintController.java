@@ -5,10 +5,16 @@ import Domain.DAL.Controllers.DConstraintController;
 import Domain.DAL.Objects.DConstraint;
 import Globals.Enums.ShiftTypes;
 
-import java.util.*;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 
 public class ConstraintController {
-    private final Map<Date, Map<ShiftTypes, Constraint>> constraints = new HashMap<>();
+    private final Map<LocalDate, Map<ShiftTypes, Constraint>> constraints = new HashMap<>();
     private final DConstraintController dConstraintController = new DConstraintController();
 
     public void loadData() {
@@ -24,7 +30,7 @@ public class ConstraintController {
     public void deleteData() {
     }
 
-    public Constraint getConstraint(Date workday, ShiftTypes shift){
+    public Constraint getConstraint(LocalDate workday, ShiftTypes shift){
         if (!constraints.containsKey(workday))
             constraints.put(workday, new HashMap<>());
         if (!constraints.get(workday).containsKey(shift))
@@ -32,12 +38,12 @@ public class ConstraintController {
         return constraints.get(workday).get(shift);
     }
 
-    public void registerToConstraint(String id, Date workday, ShiftTypes shift) {
+    public void registerToConstraint(String id, LocalDate workday, ShiftTypes shift) {
         Constraint constraint = getConstraint(workday, shift);
         constraint.register(id);
     }
 
-    public void unregisterFromConstraint(String id, Date workday, ShiftTypes shift) {
+    public void unregisterFromConstraint(String id, LocalDate workday, ShiftTypes shift) {
         if (!constraints.containsKey(workday) || !constraints.get(workday).containsKey(shift))
             return;
         Constraint constraint = getConstraint(workday, shift);
@@ -50,17 +56,17 @@ public class ConstraintController {
         }
     }
 
-    public Set<String> getConstraintEmployees(Date workday, ShiftTypes shift){
+    public Set<String> getConstraintEmployees(LocalDate workday, ShiftTypes shift){
         if (!constraints.containsKey(workday) || !constraints.get(workday).containsKey(shift))
             return new HashSet<>();
         return constraints.get(workday).get(shift).getEmployees();
     }
 
 
-    public Set<Constraint> getEmployeeConstraintsBetween(String id, Date today, Date nextMonth) {
-        Set<Date> dates = getDatesBetween(today,nextMonth);
+    public Set<Constraint> getEmployeeConstraintsBetween(String id, LocalDate today, LocalDate nextMonth) {
+        Set<LocalDate> dates = getDatesBetween(today,nextMonth);
         Set<Constraint> output = new HashSet<>();
-        for(Date date : dates){
+        for(LocalDate date : dates){
             if (constraints.containsKey(date)){
                 for(Constraint constraint: constraints.get(date).values())
                     if (constraint.getEmployees().contains(id))
@@ -70,30 +76,9 @@ public class ConstraintController {
         return output;
     }
 
-    private Set<Date> getDatesBetween(Date today,Date nextMonth){
-        Set<Date> datesInRange = new HashSet<>();
-        Calendar calendar = getCalendarWithoutTime(today);
-        Calendar endCalendar = getCalendarWithoutTime(nextMonth);
-        endCalendar.add(Calendar.DATE, 1);
-
-        while (calendar.before(endCalendar)) {
-            Date result = calendar.getTime();
-            datesInRange.add(result);
-            calendar.add(Calendar.DATE, 1);
-        }
-
-        return datesInRange;
+    private Set<LocalDate> getDatesBetween(LocalDate today,LocalDate nextMonth){
+        return constraints.keySet().stream()
+                .filter((d) -> d.isAfter(today) || d.isEqual(today))
+                .filter((d) -> d.isBefore(nextMonth) || d.isEqual(nextMonth)).collect(Collectors.toSet());
     }
-
-    private Calendar getCalendarWithoutTime(Date date) {
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar;
-    }
-
 }

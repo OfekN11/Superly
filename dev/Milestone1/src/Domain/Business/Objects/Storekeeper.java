@@ -6,7 +6,7 @@ import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class Storekeeper extends Employee {
 
-    public Storekeeper(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
+    public Storekeeper(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications,new DStorekeeper(id,name,bankDetails,salary,employmentConditions,startingDate));
     }
 
@@ -23,8 +23,8 @@ public class Storekeeper extends Employee {
     }
 
     @Override
-    public JobTitles getJobTitle() {
-        return JobTitles.Storekeeper;
+    protected void updateEmploymentConditions() {
+       super.updateEmploymentConditions(JobTitles.Storekeeper);
     }
 
     @Override

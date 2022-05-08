@@ -2,9 +2,8 @@ package Presentation.Screens;
 
 import Presentation.BackendController;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Screen implements Runnable{
@@ -85,7 +84,7 @@ public abstract class Screen implements Runnable{
         return ans == 1;
     }
 
-    public static Date buildDate()  {
+    public static LocalDate buildDate()  {
         boolean success = false;
         int day =0;
         int month =0;
@@ -150,11 +149,6 @@ public abstract class Screen implements Runnable{
             }
         }
 
-        try {
-            return  new SimpleDateFormat("dd-MM-yyyy").parse(String.format("%d-%d-%d",day,month,year));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null; // should never get here
+        return LocalDate.of(year, month, day);
     }
 }

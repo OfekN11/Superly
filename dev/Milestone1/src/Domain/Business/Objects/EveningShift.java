@@ -5,10 +5,11 @@ import Domain.DAL.Objects.DShift;
 import Domain.Service.ServiceShiftFactory;
 import Globals.Enums.ShiftTypes;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 public  class EveningShift extends Shift {
 
-    public EveningShift(Date workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) throws Exception {
+    public EveningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) throws Exception {
         super(workday, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount, new DEveningShift(workday,managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount));
     }
     public EveningShift(DShift dShift){

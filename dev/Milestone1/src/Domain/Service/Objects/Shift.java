@@ -1,17 +1,16 @@
 package Domain.Service.Objects;
 
-import Globals.Enums.ShiftTypes;
 import Presentation.Screens.ScreenShiftFactory;
 
+import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Set;
 
 /**
  * Service model for Shift
  */
 public abstract class Shift {
-    public final Date date;
+    public final LocalDate date;
     public final String shiftManagerId;
 
     public final int carrierCount;
@@ -28,7 +27,7 @@ public abstract class Shift {
     public final Set<String> hr_managerIDs;
     public final Set<String> logistics_managerIDs;
 
-    private Shift(Date date, String shiftManagerId,
+    private Shift(LocalDate date, String shiftManagerId,
                   int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,
                   Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs){
         this.date = date;
@@ -56,6 +55,4 @@ public abstract class Shift {
     }
 
     public abstract Presentation.Screens.Shift accept(ScreenShiftFactory screenShiftFactory);
-
-    public abstract ShiftTypes getType();
 }

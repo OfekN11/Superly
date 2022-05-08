@@ -6,7 +6,7 @@ import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class Cashier extends Employee {
 
-    public Cashier(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
+    public Cashier(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications, new DCashier(id,name,bankDetails,salary,employmentConditions,startingDate));
     }
 
@@ -23,8 +23,8 @@ public class Cashier extends Employee {
     }
 
     @Override
-    public JobTitles getJobTitle() {
-        return JobTitles.Cashier;
+    protected void updateEmploymentConditions() {
+       updateEmploymentConditions(JobTitles.Cashier);
     }
 
     @Override

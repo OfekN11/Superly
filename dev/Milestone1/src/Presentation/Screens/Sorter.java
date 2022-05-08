@@ -1,7 +1,5 @@
 package Presentation.Screens;
 
-import Globals.Enums.JobTitles;
-
 public class Sorter extends Employee{
     private static final String[] extraMenuOptions  = {
             "Exit"              //9
@@ -9,11 +7,6 @@ public class Sorter extends Employee{
 
     public Sorter(Screen caller, Domain.Service.Objects.Sorter sEmployee) {
         super(caller, sEmployee, extraMenuOptions);
-    }
-
-    @Override
-    JobTitles getJobTitle() {
-        return JobTitles.Sorter;
     }
 
     @Override

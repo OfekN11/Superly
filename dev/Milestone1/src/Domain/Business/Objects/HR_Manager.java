@@ -6,14 +6,14 @@ import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 /**
  * Business model of the HR Manager
  */
 public class HR_Manager extends Employee{
-    public HR_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
+    public HR_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications,new DHR_Manager(id,name,bankDetails,salary,employmentConditions,startingDate));
     }
 
@@ -22,8 +22,8 @@ public class HR_Manager extends Employee{
     }
 
     @Override
-    public JobTitles getJobTitle() {
-        return JobTitles.HR_Manager;
+    protected void updateEmploymentConditions() {
+       super.updateEmploymentConditions(JobTitles.HR_Manager);
     }
 
     @Override

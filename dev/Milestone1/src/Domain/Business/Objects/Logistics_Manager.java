@@ -6,14 +6,14 @@ import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 /**
  * Business model of the Logistics Manager
  */
 public class Logistics_Manager extends Employee{
-    public Logistics_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications) throws Exception {
+    public Logistics_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications,new DLogistics_Manager(id,name,bankDetails,salary,employmentConditions,startingDate));
     }
 
@@ -22,8 +22,8 @@ public class Logistics_Manager extends Employee{
     }
 
     @Override
-    public JobTitles getJobTitle() {
-        return JobTitles.Logistics_Manager;
+    protected void updateEmploymentConditions() {
+       super.updateEmploymentConditions(JobTitles.Logistics_Manager);
     }
 
     @Override

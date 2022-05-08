@@ -1,13 +1,11 @@
 package Domain.Business.Objects;
 
 import Domain.DAL.Objects.DCarrier;
-import Domain.DAL.Objects.DCashier;
-import Domain.DAL.Objects.DEmployee;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +15,7 @@ import java.util.Set;
 public class Carrier extends Employee {
     private Set<String> licenses;
 
-    public Carrier(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications, Set<String> licenses) throws Exception {
+    public Carrier(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications, Set<String> licenses) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate,certifications,new DCarrier(id,name,bankDetails,salary,employmentConditions,startingDate, licenses));
         this.licenses = licenses;
     }
@@ -27,9 +25,8 @@ public class Carrier extends Employee {
         this.licenses = new HashSet<>(dEmployee.getLicenses());
     }
 
-    @Override
-    public JobTitles getJobTitle() {
-        return JobTitles.Carrier;
+    protected void updateEmploymentConditions() {
+        super.updateEmploymentConditions(JobTitles.Carrier);
     }
 
     @Override

@@ -6,6 +6,7 @@ import Globals.Enums.JobTitles;
 import Globals.util.EmployeeComparator;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -251,7 +252,7 @@ public class EmployeesMenu extends Screen {
         System.out.println("Chosen job title: " + jobTitle);
 
         //Starting Date
-        Date startingDate = null;
+        LocalDate startingDate = null;
         success = false;
         while (!success) {
             System.out.println("\nEnter " + name + "'s starting date");

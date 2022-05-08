@@ -4,8 +4,8 @@ import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Presentation.Screens.ScreenEmployeeFactory;
 
+import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Set;
 
 /**
@@ -17,7 +17,7 @@ public abstract class Employee {
     public final String bankDetails;
     public final int salary;
     public final String employmentConditions;
-    public final Date startingDate;
+    public final LocalDate startingDate;
     public final Set<Certifications> certifications;
 
     /**
@@ -31,7 +31,7 @@ public abstract class Employee {
      * @param startingDate Employee's work starting date
      * @param certifications Employee's certifications
      */
-    private Employee(String id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications){
+    private Employee(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications){
         this.id = id;
         this.name = name;
         this.bankDetails = bankDetails;

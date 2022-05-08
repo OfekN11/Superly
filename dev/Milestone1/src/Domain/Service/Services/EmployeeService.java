@@ -6,7 +6,7 @@ import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -62,7 +62,7 @@ public class EmployeeService {
      * @param certifications All of the employee's certifications
      * @return Result detailing process' success
      */
-    public Result<Object> registerEmployee(JobTitles title, String  id, String name, String bankDetails, int salary, String employmentConditions, Date startingDate, Set<Certifications> certifications){
+    public Result<Object> registerEmployee(JobTitles title, String  id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications){
         try {
             controller.registerEmployee(title, id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
         }
@@ -107,16 +107,6 @@ public class EmployeeService {
     public Result<Object> editEmployeeBankDetails(String id, String bankDetails){
         try {
             controller.editEmployeeBankDetails(id, bankDetails);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
-
-    public Result<Object> editEmployeeEmployementCondidions(String id, String employementCondition){
-        try {
-            controller.editEmployeeEmployementConditions(id, employementCondition);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -210,6 +200,13 @@ public class EmployeeService {
         }catch (Exception e){
             return Result.makeError(e.getMessage());
         }
+    }
 
+    public Result<String> getEmploymentConditionsOf(String id) {
+        try {
+            return Result.makeOk(controller.getEmploymentConditionsOf(id));
+        }catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 }

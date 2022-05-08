@@ -8,7 +8,7 @@ import Globals.Enums.ShiftTypes;
 import Globals.util.ConstraintComparator;
 import Globals.util.ShiftComparator;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -30,7 +30,7 @@ public abstract class Employee extends Screen {
      protected String bankDetails;
      protected int salary;
      protected String employmentConditions;
-     protected final Date startingDate;
+     protected final LocalDate startingDate;
      protected Set<Certifications> certifications;
 
     public Employee(Screen caller, Domain.Service.Objects.Employee sEmployee, String[] extraMenuOptions) {
@@ -86,17 +86,9 @@ public abstract class Employee extends Screen {
         this.certifications = certifications;
     }
 
-    protected void updateEmploymentConditions() throws Exception {
-        this.employmentConditions =
-                "Name: " + name
-                        + "\nID: " + id
-                        + "\nJob title: " + getJobTitle()
-                        + "\nStarting date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate)
-                        + "\nSalary per shift: " + salary;
-        controller.editEmployeeEmploymentConditions(this, employmentConditions);
+    private void updateEmploymentConditions() throws Exception {
+        this.employmentConditions = this.controller.getEmploymentConditionsOf(id);
     }
-
-    abstract JobTitles getJobTitle();
 
     private void updateName() throws Exception {
         String name = null;
@@ -269,15 +261,13 @@ public abstract class Employee extends Screen {
 
     private void calculateSalary() throws Exception {
         System.out.println("Enter date to start calculating from: ");
-        Date start = buildDate();
+        LocalDate start = buildDate();
         if (start == null)
             return;
-        start.setSeconds(-1);
         System.out.println("Enter last date to calculate: ");
-        Date end = buildDate();
+        LocalDate end = buildDate();
         if (end == null)
             return;
-        end.setSeconds(1);
         int numOfShifts = controller.getEmployeeShiftsBetween(id, start, end).size();
         System.out.println("Between the dates entered " + name + " has done " + numOfShifts + "shifts");
         System.out.println("With a salary of " + salary + " per shift");
@@ -285,9 +275,8 @@ public abstract class Employee extends Screen {
     }
 
     private void manageConstraints() throws Exception {
-        Date today = new Date();
-        Date nextMonth = new Date();
-            nextMonth.setMonth(nextMonth.getMonth() + 1);
+        LocalDate today = LocalDate.now();
+        LocalDate nextMonth = today.plusMonths(1);
         List<Constraint> constraints = new ArrayList<>(controller.getEmployeeConstraintsBetween(id, today, nextMonth));
         constraints.sort(new ConstraintComparator());
         System.out.println("Current constraints for the following month");
@@ -322,7 +311,7 @@ public abstract class Employee extends Screen {
     private void removeConstraints() throws Exception {
         while (true) {
             System.out.println("When can't you work? (enter -1 to stop adding constraints)");
-            Date date = buildDate();
+            LocalDate date = buildDate();
             if (date == null)
                 return;
             System.out.println("What shift?");
@@ -351,7 +340,7 @@ public abstract class Employee extends Screen {
     private void addConstraints() throws Exception {
         while (true) {
             System.out.println("When can you work? (enter -1 to stop adding constraints)");
-            Date date = buildDate();
+            LocalDate date = buildDate();
             if (date == null)
                 return;
             System.out.println("What shift?");
@@ -378,9 +367,8 @@ public abstract class Employee extends Screen {
     }
 
     private void printUpcomingShifts() throws Exception {
-        Date today = new Date();
-        Date nextWeek = new Date();
-        nextWeek.setDate(nextWeek.getDate()+7);
+        LocalDate today = LocalDate.now();
+        LocalDate nextWeek = today.plusWeeks(1);
         List<Shift> shifts= new ArrayList<>(controller.getEmployeeShiftsBetween(id, today, nextWeek));
         shifts.sort(new ShiftComparator());
         System.out.println("Upcoming shift for the following week");

@@ -12,11 +12,6 @@ public class Storekeeper extends Employee{
     }
 
     @Override
-    JobTitles getJobTitle() {
-        return JobTitles.Storekeeper;
-    }
-
-    @Override
     public void run() {
         System.out.println("\nWelcome to the Management Menu of " + name + "!");
         int option = 0;

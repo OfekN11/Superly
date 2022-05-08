@@ -7,7 +7,11 @@ import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,7 +23,7 @@ public abstract class Shift extends Screen {
             "Assign employees",             //3
     };
 
-    protected final Date date;
+    protected final LocalDate date;
     protected String shiftManagerId;
 
     protected int carrierCount;
@@ -156,7 +160,7 @@ public abstract class Shift extends Screen {
         System.out.println("\nCurrent shift manager: " + currManager.name + ", ID: " + currManager.id);
         Constraint constraint = controller.getConstraint(date, getType());
         Set<Domain.Service.Objects.Employee> employees = controller.getEmployees(constraint.employeeIDs);
-        List<Domain.Service.Objects.Employee> managers = employees.stream().filter((x) -> x.certifications.contains(Certifications.ShiftManagement)).collect(Collectors.toList());
+        List<Employee> managers = employees.stream().filter((x) -> x.certifications.contains(Certifications.ShiftManagement)).collect(Collectors.toList());
         if (managers.size() == 0) {
             System.out.println("No employee who is certified to manage shifts has filled a possibility to work at this shift.");
             System.out.println("Cannot assign a shift manager. Operation Cancelled");
@@ -382,7 +386,7 @@ public abstract class Shift extends Screen {
         }
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 }

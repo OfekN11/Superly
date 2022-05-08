@@ -4,7 +4,7 @@ import Domain.Business.Controllers.ConstraintController;
 import Domain.Service.Objects.*;
 import Globals.Enums.ShiftTypes;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,7 +25,7 @@ public class ConstraintService {
     public void deleteData() {
     }
 
-    public Result<Constraint> getConstraint(Date workday, ShiftTypes shift){
+    public Result<Constraint> getConstraint(LocalDate workday, ShiftTypes shift){
         try {
             return Result.makeOk(new Constraint(controller.getConstraint(workday, shift)));
         }
@@ -34,7 +34,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Object> registerToConstraint(String id, Date workday, ShiftTypes shift) {
+    public Result<Object> registerToConstraint(String id, LocalDate workday, ShiftTypes shift) {
         try {
             controller.registerToConstraint(id, workday, shift);
         }
@@ -44,7 +44,7 @@ public class ConstraintService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> unregisterFromConstraint(String id, Date workday, ShiftTypes shift) {
+    public Result<Object> unregisterFromConstraint(String id, LocalDate workday, ShiftTypes shift) {
         try {
             controller.unregisterFromConstraint(id, workday, shift);
         }
@@ -54,7 +54,7 @@ public class ConstraintService {
         return Result.makeOk(null);
     }
 
-    public Result<Set<Constraint>> getEmployeeConstraintsBetween(String id, Date today, Date nextMonth) {
+    public Result<Set<Constraint>> getEmployeeConstraintsBetween(String id, LocalDate today, LocalDate nextMonth) {
         try {
             Set<Constraint> constraints = controller.getEmployeeConstraintsBetween(id, today, nextMonth).stream().map(Constraint::new).collect(Collectors.toSet());
             return Result.makeOk(constraints);

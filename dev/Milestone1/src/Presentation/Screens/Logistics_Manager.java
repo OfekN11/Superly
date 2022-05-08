@@ -28,9 +28,4 @@ public class Logistics_Manager extends Employee{
             }
         }
     }
-
-    @Override
-    JobTitles getJobTitle() {
-        return JobTitles.Logistics_Manager;
-    }
 }

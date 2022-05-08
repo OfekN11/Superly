@@ -18,11 +18,6 @@ public class Carrier extends Employee{
     }
 
     @Override
-    JobTitles getJobTitle() {
-        return JobTitles.Carrier;
-    }
-
-    @Override
     public void run() {
         System.out.println("\nWelcome to the Management Menu of " + name + "!");
         int option = 0;

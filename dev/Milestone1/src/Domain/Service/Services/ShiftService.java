@@ -6,7 +6,7 @@ import Domain.Service.Objects.Shift;
 import Domain.Service.ServiceShiftFactory;
 import Globals.Enums.ShiftTypes;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,7 +44,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Shift> getShift(Date workday, ShiftTypes type){
+    public Result<Shift> getShift(LocalDate workday, ShiftTypes type){
         try {
             return Result.makeOk(factory.createServiceShift(controller.getShift(workday,type)));
         }
@@ -53,7 +53,7 @@ public class ShiftService {
         }
     }
 
-    public Result<Object> editShiftManagerID(Date workday, ShiftTypes type, String managerID){
+    public Result<Object> editShiftManagerID(LocalDate workday, ShiftTypes type, String managerID){
         try {
             controller.editShiftManagerID(workday, type, managerID);
         }
@@ -63,7 +63,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftCarrierCount(Date workday, ShiftTypes type, int carrierCount){
+    public Result<Object> editShiftCarrierCount(LocalDate workday, ShiftTypes type, int carrierCount){
         try {
             controller.editShiftCarrierCount(workday,type, carrierCount);
         }
@@ -73,7 +73,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftCashierCount(Date workday, ShiftTypes type, int cashierCount){
+    public Result<Object> editShiftCashierCount(LocalDate workday, ShiftTypes type, int cashierCount){
         try {
             controller.editShiftCashierCount(workday,type, cashierCount);
         }
@@ -83,7 +83,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftStorekeeperCount(Date workday, ShiftTypes type, int storekeeperCount){
+    public Result<Object> editShiftStorekeeperCount(LocalDate workday, ShiftTypes type, int storekeeperCount){
         try {
             controller.editShiftStorekeeperCount(workday,type, storekeeperCount);
         }
@@ -93,7 +93,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftSorterCount(Date workday, ShiftTypes type, int sorterCount){
+    public Result<Object> editShiftSorterCount(LocalDate workday, ShiftTypes type, int sorterCount){
         try {
             controller.editShiftSorterCount(workday,type, sorterCount);
         }
@@ -103,7 +103,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftHR_ManagerCount(Date workday, ShiftTypes type, int hr_managerCount){
+    public Result<Object> editShiftHR_ManagerCount(LocalDate workday, ShiftTypes type, int hr_managerCount){
         try {
             controller.editShiftHR_ManagerCount(workday,type, hr_managerCount);
         }
@@ -113,7 +113,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftLogistics_ManagerCount(Date workday, ShiftTypes type, int logistics_managerCount){
+    public Result<Object> editShiftLogistics_ManagerCount(LocalDate workday, ShiftTypes type, int logistics_managerCount){
         try {
             controller.editShiftLogistics_ManagerCount(workday,type, logistics_managerCount);
         }
@@ -123,7 +123,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftCarrierIDs(Date workday, ShiftTypes type, Set<String> ids){
+    public Result<Object> editShiftCarrierIDs(LocalDate workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftCarrierIDs(workday,type, ids);
         }
@@ -133,7 +133,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftCashierIDs(Date workday, ShiftTypes type, Set<String> ids){
+    public Result<Object> editShiftCashierIDs(LocalDate workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftCashierIDs(workday,type, ids);
         }
@@ -143,7 +143,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftStorekeeperIDs(Date workday, ShiftTypes type, Set<String> ids){
+    public Result<Object> editShiftStorekeeperIDs(LocalDate workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftStorekeeperIDs(workday,type, ids);
         }
@@ -153,7 +153,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftSorterIDs(Date workday, ShiftTypes type, Set<String> ids){
+    public Result<Object> editShiftSorterIDs(LocalDate workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftSorterIDs(workday,type, ids);
         }
@@ -163,7 +163,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftHR_ManagerIDs(Date workday, ShiftTypes type, Set<String> ids){
+    public Result<Object> editShiftHR_ManagerIDs(LocalDate workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftHR_ManagerIDs(workday,type, ids);
         }
@@ -173,7 +173,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Object> editShiftLogistics_ManagerIDs(Date workday, ShiftTypes type, Set<String> ids){
+    public Result<Object> editShiftLogistics_ManagerIDs(LocalDate workday, ShiftTypes type, Set<String> ids){
         try {
             controller.editShiftLogistics_ManagerIDs(workday,type, ids);
         }
@@ -183,7 +183,7 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    public Result<Set<Shift>> getEmployeeShiftsBetween(String id, Date start, Date end) {
+    public Result<Set<Shift>> getEmployeeShiftsBetween(String id, LocalDate start, LocalDate end) {
         try {
             return Result.makeOk(controller.getEmployeeShiftsBetween(id, start, end).stream().map(factory::createServiceShift).collect(Collectors.toSet()));
         }catch (Exception e){
@@ -191,7 +191,7 @@ public class ShiftService {
         }
     }
 
-    public Result<Set<Shift>> getShiftsBetween(Date start, Date end) {
+    public Result<Set<Shift>> getShiftsBetween(LocalDate start, LocalDate end) {
         try {
             return Result.makeOk(controller.getShiftsBetween(start, end).stream().map(factory::createServiceShift).collect(Collectors.toSet()));
         }catch (Exception e){
@@ -199,7 +199,7 @@ public class ShiftService {
         }
     }
 
-    public Result<Object> createShift(Date date, ShiftTypes type, String managerId, int carrierCount,int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) {
+    public Result<Object> createShift(LocalDate date, ShiftTypes type, String managerId, int carrierCount,int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) {
         try {
             controller.createShift(date,type, managerId, carrierCount,cashierCount, storekeeperCount,sorterCount, hr_managerCount, logistics_managerCount);
         }
@@ -217,7 +217,7 @@ public class ShiftService {
         }
     }
 
-    public Result<Object> removeShift(Date date, ShiftTypes type) {
+    public Result<Object> removeShift(LocalDate date, ShiftTypes type) {
         try {
             controller.removeShift(date,type);
         }

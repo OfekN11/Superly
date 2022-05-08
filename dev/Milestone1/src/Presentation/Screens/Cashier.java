@@ -13,11 +13,6 @@ public class Cashier extends Employee{
     }
 
     @Override
-    JobTitles getJobTitle() {
-        return JobTitles.Cashier;
-    }
-
-    @Override
     public void run() {
         System.out.println("\nWelcome to the Management Menu of " + name + "!");
         int option = 0;

@@ -3,9 +3,8 @@ package Domain.Business.Objects;
 import Domain.DAL.Objects.DShift;
 import Domain.Service.ServiceShiftFactory;
 import Globals.Enums.JobTitles;
-import Globals.Enums.ShiftTypes;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +20,7 @@ public abstract class Shift {
     private static final int MIN_LOGISTICS_MANAGERS = 0;
     private DShift dShift; // represent of this object in the DAL
     // properties
-    private Date workday;
+    private LocalDate workday;
     private String shiftManagerId;
     private int carrierCount;
     private int cashierCount;
@@ -38,7 +37,7 @@ public abstract class Shift {
     private Set<String> logistics_managerIDs;
 
     // constructors
-    public Shift(Date workday, String shiftManagerId,
+    public Shift(LocalDate workday, String shiftManagerId,
                  int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,
                  Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs,DShift dShift) throws Exception {
         this.workday = workday;
@@ -70,7 +69,7 @@ public abstract class Shift {
         dShift.save();
     }
 
-    public Shift(Date date, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,DShift dShift) throws Exception {
+    public Shift(LocalDate date, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,DShift dShift) throws Exception {
         this(date,managerId,
                 carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount,
                 new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),dShift);
@@ -96,7 +95,7 @@ public abstract class Shift {
         dShift.setPersist(true);
     }
 
-    public Date getWorkday() {
+    public LocalDate getWorkday() {
         return workday;
     }
 
