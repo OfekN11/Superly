@@ -1,6 +1,6 @@
-package Backend.BusinessLayer.Objects;
+package Domain.Business.Objects;
 
-import Backend.BusinessLayer.Objects.Document.DestinationDocument;
+import Domain.Business.Objects.Document.DestinationDocument;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,7 +1,7 @@
-package Backend.ServiceLayer.Objects;
+package Domain.Service.Objects;
 
 
-import Backend.Globals.Enums.ShippingAreas;
+import Globals.Enums.ShippingAreas;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -17,11 +17,13 @@ public class Transport {
     //private List<Source> sources;
     //private List<Destination> destinations;
     //private HashMap<ShippingAreas, Integer> shippingAreas;
-    public Transport(Backend.BusinessLayer.Objects.Transport transport) {
+    public Transport(Domain.Business.Objects.Transport transport) {
         startTime = transport.getStartTime();
         endTime = transport.getEndTime();
         driverName = transport.getDriverName();
         truckNumber = transport.getTruckNumber();
         truckWeight = transport.getTruckWeight();
     }
+
+
 }

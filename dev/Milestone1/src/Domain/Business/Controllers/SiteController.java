@@ -1,7 +1,7 @@
-package Backend.BusinessLayer.Controllers;
+package Domain.Business.Controllers;
 
-import Backend.BusinessLayer.Objects.Destination;
-import Backend.BusinessLayer.Objects.Source;
+import Domain.Business.Objects.Destination;
+import Domain.Business.Objects.Source;
 
 import java.util.HashMap;
 

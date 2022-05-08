@@ -1,12 +1,11 @@
-package Backend.BusinessLayer.Controllers;
+package Domain.Business.Controllers;
 
-import Backend.BusinessLayer.Objects.*;
+import Domain.Business.Objects.*;
 import Globals.Enums.ShippingAreas;
 
 import java.util.*;
 
 public class TransportController {
-    private static TransportController instance = null;
     private HashMap<Integer, Transport> pendingTransports;
     private HashMap<Integer, Transport> inProgressTransports;
     private HashMap<Integer, Transport> redesignTransports;
@@ -17,22 +16,16 @@ public class TransportController {
     private DocumentController documentController;
     private SiteController siteController;
 
-    private TransportController() {
+    public TransportController() {
         pendingTransports =  new HashMap<>();
         inProgressTransports =  new HashMap<>();
         redesignTransports =  new HashMap<>();
         completedTransports =  new HashMap<>();
         orders = new HashMap<>();
-        truckController = TruckController.getInstance();
-        driverController = DriverController.getInstance();
+        truckController = new TruckController();
+        driverController = new DriverController();
     }
 
-    public static TransportController getInstance(){
-        if (instance == null) {
-            instance = new TransportController();
-        }
-        return instance;
-    }
 
     public Transport getTransport(int transportSN) throws Exception {
         if (pendingTransports.containsKey(transportSN))
@@ -77,7 +70,7 @@ public class TransportController {
         }
     }
 
-    public void placeDrive(int transportSN, String driverName) throws Exception {
+    public void placeDriver(int transportSN, String driverName) throws Exception {
         if(pendingTransports.containsKey(transportSN))
         {
             Transport transport = pendingTransports.get(transportSN);

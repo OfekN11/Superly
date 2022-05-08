@@ -1,8 +1,8 @@
-package Backend.ServiceLayer;
+package Domain.Service.Services;
 
-import Backend.BusinessLayer.Controllers.TransportController;
-import Backend.Globals.Enums.ShippingAreas;
-import Backend.ServiceLayer.Objects.Transport;
+import Domain.Business.Controllers.TransportController;
+import Globals.Enums.ShippingAreas;
+import Domain.Service.Objects.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class TransportService {
             return Result.makeError(e.getMessage());
         }
     }
-    private HashMap<Integer, Transport> toServiceTransports(HashMap<Integer, Backend.BusinessLayer.Objects.Transport> transports)
+    private HashMap<Integer, Transport> toServiceTransports(HashMap<Integer, Domain.Business.Objects.Transport> transports)
     {
         HashMap<Integer, Transport> transportList = new HashMap<>();
         for (Integer transportKey: transports.keySet()) {
@@ -41,7 +41,7 @@ public class TransportService {
         }
     }
 
-    public Result getWaitingTransports() {
+    /*public Result getWaitingTransports() {
         try {
             return Result.makeOk(toServiceTransports(controller.getWaitingTransports()));
         }
@@ -57,7 +57,7 @@ public class TransportService {
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-    }
+    }*/
 
     public Result getTransportOrders() {
         try {
@@ -69,7 +69,7 @@ public class TransportService {
         }
     }
 
-    public Result getTransportOrders(ShippingAreas areas) {
+    /*public Result getTransportOrders(ShippingAreas areas) {
         try {
             //Todo: casting to service object
             return Result.makeOk(controller.getTransportOrders(areas));
@@ -77,7 +77,7 @@ public class TransportService {
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-    }
+    }*/
 
     public Result startTransport(int transportSN) {
         try {

@@ -1,6 +1,6 @@
-package Backend.ServiceLayer;
-
-import Backend.BusinessLayer.Controllers.DocumentController;
+package Domain.Service.Services;
+import Domain.Service.Objects.*;
+import Domain.Business.Controllers.DocumentController;
 
 public class DocumentService {
     private DocumentController controller;

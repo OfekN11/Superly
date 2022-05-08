@@ -1,4 +1,6 @@
-package Backend.BusinessLayer.Objects.Document;
+package Domain.Business.Objects.Document;
+
+import Domain.Service.ServiceDocumentFactory;
 
 import java.util.List;
 
@@ -25,5 +27,10 @@ public class DestinationDocument extends  Document{
 
     public void setProvidedProducts(List<String> providedProducts) {
         this.providedProducts = providedProducts;
+    }
+
+    @Override
+    public Domain.Service.Objects.Document accept(ServiceDocumentFactory serviceDocumentFactory) {
+        return serviceDocumentFactory.createServiceDocument(this);
     }
 }

@@ -1,4 +1,6 @@
-package Backend.BusinessLayer.Objects.Document;
+package Domain.Business.Objects.Document;
+
+import Domain.Service.ServiceDocumentFactory;
 
 public abstract class Document {
     private static int incSN = 0;
@@ -11,4 +13,6 @@ public abstract class Document {
     public int getSN() {
         return SN;
     }
+
+    public abstract Domain.Service.Objects.Document accept(ServiceDocumentFactory serviceDocumentFactory);
 }

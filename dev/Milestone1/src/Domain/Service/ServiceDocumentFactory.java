@@ -1,19 +1,19 @@
-package Backend.ServiceLayer.Factory;
+package Domain.Service;
 
-import Backend.ServiceLayer.Objects.DestinationDocument;
-import Backend.ServiceLayer.Objects.Document;
-import Backend.ServiceLayer.Objects.TransportDocument;
+import Domain.Service.Objects.DestinationDocument;
+import Domain.Service.Objects.Document;
+import Domain.Service.Objects.TransportDocument;
 
 public class ServiceDocumentFactory {
-    public Document createServiceDocument(Backend.BusinessLayer.Objects.Document doc){
+    public Document createServiceDocument(Domain.Business.Objects.Document.Document doc){
         return doc.accept(this);
     }
 
-    public DestinationDocument createServiceDocument(Backend.BusinessLayer.Objects.DestinationDocument destinationDoc){
+    public DestinationDocument createServiceDocument(Domain.Business.Objects.Document.DestinationDocument destinationDoc){
         return new DestinationDocument(destinationDoc);
     }
 
-    public TransportDocument createServiceDocument(Backend.BusinessLayer.Objects.TransportDocument transportDoc){
+    public TransportDocument createServiceDocument(Domain.Business.Objects.Document.TransportDocument transportDoc){
         return new TransportDocument(transportDoc);
     }
 

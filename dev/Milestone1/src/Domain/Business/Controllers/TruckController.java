@@ -1,23 +1,16 @@
-package Backend.BusinessLayer.Controllers;
+package Domain.Business.Controllers;
 
-import Backend.BusinessLayer.Objects.Truck;
+import Domain.Business.Objects.Truck;
 import Globals.Enums.TruckModel;
 
 import java.util.HashMap;
 
 public class TruckController {
     private HashMap<TruckModel, HashMap<Integer, Truck>> trucksFleet;
-    private static TruckController instance = null;
-    private TruckController() {
+    public TruckController() {
         trucksFleet = new HashMap<>();
     }
 
-    public static TruckController getInstance(){
-        if (instance == null) {
-            instance = new TruckController();
-        }
-        return instance;
-    }
 
     public void removeTruck(int licenseNumber) throws Exception {
         boolean deleted = false;
