@@ -45,10 +45,12 @@ public class BackendController {
         return result.getValue();
     }
 
+    /*
     public boolean updateSupplierID(int supplierID, int input) throws Exception {
         Result<Boolean> result = supplierService.updateSupplierID(supplierID, input);
         return getValueFromBooleanResult(result);
     }
+     */
 
     public boolean updateSupplierBankNumber(int supplierID, int input) throws Exception {
         Result<Boolean> result = supplierService.updateSupplierBankNumber(supplierID, input);
@@ -143,8 +145,8 @@ public class BackendController {
         return getValueFromBooleanResult(result);
     }
 
-    public boolean addSupplier(int id, String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String, String>> contacts, ArrayList<String> manufacturers) throws Exception {
-        Result<Boolean> result = supplierService.addSupplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers);
+    public boolean addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String, String>> contacts, ArrayList<String> manufacturers) throws Exception {
+        Result<Boolean> result = supplierService.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
         return getValueFromBooleanResult(result);
     }
 

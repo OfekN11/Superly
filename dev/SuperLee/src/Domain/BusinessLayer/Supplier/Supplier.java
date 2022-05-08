@@ -29,10 +29,12 @@ public class Supplier {
     private final int BY_ORDER  = 2;
     private final int NOT_TRANSPORTING  = 3;
 
+    private static int globalID = 1;
 
 
-    public Supplier(int id, String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts, ArrayList<String> manufacturers){
-        this.id = id;
+    public Supplier(String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts, ArrayList<String> manufacturers){
+        this.id = globalID;
+        globalID++;
         this.name = name;
         this.bankNumber = bankNumber;
         this.address = address;
@@ -90,6 +92,7 @@ public class Supplier {
         this.bankNumber = bankNumber;
     }
 
+    /*
     public void updateId(int newId) {
         this.id = newId;
         for(Map.Entry<Integer, Order> order : ordersInTheNext24Hours.entrySet()){
@@ -99,6 +102,7 @@ public class Supplier {
             order.getValue().updateSupplierID(newId);
         }
     }
+     */
 
     public void updateName(String newName) {
         this.name = newName;

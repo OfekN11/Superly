@@ -4,15 +4,14 @@ import PresentationLayer.Screens.Screen;
 
 public class EditCardScreen extends Screen {
 
-    private int supplierID;
+    private final int supplierID;
 
     private static final String[] menuOptions = {
-            "Edit ID",          //1
-            "Edit Bank Number",           //2
-            "Edit Address",           //3
-            "Edit Name",       //4
-            "Edit Paying Agreement",            //5
-            "Exit",        //6
+            "Edit Bank Number",           //1
+            "Edit Address",           //2
+            "Edit Name",       //3
+            "Edit Paying Agreement",            //4
+            "Exit",        //5
     };
 
 
@@ -25,26 +24,23 @@ public class EditCardScreen extends Screen {
     public void run() {
         System.out.println("\nHere you can change the Card's info");
         int option = 0;
-        while (option != 6) {
+        while (option != 5) {
             option = runMenu();
             try {
                 switch (option) {
                     case 1:
-                        supplierID = editID(supplierID);
-                        break;
-                    case 2:
                         editBunkNumber(supplierID);
                         break;
-                    case 3:
+                    case 2:
                         editAddress(supplierID);
                         break;
-                    case 4:
+                    case 3:
                         editName(supplierID);
                         break;
-                    case 5:
+                    case 4:
                         editPayingAgreement(supplierID);
                         break;
-                    case 6:
+                    case 5:
                         System.out.println("Returning..");
                         endRun();
                         break;
@@ -58,6 +54,7 @@ public class EditCardScreen extends Screen {
 
 
 
+    /*
     private int editID(int supplierID){
         int input, newID = -1;
         boolean correctInput = false;
@@ -95,6 +92,7 @@ public class EditCardScreen extends Screen {
         return newID;
 
     }
+     */
 
     private void editBunkNumber(int supplierID){
         int input;

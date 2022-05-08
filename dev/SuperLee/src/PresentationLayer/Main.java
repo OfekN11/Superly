@@ -60,8 +60,8 @@ public class Main {
         contacts.add(new Pair<>("Avi", "086475421"));
         ArrayList<String> manufacturers = new ArrayList<>();
         manufacturers.add("Osem") ; manufacturers.add("Elit");
-        service.addSupplier(1, "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
-        service.addSupplier(2, "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
+        service.addSupplier( "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
+        service.addSupplier( "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
 
         service.addAgreement(1 ,1 , "2 4 5");
 

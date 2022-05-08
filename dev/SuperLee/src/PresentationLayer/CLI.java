@@ -454,7 +454,7 @@ public class CLI {
                 }
             }
 
-            Result<Boolean> result = service.addSupplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers);
+            Result<Boolean> result = service.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
 
             if(result.isOk()){
                 System.out.println("The new supplier was added successfully to the data base.\n\n");
@@ -568,7 +568,7 @@ public class CLI {
 
                 switch (input){
                     case 1 : {
-                        supplierID = editID(supplierID);
+                        //supplierID = editID(supplierID);
                         correctInput = true;
                         break;
                     }
@@ -628,6 +628,7 @@ public class CLI {
 
     }
 
+    /*
     private int editID(int supplierID){
         int input, newID = -1;
         boolean correctInput = false;
@@ -658,6 +659,7 @@ public class CLI {
         return newID;
 
     }
+     */
 
     private void editBunkNumber(int supplierID){
         int input;

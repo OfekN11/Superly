@@ -19,12 +19,9 @@ public class SupplierController {
 
 
 
-    public void addSupplier(int id, String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
-        if(supplierExist(id))
-            throw new Exception("Supplier with same Id already exists");
-
+    public void addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
         ArrayList<Contact> contacts = createContacts(contactPairs);
-        Supplier supplier = new Supplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers);
+        Supplier supplier = new Supplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
         suppliersDAO.addSupplier(supplier);
     }
 
@@ -57,6 +54,7 @@ public class SupplierController {
         suppliersDAO.getSupplier(id).updateBankNumber(bankNumber);
     }
 
+    /*
     public void updateSupplierID(int id, int newId) throws Exception {
         if(!supplierExist(id) || supplierExist(newId))
             throw new Exception("There is no supplier with this ID!");
@@ -65,6 +63,8 @@ public class SupplierController {
         suppliersDAO.removeSupplier(id);
         suppliersDAO.addSupplier(temp);
     }
+
+     */
 
     public void updateSupplierName(int id, String newName) throws Exception {
         if(!supplierExist(id))

@@ -24,8 +24,8 @@ class SupplierControllerTest {
         manufacturers.add("Elit");
         contacts.add(new Pair<String,String>("name", "0508644177"));
         try {
-            controller.addSupplier(1, "name", 1, "address", "credit card", contacts, manufacturers);
-            controller.addSupplier(2, "name", 2, "address", "credit card", contacts, manufacturers);
+            controller.addSupplier( "name", 1, "address", "credit card", contacts, manufacturers);
+            controller.addSupplier( "name", 2, "address", "credit card", contacts, manufacturers);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -35,14 +35,14 @@ class SupplierControllerTest {
     @Test
     void addSupplier() {
         try {
-            controller.addSupplier(3, "name", 3, "address", "credit card", contacts, manufacturers);
+            controller.addSupplier( "name", 3, "address", "credit card", contacts, manufacturers);
         } catch (Exception e) {
             e.printStackTrace();
         }
         assertTrue(controller.supplierExist(3));
 
         try {
-            controller.addSupplier(4, "name", 4, "address", "credit card", contacts, manufacturers);
+            controller.addSupplier("name", 4, "address", "credit card", contacts, manufacturers);
         } catch (Exception e) {
             e.printStackTrace();
         }

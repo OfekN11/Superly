@@ -24,7 +24,7 @@ class SupplierTest {
         manufacturers.add("Osem");
         manufacturers.add("Elit");
         contacts.add(new Contact("name", "phone"));
-        supplier = new Supplier(1,"name",23, "address", "credit", contacts, manufacturers);
+        supplier = new Supplier("name",23, "address", "credit", contacts, manufacturers);
     }
 
 
