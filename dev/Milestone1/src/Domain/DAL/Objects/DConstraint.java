@@ -1,7 +1,6 @@
 package Domain.DAL.Objects;
 
-import Domain.DAL.Abstract.DTO;
-import Domain.DAL.Controllers.ConstraintDataMap;
+import Domain.DAL.Controllers.ConstraintDataMapper;
 import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
@@ -14,7 +13,7 @@ public class DConstraint extends DTO {
     private Date date;
     private ShiftTypes shiftType; // morning evening
     private Set<String> employees;
-    private ConstraintDataMap constraintDataMap;
+    private ConstraintDataMapper constraintDataMapper;
 
     // constructor
 
@@ -23,14 +22,14 @@ public class DConstraint extends DTO {
         this.date = date;
         this.shiftType = shiftType;
         this.employees = new HashSet<>();
-        constraintDataMap = new ConstraintDataMap();
+        constraintDataMapper = new ConstraintDataMapper();
     }
     public DConstraint(Date date, ShiftTypes shiftType, Set<String> employees) {
         super(date.toString() + shiftType, tableName);
         this.date = date;
         this.shiftType = shiftType;
         this.employees = employees;
-        constraintDataMap = new ConstraintDataMap();
+        constraintDataMapper = new ConstraintDataMapper();
     }
 
 
@@ -38,13 +37,13 @@ public class DConstraint extends DTO {
 
     public void register(String employeeId){
         if (isPersist())
-            constraintDataMap.addEmployeeToConstraint(this,employeeId);
+            constraintDataMapper.addEmployeeToConstraint(this,employeeId);
         employees.add(employeeId);
     }
 
     public void unregister(String employeeId){
         if (isPersist())
-            constraintDataMap.removeEmployeeToConstraint(this,employeeId);
+            constraintDataMapper.removeEmployeeToConstraint(this,employeeId);
         employees.remove(employeeId);
     }
 

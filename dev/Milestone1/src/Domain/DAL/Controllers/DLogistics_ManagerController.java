@@ -1,5 +1,4 @@
 package Domain.DAL.Controllers;
-import Domain.DAL.Abstract.DTOControllers;
 import Domain.DAL.Objects.DLogistics_Manager;
 
 import java.text.ParseException;

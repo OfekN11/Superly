@@ -1,7 +1,6 @@
 package Domain.DAL.Controllers;
 import Domain.Business.Objects.Cashier;
 import Domain.DAL.Abstract.DataMapper;
-import Globals.Enums.Certifications;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,13 +12,13 @@ public class CashierDataMapper extends DataMapper {
     private final static Map<String, Cashier> CASHIER_IDENTITY_MAP = new HashMap<>();
 
     // fields
-    private final DEmployeeCertificationController employeeCertificationController;
+    private final EmployeeCertificationDAO employeeCertificationController;
 
     //constructor
 
     public CashierDataMapper() {
         super("Cashiers");
-        employeeCertificationController = new DEmployeeCertificationController();
+        employeeCertificationController = new EmployeeCertificationDAO();
     }
 
     public Cashier get(String id){
@@ -32,8 +31,8 @@ public class CashierDataMapper extends DataMapper {
             if (!instanceResult.next())
                 return null;
 
-            Set<Certifications> certifications= employeeCertificationController.get(id);
-            output = new Cashier(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getString(5),instanceResult.getDate(6).toLocalDate(),certifications);
+
+            output = new Cashier(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getString(5),instanceResult.getDate(6).toLocalDate(),employeeCertificationController.get(id));
             CASHIER_IDENTITY_MAP.put(id,output);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
