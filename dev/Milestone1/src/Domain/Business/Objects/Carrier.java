@@ -15,7 +15,6 @@ import java.util.Set;
  */
 public class Carrier extends Employee {
     private Set<LicenseTypes> licenses;
-
     public Carrier(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications, Set<LicenseTypes> licenses) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate,certifications,new DCarrier(id,name,bankDetails,salary,employmentConditions,startingDate, licenses));
         this.licenses = licenses;
