@@ -98,6 +98,15 @@ public abstract class DataMapper {
     }
 
     /**
+     *
+     * @param connection
+     * @return retuns all the rows in the table
+     */
+    public ResultSet select(Connection connection) throws SQLException{
+        return executeQuery(connection,String.format("SELECT * from %s",tableName));
+    }
+
+    /**
      * Gets the lines with the specific id, note that the function works only with tables with id as their first column
      * @param connection a connection to the DB, should be close from the calling function when finish to read the result!
      * @param id id for the row you want to get
