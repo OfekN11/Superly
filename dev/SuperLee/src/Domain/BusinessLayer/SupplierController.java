@@ -19,10 +19,11 @@ public class SupplierController {
 
 
 
-    public void addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
+    public int addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
         ArrayList<Contact> contacts = createContacts(contactPairs);
         Supplier supplier = new Supplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
         suppliersDAO.addSupplier(supplier);
+        return supplier.getId();
     }
 
     private ArrayList<Contact> createContacts(ArrayList<Pair<String, String>> contactPairs) throws Exception {
@@ -53,18 +54,6 @@ public class SupplierController {
             throw new Exception("There is no supplier with this ID!");
         suppliersDAO.getSupplier(id).updateBankNumber(bankNumber);
     }
-
-    /*
-    public void updateSupplierID(int id, int newId) throws Exception {
-        if(!supplierExist(id) || supplierExist(newId))
-            throw new Exception("There is no supplier with this ID!");
-        Supplier temp = suppliersDAO.getSupplier(id);
-        temp.updateId(newId);
-        suppliersDAO.removeSupplier(id);
-        suppliersDAO.addSupplier(temp);
-    }
-
-     */
 
     public void updateSupplierName(int id, String newName) throws Exception {
         if(!supplierExist(id))

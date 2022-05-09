@@ -20,12 +20,6 @@ public class BackendController {
     private SupplierService supplierService ;
     private InventoryService inventoryService = new InventoryService();
 
-    // TODO: 07/05/2022  //For testing
-    /*
-    public SupplierController getController(){
-        return supplierService.getController();
-    }
-     */
 
     public BackendController(){
         this.supplierService = new SupplierService();
@@ -44,13 +38,6 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
-
-    /*
-    public boolean updateSupplierID(int supplierID, int input) throws Exception {
-        Result<Boolean> result = supplierService.updateSupplierID(supplierID, input);
-        return getValueFromBooleanResult(result);
-    }
-     */
 
     public boolean updateSupplierBankNumber(int supplierID, int input) throws Exception {
         Result<Boolean> result = supplierService.updateSupplierBankNumber(supplierID, input);
@@ -145,9 +132,11 @@ public class BackendController {
         return getValueFromBooleanResult(result);
     }
 
-    public boolean addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String, String>> contacts, ArrayList<String> manufacturers) throws Exception {
-        Result<Boolean> result = supplierService.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
-        return getValueFromBooleanResult(result);
+    public Integer addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String, String>> contacts, ArrayList<String> manufacturers) throws Exception {
+        Result<Integer> result = supplierService.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
     public boolean removeSupplier(int id) throws Exception {

@@ -380,63 +380,6 @@ public class Supplier {
     }
 
 
-    /*
-    public void addItemsToOrder(int orderId, List<String> itemsString) throws Exception {
-        if(!orders.containsKey(orderId)){
-            throw new Exception("This order Id already exists!");
-        }
-        ArrayList<String> itemsFullInfo = new ArrayList<>();
-        for(int i = 0; i < itemsString.size(); i+=3 ){
-
-            if(!itemsString.get(i).matches("\\d+"))  //if its a number
-                throw new Exception("You gave bad ID!");
-            if(i >= itemsString.size())
-                throw new Exception("Something is missing");
-
-            int currId = Integer.parseInt(itemsString.get(i));
-            if(!agreement.itemExists(currId))
-                throw new Exception(String.format("Item with ID: %d does not Exists!", currId));
-
-            //ID
-            AgreementItem currItem = agreement.getItem(currId);
-            itemsFullInfo.add(String.valueOf(currItem.getId()));
-
-            if(!itemsString.get(i+2).trim().equals(currItem.getName()))
-                throw new Exception(String.format("Item with name: %s does not match the id you gave!", itemsString.get(i+2)));
-
-            //Name
-            itemsFullInfo.add(currItem.getName());
-
-            //Quantity
-            int quantity = Integer.parseInt(itemsString.get(i+2));
-            itemsFullInfo.add(itemsString.get(i+2));
-
-            //PPU
-            itemsFullInfo.add(String.valueOf(currItem.getPricePerUnit()));
-
-            //Discount
-            int discount = agreement.getItem(currId).getDiscount(quantity);
-            itemsFullInfo.add(String.valueOf(discount));
-
-            //FinalPrice
-            itemsFullInfo.add(String.valueOf(agreement.getItem(currId).calculateTotalPrice(quantity)));
-
-        }
-
-        //Finish the first loop to make sure all the items are Ok!
-        for(int i = 0; i < itemsFullInfo.size(); i+=6){
-            int id = Integer.parseInt(itemsFullInfo.get(i));
-            String name = itemsFullInfo.get(i+1);
-            int quantity = Integer.parseInt(itemsFullInfo.get(i+2));
-            float ppu = Float.parseFloat(itemsFullInfo.get(i+3));
-            int discount = Integer.parseInt(itemsFullInfo.get(i+4));
-            float finalPrice = Float.parseFloat(itemsFullInfo.get(i+5));
-            orders.get(orderId).addItem(id, name, quantity, ppu, discount, finalPrice);
-        }
-
-    }
-     */
-
     public void addOneItemToOrder(int orderId, int itemId, int itemQuantity) throws Exception {
         agreementExists();
         if(!agreement.itemExists(itemId))

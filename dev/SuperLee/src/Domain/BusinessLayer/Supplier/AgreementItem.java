@@ -11,7 +11,6 @@ public class AgreementItem {
     private String name;
     private String manufacturer;
     private float pricePerUnit;
-    //int quantity;
     private Map<Integer, Integer> bulkPrices; // <quantity, percent>
 
     //POSSIBLE FIELD
@@ -22,7 +21,6 @@ public class AgreementItem {
         name = _name;
         manufacturer = _manu;
         pricePerUnit = _price;
-        //quantity = _quan;
         bulkPrices = _bulkPrices;
     }
 

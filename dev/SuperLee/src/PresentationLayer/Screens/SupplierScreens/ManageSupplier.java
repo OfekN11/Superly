@@ -119,8 +119,9 @@ public class ManageSupplier extends Screen {
         }
 
         try {
-            if(controller.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers)){
-                System.out.println("\nThe new supplier was added successfully to the data base.\n");
+            int supplierId = controller.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
+            if(supplierId != -1){
+                System.out.println("\nSupplier " + supplierId + " was added successfully to the data base.\n");
             }
             else{
                 System.out.println("Supplier wasn't added!");
