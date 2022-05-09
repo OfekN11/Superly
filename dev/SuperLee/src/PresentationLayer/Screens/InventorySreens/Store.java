@@ -1,8 +1,10 @@
 package PresentationLayer.Screens.InventorySreens;
 
+import Domain.ServiceLayer.InventoryObjects.DefectiveItemReport;
 import Domain.ServiceLayer.InventoryObjects.PurchaseFromSupplierReport;
 import Domain.ServiceLayer.Result;
 import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
+import Globals.Pair;
 import PresentationLayer.Screens.Screen;
 
 import java.util.Arrays;
@@ -12,7 +14,7 @@ import java.util.stream.Stream;
 public class Store extends Screen {
     private static final String[] menuOptions = {
             "Manage Sales",  //1
-            "Sell Items",                  //2
+            "Buy Items",                  //2
             "Return Items",          //3
             "Order Arrived",      //4
             "Add Store",        //5
@@ -110,12 +112,13 @@ public class Store extends Screen {
         System.out.println("Please insert amount of product you would like to buy");
         int amount = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<Double> r = controller.buyItems(storeID, productId, amount);
+        Result<Pair<Double, String>> r = controller.buyItems(storeID, productId, amount);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            System.out.println("Purchase successful! Total price is " + round(r.getValue()) + "NIS");
-            isUnderMin(storeID, productId);
+            System.out.println("Purchase successful! Total price is " + round(r.getValue().getFirst()) + "NIS");
+            if (r.getValue().getSecond()!=null)
+                System.out.println(r.getValue().getSecond());
         }
     }
 

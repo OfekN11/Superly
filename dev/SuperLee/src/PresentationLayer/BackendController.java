@@ -379,7 +379,7 @@ public class BackendController {
         return inventoryService.getCategory(categoryID);
     }
 
-    public Result<Double> buyItems(int storeID, int productID, int amount){
+    public Result<Pair<Double, String>> buyItems(int storeID, int productID, int amount){
         return inventoryService.buyItems(storeID, productID, amount);
     }
 
@@ -395,11 +395,11 @@ public class BackendController {
         return inventoryService.isUnderMin(store, product);
     }
 
-    public Result<DefectiveItemReport> reportDamaged(int storeID, int productID, int amount, int employeeID, String description){
+    public Result<Pair<DefectiveItemReport, String>> reportDamaged(int storeID, int productID, int amount, int employeeID, String description){
         return inventoryService.reportDamaged(storeID, productID, amount, employeeID, description);
     }
 
-    public Result<DefectiveItemReport> reportExpired(int storeID, int productID, int amount, int employeeID, String description){
+    public Result<Pair<DefectiveItemReport, String>> reportExpired(int storeID, int productID, int amount, int employeeID, String description){
         return inventoryService.reportExpired(storeID, productID, amount, employeeID, description);
     }
 

@@ -2,6 +2,7 @@ package PresentationLayer.Screens.InventorySreens;
 
 import Domain.ServiceLayer.InventoryObjects.DefectiveItemReport;
 import Domain.ServiceLayer.Result;
+import Globals.Pair;
 import PresentationLayer.Screens.Screen;
 
 import java.util.Arrays;
@@ -60,13 +61,14 @@ public class ReportDefective extends Screen {
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please describe the damage");
         String description = scanner.nextLine();
-        Result<DefectiveItemReport> r = controller.reportDamaged(store, productID, amount, employeeID, description);
+        Result<Pair<DefectiveItemReport, String>> r = controller.reportDamaged(store, productID, amount, employeeID, description);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            DefectiveItemReport dir = r.getValue();
+            DefectiveItemReport dir = r.getValue().getFirst();
             System.out.println(dir);
-            isUnderMin(store, productID);
+            if (r.getValue().getSecond()!=null)
+                System.out.println(r.getValue().getSecond());
         }
     }
 
@@ -81,13 +83,14 @@ public class ReportDefective extends Screen {
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please add a description (not mandatory)");
         String description = scanner.nextLine();
-        Result<DefectiveItemReport> r = controller.reportExpired(store, productID, amount, employeeID, description);
+        Result<Pair<DefectiveItemReport, String>> r = controller.reportExpired(store, productID, amount, employeeID, description);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            DefectiveItemReport eir = r.getValue();
+            DefectiveItemReport eir = r.getValue().getFirst();
             System.out.println(eir);
-            isUnderMin(store, productID);
+            if (r.getValue().getSecond()!=null)
+                System.out.println(r.getValue().getSecond());
         }
     }
 }

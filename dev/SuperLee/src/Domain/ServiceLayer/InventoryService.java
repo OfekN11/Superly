@@ -8,6 +8,7 @@ import Domain.BusinessLayer.InventoryController;
 import Domain.BusinessLayer.Supplier.Order;
 import Domain.ServiceLayer.InventoryObjects.*;
 import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
+import Globals.Pair;
 
 import java.util.*;
 
@@ -382,7 +383,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing price of the products
      */
-    public Result<Double> buyItems(int storeID, int productID, int amount){
+    public Result<Pair<Double, String>> buyItems(int storeID, int productID, int amount){
         try {
             return Result.makeOk(controller.buyItems(storeID, productID, amount));
         }
@@ -446,9 +447,10 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the report details
      */
-    public Result<DefectiveItemReport> reportDamaged(int storeID, int productID, int amount, int employeeID, String description){
+    public Result<Pair<DefectiveItemReport, String>> reportDamaged(int storeID, int productID, int amount, int employeeID, String description){
         try {
-            return Result.makeOk(new DefectiveItemReport(controller.reportDamaged(storeID, productID, amount, employeeID, description)));
+            Pair<DefectiveItems, String> result = controller.reportDamaged(storeID, productID, amount, employeeID, description);
+            return Result.makeOk(new Pair<DefectiveItemReport, String>(new DefectiveItemReport(result.getFirst()), result.getSecond()));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -460,9 +462,10 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the report details
      */
-    public Result<DefectiveItemReport> reportExpired(int storeID, int productID, int amount, int employeeID, String description){
+    public Result<Pair<DefectiveItemReport, String>> reportExpired(int storeID, int productID, int amount, int employeeID, String description){
         try {
-            return Result.makeOk(new DefectiveItemReport(controller.reportExpired(storeID, productID, amount, employeeID, description)));
+            Pair<DefectiveItems, String> result = controller.reportDamaged(storeID, productID, amount, employeeID, description);
+            return Result.makeOk(new Pair<DefectiveItemReport, String>(new DefectiveItemReport(result.getFirst()), result.getSecond()));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

@@ -99,7 +99,7 @@ public class StockReport {
     public int getAmountForOrder() {
         return targetAmountInStore - getTotalAmount();
     }
-    public boolean gotUnderMinimum(int amount) {
-        return (minAmountInStore > getTotalAmount()) && (minAmountInStore <= getTotalAmount()+amount);
+    public boolean gotUnderMinimum() {
+        return (minAmountInStore > getTotalAmount()) && (minAmountInStore <= getTotalAmount());
     }
 }

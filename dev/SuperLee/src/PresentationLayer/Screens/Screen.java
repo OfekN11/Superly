@@ -234,14 +234,6 @@ public abstract class Screen implements Runnable{
         }
         return cIDs;
     }
-    public void isUnderMin(int store, int product) {
-        Result<Boolean> r = controller.isUnderMin(store, product);
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            System.out.println("WARNING: product with ID " + product + " is in low stock in store " + store);
-        }
-    }
 
     public double round(double price) {
         price = (int)(price*100);
