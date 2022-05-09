@@ -96,7 +96,7 @@ public class Product {
         sales.add(sale);
     }
 
-    public void removeItems(int storeID, int amount) { //bought or thrown.
+    public void removeItems(int storeID, int amount) { //bought
         if (!stockreports.containsKey(storeID))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
         stockreports.get(storeID).removeItemsFromStore(amount);
@@ -301,7 +301,7 @@ public class Product {
         return stockreports.get(storeID).getAmountForOrder();
     }
 
-    public boolean gotUnderMinimum(int storeID, int amount) {
-        return stockreports.get(storeID).gotUnderMinimum(amount);
+    public boolean gotUnderMinimum(int storeID) {
+        return stockreports.get(storeID).gotUnderMinimum();
     }
 }

@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 public class Store extends Screen {
     private static final String[] menuOptions = {
             "Manage Sales",  //1
-            "Sell Items",                  //2
+            "Buy Items",                  //2
             "Return Items",          //3
             "Order Arrived",      //4
             "Add Store",        //5

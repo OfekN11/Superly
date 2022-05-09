@@ -634,8 +634,10 @@ public class InventoryController {
     }
 
     private void ordersOnTheWay(int storeID) {
-        //daily, check what routine orders are otw
-        supplierController.getOrdersOnTheWay(storeID);
+        //daily, check what routine orders are otw (cannot be changed anymore)
+
+        List<Order> ordersOnTheWay = supplierController.getOrdersOnTheWay(storeID);
+        //loop through orders and account for inventory
     }
 
     public Category getCategory(int categoryID) {
