@@ -184,7 +184,7 @@ public class ViewOrder extends Screen {
                     return;
                 }
 
-                Result<Boolean> r = controller.orderExists(supplierId, orderId);
+                Result<Boolean> r = controller.orderExists(supplierId, orderId);//
 
                 if(r.isOk() && r.getValue()){
                     correctInput = true;
