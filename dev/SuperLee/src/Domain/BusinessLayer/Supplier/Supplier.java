@@ -18,23 +18,32 @@ public class Supplier {
     private String payingAgreement;
     private Agreement agreement;
     private ArrayList<String> manufacturers;
-    private HashMap<Integer, Order> orders;
+
+    //private HashMap<Integer, Order> orders;
+    private HashMap<Integer, Order> ordersToBe;    //orders that will be in the future
+    private HashMap<Integer, Order> finishedOrders;
+    private HashMap<Integer, Order> ordersInTheNext24Hours;
+
 
     private final int ROUTINE  = 1;
     private final int BY_ORDER  = 2;
     private final int NOT_TRANSPORTING  = 3;
 
+    private static int globalID = 1;
 
 
-    public Supplier(int id, String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts, ArrayList<String> manufacturers){
-        this.id = id;
+    public Supplier(String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts, ArrayList<String> manufacturers){
+        this.id = globalID;
+        globalID++;
         this.name = name;
         this.bankNumber = bankNumber;
         this.address = address;
         this.payingAgreement = payingAgreement;
         this.contacts = contacts;
         this.manufacturers = manufacturers;
-        this.orders = new HashMap<>();
+        this.ordersToBe = new HashMap<>();
+        this.finishedOrders = new HashMap<>();
+        this.ordersInTheNext24Hours = new HashMap<>();
         agreement = null;
 
         //this.agreement = new Agreement();
@@ -83,9 +92,17 @@ public class Supplier {
         this.bankNumber = bankNumber;
     }
 
+    /*
     public void updateId(int newId) {
         this.id = newId;
+        for(Map.Entry<Integer, Order> order : ordersInTheNext24Hours.entrySet()){
+            order.getValue().updateSupplierID(newId);
+        }
+        for(Map.Entry<Integer, Order> order : ordersToBe.entrySet()){
+            order.getValue().updateSupplierID(newId);
+        }
     }
+     */
 
     public void updateName(String newName) {
         this.name = newName;
@@ -358,8 +375,8 @@ public class Supplier {
     public void addNewOrder() throws Exception {
         agreementExists();
 
-        Order order = new Order(agreement.daysToDelivery());
-        orders.put(order.getId(), order);
+        Order order = new Order(agreement.daysToDelivery(), id);
+        ordersToBe.put(order.getId(), order);
     }
 
 
@@ -424,14 +441,20 @@ public class Supplier {
         agreementExists();
         if(!agreement.itemExists(itemId))
             throw new Exception(String.format("Item with ID: %d does not Exists!", itemId));
-        if(!orders.containsKey(orderId))
+        if(!orderExists(orderId))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
 
         if(itemQuantity == 0){
             throw new Exception("Can't add 0 items to the order!");
         }
 
+        // TODO: 07/05/2022  this is replaced by the list?
+        /*
         if(!orders.get(orderId).changeable()){
+            throw new Exception("Can't change order: time exception.");
+        }
+         */
+        if(ordersInTheNext24Hours.containsKey(orderId) || finishedOrders.containsKey(orderId)){
             throw new Exception("Can't change order: time exception.");
         }
         AgreementItem currItem = agreement.getItem(itemId);
@@ -439,28 +462,28 @@ public class Supplier {
         float ppu = currItem.getPricePerUnit();
         int discount = agreement.getItem(itemId).getDiscount(itemQuantity);
         Double finalPrice = agreement.getItem(itemId).calculateTotalPrice(itemQuantity);
-        orders.get(orderId).addItem(itemId, agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice);
+        ordersToBe.get(orderId).addItem(itemId, agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice);
 
     }
 
     public void removeOrder(int orderId) throws Exception {
-        if(!orders.containsKey(orderId))
+        if(!orderExists(orderId))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
 
-        if(!orders.get(orderId).changeable()){
+        if(ordersInTheNext24Hours.containsKey(orderId) || finishedOrders.containsKey(orderId)){
             throw new Exception("Can't change order: time exception.");
         }
 
-        orders.remove(orderId);
+        ordersToBe.remove(orderId);
     }
 
     public void updateOrder(int orderID,int itemID, int quantity) throws Exception {
         agreementExists();
-        if(!orders.containsKey(orderID)){
+        if(!orderExists(orderID)){
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderID));
         }
 
-        if(!orders.get(orderID).changeable()){
+        if(ordersInTheNext24Hours.containsKey(orderID) || finishedOrders.containsKey(orderID)){
             throw new Exception("Can't change order: time exception.");
         }
 
@@ -468,22 +491,22 @@ public class Supplier {
             throw new Exception(String.format("Item with ID: %d does not Exists!", itemID));
         }
 
-        orders.get(orderID).updateItemQuantity(itemID, quantity, agreement.getItem(itemID).getDiscount(quantity), agreement.getOrderPrice(itemID, quantity));
+        ordersToBe.get(orderID).updateItemQuantity(itemID, quantity, agreement.getItem(itemID).getDiscount(quantity), agreement.getOrderPrice(itemID, quantity));
     }
 
     public void removeItemFromOrder(int orderId, int itemId) throws Exception {
-        if(!orders.containsKey(orderId))
+        if(!orderExists(orderId))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
-        if(!orders.get(orderId).itemExists(itemId))
+        if(ordersInTheNext24Hours.containsKey(orderId) || finishedOrders.containsKey(orderId))
+            throw new Exception("Can't change order: time exception.");
+        if(!ordersToBe.get(orderId).itemExists(itemId))
             throw new Exception("Item with this ID does not exist in thins order!");
-        orders.get(orderId).removeItem(itemId);
+        ordersToBe.get(orderId).removeItem(itemId);
     }
 
 
     public List<String> getOrder(int orderId) throws Exception {
-        if(!orders.containsKey(orderId))
-            throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
-        Order currOrder = orders.get(orderId);
+        Order currOrder = getOrderFromALlLists(orderId);
         List<String> result = new ArrayList<>();
         result.add(String.valueOf(currOrder.getId()));
 
@@ -498,7 +521,60 @@ public class Supplier {
         return result;
     }
 
+    private Order getOrderFromALlLists(int orderId) throws Exception {
+        if(!orderExists(orderId))
+            throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
+        if(ordersToBe.containsKey(orderId))
+            return ordersToBe.get(orderId);
+        else if(ordersInTheNext24Hours.containsKey(orderId))
+            return ordersInTheNext24Hours.get(orderId);
+        else
+            return finishedOrders.get(orderId);
+    }
+
     public boolean orderExists(int id){
-        return orders.containsKey(id);
+        return ordersToBe.containsKey(id) || ordersInTheNext24Hours.containsKey(id) || finishedOrders.containsKey(id);
+    }
+
+    public ArrayList<Order> itemInOrderForTheNextTwoDays(int itemID) {
+        ArrayList<Order> result = new ArrayList<>();
+        if(!agreement.isTransporting())
+            return result;
+        for(Order order : ordersToBe.values()){
+            int daysUntilDelivery = order.getDaysUntillOrder(Calendar.getInstance().getTime());
+            if(order.itemExists(itemID) && daysUntilDelivery <= 2)
+                result.add(order);
+        }
+
+        // TODO: 07/05/2022  //Need to treat this orders differently!!!!! dont allow changing the quantity, jst return the order if its the right one
+        // TODO: 07/05/2022  // Maybe they delete it? they hold lost for the next 24 hours orders
+        for(Order order : ordersInTheNext24Hours.values()){
+            int daysUntilDelivery = order.getDaysUntillOrder(Calendar.getInstance().getTime());
+            if(order.itemExists(itemID) && daysUntilDelivery <= 2)
+                result.add(order);
+        }
+        return result;
+    }
+
+    public Double getToatalPriceForItem(int itemId, int quantity) throws Exception {
+        agreementExists();
+        return agreement.getOrderPrice(itemId, quantity);
+    }
+
+    public Order getOrderForThisAmount(int orderId, int productID, int amount) throws Exception {
+        if(!orderExists(orderId))
+            throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
+        if( ordersToBe.get(orderId).hasEnoughItemQuantity(productID, amount) )    //This should be the "future" orders
+            return ordersToBe.get(orderId);
+        else{
+            ordersToBe.get(orderId).updateItemQuantity(productID, amount, agreement.getItem(productID).getDiscount(amount), agreement.getOrderPrice(productID, amount));
+        }
+        return ordersToBe.get(orderId);
+    }
+
+    public ArrayList<Order> getFutureOrders() {
+        ArrayList<Order> result = new ArrayList<>();
+        result.addAll(ordersToBe.values());    //This should be the "future" orders
+        return result;
     }
 }

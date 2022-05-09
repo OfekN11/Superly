@@ -1,5 +1,6 @@
 package PresentationLayer;
 
+import Domain.BusinessLayer.SupplierController;
 import Domain.ServiceLayer.SupplierService;
 import Domain.ServiceLayer.SupplierObjects.*;
 import Globals.Pair;
@@ -16,11 +17,16 @@ import java.util.*;
 
 public class BackendController {
 
-    //private final SupplierService supplierService = new SupplierService();
-    private SupplierService supplierService ; // = new SupplierService();  //FOR TESTING!!!!
+    private SupplierService supplierService ;
     private InventoryService inventoryService = new InventoryService();
 
-    //For testing
+    // TODO: 07/05/2022  //For testing
+    /*
+    public SupplierController getController(){
+        return supplierService.getController();
+    }
+     */
+
     public BackendController(){
         this.supplierService = new SupplierService();
         this.inventoryService = new InventoryService();
@@ -39,10 +45,12 @@ public class BackendController {
         return result.getValue();
     }
 
+    /*
     public boolean updateSupplierID(int supplierID, int input) throws Exception {
         Result<Boolean> result = supplierService.updateSupplierID(supplierID, input);
         return getValueFromBooleanResult(result);
     }
+     */
 
     public boolean updateSupplierBankNumber(int supplierID, int input) throws Exception {
         Result<Boolean> result = supplierService.updateSupplierBankNumber(supplierID, input);
@@ -137,8 +145,8 @@ public class BackendController {
         return getValueFromBooleanResult(result);
     }
 
-    public boolean addSupplier(int id, String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String, String>> contacts, ArrayList<String> manufacturers) throws Exception {
-        Result<Boolean> result = supplierService.addSupplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers);
+    public boolean addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String, String>> contacts, ArrayList<String> manufacturers) throws Exception {
+        Result<Boolean> result = supplierService.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
         return getValueFromBooleanResult(result);
     }
 

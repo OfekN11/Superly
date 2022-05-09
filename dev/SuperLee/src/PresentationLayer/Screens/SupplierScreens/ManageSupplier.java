@@ -50,7 +50,7 @@ public class ManageSupplier extends Screen {
         boolean _continue = true;
 
         boolean correctInput;
-        int id, bankNumber;
+        int bankNumber;
         String name, address, payingAgreement, contact, manufacturer;
         ArrayList<Pair<String, String>> contacts;
         boolean done;
@@ -65,6 +65,7 @@ public class ManageSupplier extends Screen {
         done = false;
         manufacturers = new ArrayList<>();
 
+        /*
         System.out.println("ID: ");
         id = getInput();
 
@@ -72,6 +73,7 @@ public class ManageSupplier extends Screen {
             System.out.println("Returning..\n");
             return;
         }
+         */
 
         System.out.println("Name: ");
         name = scanner.nextLine();
@@ -117,7 +119,7 @@ public class ManageSupplier extends Screen {
         }
 
         try {
-            if(controller.addSupplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers)){
+            if(controller.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers)){
                 System.out.println("\nThe new supplier was added successfully to the data base.\n");
             }
             else{

@@ -6,6 +6,7 @@ import Domain.BusinessLayer.Supplier.Supplier;
 import Globals.Pair;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class SupplierController {
 
@@ -18,19 +19,22 @@ public class SupplierController {
 
 
 
-    public void addSupplier(int id, String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
-        if(supplierExist(id))
-            throw new Exception("Supplier with same Id already exists");
+    public void addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
+        ArrayList<Contact> contacts = createContacts(contactPairs);
+        Supplier supplier = new Supplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
+        suppliersDAO.addSupplier(supplier);
+    }
+
+    private ArrayList<Contact> createContacts(ArrayList<Pair<String, String>> contactPairs) throws Exception {
         ArrayList<Contact> contacts = new ArrayList<>();
         for(Pair<String,String> curr : contactPairs){
             if(!validPhoneNumber(curr.getSecond()))
                 throw new Exception("Invalid phone number!");
             contacts.add(new Contact( curr.getFirst(), curr.getSecond()));
         }
-
-        Supplier supplier = new Supplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers);
-        suppliersDAO.addSupplier(supplier);
+        return contacts;
     }
+
 
     public void removeSupplier(int id) throws Exception {
         if(!supplierExist(id))
@@ -50,6 +54,7 @@ public class SupplierController {
         suppliersDAO.getSupplier(id).updateBankNumber(bankNumber);
     }
 
+    /*
     public void updateSupplierID(int id, int newId) throws Exception {
         if(!supplierExist(id) || supplierExist(newId))
             throw new Exception("There is no supplier with this ID!");
@@ -58,6 +63,8 @@ public class SupplierController {
         suppliersDAO.removeSupplier(id);
         suppliersDAO.addSupplier(temp);
     }
+
+     */
 
     public void updateSupplierName(int id, String newName) throws Exception {
         if(!supplierExist(id))
@@ -393,6 +400,7 @@ public class SupplierController {
         suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity);
     }
 
+
     public void removeOrder(int supId, int orderId) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
@@ -434,16 +442,79 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supID).orderExists(orderID);
     }
 
-    public Order makeOrderBecauseOfMinimum(int storeID, int productID, int amount) {
-        //find what the soonest/cheapest supplier is
-        //return the order (might be an updated routine and might be a new order)
-        //minimum - up to 2 days, otherwise ASAP
-        //if there is a discount pretty close (within 10 or X% of the items or price) round up
-        return null;
+    public Order makeOrderBecauseOfMinimum(int storeID, int productID, int amount) throws Exception {
+
+        ArrayList<Order> orders = getOrderWithinTheNextTwoDays(productID);
+        if(!orders.isEmpty()) {                 //we found supplier that supplies within the next 2 days
+            Order order = getTheCheapestSupplier(orders, productID, amount);
+            Supplier supplier = suppliersDAO.getSupplier(order.getId());
+            return supplier.getOrderForThisAmount(order.getId(), productID, amount);
+        }
+        else{                                   //we didn't found anyone in the next 2 days, than we will take the soonest
+            Order order = getTheClosestOrder();
+            Supplier supplier = suppliersDAO.getSupplier(order.getId());
+            return supplier.getOrderForThisAmount(order.getId(), productID, amount);
+        }
     }
+
+
+    private Order getTheCheapestSupplier(ArrayList<Order> orders, int productID, int amount) throws Exception {
+        HashMap<Order , Double> prices = new HashMap<>();
+        for(Order currOrder : orders){
+            int supplierId = currOrder.getSupplierId();
+            Supplier supplier = suppliersDAO.getSupplier(supplierId);
+            prices.put(currOrder, supplier.getToatalPriceForItem(productID, amount));
+        }
+        return sortAndReturnFirstOrder(prices);
+    }
+
+    private ArrayList<Order> getOrderWithinTheNextTwoDays(int productID) {
+        ArrayList<Supplier> allSuppliers = suppliersDAO.getAllSuppliers();
+        ArrayList<Order> result = new ArrayList<>();
+        for(Supplier supplier : allSuppliers){
+            ArrayList<Order> currOrder = supplier.itemInOrderForTheNextTwoDays(productID);
+            if(currOrder.size() != 0){
+                result.addAll(currOrder);
+            }
+        }
+        return result;
+    }
+
+    private Order getTheClosestOrder() {
+        ArrayList<Order> ordersFromAllSuppliers = getAllFutureOrders();
+        HashMap<Order, Integer> ordersAndDays = new HashMap<>();
+        for(Order order: ordersFromAllSuppliers){
+            ordersAndDays.put(order, order.getDaysUntillOrder(Calendar.getInstance().getTime()));
+        }
+        
+        return sortAndReturnFirstOrderInteger(ordersAndDays);
+        
+    }
+
+    // TODO: 07/05/2022   //check with Sagi, see if we can do both double 
+    private Order sortAndReturnFirstOrder(HashMap<Order, Double> orders) {
+        Stream<Map.Entry<Order,Double>> sorted = orders.entrySet().stream().sorted(Map.Entry.comparingByValue());
+        return sorted.findFirst().get().getKey();
+    }
+
+    private Order sortAndReturnFirstOrderInteger(HashMap<Order, Integer> orders) {
+        Stream<Map.Entry<Order,Integer>> sorted = orders.entrySet().stream().sorted(Map.Entry.comparingByValue());
+        return sorted.findFirst().get().getKey();
+    }
+
+    private ArrayList<Order> getAllFutureOrders() {
+        ArrayList<Order> orders = new ArrayList<>();
+        ArrayList<Supplier> suppliers = suppliersDAO.getAllSuppliers();
+        for(Supplier supplier : suppliers){
+            orders.addAll(supplier.getFutureOrders());
+        }
+        return orders;
+    }
+
 
     public List<Order> getOrdersOnTheWay(int storeID) {
         //return all orders on the way tomorrow
+        //check if supplier should move the order from one list to another
         return null;
     }
 

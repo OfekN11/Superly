@@ -20,9 +20,9 @@ public class SupplierService {
 
 
     //Pair.first = name , Pair.second = phoneNumber
-    public Result<Boolean> addSupplier(int id, String name, int bankNumber, String address, String payingAgreement , ArrayList<Pair<String,String>> contacts, ArrayList<String> manufacturers){
+    public Result<Boolean> addSupplier(String name, int bankNumber, String address, String payingAgreement , ArrayList<Pair<String,String>> contacts, ArrayList<String> manufacturers){
         try {
-            controller.addSupplier(id, name, bankNumber, address, payingAgreement, contacts , manufacturers);
+            controller.addSupplier(name, bankNumber, address, payingAgreement, contacts , manufacturers);
             return Result.makeOk(true);
         } catch (Exception e) {
             return  Result.makeError(e.getMessage());
@@ -56,6 +56,7 @@ public class SupplierService {
         }
     }
 
+    /*
     public Result<Boolean> updateSupplierID(int id, int newId){
         try {
             controller.updateSupplierID(id, newId);
@@ -63,7 +64,7 @@ public class SupplierService {
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }
-    }
+    }*/
 
     public Result<Boolean> updateSupplierName(int id, String newName){
         try {
@@ -574,4 +575,12 @@ public class SupplierService {
             return Result.makeError(e.getMessage());
         }
     }
+
+
+    // TODO: 07/05/2022  //For testing
+    /*
+    public SupplierController getController() {
+        return controller;
+    }
+     */
 }
