@@ -9,6 +9,7 @@ import Domain.BusinessLayer.Inventory.StockReport;
 import Domain.BusinessLayer.Supplier.Order;
 import Domain.BusinessLayer.Supplier.OrderItem;
 import Globals.Defect;
+import Globals.Pair;
 
 import java.util.*;
 
@@ -305,38 +306,45 @@ public class InventoryController {
         //remove sales? remove empty categories?
     }
 
-    public DefectiveItems reportDamaged(int storeID, int productID, int amount, int employeeID, String description) {
+    public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description) {
         Product product = getProduct(productID);
         DefectiveItems DI = product.reportDamaged(storeID, amount, employeeID, description);
-        if (product.gotUnderMinimum(storeID, amount))
+        boolean underMin = product.gotUnderMinimum(storeID);
+        if (underMin)
         {
             //order - minimum alert
 
         }
-        return DI;
+        return new Pair<DefectiveItems, String>(DI, underMin ? underMinMessage(productID, storeID) : null);
     }
 
-    public DefectiveItems reportExpired(int storeID, int productID, int amount, int employeeID, String description) {
+    public Pair<DefectiveItems, String> reportExpired(int storeID, int productID, int amount, int employeeID, String description) {
         Product product = getProduct(productID);
         DefectiveItems DI = product.reportExpired(storeID, amount, employeeID, description);
-        if (product.gotUnderMinimum(storeID, amount))
+        boolean underMin = product.gotUnderMinimum(storeID);
+        if (underMin)
         {
             //order - minimum alert
 
         }
-        return DI;
+        return new Pair<DefectiveItems, String>(DI, underMin ? underMinMessage(productID, storeID) : null);
     }
 
-    public Double buyItems(int storeID, int productID, int amount) throws Exception {
+    private String underMinMessage(int productID, int storeID) {
+        return "WARNING: product with ID " + productID + " is in low stock in store " + storeID;
+    }
+
+    public Pair<Double, String> buyItems(int storeID, int productID, int amount) throws Exception {
         Product product = getProduct(productID);
         double price = product.getCurrentPrice()*amount;
         product.removeItems(storeID, amount);
-        if (product.gotUnderMinimum(storeID, amount))
+        boolean underMin = product.gotUnderMinimum(storeID);
+        if (underMin)
         {
             //order - minimum alert
             supplierController.makeOrderBecauseOfMinimum(storeID, productID, getAmountForOrder(storeID, productID));
         }
-        return price;
+        return new Pair<Double, String>(price, underMin ? underMinMessage(productID, storeID) : null);
     }
 
     private void checkDates(Date start, Date end) {
