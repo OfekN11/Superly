@@ -12,7 +12,7 @@ public abstract class LinkDAO<T> extends DataMapper{
         super(tableName);
     }
 
-    public Set<T> getLicensesOfCarrier(List<Integer> columnIdNumber, List<Object> values) throws SQLException {
+    protected Set<T> get(List<Integer> columnIdNumber, List<Object> values) throws SQLException {
         Set<T> output = new HashSet<>();
         try(Connection connection = getConnection()){
             ResultSet resultSet = select(connection, columnIdNumber,values);
@@ -21,6 +21,9 @@ public abstract class LinkDAO<T> extends DataMapper{
         }
         return output;
     }
+
+    protected void replaceAll(String id ,List<T>)
+
 
     protected abstract T buildObject(ResultSet resultSet);
 
