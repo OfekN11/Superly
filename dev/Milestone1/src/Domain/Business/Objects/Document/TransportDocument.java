@@ -1,4 +1,6 @@
-package Backend.BusinessLayer.Objects.Document;
+package Domain.Business.Objects.Document;
+
+import Domain.Service.ServiceDocumentFactory;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -77,5 +79,10 @@ public class TransportDocument extends Document{
 
     public void setRedesign(String redesign) {
         this.redesign = redesign;
+    }
+
+    @Override
+    public Domain.Service.Objects.Document accept(ServiceDocumentFactory serviceDocumentFactory) {
+        return serviceDocumentFactory.createServiceDocument(this);
     }
 }

@@ -1,27 +1,21 @@
-package Backend.BusinessLayer.Controllers;
+package Domain.Business.Controllers;
 
-import Backend.BusinessLayer.Facade;
-import Backend.BusinessLayer.Objects.Document.DestinationDocument;
-import Backend.BusinessLayer.Objects.Document.TransportDocument;
+
+import Domain.Business.Objects.Document.DestinationDocument;
+import Domain.Business.Objects.Document.TransportDocument;
 
 import java.util.HashMap;
 
 public class DocumentController {
     private HashMap<Integer, TransportDocument> transportDocuments;
     private HashMap<Integer, DestinationDocument> destinationDocuments;
-    private static DocumentController instance = null;
 
-    private DocumentController() {
+    public DocumentController() {
         transportDocuments = new HashMap<>();
         destinationDocuments = new HashMap<>();
     }
 
-    public static DocumentController getInstance(){
-        if (instance == null) {
-            instance = new DocumentController();
-        }
-        return instance;
-    }
+
 
     public void uploadDestinationDocument(DestinationDocument document) throws Exception {
         if(document != null && !destinationDocuments.containsKey(document.getSN()))

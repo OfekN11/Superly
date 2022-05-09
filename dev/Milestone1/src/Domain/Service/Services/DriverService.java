@@ -1,18 +1,19 @@
-package Backend.ServiceLayer;
+package Domain.Service.Services;
 
-import Backend.BusinessLayer.Controllers.DriverController;
-import Backend.BusinessLayer.Controllers.TruckController;
-import Backend.Globals.Enums.LicenseTypes;
-
+import Domain.Business.Controllers.DriverController;
+import Domain.Business.Controllers.TruckController;
+import Globals.Enums.LicenseTypes;
+import Domain.Service.Objects.*;
 public class DriverService {
     private DriverController controller;
 
     public DriverService() {
         this.controller = new DriverController();
     }
+    //TODO deliver this functionality to the employee service
 
 
-    public Result addDriver(String name, LicenseTypes licenseTypes) {
+    /*public Result addDriver(String name, LicenseTypes licenseTypes) {
         try {
             controller.addDriver(name, licenseTypes);
             return Result.makeOk(null);
@@ -40,5 +41,5 @@ public class DriverService {
         {
             return Result.makeError(e.getMessage());
         }
-    }
+    }*/
 }

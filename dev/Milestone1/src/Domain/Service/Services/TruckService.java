@@ -1,7 +1,9 @@
-package Backend.ServiceLayer;
+package Domain.Service.Services;
 
-import Backend.BusinessLayer.Controllers.TruckController;
-import Backend.Globals.Enums.LicenseTypes;
+import Domain.Business.Controllers.TruckController;
+import Globals.Enums.LicenseTypes;
+import Domain.Service.Objects.*;
+import Globals.Enums.TruckModel;
 
 public class TruckService {
     private TruckController controller;
@@ -26,7 +28,7 @@ public class TruckService {
     }
 
 
-    public Result addTruck(int licenseNumber, LicenseTypes model, int netWeight, int maxCapacityWeight)
+    public Result addTruck(int licenseNumber, TruckModel model, int netWeight, int maxCapacityWeight)
     {
         try {
             controller.addTruck(licenseNumber, model, netWeight, maxCapacityWeight);

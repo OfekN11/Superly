@@ -1,6 +1,6 @@
 package Domain.Business.Objects;
 
-import Backend.BusinessLayer.Objects.Document.TransportDocument;
+import Domain.Business.Objects.Document.TransportDocument;
 import Globals.Enums.ShippingAreas;
 
 import java.time.LocalDateTime;
@@ -132,5 +132,17 @@ public class Transport {
             truckWeight = newWeight;
             return true;
         }
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public int getTruckWeight() {
+        return truckWeight;
     }
 }

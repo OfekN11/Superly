@@ -1,4 +1,4 @@
-package Backend.ServiceLayer.Objects;
+package Domain.Service.Objects;
 
 public class Site {
 }

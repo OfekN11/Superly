@@ -1,4 +1,4 @@
-package Backend.BusinessLayer.Controllers;
+package Domain.Business.Controllers;
 
 import java.util.HashMap;
 
