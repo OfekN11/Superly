@@ -1,7 +1,9 @@
-package Backend.BusinessLayer.Objects;
+package Domain.Business.Objects;
 
 import Backend.BusinessLayer.Objects.Document.DestinationDocument;
+import Domain.Business.Objects.Source;
 
+import javax.print.attribute.standard.Destination;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

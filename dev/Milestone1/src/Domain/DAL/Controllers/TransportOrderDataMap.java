@@ -1,5 +1,7 @@
 package Domain.DAL.Controllers;
 
+import Domain.Business.Objects.Transport;
+import Domain.Business.Objects.TransportOrder;
 import Domain.Business.Objects.Truck;
 import Domain.DAL.Abstract.DataMapper;
 import Globals.Enums.TruckModel;
@@ -7,42 +9,42 @@ import Globals.Enums.TruckModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-public class TruckDataMap extends DataMapper {
+public class TransportOrderDataMap extends DataMapper {
     //Static Fields:
-    private final static Map<String, Truck> CONSTRAINT_IDENTITY_MAP = new HashMap<>();
+    private final static Map<String, TransportOrder> CONSTRAINT_IDENTITY_MAP = new HashMap<>();
     //Properties:
 
     //Constructor:
-    public TruckDataMap() {
-        super("Trucks");
+    public TransportOrderDataMap() {
+        super("TransportOrders");
     }
 
     //Functions:
 
     /**
      *
-     * @param licenseNumber license number of the truck
-     * @return truck if saved, null if is not exist
+     * @param orderID ID of the order
+     * @return TransportOrder if saved, null if is not exist
      */
-    public Truck get(int licenseNumber){
-        String id = Integer.toString(licenseNumber);
-        Truck truck = CONSTRAINT_IDENTITY_MAP.get(id);
-        if (truck!=null)
-            return truck;
+    public TransportOrder get(int orderID){
+        String id = Integer.toString(orderID);
+        TransportOrder order = CONSTRAINT_IDENTITY_MAP.get(id);
+        if (order != null)
+            return order;
 
         try(Connection connection = getConnection()) {
-            ResultSet result = select(connection, Arrays.asList(1),Arrays.asList(licenseNumber));
+            ResultSet result = select(connection, Arrays.asList(1),Arrays.asList(orderID));
             if (!result.next()){
                 return null;
             }
 
-            TruckModel model = TruckModel.valueOf(result.getString(2));
-            int netWeight =  result.getInt(3);
-            int maxCapacityWeight = result.getInt(4);
-            truck = new Truck(licenseNumber, model, netWeight, maxCapacityWeight);
-            CONSTRAINT_IDENTITY_MAP.put(id,truck);
+
+            //order = new TransportOrder(orderID, );
+            CONSTRAINT_IDENTITY_MAP.put(id, order);
             return truck;
 
 
