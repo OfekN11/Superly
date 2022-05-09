@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class LinkDTO<T> extends DataMapper{
-    public LinkDTO(String tableName) {
+public abstract class LinkDAO<T> extends DataMapper{
+    public LinkDAO(String tableName) {
         super(tableName);
     }
 

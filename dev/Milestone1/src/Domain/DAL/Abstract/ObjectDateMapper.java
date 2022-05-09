@@ -14,15 +14,15 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
         super(tableName);
     }
 
-    public T get(List<Integer> columnIdNumber,List<Object> values){
-        String id = generateId(values);
+    public T get(List<Integer> columnIdNumber,List<Object> idValues){
+        String id = generateId(idValues);
         Map<String,T> map = getMap();
         T output = map.get(id);
         if (output != null)
             return output;
 
         try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection,columnIdNumber,values);
+            ResultSet instanceResult = select(connection,columnIdNumber,idValues);
             if (!instanceResult.next())
                 return null;
 
@@ -36,6 +36,8 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
         }
         throw new RuntimeException("something went wrong in ObjectDateMapper");
     }
+
+    protected void update(List<Integer> columnIdNumber,List<Object> idValues)
 
 
     private String generateId(List<Object> idValues) {
