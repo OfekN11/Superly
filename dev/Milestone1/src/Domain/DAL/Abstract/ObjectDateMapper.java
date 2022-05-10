@@ -35,28 +35,31 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        throw new RuntimeException("No such Instance");
+        throw new RuntimeException("this is bad");
     }
 
-    private List<Integer> generateIdNumberColumnsList(int size) {
-        List<Integer> output = new LinkedList<>();
-        for (int i=1;i<=size;i++)
-            output.add(i);
-
-        return output;
-    }
-
-    protected <K> void update (String id, int propertyColumnNumber,K toUpdate) throws RuntimeException, SQLException {
-        T instance = get(id); // throw exception if not found
-        getUpdateFunction(propertyColumnNumber).update(instance,toUpdate);
+    /**
+     *
+     * @param id the id of instance you want to update
+     * @param propertyColumnNumber the columnNumber you want to update
+     * @param toUpdate the value to update
+     * @param <K> whatever
+     * @throws RuntimeException
+     * @throws SQLException
+     */
+    protected <K> void updateProperty (String id, int propertyColumnNumber,K toUpdate) throws RuntimeException, SQLException {
+       /* T instance = get(id); // throw exception if not found
+        getUpdateFunction(propertyColumnNumber).update(instance,toUpdate); */
         super.update(Arrays.asList(propertyColumnNumber),Arrays.asList(toUpdate),Arrays.asList(1),Arrays.asList(id));
     }
+   // protected abstract <K>UpdateFunction<T,K> getUpdateFunction(int propertyColumnNumber);
 
+    protected abstract <K> void addToList(String id, String listName,K toAdd);
+    protected abstract <K> void removeFromList(String id, String listName,K toRemove);
+    protected abstract <K> void replaceList(String id, String listName,K toRemove);
     protected abstract Map<String,T> getMap();
-
     protected abstract T buildObject(ResultSet instanceResult) throws SQLException;
 
-    protected abstract <K>UpdateFunction<T,K> getUpdateFunction(int propertyColumnNumber);
 
 }
 
