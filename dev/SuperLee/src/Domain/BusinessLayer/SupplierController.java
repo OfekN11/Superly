@@ -433,7 +433,7 @@ public class SupplierController {
 
     public Order makeOrderBecauseOfMinimum(int storeID, int productID, int amount) throws Exception {
 
-        ArrayList<Order> orders = getOrderWithinTheNextTwoDays(productID);
+        ArrayList<Order> orders = getOrderWithinTheNextTwoDays(productID);  //check the amount necessary
         if(!orders.isEmpty()) {                 //we found supplier that supplies within the next 2 days
             Order order = getTheCheapestSupplier(orders, productID, amount);
             Supplier supplier = suppliersDAO.getSupplier(order.getId());
@@ -507,9 +507,16 @@ public class SupplierController {
 
     //returns all orders that cannot be changed anymore (routine) + everything needed because of MinAmounts
     public List<Order> createAllOrders(Map<Integer, Map<Integer, Integer>> orderItemMinAmounts) { //map<productID, Map<store, amount>>
-        //create orders for tomorrow
-        //if it's in the underMin List must create order ASAP
-        //for each make new order
+
+        // get and create all routine orders for tomorrow. returns List<Order>
+        // create all the orders required for the min amounts GET THE CHEAPEST ONE!
+        // pay attention to the amount, if someone from tomorrow delivers 99 from the 100 items, we only need one more item!!!!!!!!!!!!!
+
+        //List<Order> ordersForTomorrow = getOrdersForTomorrow();
+        //List<Order> ordersForMinProducts = getOrdersForMinProducts();
+
+        // check if there are duplicates and delete or calculate before calling the second function what we need to order ( subtract the orders for tomorrow. )
+
         return null;
     }
 }

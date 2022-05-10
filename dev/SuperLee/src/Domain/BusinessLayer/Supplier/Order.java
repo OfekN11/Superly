@@ -30,6 +30,15 @@ public class Order {
         arrivalTime = cal.getTime();
     }
 
+    //For uploading from dal
+    public Order(int id, int supplierId, Date creationDate, Date arrivalTime){
+        this.id = id;
+        this.supplierID = supplierId;
+        this.creationDate = creationDate;
+        this.arrivalTime = arrivalTime;
+        globalID++;
+    }
+
 
     public void addItem(int id, String name, int quantity, float ppu, int discount, Double finalPrice) throws Exception {
         if(!changeable()){
