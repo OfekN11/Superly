@@ -11,12 +11,12 @@ import java.util.stream.Stream;
 public class SupplierController {
 
     private SuppliersDAO suppliersDAO;
-
+    private InventoryController inventoryController;
 
     public SupplierController(){
         suppliersDAO = new SuppliersDAO();
+        inventoryController = new InventoryController(); // need to make sure there isn't more than one instance
     }
-
 
 
     public void addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
@@ -512,13 +512,15 @@ public class SupplierController {
     }
 
 
-    public List<Order> getOrdersOnTheWay(int storeID) {
-        //return all orders on the way tomorrow
-        //check if supplier should move the order from one list to another
-        return null;
-    }
-
     public void orderHasArrived(int orderID) {
         //order has arrived, can be moved from current to past
+    }
+
+    //returns all orders that cannot be changed anymore (routine) + everything needed because of MinAmounts
+    public List<Order> createAllOrders(Map<Integer, Map<Integer, Integer>> orderItemMinAmounts) { //map<productID, Map<store, amount>>
+        //create orders for tomorrow
+        //if it's in the underMin List must create order ASAP
+        //for each make new order
+        return null;
     }
 }

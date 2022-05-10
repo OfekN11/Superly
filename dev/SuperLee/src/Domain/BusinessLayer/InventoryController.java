@@ -312,7 +312,7 @@ public class InventoryController {
         boolean underMin = product.gotUnderMinimum(storeID);
         if (underMin)
         {
-            //order - minimum alert
+            //order - minimum alert NOT RELEVANT
 
         }
         return new Pair<DefectiveItems, String>(DI, underMin ? underMinMessage(productID, storeID) : null);
@@ -324,7 +324,7 @@ public class InventoryController {
         boolean underMin = product.gotUnderMinimum(storeID);
         if (underMin)
         {
-            //order - minimum alert
+            //order - minimum alert NOT RELEVANT
 
         }
         return new Pair<DefectiveItems, String>(DI, underMin ? underMinMessage(productID, storeID) : null);
@@ -341,7 +341,7 @@ public class InventoryController {
         boolean underMin = product.gotUnderMinimum(storeID);
         if (underMin)
         {
-            //order - minimum alert
+            //order - minimum alert NOT RELEVANT
             supplierController.makeOrderBecauseOfMinimum(storeID, productID, getAmountForOrder(storeID, productID));
         }
         return new Pair<Double, String>(price, underMin ? underMinMessage(productID, storeID) : null);
@@ -641,14 +641,17 @@ public class InventoryController {
         return getProduct(productID).getAmountForOrder(storeID);
     }
 
-    private void ordersOnTheWay(int storeID) {
-        //daily, check what routine orders are otw (cannot be changed anymore)
-
-        List<Order> ordersOnTheWay = supplierController.getOrdersOnTheWay(storeID);
+    //needs to be called every morning from service by some kind of trigger
+    public List<Order> getOrdersOfTomorrow() {
+        //orders are otw (cannot be changed anymore)
+        Map<Integer, Map<Integer,Integer>> thingsToOrder = null;//find out what i need getminstockreport()
+        supplierController.createAllOrders(thingsToOrder); //returns list<Order>
         //loop through orders and account for inventory
+        return null;
     }
 
     public Category getCategory(int categoryID) {
         return categories.get(categoryID);
     }
+
 }
