@@ -253,7 +253,7 @@ public class CLI {
             return;
         }
 
-        Result<Boolean> r = service.order(supplierID); // Result<Boolean> r = service.order(supplierID, input);
+        Result<Integer> r = service.order(supplierID); // Result<Boolean> r = service.order(supplierID, input);
 
         if(r.isError()){
             System.out.println(r.getError());
@@ -454,7 +454,7 @@ public class CLI {
                 }
             }
 
-            Result<Boolean> result = service.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
+            Result<Integer> result = service.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
 
             if(result.isOk()){
                 System.out.println("The new supplier was added successfully to the data base.\n\n");

@@ -10,7 +10,7 @@ public class Order {
 
     private int id;
     private int supplierID;
-    private Date date;
+    private Date creationDate;
     private Date arrivalTime;
     private ArrayList<OrderItem> orderItems;
 
@@ -21,8 +21,8 @@ public class Order {
         this.supplierID = supplierID;
         this.id = globalID;
         globalID++;
-        date = new Date();
-        date = Calendar.getInstance().getTime();
+        creationDate = new Date();
+        creationDate = Calendar.getInstance().getTime();
         this.orderItems = new ArrayList<>();
 
         Calendar cal = Calendar.getInstance();
@@ -30,9 +30,6 @@ public class Order {
         arrivalTime = cal.getTime();
     }
 
-    public void updateSupplierID(int newId){
-        supplierID = newId;
-    }
 
     public void addItem(int id, String name, int quantity, float ppu, int discount, Double finalPrice) throws Exception {
         if(!changeable()){
@@ -87,7 +84,7 @@ public class Order {
     }
 
     public Date getDate() {
-        return date;
+        return creationDate;
     }
 
     public int getId() {

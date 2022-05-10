@@ -11,18 +11,19 @@ import java.util.stream.Stream;
 public class SupplierController {
 
     private SuppliersDAO suppliersDAO;
-    private InventoryController inventoryController;
+
 
     public SupplierController(){
         suppliersDAO = new SuppliersDAO();
-        inventoryController = new InventoryController(); // need to make sure there isn't more than one instance
     }
 
 
-    public void addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
+
+    public int addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
         ArrayList<Contact> contacts = createContacts(contactPairs);
         Supplier supplier = new Supplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
         suppliersDAO.addSupplier(supplier);
+        return supplier.getId();
     }
 
     private ArrayList<Contact> createContacts(ArrayList<Pair<String, String>> contactPairs) throws Exception {
@@ -53,18 +54,6 @@ public class SupplierController {
             throw new Exception("There is no supplier with this ID!");
         suppliersDAO.getSupplier(id).updateBankNumber(bankNumber);
     }
-
-    /*
-    public void updateSupplierID(int id, int newId) throws Exception {
-        if(!supplierExist(id) || supplierExist(newId))
-            throw new Exception("There is no supplier with this ID!");
-        Supplier temp = suppliersDAO.getSupplier(id);
-        temp.updateId(newId);
-        suppliersDAO.removeSupplier(id);
-        suppliersDAO.addSupplier(temp);
-    }
-
-     */
 
     public void updateSupplierName(int id, String newName) throws Exception {
         if(!supplierExist(id))
@@ -374,11 +363,11 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supID).hasAgreement();
     }
 
-    public void addNewOrder(int supId) throws Exception {
+    public int addNewOrder(int supId) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliersDAO.getSupplier(supId).addNewOrder();
+        return suppliersDAO.getSupplier(supId).addNewOrder();
     }
 
     public void addItemsToOrder(int supId, int orderId, List<String> itemsString) throws Exception {

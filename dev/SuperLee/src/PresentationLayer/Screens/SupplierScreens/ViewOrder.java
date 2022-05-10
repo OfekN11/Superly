@@ -62,17 +62,19 @@ public class ViewOrder extends Screen {
             return;
         }
 
-        boolean r = false;
-        try {
-            r = controller.order(supplierId);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());;
-        }
 
-        if(!r){
-            System.out.println("Returning, please try again.\n");
+        try {
+            int orderId = controller.order(supplierId);
+            System.out.println("Order " + orderId + " added successfully.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return;
         }
+
+        //if(!r){
+        //    System.out.println("Returning, please try again.\n");
+        //    return;
+        //}
 
         addItemsToOrder(supplierId, input);
 
