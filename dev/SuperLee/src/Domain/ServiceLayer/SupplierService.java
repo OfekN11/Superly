@@ -471,10 +471,10 @@ public class SupplierService {
         }
     }
 
-    public Result<Boolean> order(int supId){
+    public Result<Integer> order(int supId){
         try{
-            controller.addNewOrder(supId);
-            return Result.makeOk(true);
+            int orderId = controller.addNewOrder(supId);
+            return Result.makeOk(orderId);
         }
         catch(Exception e){
             return Result.makeError(e.getMessage());

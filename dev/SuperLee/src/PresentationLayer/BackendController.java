@@ -122,9 +122,11 @@ public class BackendController {
         return result.getValue();
     }
 
-    public boolean order(int supplierId) throws Exception {
-        Result<Boolean> result = supplierService.order(supplierId);
-        return getValueFromBooleanResult(result);
+    public Integer order(int supplierId) throws Exception {
+        Result<Integer> result = supplierService.order(supplierId);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
     public boolean addItemToOrder(int supplierID, int orderId, int itemID, int quantity) throws Exception {

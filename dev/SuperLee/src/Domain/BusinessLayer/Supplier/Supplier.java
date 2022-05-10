@@ -372,11 +372,12 @@ public class Supplier {
         return agreement != null;
     }
 
-    public void addNewOrder() throws Exception {
+    public int addNewOrder() throws Exception {
         agreementExists();
 
         Order order = new Order(agreement.daysToDelivery(), id);
         ordersToBe.put(order.getId(), order);
+        return order.getId();
     }
 
 

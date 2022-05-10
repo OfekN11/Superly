@@ -363,11 +363,11 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supID).hasAgreement();
     }
 
-    public void addNewOrder(int supId) throws Exception {
+    public int addNewOrder(int supId) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliersDAO.getSupplier(supId).addNewOrder();
+        return suppliersDAO.getSupplier(supId).addNewOrder();
     }
 
     public void addItemsToOrder(int supId, int orderId, List<String> itemsString) throws Exception {
