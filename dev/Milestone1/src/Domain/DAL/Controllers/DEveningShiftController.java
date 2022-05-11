@@ -1,37 +1,40 @@
 package Domain.DAL.Controllers;
 
+import Domain.Business.Objects.EveningShift;
+import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.Abstract.ObjectDateMapper;
 import Domain.DAL.Objects.DEveningShift;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-public class DEveningShiftController extends DTOControllers<DEveningShift> {
+public class DEveningShiftController extends ObjectDateMapper<EveningShift> {
     public DEveningShiftController() {
         super("Place holder");
     }
 
     @Override
-    public Set<DEveningShift> loadData() {
-        Set<DEveningShift> morningShifts = new HashSet<>();
-        try {
-            morningShifts.add(new DEveningShift(new SimpleDateFormat("dd-MM-yyyy").parse("25-07-2022"),""+8,15,12,12,12,12,12));
-            morningShifts.add(new DEveningShift(new SimpleDateFormat("dd-MM-yyyy").parse("282-07-2022"),""+2,12,7,12,12,12,12));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return morningShifts;
-
+    protected Map<String, EveningShift> getMap() {
+        return null;
     }
 
     @Override
-    public void deleteAll() {
-
+    protected LinkDAO getLinkDTO(String setName) {
+        return null;
     }
 
     @Override
-    public void delete(DEveningShift toDelete) {
+    protected EveningShift buildObject(ResultSet instanceResult) throws Exception {
+        return null;
+    }
+
+    @Override
+    public void insert(EveningShift instance) throws SQLException {
 
     }
 }
