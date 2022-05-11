@@ -424,6 +424,8 @@ public class Inventory {
 
     private static void reportExpired() {
         int store = getStoreID();
+        System.out.println("Please enter 0 for report in warehouse or any other number for report in store");
+        int inWarehouse = scanner.nextInt();
         System.out.println("Which product is expired? (insert ID)");
         int productID = scanner.nextInt();
         System.out.println("How much of the product is expired?");
@@ -433,7 +435,7 @@ public class Inventory {
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please add a description (not mandatory)");
         String description = scanner.nextLine();
-        Result<Pair<DefectiveItemReport, String>> r = is.reportExpired(store, productID, amount, employeeID, description);
+        Result<Pair<DefectiveItemReport, String>> r = is.reportExpired(store, productID, amount, employeeID, description, (inWarehouse==0) ? (true) : (false));
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -562,6 +564,8 @@ public class Inventory {
 
     private static void reportDamaged() {
         int store = getStoreID();
+        System.out.println("Please enter 0 for report in warehouse or any other number for report in store");
+        int inWarehouse = scanner.nextInt();
         System.out.println("Which product is damaged? (insert ID)");
         int productID = scanner.nextInt();
         System.out.println("How much of the product is damaged?");
@@ -571,7 +575,7 @@ public class Inventory {
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please describe the damage");
         String description = scanner.nextLine();
-        Result<Pair<DefectiveItemReport, String>> r = is.reportDamaged(store, productID, amount, employeeID, description);
+        Result<Pair<DefectiveItemReport, String>> r = is.reportDamaged(store, productID, amount, employeeID, description, (inWarehouse==0) ? (true) : (false));
         if (r.isError())
             System.out.println(r.getError());
         else {

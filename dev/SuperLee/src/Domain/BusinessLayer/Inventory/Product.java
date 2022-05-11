@@ -97,10 +97,10 @@ public class Product {
         sales.add(sale);
     }
 
-    public void removeItems(int storeID, int amount) { //bought
+    public void removeItems(int storeID, int amount, boolean inWarehouse) { //bought
         if (!stockReports.containsKey(storeID))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
-        stockReports.get(storeID).removeItemsFromStore(amount);
+        stockReports.get(storeID).removeItemsFromStore(amount, inWarehouse);
     }
 
     public void moveItems(int storeID, int amount) { //from warehouse to store
@@ -143,23 +143,23 @@ public class Product {
         return getOriginalPrice()*(100-bestSale.getPercent())/100; //what if price in general changed? do we need a log of the prices?
     }
 
-    public DefectiveItems reportDamaged(int storeID, int amount, int employeeID, String description) {
-        removeItems(storeID, amount);
-        DefectiveItems dir = new DefectiveItems(Damaged, new Date(), storeID, id, amount, employeeID, description);
+    public DefectiveItems reportDamaged(int storeID, int amount, int employeeID, String description, boolean inWarehouse) {
+        removeItems(storeID, amount, inWarehouse);
+        DefectiveItems dir = new DefectiveItems(Damaged, new Date(), storeID, id, amount, employeeID, description, inWarehouse);
         damagedItemReport.add(dir);
         return dir;
     }
 
-    public DefectiveItems reportExpired(int storeID, int amount, int employeeID, String description) {
-        removeItems(storeID, amount);
-        DefectiveItems eir = new DefectiveItems(Expired, new Date(), storeID, id, amount, employeeID, description);
+    public DefectiveItems reportExpired(int storeID, int amount, int employeeID, String description, boolean inWarehouse) {
+        removeItems(storeID, amount, inWarehouse);
+        DefectiveItems eir = new DefectiveItems(Expired, new Date(), storeID, id, amount, employeeID, description, inWarehouse);
         expiredItemReport.add(eir);
         return eir;
     }
 
-    public DefectiveItems reportDefectiveForTest(int storeID, int amount, int employeeID, String description, Defect defect, Date date) {
-        removeItems(storeID, amount);
-        DefectiveItems eir = new DefectiveItems(defect, date, storeID, id, amount, employeeID, description);
+    public DefectiveItems reportDefectiveForTest(int storeID, int amount, int employeeID, String description, Defect defect, Date date, boolean inWarehouse) {
+        removeItems(storeID, amount, inWarehouse);
+        DefectiveItems eir = new DefectiveItems(defect, date, storeID, id, amount, employeeID, description, inWarehouse);
         if (defect==Expired)
             expiredItemReport.add(eir);
         else

@@ -447,9 +447,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the report details
      */
-    public Result<Pair<DefectiveItemReport, String>> reportDamaged(int storeID, int productID, int amount, int employeeID, String description){
+    public Result<Pair<DefectiveItemReport, String>> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse){
         try {
-            Pair<DefectiveItems, String> result = controller.reportDamaged(storeID, productID, amount, employeeID, description);
+            Pair<DefectiveItems, String> result = controller.reportDamaged(storeID, productID, amount, employeeID, description, inWarehouse);
             return Result.makeOk(new Pair<>(new DefectiveItemReport(result.getFirst()), result.getSecond()));
         }
         catch (Exception e){
@@ -462,9 +462,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the report details
      */
-    public Result<Pair<DefectiveItemReport, String>> reportExpired(int storeID, int productID, int amount, int employeeID, String description){
+    public Result<Pair<DefectiveItemReport, String>> reportExpired(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse){
         try {
-            Pair<DefectiveItems, String> result = controller.reportExpired(storeID, productID, amount, employeeID, description);
+            Pair<DefectiveItems, String> result = controller.reportExpired(storeID, productID, amount, employeeID, description, inWarehouse);
             return Result.makeOk(new Pair<>(new DefectiveItemReport(result.getFirst()), result.getSecond()));
         }
         catch (Exception e){

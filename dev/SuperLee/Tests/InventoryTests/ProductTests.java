@@ -101,7 +101,7 @@ public class ProductTests {
         Assertions.assertEquals(0, product1.getInWarehouse(1));
         product0.addItems(1, new Date(), 1, 100, 5, 5, 8);
         product0.moveItems(1, 58);
-        product0.removeItems(1, 37);
+        product0.removeItems(1, 37, false);
         Assertions.assertEquals(21, product0.getInStore(1));
         Assertions.assertEquals(42, product0.getInWarehouse(1));
         Assertions.assertEquals(0, product0.getInStore(2));
@@ -114,9 +114,9 @@ public class ProductTests {
         product0.moveItems(1, 40);
         product0.moveItems(2, 25);
         product1.moveItems(1, 18);
-        product0.removeItems(1, 15);
-        product0.removeItems(2, 25);
-        product1.removeItems(1, 0);
+        product0.removeItems(1, 15, false);
+        product0.removeItems(2, 25, false);
+        product1.removeItems(1, 0, false);
         Assertions.assertEquals(46, product0.getInStore(1));
         Assertions.assertEquals(42, product0.getInWarehouse(1));
         Assertions.assertEquals(0, product0.getInStore(2));

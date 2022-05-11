@@ -12,22 +12,26 @@ public class DefectiveItems {
     private int productID;
     private int amount;
     private int employeeID;
+    private boolean inWarehouse;
     private String description;
     private Defect defect;
 
-    public DefectiveItems(Defect defect ,Date date, int storeID, int productID, int amount, int employeeID, String description) {
+    public DefectiveItems(Defect defect ,Date date, int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
         this.date = date;
         this.storeID = storeID;
         this.productID = productID;
         this.amount = amount;
         this.employeeID = employeeID;
         this.description = description;
+        this.inWarehouse = inWarehouse;
         this.defect = defect;
     }
 
     public int getProductID() {
         return productID;
     }
+
+    public boolean getInWarehouse() { return inWarehouse; }
 
     public Date getDate() {
         return date;

@@ -310,16 +310,16 @@ public class InventoryController {
         //remove sales? remove empty categories?
     }
 
-    public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description) {
+    public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
         Product product = getProduct(productID);
-        DefectiveItems DI = product.reportDamaged(storeID, amount, employeeID, description);
+        DefectiveItems DI = product.reportDamaged(storeID, amount, employeeID, description, inWarehouse);
         boolean underMin = product.isLow(storeID);
         return new Pair<>(DI, underMin ? underMinMessage(productID, storeID) : null);
     }
 
-    public Pair<DefectiveItems, String> reportExpired(int storeID, int productID, int amount, int employeeID, String description) {
+    public Pair<DefectiveItems, String> reportExpired(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
         Product product = getProduct(productID);
-        DefectiveItems DI = product.reportExpired(storeID, amount, employeeID, description);
+        DefectiveItems DI = product.reportExpired(storeID, amount, employeeID, description, inWarehouse);
         boolean underMin = product.isLow(storeID);
         return new Pair<>(DI, underMin ? underMinMessage(productID, storeID) : null);
     }
@@ -327,7 +327,7 @@ public class InventoryController {
     public Pair<Double, String> buyItems(int storeID, int productID, int amount) {
         Product product = getProduct(productID);
         double price = product.getCurrentPrice()*amount;
-        product.removeItems(storeID, amount);
+        product.removeItems(storeID, amount, false);
         boolean underMin = product.isLow(storeID);
         return new Pair<>(price, underMin ? underMinMessage(productID, storeID) : null);
     }
@@ -543,7 +543,7 @@ public class InventoryController {
         List<Order> orders = supplierController.createAllOrders(thingsToOrder);
         for (Order order: orders) {
             for (OrderItem orderItem: order.getOrderItems()) {
-                getProduct(orderItem.getProductId()).addDelivery(order.getId(), order.getStoreID(), orderItem.getQuantity())
+                getProduct(orderItem.getProductId()).addDelivery(order.getId(), order.getStoreID(), orderItem.getQuantity());
             }
         }
         return orders;
@@ -643,21 +643,21 @@ public class InventoryController {
         Date yesterday = new Date(); yesterday.setHours(-24);
         Date today = new Date();
 
-        reportDefectiveForTest(4,2,10, 23, "", Defect.Expired, threeDaysAgo);
-        reportDefectiveForTest(4,6,11, 23, "", Defect.Expired, threeDaysAgo);
-        reportDefectiveForTest(4,3,3, 23, "", Defect.Expired, twoDaysAgo);
-        reportDefectiveForTest(5,2,2, 23, "", Defect.Expired, yesterday);
-        reportDefectiveForTest(5,2,6, 23, "", Defect.Expired, today);
+        reportDefectiveForTest(4,2,10, 23, "", Defect.Expired, threeDaysAgo, false);
+        reportDefectiveForTest(4,6,11, 23, "", Defect.Expired, threeDaysAgo, false);
+        reportDefectiveForTest(4,3,3, 23, "", Defect.Expired, twoDaysAgo, true);
+        reportDefectiveForTest(5,2,2, 23, "", Defect.Expired, yesterday, true);
+        reportDefectiveForTest(5,2,6, 23, "", Defect.Expired, today, false);
 
-        reportDefectiveForTest(4,4,10, 24, "broken spout", Defect.Damaged, threeDaysAgo);
-        reportDefectiveForTest(4,4,11, 2, "fell on floor", Defect.Damaged, threeDaysAgo);
-        reportDefectiveForTest(4,1,3, 3, "the dog ate it", Defect.Damaged, twoDaysAgo);
-        reportDefectiveForTest(4,9,2, 23, "alarm didn't go off", Defect.Damaged, yesterday);
-        reportDefectiveForTest(4,2,6, 23, "very sour", Defect.Damaged, today);
+        reportDefectiveForTest(4,4,10, 24, "broken spout", Defect.Damaged, threeDaysAgo, true);
+        reportDefectiveForTest(4,4,11, 2, "fell on floor", Defect.Damaged, threeDaysAgo, true);
+        reportDefectiveForTest(4,1,3, 3, "the dog ate it", Defect.Damaged, twoDaysAgo, false);
+        reportDefectiveForTest(4,9,2, 23, "alarm didn't go off", Defect.Damaged, yesterday, false);
+        reportDefectiveForTest(4,2,6, 23, "very sour", Defect.Damaged, today, true);
     }
 
-    private void reportDefectiveForTest(int storeID, int productID, int amount, int employeeID, String description, Defect defect, Date date) {
+    private void reportDefectiveForTest(int storeID, int productID, int amount, int employeeID, String description, Defect defect, Date date, boolean inWarehouse) {
         Product product = getProduct(productID);
-        product.reportDefectiveForTest(storeID, amount, employeeID, description, defect, date);
+        product.reportDefectiveForTest(storeID, amount, employeeID, description, defect, date, inWarehouse);
     }
 }

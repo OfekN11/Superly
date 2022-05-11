@@ -397,12 +397,12 @@ public class BackendController {
         return inventoryService.isUnderMin(store, product);
     }
 
-    public Result<Pair<DefectiveItemReport, String>> reportDamaged(int storeID, int productID, int amount, int employeeID, String description){
-        return inventoryService.reportDamaged(storeID, productID, amount, employeeID, description);
+    public Result<Pair<DefectiveItemReport, String>> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse){
+        return inventoryService.reportDamaged(storeID, productID, amount, employeeID, description, inWarehouse);
     }
 
-    public Result<Pair<DefectiveItemReport, String>> reportExpired(int storeID, int productID, int amount, int employeeID, String description){
-        return inventoryService.reportExpired(storeID, productID, amount, employeeID, description);
+    public Result<Pair<DefectiveItemReport, String>> reportExpired(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse){
+        return inventoryService.reportExpired(storeID, productID, amount, employeeID, description, inWarehouse);
     }
 
     public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(Date start, Date end, List<Integer> storeIDs){

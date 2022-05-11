@@ -43,10 +43,13 @@ public class StockReport {
     public int getTargetAmountInStore() { return targetAmountInStore; }
     public Map<Integer, Integer> getAmountInDeliveries() { return amountInDeliveries; }
 
-    public void removeItemsFromStore(int amount) {
-        if (amountInStore+amountInWarehouse-amount<0)
-            throw new IllegalArgumentException("Can not buy or remove more items than in the store - please check amount");
-        amountInStore-=amount;
+    public void removeItemsFromStore(int amount, boolean inWarehouse) {
+        if ((!inWarehouse && amountInStore-amount<0) || (inWarehouse && amountInWarehouse-amount<0))
+            throw new IllegalArgumentException("Can not buy or remove more items than in stock - please check amount");
+        if (inWarehouse)
+            amountInWarehouse-=amount;
+        else
+            amountInStore-=amount;
     }
 
     public void moveItems(int amount) {
