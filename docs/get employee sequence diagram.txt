@@ -1,0 +1,59 @@
+title get employee
+activate EmployeeController
+
+EmployeeController ->EmployeeDataMapper :get(id)
+activate EmployeeDataMapper
+
+EmployeeDataMapper -> Logistics_ManagerDataMapper:get(id)
+activate Logistics_ManagerDataMapper
+Logistics_ManagerDataMapper -->EmployeeDataMapper: instance
+deactivate Logistics_ManagerDataMapper
+alt instance != null
+EmployeeDataMapper -->EmployeeController:instance
+else instance == null
+
+EmployeeDataMapper -> CarrierDataMapper:get(id)
+activate CarrierDataMapper
+CarrierDataMapper -->EmployeeDataMapper: instance
+deactivate CarrierDataMapper
+alt instance != null
+EmployeeDataMapper -->EmployeeController:instance
+else instance == null
+
+EmployeeDataMapper -> CashierDataMapper:get(id)
+activate CashierDataMapper
+CashierDataMapper -->EmployeeDataMapper: instance
+deactivate CashierDataMapper
+alt instance != null
+EmployeeDataMapper -->EmployeeController:instance
+else instance == null
+
+EmployeeDataMapper -> StoreKeeperMapper:get(id)
+activate StoreKeeperMapper
+StoreKeeperMapper -->EmployeeDataMapper: instance
+deactivate StoreKeeperMapper
+alt instance != null
+EmployeeDataMapper -->EmployeeController:instance
+else instance == null
+
+EmployeeDataMapper -> SorterMapper:get(id)
+activate SorterMapper
+SorterMapper -->EmployeeDataMapper: instance
+deactivate SorterMapper
+alt instance != null
+EmployeeDataMapper -->EmployeeController:instance
+else instance == null
+
+EmployeeDataMapper -> HR_ManagerMapper:get(id)
+activate HR_ManagerMapper
+HR_ManagerMapper -->EmployeeDataMapper: instance
+deactivate HR_ManagerMapper
+alt instance != null
+EmployeeDataMapper -->EmployeeController:instance
+else instance == null
+end 
+end 
+end 
+end 
+end 
+end 

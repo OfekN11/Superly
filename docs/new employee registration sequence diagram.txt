@@ -1,0 +1,29 @@
+title save employee in DB
+actor HR_Manager
+activate HR_Manager
+HR_Manager->EmployeeController: 1.1: registerEmployee(jobTitle, id, name,\nbankDetails,salary,employmentConditions,\nstartin gDate,certifications) 
+activate EmployeeController
+EmployeeController ->EmployeeDataMapper :1.1.2: get(id) 
+activate EmployeeDataMapper
+ref over EmployeeDataMapper:get employee
+EmployeeDataMapper -->EmployeeController:1.1.3: instance 
+alt       [instance != null
+deactivate EmployeeDataMapper
+EmployeeController->E1-Employee:1.1.4: new<JobTitle>(jobTitle, id, name,\nbankDetails,salary,employmentConditions,\nstartin gDate,certifications) 
+EmployeeController ->EmployeeDataMapper:1.1.5: save(El-Employee) 
+activate EmployeeDataMapper
+ref over EmployeeDataMapper:save employee in DB
+alt 
+EmployeeController -->HR_Manager:1.1.6: registration complete 
+else  [saving error occured 
+EmployeeDataMapper -->EmployeeController:1.1.6: error msg
+deactivate EmployeeDataMapper
+EmployeeController -->HR_Manager:1.1.7: error msg 
+end
+else [ employee already exist
+
+deactivate EmployeeDataMapper
+EmployeeController -->HR_Manager:1.1.4: employee already exist
+end 
+deactivate EmployeeController
+deactivate HR_Manager
