@@ -520,7 +520,7 @@ public class InventoryController {
         return getProduct(productID).getAmountForOrder(storeID);
     }
 
-    private Map<Integer, Integer> getAmountForMinOrders(Product product) {
+    private Map<Integer, Integer> getAmountsForMinOrders(Product product) {
         Map<Integer, Integer> amounts = new HashMap<>();
         int amount;
         for (int storeID: product.getStoreIDs()) {
@@ -536,7 +536,7 @@ public class InventoryController {
         Map<Integer, Map<Integer,Integer>> thingsToOrder = new HashMap<>(); // <productID, <storeID, amount>>
         Map<Integer, Integer> amounts;
         for (Product product: products.values()) {
-            amounts = getAmountForMinOrders(product);
+            amounts = getAmountsForMinOrders(product);
             if (amounts.size()>0)
                 thingsToOrder.put(product.getId(), amounts);
         }
