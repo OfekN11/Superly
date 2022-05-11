@@ -450,7 +450,7 @@ public class InventoryService {
     public Result<Pair<DefectiveItemReport, String>> reportDamaged(int storeID, int productID, int amount, int employeeID, String description){
         try {
             Pair<DefectiveItems, String> result = controller.reportDamaged(storeID, productID, amount, employeeID, description);
-            return Result.makeOk(new Pair<DefectiveItemReport, String>(new DefectiveItemReport(result.getFirst()), result.getSecond()));
+            return Result.makeOk(new Pair<>(new DefectiveItemReport(result.getFirst()), result.getSecond()));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -464,8 +464,8 @@ public class InventoryService {
      */
     public Result<Pair<DefectiveItemReport, String>> reportExpired(int storeID, int productID, int amount, int employeeID, String description){
         try {
-            Pair<DefectiveItems, String> result = controller.reportDamaged(storeID, productID, amount, employeeID, description);
-            return Result.makeOk(new Pair<DefectiveItemReport, String>(new DefectiveItemReport(result.getFirst()), result.getSecond()));
+            Pair<DefectiveItems, String> result = controller.reportExpired(storeID, productID, amount, employeeID, description);
+            return Result.makeOk(new Pair<>(new DefectiveItemReport(result.getFirst()), result.getSecond()));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

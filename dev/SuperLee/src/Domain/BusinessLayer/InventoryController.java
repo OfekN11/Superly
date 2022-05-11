@@ -46,6 +46,10 @@ public class InventoryController {
         addReportsForTests();
     }
 
+    public Category getCategory(int categoryID) {
+        return categories.get(categoryID);
+    }
+
     public List<SaleToCustomer> getRemovableSales() {
         List<SaleToCustomer> removableSales = new ArrayList<>();
         for (SaleToCustomer sale: sales) {
@@ -309,42 +313,27 @@ public class InventoryController {
     public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description) {
         Product product = getProduct(productID);
         DefectiveItems DI = product.reportDamaged(storeID, amount, employeeID, description);
-        boolean underMin = product.gotUnderMinimum(storeID);
-        if (underMin)
-        {
-            //order - minimum alert NOT RELEVANT
-
-        }
-        return new Pair<DefectiveItems, String>(DI, underMin ? underMinMessage(productID, storeID) : null);
+        boolean underMin = product.isLow(storeID);
+        return new Pair<>(DI, underMin ? underMinMessage(productID, storeID) : null);
     }
 
     public Pair<DefectiveItems, String> reportExpired(int storeID, int productID, int amount, int employeeID, String description) {
         Product product = getProduct(productID);
         DefectiveItems DI = product.reportExpired(storeID, amount, employeeID, description);
-        boolean underMin = product.gotUnderMinimum(storeID);
-        if (underMin)
-        {
-            //order - minimum alert NOT RELEVANT
+        boolean underMin = product.isLow(storeID);
+        return new Pair<>(DI, underMin ? underMinMessage(productID, storeID) : null);
+    }
 
-        }
-        return new Pair<DefectiveItems, String>(DI, underMin ? underMinMessage(productID, storeID) : null);
+    public Pair<Double, String> buyItems(int storeID, int productID, int amount) {
+        Product product = getProduct(productID);
+        double price = product.getCurrentPrice()*amount;
+        product.removeItems(storeID, amount);
+        boolean underMin = product.isLow(storeID);
+        return new Pair<>(price, underMin ? underMinMessage(productID, storeID) : null);
     }
 
     private String underMinMessage(int productID, int storeID) {
         return "WARNING: product with ID " + productID + " is in low stock in store " + storeID;
-    }
-
-    public Pair<Double, String> buyItems(int storeID, int productID, int amount) throws Exception {
-        Product product = getProduct(productID);
-        double price = product.getCurrentPrice()*amount;
-        product.removeItems(storeID, amount);
-        boolean underMin = product.gotUnderMinimum(storeID);
-        if (underMin)
-        {
-            //order - minimum alert NOT RELEVANT
-            supplierController.makeOrderBecauseOfMinimum(storeID, productID, getAmountForOrder(storeID, productID));
-        }
-        return new Pair<Double, String>(price, underMin ? underMinMessage(productID, storeID) : null);
     }
 
     private void checkDates(Date start, Date end) {
@@ -476,15 +465,15 @@ public class InventoryController {
         return product;
     }
 
-    public boolean isUnderMin(int store, int product) {
-        return getProduct(product).isLow(store);
+    public boolean isUnderMin(int storeID, int productID) {
+        return getProduct(productID).isLow(storeID);
     }
 
-    public int getAmountInStore(int store, int productID) {
-        if (!storeIds.contains(store))
-            throw new IllegalArgumentException("Store " + store + " is not registered in the system");
+    public int getAmountInStore(int storeID, int productID) {
+        if (!storeIds.contains(storeID))
+            throw new IllegalArgumentException("Store " + storeID + " is not registered in the system");
         Product p = getProduct(productID);
-        return p.getInStore(store)+p.getInWarehouse(store);
+        return p.getInStore(storeID)+p.getInWarehouse(storeID);
     }
 
     public List<StockReport> getStockReport(List<Integer> stores, List<Integer> categoryIDs) {
@@ -499,6 +488,65 @@ public class InventoryController {
             }
         }
         return stock;
+    }
+
+
+
+    public void deleteCategory(int catID) {
+        Category categoryToRemove = categories.get(catID);
+        if (categoryToRemove==null)
+            throw new IllegalArgumentException("There is no category with id " + catID);
+        if (!categoryToRemove.getSubcategories().isEmpty())
+            throw new IllegalArgumentException("Cannot delete a category that has subcategories");
+        if (!categoryToRemove.getAllProductsInCategory().isEmpty())
+            throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
+        categoryToRemove.changeParentCategory(null);
+        categories.remove(catID);
+    }
+
+    public Product changeProductMin(int store, int product, int min) {
+        Product p = getProduct(product);
+        p.changeProductMin(store, min);
+        return p;
+    }
+
+    public Product changeProductTarget(int store, int product, int target) {
+        Product p = getProduct(product);
+        p.changeProductTarget(store, target);
+        return p;
+    }
+
+    private int getAmountForOrder(int storeID, int productID) { //Periodically
+        return getProduct(productID).getAmountForOrder(storeID);
+    }
+
+    private Map<Integer, Integer> getAmountForMinOrders(Product product) {
+        Map<Integer, Integer> amounts = new HashMap<>();
+        int amount;
+        for (int storeID: product.getStoreIDs()) {
+            amount = product.getAmountForOrder(storeID);
+            if (amount>0)
+                amounts.put(storeID, amount);
+        }
+        return amounts;
+    }
+
+    //needs to be called every morning from service by some kind of trigger
+    public List<Order> getOrdersOfTomorrow() {
+        Map<Integer, Map<Integer,Integer>> thingsToOrder = new HashMap<>(); // <productID, <storeID, amount>>
+        Map<Integer, Integer> amounts;
+        for (Product product: products.values()) {
+            amounts = getAmountForMinOrders(product);
+            if (amounts.size()>0)
+                thingsToOrder.put(product.getId(), getAmountForMinOrders(product));
+        }
+        List<Order> orders = supplierController.createAllOrders(thingsToOrder);
+        for (Order order: orders) {
+            for (OrderItem orderItem: order.getOrderItems()) {
+                getProduct(orderItem.getProductId()).addDelivery(order.getId(), order.getStoreID(), orderItem.getQuantity())
+            }
+        }
+        return orders;
     }
 
     private void addCategoriesForTests () {
@@ -612,46 +660,4 @@ public class InventoryController {
         Product product = getProduct(productID);
         product.reportDefectiveForTest(storeID, amount, employeeID, description, defect, date);
     }
-
-    public void deleteCategory(int catID) {
-        Category categoryToRemove = categories.get(catID);
-        if (categoryToRemove==null)
-            throw new IllegalArgumentException("There is no category with id " + catID);
-        if (!categoryToRemove.getSubcategories().isEmpty())
-            throw new IllegalArgumentException("Cannot delete a category that has subcategories");
-        if (!categoryToRemove.getAllProductsInCategory().isEmpty())
-            throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
-        categoryToRemove.changeParentCategory(null);
-        categories.remove(catID);
-    }
-
-    public Product changeProductMin(int store, int product, int min) {
-        Product p = getProduct(product);
-        p.changeProductMin(store, min);
-        return p;
-    }
-
-    public Product changeProductTarget(int store, int product, int target) {
-        Product p = getProduct(product);
-        p.changeProductTarget(store, target);
-        return p;
-    }
-
-    private int getAmountForOrder(int storeID, int productID) { //Periodically
-        return getProduct(productID).getAmountForOrder(storeID);
-    }
-
-    //needs to be called every morning from service by some kind of trigger
-    public List<Order> getOrdersOfTomorrow() {
-        //orders are otw (cannot be changed anymore)
-        Map<Integer, Map<Integer,Integer>> thingsToOrder = null;//find out what i need getminstockreport()
-        supplierController.createAllOrders(thingsToOrder); //returns list<Order>
-        //loop through orders and account for inventory
-        return null;
-    }
-
-    public Category getCategory(int categoryID) {
-        return categories.get(categoryID);
-    }
-
 }

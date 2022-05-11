@@ -65,9 +65,7 @@ public class StockReport {
         amountInStore+=amount;
     }
 
-    public boolean isLow() {
-        return amountInStore+amountInWarehouse<minAmountInStore;
-    }
+    public boolean isLow() { return minAmountInStore > getTotalAmount(); }
 
     public void changeMin(int min) {
         if (min<1)
@@ -99,7 +97,8 @@ public class StockReport {
     public int getAmountForOrder() {
         return targetAmountInStore - getTotalAmount();
     }
-    public boolean gotUnderMinimum() {
-        return (minAmountInStore > getTotalAmount()) && (minAmountInStore <= getTotalAmount());
+
+    public void addDelivery(int orderID, int amount) {
+        amountInDeliveries.put(orderID, amount);
     }
 }
