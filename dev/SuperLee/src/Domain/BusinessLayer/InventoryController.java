@@ -538,7 +538,7 @@ public class InventoryController {
         for (Product product: products.values()) {
             amounts = getAmountForMinOrders(product);
             if (amounts.size()>0)
-                thingsToOrder.put(product.getId(), getAmountForMinOrders(product));
+                thingsToOrder.put(product.getId(), amounts);
         }
         List<Order> orders = supplierController.createAllOrders(thingsToOrder);
         for (Order order: orders) {
