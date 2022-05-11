@@ -543,7 +543,13 @@ public class InventoryController {
         List<Order> orders = supplierController.createAllOrders(thingsToOrder);
         for (Order order: orders) {
             for (OrderItem orderItem: order.getOrderItems()) {
-                getProduct(orderItem.getProductId()).addDelivery(order.getId(), order.getStoreID(), orderItem.getQuantity());
+                //###############################
+                //###############################
+                //###############################
+                //getProduct(orderItem.getProductId()).addDelivery(order.getId(), order.getStoreID(), orderItem.getQuantity());
+                //###############################
+                //###############################
+                //###############################
             }
         }
         return orders;
