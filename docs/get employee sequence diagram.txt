@@ -1,21 +1,21 @@
-title get employee
-activate EmployeeController
+title Get Employee
+activate ec1-EmployeeController
 
-EmployeeController ->EmployeeDataMapper :1: get(id)
-activate EmployeeDataMapper
-EmployeeDataMapper -> EmployeeTypeLink:1.2: get(id)
-activate EmployeeTypeLink
-EmployeeTypeLink -->EmployeeDataMapper:1.3: type
-deactivate EmployeeTypeLink
+ec1-EmployeeController ->edm1-EmployeeDataMapper :1: get(id)
+activate edm1-EmployeeDataMapper
+edm1-EmployeeDataMapper -> etl1-EmployeeTypeLink:1.2: get(id)
+activate etl1-EmployeeTypeLink
+etl1-EmployeeTypeLink -->edm1-EmployeeDataMapper:1.3: type
+deactivate etl1-EmployeeTypeLink
 alt type !=null
-EmployeeDataMapper -> EmployeeTypeDataMapper:1.4A: get(id)
-activate EmployeeTypeDataMapper
-create E1-Employee
-EmployeeTypeDataMapper -->EmployeeDataMapper:1.4A: E1-Employee
-deactivate EmployeeTypeDataMapper
-EmployeeDataMapper -->EmployeeController:1.5A: E1-Employee
-deactivate EmployeeDataMapper
+edm1-EmployeeDataMapper -> etDataMapper-EmployeeTypeDataMapper:1.4A: get(id)
+activate etDataMapper-EmployeeTypeDataMapper
+create e1-Employee
+etDataMapper-EmployeeTypeDataMapper -->edm1-EmployeeDataMapper:1.4A: e1-Employee
+deactivate etDataMapper-EmployeeTypeDataMapper
+edm1-EmployeeDataMapper -->ec1-EmployeeController:1.5A: e1-Employee
+deactivate edm1-EmployeeDataMapper
 else type == null
-EmployeeDataMapper -->EmployeeController: 1.5B: null
+edm1-EmployeeDataMapper -->ec1-EmployeeController: 1.5B: null
 end 
 
