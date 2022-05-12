@@ -1,0 +1,21 @@
+title get employee
+activate EmployeeController
+
+EmployeeController ->EmployeeDataMapper :1: get(id)
+activate EmployeeDataMapper
+EmployeeDataMapper -> EmployeeTypeLink:1.2: get(id)
+activate EmployeeTypeLink
+EmployeeTypeLink -->EmployeeDataMapper:1.3: type
+deactivate EmployeeTypeLink
+alt type !=null
+EmployeeDataMapper -> EmployeeTypeDataMapper:1.4A: get(id)
+activate EmployeeTypeDataMapper
+create E1-Employee
+EmployeeTypeDataMapper -->EmployeeDataMapper:1.4A: E1-Employee
+deactivate EmployeeTypeDataMapper
+EmployeeDataMapper -->EmployeeController:1.5A: E1-Employee
+deactivate EmployeeDataMapper
+else type == null
+EmployeeDataMapper -->EmployeeController: 1.5B: null
+end 
+

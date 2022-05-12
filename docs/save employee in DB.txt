@@ -1,0 +1,23 @@
+title save employee in DB
+activate EmployeeController
+EmployeeController -> EmployeeDataMapper:1: save(E1-Employee)
+activate EmployeeDataMapper
+EmployeeDataMapper -> E1-Employee:1.2 save(this)
+activate E1-Employee
+note over EmployeeDataMapper,E1-Employee:visitor pattern
+E1-Employee -> EmployeeDataMapper:1.3: save(this)
+activate EmployeeDataMapper
+EmployeeDataMapper->EmployeeTypeDataMapper:1.4: save(E1-Employee)
+activate EmployeeTypeDataMapper
+alt 
+EmployeeTypeDataMapper -->EmployeeDataMapper:
+deactivate EmployeeDataMapper
+deactivate E1-Employee
+deactivate EmployeeDataMapper
+deactivate EmployeeTypeDataMapper
+else  error occurde
+activate EmployeeDataMapper
+EmployeeDataMapper -->EmployeeController:1.5 B: error msg
+deactivate EmployeeDataMapper
+end
+
