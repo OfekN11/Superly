@@ -14,6 +14,8 @@ public class Order {
     private Date arrivalTime;
     private ArrayList<OrderItem> orderItems;
 
+    private int storeID; //WROTE BY AMIR
+
     private static int globalID = 1;
 
 
@@ -95,7 +97,7 @@ public class Order {
     public Date getDate() {
         return creationDate;
     }
-
+    public int getStoreID() { return storeID; } //WROTE BY AMIR
     public int getId() {
         return id;
     }
