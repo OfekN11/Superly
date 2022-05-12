@@ -15,9 +15,9 @@ public abstract class Agreement {
 
     private void listToMap(List<AgreementItem> _items) throws Exception {
         for(AgreementItem i : _items){
-            if(itemExists(i.getId()))
+            if(itemExists(i.getProductId()))
                 throw new Exception("Item with this ID already exists!");
-            items.put(i.getId(), i);
+            items.put(i.getProductId(), i);
         }
     }
 
@@ -52,7 +52,7 @@ public abstract class Agreement {
     }
 
 
-    //Format : " id , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
+    //Format : " productId, idBySupplier , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
     private List<AgreementItem> transformStringToItems(List<String> itemsString) throws Exception {
         List<AgreementItem> items = new ArrayList<>();
         for(String curr : itemsString){
@@ -63,15 +63,16 @@ public abstract class Agreement {
             for(int i = 0; i < arr.length; i++){
                 arr[i] = arr[i].trim();
             }
-            int itemId = Integer.parseInt(arr[0]);
-            String name = arr[1];  String manufacturer = arr[2];
-            float pricePerUnit = Float.parseFloat(arr[3]);
+            int productId = Integer.parseInt(arr[0]);
+            int idBuSupplier = Integer.parseInt(arr[1]);
+            String name = arr[2];  String manufacturer = arr[3];
+            float pricePerUnit = Float.parseFloat(arr[4]);
             HashMap<Integer, Integer> bulk = new HashMap<>();
-            for(int i = 4; i < arr.length; i++ ){
+            for(int i = 5; i < arr.length; i++ ){
                 bulk.put(Integer.parseInt(arr[i]) , Integer.parseInt(arr[i+1]));
                 i++;
             }
-            items.add(new AgreementItem(itemId, name , manufacturer, pricePerUnit, bulk));
+            items.add(new AgreementItem(productId, idBuSupplier, name , manufacturer, pricePerUnit, bulk));
         }
         return items;
     }
@@ -80,11 +81,11 @@ public abstract class Agreement {
     public void addItem(AgreementItem item) throws Exception {
         NotNull.Check(item);
 
-        if(items.containsKey(item.getId())){
+        if(items.containsKey(item.getProductId())){
             throw new Exception("This item already exists!");
         }
 
-        items.put(item.getId(), item);
+        items.put(item.getProductId(), item);
     }
 
 
@@ -139,7 +140,7 @@ public abstract class Agreement {
         if(itemExists(newItemId))
             throw new Exception("The new ID you gave has already been used!");
         AgreementItem item = items.remove(oldItemId);
-        item.setId(newItemId);
+        item.setProductId(newItemId);
         items.put(newItemId, item);
 
     }

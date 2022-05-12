@@ -40,16 +40,16 @@ public class Order {
     }
 
 
-    public void addItem(int id, String name, int quantity, float ppu, int discount, Double finalPrice) throws Exception {
+    public void addItem(int productId, int idBySupplier, String name, int quantity, float ppu, int discount, Double finalPrice) throws Exception {
         if(!changeable()){
             throw new Exception("This order can't be changed!");
         }
-        orderItems.add(new OrderItem(id, name, quantity, ppu, discount, finalPrice));
+        orderItems.add(new OrderItem(productId, idBySupplier,  name, quantity, ppu, discount, finalPrice));
     }
 
     public boolean itemExists(int itemId) {
         for(OrderItem orderItem : orderItems){
-            if(orderItem.getId() == itemId)
+            if(orderItem.getProductId() == itemId)
                 return true;
         }
         return false;
@@ -62,7 +62,7 @@ public class Order {
         }
 
         for(OrderItem orderItem : orderItems){
-            if(orderItem.getId() == itemId){
+            if(orderItem.getProductId() == itemId){
                 orderItems.remove(orderItem);
                 return;
             }
@@ -83,7 +83,7 @@ public class Order {
         }
 
         for(OrderItem item : orderItems){
-            if(item.getId() == id){
+            if(item.getProductId() == id){
                 item.setQuantity(quantity);
                 item.setDiscount(discount);
                 item.setFinalPrice(finalPrice);
@@ -121,7 +121,7 @@ public class Order {
 
     private OrderItem getOrderItem(int productID) {
         for(OrderItem orderItem : orderItems) {
-            if (orderItem.getId() == productID) {
+            if (orderItem.getProductId() == productID) {
                 return orderItem;
             }
         }

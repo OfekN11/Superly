@@ -7,26 +7,28 @@ import java.util.Map;
 public class AgreementItem {
 
     //fields
-    private int id;
+    private int productId;
+    private int idBySupplier;
     private String name;
     private String manufacturer;
     private float pricePerUnit;
     private Map<Integer, Integer> bulkPrices; // <quantity, percent>
 
-    //POSSIBLE FIELD
-    private int idBySupplier = -1; // not yet decided if it's possible
 
-    public AgreementItem(int _id, String _name, String _manu, float _price, Map<Integer, Integer> _bulkPrices){
-        id = _id;
+    public AgreementItem(int _productId, int _idBySupplier,  String _name, String _manu, float _price, Map<Integer, Integer> _bulkPrices){
+        productId = _productId;
+        idBySupplier = _idBySupplier;
         name = _name;
         manufacturer = _manu;
         pricePerUnit = _price;
         bulkPrices = _bulkPrices;
     }
 
-    public int getId(){
-        return id;
+    public int getProductId(){
+        return productId;
     }
+
+    public int getIdBySupplier(){ return idBySupplier;}
 
     public String getName(){
         return name;
@@ -48,9 +50,14 @@ public class AgreementItem {
         return bulkPrices;
     }
 
-    public void setId(int _id){
-        id = _id;
+    public void setProductId(int _id){
+        productId = _id;
     }
+
+    public void setIdBySupplier(int _id){
+        idBySupplier = _id;
+    }
+
 
     public void setName(String newName){
         name = newName;
@@ -119,7 +126,7 @@ public class AgreementItem {
     //" id , name , manufacturer , pricePerUnit , quantity1 , percent1 , quantity2 , percent2 ...  "
     public String getInfoInStringFormat() {
         String result = "";
-        result += String.valueOf(id) + ",";
+        result += String.valueOf(productId) + ",";
         result += name + ",";
         result += manufacturer + ",";
         result += String.valueOf(pricePerUnit);
@@ -133,10 +140,10 @@ public class AgreementItem {
     //Format : " id , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
     public String toString(){
         if(bulkPrices.isEmpty()){
-            return "" + id + ", " + name + ", " + manufacturer + ", " + pricePerUnit + ", [NO BULK PRICES]";
+            return "" + productId + ", " + name + ", " + manufacturer + ", " + pricePerUnit + ", [NO BULK PRICES]";
         }
         else{
-            return "" + id + ", " + name + ", " + manufacturer + ", " + pricePerUnit + ", " + printBulkMap();
+            return "" + productId + ", " + name + ", " + manufacturer + ", " + pricePerUnit + ", " + printBulkMap();
         }
     }
 

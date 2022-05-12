@@ -115,7 +115,7 @@ public class SupplierService {
         return Result.makeOk(controller.isSuppliersEmpty());
     }
 
-    //Format : " id , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
+    //Format : " productId, idBySupplier , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
     public void addAgreementItems(int supplierId, List<String> itemsString) {
         try {
             controller.addItemsToAgreement(supplierId, itemsString);
@@ -224,9 +224,9 @@ public class SupplierService {
         }
     }
 
-    public Result<Boolean> addItemToAgreement(int supplierId, int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices){
+    public Result<Boolean> addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices){
         try {
-            controller.addItemToAgreement( supplierId, itemId, itemName, itemManu, itemPrice, bulkPrices);
+            controller.addItemToAgreement( supplierId, itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices);
             return Result.makeOk(true);
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
@@ -482,7 +482,7 @@ public class SupplierService {
     }
 
 
-    // Format :  <id1, name1, quantity1> , <id2, name2 , quantity2> , ...
+    // Format :  <productId1, idBySupplier1, quantity1> , <productId2, idBySupplier2 , quantity2> , ...
     public Result<Boolean> addItemsToOrder(int supId, int orderId, List<String> itemsString){
         try{
             controller.addItemsToOrder(supId, orderId, itemsString);
@@ -493,9 +493,9 @@ public class SupplierService {
         }
     }
 
-    public Result<Boolean> addItemToOrder(int supId, int orderId, int itemId, int itemQuantity){
+    public Result<Boolean> addItemToOrder(int supId, int orderId, int itemId, int idBySupplier, int itemQuantity){
         try{
-            controller.addItemToOrder(supId, orderId, itemId, itemQuantity);
+            controller.addItemToOrder(supId, orderId, itemId, idBySupplier, itemQuantity);
             return Result.makeOk(true);
         }
         catch(Exception e){

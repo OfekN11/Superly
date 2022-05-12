@@ -67,21 +67,21 @@ public class Main {
 
 
         ArrayList<String> items = new ArrayList<>();
-        items.add("1 , bamba , Osem , 5 , 100 , 20 , 200 , 50 ");
-        items.add("2 , Halva , Elit , 10 , 100 , 20 , 200 , 50");
-        items.add("3 , Chocolate , Elit , 10 , 100 , 20 , 200 , 50 ");
+        items.add("1 , 1,  bamba , Osem , 5 , 100 , 20 , 200 , 50 ");
+        items.add("2 , 2, Halva , Elit , 10 , 100 , 20 , 200 , 50");
+        items.add("3 , 3, Chocolate , Elit , 10 , 100 , 20 , 200 , 50 ");
         service.addAgreementItems(1, items);
         service.order(1);
 
 
         ArrayList<String> itemsToOrder = new ArrayList<>();
-        itemsToOrder.add("1");  itemsToOrder.add("bamba");   itemsToOrder.add("100");  itemsToOrder.add("2");  itemsToOrder.add("Halva");  itemsToOrder.add("50");
+        itemsToOrder.add("1"); itemsToOrder.add("1");  itemsToOrder.add("100");  itemsToOrder.add("2");  itemsToOrder.add("2");  itemsToOrder.add("50");
         service.addItemsToOrder(1, 1, itemsToOrder);
 
         /*
         service.addAgreement(2 ,2 , "2");
         ArrayList<String> items2 = new ArrayList<>();
-        items2.add("1 , bamba , Osem , 4 , 100 , 20 , 200 , 50 ");
+        items2.add("1 ,1,  bamba , Osem , 4 , 100 , 20 , 200 , 50 ");
         service.addAgreementItems(2, items2);
         service.order(2);
         service.addItemsToOrder(2, 2, itemsToOrder);

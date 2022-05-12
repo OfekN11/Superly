@@ -157,10 +157,10 @@ public class SupplierController {
         suppliersDAO.getSupplier(supplierId).updateItemManufacturer(itemId, manufacturer);
     }
 
-    public void addItemToAgreement(int supplierId, int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.getSupplier(supplierId).addItem(itemId, itemName, itemManu, itemPrice, bulkPrices);
+        suppliersDAO.getSupplier(supplierId).addItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices);
     }
 
     public void deleteItemFromAgreement(int supplierId, int itemId) throws Exception {
@@ -377,16 +377,16 @@ public class SupplierController {
         for(int i = 0; i < itemsString.size(); i+=3 ){
             if(itemsString.size() <= i+2)
                throw new Exception("Some information is missing!");
-            suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId , Integer.parseInt(itemsString.get(i)), Integer.parseInt(itemsString.get(i+2)));
+            suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId , Integer.parseInt(itemsString.get(i)),Integer.parseInt(itemsString.get(i+1)),  Integer.parseInt(itemsString.get(i+2)));
         }
         //suppliers.get(supId).addItemsToOrder(orderId, itemsString);
     }
 
-    public void addItemToOrder(int supId, int orderId, int itemId, int itemQuantity) throws Exception {
+    public void addItemToOrder(int supId, int orderId, int itemId, int idBySupplier, int itemQuantity) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity);
+        suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, idBySupplier, itemQuantity);
     }
 
 
@@ -431,6 +431,8 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supID).orderExists(orderID);
     }
 
+
+    /*
     public Order makeOrderBecauseOfMinimum(int storeID, int productID, int amount) throws Exception {
 
         ArrayList<Order> orders = getOrderWithinTheNextTwoDays(productID);  //check the amount necessary
@@ -480,7 +482,6 @@ public class SupplierController {
         
     }
 
-    // TODO: 07/05/2022   //check with Sagi, see if we can do both double 
     private Order sortAndReturnFirstOrder(HashMap<Order, Double> orders) {
         Stream<Map.Entry<Order,Double>> sorted = orders.entrySet().stream().sorted(Map.Entry.comparingByValue());
         return sorted.findFirst().get().getKey();
@@ -499,7 +500,7 @@ public class SupplierController {
         }
         return orders;
     }
-
+     */
 
     public void orderHasArrived(int orderID) {
         //order has arrived, can be moved from current to past
@@ -508,15 +509,73 @@ public class SupplierController {
     //returns all orders that cannot be changed anymore (routine) + everything needed because of MinAmounts
     public List<Order> createAllOrders(Map<Integer, Map<Integer, Integer>> orderItemMinAmounts) { //map<productID, Map<store, amount>>
 
-        // get and create all routine orders for tomorrow. returns List<Order>
+
+        //prior to this function we need to upload all the suppliers and agreements. the last order id is uploaded too
+        // check what routine suppliers delivers tomorrow (using the agreement days)
+        // take the orderId of the suppliers we found and go to ordersDAO and upload the requested order.
+        // upload only the orders that their arrival time passed.
+        // also upload the orders that their arrival time is tomorrow (this orders were created because lack of supplies), those we don't copy construct!!
+        // copy constructor to a new order with different arrival time and creation time. (only for the orders which arrival time passed)
+        // now we have a list of routine orders for tomorrow!!!
+        ArrayList<Order> ordersForTomorrow = getOrdersForTomorrow();
+
+
+        //subtract the products that are delivered tomorrow from the map
+        Map<Integer, Map<Integer, Integer>> updatedQuantity = checkForProductInTomorrowOrders(orderItemMinAmounts, ordersForTomorrow);
+
+
         // create all the orders required for the min amounts GET THE CHEAPEST ONE!
-        // pay attention to the amount, if someone from tomorrow delivers 99 from the 100 items, we only need one more item!!!!!!!!!!!!!
+        //iterate through all the items and for every item choose the cheapest supplier
+        //create Map<supplierId, List<OrderItem>> for each cheapest supplier we found and create the orders after we found all the suppliers using a new constructor
+        // add a new constructor that gets all the items and put them on his list.
+        // if we found that the cheapest supplier is a routine one, and he has an order tomorrow w need to delete the last order
+        // and replace it with the item that are low in stocks???.  (if we do this, we need to delete the prev order from orderForTomorrow list above.
+        //now we have the list of all the orders for low stocks
+        ArrayList<Order> ordersFromMinSuppliers = getCheapestSupplierForEachItem(updatedQuantity);
 
-        //List<Order> ordersForTomorrow = getOrdersForTomorrow();
-        //List<Order> ordersForMinProducts = getOrdersForMinProducts();
+        //combine the arrays and return them tp inventory
 
-        // check if there are duplicates and delete or calculate before calling the second function what we need to order ( subtract the orders for tomorrow. )
+        // now we need to send them to the ordersDAO and save in dataBase.
 
+        return ordersForTomorrow;
+    }
+
+    private ArrayList<Order> getCheapestSupplierForEachItem(Map<Integer, Map<Integer, Integer>> updatedQuantity) {
+        Map<Integer, Integer> productsANdQuantity = organizeProductsMap(updatedQuantity);  //organize the map to normal map with id and quantity
+        ArrayList<Order> orders = new ArrayList<>();
+        for(Map.Entry<Integer,Integer> entry : productsANdQuantity.entrySet()){
+            orders.add( getTheCheapstSupplierForThisItem(entry.getKey(), entry.getValue()));
+        }
         return null;
+    }
+
+    private Order getTheCheapstSupplierForThisItem(int productId, int quantity) {
+        //iterate through all suppliersAgreement, calculate the cheapest one and order from him
+
+        //chosenSupplier.orderForThisAMount(productId, quantity);
+        return null;
+    }
+
+    private Map<Integer, Integer> organizeProductsMap(Map<Integer, Map<Integer, Integer>> updatedQuantity) {
+        HashMap<Integer, Integer> result = new HashMap<>();
+        for(Map.Entry<Integer,Map<Integer,Integer>> entry : updatedQuantity.entrySet()){
+            int productId = entry.getKey();
+            int storeId = updatedQuantity.get(productId).keySet().iterator().next();
+            result.put(productId, entry.getValue().get(storeId));
+        }
+        return result;
+    }
+
+    private Map<Integer, Map<Integer, Integer>> checkForProductInTomorrowOrders(Map<Integer, Map<Integer, Integer>> orderItemMinAmounts, ArrayList<Order> ordersForTomorrow) {
+        return null;
+    }
+
+    private ArrayList<Order> getOrdersForTomorrow() {
+        ArrayList<Order> orders = new ArrayList<>();
+        ArrayList<Supplier> suppliers = suppliersDAO.getAllSuppliers();
+        for(Supplier supplier : suppliers){
+            orders.addAll(supplier.getOrdersForTomorrow());
+        }
+        return orders;
     }
 }

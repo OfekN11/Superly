@@ -284,7 +284,7 @@ public class CLI {
 
             quantity = getInput();
 
-            Result<Boolean> r = service.addItemToOrder(supplierID, orderId, itemID, quantity);
+            Result<Boolean> r = service.addItemToOrder(supplierID, orderId, itemID, itemID, quantity);
 
             if(r.isOk()){
                 System.out.println("Choose:");
@@ -1064,7 +1064,7 @@ public class CLI {
                 i++;
             }
 
-            Result<Boolean> r = service.addItemToAgreement(supplierID, id, name, manufacturer, pricePerUnit, bulkMap);
+            Result<Boolean> r = service.addItemToAgreement(supplierID, id, 1, name, manufacturer, pricePerUnit, bulkMap);
 
             if(r.isOk()){
                 System.out.println("The new Item was added successfully.");

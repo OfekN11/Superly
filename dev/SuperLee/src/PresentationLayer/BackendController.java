@@ -1,6 +1,5 @@
 package PresentationLayer;
 
-import Domain.BusinessLayer.SupplierController;
 import Domain.ServiceLayer.SupplierService;
 import Domain.ServiceLayer.SupplierObjects.*;
 import Globals.Pair;
@@ -129,8 +128,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public boolean addItemToOrder(int supplierID, int orderId, int itemID, int quantity) throws Exception {
-        Result<Boolean> result = supplierService.addItemToOrder(supplierID, orderId, itemID, quantity);
+    public boolean addItemToOrder(int supplierID, int orderId, int itemID, int idBySupplier, int quantity) throws Exception {
+        Result<Boolean> result = supplierService.addItemToOrder(supplierID, orderId, itemID, idBySupplier, quantity);
         return getValueFromBooleanResult(result);
     }
 
@@ -168,8 +167,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public boolean addItemToAgreement(int supplierID, int id, String name, String manufacturer, float pricePerUnit, Map<Integer, Integer> bulkMap) throws Exception {
-        Result<Boolean> result = supplierService.addItemToAgreement(supplierID, id, name, manufacturer, pricePerUnit, bulkMap);
+    public boolean addItemToAgreement(int supplierID, int id, int idBySupplier, String name, String manufacturer, float pricePerUnit, Map<Integer, Integer> bulkMap) throws Exception {
+        Result<Boolean> result = supplierService.addItemToAgreement(supplierID, id, idBySupplier, name, manufacturer, pricePerUnit, bulkMap);
         return getValueFromBooleanResult(result);
     }
 

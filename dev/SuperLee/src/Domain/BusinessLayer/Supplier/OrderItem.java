@@ -5,7 +5,8 @@ import java.util.List;
 
 public class OrderItem {
 
-    private int id;
+    private int productId;
+    private int idBySupplier;
     private String name;
     private int quantity;
     private float ppu;
@@ -13,8 +14,9 @@ public class OrderItem {
     private Double finalPrice;
 
 
-    public OrderItem(int id, String name, int quantity, float ppu, int discount, Double finalPrice) {
-        this.id = id;
+    public OrderItem(int id,int idBySupplier, String name, int quantity, float ppu, int discount, Double finalPrice) {
+        this.productId = id;
+        this.idBySupplier = idBySupplier;
         this.name = name;
         this.quantity = quantity;
         this.ppu = ppu;
@@ -26,8 +28,12 @@ public class OrderItem {
         return name;
     }
 
-    public int getId() {
-        return id;
+    public int getProductId() {
+        return productId;
+    }
+
+    public int getIdBySupplier() {
+        return idBySupplier;
     }
 
     public Double getFinalPrice() {
@@ -48,7 +54,7 @@ public class OrderItem {
 
     public List<String> getStringInfo() {
         List<String> result = new ArrayList<>();
-        result.add(String.valueOf(id));
+        result.add(String.valueOf(productId));
         result.add(name);
         result.add(String.valueOf(quantity));
         result.add(String.valueOf(ppu));
@@ -72,4 +78,5 @@ public class OrderItem {
     public void setFinalPrice(double fp){
         finalPrice = fp;
     }
+
 }

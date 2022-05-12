@@ -6,6 +6,8 @@ public class RoutineAgreement extends Agreement {
 
     private List<Integer> daysOfDelivery;
 
+    private int lastOrderId = -1;
+
     // days should be in the format "x1 x2 x3 ...", xi in {1, 2, 3, 4, 5, 6, 7}
     // THE STRING MUST NOT BE EMPTY!
     public RoutineAgreement(String days){
@@ -121,5 +123,13 @@ public class RoutineAgreement extends Agreement {
 
     public void removeDayOfDelivery(Integer day){
         daysOfDelivery.remove(day); // Supposed to remove the element day and not the index day
+    }
+
+    public int getLastOrderId(){
+        return lastOrderId;
+    }
+
+    public void setLastOrderId(int id){
+        lastOrderId = id;
     }
 }

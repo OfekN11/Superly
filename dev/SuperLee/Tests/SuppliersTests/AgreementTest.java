@@ -25,12 +25,12 @@ public class AgreementTest {
         List<AgreementItem> list = new ArrayList<>();
         bulkPrices = new HashMap<>();
         bulkPrices.put(5, 20);
-        list.add(new AgreementItem(1, "item1", "m1", 5.11f, bulkPrices));
-        list.add(new AgreementItem(2, "item2", "m2", 7.11f, bulkPrices));
-        list.add(new AgreementItem(3, "item3", "m3", 12.876f, bulkPrices));
-        list.add(new AgreementItem(4, "item4", "m4", 184.2f, bulkPrices));
-        list.add(new AgreementItem(5, "item5", "m5", 1123f, bulkPrices));
-        list.add(new AgreementItem(6, "item6", "m6", 687248.45621f, bulkPrices));
+        list.add(new AgreementItem(1,1, "item1", "m1", 5.11f, bulkPrices));
+        list.add(new AgreementItem(2,2, "item2", "m2", 7.11f, bulkPrices));
+        list.add(new AgreementItem(3, 3,"item3", "m3", 12.876f, bulkPrices));
+        list.add(new AgreementItem(4, 4,"item4", "m4", 184.2f, bulkPrices));
+        list.add(new AgreementItem(5, 5,"item5", "m5", 1123f, bulkPrices));
+        list.add(new AgreementItem(6, 6,"item6", "m6", 687248.45621f, bulkPrices));
 
         return list;
     }
@@ -68,9 +68,9 @@ public class AgreementTest {
 
     @Test
     public void test_addItem(){
-        AgreementItem item1 = new AgreementItem(17, "name1", "man1", 1565165f, bulkPrices);
-        AgreementItem item2 = new AgreementItem(18, "name2", "man2", 1565165f, bulkPrices);
-        AgreementItem item3 = new AgreementItem(19, "name3", "man3", 1565165f, bulkPrices);
+        AgreementItem item1 = new AgreementItem(17, 17,"name1", "man1", 1565165f, bulkPrices);
+        AgreementItem item2 = new AgreementItem(18, 18,"name2", "man2", 1565165f, bulkPrices);
+        AgreementItem item3 = new AgreementItem(19, 19,"name3", "man3", 1565165f, bulkPrices);
 
         List<AgreementItem> aiList = makeItemList();
 
@@ -82,7 +82,7 @@ public class AgreementTest {
             aiList = makeItemList();
             aiList.add(1, item1);
 
-            assertEquals(item1, agreement.getItem(item1.getId()));
+            assertEquals(item1, agreement.getItem(item1.getProductId()));
             //assertEquals(aiList, agreement.getItems());
 
             agreement.addItem(item2);
@@ -94,9 +94,9 @@ public class AgreementTest {
             aiList.add(item3);
 
 
-            assertEquals(item1, agreement.getItem(item1.getId()));
-            assertEquals(item2, agreement.getItem(item2.getId()));
-            assertEquals(item3, agreement.getItem(item3.getId()));
+            assertEquals(item1, agreement.getItem(item1.getProductId()));
+            assertEquals(item2, agreement.getItem(item2.getProductId()));
+            assertEquals(item3, agreement.getItem(item3.getProductId()));
             // assertEquals(aiList, agreement.getItems());
         }
         catch (Exception e){
@@ -133,9 +133,9 @@ public class AgreementTest {
 
     @Test
     public void test_addAndRemove(){
-        AgreementItem item1 = new AgreementItem(17, "name1", "man1", 1565165, bulkPrices);
-        AgreementItem item2 = new AgreementItem(18, "name2", "man2", 1565165, bulkPrices);
-        AgreementItem item3 = new AgreementItem(19, "name3", "man3", 1565165, bulkPrices);
+        AgreementItem item1 = new AgreementItem(17, 17, "name1", "man1", 1565165, bulkPrices);
+        AgreementItem item2 = new AgreementItem(18, 18, "name2", "man2", 1565165, bulkPrices);
+        AgreementItem item3 = new AgreementItem(19, 19,"name3", "man3", 1565165, bulkPrices);
 
         List<AgreementItem> aiList = makeItemList();
 
@@ -146,7 +146,7 @@ public class AgreementTest {
 
             agreement.addItem(item3);
             //aiList.add(item3);
-            assertEquals(item3, agreement.getItem(item3.getId()));
+            assertEquals(item3, agreement.getItem(item3.getProductId()));
             assertEquals(aiList.size() + 1, agreement.getItems().size());
 
             agreement.removeItem(4);
@@ -160,12 +160,12 @@ public class AgreementTest {
             agreement.addItem(item1);
             //aiList.add(item1);
             assertEquals(aiList.size(), agreement.getItems().size());
-            assertEquals(item1, agreement.getItem(item1.getId()));
+            assertEquals(item1, agreement.getItem(item1.getProductId()));
 
             agreement.addItem(item2);
             //aiList.add(item2);
             assertEquals(aiList.size() + 1, agreement.getItems().size());
-            assertEquals(item2, agreement.getItem(item2.getId()));
+            assertEquals(item2, agreement.getItem(item2.getProductId()));
 
             agreement.removeItem(3);
             //aiList.remove(new AgreementItem(3, "item3", "m3", 12.876f, new HashMap<>()));
