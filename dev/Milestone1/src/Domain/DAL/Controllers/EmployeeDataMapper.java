@@ -1,13 +1,7 @@
 package Domain.DAL.Controllers;
 import Domain.Business.Objects.*;
-import Domain.DAL.Objects.DEmployee;
-import Globals.Enums.Certifications;
-import Globals.Pair;
-
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class EmployeeDataMapper  {
 
@@ -71,26 +65,32 @@ public class EmployeeDataMapper  {
     }
 
     public void save(Carrier toSave) throws SQLException {
+        employeeTypeLink.add(toSave.getId(),"carrier");
         carrierDataMapper.save(toSave.getId(),toSave);
     }
 
     public void save(Cashier toSave) throws SQLException {
+        employeeTypeLink.add(toSave.getId(),"cashier");
         cashierDataMapper.save(toSave.getId(),toSave);
     }
 
     public void save(HR_Manager toSave) throws SQLException {
+        employeeTypeLink.add(toSave.getId(),"HRManager");
         dhr_managerController.save(toSave.getId(),toSave);
     }
 
     public void save(Logistics_Manager toSave) throws SQLException {
+        employeeTypeLink.add(toSave.getId(),"logisticsManager");
         dLogistics_managerController.save(toSave.getId(),toSave);
     }
 
     public void save(Sorter toSave) throws SQLException {
+        employeeTypeLink.add(toSave.getId(),"sorter");
         dSorterController.save(toSave.getId(),toSave);
     }
 
     public void save(Storekeeper toSave) throws SQLException {
+        employeeTypeLink.add(toSave.getId(),"storekeeper");
         dStorekeeperController.save(toSave.getId(),toSave);
     }
 
