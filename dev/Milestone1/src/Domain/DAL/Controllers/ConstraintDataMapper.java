@@ -2,6 +2,7 @@ package Domain.DAL.Controllers;
 
 import Domain.Business.Objects.Constraint;
 import Domain.DAL.Abstract.DataMapper;
+import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Abstract.ObjectDateMapper;
 import Globals.Enums.ShiftTypes;
 
@@ -23,41 +24,24 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
 
 
     // function
-
-    /**
-     *
-     * @param date date of the constraint
-     * @param shiftType shift type of the constraint
-     * @return constraint if saved, null if is not exist
-     */
-    public Constraint get(LocalDate date, ShiftTypes shiftType){
-        return super.get(Arrays.asList(1,2),Arrays.asList(date,shiftType));
+    @Override
+    protected  <K> void addToSet(String id, String listName, K toAdd) throws SQLException{
+        Constraint constraint = CONSTRAINT_IDENTITY_MAP.get(id);
+        super.insert(Arrays.asList(id,constraint.getDate(),constraint.getType(),toAdd));
     }
 
-    public void save(Constraint constraint){
-        for(String id : constraint.getEmployees()) {
-            try {
-                insert(Arrays.asList(constraint.getDate(),constraint.getType(),id));
-                CONSTRAINT_IDENTITY_MAP.put(constraint.getDate().toString()+constraint.getType().toString(),constraint);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-                throw new RuntimeException("saved has failed");
-            }
-        }
+    @Override
+    protected  <K> void removeFromSet(String id, String listName, K toRemove) throws SQLException{
+        super.remove(Arrays.asList(1,4),Arrays.asList(id,toRemove));
     }
 
-    public void updateEmployeesForConstraint(Constraint constraint,List<String> newIds){
-        try {
-            remove(Arrays.asList(1,2),Arrays.asList(constraint.getDate(),constraint.getType()));
-
-            for (String id : newIds)
-                insert(Arrays.asList(constraint.getDate(),constraint.getType(),id));
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    @Override
+    protected <K> void replaceSet(String id, String listName, Set<K> toReplace) throws SQLException{
+        super.remove(id);
+        Constraint constraint = CONSTRAINT_IDENTITY_MAP.get(id);
+        for(K employeeId: toReplace)
+            insert(Arrays.asList(employeeId,constraint.getDate(),constraint.getType(),employeeId));
     }
-
 
     @Override
     protected Map<String, Constraint> getMap() {
@@ -65,17 +49,25 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
     }
 
     @Override
+    protected LinkDAO getLinkDTO(String setName) {
+        throw new IllegalArgumentException("this function should not be used cause there is no Link DAO in Constraint");
+    }
+
+    @Override
     protected Constraint buildObject(ResultSet result) throws SQLException {
-        if (!result.next()){
-            return null;
-        }
         Set<String> ids = new HashSet<>();
-        LocalDate date = result.getDate(1).toLocalDate();
-        ShiftTypes shiftType = ShiftTypes.valueOf(result.getString(2));
-        ids.add(result.getString(3));
+        LocalDate date = result.getDate(2).toLocalDate();
+        ShiftTypes shiftType = ShiftTypes.valueOf(result.getString(3));
+        ids.add(result.getString(4));
         while (result.next())
-            ids.add(result.getString(3));
+            ids.add(result.getString(4));
         return  new Constraint(date,shiftType,ids);
+    }
+
+    @Override
+    public void insert(Constraint instance) throws SQLException {
+        for (String employeeID : instance.getEmployees())
+            super.insert(Arrays.asList(instance.getDate().toString()+instance.getType().toString(),instance.getDate(),instance.getType(),employeeID));
     }
 
 

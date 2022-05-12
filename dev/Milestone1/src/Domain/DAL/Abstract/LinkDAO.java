@@ -3,8 +3,8 @@ package Domain.DAL.Abstract;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public abstract class LinkDAO<T> extends DataMapper{
@@ -12,20 +12,30 @@ public abstract class LinkDAO<T> extends DataMapper{
         super(tableName);
     }
 
-    protected Set<T> get(List<Integer> columnIdNumber, List<Object> values) throws SQLException {
+    public Set<T> get(String id) throws SQLException {
         Set<T> output = new HashSet<>();
         try(Connection connection = getConnection()){
-            ResultSet resultSet = select(connection, columnIdNumber,values);
+            ResultSet resultSet = select(connection,id);
             while (resultSet.next())
                 output.add(buildObject(resultSet));
         }
         return output;
     }
 
-    protected void replaceAll(String id ,List<T>)
+    public void replaceSet(String mainObjectId , Set<? extends T> newValues) throws SQLException {
+        remove(mainObjectId);
+        for(Object instance : newValues)
+            insert(Arrays.asList(mainObjectId,instance));
+    }
+
+    public void add(String id, T instance) throws SQLException {
+        insert(Arrays.asList(id,instance));
+    }
+
+    public void remove(String mainObjectId, T secondInstanceID) throws SQLException{
+        remove(Arrays.asList(1,2),Arrays.asList(mainObjectId,secondInstanceID));
+    }
 
 
-    protected abstract T buildObject(ResultSet resultSet);
-
-
+    protected abstract T buildObject(ResultSet resultSet) throws SQLException;
 }

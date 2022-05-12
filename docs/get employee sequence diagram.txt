@@ -1,59 +1,21 @@
 title get employee
 activate EmployeeController
 
-EmployeeController ->EmployeeDataMapper :get(id)
+EmployeeController ->EmployeeDataMapper :1: get(id)
 activate EmployeeDataMapper
-
-EmployeeDataMapper -> Logistics_ManagerDataMapper:get(id)
-activate Logistics_ManagerDataMapper
-Logistics_ManagerDataMapper -->EmployeeDataMapper: instance
-deactivate Logistics_ManagerDataMapper
-alt instance != null
-EmployeeDataMapper -->EmployeeController:instance
-else instance == null
-
-EmployeeDataMapper -> CarrierDataMapper:get(id)
-activate CarrierDataMapper
-CarrierDataMapper -->EmployeeDataMapper: instance
-deactivate CarrierDataMapper
-alt instance != null
-EmployeeDataMapper -->EmployeeController:instance
-else instance == null
-
-EmployeeDataMapper -> CashierDataMapper:get(id)
-activate CashierDataMapper
-CashierDataMapper -->EmployeeDataMapper: instance
-deactivate CashierDataMapper
-alt instance != null
-EmployeeDataMapper -->EmployeeController:instance
-else instance == null
-
-EmployeeDataMapper -> StoreKeeperMapper:get(id)
-activate StoreKeeperMapper
-StoreKeeperMapper -->EmployeeDataMapper: instance
-deactivate StoreKeeperMapper
-alt instance != null
-EmployeeDataMapper -->EmployeeController:instance
-else instance == null
-
-EmployeeDataMapper -> SorterMapper:get(id)
-activate SorterMapper
-SorterMapper -->EmployeeDataMapper: instance
-deactivate SorterMapper
-alt instance != null
-EmployeeDataMapper -->EmployeeController:instance
-else instance == null
-
-EmployeeDataMapper -> HR_ManagerMapper:get(id)
-activate HR_ManagerMapper
-HR_ManagerMapper -->EmployeeDataMapper: instance
-deactivate HR_ManagerMapper
-alt instance != null
-EmployeeDataMapper -->EmployeeController:instance
-else instance == null
+EmployeeDataMapper -> EmployeeTypeLink:1.2: get(id)
+activate EmployeeTypeLink
+EmployeeTypeLink -->EmployeeDataMapper:1.3: type
+deactivate EmployeeTypeLink
+alt type !=null
+EmployeeDataMapper -> EmployeeTypeDataMapper:1.4A: get(id)
+activate EmployeeTypeDataMapper
+create E1-Employee
+EmployeeTypeDataMapper -->EmployeeDataMapper:1.4A: E1-Employee
+deactivate EmployeeTypeDataMapper
+EmployeeDataMapper -->EmployeeController:1.5A: E1-Employee
+deactivate EmployeeDataMapper
+else type == null
+EmployeeDataMapper -->EmployeeController: 1.5B: null
 end 
-end 
-end 
-end 
-end 
-end 
+
