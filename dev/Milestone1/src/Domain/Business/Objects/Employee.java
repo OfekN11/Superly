@@ -1,5 +1,6 @@
 package Domain.Business.Objects;
 
+import Domain.DAL.Controllers.EmployeeDataMapper;
 import Domain.DAL.Objects.DEmployee;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
@@ -148,4 +149,10 @@ public abstract class Employee {
         if (!id.matches(ID_VALIDATING_REGEX))
             throw new Exception("ID has to be a non-empty string consisting ONLY of numbers!");
     }
+
+    /**
+     * visitor pattern with the function save in {@param employeeDataMapper}
+     * @param employeeDataMapper the data mapper to call employeeDataMapper.save(this)
+     */
+    public abstract void save(EmployeeDataMapper employeeDataMapper);
 }
