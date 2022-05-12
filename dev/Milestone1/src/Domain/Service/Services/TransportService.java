@@ -1,18 +1,19 @@
 package Domain.Service.Services;
 
 import Domain.Business.Controllers.TransportController;
-import Globals.Enums.ShippingAreas;
 import Domain.Service.Objects.*;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TransportService {
-    private TransportController controller;
+    private final TransportController controller = new TransportController();
 
-    public TransportService() {
-        this.controller = new TransportController();
+    public Result<Transport> getTransport(int transportSN) {
+        try {
+            return Result.makeOk(controller.getTransport(transportSN));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
     }
 
     public Result addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) {

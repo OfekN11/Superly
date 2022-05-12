@@ -1,16 +1,13 @@
 package Domain.Service.Services;
 
+import Domain.Business.Controllers.ShiftController;
 import Domain.Business.Controllers.TruckController;
 import Globals.Enums.LicenseTypes;
 import Domain.Service.Objects.*;
 import Globals.Enums.TruckModel;
 
 public class TruckService {
-    private TruckController controller;
-
-    public TruckService() {
-        this.controller = new TruckController();
-    }
+    private final TruckController controller = new TruckController();
 
     /**
      * Calls for data from persistent to load into the business layer
@@ -19,7 +16,7 @@ public class TruckService {
      */
     public Result<Object> loadData(){
         try {
-            //controller.loadData();
+            //TODO: implement controller.loadData();
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
