@@ -13,7 +13,9 @@ public class EmployeeDataMapper  {
     private DLogistics_ManagerController dLogistics_managerController;
     private DSorterController dSorterController;
     private DStorekeeperController dStorekeeperController;
+    private TransportManagerDataMapper transportManagerDataMapper;
     private EmployeeTypeLink employeeTypeLink;
+
 
     // constructor
     public EmployeeDataMapper() {
@@ -25,6 +27,7 @@ public class EmployeeDataMapper  {
         dSorterController = new DSorterController();
         dStorekeeperController = new DStorekeeperController();
         employeeTypeLink = new EmployeeTypeLink();
+        transportManagerDataMapper = new TransportManagerDataMapper();
     }
 
     public Employee get(String id) throws SQLException {
@@ -56,6 +59,10 @@ public class EmployeeDataMapper  {
             case "storekeeper":
                 return dStorekeeperController.get(id);
                 break;
+
+            case "transport_Manager":
+                return transportManagerDataMapper.get(id);
+            break;
             default:
                 throw new IllegalArgumentException("Illegal employee type saved in the db");
         }
@@ -93,5 +100,12 @@ public class EmployeeDataMapper  {
         employeeTypeLink.add(toSave.getId(),"storekeeper");
         dStorekeeperController.save(toSave.getId(),toSave);
     }
+
+    public void save(Transport_Manager toSave) throws SQLException {
+        employeeTypeLink.add(toSave.getId(),"transport_Manager");
+        dStorekeeperController.save(toSave.getId(),toSave);
+    }
+
+    Transport_Manager
 
 }
