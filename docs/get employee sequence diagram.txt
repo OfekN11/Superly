@@ -16,6 +16,8 @@ deactivate etDataMapper-EmployeeTypeDataMapper
 edm1-EmployeeDataMapper -->ec1-EmployeeController:1.5A: e1-Employee
 deactivate edm1-EmployeeDataMapper
 else type == null
+activate edm1-EmployeeDataMapper
 edm1-EmployeeDataMapper -->ec1-EmployeeController: 1.5B: null
+deactivate edm1-EmployeeDataMapper
 end 
 
