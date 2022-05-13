@@ -225,7 +225,7 @@ public class Product {
         locations.add(warehouseLocation);
     }
 
-    public void removeLocation(Integer storeID) {
+    public void removeLocation(int storeID) {
         if (!stockReports.containsKey(storeID))
             throw new IllegalArgumentException("Product " + name + " is not being sold at store " + storeID);
         stockReports.remove(storeID);

@@ -55,10 +55,6 @@ public class Category {
         return output;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
     private boolean removeSubcategory(Category category) {
         return subcategories.remove(category);
     }
@@ -68,9 +64,8 @@ public class Category {
     public boolean removeProduct(Product product) {
         return products.remove(product);
     }
-    public boolean addProduct(Product product) {
-        return products.add(product);
-    }
+    public boolean addProduct(Product product) { return products.add(product); }
+
     public boolean addSale(SaleToCustomer sale) {
         return sales.add(sale);
     }
