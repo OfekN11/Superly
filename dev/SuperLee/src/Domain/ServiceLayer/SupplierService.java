@@ -471,9 +471,9 @@ public class SupplierService {
         }
     }
 
-    public Result<Integer> order(int supId){
+    public Result<Integer> order(int supId, int storeId){
         try{
-            int orderId = controller.addNewOrder(supId);
+            int orderId = controller.addNewOrder(supId, storeId);
             return Result.makeOk(orderId);
         }
         catch(Exception e){

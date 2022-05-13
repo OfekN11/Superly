@@ -272,19 +272,16 @@ public class Supplier {
         return agreement.daysToDelivery();
     }
 
-    public boolean isRoutineAgreement() throws Exception {
-        agreementExists();
-        return agreement instanceof RoutineAgreement;
+    public boolean isRoutineAgreement() {
+        return agreement != null && agreement instanceof RoutineAgreement;
     }
 
-    public boolean isByOrderAgreement() throws Exception {
-        agreementExists();
-        return agreement instanceof ByOrderAgreement;
+    public boolean isByOrderAgreement(){
+        return agreement != null && agreement instanceof ByOrderAgreement;
     }
 
-    public boolean isNotTransportingAgreement() throws Exception {
-        agreementExists();
-        return agreement instanceof NotTransportingAgreement;
+    public boolean isNotTransportingAgreement() {
+        return agreement != null && agreement instanceof NotTransportingAgreement;
     }
 
     public void setDaysOfDelivery(String days) throws Exception{
@@ -372,10 +369,10 @@ public class Supplier {
         return agreement != null;
     }
 
-    public int addNewOrder() throws Exception {
+    public int addNewOrder(int storeId) throws Exception {
         agreementExists();
 
-        Order order = new Order(agreement.daysToDelivery(), id);
+        Order order = new Order(agreement.daysToDelivery(), id, storeId);
         ordersToBe.put(order.getId(), order);
 
         if(isRoutineAgreement()){
@@ -535,7 +532,7 @@ public class Supplier {
         //check all orders dates and return the ones for tomorrow
         ArrayList<Order> orders = new ArrayList<>();
         for(Order order : ordersToBe.values()){
-            if(order.getDaysUntillOrder(Calendar.getInstance().getTime()) == 1){
+            if(order.getDaysUntilOrder(Calendar.getInstance().getTime()) == 1){
                 orders.add(order);
             }
         }
@@ -548,5 +545,16 @@ public class Supplier {
         //check if there is an order for this item, if there is add to this order
         // if not create new order and return it
         return null;
+    }
+
+    public int getLastOrderId() {
+        if(isRoutineAgreement()){
+            return ((RoutineAgreement)agreement).getLastOrderId();
+        }
+        return -1;
+    }
+
+    public boolean itemExists(int productId) {
+        return agreement.itemExists(productId);
     }
 }
