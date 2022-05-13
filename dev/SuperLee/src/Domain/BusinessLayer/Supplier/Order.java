@@ -13,19 +13,18 @@ public class Order {
     private Date creationDate;
     private Date arrivalTime;
     private ArrayList<OrderItem> orderItems;
-
-    private int storeID; //WROTE BY AMIR
-
+    private int storeID;
     private static int globalID = 1;
 
 
-    public Order(int daysToArrival, int supplierID){
+    public Order(int daysToArrival, int supplierID, int storeID){
         this.supplierID = supplierID;
         this.id = globalID;
         globalID++;
-        creationDate = new Date();
+        //creationDate = new Date();
         creationDate = Calendar.getInstance().getTime();
         this.orderItems = new ArrayList<>();
+        this.storeID = storeID;
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, daysToArrival);
@@ -33,12 +32,28 @@ public class Order {
     }
 
     //For uploading from dal
-    public Order(int id, int supplierId, Date creationDate, Date arrivalTime){
+    public Order(int id, int supplierId, Date creationDate, Date arrivalTime, int storeID){
         this.id = id;
         this.supplierID = supplierId;
         this.creationDate = creationDate;
         this.arrivalTime = arrivalTime;
         globalID++;
+        this.storeID = storeID;
+    }
+
+
+    //copy constructor, create new Id
+    public Order(Order orderArriavalTimePassed) {
+        this.id = globalID;
+        this.supplierID = orderArriavalTimePassed.getSupplierId();
+        this.creationDate = Calendar.getInstance().getTime();
+        this.orderItems = orderArriavalTimePassed.getOrderItems();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 1);
+        arrivalTime = cal.getTime();
+        globalID++;
+        this.storeID = orderArriavalTimePassed.getStoreID();
+
     }
 
 
@@ -102,13 +117,18 @@ public class Order {
         return id;
     }
 
-    public List<OrderItem> getOrderItems() {
+    public ArrayList<OrderItem> getOrderItems() {
         return orderItems;
     }
 
     public boolean changeable(){
         return arrivalTime.after(Calendar.getInstance().getTime());
     }
+
+    public boolean passed(){
+        return arrivalTime.before(Calendar.getInstance().getTime());
+    }
+
 
     public int getSupplierId() {
         return supplierID;
@@ -130,8 +150,16 @@ public class Order {
         return null;
     }
 
-    public int getDaysUntillOrder(Date currDate) {
+    public int getDaysUntilOrder(Date currDate) {
         long diff = arrivalTime.getTime() - currDate.getTime();
         return (int) (diff / (1000*60*60*24));
+    }
+
+    public int getQuantityOfItem(int productId) {
+        for(OrderItem orderItem : orderItems){
+            if(orderItem.getProductId() == productId)
+                return orderItem.getQuantity();
+        }
+        return 0;
     }
 }

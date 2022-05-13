@@ -64,7 +64,7 @@ public class ViewOrder extends Screen {
 
 
         try {
-            int orderId = controller.order(supplierId);
+            int orderId = controller.order(supplierId, getStoreID());
             System.out.println("Order " + orderId + " added successfully.");
         } catch (Exception e) {
             System.out.println(e.getMessage());

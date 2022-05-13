@@ -71,7 +71,7 @@ public class Main {
         items.add("2 , 2, Halva , Elit , 10 , 100 , 20 , 200 , 50");
         items.add("3 , 3, Chocolate , Elit , 10 , 100 , 20 , 200 , 50 ");
         service.addAgreementItems(1, items);
-        service.order(1);
+        service.order(1, 1);
 
 
         ArrayList<String> itemsToOrder = new ArrayList<>();

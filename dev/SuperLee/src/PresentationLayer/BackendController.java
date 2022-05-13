@@ -121,8 +121,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Integer order(int supplierId) throws Exception {
-        Result<Integer> result = supplierService.order(supplierId);
+    public Integer order(int supplierId, int storeId) throws Exception {
+        Result<Integer> result = supplierService.order(supplierId, storeId);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
