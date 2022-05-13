@@ -22,41 +22,33 @@ public class DefectiveItems {
         this.productID = productID;
         this.amount = amount;
         this.employeeID = employeeID;
-        this.description = description;
         this.inWarehouse = inWarehouse;
+        this.description = description;
         this.defect = defect;
     }
-
-    public int getProductID() {
-        return productID;
-    }
-
-    public boolean getInWarehouse() { return inWarehouse; }
 
     public Date getDate() {
         return date;
     }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Defect getDefect() {
-        return defect;
-    }
-
     public int getStoreID() {
         return storeID;
     }
-
+    public int getProductID() {
+        return productID;
+    }
+    public int getAmount() {
+        return amount;
+    }
     public int getEmployeeID() {
         return employeeID;
     }
-
+    public boolean getInWarehouse() { return inWarehouse; }
+    public String getDescription() {
+        return description;
+    }
+    public Defect getDefect() {
+        return defect;
+    }
 
     public boolean inDates(Date startDate, Date endDate) {
         Calendar c = Calendar.getInstance();
