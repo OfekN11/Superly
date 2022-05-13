@@ -19,4 +19,8 @@ public class ContactDAO extends DAO {
         insert(Arrays.asList( String.valueOf(supplierId) ,contact.getPhone(), contact.getName()));
     }
 
+    public void removeContact(int supplierId, String name) throws SQLException {
+        remove(Arrays.asList(1 , 2 ) ,Arrays.asList() );
+    }
+
 }
