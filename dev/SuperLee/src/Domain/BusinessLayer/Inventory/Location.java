@@ -16,6 +16,6 @@ public class Location {
     public int getStoreID() {
         return storeID;
     }
-
-
+    public boolean getInWarehouse() { return inWarehouse; }
+    public List<Integer> getShelves() { return shelves; }
 }
