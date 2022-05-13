@@ -22,8 +22,8 @@ public class DefectiveItems {
         this.productID = productID;
         this.amount = amount;
         this.employeeID = employeeID;
-        this.description = description;
         this.inWarehouse = inWarehouse;
+        this.description = description;
         this.defect = defect;
     }
 
