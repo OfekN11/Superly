@@ -3,8 +3,7 @@ title Updating Employee Details
 actor HR Manager
 participant Facade
 participant eService - EmployeeService
-participant result - Ok
-participant result - Failure
+participant result - Result
 participant eController - EmployeeController
 participant bEmployee - BusinessEmployee
 participant mapper - EmployeeDataMapper
@@ -25,11 +24,11 @@ ref over eController - EmployeeController, mapper - EmployeeDataMapper : Update 
 
 alt newValue is illegal
 eController - EmployeeController -->eService - EmployeeService: 1.1.1.1A Error
-eService - EmployeeService->*result - Failure: 1.1.2A <<create(Error.msg)>>
+eService - EmployeeService->*result - Result:1.1.2A <<createFailute(Error)>>
 
 else else
 deactivate eController - EmployeeController
-eService - EmployeeService->*result - Ok: 1.1.2B <<create(sEmployee)>>
+eService - EmployeeService->*result - Result: 1.1.2B <<createOk(sEmployee)>>
 
 end
 
@@ -38,10 +37,10 @@ deactivate eService - EmployeeService
 
 alt result is Ok
 Facade-->HR Manager:1.2A successMsg
-destroy result - Ok
+destroy result - Result
 
 else else
 Facade-->HR Manager:1.2B result.error
-destroy result - Failure
+destroy result - Result
 deactivate Facade
 end
