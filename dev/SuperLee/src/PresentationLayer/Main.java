@@ -1,12 +1,15 @@
 package PresentationLayer;
 
+import Domain.BusinessLayer.Supplier.Contact;
 import Domain.BusinessLayer.SupplierController;
+import Domain.PersistenceLayer.Controllers.ContactDAO;
 import Globals.Pair;
 import PresentationLayer.Screens.MainMenu;
 import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
 import Domain.ServiceLayer.SupplierService;
 import Domain.BusinessLayer.Supplier.Order;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,16 +17,21 @@ public class Main {
     public static void main(String[] args) {
 
 
-        BackendController controller = new BackendController(initWithData());
-        new Thread(new MainMenu(controller)).start();
+        ContactDAO dao = new ContactDAO();
+        try {
+            dao.addContact(1, new Contact("name", "0508644197"));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        //BackendController controller = new BackendController(initWithData());
+        //new Thread(new MainMenu(controller)).start();
 
         /*
         System.out.println("Choose 1 for init with data or 2 for init with no data: ");
         int input = scan.nextInt();
         scan.nextLine();
         CLI cli = new CLI();
-
-
         switch (input) { // temporary
             case 1 : {
                 initWithData(cli);
@@ -32,9 +40,7 @@ public class Main {
                 System.out.println("Init without data");
                 cli.init();
             }
-
         }
-
          */
 
 

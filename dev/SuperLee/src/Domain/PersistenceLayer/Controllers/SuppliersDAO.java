@@ -1,18 +1,16 @@
 package Domain.PersistenceLayer.Controllers;
 
 import Domain.BusinessLayer.Supplier.Supplier;
-import Domain.PersistenceLayer.Abstract.DataMapper;
+import Domain.PersistenceLayer.Abstract.DAO;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SuppliersDAO extends DataMapper {
+public class SuppliersDAO extends DAO {
 
 
     // TODO: 13/05/2022 WHY THE KEY IS STRING ???
