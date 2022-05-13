@@ -36,7 +36,6 @@ public class StockReport {
     }
     public int getAmountInStore() { return amountInStore; }
     public int getAmountInWarehouse() { return amountInWarehouse; }
-    public int getAmountInTotal() { return amountInStore+amountInWarehouse; }
     public int getMinAmountInStore() {
         return minAmountInStore;
     }
@@ -100,7 +99,6 @@ public class StockReport {
     public int getAmountForOrder() {
         return targetAmountInStore - getTotalAmount();
     }
-
     public void addDelivery(int orderID, int amount) {
         amountInDeliveries.put(orderID, amount);
     }
