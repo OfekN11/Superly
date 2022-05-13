@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class DLogistics_ManagerController extends DTOControllers<DLogistics_Manager> {
     public DLogistics_ManagerController() {
-        super("tableName");
+        super("Logistics_Manager");
     }
 
     @Override

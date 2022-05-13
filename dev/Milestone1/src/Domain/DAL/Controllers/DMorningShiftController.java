@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class DMorningShiftController extends DTOControllers<DMorningShift> {
     public DMorningShiftController() {
-        super("placeHolder");
+        super("MorningShifts");
     }
 
     @Override

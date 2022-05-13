@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class DHR_ManagerController extends DTOControllers<DHR_Manager> {
     public DHR_ManagerController() {
-        super("tableName");
+        super("HRManagers");
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class DStorekeeperController extends DTOControllers<DStorekeeper> {
     public DStorekeeperController() {
-        super("tableName");
+        super("Storekeepers");
     }
 
     @Override

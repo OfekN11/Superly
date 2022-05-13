@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class DSorterController extends DTOControllers<DSorter> {
     public DSorterController() {
-        super("tableName");
+        super("Sorters");
     }
 
     @Override

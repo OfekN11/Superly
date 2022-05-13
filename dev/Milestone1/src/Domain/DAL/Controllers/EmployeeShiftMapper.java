@@ -16,7 +16,7 @@ public class EmployeeShiftMapper extends DataMapper {
 
     // properties
     public EmployeeShiftMapper() {
-        super("EmployeesShifts");
+        super("ShiftsEmployees");
     }
 
     public void updateSetOfEmployees(LocalDate shiftDate,ShiftTypes type, Set<String> newEmployeeIds) throws SQLException {

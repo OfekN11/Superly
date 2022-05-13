@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class DEveningShiftController extends ObjectDateMapper<EveningShift> {
     public DEveningShiftController() {
-        super("Place holder");
+        super("EveningShifts");
     }
 
     @Override
