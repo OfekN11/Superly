@@ -3,7 +3,7 @@ package Domain.Business.Controllers;
 import Domain.Business.BusinessEmployeeFactory;
 import Domain.Business.Objects.*;
 import Globals.Enums.*;
-import Domain.DAL.Controllers.DEmployeeController;
+import Domain.DAL.Controllers.EmployeeDataMapper;
 import Domain.DAL.Objects.DEmployee;
 
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ public class EmployeeController {
 
     // properties
     private final Map<String,Employee> employees = new HashMap<>();
-    private final DEmployeeController dEmployeeController = new DEmployeeController();
+    private final EmployeeDataMapper employeeDataMapper = new EmployeeDataMapper();
     private final BusinessEmployeeFactory employeeFactory= new BusinessEmployeeFactory();
 
     public Set<Employee> getEmployees(Set<String> workersId) {
@@ -37,7 +37,7 @@ public class EmployeeController {
     }
 
     public void loadData() {
-        Set<DEmployee> dEmployees = dEmployeeController.loadData();
+        Set<DEmployee> dEmployees = employeeDataMapper.loadData();
         for (DEmployee dEmployee : dEmployees) {
             Employee employee = employeeFactory.createBusinessEmployee(dEmployee);
             employees.put(employee.getId(), employee);

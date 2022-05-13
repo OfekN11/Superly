@@ -1,0 +1,42 @@
+title New Employee Registration
+actor HR_Manager
+activate HR_Manager
+activate Facade
+HR_Manager->Facade: 1: registerEmployee(jobTitle, id, name,\nbankDetails,salary,employmentConditions,\nstartin gDate,certifications) 
+
+Facade->ec1-EmployeeController: 1: registerEmployee(jobTitle, id, name,\nbankDetails,salary,employmentConditions,\nstartin gDate,certifications) 
+
+
+activate ec1-EmployeeController
+ec1-EmployeeController ->edm1-EmployeeDataMapper :1.1: get(id) 
+activate edm1-EmployeeDataMapper
+ref over edm1-EmployeeDataMapper:Get Employee
+edm1-EmployeeDataMapper -->ec1-EmployeeController:1.2: instance 
+deactivate edm1-EmployeeDataMapper
+
+
+alt       [instance != null
+ec1-EmployeeController->e1-Employee:1.3 A: new<JobTitle>(jobTitle, id, name,\nbankDetails,salary,employmentConditions,\nstartin gDate,certifications) 
+ec1-EmployeeController ->edm1-EmployeeDataMapper:1.4 A: save(e1-Employee) 
+activate edm1-EmployeeDataMapper
+ref over edm1-EmployeeDataMapper:Save Employee In DB
+alt 
+
+Facade -->HR_Manager:1.5 AA: registration complete 
+else  [saving error occured 
+edm1-EmployeeDataMapper -->ec1-EmployeeController:1.5 AB: error msg
+deactivate edm1-EmployeeDataMapper
+ec1-EmployeeController -->Facade:1.6 AB: error msg 
+deactivate ec1-EmployeeController
+Facade -->HR_Manager:1.6 AB: error msg 
+deactivate Facade
+end
+else [ employee already exist
+activate Facade
+activate ec1-EmployeeController
+ec1-EmployeeController -->Facade:1.3 B: employee already exist
+deactivate ec1-EmployeeController
+Facade -->HR_Manager:1.3 B: employee already exist
+end 
+deactivate Facade
+deactivate HR_Manager
