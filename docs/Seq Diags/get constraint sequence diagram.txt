@@ -1,14 +1,22 @@
 title Get Constraint
 activate cc1-ConstraintController
-
 cc1-ConstraintController ->cdm1-ConstrinatDataMapper :1: get(date,shitType)
 activate cdm1-ConstrinatDataMapper
+cdm1-ConstrinatDataMapper->cdm1-ConstrinatDataMapper:1.1: serch in the identityMap
+activate cdm1-ConstrinatDataMapper
+space -0.5
+deactivate cdm1-ConstrinatDataMapper
+alt instance found in the identity map
+participant c2-Constrint
+cdm1-ConstrinatDataMapper-->cc1-ConstraintController:1.2A: c2-Constrint
+else
 alt constraint(date,shiftType) is saved in the db
-cdm1-ConstrinatDataMapper-->*c1-Constraint:<<create>>
-cdm1-ConstrinatDataMapper -->cc1-ConstraintController:1.2A: c1-Constraint
+cdm1-ConstrinatDataMapper-->*c1-Constraint:1.2BA: <<create>>
+cdm1-ConstrinatDataMapper -->cc1-ConstraintController:1.3BA: c1-Constraint
 deactivate cdm1-ConstrinatDataMapper
 
 else constraint (date,shiftType) was never saved in the db
-cdm1-ConstrinatDataMapper -->cc1-ConstraintController: 1.2B: null
+cdm1-ConstrinatDataMapper -->cc1-ConstraintController: 1.2BB: null
+end 
 end 
 
