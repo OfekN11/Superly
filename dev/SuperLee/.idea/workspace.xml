@@ -1,28 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="14db89f2-b157-448b-aea3-2353a64a0cb5" name="Default Changelist" comment="small plchanges">
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/DefectiveItemReports.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/ReportDefective.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/StockReports.java" afterDir="false" />
+    <list default="true" id="14db89f2-b157-448b-aea3-2353a64a0cb5" name="Default Changelist" comment="stock warning changed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperLee.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SuperLee.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/CategoryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/CategoryTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/ProductTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/ProductTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryObjects/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryObjects/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/BackendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/BackendController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Catalogs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Catalogs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/InventoryMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/InventoryMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Register.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Reports.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Sales.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Sales.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PresentationLayer/Screens/InventorySreens/Store.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../docs/Instructions.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/Instructions.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/SupplierController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/SupplierController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,13 +173,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1650207572858</updated>
-    </task>
-    <task id="LOCAL-00008" summary="created service objects and starting interface">
-      <created>1650448401799</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1650448401799</updated>
     </task>
     <task id="LOCAL-00009" summary="PL and SL">
       <created>1650448435807</created>
@@ -535,7 +510,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651833030823</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="stock warning changed">
+      <created>1652105704525</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1652105704525</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -551,7 +533,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="small changes" />
     <MESSAGE value="add product in test" />
     <MESSAGE value="list products in category" />
     <MESSAGE value="next line bug" />
@@ -576,7 +557,8 @@
     <MESSAGE value="BL contracts" />
     <MESSAGE value="changes with amir after zoom with everyone" />
     <MESSAGE value="small plchanges" />
-    <option name="LAST_COMMIT_MESSAGE" value="small plchanges" />
+    <MESSAGE value="stock warning changed" />
+    <option name="LAST_COMMIT_MESSAGE" value="stock warning changed" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -584,13 +566,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java</url>
-          <line>53</line>
+          <line>54</line>
           <option name="timeStamp" value="62" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Domain/ServiceLayer/InventoryService.java</url>
-          <line>418</line>
-          <option name="timeStamp" value="63" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -77,7 +77,7 @@ public abstract class ViewAgreement extends Screen {
 
     private void addItemToAgreement() {
         boolean _continue = true;
-        int id, input;
+        int productId, input, idBySupplier;
         String name, manufacturer, bulkString;
         float pricePerUnit;
         String[] bulkArr;
@@ -93,13 +93,16 @@ public abstract class ViewAgreement extends Screen {
             System.out.println("Insert the details, press \"Enter\" to continue.");
             System.out.println("If you want to go back, please insert \"-1\" instead of the ID.\n");
 
-            System.out.println("ID:");
-            id = getInput();
+            System.out.println("Product ID:");
+            productId = getInput();
 
-            if(id == -1){
+            if(productId == -1){
                 System.out.println("Returning..\n");
                 return;
             }
+
+            System.out.println("ID by Supplier:");
+            idBySupplier = getInput();
 
             System.out.println("Name:");
             name = scanner.nextLine();
@@ -139,7 +142,7 @@ public abstract class ViewAgreement extends Screen {
 
 
             try {
-                if(controller.addItemToAgreement(supplierID, id, name, manufacturer, pricePerUnit, bulkMap)){
+                if(controller.addItemToAgreement(supplierID, productId, idBySupplier, name, manufacturer, pricePerUnit, bulkMap)){
                     System.out.println("The new Item was added successfully.");
                     System.out.println("Choose:");
                     System.out.println("1) Add another item");

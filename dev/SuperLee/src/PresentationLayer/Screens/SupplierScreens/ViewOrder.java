@@ -62,17 +62,19 @@ public class ViewOrder extends Screen {
             return;
         }
 
-        boolean r = false;
-        try {
-            r = controller.order(supplierId);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());;
-        }
 
-        if(!r){
-            System.out.println("Returning, please try again.\n");
+        try {
+            int orderId = controller.order(supplierId, getStoreID());
+            System.out.println("Order " + orderId + " added successfully.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return;
         }
+
+        //if(!r){
+        //    System.out.println("Returning, please try again.\n");
+        //    return;
+        //}
 
         addItemsToOrder(supplierId, input);
 
@@ -81,16 +83,20 @@ public class ViewOrder extends Screen {
 
     private void addItemsToOrder(int supplierID, int orderId) {
         boolean _continue = true, correctInput;
-        int itemID, quantity, input;
+        int itemID, quantity, input, idBySupplier;
 
         System.out.println("Now we shall add items to your new order.");
         System.out.println("PLEASE NOTICE: the order must contain at least one item.\n");
 
         while (_continue){
             System.out.println("Please insert the following details:");
-            System.out.println("ID:");
+            System.out.println("Product ID:");
 
             itemID = getInput();
+
+            System.out.println("ID By Supplier:");
+
+            idBySupplier = getInput();
 
             System.out.println("Quantity:");
 
@@ -184,7 +190,7 @@ public class ViewOrder extends Screen {
                     return;
                 }
 
-                Result<Boolean> r = controller.orderExists(supplierId, orderId);
+                Result<Boolean> r = controller.orderExists(supplierId, orderId);//
 
                 if(r.isOk() && r.getValue()){
                     correctInput = true;
@@ -232,13 +238,13 @@ public class ViewOrder extends Screen {
 
     private void addItemToOrder(int supplierID, int orderId){
         boolean _continue = true, correctInput;
-        int itemID, quantity, input;
+        int itemID, quantity, input, idBySupplier;
 
 
         while (_continue){
             System.out.println("Please insert the following details:");
             System.out.println("If you want to return, please insert \"-1\" instead od the ID");
-            System.out.println("ID:");
+            System.out.println("Product ID:");
 
             itemID = getInput();
 
@@ -246,6 +252,10 @@ public class ViewOrder extends Screen {
                 System.out.println("Returning");
                 return;
             }
+
+            System.out.println("ID By Supplier:");
+
+            idBySupplier = getInput();
 
             System.out.println("Quantity:");
 

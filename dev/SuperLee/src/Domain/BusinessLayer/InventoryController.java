@@ -9,6 +9,7 @@ import Domain.BusinessLayer.Inventory.StockReport;
 import Domain.BusinessLayer.Supplier.Order;
 import Domain.BusinessLayer.Supplier.OrderItem;
 import Globals.Defect;
+import Globals.Pair;
 
 import java.util.*;
 
@@ -43,6 +44,10 @@ public class InventoryController {
         addProductsForTests();
         addSalesForTests();
         addReportsForTests();
+    }
+
+    public Category getCategory(int categoryID) {
+        return categories.get(categoryID);
     }
 
     public List<SaleToCustomer> getRemovableSales() {
@@ -305,38 +310,30 @@ public class InventoryController {
         //remove sales? remove empty categories?
     }
 
-    public DefectiveItems reportDamaged(int storeID, int productID, int amount, int employeeID, String description) {
+    public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
         Product product = getProduct(productID);
-        DefectiveItems DI = product.reportDamaged(storeID, amount, employeeID, description);
-        if (product.gotUnderMinimum(storeID, amount))
-        {
-            //order - minimum alert
-
-        }
-        return DI;
+        DefectiveItems DI = product.reportDamaged(storeID, amount, employeeID, description, inWarehouse);
+        boolean underMin = product.isLow(storeID);
+        return new Pair<>(DI, underMin ? underMinMessage(productID, storeID) : null);
     }
 
-    public DefectiveItems reportExpired(int storeID, int productID, int amount, int employeeID, String description) {
+    public Pair<DefectiveItems, String> reportExpired(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
         Product product = getProduct(productID);
-        DefectiveItems DI = product.reportExpired(storeID, amount, employeeID, description);
-        if (product.gotUnderMinimum(storeID, amount))
-        {
-            //order - minimum alert
-
-        }
-        return DI;
+        DefectiveItems DI = product.reportExpired(storeID, amount, employeeID, description, inWarehouse);
+        boolean underMin = product.isLow(storeID);
+        return new Pair<>(DI, underMin ? underMinMessage(productID, storeID) : null);
     }
 
-    public Double buyItems(int storeID, int productID, int amount) throws Exception {
+    public Pair<Double, String> buyItems(int storeID, int productID, int amount) {
         Product product = getProduct(productID);
         double price = product.getCurrentPrice()*amount;
-        product.removeItems(storeID, amount);
-        if (product.gotUnderMinimum(storeID, amount))
-        {
-            //order - minimum alert
-            supplierController.makeOrderBecauseOfMinimum(storeID, productID, getAmountForOrder(storeID, productID));
-        }
-        return price;
+        product.removeItems(storeID, amount, false);
+        boolean underMin = product.isLow(storeID);
+        return new Pair<>(price, underMin ? underMinMessage(productID, storeID) : null);
+    }
+
+    private String underMinMessage(int productID, int storeID) {
+        return "WARNING: product with ID " + productID + " is in low stock in store " + storeID;
     }
 
     private void checkDates(Date start, Date end) {
@@ -468,15 +465,15 @@ public class InventoryController {
         return product;
     }
 
-    public boolean isUnderMin(int store, int product) {
-        return getProduct(product).isLow(store);
+    public boolean isUnderMin(int storeID, int productID) {
+        return getProduct(productID).isLow(storeID);
     }
 
-    public int getAmountInStore(int store, int productID) {
-        if (!storeIds.contains(store))
-            throw new IllegalArgumentException("Store " + store + " is not registered in the system");
+    public int getAmountInStore(int storeID, int productID) {
+        if (!storeIds.contains(storeID))
+            throw new IllegalArgumentException("Store " + storeID + " is not registered in the system");
         Product p = getProduct(productID);
-        return p.getInStore(store)+p.getInWarehouse(store);
+        return p.getInStore(storeID)+p.getInWarehouse(storeID);
     }
 
     public List<StockReport> getStockReport(List<Integer> stores, List<Integer> categoryIDs) {
@@ -491,6 +488,66 @@ public class InventoryController {
             }
         }
         return stock;
+    }
+
+
+
+    public void deleteCategory(int catID) {
+        Category categoryToRemove = categories.get(catID);
+        if (categoryToRemove==null)
+            throw new IllegalArgumentException("There is no category with id " + catID);
+        if (!categoryToRemove.getSubcategories().isEmpty())
+            throw new IllegalArgumentException("Cannot delete a category that has subcategories");
+        if (!categoryToRemove.getAllProductsInCategory().isEmpty())
+            throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
+        categoryToRemove.changeParentCategory(null);
+        categories.remove(catID);
+    }
+
+    public Product changeProductMin(int store, int product, int min) {
+        Product p = getProduct(product);
+        p.changeProductMin(store, min);
+        return p;
+    }
+
+    public Product changeProductTarget(int store, int product, int target) {
+        Product p = getProduct(product);
+        p.changeProductTarget(store, target);
+        return p;
+    }
+
+    private int getAmountForOrder(int storeID, int productID) { //Periodically
+        return getProduct(productID).getAmountForOrder(storeID);
+    }
+
+    private Map<Integer, Integer> getAmountsForMinOrders(Product product) {
+        Map<Integer, Integer> amounts = new HashMap<>();
+        int amount;
+        for (int storeID: product.getStoreIDs()) {
+            amount = product.getAmountForOrder(storeID);
+            if (amount>0)
+                amounts.put(storeID, amount);
+        }
+        return amounts;
+    }
+
+    //needs to be called every morning from service by some kind of trigger
+    public List<Order> getOrdersOfTomorrow() throws Exception {
+        Map<Integer, Map<Integer,Integer>> thingsToOrder = new HashMap<>(); // <productID, <storeID, amount>>
+        Map<Integer, Integer> amounts;
+        for (Product product: products.values()) {
+            amounts = getAmountsForMinOrders(product);
+            if (amounts.size()>0)
+                thingsToOrder.put(product.getId(), amounts);
+        }
+        List<Order> orders = supplierController.createAllOrders(thingsToOrder); //orders we print on screen (=order to issue from suppliers) (new orders and edited order)
+        //document every order we print on screen (new orders or edit amount of existed orders)
+        for (Order order: orders) {
+            for (OrderItem orderItem: order.getOrderItems()) {
+                getProduct(orderItem.getProductId()).addDelivery(order.getId(), order.getStoreID(), orderItem.getQuantity());
+            }
+        }
+        return orders;
     }
 
     private void addCategoriesForTests () {
@@ -587,58 +644,21 @@ public class InventoryController {
         Date yesterday = new Date(); yesterday.setHours(-24);
         Date today = new Date();
 
-        reportDefectiveForTest(4,2,10, 23, "", Defect.Expired, threeDaysAgo);
-        reportDefectiveForTest(4,6,11, 23, "", Defect.Expired, threeDaysAgo);
-        reportDefectiveForTest(4,3,3, 23, "", Defect.Expired, twoDaysAgo);
-        reportDefectiveForTest(5,2,2, 23, "", Defect.Expired, yesterday);
-        reportDefectiveForTest(5,2,6, 23, "", Defect.Expired, today);
+        reportDefectiveForTest(4,2,10, 23, "", Defect.Expired, threeDaysAgo, false);
+        reportDefectiveForTest(4,6,11, 23, "", Defect.Expired, threeDaysAgo, false);
+        reportDefectiveForTest(4,3,3, 23, "", Defect.Expired, twoDaysAgo, true);
+        reportDefectiveForTest(5,2,2, 23, "", Defect.Expired, yesterday, true);
+        reportDefectiveForTest(5,2,6, 23, "", Defect.Expired, today, false);
 
-        reportDefectiveForTest(4,4,10, 24, "broken spout", Defect.Damaged, threeDaysAgo);
-        reportDefectiveForTest(4,4,11, 2, "fell on floor", Defect.Damaged, threeDaysAgo);
-        reportDefectiveForTest(4,1,3, 3, "the dog ate it", Defect.Damaged, twoDaysAgo);
-        reportDefectiveForTest(4,9,2, 23, "alarm didn't go off", Defect.Damaged, yesterday);
-        reportDefectiveForTest(4,2,6, 23, "very sour", Defect.Damaged, today);
+        reportDefectiveForTest(4,4,10, 24, "broken spout", Defect.Damaged, threeDaysAgo, true);
+        reportDefectiveForTest(4,4,11, 2, "fell on floor", Defect.Damaged, threeDaysAgo, true);
+        reportDefectiveForTest(4,1,3, 3, "the dog ate it", Defect.Damaged, twoDaysAgo, false);
+        reportDefectiveForTest(4,9,2, 23, "alarm didn't go off", Defect.Damaged, yesterday, false);
+        reportDefectiveForTest(4,2,6, 23, "very sour", Defect.Damaged, today, true);
     }
 
-    private void reportDefectiveForTest(int storeID, int productID, int amount, int employeeID, String description, Defect defect, Date date) {
+    private void reportDefectiveForTest(int storeID, int productID, int amount, int employeeID, String description, Defect defect, Date date, boolean inWarehouse) {
         Product product = getProduct(productID);
-        product.reportDefectiveForTest(storeID, amount, employeeID, description, defect, date);
-    }
-
-    public void deleteCategory(int catID) {
-        Category categoryToRemove = categories.get(catID);
-        if (categoryToRemove==null)
-            throw new IllegalArgumentException("There is no category with id " + catID);
-        if (!categoryToRemove.getSubcategories().isEmpty())
-            throw new IllegalArgumentException("Cannot delete a category that has subcategories");
-        if (!categoryToRemove.getAllProductsInCategory().isEmpty())
-            throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
-        categoryToRemove.changeParentCategory(null);
-        categories.remove(catID);
-    }
-
-    public Product changeProductMin(int store, int product, int min) {
-        Product p = getProduct(product);
-        p.changeProductMin(store, min);
-        return p;
-    }
-
-    public Product changeProductTarget(int store, int product, int target) {
-        Product p = getProduct(product);
-        p.changeProductTarget(store, target);
-        return p;
-    }
-
-    private int getAmountForOrder(int storeID, int productID) { //Periodically
-        return getProduct(productID).getAmountForOrder(storeID);
-    }
-
-    private void ordersOnTheWay(int storeID) {
-        //daily, check what routine orders are otw
-        supplierController.getOrdersOnTheWay(storeID);
-    }
-
-    public Category getCategory(int categoryID) {
-        return categories.get(categoryID);
+        product.reportDefectiveForTest(storeID, amount, employeeID, description, defect, date, inWarehouse);
     }
 }

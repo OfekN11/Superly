@@ -1,6 +1,5 @@
 package PresentationLayer;
 
-import Domain.BusinessLayer.SupplierController;
 import Domain.ServiceLayer.SupplierService;
 import Domain.ServiceLayer.SupplierObjects.*;
 import Globals.Pair;
@@ -20,12 +19,6 @@ public class BackendController {
     private SupplierService supplierService ;
     private InventoryService inventoryService = new InventoryService();
 
-    // TODO: 07/05/2022  //For testing
-    /*
-    public SupplierController getController(){
-        return supplierService.getController();
-    }
-     */
 
     public BackendController(){
         this.supplierService = new SupplierService();
@@ -43,11 +36,6 @@ public class BackendController {
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
-    }
-
-    public boolean updateSupplierID(int supplierID, int input) throws Exception {
-        Result<Boolean> result = supplierService.updateSupplierID(supplierID, input);
-        return getValueFromBooleanResult(result);
     }
 
     public boolean updateSupplierBankNumber(int supplierID, int input) throws Exception {
@@ -133,9 +121,11 @@ public class BackendController {
         return result.getValue();
     }
 
-    public boolean order(int supplierId) throws Exception {
-        Result<Boolean> result = supplierService.order(supplierId);
-        return getValueFromBooleanResult(result);
+    public Integer order(int supplierId, int storeId) throws Exception {
+        Result<Integer> result = supplierService.order(supplierId, storeId);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
     public boolean addItemToOrder(int supplierID, int orderId, int itemID, int quantity) throws Exception {
@@ -143,9 +133,11 @@ public class BackendController {
         return getValueFromBooleanResult(result);
     }
 
-    public boolean addSupplier(int id, String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String, String>> contacts, ArrayList<String> manufacturers) throws Exception {
-        Result<Boolean> result = supplierService.addSupplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers);
-        return getValueFromBooleanResult(result);
+    public Integer addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String, String>> contacts, ArrayList<String> manufacturers) throws Exception {
+        Result<Integer> result = supplierService.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
 
     public boolean removeSupplier(int id) throws Exception {
@@ -175,8 +167,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public boolean addItemToAgreement(int supplierID, int id, String name, String manufacturer, float pricePerUnit, Map<Integer, Integer> bulkMap) throws Exception {
-        Result<Boolean> result = supplierService.addItemToAgreement(supplierID, id, name, manufacturer, pricePerUnit, bulkMap);
+    public boolean addItemToAgreement(int supplierID, int id, int idBySupplier, String name, String manufacturer, float pricePerUnit, Map<Integer, Integer> bulkMap) throws Exception {
+        Result<Boolean> result = supplierService.addItemToAgreement(supplierID, id, idBySupplier, name, manufacturer, pricePerUnit, bulkMap);
         return getValueFromBooleanResult(result);
     }
 
@@ -388,7 +380,7 @@ public class BackendController {
         return inventoryService.getCategory(categoryID);
     }
 
-    public Result<Double> buyItems(int storeID, int productID, int amount){
+    public Result<Pair<Double, String>> buyItems(int storeID, int productID, int amount){
         return inventoryService.buyItems(storeID, productID, amount);
     }
 
@@ -404,12 +396,12 @@ public class BackendController {
         return inventoryService.isUnderMin(store, product);
     }
 
-    public Result<DefectiveItemReport> reportDamaged(int storeID, int productID, int amount, int employeeID, String description){
-        return inventoryService.reportDamaged(storeID, productID, amount, employeeID, description);
+    public Result<Pair<DefectiveItemReport, String>> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse){
+        return inventoryService.reportDamaged(storeID, productID, amount, employeeID, description, inWarehouse);
     }
 
-    public Result<DefectiveItemReport> reportExpired(int storeID, int productID, int amount, int employeeID, String description){
-        return inventoryService.reportExpired(storeID, productID, amount, employeeID, description);
+    public Result<Pair<DefectiveItemReport, String>> reportExpired(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse){
+        return inventoryService.reportExpired(storeID, productID, amount, employeeID, description, inWarehouse);
     }
 
     public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(Date start, Date end, List<Integer> storeIDs){

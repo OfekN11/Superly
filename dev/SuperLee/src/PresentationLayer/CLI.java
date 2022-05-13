@@ -253,7 +253,7 @@ public class CLI {
             return;
         }
 
-        Result<Boolean> r = service.order(supplierID); // Result<Boolean> r = service.order(supplierID, input);
+        Result<Integer> r = service.order(supplierID, 1); // Result<Boolean> r = service.order(supplierID, input);
 
         if(r.isError()){
             System.out.println(r.getError());
@@ -454,7 +454,7 @@ public class CLI {
                 }
             }
 
-            Result<Boolean> result = service.addSupplier(id, name, bankNumber, address, payingAgreement, contacts, manufacturers);
+            Result<Integer> result = service.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
 
             if(result.isOk()){
                 System.out.println("The new supplier was added successfully to the data base.\n\n");
@@ -568,7 +568,7 @@ public class CLI {
 
                 switch (input){
                     case 1 : {
-                        supplierID = editID(supplierID);
+                        //supplierID = editID(supplierID);
                         correctInput = true;
                         break;
                     }
@@ -628,6 +628,7 @@ public class CLI {
 
     }
 
+    /*
     private int editID(int supplierID){
         int input, newID = -1;
         boolean correctInput = false;
@@ -658,6 +659,7 @@ public class CLI {
         return newID;
 
     }
+     */
 
     private void editBunkNumber(int supplierID){
         int input;
@@ -1062,7 +1064,7 @@ public class CLI {
                 i++;
             }
 
-            Result<Boolean> r = service.addItemToAgreement(supplierID, id, name, manufacturer, pricePerUnit, bulkMap);
+            Result<Boolean> r = service.addItemToAgreement(supplierID, id, 1, name, manufacturer, pricePerUnit, bulkMap);
 
             if(r.isOk()){
                 System.out.println("The new Item was added successfully.");

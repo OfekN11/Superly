@@ -1,12 +1,15 @@
 package PresentationLayer;
 
+import Domain.BusinessLayer.Supplier.Contact;
 import Domain.BusinessLayer.SupplierController;
+import Domain.PersistenceLayer.Controllers.ContactDAO;
 import Globals.Pair;
 import PresentationLayer.Screens.MainMenu;
 import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
 import Domain.ServiceLayer.SupplierService;
 import Domain.BusinessLayer.Supplier.Order;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,16 +17,21 @@ public class Main {
     public static void main(String[] args) {
 
 
-        BackendController controller = new BackendController(initWithData());
-        new Thread(new MainMenu(controller)).start();
+        ContactDAO dao = new ContactDAO();
+        try {
+            dao.addContact(1, new Contact("name", "0508644197"));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        //BackendController controller = new BackendController(initWithData());
+        //new Thread(new MainMenu(controller)).start();
 
         /*
         System.out.println("Choose 1 for init with data or 2 for init with no data: ");
         int input = scan.nextInt();
         scan.nextLine();
         CLI cli = new CLI();
-
-
         switch (input) { // temporary
             case 1 : {
                 initWithData(cli);
@@ -32,9 +40,7 @@ public class Main {
                 System.out.println("Init without data");
                 cli.init();
             }
-
         }
-
          */
 
 
@@ -60,28 +66,28 @@ public class Main {
         contacts.add(new Pair<>("Avi", "086475421"));
         ArrayList<String> manufacturers = new ArrayList<>();
         manufacturers.add("Osem") ; manufacturers.add("Elit");
-        service.addSupplier(1, "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
-        service.addSupplier(2, "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
+        service.addSupplier( "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
+        service.addSupplier( "Avi", 123456, "Beer sheva" , "check", contacts, manufacturers);
 
         service.addAgreement(1 ,1 , "2 4 5");
 
 
         ArrayList<String> items = new ArrayList<>();
-        items.add("1 , bamba , Osem , 5 , 100 , 20 , 200 , 50 ");
-        items.add("2 , Halva , Elit , 10 , 100 , 20 , 200 , 50");
-        items.add("3 , Chocolate , Elit , 10 , 100 , 20 , 200 , 50 ");
+        items.add("1 , 1,  bamba , Osem , 5 , 100 , 20 , 200 , 50 ");
+        items.add("2 , 2, Halva , Elit , 10 , 100 , 20 , 200 , 50");
+        items.add("3 , 3, Chocolate , Elit , 10 , 100 , 20 , 200 , 50 ");
         service.addAgreementItems(1, items);
-        service.order(1);
+        service.order(1, 1);
 
 
         ArrayList<String> itemsToOrder = new ArrayList<>();
-        itemsToOrder.add("1");  itemsToOrder.add("bamba");   itemsToOrder.add("100");  itemsToOrder.add("2");  itemsToOrder.add("Halva");  itemsToOrder.add("50");
+        itemsToOrder.add("1"); itemsToOrder.add("1");  itemsToOrder.add("100");  itemsToOrder.add("2");  itemsToOrder.add("2");  itemsToOrder.add("50");
         service.addItemsToOrder(1, 1, itemsToOrder);
 
         /*
         service.addAgreement(2 ,2 , "2");
         ArrayList<String> items2 = new ArrayList<>();
-        items2.add("1 , bamba , Osem , 4 , 100 , 20 , 200 , 50 ");
+        items2.add("1 ,1,  bamba , Osem , 4 , 100 , 20 , 200 , 50 ");
         service.addAgreementItems(2, items2);
         service.order(2);
         service.addItemsToOrder(2, 2, itemsToOrder);

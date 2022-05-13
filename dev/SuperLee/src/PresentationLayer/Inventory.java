@@ -3,6 +3,7 @@ package PresentationLayer;
 import Domain.ServiceLayer.InventoryService;
 import Domain.ServiceLayer.InventoryObjects.*;
 import Domain.ServiceLayer.Result;
+import Globals.Pair;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -423,6 +424,8 @@ public class Inventory {
 
     private static void reportExpired() {
         int store = getStoreID();
+        System.out.println("Please enter 0 for report in warehouse or any other number for report in store");
+        int inWarehouse = scanner.nextInt();
         System.out.println("Which product is expired? (insert ID)");
         int productID = scanner.nextInt();
         System.out.println("How much of the product is expired?");
@@ -432,13 +435,14 @@ public class Inventory {
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please add a description (not mandatory)");
         String description = scanner.nextLine();
-        Result<DefectiveItemReport> r = is.reportExpired(store, productID, amount, employeeID, description);
+        Result<Pair<DefectiveItemReport, String>> r = is.reportExpired(store, productID, amount, employeeID, description, (inWarehouse==0) ? (true) : (false));
         if (r.isError())
             System.out.println(r.getError());
         else {
-            DefectiveItemReport eir = r.getValue();
+            DefectiveItemReport eir = r.getValue().getFirst();
             System.out.println(eir);
-            isUnderMin(store, productID);
+            if (r.getValue().getSecond()!=null)
+                System.out.println(r.getValue().getSecond());
         }
     }
 
@@ -560,6 +564,8 @@ public class Inventory {
 
     private static void reportDamaged() {
         int store = getStoreID();
+        System.out.println("Please enter 0 for report in warehouse or any other number for report in store");
+        int inWarehouse = scanner.nextInt();
         System.out.println("Which product is damaged? (insert ID)");
         int productID = scanner.nextInt();
         System.out.println("How much of the product is damaged?");
@@ -569,13 +575,14 @@ public class Inventory {
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please describe the damage");
         String description = scanner.nextLine();
-        Result<DefectiveItemReport> r = is.reportDamaged(store, productID, amount, employeeID, description);
+        Result<Pair<DefectiveItemReport, String>> r = is.reportDamaged(store, productID, amount, employeeID, description, (inWarehouse==0) ? (true) : (false));
         if (r.isError())
             System.out.println(r.getError());
         else {
-            DefectiveItemReport dir = r.getValue();
+            DefectiveItemReport dir = r.getValue().getFirst();
             System.out.println(dir);
-            isUnderMin(store, productID);
+            if (r.getValue().getSecond()!=null)
+                System.out.println(r.getValue().getSecond());
         }
     }
 
@@ -1085,12 +1092,13 @@ public class Inventory {
         System.out.println("Please insert amount of product you would like to buy");
         int amount = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<Double> r = is.buyItems(storeID, productId, amount);
+        Result<Pair<Double, String>> r = is.buyItems(storeID, productId, amount);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            System.out.println("Purchase successful! Total price is " + round(r.getValue()) + "NIS");
-            isUnderMin(storeID, productId);
+            System.out.println("Purchase successful! Total price is " + round(r.getValue().getFirst()) + "NIS");
+            if (r.getValue().getSecond()!=null)
+                System.out.println(r.getValue().getSecond());
         }
     }
 

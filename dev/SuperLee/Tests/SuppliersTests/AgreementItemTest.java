@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class AgreementItemTest {
 
-    private AgreementItem item =  new AgreementItem(1, "Bamaba", "Osem", 8.99f, new HashMap()
+    private AgreementItem item =  new AgreementItem(1, 1,"Bamaba", "Osem", 8.99f, new HashMap()
     {{
         put(20, 15);
         put(50, 20);
@@ -20,13 +20,13 @@ public class AgreementItemTest {
     public void setUp(){
         HashMap<Integer, Integer> map = new HashMap<>();
         map.put(20, 15); map.put(50, 20); map.put(100, 30);
-        item = new AgreementItem(1, "Bamaba", "Osem", 8.99f, map);
+        item = new AgreementItem(1, 1,"Bamaba", "Osem", 8.99f, map);
     }
 
     @Test
     public void test_setters(){
         try{
-            item.setId(444);
+            item.setProductId(444);
             item.setName("Bissli");
             item.setManufacturer("Tnuva");
             item.setPrice(51.367f);
@@ -34,7 +34,7 @@ public class AgreementItemTest {
             map.put(1000, 23);
             item.setBulkPrices(map);
 
-            assertEquals(444, item.getId());
+            assertEquals(444, item.getProductId());
             assertEquals("Bissli", item.getName());
             assertEquals("Tnuva", item.getManufacturer());
             assertEquals(51.367f, item.getPricePerUnit());

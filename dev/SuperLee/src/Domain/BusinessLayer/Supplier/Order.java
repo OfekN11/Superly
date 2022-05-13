@@ -10,40 +10,88 @@ public class Order {
 
     private int id;
     private int supplierID;
-    private Date date;
+    private Date creationDate;
     private Date arrivalTime;
     private ArrayList<OrderItem> orderItems;
-
+    private int storeID;
     private static int globalID = 1;
 
 
-    public Order(int daysToArrival, int supplierID){
+    public Order(int daysToArrival, int supplierID, int storeID){
         this.supplierID = supplierID;
         this.id = globalID;
         globalID++;
-        date = new Date();
-        date = Calendar.getInstance().getTime();
+        //creationDate = new Date();
+        creationDate = Calendar.getInstance().getTime();
         this.orderItems = new ArrayList<>();
+        this.storeID = storeID;
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, daysToArrival);
         arrivalTime = cal.getTime();
     }
 
-    public void updateSupplierID(int newId){
-        supplierID = newId;
+    public Order(int daysToArrival, int supplierID, int storeID, OrderItem item){
+        this.supplierID = supplierID;
+        this.id = globalID;
+        globalID++;
+        //creationDate = new Date();
+        creationDate = Calendar.getInstance().getTime();
+        this.orderItems = new ArrayList<>();
+        this.storeID = storeID;
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, daysToArrival);
+        arrivalTime = cal.getTime();
+        orderItems.add(item);
     }
 
-    public void addItem(int id, String name, int quantity, float ppu, int discount, Double finalPrice) throws Exception {
+
+    //For uploading from dal
+    public Order(int id, int supplierId, Date creationDate, Date arrivalTime, int storeID){
+        this.id = id;
+        this.supplierID = supplierId;
+        this.creationDate = creationDate;
+        this.arrivalTime = arrivalTime;
+        globalID++;
+        this.storeID = storeID;
+    }
+
+
+    //copy constructor, create new Id
+    public Order(Order orderArriavalTimePassed) {
+        this.id = globalID;
+        this.supplierID = orderArriavalTimePassed.getSupplierId();
+        this.creationDate = Calendar.getInstance().getTime();
+        this.orderItems = orderArriavalTimePassed.getOrderItems();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 1);
+        arrivalTime = cal.getTime();
+        globalID++;
+        this.storeID = orderArriavalTimePassed.getStoreID();
+    }
+
+    public Order(Order order, ArrayList<OrderItem> orderItems) {
+        this.supplierID = order.getSupplierId();
+        this.creationDate = Calendar.getInstance().getTime();
+        this.orderItems = orderItems;
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 1);
+        arrivalTime = cal.getTime();
+        this.storeID = order.getStoreID();
+    }
+
+
+    public void addItem(int productId, int idBySupplier, String name, int quantity, float ppu, int discount, Double finalPrice) throws Exception {
         if(!changeable()){
             throw new Exception("This order can't be changed!");
         }
-        orderItems.add(new OrderItem(id, name, quantity, ppu, discount, finalPrice));
+        orderItems.add(new OrderItem(productId, idBySupplier,  name, quantity, ppu, discount, finalPrice));
     }
 
     public boolean itemExists(int itemId) {
         for(OrderItem orderItem : orderItems){
-            if(orderItem.getId() == itemId)
+            if(orderItem.getProductId() == itemId)
                 return true;
         }
         return false;
@@ -56,7 +104,7 @@ public class Order {
         }
 
         for(OrderItem orderItem : orderItems){
-            if(orderItem.getId() == itemId){
+            if(orderItem.getProductId() == itemId){
                 orderItems.remove(orderItem);
                 return;
             }
@@ -77,7 +125,7 @@ public class Order {
         }
 
         for(OrderItem item : orderItems){
-            if(item.getId() == id){
+            if(item.getProductId() == id){
                 item.setQuantity(quantity);
                 item.setDiscount(discount);
                 item.setFinalPrice(finalPrice);
@@ -87,20 +135,25 @@ public class Order {
     }
 
     public Date getDate() {
-        return date;
+        return creationDate;
     }
-
+    public int getStoreID() { return storeID; } //WROTE BY AMIR
     public int getId() {
         return id;
     }
 
-    public List<OrderItem> getOrderItems() {
+    public ArrayList<OrderItem> getOrderItems() {
         return orderItems;
     }
 
     public boolean changeable(){
         return arrivalTime.after(Calendar.getInstance().getTime());
     }
+
+    public boolean passed(){
+        return arrivalTime.before(Calendar.getInstance().getTime());
+    }
+
 
     public int getSupplierId() {
         return supplierID;
@@ -115,15 +168,23 @@ public class Order {
 
     private OrderItem getOrderItem(int productID) {
         for(OrderItem orderItem : orderItems) {
-            if (orderItem.getId() == productID) {
+            if (orderItem.getProductId() == productID) {
                 return orderItem;
             }
         }
         return null;
     }
 
-    public int getDaysUntillOrder(Date currDate) {
+    public int getDaysUntilOrder(Date currDate) {
         long diff = arrivalTime.getTime() - currDate.getTime();
         return (int) (diff / (1000*60*60*24));
+    }
+
+    public int getQuantityOfItem(int productId) {
+        for(OrderItem orderItem : orderItems){
+            if(orderItem.getProductId() == productId)
+                return orderItem.getQuantity();
+        }
+        return 0;
     }
 }

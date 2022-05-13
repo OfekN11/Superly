@@ -29,10 +29,12 @@ public class Supplier {
     private final int BY_ORDER  = 2;
     private final int NOT_TRANSPORTING  = 3;
 
+    private static int globalID = 1;
 
 
-    public Supplier(int id, String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts, ArrayList<String> manufacturers){
-        this.id = id;
+    public Supplier(String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts, ArrayList<String> manufacturers){
+        this.id = globalID;
+        globalID++;
         this.name = name;
         this.bankNumber = bankNumber;
         this.address = address;
@@ -44,7 +46,15 @@ public class Supplier {
         this.ordersInTheNext24Hours = new HashMap<>();
         agreement = null;
 
-        //this.agreement = new Agreement();
+    }
+
+    public Supplier(int id, int bankNumber, String address, String name, String payingAgreement){
+        this.id = id;
+        this.name = name;
+        this.bankNumber = bankNumber;
+        this.address = address;
+        this.payingAgreement = payingAgreement;
+        globalID ++;
     }
 
     public int getId() {
@@ -90,6 +100,7 @@ public class Supplier {
         this.bankNumber = bankNumber;
     }
 
+    /*
     public void updateId(int newId) {
         this.id = newId;
         for(Map.Entry<Integer, Order> order : ordersInTheNext24Hours.entrySet()){
@@ -99,6 +110,7 @@ public class Supplier {
             order.getValue().updateSupplierID(newId);
         }
     }
+     */
 
     public void updateName(String newName) {
         this.name = newName;
@@ -140,11 +152,11 @@ public class Supplier {
         agreement.getItem(itemID).setPrice(newPrice);
     }
 
-    public void addItem(int itemId, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+    public void addItem(int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
         agreementExists();
         if(agreement.itemExists(itemId))
             throw new Exception("item with this ID already exists!");
-        agreement.addItem(new AgreementItem(itemId, itemName, itemManu, itemPrice, bulkPrices));
+        agreement.addItem(new AgreementItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices));
         if(!manufacturers.contains(itemManu)){
             manufacturers.add(itemManu);
         }
@@ -268,19 +280,16 @@ public class Supplier {
         return agreement.daysToDelivery();
     }
 
-    public boolean isRoutineAgreement() throws Exception {
-        agreementExists();
-        return agreement instanceof RoutineAgreement;
+    public boolean isRoutineAgreement() {
+        return agreement != null && agreement instanceof RoutineAgreement;
     }
 
-    public boolean isByOrderAgreement() throws Exception {
-        agreementExists();
-        return agreement instanceof ByOrderAgreement;
+    public boolean isByOrderAgreement(){
+        return agreement != null && agreement instanceof ByOrderAgreement;
     }
 
-    public boolean isNotTransportingAgreement() throws Exception {
-        agreementExists();
-        return agreement instanceof NotTransportingAgreement;
+    public boolean isNotTransportingAgreement() {
+        return agreement != null && agreement instanceof NotTransportingAgreement;
     }
 
     public void setDaysOfDelivery(String days) throws Exception{
@@ -368,70 +377,19 @@ public class Supplier {
         return agreement != null;
     }
 
-    public void addNewOrder() throws Exception {
+    public Order addNewOrder(int storeId) throws Exception {
         agreementExists();
 
-        Order order = new Order(agreement.daysToDelivery(), id);
+        Order order = new Order(agreement.daysToDelivery(), id, storeId);
         ordersToBe.put(order.getId(), order);
+
+        if(isRoutineAgreement()){
+            ( (RoutineAgreement) agreement).setLastOrderId(order.getId());
+        }
+
+        return order;
     }
 
-
-    /*
-    public void addItemsToOrder(int orderId, List<String> itemsString) throws Exception {
-        if(!orders.containsKey(orderId)){
-            throw new Exception("This order Id already exists!");
-        }
-        ArrayList<String> itemsFullInfo = new ArrayList<>();
-        for(int i = 0; i < itemsString.size(); i+=3 ){
-
-            if(!itemsString.get(i).matches("\\d+"))  //if its a number
-                throw new Exception("You gave bad ID!");
-            if(i >= itemsString.size())
-                throw new Exception("Something is missing");
-
-            int currId = Integer.parseInt(itemsString.get(i));
-            if(!agreement.itemExists(currId))
-                throw new Exception(String.format("Item with ID: %d does not Exists!", currId));
-
-            //ID
-            AgreementItem currItem = agreement.getItem(currId);
-            itemsFullInfo.add(String.valueOf(currItem.getId()));
-
-            if(!itemsString.get(i+2).trim().equals(currItem.getName()))
-                throw new Exception(String.format("Item with name: %s does not match the id you gave!", itemsString.get(i+2)));
-
-            //Name
-            itemsFullInfo.add(currItem.getName());
-
-            //Quantity
-            int quantity = Integer.parseInt(itemsString.get(i+2));
-            itemsFullInfo.add(itemsString.get(i+2));
-
-            //PPU
-            itemsFullInfo.add(String.valueOf(currItem.getPricePerUnit()));
-
-            //Discount
-            int discount = agreement.getItem(currId).getDiscount(quantity);
-            itemsFullInfo.add(String.valueOf(discount));
-
-            //FinalPrice
-            itemsFullInfo.add(String.valueOf(agreement.getItem(currId).calculateTotalPrice(quantity)));
-
-        }
-
-        //Finish the first loop to make sure all the items are Ok!
-        for(int i = 0; i < itemsFullInfo.size(); i+=6){
-            int id = Integer.parseInt(itemsFullInfo.get(i));
-            String name = itemsFullInfo.get(i+1);
-            int quantity = Integer.parseInt(itemsFullInfo.get(i+2));
-            float ppu = Float.parseFloat(itemsFullInfo.get(i+3));
-            int discount = Integer.parseInt(itemsFullInfo.get(i+4));
-            float finalPrice = Float.parseFloat(itemsFullInfo.get(i+5));
-            orders.get(orderId).addItem(id, name, quantity, ppu, discount, finalPrice);
-        }
-
-    }
-     */
 
     public void addOneItemToOrder(int orderId, int itemId, int itemQuantity) throws Exception {
         agreementExists();
@@ -458,7 +416,7 @@ public class Supplier {
         float ppu = currItem.getPricePerUnit();
         int discount = agreement.getItem(itemId).getDiscount(itemQuantity);
         Double finalPrice = agreement.getItem(itemId).calculateTotalPrice(itemQuantity);
-        ordersToBe.get(orderId).addItem(itemId, agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice);
+        ordersToBe.get(orderId).addItem(itemId, agreement.getItem(itemId).getIdBySupplier() , agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice);
 
     }
 
@@ -532,6 +490,7 @@ public class Supplier {
         return ordersToBe.containsKey(id) || ordersInTheNext24Hours.containsKey(id) || finishedOrders.containsKey(id);
     }
 
+    /*
     public ArrayList<Order> itemInOrderForTheNextTwoDays(int itemID) {
         ArrayList<Order> result = new ArrayList<>();
         if(!agreement.isTransporting())
@@ -551,12 +510,14 @@ public class Supplier {
         }
         return result;
     }
+     */
 
     public Double getToatalPriceForItem(int itemId, int quantity) throws Exception {
         agreementExists();
         return agreement.getOrderPrice(itemId, quantity);
     }
 
+    /*
     public Order getOrderForThisAmount(int orderId, int productID, int amount) throws Exception {
         if(!orderExists(orderId))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
@@ -567,10 +528,42 @@ public class Supplier {
         }
         return ordersToBe.get(orderId);
     }
+     */
 
     public ArrayList<Order> getFutureOrders() {
         ArrayList<Order> result = new ArrayList<>();
         result.addAll(ordersToBe.values());    //This should be the "future" orders
         return result;
+    }
+
+    public ArrayList<Order> getOrdersForTomorrow() {
+
+        //check all orders dates and return the ones for tomorrow
+        ArrayList<Order> orders = new ArrayList<>();
+        for(Order order : ordersToBe.values()){
+            if(order.getDaysUntilOrder(Calendar.getInstance().getTime()) == 1){
+                orders.add(order);
+            }
+        }
+        // also move them to the other list (from to be to 24 hours)
+
+        return null;
+    }
+
+    public Order orderForThisAMount(int productId, int quantity){
+        //check if there is an order for this item, if there is add to this order
+        // if not create new order and return it
+        return null;
+    }
+
+    public int getLastOrderId() {
+        if(isRoutineAgreement()){
+            return ((RoutineAgreement)agreement).getLastOrderId();
+        }
+        return -1;
+    }
+
+    public boolean itemExists(int productId) {
+        return agreement.itemExists(productId);
     }
 }

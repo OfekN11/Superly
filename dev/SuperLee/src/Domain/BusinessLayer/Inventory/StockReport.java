@@ -43,10 +43,13 @@ public class StockReport {
     public int getTargetAmountInStore() { return targetAmountInStore; }
     public Map<Integer, Integer> getAmountInDeliveries() { return amountInDeliveries; }
 
-    public void removeItemsFromStore(int amount) {
-        if (amountInStore+amountInWarehouse-amount<0)
-            throw new IllegalArgumentException("Can not buy or remove more items than in the store - please check amount");
-        amountInStore-=amount;
+    public void removeItemsFromStore(int amount, boolean inWarehouse) {
+        if ((!inWarehouse && amountInStore-amount<0) || (inWarehouse && amountInWarehouse-amount<0))
+            throw new IllegalArgumentException("Can not buy or remove more items than in stock - please check amount");
+        if (inWarehouse)
+            amountInWarehouse-=amount;
+        else
+            amountInStore-=amount;
     }
 
     public void moveItems(int amount) {
@@ -65,9 +68,7 @@ public class StockReport {
         amountInStore+=amount;
     }
 
-    public boolean isLow() {
-        return amountInStore+amountInWarehouse<minAmountInStore;
-    }
+    public boolean isLow() { return minAmountInStore > getTotalAmount(); }
 
     public void changeMin(int min) {
         if (min<1)
@@ -99,7 +100,8 @@ public class StockReport {
     public int getAmountForOrder() {
         return targetAmountInStore - getTotalAmount();
     }
-    public boolean gotUnderMinimum(int amount) {
-        return (minAmountInStore > getTotalAmount()) && (minAmountInStore <= getTotalAmount()+amount);
+
+    public void addDelivery(int orderID, int amount) {
+        amountInDeliveries.put(orderID, amount);
     }
 }
