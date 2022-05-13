@@ -28,6 +28,7 @@ class SupplierTest {
     }
 
 
+    /*
     @Test
     void isTransporting() {
         try {
@@ -53,4 +54,6 @@ class SupplierTest {
 
 
     }
+
+     */
 }

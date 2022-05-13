@@ -1,7 +1,6 @@
 package Domain.PersistenceLayer.Controllers;
 
 import Domain.BusinessLayer.Supplier.Contact;
-import Domain.BusinessLayer.Supplier.Supplier;
 import Domain.PersistenceLayer.Abstract.DAO;
 
 import java.sql.Connection;
@@ -11,24 +10,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ContactDAO extends DAO {
+public class ManufacturerDAO extends DAO {
 
-    private static final ArrayList<Contact> contacts = new ArrayList<>();
 
-    public ContactDAO() {
-        super("SupplierContacts");
+    private static final ArrayList<String> manufacturers = new ArrayList<>();
+
+
+
+    public ManufacturerDAO() {
+        super("SupplierToManufacturer");
     }
 
 
-    public void addContact(int supplierId, Contact contact) {
+
+
+    public void addManufacturer(int id, String manufacturer) {
         try {
-            insert(Arrays.asList( String.valueOf(supplierId) , contact.getName() ,contact.getPhone()));
+            insert(Arrays.asList( String.valueOf(id) , manufacturer));
         } catch (SQLException throwables) {
             System.out.println(throwables.getMessage());
         }
     }
 
-    public void removeContact(int supplierId, String name) {
+
+    public void removeManufacturer(int supplierId, String name) {
         try {
             remove(Arrays.asList(1 , 2 ) ,Arrays.asList(String.valueOf(supplierId) , name) );
         } catch (SQLException throwables) {
@@ -36,21 +41,19 @@ public class ContactDAO extends DAO {
         }
     }
 
-    // TODO: 13/05/2022  How to check if contact already exists in the list??, in this case we don't need to upload him
-    public ArrayList<Contact> getAllSupplierContact(int supID) {
-        ArrayList<Contact> output = new ArrayList<>();
+    // TODO: 13/05/2022  How to check if manu already exists in the list??, in this case we don't need to upload him
+    public ArrayList<String> getAllSupplierManufacturer(int supID) {
+        ArrayList<String> output = new ArrayList<>();
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection, String.valueOf(supID));
             while (instanceResult.next()) {
-                Contact contact = new Contact(instanceResult.getString(2), instanceResult.getString(3));
-                output.add(contact);
-                contacts.add(contact);
+                String manufacturer = instanceResult.getString(2);
+                output.add(manufacturer);
+                manufacturers.add(manufacturer);
             }
         } catch (Exception throwables) {
             System.out.println(throwables.getMessage());
         }
         return output;
     }
-
-
 }

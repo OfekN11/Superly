@@ -83,14 +83,15 @@ public class Supplier {
         return contacts.remove(contact);
     }
 
+    /*
     public void addAgreement(int agreementType, String agreementDays) throws Exception {
-        //"[0-9]+"  checks if all the agreement days chars are digits
         if(agreementType > NOT_TRANSPORTING || agreementType < ROUTINE)
             throw new Exception("Invalid agreement type!");
-        /*if( !agreementDays.matches("[0-9]+"))
-            throw new Exception("Invalid agreement days!");*/
         createAgreement(agreementType, agreementDays);
     }
+
+     */
+
 
     public void updateAddress(String address) {
         this.address = address;
@@ -100,31 +101,24 @@ public class Supplier {
         this.bankNumber = bankNumber;
     }
 
-    /*
-    public void updateId(int newId) {
-        this.id = newId;
-        for(Map.Entry<Integer, Order> order : ordersInTheNext24Hours.entrySet()){
-            order.getValue().updateSupplierID(newId);
-        }
-        for(Map.Entry<Integer, Order> order : ordersToBe.entrySet()){
-            order.getValue().updateSupplierID(newId);
-        }
-    }
-     */
 
     public void updateName(String newName) {
         this.name = newName;
     }
 
+    /*
+
     public void addContact(Contact contact) {
         contacts.add(contact);
     }
+    */
 
     public void changePayingAgreement(String payingAgreement) {
         this.payingAgreement = payingAgreement;
         //If we add this payingAgreement to the agreement,  need to update there too
     }
 
+    /*
     public void addManufacturer(String manufacturer) throws Exception {
         if(manufacturers.contains(manufacturer)){
             throw new Exception("This manufacturer already exists in the system!");
@@ -132,6 +126,8 @@ public class Supplier {
 
         manufacturers.add(manufacturer);
     }
+
+     */
 
     public String getName() {
         return name;
@@ -152,6 +148,7 @@ public class Supplier {
         agreement.getItem(itemID).setPrice(newPrice);
     }
 
+    /*
     public void addItem(int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
         agreementExists();
         if(agreement.itemExists(itemId))
@@ -161,6 +158,7 @@ public class Supplier {
             manufacturers.add(itemManu);
         }
     }
+     */
 
     public void deleteItem(int itemId) throws Exception {
         agreementExists();
@@ -173,10 +171,13 @@ public class Supplier {
         }
     }
 
+    /*
     public boolean isTransporting() throws Exception {
         agreementExists();
         return agreement.isTransporting();
     }
+
+     */
 
     /*
     public void updateItemId(int oldItemId, int newItemId) throws Exception {
@@ -206,6 +207,8 @@ public class Supplier {
         }
     }
 
+
+    /*
     public void addAgreementItems(List<String> itemsString) throws Exception {
         agreementExists();
         agreement.setItemsFromString(itemsString);
@@ -216,13 +219,17 @@ public class Supplier {
             manufacturers.add(item.getManufacturer());
         }
     }
+     */
 
+    /*
     public void updateAgreementType( int agreementType, String agreementDays) throws Exception {
         agreementExists();
         List<AgreementItem> items = agreement.getItems();
         createAgreement(agreementType, agreementDays);
         agreement.setItems(items);
     }
+
+
 
     private void createAgreement(int agreementType, String agreementDays) throws Exception {
         switch(agreementType){
@@ -240,6 +247,8 @@ public class Supplier {
                 break;
         }
     }
+
+     */
 
     public List<Integer> getDaysOfDelivery() {
         if(agreement instanceof RoutineAgreement){
@@ -337,6 +346,7 @@ public class Supplier {
         return contacts;
     }
 
+    /*
     public void removeContact(String name) throws Exception {
         for(Contact c : contacts){
             if(Objects.equals(name, c.getName())){
@@ -373,9 +383,14 @@ public class Supplier {
         manufacturers.remove(name);
     }
 
+     */
+
+    /*
     public boolean hasAgreement(){
         return agreement != null;
     }
+
+     */
 
     public Order addNewOrder(int storeId) throws Exception {
         agreementExists();
@@ -566,4 +581,17 @@ public class Supplier {
     public boolean itemExists(int productId) {
         return agreement.itemExists(productId);
     }
+
+    public int getAgreementType() {
+        if(isRoutineAgreement())
+            return ROUTINE;
+        else if(isByOrderAgreement())
+            return BY_ORDER;
+        else if(isNotTransportingAgreement())
+            return NOT_TRANSPORTING;
+        else
+            return -1;
+    }
+
+
 }

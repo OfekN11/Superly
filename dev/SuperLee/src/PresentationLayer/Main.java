@@ -1,32 +1,44 @@
 package PresentationLayer;
 
 import Domain.BusinessLayer.Supplier.Contact;
-import Domain.BusinessLayer.SupplierController;
-import Domain.PersistenceLayer.Controllers.ContactDAO;
+import Domain.BusinessLayer.Supplier.Supplier;
+import Domain.PersistenceLayer.Controllers.ManufacturerDAO;
+import Domain.PersistenceLayer.Controllers.SuppliersDAO;
 import Globals.Pair;
-import PresentationLayer.Screens.MainMenu;
-import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
 import Domain.ServiceLayer.SupplierService;
-import Domain.BusinessLayer.Supplier.Order;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
 
+        //OrderDAO orderDAO = new OrderDAO();
 
-        ContactDAO dao = new ContactDAO();
+
+        /*
+        ArrayList<Contact> contacts = new ArrayList<>();
+        contacts.add(new Contact("Yael", "0508647894"));      contacts.add(new Contact("Avi", "086475421"));
+        ArrayList<String> manufacturers = new ArrayList<>();
+        manufacturers.add("Osem") ; manufacturers.add("Elit");
+        suppliersDAO.addSupplier(new Supplier("Avi", 123456, "Beer sheva" , "check", contacts, manufacturers), contacts, manufacturers);
+        suppliersDAO.addSupplierManufacturer(1, "Osem");
+        suppliersDAO.addSupplierManufacturer(1, "Elit");
+         */
+        SuppliersDAO suppliersDAO = new SuppliersDAO();
         try {
-            dao.addContact(1, new Contact("name", "0508644197"));
-        } catch (SQLException throwables) {
+            suppliersDAO.addSupplier(new Supplier("Avi", 123456, "Beer sheva" , "check", null, null),null,null);
+            suppliersDAO.addAgreement(1 ,1 , "2 4 5");
+        } catch (Exception throwables) {
             throwables.printStackTrace();
         }
 
+        suppliersDAO.removeSupplier(1);
+
+
         //BackendController controller = new BackendController(initWithData());
         //new Thread(new MainMenu(controller)).start();
-
         /*
         System.out.println("Choose 1 for init with data or 2 for init with no data: ");
         int input = scan.nextInt();
@@ -44,19 +56,8 @@ public class Main {
          */
 
 
-        /*
-        BackendController controller = new BackendController(initWithData());
-        SupplierController controller1 = controller.getController();
-        try {
-            var order = controller1.makeOrderBecauseOfMinimum(1, 1, 102);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-
     }
 
-  //private static SupplierService initWithData(CLI cli) {
     private static SupplierService initWithData() {
         System.out.println("Init with data");
         SupplierService service = new SupplierService();
