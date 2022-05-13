@@ -1,10 +1,12 @@
 package Domain.PersistenceLayer.Controllers;
 
 import Domain.BusinessLayer.Supplier.Order;
+import Domain.PersistenceLayer.Abstract.DataMapper;
 
-public class OrderDAO {
+public class OrderDAO extends DataMapper {
 
     public OrderDAO(){
+        super("Order");
 
     }
 

@@ -1,8 +1,6 @@
 package Domain.BusinessLayer;
 
-import Domain.BusinessLayer.Supplier.Contact;
-import Domain.BusinessLayer.Supplier.Order;
-import Domain.BusinessLayer.Supplier.Supplier;
+import Domain.BusinessLayer.Supplier.*;
 import Domain.PersistenceLayer.Controllers.OrderDAO;
 import Domain.PersistenceLayer.Controllers.SuppliersDAO;
 import Globals.Pair;
@@ -18,6 +16,9 @@ public class SupplierController {
     public SupplierController(){
         suppliersDAO = new SuppliersDAO();
         orderDAO = new OrderDAO();
+
+        //maybe add dataBase to save globalId for orders and suppliers and transfer the id to suppliersDAO and OrderDAO
+
     }
 
 
@@ -25,7 +26,7 @@ public class SupplierController {
     public int addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
         ArrayList<Contact> contacts = createContacts(contactPairs);
         Supplier supplier = new Supplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
-        suppliersDAO.addSupplier(supplier);
+        suppliersDAO.addSupplier( supplier.getId() ,supplier);
         return supplier.getId();
     }
 
@@ -70,6 +71,7 @@ public class SupplierController {
         if(!validPhoneNumber(contactPhone))
             throw new Exception("Phone number is Illegal");
         Contact contact = new Contact(contactName, contactPhone);
+        //suppliersDAO.addContact();  //this will go to contactDAO and add.
         suppliersDAO.getSupplier(id).addContact(contact);
     }
 
@@ -370,26 +372,28 @@ public class SupplierController {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        return suppliersDAO.getSupplier(supId).addNewOrder(storeId);
+        Order order = suppliersDAO.getSupplier(supId).addNewOrder(storeId);
+        insertToOrderDAO( order );
+        return order.getId();
     }
 
     public void addItemsToOrder(int supId, int orderId, List<String> itemsString) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        for(int i = 0; i < itemsString.size(); i+=3 ){
+        for(int i = 0; i < itemsString.size(); i+=2 ){
             if(itemsString.size() <= i+2)
                throw new Exception("Some information is missing!");
-            suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId , Integer.parseInt(itemsString.get(i)),Integer.parseInt(itemsString.get(i+1)),  Integer.parseInt(itemsString.get(i+2)));
+            suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId , Integer.parseInt(itemsString.get(i)),Integer.parseInt(itemsString.get(i+1)));
         }
         //suppliers.get(supId).addItemsToOrder(orderId, itemsString);
     }
 
-    public void addItemToOrder(int supId, int orderId, int itemId, int idBySupplier, int itemQuantity) throws Exception {
+    public void addItemToOrder(int supId, int orderId, int itemId, int itemQuantity) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, idBySupplier, itemQuantity);
+        suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity);
     }
 
 
@@ -448,22 +452,13 @@ public class SupplierController {
 
         checkForProductInTomorrowOrders(orderItemMinAmounts, ordersForTomorrow);
 
-
-        // create all the orders required for the min amounts GET THE CHEAPEST ONE!
-        //iterate through all the items and for every item choose the cheapest supplier
-        //create Map<supplierId, List<OrderItem>> for each cheapest supplier we found and create the orders after we found all the suppliers using a new constructor
-        // add a new constructor that gets all the items and put them on his list.
-        // if we found that the cheapest supplier is a routine one, and he has an order tomorrow w need to delete the last order
-        // and replace it with the item that are low in stocks???.  (if we do this, we need to delete the prev order from orderForTomorrow list above.
         //now we have the list of all the orders for low stocks
         createOrderAccordingToCheapestSupplier(orderItemMinAmounts, ordersForTomorrow);
 
-        //combine the arrays and return them tp inventory
+        ArrayList<Order> result = ordersForTomorrow.get("not deletable");
+        result.addAll(ordersForTomorrow.get("deletable"));
 
-        // TODO: 13/05/2022 WHere we insert to dataBase
-        // now we need to send them to the ordersDAO and save in dataBase.
-
-        return null;
+        return result;
     }
 
     private void createOrderAccordingToCheapestSupplier(Map<Integer, Map<Integer, Integer>> updatedQuantity, Map<String, ArrayList<Order>> orders) throws Exception {
@@ -477,23 +472,65 @@ public class SupplierController {
                 if( !checkIfOrderFromThisSupplierAlreadyExists(supplierId, orders, productId, entry.getKey(), entry.getValue()) )
                     createNewOrderForThisProduct(supplierId, productId, entry.getKey(), entry.getValue());
             }
-
         }
-
     }
 
     private boolean checkIfOrderFromThisSupplierAlreadyExists(int supplierId, Map<String, ArrayList<Order>> orders, int productId, int storeId, int quantity) {
-        // checks storeId
-        // update Order that already exists and return false otherwise
-        // deletable = replace the order with new one return true
-        // not deletable = add item to the order  return true
+        ArrayList<Order> deletableOrders = orders.get("deletable");
+        ArrayList<Order> notDeletableOrders = orders.get("not deletable");
+        for(Order order : deletableOrders){
+            if(order.getStoreID() == storeId && order.getSupplierId() == supplierId){
+                OrderItem orderItem = createNewOrderItem(supplierId, productId, quantity);
+                ArrayList<OrderItem> items = new ArrayList<>();
+                items.add(orderItem);
+                Order newOrder = new Order(order, items);
 
-        return true;
+                deletableOrders.remove(order);
+                notDeletableOrders.add(newOrder);
+                deleteOrderFromDAO(order.getId());
+                insertToOrderDAO(newOrder);
+                return true;
+            }
+        }
+
+        for(Order order : notDeletableOrders){
+            if(order.getStoreID() == storeId && order.getSupplierId() == supplierId){
+                OrderItem orderItem = createNewOrderItem(supplierId, productId, quantity);
+                ArrayList<OrderItem> items = order.getOrderItems();
+                items.add(orderItem);
+                Order newOrder = new Order(order, items);
+                notDeletableOrders.remove(order);
+                notDeletableOrders.add(newOrder);
+                updateOrderDAO(newOrder);
+                return true;
+            }
+        }
+        return false;
     }
 
-    private void createNewOrderForThisProduct(int supplierId, int productId, int storeId, int quantity) {
-        // create new order and
 
+
+    private void createNewOrderForThisProduct(int supplierId, int productId, int storeId, int quantity) {
+        Supplier supplier = suppliersDAO.getSupplier(supplierId);
+        OrderItem orderItem  = createNewOrderItem(supplierId, productId, quantity);
+        try {
+            insertToOrderDAO( new Order(supplier.daysToDelivery() , supplierId, storeId, orderItem));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private OrderItem createNewOrderItem(int supplierId, int productId, int quantity) {
+        Supplier supplier = suppliersDAO.getSupplier(supplierId);
+        AgreementItem currItem = null;
+        try {
+            currItem = supplier.getItem(productId);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return new OrderItem( productId, currItem.getIdBySupplier() , currItem.getName() , quantity, currItem.getPricePerUnit(), currItem.getDiscount(quantity), currItem.calculateTotalPrice(quantity));
     }
 
     private int getTheCheapestSupplier(int productId, int quantity) {
@@ -509,8 +546,7 @@ public class SupplierController {
                 }
             }
         }
-        } catch (Exception e) {
-            //will never reach here
+        } catch (Exception e) {               //will never reach here
             System.out.println(e.getMessage());
         }
         return supplierId;
@@ -632,6 +668,20 @@ public class SupplierController {
         return result;
     }
 
+
+
+    private void insertToOrderDAO(Order order) {
+
+    }
+
+    private void deleteOrderFromDAO(int id) {
+
+    }
+
+
+    private void updateOrderDAO(Order newOrder) {
+
+    }
 
 
 }

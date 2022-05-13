@@ -253,7 +253,7 @@ public class CLI {
             return;
         }
 
-        Result<Integer> r = service.order(supplierID); // Result<Boolean> r = service.order(supplierID, input);
+        Result<Integer> r = service.order(supplierID, 1); // Result<Boolean> r = service.order(supplierID, input);
 
         if(r.isError()){
             System.out.println(r.getError());
@@ -284,7 +284,7 @@ public class CLI {
 
             quantity = getInput();
 
-            Result<Boolean> r = service.addItemToOrder(supplierID, orderId, itemID, itemID, quantity);
+            Result<Boolean> r = service.addItemToOrder(supplierID, orderId, itemID, quantity);
 
             if(r.isOk()){
                 System.out.println("Choose:");

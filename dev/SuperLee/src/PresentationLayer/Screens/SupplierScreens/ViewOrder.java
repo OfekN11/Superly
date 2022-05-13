@@ -104,7 +104,7 @@ public class ViewOrder extends Screen {
 
             boolean r = false;
             try {
-                r = controller.addItemToOrder(supplierID, orderId, itemID, idBySupplier, quantity);
+                r = controller.addItemToOrder(supplierID, orderId, itemID, quantity);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
 
@@ -263,7 +263,7 @@ public class ViewOrder extends Screen {
 
             boolean r = false;
             try {
-                r = controller.addItemToOrder(supplierID, orderId, itemID, idBySupplier, quantity);
+                r = controller.addItemToOrder(supplierID, orderId, itemID, quantity);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

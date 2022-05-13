@@ -31,6 +31,22 @@ public class Order {
         arrivalTime = cal.getTime();
     }
 
+    public Order(int daysToArrival, int supplierID, int storeID, OrderItem item){
+        this.supplierID = supplierID;
+        this.id = globalID;
+        globalID++;
+        //creationDate = new Date();
+        creationDate = Calendar.getInstance().getTime();
+        this.orderItems = new ArrayList<>();
+        this.storeID = storeID;
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, daysToArrival);
+        arrivalTime = cal.getTime();
+        orderItems.add(item);
+    }
+
+
     //For uploading from dal
     public Order(int id, int supplierId, Date creationDate, Date arrivalTime, int storeID){
         this.id = id;
@@ -53,7 +69,16 @@ public class Order {
         arrivalTime = cal.getTime();
         globalID++;
         this.storeID = orderArriavalTimePassed.getStoreID();
+    }
 
+    public Order(Order order, ArrayList<OrderItem> orderItems) {
+        this.supplierID = order.getSupplierId();
+        this.creationDate = Calendar.getInstance().getTime();
+        this.orderItems = orderItems;
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 1);
+        arrivalTime = cal.getTime();
+        this.storeID = order.getStoreID();
     }
 
 

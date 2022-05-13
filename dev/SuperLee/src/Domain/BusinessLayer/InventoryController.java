@@ -532,7 +532,7 @@ public class InventoryController {
     }
 
     //needs to be called every morning from service by some kind of trigger
-    public List<Order> getOrdersOfTomorrow() {
+    public List<Order> getOrdersOfTomorrow() throws Exception {
         Map<Integer, Map<Integer,Integer>> thingsToOrder = new HashMap<>(); // <productID, <storeID, amount>>
         Map<Integer, Integer> amounts;
         for (Product product: products.values()) {

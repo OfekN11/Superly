@@ -46,7 +46,15 @@ public class Supplier {
         this.ordersInTheNext24Hours = new HashMap<>();
         agreement = null;
 
-        //this.agreement = new Agreement();
+    }
+
+    public Supplier(int id, int bankNumber, String address, String name, String payingAgreement){
+        this.id = id;
+        this.name = name;
+        this.bankNumber = bankNumber;
+        this.address = address;
+        this.payingAgreement = payingAgreement;
+        globalID ++;
     }
 
     public int getId() {
@@ -369,7 +377,7 @@ public class Supplier {
         return agreement != null;
     }
 
-    public int addNewOrder(int storeId) throws Exception {
+    public Order addNewOrder(int storeId) throws Exception {
         agreementExists();
 
         Order order = new Order(agreement.daysToDelivery(), id, storeId);
@@ -378,11 +386,12 @@ public class Supplier {
         if(isRoutineAgreement()){
             ( (RoutineAgreement) agreement).setLastOrderId(order.getId());
         }
-        return order.getId();
+
+        return order;
     }
 
 
-    public void addOneItemToOrder(int orderId, int itemId,int idBySupplier, int itemQuantity) throws Exception {
+    public void addOneItemToOrder(int orderId, int itemId, int itemQuantity) throws Exception {
         agreementExists();
         if(!agreement.itemExists(itemId))
             throw new Exception(String.format("Item with ID: %d does not Exists!", itemId));
@@ -407,7 +416,7 @@ public class Supplier {
         float ppu = currItem.getPricePerUnit();
         int discount = agreement.getItem(itemId).getDiscount(itemQuantity);
         Double finalPrice = agreement.getItem(itemId).calculateTotalPrice(itemQuantity);
-        ordersToBe.get(orderId).addItem(itemId, idBySupplier, agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice);
+        ordersToBe.get(orderId).addItem(itemId, agreement.getItem(itemId).getIdBySupplier() , agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice);
 
     }
 

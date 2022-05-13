@@ -482,7 +482,7 @@ public class SupplierService {
     }
 
 
-    // Format :  <productId1, idBySupplier1, quantity1> , <productId2, idBySupplier2 , quantity2> , ...
+    // Format :  <productId1, quantity1> , <productId2, quantity2> , ...
     public Result<Boolean> addItemsToOrder(int supId, int orderId, List<String> itemsString){
         try{
             controller.addItemsToOrder(supId, orderId, itemsString);
@@ -493,9 +493,9 @@ public class SupplierService {
         }
     }
 
-    public Result<Boolean> addItemToOrder(int supId, int orderId, int itemId, int idBySupplier, int itemQuantity){
+    public Result<Boolean> addItemToOrder(int supId, int orderId, int itemId, int itemQuantity){
         try{
-            controller.addItemToOrder(supId, orderId, itemId, idBySupplier, itemQuantity);
+            controller.addItemToOrder(supId, orderId, itemId, itemQuantity);
             return Result.makeOk(true);
         }
         catch(Exception e){
