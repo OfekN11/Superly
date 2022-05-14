@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Supplier {
 
-    private int id;
+    private int id;//
     private int bankNumber;
     private String address;
     private String name;
