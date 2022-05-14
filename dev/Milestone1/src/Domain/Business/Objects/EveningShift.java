@@ -1,10 +1,9 @@
 package Domain.Business.Objects;
-
-import Domain.DAL.Objects.DEveningShift;
-import Domain.DAL.Objects.DShift;
+import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.Service.ServiceShiftFactory;
 import Globals.Enums.ShiftTypes;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -55,6 +54,16 @@ public  class EveningShift extends Shift {
 
     @Override
     public String printDayAndType() {
-        return "Evening- " + getWorkday().getDate();
+        return "Evening- " + getWorkday().toString();
+    }
+
+    @Override
+    public void save(ShiftDataMapper shiftDataMapper) throws SQLException {
+        shiftDataMapper.save(this);
+    }
+
+    @Override
+    public void update(ShiftDataMapper shiftDataMapper) throws SQLException {
+        shiftDataMapper.update(this);
     }
 }

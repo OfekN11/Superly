@@ -1,11 +1,11 @@
 package Domain.Business.Objects;
 
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
-import Domain.DAL.Objects.DEmployee;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -26,7 +26,6 @@ public abstract class Employee {
     private String employmentConditions;
     private LocalDate startingDate;
     private Set<Certifications> certifications;
-    private DEmployee dEmployee; // represent of this object in the DAL
 
     /**
      * Raw data constructor
@@ -39,7 +38,7 @@ public abstract class Employee {
      * @param startingDate Employee's Starting date
      * @param certifications Employees Certifications
      */
-    public Employee(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications,DEmployee dEmployee) throws Exception {
+    public Employee(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         validateLegalID(id);
         this.id = id;
         this.name = name;
@@ -48,30 +47,9 @@ public abstract class Employee {
         this.employmentConditions = employmentConditions;
         this.startingDate = startingDate;
         this.certifications = certifications;
-        this.dEmployee = dEmployee;
-        dEmployee.setCertifications(certifications);
-        dEmployee.save();
     }
 
-    /**
-     * Reconstractor from DAL type employee
-     *
-     * @param dEmployee DAL type representing the employee
-     */
-    public Employee(DEmployee dEmployee) {
-        this.id = dEmployee.getId();
-        this.name = dEmployee.getName();
-        this.bankDetails = dEmployee.getBankDetails();
-        this.salary = dEmployee.getSalary();
-        this.employmentConditions = dEmployee.getEmploymentConditions();
-        this.startingDate = dEmployee.getStartingDate();
-        this.certifications = new HashSet<>(dEmployee.getCertifications());
-        this.dEmployee = dEmployee;
-    }
 
-    public DEmployee getDEmployee() {
-        return dEmployee;
-    }
 
     public String getId() {
         return id;
@@ -85,7 +63,6 @@ public abstract class Employee {
         if (name == null)
             throw new NullPointerException("Name Cannot be null");
         this.name = name;
-        dEmployee.setName(this.name);
         updateEmploymentConditions();
     }
 
@@ -106,7 +83,6 @@ public abstract class Employee {
     public void setSalary(int newSalary) {
         if (salary<=0)
             throw new IllegalArgumentException(String.format(SALARY_MOST_BE_POSITIVE_ERROR_MSG,salary));
-        dEmployee.setSalary(newSalary);
         this.salary=newSalary;
         updateEmploymentConditions();
     }
@@ -122,7 +98,6 @@ public abstract class Employee {
                         + "\nJob title: " + title
                         + "\nStarting date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate)
                         + "\nSalary per shift: " + salary;
-        dEmployee.setEmploymentConditions(this.employmentConditions);
     }
 
     abstract protected void updateEmploymentConditions();
@@ -139,10 +114,6 @@ public abstract class Employee {
         this.certifications = new HashSet<>(certifications);
     }
 
-    public DEmployee getdEmployee() {
-        return dEmployee;
-    }
-
     public abstract Domain.Service.Objects.Employee accept(ServiceEmployeeFactory factory);
 
     public static void validateLegalID(String id) throws Exception {
@@ -154,5 +125,7 @@ public abstract class Employee {
      * visitor pattern with the function save in {@param employeeDataMapper}
      * @param employeeDataMapper the data mapper to call employeeDataMapper.save(this)
      */
-    public abstract void save(EmployeeDataMapper employeeDataMapper);
+    public abstract void save(EmployeeDataMapper employeeDataMapper) throws SQLException;
+
+    public abstract void update(EmployeeDataMapper employeeDataMapper) throws SQLException;
 }

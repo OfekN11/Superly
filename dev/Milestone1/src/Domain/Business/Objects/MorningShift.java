@@ -1,11 +1,10 @@
 package Domain.Business.Objects;
 
-import Domain.DAL.Objects.DEveningShift;
-import Domain.DAL.Objects.DMorningShift;
-import Domain.DAL.Objects.DShift;
+import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.Service.ServiceShiftFactory;
 import Globals.Enums.ShiftTypes;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -36,13 +35,19 @@ public class MorningShift extends Shift {
         return factory.createServiceShift(this);
     }
 
-    @Override
-    public DShift createDShift() {
-        return new DMorningShift(getWorkday(),getShiftManagerId(),getCarrierCount(),getCashierCount(),getStorekeeperCount(),getSorterCount(),getHr_managersCount(),getLogistics_managersCount());
-    }
 
     @Override
     public String printDayAndType() {
-        return "Morning- " + getWorkday().getDate();
+        return "Morning- " + getWorkday().toString();
+    }
+
+    @Override
+    public void save(ShiftDataMapper shiftDataMapper) throws SQLException {
+        shiftDataMapper.save(this);
+    }
+
+    @Override
+    public void update(ShiftDataMapper shiftDataMapper) throws SQLException {
+        shiftDataMapper.update(this);
     }
 }

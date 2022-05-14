@@ -26,6 +26,11 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
 
     // function
 
+
+    public Constraint get(LocalDate localDate,ShiftTypes shiftTypes){
+        return get(localDate.toString()+shiftTypes.toString());
+    }
+
     @Override
     protected Map<String, Constraint> getMap() {
         return CONSTRAINT_IDENTITY_MAP;
@@ -48,9 +53,17 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
 
     @Override
     public void insert(Constraint instance) throws SQLException {
-        for (String employeeID : instance.getEmployees())
-            super.insert(Arrays.asList(instance.getDate().toString()+instance.getType().toString(),instance.getDate(),instance.getType(),employeeID));
+        String id = instance.getDate().toString()+instance.getType().toString();
+        constraintsEmployeesLink.replaceSet(id,instance.getEmployees());
+        super.remove(id);
+        super.insert(Arrays.asList(id,instance.getDate(),instance.getType()));
     }
 
+    public void update(Constraint constraint) throws SQLException {
+        insert(constraint);
+    }
 
+    public void save(LocalDate workday, ShiftTypes shiftType, Constraint constraint) throws SQLException {
+        save(workday.toString()+shiftType.toString(),constraint);
+    }
 }

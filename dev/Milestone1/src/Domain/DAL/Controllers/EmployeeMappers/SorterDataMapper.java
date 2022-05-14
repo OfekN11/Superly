@@ -1,30 +1,30 @@
 package Domain.DAL.Controllers.EmployeeMappers;
 
-import Domain.Business.Objects.Transport_Manager;
+import Domain.Business.Objects.Logistics_Manager;
+import Domain.Business.Objects.Sorter;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Abstract.ObjectDateMapper;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class TransportManagerDataMapper extends ObjectDateMapper<Transport_Manager> {
-    private static Map<String, Transport_Manager> TRANSPORT_MANAGER_IDENTITY_MAP = new HashMap<>();
+public class SorterDataMapper extends ObjectDateMapper<Sorter> {
+    private static Map<String, Sorter> SORTER_IDENTITY_MAP = new HashMap<>();
     EmployeeCertificationDAO employeeCertificationController ;
 
 
-    public TransportManagerDataMapper() {
-        super("TransportManagers");
+    public SorterDataMapper() {
+        super("Sorters");
+        employeeCertificationController =new EmployeeCertificationDAO();
     }
 
 
 
     @Override
-    protected Map<String, Transport_Manager> getMap() {
-        return TRANSPORT_MANAGER_IDENTITY_MAP;
+    protected Map<String, Sorter> getMap() {
+        return SORTER_IDENTITY_MAP;
     }
 
     @Override
@@ -38,12 +38,12 @@ public class TransportManagerDataMapper extends ObjectDateMapper<Transport_Manag
     }
 
     @Override
-    protected Transport_Manager buildObject(ResultSet instanceResult) throws Exception {
-        return new Transport_Manager(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getString(5),instanceResult.getDate(6).toLocalDate(),employeeCertificationController.get(instanceResult.getString(1)));
+    protected Sorter buildObject(ResultSet instanceResult) throws Exception {
+        return new Sorter(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getString(5),instanceResult.getDate(6).toLocalDate(),employeeCertificationController.get(instanceResult.getString(1)));
     }
 
     @Override
-    public void insert(Transport_Manager instance) throws SQLException {
+    public void insert(Sorter instance) throws SQLException {
         employeeCertificationController.replaceSet(instance.getId(),instance.getCertifications());
         super.remove(instance.getId());
         super.insert(Arrays.asList(instance.getId(),instance.getName(),instance.getBankDetails(),instance.getSalary(),instance.getEmploymentConditions(),instance.getStartingDate()));

@@ -1,9 +1,10 @@
 package Domain.Business.Objects;
 
-import Domain.DAL.Objects.DShift;
+import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.Service.ServiceShiftFactory;
 import Globals.Enums.JobTitles;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +18,6 @@ public abstract class Shift {
     private static final int MIN_HR_MANAGERS = 0;
     private static final int MIN_LOGISTICS_MANAGERS = 0;
     private static final int MIN_TRANSPORT_MANAGERS = 0;
-    private DShift dShift; // represent of this object in the DAL
     // properties
     private LocalDate workday;
     private String shiftManagerId;
@@ -59,7 +59,7 @@ public abstract class Shift {
         this.hr_managersCount = hr_managersCount;
         checkCountValidity(logistics_managersCount, MIN_LOGISTICS_MANAGERS, JobTitles.Logistics_Manager);
         this.logistics_managersCount = logistics_managersCount;
-        checkCountValidity(transportManagersCount, MIN_TRANSPORT_MANAGERS, JobTitles.transportManager);
+        checkCountValidity(transportManagersCount, MIN_TRANSPORT_MANAGERS, JobTitles.Transport_Manager);
         this.transportManagersCount =transportManagersCount;
 
         this.carrierIDs =new HashSet<>(carrierIDs);
@@ -109,12 +109,7 @@ public abstract class Shift {
         if (logistics_managerIDs.contains(shiftManagerId))
             throw new Exception("This manager is already assigned for this shift as a logistics manager. " +
                     "\nIf you'd like him to manager this shift please remove him from from the logistics manager list of this shift");
-        dShift.setShiftManagerId(shiftManagerId);
         this.shiftManagerId = shiftManagerId;
-    }
-
-    public DShift getdShift() {
-        return dShift;
     }
 
     public int getCarrierCount() {
@@ -124,7 +119,6 @@ public abstract class Shift {
     public void setCarrierCount(int carrierCount) throws Exception {
         checkCountValidity(carrierCount, MIN_CARRIERS, JobTitles.Carrier);
         checkSizeValidity(carrierCount, carrierIDs.size());
-        dShift.setCarrierCount(carrierCount);
         this.carrierCount = carrierCount;
     }
 
@@ -135,7 +129,6 @@ public abstract class Shift {
     public void setCashierCount(int cashierCount) throws Exception {
         checkCountValidity(cashierCount, MIN_CASHIERS, JobTitles.Cashier);
         checkSizeValidity(cashierCount, cashierIDs.size());
-        dShift.setCashierCount(cashierCount);
         this.cashierCount = cashierCount;
     }
 
@@ -146,7 +139,6 @@ public abstract class Shift {
     public void setStorekeeperCount(int storekeeperCount) throws Exception {
         checkCountValidity(storekeeperCount, MIN_STOREKEEPERS, JobTitles.Storekeeper);
         checkSizeValidity(storekeeperCount, storekeeperIDs.size());
-        dShift.setStorekeeperCount(storekeeperCount);
         this.storekeeperCount = storekeeperCount;
     }
 
@@ -157,7 +149,6 @@ public abstract class Shift {
     public void setSorterCount(int sorterCount) throws Exception {
         checkCountValidity(sorterCount, MIN_SORTERS, JobTitles.Sorter);
         checkSizeValidity(sorterCount, sorterIDs.size());
-        dShift.setSorterCount(sorterCount);
         this.sorterCount = sorterCount;
     }
 
@@ -168,7 +159,6 @@ public abstract class Shift {
     public void setHr_managersCount(int hr_managersCount) throws Exception {
         checkCountValidity(hr_managersCount, MIN_HR_MANAGERS, JobTitles.HR_Manager);
         checkSizeValidity(hr_managersCount, hr_managerIDs.size());
-        dShift.setHr_ManagersCount(hr_managersCount);
         this.hr_managersCount = hr_managersCount;
     }
 
@@ -179,7 +169,6 @@ public abstract class Shift {
     public void setLogistics_managersCount(int logistics_managersCount) throws Exception {
         checkCountValidity(logistics_managersCount, MIN_LOGISTICS_MANAGERS, JobTitles.Logistics_Manager);
         checkSizeValidity(logistics_managersCount, logistics_managerIDs.size());
-        dShift.setLogistics_ManagersCount(logistics_managersCount);
         this.logistics_managersCount = logistics_managersCount;
     }
 
@@ -191,7 +180,6 @@ public abstract class Shift {
         checkSizeValidity(carrierCount, carrierIDs.size());
         if (carrierIDs.contains(shiftManagerId))
             throw new Exception("One of these carriers (" + shiftManagerId + ") is assigned as manager of this shift, please assign someone else");
-        dShift.setCarrierIDs(carrierIDs);
         this.carrierIDs = new HashSet<>(carrierIDs);
     }
 
@@ -203,7 +191,6 @@ public abstract class Shift {
         checkSizeValidity(cashierCount, cashierIDs.size());
         if (cashierIDs.contains(shiftManagerId))
             throw new Exception("One of these cashiers (" + shiftManagerId + ") is assigned as manager of this shift, please assign someone else");
-        dShift.setCashierIDs(cashierIDs);
         this.cashierIDs = new HashSet<>(cashierIDs);
     }
 
@@ -215,7 +202,6 @@ public abstract class Shift {
         checkSizeValidity(storekeeperCount, storekeeperIDs.size());
         if (storekeeperIDs.contains(shiftManagerId))
             throw new Exception("One of these storekeepers (" + shiftManagerId + ") is assigned as manager of this shift, please assign someone else");
-        dShift.setStorekeeperIDs(storekeeperIDs);
         this.storekeeperIDs = new HashSet<>(storekeeperIDs);
     }
 
@@ -227,7 +213,6 @@ public abstract class Shift {
         checkSizeValidity(sorterCount, sorterIDs.size());
         if (sorterIDs.contains(shiftManagerId))
             throw new Exception("One of these sorters (" + shiftManagerId + ") is assigned as manager of this shift, please assign someone else");
-        dShift.setSorterIDs(sorterIDs);
         this.sorterIDs = new HashSet<>(sorterIDs);
     }
 
@@ -239,7 +224,6 @@ public abstract class Shift {
         checkSizeValidity(hr_managersCount, hr_managerIDs.size());
         if (hr_managerIDs.contains(shiftManagerId))
             throw new Exception("One of these HR managers (" + shiftManagerId + ") is assigned as manager of this shift, please assign someone else");
-        dShift.setHr_managerIDs(hr_managerIDs);
         this.hr_managerIDs = new HashSet<>(hr_managerIDs);
     }
 
@@ -251,7 +235,6 @@ public abstract class Shift {
         checkSizeValidity(logistics_managersCount, logistics_managerIDs.size());
         if (logistics_managerIDs.contains(shiftManagerId))
             throw new Exception("One of these logistics managers (" + shiftManagerId + ") is assigned as manager of this shift, please assign someone else");
-        dShift.setLogistics_managerIDs(logistics_managerIDs);
         this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
     }
 
@@ -276,7 +259,17 @@ public abstract class Shift {
                 hr_managerIDs.contains(id) ||
                 logistics_managerIDs.contains(id);
     }
-
-    public abstract DShift createDShift();
     public abstract String printDayAndType();
+
+    public Set<String> getTransportManagersIDs() {
+        return this.transportManagerIDs;
+    }
+
+    public int getTransportManagersCount() {
+        return transportManagersCount;
+    }
+
+    public abstract void save(ShiftDataMapper shiftDataMapper) throws SQLException;
+
+    public abstract void update(ShiftDataMapper shiftDataMapper) throws SQLException;
 }

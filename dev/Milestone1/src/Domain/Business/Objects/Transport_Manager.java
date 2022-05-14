@@ -9,27 +9,25 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Set;
 
-/**
- * Business model of the Logistics Manager
- */
-public class Logistics_Manager extends Employee{
-    public Logistics_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
+public class Transport_Manager extends Employee{
+
+    public Transport_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
     }
 
     @Override
-    public void save(EmployeeDataMapper employeeDataMapper) throws SQLException {
-        employeeDataMapper.save(this);
-    }
-
-    @Override
     protected void updateEmploymentConditions() {
-       super.updateEmploymentConditions(JobTitles.Logistics_Manager);
+        super.updateEmploymentConditions(JobTitles.Transport_Manager);
     }
 
     @Override
     public Domain.Service.Objects.Employee accept(ServiceEmployeeFactory factory) {
         return factory.createServiceEmployee(this);
+    }
+
+    @Override
+    public void save(EmployeeDataMapper employeeDataMapper) throws SQLException {
+        employeeDataMapper.save(this);
     }
 
     @Override
