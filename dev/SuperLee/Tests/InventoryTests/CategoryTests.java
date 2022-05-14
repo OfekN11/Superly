@@ -1,7 +1,7 @@
-package InventoryTests;
+package Tests.InventoryTests;
 
 import Domain.BusinessLayer.Inventory.Category;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.HashSet;

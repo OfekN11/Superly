@@ -411,13 +411,13 @@ public class InventoryService {
     }
 
     /**
-     * Stock report of all items under the defined minimum amount in specified stores and categories
+     * Stock report of all items under the defined minimum amount in specified storeIDs and categories
      *
      * @return Result detailing success of operation, with list of stockreports
      */
-    public Result<List<StockReport>> storeStockReport(List<Integer> stores, List<Integer> categories){
+    public Result<List<StockReport>> storeStockReport(List<Integer> storeIDs, List<Integer> categories){
         try {
-            List<Domain.BusinessLayer.Inventory.StockReport> stock = controller.getStockReport(stores, categories);
+            List<Domain.BusinessLayer.Inventory.StockReport> stock = controller.getStockReport(storeIDs, categories);
             List<StockReport> stockReports = new ArrayList<>();
             for (Domain.BusinessLayer.Inventory.StockReport s : stock)
                 stockReports.add(new StockReport(s));
