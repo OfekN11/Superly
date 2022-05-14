@@ -165,10 +165,10 @@ public class Product extends Screen {
         List<Integer> inWareHouse = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("What will be the min amount in the store?");
         int min = scanner.nextInt();
-        System.out.println("What will be the max amount in the store?");
-        int max = scanner.nextInt();
+        System.out.println("What will be the target amount in the store?");
+        int target = scanner.nextInt();
         scanner.nextLine(); //to remove extra \n
-        Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.addProductToStore(store, inStore, inWareHouse, id, min, max);
+        Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.addProductToStore(store, inStore, inWareHouse, id, min, target);
         if (r.isError())
             System.out.println(r.getError());
         else {

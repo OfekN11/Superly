@@ -323,8 +323,8 @@ public class BackendController {
         return inventoryService.removeSale(saleID);
     }
 
-    public Result<Product> addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int maxAmount){
-        return inventoryService.addProductToStore(storeID, shelvesInStore, shelvesInWarehouse, productID, minAmount, maxAmount);
+    public Result<Product> addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int targetAmount){
+        return inventoryService.addProductToStore(storeID, shelvesInStore, shelvesInWarehouse, productID, minAmount, targetAmount);
     }
 
     public Result<Product> removeProductFromStore(int storeID, int productID){

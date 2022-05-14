@@ -153,9 +153,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the specified product
      */
-    public Result<Product> addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int maxAmount){
+    public Result<Product> addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int targetAmount){
         try {
-            Domain.BusinessLayer.Inventory.Product p = controller.addProductToStore(storeID, shelvesInStore, shelvesInWarehouse, productID, minAmount, maxAmount);
+            Domain.BusinessLayer.Inventory.Product p = controller.addProductToStore(storeID, shelvesInStore, shelvesInWarehouse, productID, minAmount, targetAmount);
             return Result.makeOk(new Product(p));
         }
         catch (Exception e){
