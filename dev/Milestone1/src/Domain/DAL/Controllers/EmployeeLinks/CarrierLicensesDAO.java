@@ -1,4 +1,4 @@
-package Domain.DAL.Controllers;
+package Domain.DAL.Controllers.EmployeeLinks;
 import Domain.DAL.Abstract.LinkDAO;
 import Globals.Enums.LicenseTypes;
 import java.sql.ResultSet;

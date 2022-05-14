@@ -2,7 +2,7 @@ package Domain.Business.Controllers;
 
 import Domain.Business.BusinessShiftFactory;
 import Domain.Business.Objects.*;
-import Domain.DAL.Controllers.DShiftController;
+import Domain.DAL.Controllers.ShiftDataMappers.DShiftController;
 import Domain.DAL.Objects.DShift;
 import Globals.Enums.ShiftTypes;
 import Globals.Pair;

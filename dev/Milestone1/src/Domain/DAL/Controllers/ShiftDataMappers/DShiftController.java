@@ -1,18 +1,21 @@
-package Domain.DAL.Controllers;
+package Domain.DAL.Controllers.ShiftDataMappers;
+import Domain.DAL.Controllers.ShiftDataMappers.DEveningShiftController;
+import Domain.DAL.Controllers.ShiftDataMappers.DMorningShiftController;
+import Domain.DAL.Controllers.ShiftEmployeesLink.ShiftsCarriersLink;
 import Domain.DAL.Objects.DShift;
 
 import java.util.*;
 
 public class  DShiftController extends DTOControllers<DShift> {
     // properties
-    private EmployeeShiftMapper employeeShiftMapper;
+    private ShiftsCarriersLink shiftsCarriersLink;
     private DMorningShiftController dMorningShiftController;
     private DEveningShiftController dEveningShiftController;
 
     // constructor
     public DShiftController() {
         super("placeHolder");
-        this.employeeShiftMapper = new EmployeeShiftMapper();
+        this.shiftsCarriersLink = new ShiftsCarriersLink();
         this.dMorningShiftController = new DMorningShiftController();
         this.dEveningShiftController = new DEveningShiftController();
     }

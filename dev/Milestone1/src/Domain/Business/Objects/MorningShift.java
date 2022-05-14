@@ -7,15 +7,24 @@ import Domain.Service.ServiceShiftFactory;
 import Globals.Enums.ShiftTypes;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 public class MorningShift extends Shift {
 
-    public MorningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) throws Exception {
-        super(workday, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount, new DEveningShift(workday,managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount));
+    public MorningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transportManagersCount) throws Exception {
+        super(workday, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount,transportManagersCount);
     }
 
-    public MorningShift(DShift dShift){
-        super(dShift);
+    public MorningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transportManagersCount
+            , Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs, Set<String> transportManagersIDs
+    ) throws Exception {
+        super(workday, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount,transportManagersCount,carrierIDs,
+                cashierIDs,
+                storekeeperIDs,
+                sorterIDs,
+                hr_managerIDs,
+                logistics_managerIDs,
+                transportManagersIDs );
     }
 
     public ShiftTypes getType() {

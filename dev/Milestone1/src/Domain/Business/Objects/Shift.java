@@ -9,8 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Shift {
-    private static final String employeeAlreadyInShiftErrorMsg = "this employee already in this shift";
-    private static final String employeeNotInShiftErrorMsg = "Employee %o was not in the shift";
 
     private static final int MIN_CARRIERS= 1;
     private static final int MIN_CASHIERS = 1;
@@ -18,6 +16,7 @@ public abstract class Shift {
     private static final int MIN_SORTERS = 1;
     private static final int MIN_HR_MANAGERS = 0;
     private static final int MIN_LOGISTICS_MANAGERS = 0;
+    private static final int MIN_TRANSPORT_MANAGERS = 0;
     private DShift dShift; // represent of this object in the DAL
     // properties
     private LocalDate workday;
@@ -28,6 +27,7 @@ public abstract class Shift {
     private int sorterCount;
     private int hr_managersCount;
     private int logistics_managersCount;
+    private int transportManagersCount;
 
     private Set<String> carrierIDs;
     private Set<String> cashierIDs;
@@ -35,11 +35,13 @@ public abstract class Shift {
     private Set<String> sorterIDs;
     private Set<String> hr_managerIDs;
     private Set<String> logistics_managerIDs;
+    private Set<String> transportManagerIDs;
+
 
     // constructors
     public Shift(LocalDate workday, String shiftManagerId,
-                 int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,
-                 Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs,DShift dShift) throws Exception {
+                 int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,int transportManagersCount,
+                 Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs,Set<String>transportManagerIDs) throws Exception {
         this.workday = workday;
         if (shiftManagerId == null)
             throw new Exception("A shift has to have a shift manager");
@@ -57,6 +59,8 @@ public abstract class Shift {
         this.hr_managersCount = hr_managersCount;
         checkCountValidity(logistics_managersCount, MIN_LOGISTICS_MANAGERS, JobTitles.Logistics_Manager);
         this.logistics_managersCount = logistics_managersCount;
+        checkCountValidity(transportManagersCount, MIN_TRANSPORT_MANAGERS, JobTitles.transportManager);
+        this.transportManagersCount =transportManagersCount;
 
         this.carrierIDs =new HashSet<>(carrierIDs);
         this.carrierIDs = new HashSet<>(cashierIDs);
@@ -65,35 +69,16 @@ public abstract class Shift {
         this.sorterIDs = new HashSet<>(sorterIDs);
         this.hr_managerIDs = new HashSet<>(hr_managerIDs);
         this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
-        this.dShift =dShift;
-        dShift.save();
+        this.transportManagerIDs = new HashSet<>(transportManagerIDs);
     }
 
-    public Shift(LocalDate date, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,DShift dShift) throws Exception {
+    public Shift(LocalDate date, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transportManagersCount) throws Exception {
         this(date,managerId,
-                carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount,
-                new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),dShift);
+                carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount,transportManagersCount,
+                new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),new HashSet<>());
 
     }
 
-    public Shift(DShift shift){
-        this.dShift = shift;
-        this.workday = shift.getWorkday();
-        this.shiftManagerId = shift.getShiftManagerId();
-        this.carrierCount = shift.getCarrierCount();
-        this.cashierCount = shift.getCashierCount();
-        this.storekeeperCount= shift.getStorekeeperCount();
-        this.sorterCount = shift.getSorterCount();
-        this.hr_managersCount = shift.getHr_managersCount();
-        this.logistics_managersCount = shift.getLogistics_managersCount();
-        this.carrierIDs = new HashSet<>(shift.getCarrierIDs());
-        this.cashierIDs = new HashSet<>(shift.getCashierIDs());
-        this.storekeeperIDs  =new HashSet<>(shift.getStorekeeperIDs());
-        this.sorterIDs =new HashSet<>(shift.getSorterIDs());
-        this.hr_managerIDs =new HashSet<>(shift.getHr_managerIDs());
-        this.logistics_managerIDs =new HashSet<>(shift.getLogistics_managerIDs());
-        dShift.setPersist(true);
-    }
 
     public LocalDate getWorkday() {
         return workday;

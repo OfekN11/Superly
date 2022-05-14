@@ -1,7 +1,7 @@
 package Domain.DAL.Objects;
 import Domain.Business.BusinessEmployeeFactory;
 import Domain.Business.Objects.Employee;
-import Domain.DAL.Controllers.EmployeeCertificationDAO;
+import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 import Globals.Enums.Certifications;
 
 import java.util.Date;

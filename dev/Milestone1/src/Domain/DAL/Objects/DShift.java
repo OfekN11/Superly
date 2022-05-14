@@ -2,7 +2,7 @@ package Domain.DAL.Objects;
 
 import Domain.Business.BusinessShiftFactory;
 import Domain.Business.Objects.Shift;
-import Domain.DAL.Controllers.EmployeeShiftMapper;
+import Domain.DAL.Controllers.ShiftEmployeesLink.ShiftsCarriersLink;
 import Globals.Enums.ShiftTypes;
 
 import java.util.Date;
@@ -13,7 +13,7 @@ public abstract class DShift extends DTO {
     // properties
     private Date workday;
     private String shiftManagerId;
-    private EmployeeShiftMapper employeeShiftMapper;
+    private ShiftsCarriersLink shiftsCarriersLink;
 
     private int carrierCount;
     private int cashierCount;
@@ -35,7 +35,7 @@ public abstract class DShift extends DTO {
         super(workday.toString()+type.toString(), "tableName"); //no id to shift
         this.workday = workday;
         this.shiftManagerId = shiftManagerId;
-        this.employeeShiftMapper = new EmployeeShiftMapper();
+        this.shiftsCarriersLink = new ShiftsCarriersLink();
         this.carrierCount = carrierCount;
         this.cashierCount = cashierCount;
         this.storekeeperCount = storekeeperCount;

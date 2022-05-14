@@ -2,7 +2,7 @@ package Domain.DAL.Objects;
 
 import Domain.Business.BusinessEmployeeFactory;
 import Domain.Business.Objects.Employee;
-import Domain.DAL.Controllers.CarrierLicensesDAO;
+import Domain.DAL.Controllers.EmployeeLinks.CarrierLicensesDAO;
 
 import java.util.Date;
 import java.util.HashSet;

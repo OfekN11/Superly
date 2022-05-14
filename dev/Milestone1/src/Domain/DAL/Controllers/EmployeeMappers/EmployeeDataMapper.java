@@ -1,5 +1,8 @@
-package Domain.DAL.Controllers;
+package Domain.DAL.Controllers.EmployeeMappers;
 import Domain.Business.Objects.*;
+import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
+import Domain.DAL.Controllers.EmployeeLinks.EmployeeTypeLink;
+
 import java.sql.SQLException;
 import java.util.*;
 
@@ -60,7 +63,7 @@ public class EmployeeDataMapper  {
                 return dStorekeeperController.get(id);
                 break;
 
-            case "transport_Manager":
+            case "transportManager":
                 return transportManagerDataMapper.get(id);
             break;
             default:
@@ -102,7 +105,7 @@ public class EmployeeDataMapper  {
     }
 
     public void save(Transport_Manager toSave) throws SQLException {
-        employeeTypeLink.add(toSave.getId(),"transport_Manager");
+        employeeTypeLink.add(toSave.getId(),"transportManager");
         dStorekeeperController.save(toSave.getId(),toSave);
     }
 

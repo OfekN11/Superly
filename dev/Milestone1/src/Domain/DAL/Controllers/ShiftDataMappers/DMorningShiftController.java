@@ -1,4 +1,4 @@
-package Domain.DAL.Controllers;
+package Domain.DAL.Controllers.ShiftDataMappers;
 
 import Domain.DAL.Objects.DMorningShift;
 
