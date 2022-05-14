@@ -280,7 +280,7 @@ public class InventoryController {
         storeIds.remove(storeID);
     }
 
-    public Product addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int targetAmount) { //affect 4 maps in product.
+    public Product addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int targetAmount) {
         Product product = getProduct(productID);
         product.addLocation(storeID, shelvesInStore, shelvesInWarehouse, minAmount, targetAmount);
         return product;
@@ -476,10 +476,10 @@ public class InventoryController {
         return p.getInStore(storeID)+p.getInWarehouse(storeID);
     }
 
-    public List<StockReport> getStockReport(List<Integer> stores, List<Integer> categoryIDs) {
+    public List<StockReport> getStockReport(List<Integer> storeIDs, List<Integer> categoryIDs) {
         redundantCategories(categoryIDs);
         List<StockReport> stock = new ArrayList<>();
-        for (Integer store : stores) {
+        for (Integer store : storeIDs) {
             for (Integer catID : categoryIDs) {
                 Category category = categories.get(catID);
                 for (Product p : category.getAllProductsInCategory()) {

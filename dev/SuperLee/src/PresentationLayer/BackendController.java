@@ -1,18 +1,18 @@
 package PresentationLayer;
 
+import Domain.ServiceLayer.InventoryObjects.*;
+import Domain.ServiceLayer.InventoryService;
+import Domain.ServiceLayer.Result;
+import Domain.ServiceLayer.SupplierObjects.ServiceItemObject;
+import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
+import Domain.ServiceLayer.SupplierObjects.ServiceSupplierObject;
 import Domain.ServiceLayer.SupplierService;
-import Domain.ServiceLayer.SupplierObjects.*;
 import Globals.Pair;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import Domain.ServiceLayer.InventoryService;
-import Domain.ServiceLayer.InventoryObjects.*;
-import Domain.ServiceLayer.Result;
-
-import java.util.*;
 
 public class BackendController {
 
@@ -388,8 +388,8 @@ public class BackendController {
         return inventoryService.getMinStockReport();
     }
 
-    public Result<List<StockReport>> storeStockReport(List<Integer> stores, List<Integer> categories){
-        return inventoryService.storeStockReport(stores, categories);
+    public Result<List<StockReport>> storeStockReport(List<Integer> storeIDs, List<Integer> categories){
+        return inventoryService.storeStockReport(storeIDs, categories);
     }
 
     public Result<Boolean> isUnderMin(int store, int product){

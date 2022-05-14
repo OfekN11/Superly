@@ -294,7 +294,7 @@ public class Product {
         stockReports.get(store).changeTarget(target);
     }
 
-    public StockReport getStockReport(Integer store) {
+    public StockReport getStockReport(int store) {
         return stockReports.get(store);
     }
 
