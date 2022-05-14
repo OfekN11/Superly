@@ -95,7 +95,6 @@ public abstract class DAO {
             replaceQuestionMarks(preparedStatement,values);
             return preparedStatement.executeUpdate();
         }
-
     }
 
     /**

@@ -251,35 +251,35 @@ public class Inventory {
     }
 
     private static void removeSupplierFromProduct() {
-        System.out.println("Which product would you like to remove a supplier from? (insert ID)");
-        int productID = scanner.nextInt();
-        System.out.println("Which supplier would you like to remove? (insert ID)");
-        int supplierID = scanner.nextInt();
-        scanner.nextLine(); //to remove extra \n
-        Result<Product> r = is.removeSupplierFromProduct(productID, supplierID);
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            System.out.println("Supplier successfully removed");
-            System.out.println(r.getValue());
-        }
+//        System.out.println("Which product would you like to remove a supplier from? (insert ID)");
+//        int productID = scanner.nextInt();
+//        System.out.println("Which supplier would you like to remove? (insert ID)");
+//        int supplierID = scanner.nextInt();
+//        scanner.nextLine(); //to remove extra \n
+//        Result<Product> r = is.removeSupplierFromProduct(productID, supplierID);
+//        if (r.isError())
+//            System.out.println(r.getError());
+//        else {
+//            System.out.println("Supplier successfully removed");
+//            System.out.println(r.getValue());
+//        }
     }
 
     private static void addSupplierToProduct() {
-        System.out.println("Which product would you like to add a supplier to? (insert ID)");
-        int productID = scanner.nextInt();
-        System.out.println("Which supplier would you like to add? (insert ID)");
-        int supplierID = scanner.nextInt();
-        System.out.println("What is the supplier's ID for the product?");
-        int productIDWithSupplier = scanner.nextInt();
-        scanner.nextLine(); //to remove extra \n
-        Result<Product> r = is.addSupplierToProduct(productID, supplierID, productIDWithSupplier);
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            System.out.println("Supplier successfully added");
-            System.out.println(r.getValue());
-        }
+//        System.out.println("Which product would you like to add a supplier to? (insert ID)");
+//        int productID = scanner.nextInt();
+//        System.out.println("Which supplier would you like to add? (insert ID)");
+//        int supplierID = scanner.nextInt();
+//        System.out.println("What is the supplier's ID for the product?");
+//        int productIDWithSupplier = scanner.nextInt();
+//        scanner.nextLine(); //to remove extra \n
+//        Result<Product> r = is.addSupplierToProduct(productID, supplierID, productIDWithSupplier);
+//        if (r.isError())
+//            System.out.println(r.getError());
+//        else {
+//            System.out.println("Supplier successfully added");
+//            System.out.println(r.getValue());
+//        }
     }
 
     private static void removeSale() {
@@ -945,7 +945,7 @@ public class Inventory {
         for (int i=0; i< suppliersStringArray.length; i=i+2) {
             suppliersMap.put(Integer.parseInt(suppliersStringArray[i]), Integer.parseInt(suppliersStringArray[i + 1]));
         }
-        Result<Product> r = is.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]), Double.parseDouble(info[3]), suppliersMap, Integer.parseInt(info[5]));
+        Result<Product> r = is.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]), Double.parseDouble(info[3]), info[5]);
         if (r.isError())
             System.out.println(r.getError());
         else {

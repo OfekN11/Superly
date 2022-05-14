@@ -93,9 +93,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the new Product
      */
-    public Result<Product> newProduct(String name, int categoryID, int weight, double price, Map<Integer, Integer> suppliers, int manufacturerID){
+    public Result<Product> newProduct(String name, int categoryID, int weight, double price, String manufacturer){
         try {
-            Domain.BusinessLayer.Inventory.Product p = controller.newProduct(name, categoryID, weight, price, suppliers, manufacturerID);
+            Domain.BusinessLayer.Inventory.Product p = controller.newProduct(name, categoryID, weight, price, manufacturer);
             return Result.makeOk(new Product(p));
         }
         catch (Exception e){
@@ -722,33 +722,33 @@ public class InventoryService {
         }
     }
 
-    /**
-     * Add supplier to list of suppliers who sell specified product
-     *
-     * @return Result detailing success of operation, containing the edited Product
-     */
-    public Result<Product> addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier){
-        try {
-            return Result.makeOk(new Product(controller.addSupplierToProduct(productID, supplierID, productIDWithSupplier)));
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-    }
+//    /**
+//     * Add supplier to list of suppliers who sell specified product
+//     *
+//     * @return Result detailing success of operation, containing the edited Product
+//     */
+//    public Result<Product> addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier){
+//        try {
+//            return Result.makeOk(new Product(controller.addSupplierToProduct(productID, supplierID, productIDWithSupplier)));
+//        }
+//        catch (Exception e){
+//            return Result.makeError(e.getMessage());
+//        }
+//    }
 
-    /**
-     * Remove supplier from list of suppliers who sell specified product
-     *
-     * @return Result detailing success of operation, containing the edited Product
-     */
-    public Result<Product> removeSupplierFromProduct(int productID, int supplierID){
-        try {
-            return Result.makeOk(new Product(controller.removeSupplierFromProduct(productID, supplierID)));
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-    }
+//    /**
+//     * Remove supplier from list of suppliers who sell specified product
+//     *
+//     * @return Result detailing success of operation, containing the edited Product
+//     */
+//    public Result<Product> removeSupplierFromProduct(int productID, int supplierID){
+//        try {
+//            return Result.makeOk(new Product(controller.removeSupplierFromProduct(productID, supplierID)));
+//        }
+//        catch (Exception e){
+//            return Result.makeError(e.getMessage());
+//        }
+//    }
 
     /**
      * Delete a category

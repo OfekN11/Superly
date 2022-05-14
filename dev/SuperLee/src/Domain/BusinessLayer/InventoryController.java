@@ -8,6 +8,8 @@ import Domain.BusinessLayer.Inventory.Product;
 import Domain.BusinessLayer.Inventory.StockReport;
 import Domain.BusinessLayer.Supplier.Order;
 import Domain.BusinessLayer.Supplier.OrderItem;
+import Domain.PersistenceLayer.Controllers.CategoryDAO;
+import Domain.PersistenceLayer.Controllers.ProductDataMapper;
 import Globals.Defect;
 import Globals.Pair;
 
@@ -23,6 +25,8 @@ public class InventoryController {
     private int productID;
     private int storeID;
     private SupplierController supplierController;
+    private final static ProductDataMapper productDataMapper = new ProductDataMapper();
+    private final static CategoryDAO categoryDAODataMapper = new CategoryDAO();
     public InventoryController() {
         storeIds = new ArrayList<>();
         categories = new HashMap<>();
@@ -40,10 +44,10 @@ public class InventoryController {
         //add stores
         for (int i = 1; i <= 10; i++)
             addStore();
-        addCategoriesForTests();
-        addProductsForTests();
-        addSalesForTests();
-        addReportsForTests();
+//        addCategoriesForTests();
+//        addProductsForTests();
+//        addSalesForTests();
+//        addReportsForTests();
     }
 
     public Category getCategory(int categoryID) {
@@ -296,17 +300,19 @@ public class InventoryController {
         throw new NoSuchMethodException();
     }
 
-    public Product newProduct(String name, int categoryID, double weight, double price, Map<Integer, Integer> suppliers, int manufacturerID) {
+    public Product newProduct(String name, int categoryID, double weight, double price, String manufacturer) {
         Category category = categories.get(categoryID);
         int id = productID++;
-        Product product = new Product(id, name, category, weight, price, suppliers, manufacturerID);
+        Product product = new Product(id, name, category, weight, price, manufacturer);
         products.put(id, product);
         category.addProduct(product);
+        productDataMapper.insert(product);
         return product;
     }
 
     public void deleteProduct(int id){
         products.remove(id);
+        productDataMapper.remove(id);
         //remove sales? remove empty categories?
     }
 
@@ -439,6 +445,7 @@ public class InventoryController {
         else {
             categories.put(id, new Category(id, name, new HashSet<>(), new ArrayList<>(), categories.get(parentCategoryID)));
         }
+        categoryDAODataMapper.insert(categories.get(id));
         return categories.get(id);
     }
 
@@ -453,17 +460,17 @@ public class InventoryController {
         return lowOnStock;
     }
 
-    public Product addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier) {
-        Product product = getProduct(productID);
-        product.addSupplier(supplierID, productIDWithSupplier);
-        return product;
-    }
-
-    public Product removeSupplierFromProduct(int productID, int supplierID) {
-        Product product = getProduct(productID);
-        product.removeSupplier(supplierID);
-        return product;
-    }
+//    public Product addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier) {
+//        Product product = getProduct(productID);
+//        product.addSupplier(supplierID, productIDWithSupplier);
+//        return product;
+//    }
+//
+//    public Product removeSupplierFromProduct(int productID, int supplierID) {
+//        Product product = getProduct(productID);
+//        product.removeSupplier(supplierID);
+//        return product;
+//    }
 
     public boolean isUnderMin(int storeID, int productID) {
         return getProduct(productID).isLow(storeID);
@@ -550,115 +557,115 @@ public class InventoryController {
         return orders;
     }
 
-    private void addCategoriesForTests () {
-        addCategory("Small", 0);
-        addCategory("Small", 0);
-        addCategory("Large", 0);
-        addCategory("Large", 0);
-        addCategory("Medium", 0);
-
-        addCategory("Shampoo", 0);
-
-        addCategory("Milk", 0);
-        changeParentCategory(1, 7);
-        changeParentCategory(3, 7);
-        changeParentCategory(5, 7);
-
-        addCategory("Yogurt", 0);
-        changeParentCategory(2, 8);
-        changeParentCategory(4, 8);
-
-        addCategory("Dairy", 0);
-        changeParentCategory(7, 9);
-        changeParentCategory(8, 9);
-
-        addCategory("Toothpaste", 0);
-
-        addCategory("Health", 0);
-        changeParentCategory(6, 11);
-        changeParentCategory(10, 11);
-
-        addCategory("Organic", 0);
-        addCategory("Organic", 0);
-
-        addCategory("Vegetables", 0);
-        addCategory("Fruit", 0);
-        changeParentCategory(12, 14);
-        changeParentCategory(13, 15);
-
-        addCategory("Produce", 0);
-        changeParentCategory(14, 16);
-        changeParentCategory(15, 16);
-    }
-
-    private void addProductsForTests () {
-        newProduct("tomato", 14, -1, 7.2, new HashMap<>(), 0);
-        newProduct("tomato", 12, -1, 9.2, new HashMap<>(), 0);
-        newProduct("strawberry", 13, -1, 7.2, new HashMap<>(), 0);
-        newProduct("melon", 15, -1, 7.2, new HashMap<>(), 0);
-        newProduct( "Hawaii", 6, 1.2, 13, new HashMap<>(), 1);
-        newProduct("Crest", 10, 0.7, 7.2, new HashMap<>(), 2);
-        newProduct("Tara 1L", 5, 1.2, 8.6, new HashMap<>(), 17);
-        newProduct("Tnuva 1L", 5, 1.2, 8, new HashMap<>(), 18);
-        newProduct("yoplait strawberry", 2, 0.5, 5.3, new HashMap<>(), 9);
-        newProduct("yoplait vanilla", 2, 0.5, 5.3, new HashMap<>(), 9);
-        for (int i : storeIds) {
-            List<Integer> shelves = new ArrayList<>();
-            shelves.add(2*i); shelves.add(2*i+1);
-            for (int p : products.keySet()) {
-                addProductToStore(i, shelves, shelves, p, 10*shelves.get(1), 30*shelves.get(1));
-                addItems(i, p,3, 37, 37*10/10*shelves.get(1), 37*10/10*shelves.get(1), 1);
-            }
-        }
-    }
-
-    private void addSalesForTests () {
-        List<Integer> categories = new ArrayList<>();
-        List<Integer> products = new ArrayList<>();
-        List<Integer> empty = new ArrayList<>();
-        //small milk,       medium milk,         yogurt,         Dairy
-        categories.add(1); categories.add(5); categories.add(8); categories.add(9);
-        //crest             tara1L          tnuva1L         organic tomato  organic strawberry
-        products.add(6); products.add(7); products.add(8); products.add(2); products.add(3);
-
-        Date threeDaysAgo = new Date(); threeDaysAgo.setHours(-72);
-        Date twoDaysAgo = new Date(); twoDaysAgo.setHours(-48);
-        Date yesterday = new Date(); yesterday.setHours(-24);
-        Date today = new Date();
-        Date tomorrow = new Date(); tomorrow.setHours(24);
-        Date twoDays = new Date(); twoDays.setHours(48);
-        Date threeDays = new Date(); threeDays.setHours(72);
-
-        addSale(categories, products, 15, threeDaysAgo, tomorrow);
-        addSale(categories, empty, 20, threeDaysAgo, yesterday);
-        products.add(7); products.add(8);
-        addSale(empty, products, 5, today, tomorrow);
-        addSale(categories, products, 12, tomorrow, threeDays);
-        addSale(categories, empty, 17, twoDaysAgo, twoDays);
-    }
-
-    private void addReportsForTests () {
-        //add expired reports for items 2 and 3, none for 1
-        Date threeDaysAgo = new Date(); threeDaysAgo.setHours(-72);
-        Date twoDaysAgo = new Date(); twoDaysAgo.setHours(-48);
-        Date yesterday = new Date(); yesterday.setHours(-24);
-        Date today = new Date();
-
-        reportDefectiveForTest(4,2,10, 23, "", Defect.Expired, threeDaysAgo, false);
-        reportDefectiveForTest(4,6,11, 23, "", Defect.Expired, threeDaysAgo, false);
-        reportDefectiveForTest(4,3,3, 23, "", Defect.Expired, twoDaysAgo, true);
-        reportDefectiveForTest(5,2,2, 23, "", Defect.Expired, yesterday, true);
-        reportDefectiveForTest(5,2,6, 23, "", Defect.Expired, today, false);
-
-        reportDefectiveForTest(4,4,10, 24, "broken spout", Defect.Damaged, threeDaysAgo, true);
-        reportDefectiveForTest(4,4,11, 2, "fell on floor", Defect.Damaged, threeDaysAgo, true);
-        reportDefectiveForTest(4,1,3, 3, "the dog ate it", Defect.Damaged, twoDaysAgo, false);
-        reportDefectiveForTest(4,9,2, 23, "alarm didn't go off", Defect.Damaged, yesterday, false);
-        reportDefectiveForTest(4,2,6, 23, "very sour", Defect.Damaged, today, true);
-    }
-
-    private void reportDefectiveForTest(int storeID, int productID, int amount, int employeeID, String description, Defect defect, Date date, boolean inWarehouse) {
-        Product product = getProduct(productID);
-        product.reportDefectiveForTest(storeID, amount, employeeID, description, defect, date, inWarehouse);
-    }
+//    private void addCategoriesForTests () {
+//        addCategory("Small", 0);
+//        addCategory("Small", 0);
+//        addCategory("Large", 0);
+//        addCategory("Large", 0);
+//        addCategory("Medium", 0);
+//
+//        addCategory("Shampoo", 0);
+//
+//        addCategory("Milk", 0);
+//        changeParentCategory(1, 7);
+//        changeParentCategory(3, 7);
+//        changeParentCategory(5, 7);
+//
+//        addCategory("Yogurt", 0);
+//        changeParentCategory(2, 8);
+//        changeParentCategory(4, 8);
+//
+//        addCategory("Dairy", 0);
+//        changeParentCategory(7, 9);
+//        changeParentCategory(8, 9);
+//
+//        addCategory("Toothpaste", 0);
+//
+//        addCategory("Health", 0);
+//        changeParentCategory(6, 11);
+//        changeParentCategory(10, 11);
+//
+//        addCategory("Organic", 0);
+//        addCategory("Organic", 0);
+//
+//        addCategory("Vegetables", 0);
+//        addCategory("Fruit", 0);
+//        changeParentCategory(12, 14);
+//        changeParentCategory(13, 15);
+//
+//        addCategory("Produce", 0);
+//        changeParentCategory(14, 16);
+//        changeParentCategory(15, 16);
+//    }
+//
+//    private void addProductsForTests () {
+//        newProduct("tomato", 14, -1, 7.2, new HashMap<>(), 0);
+//        newProduct("tomato", 12, -1, 9.2, new HashMap<>(), 0);
+//        newProduct("strawberry", 13, -1, 7.2, new HashMap<>(), 0);
+//        newProduct("melon", 15, -1, 7.2, new HashMap<>(), 0);
+//        newProduct( "Hawaii", 6, 1.2, 13, new HashMap<>(), 1);
+//        newProduct("Crest", 10, 0.7, 7.2, new HashMap<>(), 2);
+//        newProduct("Tara 1L", 5, 1.2, 8.6, new HashMap<>(), 17);
+//        newProduct("Tnuva 1L", 5, 1.2, 8, new HashMap<>(), 18);
+//        newProduct("yoplait strawberry", 2, 0.5, 5.3, new HashMap<>(), 9);
+//        newProduct("yoplait vanilla", 2, 0.5, 5.3, new HashMap<>(), 9);
+//        for (int i : storeIds) {
+//            List<Integer> shelves = new ArrayList<>();
+//            shelves.add(2*i); shelves.add(2*i+1);
+//            for (int p : products.keySet()) {
+//                addProductToStore(i, shelves, shelves, p, 10*shelves.get(1), 30*shelves.get(1));
+//                addItems(i, p,3, 37, 37*10/10*shelves.get(1), 37*10/10*shelves.get(1), 1);
+//            }
+//        }
+//    }
+//
+//    private void addSalesForTests () {
+//        List<Integer> categories = new ArrayList<>();
+//        List<Integer> products = new ArrayList<>();
+//        List<Integer> empty = new ArrayList<>();
+//        //small milk,       medium milk,         yogurt,         Dairy
+//        categories.add(1); categories.add(5); categories.add(8); categories.add(9);
+//        //crest             tara1L          tnuva1L         organic tomato  organic strawberry
+//        products.add(6); products.add(7); products.add(8); products.add(2); products.add(3);
+//
+//        Date threeDaysAgo = new Date(); threeDaysAgo.setHours(-72);
+//        Date twoDaysAgo = new Date(); twoDaysAgo.setHours(-48);
+//        Date yesterday = new Date(); yesterday.setHours(-24);
+//        Date today = new Date();
+//        Date tomorrow = new Date(); tomorrow.setHours(24);
+//        Date twoDays = new Date(); twoDays.setHours(48);
+//        Date threeDays = new Date(); threeDays.setHours(72);
+//
+//        addSale(categories, products, 15, threeDaysAgo, tomorrow);
+//        addSale(categories, empty, 20, threeDaysAgo, yesterday);
+//        products.add(7); products.add(8);
+//        addSale(empty, products, 5, today, tomorrow);
+//        addSale(categories, products, 12, tomorrow, threeDays);
+//        addSale(categories, empty, 17, twoDaysAgo, twoDays);
+//    }
+//
+//    private void addReportsForTests () {
+//        //add expired reports for items 2 and 3, none for 1
+//        Date threeDaysAgo = new Date(); threeDaysAgo.setHours(-72);
+//        Date twoDaysAgo = new Date(); twoDaysAgo.setHours(-48);
+//        Date yesterday = new Date(); yesterday.setHours(-24);
+//        Date today = new Date();
+//
+//        reportDefectiveForTest(4,2,10, 23, "", Defect.Expired, threeDaysAgo, false);
+//        reportDefectiveForTest(4,6,11, 23, "", Defect.Expired, threeDaysAgo, false);
+//        reportDefectiveForTest(4,3,3, 23, "", Defect.Expired, twoDaysAgo, true);
+//        reportDefectiveForTest(5,2,2, 23, "", Defect.Expired, yesterday, true);
+//        reportDefectiveForTest(5,2,6, 23, "", Defect.Expired, today, false);
+//
+//        reportDefectiveForTest(4,4,10, 24, "broken spout", Defect.Damaged, threeDaysAgo, true);
+//        reportDefectiveForTest(4,4,11, 2, "fell on floor", Defect.Damaged, threeDaysAgo, true);
+//        reportDefectiveForTest(4,1,3, 3, "the dog ate it", Defect.Damaged, twoDaysAgo, false);
+//        reportDefectiveForTest(4,9,2, 23, "alarm didn't go off", Defect.Damaged, yesterday, false);
+//        reportDefectiveForTest(4,2,6, 23, "very sour", Defect.Damaged, today, true);
+//    }
+//
+//    private void reportDefectiveForTest(int storeID, int productID, int amount, int employeeID, String description, Defect defect, Date date, boolean inWarehouse) {
+//        Product product = getProduct(productID);
+//        product.reportDefectiveForTest(storeID, amount, employeeID, description, defect, date, inWarehouse);
+//    }
 }

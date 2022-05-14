@@ -307,8 +307,8 @@ public class BackendController {
         return inventoryService.loadData();
     }
 
-    public Result<Product> newProduct(String name, int categoryID, int weight, double price, Map<Integer, Integer> suppliers, int manufacturerID){
-        return inventoryService.newProduct(name, categoryID, weight, price, suppliers, manufacturerID);
+    public Result<Product> newProduct(String name, int categoryID, int weight, double price, String manufacturer){
+        return inventoryService.newProduct(name, categoryID, weight, price, manufacturer);
     }
 
     public Result<Object> deleteProduct(int id){
@@ -468,13 +468,13 @@ public class BackendController {
         return inventoryService.addNewCategory(name, parentCategoryID);
     }
 
-    public Result<Product> addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier){
-        return inventoryService.addSupplierToProduct(productID, supplierID, productIDWithSupplier);
-    }
-
-    public Result<Product> removeSupplierFromProduct(int productID, int supplierID){
-        return inventoryService.removeSupplierFromProduct(productID, supplierID);
-    }
+//    public Result<Product> addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier){
+//        return inventoryService.addSupplierToProduct(productID, supplierID, productIDWithSupplier);
+//    }
+//
+//    public Result<Product> removeSupplierFromProduct(int productID, int supplierID){
+//        return inventoryService.removeSupplierFromProduct(productID, supplierID);
+//    }
 
     public Result<Object> deleteCategory(int catID) {
         return inventoryService.deleteCategory(catID);

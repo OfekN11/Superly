@@ -76,14 +76,9 @@ public class Catalogs extends Screen {
     }
 
     public void addProduct() {
-        System.out.println("Please insert product name, categoryID, weight, price, List of <supplierID><space><productID> with spaces between entries, and manufacturerID. Separated by commas, no spaces");
+        System.out.println("Please insert product name, categoryID, weight, price, and manufacturer. Separated by commas, no spaces");
         String[] info = scanner.nextLine().split(",");
-        Map<Integer, Integer> suppliersMap = new HashMap<>();
-        String[] suppliersStringArray = info[4].split(" ");
-        for (int i=0; i< suppliersStringArray.length; i=i+2) {
-            suppliersMap.put(Integer.parseInt(suppliersStringArray[i]), Integer.parseInt(suppliersStringArray[i + 1]));
-        }
-        Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]), Double.parseDouble(info[3]), suppliersMap, Integer.parseInt(info[5]));
+        Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]), Double.parseDouble(info[3]), info[5]);
         if (r.isError())
             System.out.println(r.getError());
         else {

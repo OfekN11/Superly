@@ -6,6 +6,7 @@ import Domain.PersistenceLayer.Controllers.ManufacturerDAO;
 import Domain.PersistenceLayer.Controllers.SuppliersDAO;
 import Globals.Pair;
 import Domain.ServiceLayer.SupplierService;
+import PresentationLayer.Screens.MainMenu;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,19 +27,21 @@ public class Main {
         suppliersDAO.addSupplierManufacturer(1, "Osem");
         suppliersDAO.addSupplierManufacturer(1, "Elit");
          */
-        SuppliersDAO suppliersDAO = new SuppliersDAO();
-        try {
-            suppliersDAO.addSupplier(new Supplier("Avi", 123456, "Beer sheva" , "check", null, null),null,null);
-            suppliersDAO.addAgreement(1 ,1 , "2 4 5");
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
-        }
+//        SuppliersDAO suppliersDAO = new SuppliersDAO();
+//        try {
+//            suppliersDAO.addSupplier(new Supplier("Avi", 123456, "Beer sheva" , "check", null, null),null,null);
+//            suppliersDAO.addAgreement(1 ,1 , "2 4 5");
+//        } catch (Exception throwables) {
+//            throwables.printStackTrace();
+//        }
+//
+//        suppliersDAO.removeSupplier(1);
 
-        suppliersDAO.removeSupplier(1);
 
-
-        //BackendController controller = new BackendController(initWithData());
-        //new Thread(new MainMenu(controller)).start();
+        BackendController controller = new BackendController();
+        controller.addNewCategory("catName", 0);
+        controller.newProduct("catName", 1,1,1,"1");
+//        new Thread(new MainMenu(controller)).start();
         /*
         System.out.println("Choose 1 for init with data or 2 for init with no data: ");
         int input = scan.nextInt();

@@ -1,6 +1,7 @@
 package Domain.BusinessLayer.Inventory;
 
 import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
+import Domain.PersistenceLayer.Controllers.CategoryDAO;
 
 import java.util.*;
 
@@ -18,6 +19,7 @@ public class Category {
     }
     public void setName(String name) {
         this.name = name;
+        categoryDAODataMapper.updateName(getID(), name);
     }
     public Set<Category> getSubcategories() {
         return subcategories;
@@ -25,6 +27,7 @@ public class Category {
     public Category getParentCategory() {
         return parentCategory;
     }
+    private final static CategoryDAO categoryDAODataMapper = new CategoryDAO();
 
     public Category(int ID, String name, Set<Category> subcategories, List<Product> products, Category parentCategory) {
         this.ID = ID;
@@ -45,6 +48,7 @@ public class Category {
         parentCategory = newParentCategory;
         if (parentCategory!= null)
             parentCategory.addSubcategory(this);
+        categoryDAODataMapper.updateParentCategory(getID(), newParentCategory.getID());
     }
     public List<Product> getAllProductsInCategory() {
         List<Product> output = new ArrayList<>();

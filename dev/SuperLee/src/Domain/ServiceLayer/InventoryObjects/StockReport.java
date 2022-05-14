@@ -6,7 +6,7 @@ public class StockReport {
 
     private final int storeID;
     private final int productID;
-    private final String productName;
+//    private final String productName;
     private final int amountInStore;
     private final int amountInWarehouse;
     private final Map<Integer, Integer> amountInDeliveries;
@@ -17,7 +17,7 @@ public class StockReport {
     public StockReport(Domain.BusinessLayer.Inventory.StockReport stockReport) {
         this.storeID = stockReport.getStoreID();
         this.productID = stockReport.getProductID();
-        this.productName = stockReport.getProductName();
+//        this.productName = stockReport.getProductName();
         this.amountInStore = stockReport.getAmountInStore();
         this.amountInWarehouse = stockReport.getAmountInWarehouse();
         this.amountInDeliveries = stockReport.getAmountInDeliveries();
@@ -35,7 +35,7 @@ public class StockReport {
         return "StockReport{" +
                 "storeID=" + storeID +
                 ", productID=" + productID +
-                ", productName='" + productName + '\'' +
+//                ", productName='" + productName + '\'' +
                 ", amountInStore=" + amountInStore +
                 ", amountInWarehouse=" + amountInWarehouse +
                 ", amountInDeliveries=" + deliveries +

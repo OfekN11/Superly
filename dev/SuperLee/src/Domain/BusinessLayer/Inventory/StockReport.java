@@ -1,5 +1,7 @@
 package Domain.BusinessLayer.Inventory;
 
+import Domain.PersistenceLayer.Controllers.StockReportDAO;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,17 +9,16 @@ public class StockReport {
 
     private int storeID;
     private int productID;
-    private String productName;
     private int amountInStore;
     private int amountInWarehouse;
     private Map<Integer, Integer> amountInDeliveries; //orderID, amount
     private int minAmountInStore;
     private int targetAmountInStore;
+    private final static StockReportDAO dao = new StockReportDAO();
 
     public StockReport(int storeID, int productID, String productName, int amountInStore, int amountInWarehouse, int minAmountInStore, int targetAmountInStore) {
         this.storeID = storeID;
         this.productID = productID;
-        this.productName = productName;
         this.amountInStore = amountInStore;
         this.amountInWarehouse = amountInWarehouse;
         this.amountInDeliveries = new HashMap<>();
@@ -31,9 +32,6 @@ public class StockReport {
     public int getProductID() {
         return productID;
     }
-    public String getProductName() {
-        return productName;
-    }
     public int getAmountInStore() { return amountInStore; }
     public int getAmountInWarehouse() { return amountInWarehouse; }
     public int getMinAmountInStore() {
@@ -45,10 +43,14 @@ public class StockReport {
     public void removeItemsFromStore(int amount, boolean inWarehouse) {
         if ((!inWarehouse && amountInStore-amount<0) || (inWarehouse && amountInWarehouse-amount<0))
             throw new IllegalArgumentException("Can not buy or remove more items than in stock - please check amount");
-        if (inWarehouse)
-            amountInWarehouse-=amount;
-        else
-            amountInStore-=amount;
+        if (inWarehouse) {
+            amountInWarehouse -= amount;
+            dao.updateInWarehouse(productID, storeID, amountInWarehouse);
+        }
+        else {
+            amountInStore -= amount;
+            dao.updateInStore(productID, storeID, amountInStore);
+        }
     }
 
     public void moveItems(int amount) {
@@ -56,15 +58,19 @@ public class StockReport {
             throw new IllegalArgumentException("Can not move more items than in the warehouse");
         amountInWarehouse-=amount;
         amountInStore+=amount;
+        dao.updateInWarehouse(productID, storeID, amountInWarehouse);
+        dao.updateInStore(productID, storeID, amountInStore);
     }
 
     public void addItems(int amount, int orderID) {
         amountInWarehouse+=amount;
-        amountInDeliveries.remove(orderID);
+        dao.updateInWarehouse(productID, storeID, amountInWarehouse);
+        amountInDeliveries.remove(orderID); //@TODO maybe we need to add this to db
     }
 
     public void returnItems(int amount) {
         amountInStore+=amount;
+        dao.updateInStore(productID, storeID, amountInStore);
     }
 
     public boolean isLow() { return minAmountInStore > getTotalAmount(); }
@@ -75,6 +81,7 @@ public class StockReport {
         if (min > targetAmountInStore)
             throw new IllegalArgumentException("New min cannot be greater than target. target is currently " + targetAmountInStore);
         minAmountInStore = min;
+        dao.updateMin(productID, storeID, minAmountInStore);
     }
 
     public void changeTarget(int target) {
@@ -83,11 +90,12 @@ public class StockReport {
         if (target < minAmountInStore)
             throw new IllegalArgumentException("New target cannot be less than min. Min is currently " + minAmountInStore);
         targetAmountInStore = target;
+        dao.updateTarget(productID, storeID, targetAmountInStore);
     }
 
-    public void changeName(String name) {
-        productName=name;
-    }
+//    public void changeName(String name) {
+//        productName=name;
+//    }
 
     private int getTotalAmountInDeliveries() {
         int total = 0;

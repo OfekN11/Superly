@@ -2,6 +2,7 @@ package Domain.BusinessLayer.Inventory;
 
 import Domain.BusinessLayer.Inventory.DiscountsAndSales.PurchaseFromSupplier;
 import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
+import Domain.PersistenceLayer.Controllers.ProductDataMapper;
 import Globals.Defect;
 
 import java.util.*;
@@ -18,11 +19,11 @@ public class Product {
     private List<DefectiveItems> damagedItemReport;
     private List<DefectiveItems> expiredItemReport;
     private double weight;
-    private int manufacturerID;
-    private Map<Integer, Integer> supplierIdToProductIdOfTheSupplier;
+    private String manufacturer;
     private double price;
     private List<SaleToCustomer> sales;
     private List<PurchaseFromSupplier> purchaseFromSupplierList;
+    private static final ProductDataMapper productDataMapper = new ProductDataMapper();
 
     public Set<Integer> getStoreIDs() { return stockReports.keySet(); }
     public int getId() { return id; }
@@ -31,26 +32,31 @@ public class Product {
     public double getOriginalPrice() { return price; }
     public void setName(String name) {
         this.name = name;
-        for (StockReport s : stockReports.values()) {
-            s.changeName(name);
-        }
+        productDataMapper.updateName(id, name);
+//        for (StockReport s : stockReports.values()) {
+//            s.changeName(name);
+//        }
     }
-    public void setPrice(double price) { this.price = price; }
+    public void setPrice(double price) {
+        this.price = price;
+        productDataMapper.updatePrice(id, price);
+    }
     public void setCategory(Category category) {
         if (category!=null)
             category.removeProduct(this);
         this.category = category;
         category.addProduct(this);
+        productDataMapper.updateCategory(id, getCategoryID());
     }
-    public Product(int id, String name, Category category, double weight, double price, Map<Integer, Integer> suppliers, int manufacturerID) {
+
+    public Product(int id, String name, Category category, double weight, double price, String manufacturer) {
         this.id = id;
         this.name = name;
         this.name = name;
         this.category = category;
         this.weight = weight;
         this.price = price;
-        this.manufacturerID = manufacturerID;
-        this.supplierIdToProductIdOfTheSupplier = suppliers;
+        this.manufacturer = manufacturer;
         sales = new ArrayList<>();
         damagedItemReport = new ArrayList<>();
         expiredItemReport = new ArrayList<>();
@@ -63,8 +69,8 @@ public class Product {
         return weight;
     }
 
-    public int getManufacturerID() {
-        return manufacturerID;
+    public String getManufacturer() {
+        return manufacturer;
     }
 
     public Integer getInStore(int store) {
@@ -266,17 +272,17 @@ public class Product {
         sales.remove(sale);
     }
 
-    public void addSupplier(int supplierID, int productIDWithSupplier) {
-        if (supplierIdToProductIdOfTheSupplier.containsKey(supplierID))
-            throw new IllegalArgumentException("Supplier" + supplierID + " is already listed as a supplier");
-        supplierIdToProductIdOfTheSupplier.put(supplierID, productIDWithSupplier);
-    }
-
-    public void removeSupplier(int supplierID) {
-        if (!supplierIdToProductIdOfTheSupplier.containsKey(supplierID))
-            throw new IllegalArgumentException("Supplier" + supplierID + " is not registered as a supplier of " + id);
-        supplierIdToProductIdOfTheSupplier.remove(supplierID);
-    }
+//    public void addSupplier(int supplierID, int productIDWithSupplier) {
+//        if (supplierIdToProductIdOfTheSupplier.containsKey(supplierID))
+//            throw new IllegalArgumentException("Supplier" + supplierID + " is already listed as a supplier");
+//        supplierIdToProductIdOfTheSupplier.put(supplierID, productIDWithSupplier);
+//    }
+//
+//    public void removeSupplier(int supplierID) {
+//        if (!supplierIdToProductIdOfTheSupplier.containsKey(supplierID))
+//            throw new IllegalArgumentException("Supplier" + supplierID + " is not registered as a supplier of " + id);
+//        supplierIdToProductIdOfTheSupplier.remove(supplierID);
+//    }
 
     public boolean belongsToCategory(Category category) {
         return (this.category==category || this.category.belongsToCategory(category));

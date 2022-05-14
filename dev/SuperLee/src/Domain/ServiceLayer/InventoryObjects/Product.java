@@ -7,7 +7,7 @@ public class Product {
     private final double originalPrice;
     private final double currentPrice;
     private double weight;
-    private int manufacturerID;
+    private String manufacturer;
     public Product(Domain.BusinessLayer.Inventory.Product p) {
         this.id = p.getId();
         this.name = p.getName();
@@ -15,7 +15,7 @@ public class Product {
         this.originalPrice = p.getOriginalPrice();
         this.currentPrice = p.getCurrentPrice();
         this.weight = p.getWeight();
-        this.manufacturerID = p.getManufacturerID();
+        this.manufacturer = p.getManufacturer();
     }
 
     public int getId() {
@@ -38,8 +38,8 @@ public class Product {
         return currentPrice;
     }
 
-    public int getManufacturerID() {
-        return manufacturerID;
+    public String getManufacturer() {
+        return manufacturer;
     }
 
     public String getWeight() {
@@ -56,7 +56,7 @@ public class Product {
                 ", originalPrice=" + String.format("%.2f", originalPrice) +
                 ", currentPrice=" + String.format("%.2f", currentPrice) +
                 ", weight=" + getWeight() +
-                ", manufacturerID=" + manufacturerID +
+                ", manufacturer=" + manufacturer +
                 '}';
     }
 }

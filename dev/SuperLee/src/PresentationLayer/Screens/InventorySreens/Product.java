@@ -28,7 +28,7 @@ public class Product extends Screen {
     private double originalPrice;
     private double currentPrice;
     private String weight;
-    private int manufacturerID;
+    private String manufacturer;
 
     public Product(Screen caller, String[] extraMenuOptions, Domain.ServiceLayer.InventoryObjects.Product sProduct) {
         super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
@@ -38,7 +38,7 @@ public class Product extends Screen {
         this.originalPrice = sProduct.getOriginalPrice();
         this.currentPrice = sProduct.getCurrentPrice();
         this.weight = sProduct.getWeight();
-        this.manufacturerID = sProduct.getManufacturerID();
+        this.manufacturer = sProduct.getManufacturer();
     }
 
     public void run() {
