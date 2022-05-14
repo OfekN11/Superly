@@ -259,7 +259,7 @@ public class InventoryController {
         product.moveItems(storeID, amount);
     }
 
-    public Double returnItems(int storeID, int productID, int amount, Date dateBought) {
+    public double returnItems(int storeID, int productID, int amount, Date dateBought) {
         //find product add amount
         Product product = getProduct(productID);
         return product.returnItems(storeID, amount, dateBought);

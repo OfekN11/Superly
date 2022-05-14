@@ -1,4 +1,4 @@
-package SuppliersTests;
+package Tests.SuppliersTests;
 
 import Domain.BusinessLayer.Supplier.Agreement.RoutineAgreement;
 import org.junit.Test;
