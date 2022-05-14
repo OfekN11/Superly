@@ -132,6 +132,31 @@ public abstract class DAO {
     }
 
     /**
+     * gets all the rows which withstands the constraints from {@param column } in {@param value}
+     * @param connection a connection to the DB, should be close from the calling function when finish to read the result!
+     * @param columnLocation the column location in the db, starting with 1 which are going to be the conditions in the "where" statement.
+     * @param values the conditions value to the column you want to get from the DB
+     * @return ResultSet witch contains the row where column=value
+     * @throws SQLException
+     */
+    public ResultSet select(Connection connection, Integer columnLocation, List<Object> values) throws SQLException {
+        validateColumnsNames(Arrays.asList(columnLocation));
+        return executeQuery(connection,String.format(SELECT_QUERY,'*',tableName, selectInQuery(columnLocation, values)));
+    }
+
+    private String selectInQuery(Integer columnLocation, List<Object> values) {
+        String output = "";
+        output+=getColumnName(columnLocation);
+        output+=" in (";
+        for (Object o : values)
+        {
+            output+=(String.format(" %s,", o));
+        }
+        output=output.substring(0,output.length()-1);
+        return output+")";
+    }
+
+    /**
      * gets all the rows which withstands the constraints from {@param column } = {@param value}
      * @param connection a connection to the DB, should be close from the calling function when finish to read the result!
      * @param selectColumnsLocation the columns location in the table, starting with 1, which you want to have in your result

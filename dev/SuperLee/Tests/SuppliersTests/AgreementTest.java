@@ -1,10 +1,11 @@
-package Tests.SuppliersTests;
+package SuppliersTests;
 
 import Domain.BusinessLayer.Supplier.Agreement.Agreement;
 import Domain.BusinessLayer.Supplier.Agreement.NotTransportingAgreement;
 import Domain.BusinessLayer.Supplier.AgreementItem;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;

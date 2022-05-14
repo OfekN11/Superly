@@ -24,8 +24,6 @@ public abstract class DataMapper<T> extends DAO {
             ResultSet instanceResult = select(connection,id);
             if (!instanceResult.next())
                 return null;
-
-
             output = buildObject(instanceResult);
             map.put(id,output);
         } catch (SQLException throwables) {

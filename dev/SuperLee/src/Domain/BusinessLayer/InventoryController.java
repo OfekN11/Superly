@@ -8,9 +8,8 @@ import Domain.BusinessLayer.Inventory.Product;
 import Domain.BusinessLayer.Inventory.StockReport;
 import Domain.BusinessLayer.Supplier.Order;
 import Domain.BusinessLayer.Supplier.OrderItem;
-import Domain.PersistenceLayer.Controllers.CategoryDAO;
+import Domain.PersistenceLayer.Controllers.CategoryDataMapper;
 import Domain.PersistenceLayer.Controllers.ProductDataMapper;
-import Globals.Defect;
 import Globals.Pair;
 
 import java.util.*;
@@ -26,12 +25,12 @@ public class InventoryController {
     private int storeID;
     private SupplierController supplierController;
     private final static ProductDataMapper productDataMapper = new ProductDataMapper();
-    private final static CategoryDAO categoryDAODataMapper = new CategoryDAO();
+    private final static CategoryDataMapper CATEGORY_DATA_MAPPER = new CategoryDataMapper();
     public InventoryController() {
         storeIds = new ArrayList<>();
-        categories = new HashMap<>();
+        categories = CATEGORY_DATA_MAPPER.getMap();
         sales = new ArrayList<>();
-        products = new HashMap<>();
+        products = productDataMapper.getMap();
         storeID=1;
         saleID=1;
         catID=1;
@@ -51,7 +50,37 @@ public class InventoryController {
     }
 
     public Category getCategory(int categoryID) {
-        return categories.get(categoryID);
+        try {
+            Category output = categories.get(categoryID);
+            if (output==null) {
+                output = CATEGORY_DATA_MAPPER.get(Integer.toString(categoryID));
+                if (output==null) {
+                    throw new IllegalArgumentException("Category ID Invalid: " + categoryID);
+                }
+            }
+            return output;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Product getProduct(int productID) {
+        try {
+            Product output = products.get(productID);
+            if (output==null) {
+                output = productDataMapper.get(Integer.toString(productID));
+                if (output==null) {
+                    throw new IllegalArgumentException("Product ID Invalid: " + productID);
+                }
+            }
+            return output;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<SaleToCustomer> getRemovableSales() {
@@ -68,10 +97,10 @@ public class InventoryController {
         List<Integer> redundantCategories = new ArrayList<>();
         //search forward
         for (Integer i : categoriesList) {
-            Category category1 = categories.get(i);
+            Category category1 = getCategory(i);
             for (Integer j :categoriesList) {
                 if (!(i.equals(j))) {
-                    Category category2 = categories.get(j);
+                    Category category2 = getCategory(j);
                     if (category2.belongsToCategory(category1)) {
                         redundantCategories.add(j);
                     }
@@ -90,7 +119,7 @@ public class InventoryController {
         for (Integer i : productIDs) {
             Product product = getProduct(i);
             for (Integer c : categoriesList) {
-                Category category = categories.get(c);
+                Category category = getCategory(c);
                 if (product.belongsToCategory(category)) {
                     redundantProducts.add(i);
                 }
@@ -118,7 +147,7 @@ public class InventoryController {
         }
         Category category;
         for (Integer cID: categoriesList) {
-            category = categories.get(cID);
+            category = getCategory(cID);
             if (category!=null)
                 category.addSale(sale);        }
         return sale;
@@ -139,7 +168,7 @@ public class InventoryController {
         }
         Category category;
         for (Integer cID: newSale.getCategories()) {
-            category = categories.get(cID);
+            category = getCategory(cID);
             if (category!=null)
                 category.addSale(newSale);        }
     }
@@ -151,7 +180,7 @@ public class InventoryController {
         }
         Category category;
         for (Integer cID: sale.getCategories()) {
-            category = categories.get(cID);
+            category = getCategory(cID);
             if (category!=null)
                 category.removeSale(sale);
         }
@@ -206,19 +235,12 @@ public class InventoryController {
         return getProduct(productID).getDiscountFromSupplierHistory();
     }
 
-    public Product getProduct(int productID) {
-        Product output = products.get(productID);
-        if (output==null)
-            throw new IllegalArgumentException("Product ID Invalid: " + productID);
-        return output;
-    }
-
     public List<SaleToCustomer> getSaleHistoryByProduct(int productID) {
         return getProduct(productID).getSaleHistory();
     }
 
     public List<SaleToCustomer> getSaleHistoryByCategory(int categoryID) {
-        return categories.get(categoryID).getSaleHistory();
+        return getCategory(categoryID).getSaleHistory();
     }
 
     public List<DefectiveItems> getDefectiveItemsByStore(Date start, Date end, List<Integer> storeIDs) {
@@ -243,18 +265,18 @@ public class InventoryController {
     }
 
     public Collection<Product> getProducts() {
-        return products.values();
+        return productDataMapper.getAll();
     }
 
     public Collection<Category> getCategories() {
-        return categories.values();
+        return CATEGORY_DATA_MAPPER.getAll();
     }
 
     public List<Product> getProductsFromCategory(List<Integer> categoryIDs) {
         List<Product> products = new ArrayList<>();
         //remove redundancies?
         for (int i : categoryIDs)
-            products.addAll(categories.get(i).getAllProductsInCategory());
+            products.addAll(getCategory(i).getAllProductsInCategory());
         return products;
     }
 
@@ -278,8 +300,8 @@ public class InventoryController {
     public void removeStore(int storeID) {
         if (!storeIds.contains(storeID))
             throw new IllegalArgumentException("There is no store with ID" + storeID);
-        for (int i : products.keySet()) {
-            removeProductFromStore(storeID, i);
+        for (Product p : getProducts()) {
+            removeProductFromStore(storeID, p.getId());
         }
         storeIds.remove(storeID);
     }
@@ -301,17 +323,15 @@ public class InventoryController {
     }
 
     public Product newProduct(String name, int categoryID, double weight, double price, String manufacturer) {
-        Category category = categories.get(categoryID);
+        Category category = getCategory(categoryID);
         int id = productID++;
         Product product = new Product(id, name, category, weight, price, manufacturer);
-        products.put(id, product);
         category.addProduct(product);
         productDataMapper.insert(product);
         return product;
     }
 
     public void deleteProduct(int id){
-        products.remove(id);
         productDataMapper.remove(id);
         //remove sales? remove empty categories?
     }
@@ -361,7 +381,7 @@ public class InventoryController {
         checkDates(start, end);
         List<DefectiveItems> dirList = new ArrayList<>();
         for (Integer c: categoryID) {
-            dirList.addAll(categories.get(c).getDamagedItemReports(start, end));
+            dirList.addAll(getCategory(c).getDamagedItemReports(start, end));
         }
         return dirList;
     }
@@ -389,7 +409,7 @@ public class InventoryController {
         checkDates(start, end);
         List<DefectiveItems> eirList = new ArrayList<>();
         for (Integer c: categoryID) {
-            eirList.addAll(categories.get(c).getExpiredItemReports(start, end));
+            eirList.addAll(getCategory(c).getExpiredItemReports(start, end));
         }
         return eirList;
     }
@@ -421,37 +441,36 @@ public class InventoryController {
 
     public Product moveProductToCategory(int productID, int newCatID) {
         Product p = getProduct(productID);
-        p.setCategory(categories.get(newCatID));
+        p.setCategory(getCategory(newCatID));
         return p;
     }
 
     public Category editCategoryName(int categoryID, String newName) {
-        Category c = categories.get(categoryID);
+        Category c = getCategory(categoryID);
         c.setName(newName);
         return c;
     }
 
     public Category changeParentCategory(int categoryID, int newCatID) {
-        Category c = categories.get(categoryID);
-        c.changeParentCategory(categories.get(newCatID));
+        Category c = getCategory(categoryID);
+        c.changeParentCategory(getCategory(newCatID));
         return c;
     }
 
     public Category addCategory(String name, int parentCategoryID) {
         int id = catID++;
         if (parentCategoryID==0) {
-            categories.put(id, new Category(id, name, new HashSet<>(), new ArrayList<>(), null));
+            CATEGORY_DATA_MAPPER.insert(new Category(id, name, new HashSet<>(), new ArrayList<>(), null));
         }
         else {
-            categories.put(id, new Category(id, name, new HashSet<>(), new ArrayList<>(), categories.get(parentCategoryID)));
+            CATEGORY_DATA_MAPPER.insert(new Category(id, name, new HashSet<>(), new ArrayList<>(), getCategory(parentCategoryID)));
         }
-        categoryDAODataMapper.insert(categories.get(id));
-        return categories.get(id);
+        return getCategory(id);
     }
 
     public List<StockReport> getMinStockReport() {
         List<StockReport> lowOnStock = new ArrayList<>();
-        for (Product p : products.values()) {
+        for (Product p : getProducts()) {
             for (int i : storeIds) {
                 if (p.isLow(i))
                     lowOnStock.add(p.getStockReport(i));
@@ -488,7 +507,7 @@ public class InventoryController {
         List<StockReport> stock = new ArrayList<>();
         for (Integer store : storeIDs) {
             for (Integer catID : categoryIDs) {
-                Category category = categories.get(catID);
+                Category category = getCategory(catID);
                 for (Product p : category.getAllProductsInCategory()) {
                     stock.add(p.getStockReport(store));
                 }
@@ -500,7 +519,7 @@ public class InventoryController {
 
 
     public void deleteCategory(int catID) {
-        Category categoryToRemove = categories.get(catID);
+        Category categoryToRemove = getCategory(catID);
         if (categoryToRemove==null)
             throw new IllegalArgumentException("There is no category with id " + catID);
         if (!categoryToRemove.getSubcategories().isEmpty())
@@ -508,7 +527,7 @@ public class InventoryController {
         if (!categoryToRemove.getAllProductsInCategory().isEmpty())
             throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
         categoryToRemove.changeParentCategory(null);
-        categories.remove(catID);
+        CATEGORY_DATA_MAPPER.remove(catID);
     }
 
     public Product changeProductMin(int store, int product, int min) {
@@ -542,7 +561,7 @@ public class InventoryController {
     public List<Order> getOrdersOfTomorrow() throws Exception {
         Map<Integer, Map<Integer,Integer>> thingsToOrder = new HashMap<>(); // <productID, <storeID, amount>>
         Map<Integer, Integer> amounts;
-        for (Product product: products.values()) {
+        for (Product product: getProducts()) {
             amounts = getAmountsForMinOrders(product);
             if (amounts.size()>0)
                 thingsToOrder.put(product.getId(), amounts);

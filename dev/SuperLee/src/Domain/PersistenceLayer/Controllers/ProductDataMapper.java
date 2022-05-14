@@ -1,22 +1,19 @@
 package Domain.PersistenceLayer.Controllers;
 
+import Domain.BusinessLayer.Inventory.Category;
 import Domain.BusinessLayer.Inventory.Product;
-import Domain.BusinessLayer.Supplier.Supplier;
-import Domain.PersistenceLayer.Abstract.DAO;
 import Domain.PersistenceLayer.Abstract.DataMapper;
 import Domain.PersistenceLayer.Abstract.LinkDAO;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ProductDataMapper extends DataMapper<Product> {
 
 
     private final static Map<String, Product> Product_IDENTITY_MAP = new HashMap<>();
-    private final CategoryDAO categoryDAO;
+    private final static CategoryDataMapper categoryDataMapper = new CategoryDataMapper();
 
     private final static int ID_COLUMN = 1;
     private final static int CATEGORY_COLUMN = 2;
@@ -27,11 +24,10 @@ public class ProductDataMapper extends DataMapper<Product> {
 
     public ProductDataMapper(){
         super("Product");
-        categoryDAO=new CategoryDAO();
     }
 
     @Override
-    protected Map getMap() {
+    public Map getMap() {
         return Product_IDENTITY_MAP;
     }
 
@@ -43,9 +39,10 @@ public class ProductDataMapper extends DataMapper<Product> {
     @Override
     protected Product buildObject(ResultSet resultSet) {
         try {
+            Category c = categoryDataMapper.get(Integer.toString(resultSet.getInt(CATEGORY_COLUMN)));
             return new Product(resultSet.getInt(ID_COLUMN),
                     resultSet.getString(NAME_COLUMN),
-                    categoryDAO.get(Integer.toString(resultSet.getInt(CATEGORY_COLUMN))),
+                    c,
                     resultSet.getDouble(WEIGHT_COLUMN),
                     resultSet.getDouble(PRICE_COLUMN),
                     resultSet.getString(MANUFACTURER_COLUMN)
@@ -70,6 +67,7 @@ public class ProductDataMapper extends DataMapper<Product> {
                     instance.getWeight(),
                     instance.getManufacturer(),
                     instance.getOriginalPrice()));
+            Product_IDENTITY_MAP.put(Integer.toString(instance.getId()), instance);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -103,4 +101,16 @@ public class ProductDataMapper extends DataMapper<Product> {
         }
     }
 
+    public Collection<Product> getAll() {
+        try(Connection connection = getConnection()) {
+            categoryDataMapper.getAll();
+            ResultSet instanceResult = select(connection);
+            while (instanceResult.next()) {
+                Product_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Product_IDENTITY_MAP.values();
+    }
 }

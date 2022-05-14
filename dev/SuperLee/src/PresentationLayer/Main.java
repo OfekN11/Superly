@@ -39,9 +39,9 @@ public class Main {
 
 
         BackendController controller = new BackendController();
-        controller.addNewCategory("catName", 0);
-        controller.newProduct("catName", 1,1,1,"1");
-//        new Thread(new MainMenu(controller)).start();
+//        controller.addNewCategory("catName", 0);
+//        controller.newProduct("catName", 1,1,1,"1");
+        new Thread(new MainMenu(controller)).start();
         /*
         System.out.println("Choose 1 for init with data or 2 for init with no data: ");
         int input = scan.nextInt();
