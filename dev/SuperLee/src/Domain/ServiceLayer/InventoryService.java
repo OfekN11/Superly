@@ -93,7 +93,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the new Product
      */
-    public Result<Product> newProduct(String name, int categoryID, int weight, double price, String manufacturer){
+    public Result<Product> newProduct(String name, int categoryID, double weight, double price, String manufacturer){
         try {
             Domain.BusinessLayer.Inventory.Product p = controller.newProduct(name, categoryID, weight, price, manufacturer);
             return Result.makeOk(new Product(p));

@@ -78,7 +78,7 @@ public class Catalogs extends Screen {
     public void addProduct() {
         System.out.println("Please insert product name, categoryID, weight, price, and manufacturer. Separated by commas, no spaces");
         String[] info = scanner.nextLine().split(",");
-        Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.newProduct(info[0],Integer.parseInt(info[1]), Integer.parseInt(info[2]), Double.parseDouble(info[3]), info[5]);
+        Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.newProduct(info[0],Integer.parseInt(info[1]), Double.parseDouble(info[2]), Double.parseDouble(info[3]), info[5]);
         if (r.isError())
             System.out.println(r.getError());
         else {

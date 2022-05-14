@@ -307,7 +307,7 @@ public class BackendController {
         return inventoryService.loadData();
     }
 
-    public Result<Product> newProduct(String name, int categoryID, int weight, double price, String manufacturer){
+    public Result<Product> newProduct(String name, int categoryID, double weight, double price, String manufacturer){
         return inventoryService.newProduct(name, categoryID, weight, price, manufacturer);
     }
 
