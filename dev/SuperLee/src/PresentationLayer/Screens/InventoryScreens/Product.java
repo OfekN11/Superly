@@ -1,6 +1,5 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens.InventoryScreens;
 
-import Domain.ServiceLayer.InventoryObjects.*;
 import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 
@@ -60,7 +59,7 @@ public class Product extends Screen {
     }
 
 
-    protected void handleBaseOptions(int option) throws Exception {
+    private void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
                 changeProductName();
@@ -69,7 +68,7 @@ public class Product extends Screen {
                 changeProductMin();
                 break;
             case 3:
-                changeProductMax();
+                changeProductTarget();
                 break;
             case 4:
                 addProductToStore();
@@ -94,7 +93,7 @@ public class Product extends Screen {
         }
     }
 
-    public void changeProductMin() {
+    private void changeProductMin() {
         int store = getStoreID();
         System.out.println("What would you like the new min amount to be?");
         int min = scanner.nextInt();
@@ -109,7 +108,7 @@ public class Product extends Screen {
         }
     }
 
-    public void changeProductMax() {
+    private void changeProductTarget() {
         int store = getStoreID();
         System.out.println("What would you like the new max amount to be?");
         int max = scanner.nextInt();
@@ -156,7 +155,7 @@ public class Product extends Screen {
 //        }
 //    }
 
-    public void addProductToStore() {
+    private void addProductToStore() {
         int store = getStoreID();
         scanner.nextLine(); //to remove extra \n
         System.out.println("What will be the product's shelves in the store? (please insert shelf numbers, separated by commas without spaces)");
@@ -177,7 +176,7 @@ public class Product extends Screen {
         }
     }
 
-    public void removeProductFromStore() {
+    private void removeProductFromStore() {
         int store = getStoreID();
         scanner.nextLine(); //to remove extra \n
         Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.removeProductFromStore(store, id);
@@ -189,7 +188,7 @@ public class Product extends Screen {
         }
     }
 
-    public void changeProductCategory() {
+    private void changeProductCategory() {
         System.out.println("To which category would you like to move it? (insert ID)");
         int category = scanner.nextInt();
         scanner.nextLine(); //to remove extra \n
@@ -204,7 +203,7 @@ public class Product extends Screen {
         }
     }
 
-    public void moveItems() {
+    private void moveItems() {
         int store = getStoreID();
         System.out.println("How much is being moved?");
         int amount = scanner.nextInt();
@@ -217,7 +216,7 @@ public class Product extends Screen {
         }
     }
 
-    public void deleteProduct() {
+    private void deleteProduct() {
         Result r = controller.deleteProduct(id);
         if (r.isError())
             System.out.println(r.getError());
@@ -226,7 +225,7 @@ public class Product extends Screen {
         }
     }
 
-    public void changeProductPrice() {
+    private void changeProductPrice() {
         System.out.println("Please insert new product price");
         double price = scanner.nextDouble();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
@@ -240,7 +239,7 @@ public class Product extends Screen {
         }
     }
 
-    public void changeProductName() {
+    private void changeProductName() {
         System.out.println("Please insert new product name");
         String name = scanner.nextLine();
         Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.editProductName(id, name);

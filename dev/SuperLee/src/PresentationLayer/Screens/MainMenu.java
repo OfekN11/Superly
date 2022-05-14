@@ -1,8 +1,7 @@
 package PresentationLayer.Screens;
 
 import PresentationLayer.BackendController;
-import PresentationLayer.Screens.InventorySreens.InventoryMenu;
-import PresentationLayer.Screens.InventorySreens.Reports;
+import PresentationLayer.Screens.InventoryScreens.InventoryMenu;
 import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
 
 public class MainMenu extends Screen {

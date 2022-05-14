@@ -1,16 +1,11 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens.InventoryScreens;
 
-import Domain.ServiceLayer.InventoryObjects.DefectiveItemReport;
 import Domain.ServiceLayer.InventoryObjects.PurchaseFromSupplierReport;
-import Domain.ServiceLayer.InventoryObjects.StockReport;
 import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Reports extends Screen {
@@ -44,7 +39,7 @@ public class Reports extends Screen {
         }
     }
 
-    public void getDiscountFromSupplierHistory() {
+    private void getDiscountFromSupplierHistory() {
         System.out.println("Please insert product ID for which you would like to see history");
         int id = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
@@ -60,7 +55,7 @@ public class Reports extends Screen {
         }
     }
 
-    public void getPurchaseFromSupplierHistory() {
+    private void getPurchaseFromSupplierHistory() {
         System.out.println("Please insert product ID for which you would like to see history");
         int id = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.

@@ -1,8 +1,6 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens.InventoryScreens;
 
-import PresentationLayer.BackendController;
 import PresentationLayer.Screens.Screen;
-import PresentationLayer.Screens.SupplierScreens.SuppliersMenu;
 
 public class InventoryMenu extends Screen {
     private static final String[] menuOptions = {

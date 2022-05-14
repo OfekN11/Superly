@@ -1,4 +1,4 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens.InventoryScreens;
 
 import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
@@ -21,6 +21,7 @@ public class Category extends Screen {
     private String parentCategory;
     private List<Domain.ServiceLayer.InventoryObjects.Category> subCategories;
     private int numOfProducts;
+
     public Category(Screen caller, String[] extraMenuOptions, Domain.ServiceLayer.InventoryObjects.Category category) {
         super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
         id = category.getID();
@@ -49,7 +50,7 @@ public class Category extends Screen {
     }
 
 
-    protected void handleBaseOptions(int option) throws Exception {
+    private void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
                 changeCatName();
@@ -67,7 +68,7 @@ public class Category extends Screen {
 
 
 
-    public void changeCatParent() {
+    private void changeCatParent() {
         System.out.println("Please insert new category parent ID");
         int parent = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
@@ -80,7 +81,7 @@ public class Category extends Screen {
         }
     }
 
-    public void changeCatName() {
+    private void changeCatName() {
         System.out.println("Please insert new category name");
         String name = scanner.nextLine();
         Result<Domain.ServiceLayer.InventoryObjects.Category> r = controller.editCategoryName(id, name);
@@ -92,7 +93,7 @@ public class Category extends Screen {
         }
     }
 
-    public void deleteCategory() {
+    private void deleteCategory() {
         Result r = controller.deleteCategory(id);
         if (r.isError()) {
             System.out.println(r.getError());

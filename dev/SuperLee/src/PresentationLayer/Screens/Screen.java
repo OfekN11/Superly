@@ -27,7 +27,7 @@ public abstract class Screen implements Runnable{
         this.caller = caller;
     }
 
-    protected void printMenu(){
+    private void printMenu(){
         for (int i = 0 ; i < menuOptions.length; i++)
             System.out.println((i + 1) + " -- " + menuOptions[i]);
     }
@@ -69,7 +69,7 @@ public abstract class Screen implements Runnable{
         return yesOrNo();
     }
 
-    protected static boolean yesOrNo(){
+    private static boolean yesOrNo(){
         int ans = 0;
         while (ans != 1 && ans != 2){
             System.out.println("1 -- yes\n2 -- no");
@@ -86,7 +86,7 @@ public abstract class Screen implements Runnable{
         return ans == 1;
     }
 
-    public static Date buildDate() {
+    protected static Date buildDate() {
         Date date = new Date();
         boolean success = false;
         while (!success) {
@@ -197,7 +197,7 @@ public abstract class Screen implements Runnable{
         return input;
     }
 
-    public Date getDate() {
+    protected Date getDate() {
         while (true) {
             try {
                 System.out.println("Please insert date in format: DD/MM/YYYY");
@@ -213,20 +213,20 @@ public abstract class Screen implements Runnable{
         }
     }
 
-    public int getStoreID() {
+    protected int getStoreID() {
         System.out.println("Please insert store ID of store you are interested in.");
         System.out.println("Current store IDs are:");
         System.out.println(controller.getStoreIDs().getValue());
         return scanner.nextInt();
     }
 
-    public void listCategoryIDs() {
+    protected void listCategoryIDs() {
         List<Integer> cIDs = getCatIDs();
         System.out.println("Current category IDs are:");
         System.out.println(cIDs);
     }
 
-    public List<Integer> getCatIDs() {
+    protected List<Integer> getCatIDs() {
         List<Integer> cIDs = new ArrayList<>();
         List<Domain.ServiceLayer.InventoryObjects.Category> c = controller.getCategories().getValue();
         for (Domain.ServiceLayer.InventoryObjects.Category cat: c) {
@@ -235,7 +235,7 @@ public abstract class Screen implements Runnable{
         return cIDs;
     }
 
-    public double round(double price) {
+    protected double round(double price) {
         price = (int)(price*100);
         return price/100;
     }

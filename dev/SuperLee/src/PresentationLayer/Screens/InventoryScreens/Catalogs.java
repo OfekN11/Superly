@@ -1,12 +1,10 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens.InventoryScreens;
 
 import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,7 +45,7 @@ public class Catalogs extends Screen {
     }
 
 
-    protected void handleBaseOptions(int option) throws Exception {
+    private void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
                 listProducts();
@@ -75,7 +73,7 @@ public class Catalogs extends Screen {
         }
     }
 
-    public void addProduct() {
+    private void addProduct() {
         System.out.println("Please insert product name, categoryID, weight, price, and manufacturer. Separated by commas, no spaces");
         String[] info = scanner.nextLine().split(",");
         Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.newProduct(info[0],Integer.parseInt(info[1]), Double.parseDouble(info[2]), Double.parseDouble(info[3]), info[5]);
@@ -87,7 +85,7 @@ public class Catalogs extends Screen {
         }
     }
 
-    public void addCategory() {
+    private void addCategory() {
         System.out.println("Please insert category name");
         String name = scanner.nextLine();
         System.out.println("Please insert parent category ID, or 0 if there is none");
@@ -130,7 +128,7 @@ public class Catalogs extends Screen {
         }
     }
 
-    public void listProducts() {
+    private void listProducts() {
         Result<List<Domain.ServiceLayer.InventoryObjects.Product>> r = controller.getProducts();
         if (r.isError())
             System.out.println(r.getError());
@@ -143,7 +141,7 @@ public class Catalogs extends Screen {
         }
     }
 
-    public void listProductsByCategory() {
+    private void listProductsByCategory() {
         System.out.println("Which categories would you like to examine? (Please insert categories IDs separated by ',' without spaces)");
         listCategoryIDs();
         List<Integer> categories = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
@@ -159,7 +157,7 @@ public class Catalogs extends Screen {
         }
     }
 
-    public void listCategories() {
+    private void listCategories() {
         Result<List<Domain.ServiceLayer.InventoryObjects.Category>> r = controller.getCategories();
         if (r.isError())
             System.out.println(r.getError());

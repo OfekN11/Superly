@@ -1,4 +1,4 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens.InventoryScreens;
 
 import Domain.ServiceLayer.InventoryObjects.Sale;
 import Domain.ServiceLayer.Result;
@@ -44,7 +44,7 @@ public class Sales extends Screen {
     }
 
 
-    protected void handleBaseOptions(int option) throws Exception {
+    private void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
                 addSale();
@@ -92,7 +92,7 @@ public class Sales extends Screen {
             System.out.println(r.getValue());
     }
 
-    public void removeSale() {
+    private void removeSale() {
         System.out.println("Which sale would you like to remove? (insert ID)");
         printRemovableSales();
         int saleID = scanner.nextInt();
@@ -105,13 +105,13 @@ public class Sales extends Screen {
         }
     }
 
-    public void printRemovableSales() {
+    private void printRemovableSales() {
         Result<List<Sale>> removableSales = controller.getRemovableSales();
         for (Sale sale: removableSales.getValue())
             System.out.println(sale);
     }
 
-    public void saleHistoryByProduct() {
+    private void saleHistoryByProduct() {
         System.out.println("Please insert product ID for which you would like to see history");
         int id = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
@@ -127,7 +127,7 @@ public class Sales extends Screen {
         }
     }
 
-    public void saleHistoryByCategory() {
+    private void saleHistoryByCategory() {
         System.out.println("Please insert category ID for which you would like to see history");
         int id = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.

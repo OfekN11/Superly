@@ -1,4 +1,4 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens.InventoryScreens;
 
 import Domain.ServiceLayer.InventoryObjects.DefectiveItemReport;
 import Domain.ServiceLayer.Result;
@@ -42,7 +42,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    protected void handleBaseOptions(int option) throws Exception {
+    private void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
                 damagedItems();
@@ -58,7 +58,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void expiredItems() {
+    private void expiredItems() {
         System.out.println("Please insert for which items you would like to see expired item history: (choose the corresponding number)");
         System.out.println("1: A product/products");
         System.out.println("2: A category/categories");
@@ -84,7 +84,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void expiredItemsAll() {
+    private void expiredItemsAll() {
         System.out.println("Please insert start date");
         Date start = getDate();
         if (start==null)
@@ -105,7 +105,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void expiredItemsByStore() {
+    private void expiredItemsByStore() {
         System.out.println("Please insert store IDs, separated by commas without spaces");
         List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
@@ -128,7 +128,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void expiredItemsByCategory() {
+    private void expiredItemsByCategory() {
         System.out.println("Please insert category IDs, separated by commas without spaces");
         List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
@@ -151,7 +151,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void expiredItemsByProduct() {
+    private void expiredItemsByProduct() {
         System.out.println("Please insert product IDs, separated by commas without spaces");
         List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
@@ -174,9 +174,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-
-
-    public void defectiveItems() {
+    private void defectiveItems() {
         System.out.println("Please insert for which items you would like to see defect item history: (choose the corresponding number)");
         System.out.println("1: A product/products");
         System.out.println("2: A category/categories");
@@ -201,7 +199,7 @@ public class DefectiveItemReports extends Screen {
                 System.out.println("Incorrect command, please try again");
         }
     }
-    public void defectiveItemsAll() {
+    private void defectiveItemsAll() {
         System.out.println("Please insert start date");
         Date start = getDate();
         if (start==null)
@@ -222,7 +220,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void defectiveItemsByStore() {
+    private void defectiveItemsByStore() {
         System.out.println("Please insert store IDs, separated by commas without spaces");
         List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
@@ -245,7 +243,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void defectiveItemsByCategory() {
+    private void defectiveItemsByCategory() {
         System.out.println("Please insert category IDs, separated by commas without spaces");
         List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
@@ -268,7 +266,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void defectiveItemsByProduct() {
+    private void defectiveItemsByProduct() {
         System.out.println("Please insert product IDs, separated by commas without spaces");
         List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
@@ -291,7 +289,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void damagedItems() {
+    private void damagedItems() {
         System.out.println("Please insert for which items you would like to see damaged item history: (choose the corresponding number)");
         System.out.println("1: A product/products");
         System.out.println("2: A category/categories");
@@ -317,7 +315,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void damagedItemsAll() {
+    private void damagedItemsAll() {
         System.out.println("Please insert start date");
         Date start = getDate();
         if (start==null)
@@ -338,7 +336,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void damagedItemsByStore() {
+    private void damagedItemsByStore() {
         System.out.println("Please insert store IDs, separated by commas without spaces");
         List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
@@ -361,7 +359,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void damagedItemsByCategory() {
+    private void damagedItemsByCategory() {
         System.out.println("Please insert category IDs, separated by commas without spaces");
         List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
@@ -384,7 +382,7 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
-    public void damagedItemsByProduct() {
+    private void damagedItemsByProduct() {
         System.out.println("Please insert product IDs, separated by commas without spaces");
         List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");

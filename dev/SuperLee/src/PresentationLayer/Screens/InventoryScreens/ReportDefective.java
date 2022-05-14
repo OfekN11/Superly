@@ -1,4 +1,4 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens.InventoryScreens;
 
 import Domain.ServiceLayer.InventoryObjects.DefectiveItemReport;
 import Domain.ServiceLayer.Result;
@@ -37,7 +37,7 @@ public class ReportDefective extends Screen {
         }
     }
 
-    protected void handleBaseOptions(int option) throws Exception {
+    private void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
                 reportDamaged();
@@ -50,7 +50,7 @@ public class ReportDefective extends Screen {
         }
     }
 
-    public void reportDamaged() {
+    private void reportDamaged() {
         int store = getStoreID();
         System.out.println("Please enter 0 for report in warehouse or any other number for report in store");
         int inWarehouse = scanner.nextInt();
@@ -73,7 +73,7 @@ public class ReportDefective extends Screen {
         }
     }
 
-    public void reportExpired() {
+    private void reportExpired() {
         int store = getStoreID();
         System.out.println("Please enter 0 for report in warehouse or any other number for report in store");
         int inWarehouse = scanner.nextInt();

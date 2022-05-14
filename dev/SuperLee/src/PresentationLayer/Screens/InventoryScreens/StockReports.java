@@ -1,4 +1,4 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens.InventoryScreens;
 
 import Domain.ServiceLayer.InventoryObjects.StockReport;
 import Domain.ServiceLayer.Result;
@@ -39,7 +39,7 @@ public class StockReports extends Screen {
         }
     }
 
-    protected void handleBaseOptions(int option) throws Exception {
+    private void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
                 storeStockReport();
@@ -52,7 +52,7 @@ public class StockReports extends Screen {
         }
     }
 
-    public void storeStockReport() {
+    private void storeStockReport() {
         System.out.println("Please insert store IDs, separated by commas without spaces");
         System.out.println("Current store IDs are:");
         System.out.println(controller.getStoreIDs().getValue());
@@ -84,7 +84,7 @@ public class StockReports extends Screen {
         }
     }
 
-    public void getMinStockReport() {
+    private void getMinStockReport() {
         Result<List<StockReport>> r = controller.getMinStockReport();
         if (r.isError())
             System.out.println(r.getError());

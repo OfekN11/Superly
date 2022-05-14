@@ -1,7 +1,5 @@
-package PresentationLayer.Screens.InventorySreens;
+package PresentationLayer.Screens.InventoryScreens;
 
-import Domain.ServiceLayer.InventoryObjects.DefectiveItemReport;
-import Domain.ServiceLayer.InventoryObjects.PurchaseFromSupplierReport;
 import Domain.ServiceLayer.Result;
 import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
 import Globals.Pair;
@@ -45,7 +43,7 @@ public class Store extends Screen {
     }
 
 
-    protected void handleBaseOptions(int option) throws Exception {
+    private void handleBaseOptions(int option) throws Exception {
         switch (option) {
             case 1:
                 new Thread(new Sales(this, new String[]{})).start();
@@ -69,7 +67,7 @@ public class Store extends Screen {
                 endRun();
         }
     }
-    public void removeStore() {
+    private void removeStore() {
         System.out.println("Which store would you like remove?");
         int id = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
@@ -81,7 +79,7 @@ public class Store extends Screen {
         }
     }
 
-    public void addStore() {
+    private void addStore() {
         Result<Integer> r = controller.addStore();
         if (r.isError())
             System.out.println(r.getError());
@@ -91,7 +89,7 @@ public class Store extends Screen {
         }
     }
 
-    public void addItems() {
+    private void addItems() {
         System.out.println("Which Order arrived? (insert ID)");
         int orderID = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
