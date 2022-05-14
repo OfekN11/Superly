@@ -94,7 +94,7 @@ public class Sales extends Screen {
 
     public void removeSale() {
         System.out.println("Which sale would you like to remove? (insert ID)");
-        PrintRemovableSales();
+        printRemovableSales();
         int saleID = scanner.nextInt();
         scanner.nextLine(); //to remove extra \n
         Result r = controller.removeSale(saleID);
@@ -105,7 +105,7 @@ public class Sales extends Screen {
         }
     }
 
-    public void PrintRemovableSales() {
+    public void printRemovableSales() {
         Result<List<Sale>> removableSales = controller.getRemovableSales();
         for (Sale sale: removableSales.getValue())
             System.out.println(sale);
