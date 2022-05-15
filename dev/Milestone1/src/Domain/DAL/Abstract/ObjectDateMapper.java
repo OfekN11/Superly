@@ -74,7 +74,7 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
         return remove(id);
     }
 
-    public Set<T>getAll()throws SQLException{
+    public Set<T>getAll()throws Exception{
         Set<T> output = new HashSet<>();
         try(Connection connection =getConnection()){
             ResultSet resultSet = super.select(connection);
@@ -85,7 +85,7 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
     }
     protected abstract Map<String, T> getMap();
     protected abstract  LinkDAO getLinkDTO(String setName);
-    protected abstract T buildObject(ResultSet instanceResult) throws SQLException;
+    protected abstract T buildObject(ResultSet instanceResult) throws Exception;
     public abstract void insert(T instance) throws SQLException;
 
     /**
