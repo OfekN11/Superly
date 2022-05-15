@@ -25,6 +25,9 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
             map.put(id, output);
             return output;
         }
+        catch (SQLException e){
+            throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+        }
     }
 
     /**
