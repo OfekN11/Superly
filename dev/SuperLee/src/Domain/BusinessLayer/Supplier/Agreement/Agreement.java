@@ -1,6 +1,7 @@
 package Domain.BusinessLayer.Supplier.Agreement;
 
 import Domain.BusinessLayer.Supplier.AgreementItem;
+import Domain.PersistenceLayer.Controllers.AgreementController;
 import Globals.NotNull;
 
 import java.util.*;
@@ -33,12 +34,12 @@ public abstract class Agreement {
     }
 
 
-    public void setItemsFromString(List<String> itemsString) throws Exception {
+    public void setItemsFromString(List<String> itemsString, int supplierId, AgreementController agreementController) throws Exception {
         NotNull.Check(itemsString);
         List<AgreementItem> _items = transformStringToItems(itemsString);
 
         items = new HashMap<>();
-
+        agreementController.addAgreementItems( _items, supplierId);
         listToMap(_items);
     }
 
@@ -157,4 +158,9 @@ public abstract class Agreement {
     }
 
 
+    public abstract List<Integer> getDays();
+
+    public void addAgreementItems(Map<Integer, AgreementItem> items) {
+        this.items = items;
+    }
 }

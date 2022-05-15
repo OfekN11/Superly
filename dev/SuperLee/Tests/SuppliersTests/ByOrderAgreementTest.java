@@ -4,6 +4,8 @@ import Domain.BusinessLayer.Supplier.Agreement.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,7 +30,11 @@ public class ByOrderAgreementTest {
 
     @Test
     public void test_setDeliveryDays(){
-        agreement.setDeliveryDays(17);
+        try {
+            agreement.setDeliveryDays(17, 1, null);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         assertEquals(17, agreement.getDeliveryDays());
     }

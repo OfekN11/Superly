@@ -15,6 +15,8 @@ public class ManufacturerDAO extends DAO {
 
     private static final ArrayList<String> manufacturers = new ArrayList<>();
 
+    private final static int SUPPLIER_ID_COLUMN = 1;
+    private final static int MANUFACTURER_COLUMN = 2;
 
 
     public ManufacturerDAO() {

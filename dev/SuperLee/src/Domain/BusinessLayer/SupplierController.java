@@ -5,6 +5,7 @@ import Domain.PersistenceLayer.Controllers.OrderDAO;
 import Domain.PersistenceLayer.Controllers.SuppliersDAO;
 import Globals.Pair;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class SupplierController {
@@ -15,18 +16,28 @@ public class SupplierController {
 
     public SupplierController(){
         suppliersDAO = new SuppliersDAO();
-        orderDAO = new OrderDAO();
+        //orderDAO = new OrderDAO();
 
         //maybe add dataBase to save globalId for orders and suppliers and transfer the id to suppliersDAO and OrderDAO
 
     }
 
 
+    public void loadSuppliersData(){
+        try {
+            suppliersDAO.loadAllSuppliersInfo();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
 
     public int addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
         ArrayList<Contact> contacts = createContacts(contactPairs);
         Supplier supplier = new Supplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
-        suppliersDAO.addSupplier(supplier, contacts, manufacturers);
+
+        suppliersDAO.save(String.valueOf(supplier.getId()), supplier);
+        //suppliersDAO.addSupplier(supplier, contacts, manufacturers);
         return supplier.getId();
     }
 
@@ -50,21 +61,27 @@ public class SupplierController {
     public void updateSupplierAddress(int id, String address) throws Exception {
         if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
+
         suppliersDAO.updateSupplierAddress(id, address);
+        suppliersDAO.getSupplier(id).updateAddress(address);
+
 
     }
 
     public void updateSupplierBankNumber(int id, int bankNumber) throws Exception {
         if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.updateSupplierBankNumber(id, bankNumber);
 
+        suppliersDAO.updateSupplierBankNumber(id, bankNumber);
+        suppliersDAO.getSupplier(id).updateBankNumber(bankNumber);
     }
 
     public void updateSupplierName(int id, String newName) throws Exception {
         if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
+
         suppliersDAO.updateSupplierName(id, newName);
+        suppliersDAO.getSupplier(id).updateName(newName);
 
     }
 
@@ -74,40 +91,65 @@ public class SupplierController {
         if(!validPhoneNumber(contactPhone))
             throw new Exception("Phone number is Illegal");
         Contact contact = new Contact(contactName, contactPhone);
-        suppliersDAO.addSupplierContact(id, contact);
 
+        suppliersDAO.addSupplierContact(id, contact);
+        suppliersDAO.getSupplier(id).addContact(contact);
     }
 
     public void updateSupplierPayingAgreement(int id, String payingAgreement) throws Exception {
         if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.updateSupplierPayingAgreement( id, payingAgreement);
 
+        suppliersDAO.updateSupplierPayingAgreement( id, payingAgreement);
+        suppliersDAO.getSupplier(id).updatePayingAgreement(payingAgreement);
     }
 
     public void addSupplierManufacturer(int id, String manufacturer) throws Exception {
         if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.addSupplierManufacturer(id, manufacturer);
 
+        suppliersDAO.addSupplierManufacturer(id, manufacturer);
+        suppliersDAO.getSupplier(id).addManufacturer(manufacturer);
     }
 
     public void addAgreement(int supplierId, int agreementType, String agreementDays) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
 
-        suppliersDAO.addAgreement(supplierId, agreementType, agreementDays);
-        //suppliersDAO.getSupplier(supplierId).addAgreement(agreementType, agreementDays);
+        suppliersDAO.getSupplier(supplierId).addAgreement(agreementType, agreementDays, suppliersDAO);
     }
+
+
+    public void updateAgreementType(int supplierId,  int agreementType, String agreementDays) throws Exception {
+        if(!supplierExist(supplierId))
+            throw new Exception("There is no supplier with this ID!");
+
+        suppliersDAO.getSupplier(supplierId).updateAgreementType(agreementType, agreementDays);
+        suppliersDAO.updateAgreementType(supplierId, agreementType);
+        List<Integer> days = suppliersDAO.getSupplier(supplierId).getAgreementDays();
+        suppliersDAO.getAgreementController().removeSupplier(supplierId);
+        suppliersDAO.getAgreementController().updateAgreementDays(supplierId, days, agreementType);
+    }
+
+    /*
+    //we don't use this function!!!!
+    public void setAgreement(int supplierId, int agreementType, String agreementDays) throws Exception {
+        if(!supplierExist(supplierId))
+            throw new Exception("There is no supplier with this ID!");
+
+        suppliersDAO.getSupplier(supplierId).addAgreement(agreementType, agreementDays, null);
+        suppliersDAO.updateAgreementType(supplierId, agreementType);
+        List<Integer> days = suppliersDAO.getSupplier(supplierId).getAgreementDays();
+    }
+     */
 
 
     public void addItemsToAgreement(int supplierId, List<String> itemsString) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
 
-        suppliersDAO.addItemsToAgreement(supplierId, itemsString);
+        suppliersDAO.getSupplier(supplierId).addAgreementItems(itemsString, suppliersDAO);
 
-        //suppliersDAO.getSupplier(supplierId).addAgreementItems(itemsString);
     }
 
 
@@ -129,7 +171,9 @@ public class SupplierController {
     }
 
 
-    /*public Map<String, List<String>> itemsFromAllSuppliers() throws Exception {
+    /*
+    //we don't use this function
+    public Map<String, List<String>> itemsFromAllSuppliers() throws Exception {
         HashMap<String, List<String>> items = new HashMap<>();
         for (Supplier supplier : suppliers.values())
             items.put(supplier.getName(), supplier.getOrderedItems());
@@ -139,76 +183,61 @@ public class SupplierController {
     public List<String> itemsFromOneSupplier(int id) throws Exception {
         if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
-        return suppliersDAO.getSupplier(id).getOrderedItems();
+        return suppliersDAO.getSupplier(id).getAgreementItems();
     }
 
     public void updateBulkPriceForItem(int supplierId, int itemID, Map<Integer, Integer> newBulkPrices) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.getSupplier(supplierId).updateBulkPriceForItem(itemID, newBulkPrices);
+        suppliersDAO.getSupplier(supplierId).updateBulkPriceForItem(itemID, newBulkPrices, suppliersDAO.getAgreementController());
     }
 
     public void updatePricePerUnitForItem(int supplierId, int itemID, float newPrice) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.getSupplier(supplierId).updatePricePerUnitForItem(itemID, newPrice);
+        suppliersDAO.getSupplier(supplierId).updatePricePerUnitForItem(itemID, newPrice, suppliersDAO.getAgreementItemDAO());
     }
 
     public void updateItemId(int supplierId, int olditemId, int newItemId) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.getSupplier(supplierId).updateItemId(olditemId, newItemId);
+        suppliersDAO.getSupplier(supplierId).updateItemId(olditemId, newItemId, suppliersDAO.getAgreementItemDAO());
     }
 
     public void updateItemName(int supplierId, int itemId, String newName) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.getSupplier(supplierId).updateItemName(itemId, newName);
+        suppliersDAO.getSupplier(supplierId).updateItemName(itemId, newName, suppliersDAO.getAgreementItemDAO());
     }
 
     public void updateItemManufacturer(int supplierId, int itemId, String manufacturer) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.getSupplier(supplierId).updateItemManufacturer(itemId, manufacturer);
+        suppliersDAO.getSupplier(supplierId).updateItemManufacturer(itemId, manufacturer, suppliersDAO);
     }
+
 
     public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.addItemToAgreement(supplierId, itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices);
 
-        //suppliersDAO.getSupplier(supplierId).addItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices);
+        suppliersDAO.getSupplier(supplierId).addItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices, suppliersDAO);
     }
 
     public void deleteItemFromAgreement(int supplierId, int itemId) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.getSupplier(supplierId).deleteItem(itemId);
+        suppliersDAO.getSupplier(supplierId).deleteItem(itemId, suppliersDAO);
     }
 
     public boolean isTransporting(int supplierId) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
 
-        return suppliersDAO.isTransporting(supplierId);
-        //return suppliersDAO.getSupplier(supplierId).isTransporting();
+        return suppliersDAO.getSupplier(supplierId).isTransporting();
     }
 
-    public void updateAgreementType(int supplierId,  int agreementType, String agreementDays) throws Exception {
-        if(!supplierExist(supplierId))
-            throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.addAgreement(supplierId, agreementType, agreementDays);
 
-        //suppliersDAO.getSupplier(supplierId).updateAgreementType(agreementType, agreementDays);
-    }
-
-    public void setAgreement(int supplierId, int agreementType, String agreementDays) throws Exception {
-        if(!supplierExist(supplierId))
-            throw new Exception("There is no supplier with this ID!");
-        suppliersDAO.addAgreement(supplierId, agreementType, agreementDays);
-
-        //suppliersDAO.getSupplier(supplierId).addAgreement(agreementType, agreementDays);
-    }
 
     public List<Integer> getDaysOfDelivery(int supplierId) throws Exception{
         if(!supplierExist(supplierId))
@@ -262,7 +291,7 @@ public class SupplierController {
             throw new Exception("The supplier does not exists!");
         }
 
-        suppliersDAO.getSupplier(supplierID).setDaysOfDelivery(days);
+        suppliersDAO.getSupplier(supplierID).setDaysOfDelivery(days, suppliersDAO.getAgreementController());
     }
 
     public void addDaysOfDelivery(int supplierID, String days) throws Exception{
@@ -327,7 +356,7 @@ public class SupplierController {
         }
 
         if(suppliersDAO.getSupplier(supplierID).isByOrderAgreement()){
-            suppliersDAO.getSupplier(supplierID).setDaysUntilDelivery(days);
+            suppliersDAO.getSupplier(supplierID).setDaysUntilDelivery(days, suppliersDAO.getAgreementController());
         }
         else{
             throw new Exception("This supplier does not have a BY-ORDER-TRANSPORT agreement.");
@@ -341,13 +370,15 @@ public class SupplierController {
 
         List<String> contacts = new LinkedList<>();
 
-        List<Contact> list = suppliersDAO.getAllSupplierContacts(supID);
-        //List<Contact> list = suppliersDAO.getSupplier(supID).getAllContact();
 
+        List<Contact> list;
+        list = suppliersDAO.getSupplier(supID).getAllContact();
+        if(list == null || list.size() == 0){
+            list = suppliersDAO.getAllSupplierContacts(supID);
+        }
         for(Contact c : list){
             contacts.add(c.toString());
         }
-
         return contacts;
     }
 
@@ -356,8 +387,8 @@ public class SupplierController {
             throw new Exception("The supplier does not exists!");
         }
 
-        suppliersDAO.removeSupplierContact(supID, name);
-        //suppliersDAO.getSupplier(supID).removeContact(name);
+        suppliersDAO.getSupplier(supID).removeContact(name, suppliersDAO);
+
     }
 
     public List<String> getManufacturers(int supID) throws Exception {
@@ -365,8 +396,11 @@ public class SupplierController {
             throw new Exception("The supplier does not exists!");
         }
 
-        //return suppliersDAO.getSupplier(supID).getManufacturers();
-        return suppliersDAO.getAllSupplierManufacturers(supID);
+        List<String> manufacturers = suppliersDAO.getSupplier(supID).getManufacturers();
+        if(manufacturers == null || manufacturers.size() == 0){
+            manufacturers = suppliersDAO.getAllSupplierManufacturers(supID);
+        }
+        return manufacturers;
     }
 
     public void removeManufacturer(int supID, String name) throws Exception {
@@ -374,8 +408,7 @@ public class SupplierController {
             throw new Exception("The supplier does not exists!");
         }
 
-        suppliersDAO.removeSupplierManufacturer(supID, name);
-        //suppliersDAO.getSupplier(supID).removeManufacturer(name);
+        suppliersDAO.getSupplier(supID).removeManufacturer(name, suppliersDAO);
     }
 
     public boolean isSuppliersEmpty(){
@@ -390,12 +423,17 @@ public class SupplierController {
         return suppliersDAO.hasAgreement(supID);
     }
 
+
+
+
+
     public int addNewOrder(int supId, int storeId) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        Order order = suppliersDAO.getSupplier(supId).addNewOrder(storeId);
-        insertToOrderDAO( order );
+        Order order = suppliersDAO.getSupplier(supId).addNewOrder(storeId, orderDAO, suppliersDAO.getAgreementController());
+
+        //insertToOrderDAO( order ); its happening inside addNewOrder
         return order.getId();
     }
 
@@ -406,7 +444,7 @@ public class SupplierController {
         for(int i = 0; i < itemsString.size(); i+=2 ){
             if(itemsString.size() <= i+2)
                throw new Exception("Some information is missing!");
-            suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId , Integer.parseInt(itemsString.get(i)),Integer.parseInt(itemsString.get(i+1)));
+            suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId , Integer.parseInt(itemsString.get(i)),Integer.parseInt(itemsString.get(i+1)), orderDAO);
         }
         //suppliers.get(supId).addItemsToOrder(orderId, itemsString);
     }
@@ -415,7 +453,7 @@ public class SupplierController {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity);
+        suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity, orderDAO);
     }
 
 
@@ -423,21 +461,21 @@ public class SupplierController {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliersDAO.getSupplier(supId).removeOrder(orderId);
+        suppliersDAO.getSupplier(supId).removeOrder(orderId, orderDAO);
     }
 
     public void removeItemFromOrder(int supId, int orderId, int itemId) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliersDAO.getSupplier(supId).removeItemFromOrder(orderId, itemId);
+        suppliersDAO.getSupplier(supId).removeItemFromOrder(orderId, itemId, orderDAO);
     }
 
     public void updateItemQuantityInOrder(int supID, int orderID, int itemID, int quantity) throws Exception {
         if(!supplierExist(supID)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliersDAO.getSupplier(supID).updateOrder(orderID, itemID, quantity);
+        suppliersDAO.getSupplier(supID).updateOrder(orderID, itemID, quantity , orderDAO);
     }
 
 
@@ -445,7 +483,7 @@ public class SupplierController {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        return suppliersDAO.getSupplier(supId).getOrder(orderId);
+        return suppliersDAO.getSupplier(supId).getOrder(orderId, orderDAO);
     }
 
     public boolean doesSupplierExists(int id) {
@@ -456,8 +494,7 @@ public class SupplierController {
         if(!supplierExist(supID)){
             throw new Exception("The supplier does not exists!");
         }
-
-        return suppliersDAO.getSupplier(supID).orderExists(orderID);
+        return suppliersDAO.getSupplier(supID).orderExists(orderID, orderDAO);
     }
 
 
@@ -497,7 +534,7 @@ public class SupplierController {
         }
     }
 
-    private boolean checkIfOrderFromThisSupplierAlreadyExists(int supplierId, Map<String, ArrayList<Order>> orders, int productId, int storeId, int quantity) {
+    private boolean checkIfOrderFromThisSupplierAlreadyExists(int supplierId, Map<String, ArrayList<Order>> orders, int productId, int storeId, int quantity) throws SQLException {
         ArrayList<Order> deletableOrders = orders.get("deletable");
         ArrayList<Order> notDeletableOrders = orders.get("not deletable");
         for(Order order : deletableOrders){
@@ -604,10 +641,10 @@ public class SupplierController {
     }
 
 
-    private Map<String, ArrayList<Order>> getOrdersForTomorrow() {
+    private Map<String, ArrayList<Order>> getOrdersForTomorrow() throws SQLException {
         Map<String, ArrayList<Order>> result = new HashMap<>();
 
-        uploadAllSuppliersAndAgreementsFromDataBase();
+        loadSuppliersData();
         ArrayList<Integer> supplierIds = getAllRoutineSuppliersDeliveringTomorrow();
         ArrayList<Order> lastOrderForRoutineSupplier = uploadLastOrderForRoutineSupplier(supplierIds);
 
@@ -622,14 +659,6 @@ public class SupplierController {
         return result;
     }
 
-
-
-    private void uploadAllSuppliersAndAgreementsFromDataBase() {
-        // go to supplierDAO and upload for supplier :
-        // id , bank number , address , name , payingAgreement
-        //now upload all agreement info , including items
-        // upload for routine agreement the lastOrderID
-    }
 
     private ArrayList<Integer> getAllRoutineSuppliersDeliveringTomorrow() {
         ArrayList<Integer> result = new ArrayList<>();
@@ -655,6 +684,7 @@ public class SupplierController {
                 orderIds.add(lastOrderId);
         }
 
+        //return orderDAO.getLastOrdersFromALlSuppliers(orderIds);
         //ArrayList<Order> result = upload and get Orders with matching Ids from dataBase.
         //return result;
 
@@ -682,27 +712,31 @@ public class SupplierController {
 
 
 
-    private ArrayList<Order> createNewOrdersFromArrivalTimePassed(ArrayList<Order> ordersArrivalTimePassed) {
+    private ArrayList<Order> createNewOrdersFromArrivalTimePassed(ArrayList<Order> ordersArrivalTimePassed) throws SQLException {
         ArrayList<Order> result = new ArrayList<>();
         for(Order order : ordersArrivalTimePassed){
-            result.add(new Order(order));
+            Order newOrder = new Order(order);
+            //on comment until orderDAO will work
+            //orderDAO.removeOrder(order.getId());
+            //orderDAO.addOrder(newOrder);
+            result.add(newOrder);
         }
         return result;
     }
 
 
 
-    private void insertToOrderDAO(Order order) {
-
+    private void insertToOrderDAO(Order order) throws SQLException {
+        orderDAO.addOrder(order);
     }
 
-    private void deleteOrderFromDAO(int id) {
-
+    private void deleteOrderFromDAO(int id) throws SQLException {
+        orderDAO.removeOrder(id);
     }
 
 
-    private void updateOrderDAO(Order newOrder) {
-
+    private void updateOrderDAO(Order newOrder) throws SQLException {
+        orderDAO.updateOrder(newOrder);
     }
 
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class RoutineAgreementTest {
 
-    private RoutineAgreement agreement = new RoutineAgreement("1 2 3 4 5 6 7");;
+    private RoutineAgreement agreement = new RoutineAgreement(new ArrayList<>());
 
     @BeforeEach
     public void setUp(){
@@ -38,7 +38,7 @@ public class RoutineAgreementTest {
         list.add(1); list.add(2); list.add(3);
 
         try{
-            agreement.setDaysOfDelivery(s);
+            agreement.setDaysOfDelivery(s, 1, null);
 
             assertEquals(list, agreement.getDaysOfDelivery());
         }
@@ -54,7 +54,7 @@ public class RoutineAgreementTest {
         list.add(1); list.add(2); list.add(5); list.add(6);
 
         try{
-            agreement.setDaysOfDelivery("1 2");
+            agreement.setDaysOfDelivery("1 2", 1, null);
 
             agreement.addDaysOfDelivery(s);
 

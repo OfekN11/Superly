@@ -1,5 +1,7 @@
 package Domain.BusinessLayer.Supplier.Agreement;
 
+import Domain.PersistenceLayer.Controllers.AgreementController;
+
 import java.util.*;
 
 public class RoutineAgreement extends Agreement {
@@ -10,12 +12,17 @@ public class RoutineAgreement extends Agreement {
 
     // days should be in the format "x1 x2 x3 ...", xi in {1, 2, 3, 4, 5, 6, 7}
     // THE STRING MUST NOT BE EMPTY!
-    public RoutineAgreement(String days){
+    public RoutineAgreement(List<Integer> days){
         super();
-        daysOfDelivery = daysStringToDay(days);
+        daysOfDelivery = days;
     }
 
-    private List<Integer> daysStringToDay(String days){
+    public RoutineAgreement(List<Integer> days, int lastOrderId){
+        super();
+        daysOfDelivery = days;
+        this.lastOrderId = lastOrderId;
+    }
+    public static List<Integer> daysStringToDay(String days){
         List<Integer> list = new LinkedList<>();
         int d = 0;
 
@@ -91,17 +98,21 @@ public class RoutineAgreement extends Agreement {
         }
     }
 
+    public List<Integer> getDays() {
+        return getDaysOfDelivery();
+    }
+
     public List<Integer> getDaysOfDelivery(){
         return new ArrayList<>(daysOfDelivery);
     }
 
-    public void setDaysOfDelivery(String days) throws Exception {
+    public void setDaysOfDelivery(String days,int supplierId, AgreementController agreementController) throws Exception {
         List<Integer> list = daysStringToDay(days);
 
         if(list.isEmpty()){
             throw new Exception("Given string does not contain days of the week!");
         }
-
+        agreementController.setDaysOfDelivery(supplierId ,list);
         daysOfDelivery = list;
     }
 

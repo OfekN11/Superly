@@ -4,13 +4,18 @@ import Domain.BusinessLayer.Supplier.Agreement.Agreement;
 import Domain.BusinessLayer.Supplier.Agreement.ByOrderAgreement;
 import Domain.BusinessLayer.Supplier.Agreement.NotTransportingAgreement;
 import Domain.BusinessLayer.Supplier.Agreement.RoutineAgreement;
+import Domain.PersistenceLayer.Controllers.AgreementController;
+import Domain.PersistenceLayer.Controllers.AgreementItemDAO;
+import Domain.PersistenceLayer.Controllers.OrderDAO;
+import Domain.PersistenceLayer.Controllers.SuppliersDAO;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Supplier {
 
-    private int id;//
+    private int id;
     private int bankNumber;
     private String address;
     private String name;
@@ -19,7 +24,6 @@ public class Supplier {
     private Agreement agreement;
     private ArrayList<String> manufacturers;
 
-    //private HashMap<Integer, Order> orders;
     private HashMap<Integer, Order> ordersToBe;    //orders that will be in the future
     private HashMap<Integer, Order> finishedOrders;
     private HashMap<Integer, Order> ordersInTheNext24Hours;
@@ -45,7 +49,6 @@ public class Supplier {
         this.finishedOrders = new HashMap<>();
         this.ordersInTheNext24Hours = new HashMap<>();
         agreement = null;
-
     }
 
     public Supplier(int id, int bankNumber, String address, String name, String payingAgreement){
@@ -55,7 +58,31 @@ public class Supplier {
         this.address = address;
         this.payingAgreement = payingAgreement;
         globalID ++;
+
+        this.manufacturers = new ArrayList<>();
+        this.contacts = new ArrayList<>();
+        this.ordersToBe = new HashMap<>();
+        this.finishedOrders = new HashMap<>();
+        this.ordersInTheNext24Hours = new HashMap<>();
+        agreement = null;
     }
+
+    public Supplier(int id, int bankNumber, String address, String name, String payingAgreement,ArrayList<Contact> contacts, ArrayList<String> manufacturers ){
+        this.id = id;
+        this.name = name;
+        this.bankNumber = bankNumber;
+        this.address = address;
+        this.payingAgreement = payingAgreement;
+        globalID ++;
+
+        this.contacts = contacts;
+        this.manufacturers = manufacturers;
+        this.ordersToBe = new HashMap<>();
+        this.finishedOrders = new HashMap<>();
+        this.ordersInTheNext24Hours = new HashMap<>();
+        agreement = null;
+    }
+
 
     public int getId() {
         return id;
@@ -83,14 +110,17 @@ public class Supplier {
         return contacts.remove(contact);
     }
 
-    /*
-    public void addAgreement(int agreementType, String agreementDays) throws Exception {
+
+    public void addAgreement(int agreementType, String agreementDays, SuppliersDAO suppliersDAO) throws Exception {
         if(agreementType > NOT_TRANSPORTING || agreementType < ROUTINE)
             throw new Exception("Invalid agreement type!");
-        createAgreement(agreementType, agreementDays);
+
+        createAgreement(agreementType, agreementDays, suppliersDAO);
+
+
     }
 
-     */
+
 
 
     public void updateAddress(String address) {
@@ -106,19 +136,19 @@ public class Supplier {
         this.name = newName;
     }
 
-    /*
+
 
     public void addContact(Contact contact) {
         contacts.add(contact);
     }
-    */
 
-    public void changePayingAgreement(String payingAgreement) {
+
+    public void updatePayingAgreement(String payingAgreement) {
         this.payingAgreement = payingAgreement;
         //If we add this payingAgreement to the agreement,  need to update there too
     }
 
-    /*
+
     public void addManufacturer(String manufacturer) throws Exception {
         if(manufacturers.contains(manufacturer)){
             throw new Exception("This manufacturer already exists in the system!");
@@ -127,119 +157,132 @@ public class Supplier {
         manufacturers.add(manufacturer);
     }
 
-     */
+
 
     public String getName() {
         return name;
     }
 
-    public List<String> getOrderedItems() throws Exception {
+    public List<String> getAgreementItems() throws Exception {
         agreementExists();
         return agreement.getItemsInMapFormat();
     }
 
-    public void updateBulkPriceForItem(int itemID, Map<Integer, Integer> newBulkPrices) throws Exception {
+    public void updateBulkPriceForItem(int itemID, Map<Integer, Integer> newBulkPrices, AgreementController agreementController) throws Exception {
         agreementExists();
+        agreementController.updateBulkPriceForItem(itemID, newBulkPrices);
         agreement.getItem(itemID).setBulkPrices(newBulkPrices);
     }
 
-    public void updatePricePerUnitForItem(int itemID, float newPrice) throws Exception {
+    public void updatePricePerUnitForItem(int itemID, float newPrice, AgreementItemDAO agreementItemDAO) throws Exception {
         agreementExists();
+        agreementItemDAO.updatePPU(itemID, newPrice);
         agreement.getItem(itemID).setPrice(newPrice);
     }
 
-    /*
-    public void addItem(int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+
+    public void addItem(int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices, SuppliersDAO suppliersDAO) throws Exception {
         agreementExists();
         if(agreement.itemExists(itemId))
             throw new Exception("item with this ID already exists!");
-        agreement.addItem(new AgreementItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices));
+        AgreementItem item = new AgreementItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices);
+        ArrayList<AgreementItem> _items = new ArrayList<>();
+        _items.add(item);
+        AgreementController agreementController = suppliersDAO.getAgreementController();
+        agreementController.addAgreementItems( _items, id);
+        agreement.addItem(item);
         if(!manufacturers.contains(itemManu)){
+            suppliersDAO.addSupplierManufacturer(id, itemManu);
             manufacturers.add(itemManu);
         }
     }
-     */
 
-    public void deleteItem(int itemId) throws Exception {
+
+    public void deleteItem(int itemId, SuppliersDAO suppliersDAO) throws Exception {
         agreementExists();
         String manu = agreement.getItem(itemId).getManufacturer();
-
+        AgreementItemDAO agreementItemDAO = suppliersDAO.getAgreementItemDAO();
+        agreementItemDAO.removeItem(id, itemId);
         agreement.removeItem(itemId);
 
         if(!agreement.isManufacturerRepresented(manu)){
+            suppliersDAO.removeSupplierManufacturer(id, manu);
             manufacturers.remove(manu);
         }
     }
 
-    /*
+
     public boolean isTransporting() throws Exception {
         agreementExists();
         return agreement.isTransporting();
     }
 
-     */
 
-    /*
-    public void updateItemId(int oldItemId, int newItemId) throws Exception {
-        agreement.getItem(oldItemId).setId(newItemId);
-    }*/
 
-    public void updateItemId(int oldItemId, int newItemId) throws Exception {
+    public void updateItemId(int oldItemId, int newItemId, AgreementItemDAO agreementItemDAO) throws Exception {
         agreementExists();
+        agreementItemDAO.updateItemId(oldItemId, newItemId);
         agreement.setItemId(oldItemId, newItemId);
     }
 
 
-    public void updateItemName(int itemId, String newName) throws Exception {
+    public void updateItemName(int itemId, String newName, AgreementItemDAO agreementItemDAO) throws Exception {
         agreementExists();
+        agreementItemDAO.updateItemName(itemId, newName);
         agreement.getItem(itemId).setName(newName);
     }
 
-    public void updateItemManufacturer(int itemId, String manufacturer) throws Exception {
+    public void updateItemManufacturer(int itemId, String manufacturer, SuppliersDAO suppliersDAO) throws Exception {
+        AgreementItemDAO agreementItemDAO = suppliersDAO.getAgreementItemDAO();
         agreementExists();
         String manu = agreement.getItem(itemId).getManufacturer();
 
+        agreementItemDAO.updateManufacturer(itemId, manufacturer);
         agreement.getItem(itemId).setManufacturer(manufacturer);
 
         if(!agreement.isManufacturerRepresented(manu)){
+            suppliersDAO.removeSupplierManufacturer(id, manu);
+            suppliersDAO.addSupplierManufacturer(id, manufacturer);
             manufacturers.remove(manu);
             manufacturers.add(manufacturer);
         }
     }
 
 
-    /*
-    public void addAgreementItems(List<String> itemsString) throws Exception {
+
+    public void addAgreementItems(List<String> itemsString, SuppliersDAO suppliersDAO) throws Exception {
+        AgreementController agreementController =  suppliersDAO.getAgreementController();
         agreementExists();
-        agreement.setItemsFromString(itemsString);
+        agreement.setItemsFromString(itemsString, id,  agreementController);
 
         manufacturers = new ArrayList<>();
 
         for(AgreementItem item : agreement.getItems()){
+            suppliersDAO.addSupplierManufacturer(id, item.getManufacturer());
             manufacturers.add(item.getManufacturer());
         }
     }
-     */
 
-    /*
+
+
     public void updateAgreementType( int agreementType, String agreementDays) throws Exception {
         agreementExists();
         List<AgreementItem> items = agreement.getItems();
-        createAgreement(agreementType, agreementDays);
+        createAgreementAgain(agreementType, agreementDays);
         agreement.setItems(items);
     }
 
-
-
-    private void createAgreement(int agreementType, String agreementDays) throws Exception {
+    private void createAgreementAgain(int agreementType, String agreementDays) throws Exception {
         switch(agreementType){
             case ROUTINE :
                 if(!RoutineAgreement.hasDays(agreementDays)){
                     throw new Exception("You provided no days!");
                 }
-                agreement = new RoutineAgreement(agreementDays);
+                List<Integer> days = RoutineAgreement.daysStringToDay(agreementDays);
+                agreement = new RoutineAgreement(days);
                 break;
             case BY_ORDER :
+                days = new ArrayList<>();   days.add(Integer.parseInt(agreementDays));
                 agreement = new ByOrderAgreement(Integer.parseInt(agreementDays));
                 break;
             case NOT_TRANSPORTING :
@@ -248,7 +291,39 @@ public class Supplier {
         }
     }
 
-     */
+
+    private void createAgreement(int agreementType, String agreementDays, SuppliersDAO suppliersDAO) throws Exception {
+        AgreementController agreementController = suppliersDAO.getAgreementController();
+
+        suppliersDAO.updateAgreementType(id, agreementType);
+
+        switch(agreementType){
+            case ROUTINE :
+                if(!RoutineAgreement.hasDays(agreementDays)){
+                    throw new Exception("You provided no days!");
+                }
+                List<Integer> days = RoutineAgreement.daysStringToDay(agreementDays);
+                agreementController.updateAgreementDays(id, days, ROUTINE);
+                agreement = new RoutineAgreement(days);
+                break;
+            case BY_ORDER :
+                days = new ArrayList<>();
+                days.add(Integer.parseInt(agreementDays));
+                agreementController.updateAgreementDays(id, days, BY_ORDER);
+                agreement = new ByOrderAgreement(Integer.parseInt(agreementDays));
+                break;
+            case NOT_TRANSPORTING :
+                agreementController.updateAgreementDays(id, null,NOT_TRANSPORTING);
+                agreement = new NotTransportingAgreement();
+                break;
+        }
+    }
+
+    public List<Integer> getAgreementDays(){
+        return agreement.getDays();
+    }
+
+
 
     public List<Integer> getDaysOfDelivery() {
         if(agreement instanceof RoutineAgreement){
@@ -301,22 +376,22 @@ public class Supplier {
         return agreement != null && agreement instanceof NotTransportingAgreement;
     }
 
-    public void setDaysOfDelivery(String days) throws Exception{
+    public void setDaysOfDelivery(String days, AgreementController agreementController) throws Exception{
         agreementExists();
         if(!(agreement instanceof RoutineAgreement)){
             throw new Exception("The supplier's agreement is not Routine agreement");
         }
 
-        ((RoutineAgreement) agreement).setDaysOfDelivery(days);
+        ((RoutineAgreement) agreement).setDaysOfDelivery(days, id, agreementController);
     }
 
-    public void setDaysUntilDelivery(int days) throws Exception{
+    public void setDaysUntilDelivery(int days, AgreementController agreementController) throws Exception{
         agreementExists();
         if(!(agreement instanceof ByOrderAgreement)){
             throw new Exception("The supplier's agreement is not Routine agreement");
         }
 
-        ((ByOrderAgreement) agreement).setDeliveryDays(days);
+        ((ByOrderAgreement) agreement).setDeliveryDays(days, id, agreementController);
     }
 
     public void addDaysOfDelivery(String days) throws Exception {
@@ -346,10 +421,11 @@ public class Supplier {
         return contacts;
     }
 
-    /*
-    public void removeContact(String name) throws Exception {
+
+    public void removeContact(String name, SuppliersDAO suppliersDAO) throws Exception {
         for(Contact c : contacts){
             if(Objects.equals(name, c.getName())){
+                suppliersDAO.removeSupplierContact(id, c.getName());
                 contacts.remove(c);
                 return;
             }
@@ -362,7 +438,7 @@ public class Supplier {
         return new ArrayList<>(manufacturers);
     }
 
-    public void removeManufacturer(String name) throws Exception {
+    public void removeManufacturer(String name, SuppliersDAO suppliersDAO) throws Exception {
         boolean found = false;
 
         for(String s : manufacturers){
@@ -380,25 +456,26 @@ public class Supplier {
             throw new Exception("This manufacturer is selling items to the supplier, remove them first!");
         }
 
+        suppliersDAO.removeSupplierManufacturer(id, name);
         manufacturers.remove(name);
     }
 
-     */
 
-    /*
     public boolean hasAgreement(){
         return agreement != null;
     }
 
-     */
 
-    public Order addNewOrder(int storeId) throws Exception {
+
+    public Order addNewOrder(int storeId, OrderDAO orderDAO, AgreementController agreementController) throws Exception {
         agreementExists();
 
         Order order = new Order(agreement.daysToDelivery(), id, storeId);
+        orderDAO.addOrder(order);
         ordersToBe.put(order.getId(), order);
 
         if(isRoutineAgreement()){
+            agreementController.setLastOrderId(id, order.getId());
             ( (RoutineAgreement) agreement).setLastOrderId(order.getId());
         }
 
@@ -406,11 +483,11 @@ public class Supplier {
     }
 
 
-    public void addOneItemToOrder(int orderId, int itemId, int itemQuantity) throws Exception {
+    public void addOneItemToOrder(int orderId, int itemId, int itemQuantity, OrderDAO orderDAO) throws Exception {
         agreementExists();
         if(!agreement.itemExists(itemId))
             throw new Exception(String.format("Item with ID: %d does not Exists!", itemId));
-        if(!orderExists(orderId))
+        if(!orderExists(orderId, orderDAO))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
 
         if(itemQuantity == 0){
@@ -431,24 +508,24 @@ public class Supplier {
         float ppu = currItem.getPricePerUnit();
         int discount = agreement.getItem(itemId).getDiscount(itemQuantity);
         Double finalPrice = agreement.getItem(itemId).calculateTotalPrice(itemQuantity);
-        ordersToBe.get(orderId).addItem(itemId, agreement.getItem(itemId).getIdBySupplier() , agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice);
+        ordersToBe.get(orderId).addItem(itemId, agreement.getItem(itemId).getIdBySupplier() , agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice, orderDAO);
 
     }
 
-    public void removeOrder(int orderId) throws Exception {
-        if(!orderExists(orderId))
+    public void removeOrder(int orderId, OrderDAO orderDAO) throws Exception {
+        if(!orderExists(orderId, orderDAO))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
 
         if(ordersInTheNext24Hours.containsKey(orderId) || finishedOrders.containsKey(orderId)){
             throw new Exception("Can't change order: time exception.");
         }
-
+        orderDAO.removeOrder(orderId);
         ordersToBe.remove(orderId);
     }
 
-    public void updateOrder(int orderID,int itemID, int quantity) throws Exception {
+    public void updateOrder(int orderID, int itemID, int quantity, OrderDAO orderDAO) throws Exception {
         agreementExists();
-        if(!orderExists(orderID)){
+        if(!orderExists(orderID, orderDAO)){
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderID));
         }
 
@@ -460,22 +537,22 @@ public class Supplier {
             throw new Exception(String.format("Item with ID: %d does not Exists!", itemID));
         }
 
-        ordersToBe.get(orderID).updateItemQuantity(itemID, quantity, agreement.getItem(itemID).getDiscount(quantity), agreement.getOrderPrice(itemID, quantity));
+        ordersToBe.get(orderID).updateItemQuantity(itemID, quantity, agreement.getItem(itemID).getDiscount(quantity), agreement.getOrderPrice(itemID, quantity), orderDAO);
     }
 
-    public void removeItemFromOrder(int orderId, int itemId) throws Exception {
-        if(!orderExists(orderId))
+    public void removeItemFromOrder(int orderId, int itemId, OrderDAO orderDAO) throws Exception {
+        if(!orderExists(orderId, orderDAO))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
         if(ordersInTheNext24Hours.containsKey(orderId) || finishedOrders.containsKey(orderId))
             throw new Exception("Can't change order: time exception.");
         if(!ordersToBe.get(orderId).itemExists(itemId))
             throw new Exception("Item with this ID does not exist in thins order!");
-        ordersToBe.get(orderId).removeItem(itemId);
+        ordersToBe.get(orderId).removeItem(itemId, orderDAO);
     }
 
 
-    public List<String> getOrder(int orderId) throws Exception {
-        Order currOrder = getOrderFromALlLists(orderId);
+    public List<String> getOrder(int orderId, OrderDAO orderDAO) throws Exception {
+        Order currOrder = getOrderFromALlLists(orderId, orderDAO);
         List<String> result = new ArrayList<>();
         result.add(String.valueOf(currOrder.getId()));
 
@@ -490,8 +567,8 @@ public class Supplier {
         return result;
     }
 
-    private Order getOrderFromALlLists(int orderId) throws Exception {
-        if(!orderExists(orderId))
+    private Order getOrderFromALlLists(int orderId, OrderDAO orderDAO) throws Exception {
+        if(!orderExists(orderId, orderDAO))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
         if(ordersToBe.containsKey(orderId))
             return ordersToBe.get(orderId);
@@ -501,31 +578,10 @@ public class Supplier {
             return finishedOrders.get(orderId);
     }
 
-    public boolean orderExists(int id){
-        return ordersToBe.containsKey(id) || ordersInTheNext24Hours.containsKey(id) || finishedOrders.containsKey(id);
+    public boolean orderExists(int id, OrderDAO orderDAO) throws SQLException {
+        return ordersToBe.containsKey(id) || ordersInTheNext24Hours.containsKey(id) || finishedOrders.containsKey(id) || orderDAO.containsKey(id);
     }
 
-    /*
-    public ArrayList<Order> itemInOrderForTheNextTwoDays(int itemID) {
-        ArrayList<Order> result = new ArrayList<>();
-        if(!agreement.isTransporting())
-            return result;
-        for(Order order : ordersToBe.values()){
-            int daysUntilDelivery = order.getDaysUntillOrder(Calendar.getInstance().getTime());
-            if(order.itemExists(itemID) && daysUntilDelivery <= 2)
-                result.add(order);
-        }
-
-        // TODO: 07/05/2022  //Need to treat this orders differently!!!!! dont allow changing the quantity, jst return the order if its the right one
-        // TODO: 07/05/2022  // Maybe they delete it? they hold lost for the next 24 hours orders
-        for(Order order : ordersInTheNext24Hours.values()){
-            int daysUntilDelivery = order.getDaysUntillOrder(Calendar.getInstance().getTime());
-            if(order.itemExists(itemID) && daysUntilDelivery <= 2)
-                result.add(order);
-        }
-        return result;
-    }
-     */
 
     public Double getToatalPriceForItem(int itemId, int quantity) throws Exception {
         agreementExists();
@@ -591,6 +647,11 @@ public class Supplier {
             return NOT_TRANSPORTING;
         else
             return -1;
+    }
+
+
+    public void addAgreementFromDB(Agreement agreement) {
+        this.agreement = agreement;
     }
 
 

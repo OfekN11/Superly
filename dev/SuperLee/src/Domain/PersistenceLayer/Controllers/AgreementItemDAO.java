@@ -1,76 +1,143 @@
 package Domain.PersistenceLayer.Controllers;
 
+import Domain.BusinessLayer.Inventory.Category;
 import Domain.BusinessLayer.Supplier.AgreementItem;
+import Domain.BusinessLayer.Supplier.Order;
 import Domain.BusinessLayer.Supplier.Supplier;
-import Domain.PersistenceLayer.Abstract.DAO;
+import Domain.PersistenceLayer.Abstract.DataMapper;
+import Domain.PersistenceLayer.Abstract.LinkDAO;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
-public class AgreementItemDAO extends DAO {
+public class AgreementItemDAO extends DataMapper<AgreementItem> {
 
     private final static Map<String, AgreementItem> AGREEMENT_ITEM_IDENTITY_MAP = new HashMap<>();
 
 
+    private final static int SUPPLIER_ID_COLUMN = 1;
+    private final static int PRODUCT_ID_COLUMN = 2;
+    private final static int MANUFACTURER_COLUMN = 3;
+    private final static int NAME_COLUMN = 4;
+    private final static int PPU_COLUMN = 5;
+    private final static int ID_BY_SUPPLIER = 6;
+
+    private final BulkPricesDAO bulkPricesDAO;
+
     public AgreementItemDAO() {
         super("AgreementItem");
+        bulkPricesDAO = new BulkPricesDAO();
+    }
+
+    @Override
+    protected Map<String, AgreementItem> getMap() {
+        return AGREEMENT_ITEM_IDENTITY_MAP;
+    }
+
+    @Override
+    protected LinkDAO getLinkDTO(String setName) {
+        return null;
+    }
+
+    @Override
+    //(int _productId, int _idBySupplier,  String _name, String _manu, float _price, Map<Integer, Integer> _bulkPrices){
+    protected AgreementItem buildObject(ResultSet instanceResult) throws Exception {
+        return new AgreementItem(instanceResult.getInt(PRODUCT_ID_COLUMN),
+                instanceResult.getInt(ID_BY_SUPPLIER),
+                instanceResult.getString(NAME_COLUMN),
+                instanceResult.getString(MANUFACTURER_COLUMN),
+                instanceResult.getFloat(PPU_COLUMN),
+                getBulkMap(instanceResult.getInt(PRODUCT_ID_COLUMN)));
     }
 
 
+    private Map<Integer, Integer> getBulkMap(int itemId) {
+        return bulkPricesDAO.getAllBulkPrices(itemId);
+    }
 
-    //Format : " productId, idBySupplier , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
-    private List<AgreementItem> transformStringToItems(List<String> itemsString) throws Exception {
-        List<AgreementItem> items = new ArrayList<>();
-        for(String curr : itemsString){
-            String[] arr = curr.split(",");
-            for(int i = 0; i < arr.length; i++){
-                arr[i] = arr[i].trim();
+    @Override
+    public void insert(AgreementItem item) throws SQLException {
+            //we don't use this, WE CAN'T USE SAVE!
+    }
+
+    public Map<Integer, AgreementItem> getAllAgreementItemFromSupplier(int supplierId){
+        Map<Integer, AgreementItem> output = new HashMap<>();
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = select(connection, supplierId);
+            while (instanceResult.next()) {
+                AgreementItem currItem = buildObject(instanceResult);
+                output.put(currItem.getProductId(), currItem);
+                AGREEMENT_ITEM_IDENTITY_MAP.put(String.valueOf(currItem.getProductId()), currItem);
             }
-            int productId = Integer.parseInt(arr[0]);
-            int idBuSupplier = Integer.parseInt(arr[1]);
-            String name = arr[2];  String manufacturer = arr[3];
-            float pricePerUnit = Float.parseFloat(arr[4]);
-            HashMap<Integer, Integer> bulk = new HashMap<>();
-            for(int i = 5; i < arr.length; i++ ){
-                bulk.put(Integer.parseInt(arr[i]) , Integer.parseInt(arr[i+1]));
-                i++;
-            }
-            items.add(new AgreementItem(productId, idBuSupplier, name , manufacturer, pricePerUnit, bulk));
+        } catch (Exception throwables) {
+            System.out.println(throwables.getMessage());
         }
-        return items;
-    }
 
-    public ArrayList<String> addItemstoAgreement(int supplierId, List<String> itemsString) throws Exception {
-        ArrayList<String> newManufacturers = new ArrayList<>();
-        List<AgreementItem> _items = transformStringToItems(itemsString);
-        for(AgreementItem item : _items){
-            insert(Arrays.asList(/*supplierId...*/));  // need to add idBySupplier????
-
-            //also add the bulk prices to another table
-            //update the Manufacturers table in the function that calling this one
-            newManufacturers.add(item.getManufacturer());
-
-            AGREEMENT_ITEM_IDENTITY_MAP.put(String.valueOf(item.getProductId()), item);
-
-        }
-        return newManufacturers;
+        return output;
     }
 
 
 
-    public void addItemToAgreement(int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+    public void addItemstoAgreement(int supplierId, List<AgreementItem> items) throws Exception {
+        for(AgreementItem item : items){
+            insertOneItem(supplierId, item);
+        }
+    }
 
-        // need to implement this?
-        //agreementExists();
+    public void insertOneItem(int supplierId, AgreementItem item) throws SQLException {
+        insert(Arrays.asList(String.valueOf(supplierId), String.valueOf(item.getProductId()),
+                item.getManufacturer(), item.getName(),String.valueOf(item.getPricePerUnit()), String.valueOf(item.getIdBySupplier())));
 
-        if(AGREEMENT_ITEM_IDENTITY_MAP.containsKey(itemId))
-            throw new Exception("item with this ID already exists!");
-        AgreementItem item = new AgreementItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices);
-        insert(Arrays.asList(/*supplierId...*/));   // need to add idBySupplier????
-
-        //also add the bulk prices to another table
+        bulkPricesDAO.addBulkPrices( item.getProductId(), item.getBulkPrices());
 
         AGREEMENT_ITEM_IDENTITY_MAP.put(String.valueOf(item.getProductId()), item);
+    }
 
 
+    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+
+        if(AGREEMENT_ITEM_IDENTITY_MAP.containsKey(String.valueOf(itemId)))
+            throw new Exception("item with this ID already exists!");
+        AgreementItem item = new AgreementItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices);
+        insertOneItem(supplierId, item);
+
+    }
+
+
+    public void removeSupplier() throws SQLException {
+        for( AgreementItem item : AGREEMENT_ITEM_IDENTITY_MAP.values()){
+            bulkPricesDAO.remove(item.getProductId());
+            remove(item.getProductId());
+        }
+    }
+
+    public void updateBulkPrice(int itemID, Map<Integer, Integer> newBulkPrices) throws SQLException {
+        bulkPricesDAO.updateBulkPrice(itemID, newBulkPrices);
+    }
+
+    public void updatePPU(int itemID, float newPrice) throws SQLException {
+        update(Arrays.asList(PPU_COLUMN), Arrays.asList(newPrice), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(itemID) );
+    }
+
+    public void updateItemId(int oldItemId, int newItemId) throws SQLException {
+        update(Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(newItemId), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(oldItemId) );
+    }
+
+    public void updateItemName(int itemId, String newName) throws SQLException {
+        update(Arrays.asList(NAME_COLUMN), Arrays.asList(newName), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(itemId) );
+    }
+
+    public void updateManufacturer(int itemId, String manufacturer) throws SQLException {
+        update(Arrays.asList(MANUFACTURER_COLUMN), Arrays.asList(manufacturer), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(itemId) );
+    }
+
+    public void removeItem(int id, int itemId) throws SQLException {
+        remove(Arrays.asList(1,2), Arrays.asList(id, itemId));
+    }
+
+    public String getNameOfItem(int itemId) {
+        return AGREEMENT_ITEM_IDENTITY_MAP.get(String.valueOf(itemId)).getName();
     }
 }

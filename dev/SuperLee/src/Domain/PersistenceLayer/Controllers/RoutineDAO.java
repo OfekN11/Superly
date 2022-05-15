@@ -1,12 +1,13 @@
 package Domain.PersistenceLayer.Controllers;
 
+import Domain.BusinessLayer.Supplier.Agreement.Agreement;
+import Domain.BusinessLayer.Supplier.Agreement.RoutineAgreement;
 import Domain.PersistenceLayer.Abstract.DAO;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class RoutineDAO extends DAO {
 
@@ -14,12 +15,14 @@ public class RoutineDAO extends DAO {
         super("Routine");
     }
 
+    private final static int SUPPLIER_ID_COLUMN = 1;
+    private final static int DAY_COLUMN = 2;
+    private final static int LAST_ORDER_ID_COLUMN = 3;
 
-    public void addDaysOfDelivery(int supplierId, String days) {
-        List<Integer> daysOfDelivery = daysStringToDay(days);
+    public void addDaysOfDelivery(int supplierId, List<Integer> daysOfDelivery) {
         for(Integer currDay : daysOfDelivery){
             try {
-                insert(Arrays.asList(supplierId, currDay));
+                insert(Arrays.asList(supplierId, currDay, -1));
             } catch (SQLException throwables) {
                 System.out.println(throwables.getMessage());
             }
@@ -27,28 +30,25 @@ public class RoutineDAO extends DAO {
     }
 
 
-
-
-    private List<Integer> daysStringToDay(String days){
-        List<Integer> list = new LinkedList<>();
-        int d = 0;
-
-        for(int i=0; i<days.length(); i++){
-
-            while(i<days.length() && days.charAt(i) == ' '){
-                i++;
+    public Agreement loadAgreement(int supplierId) {
+        List<Integer> days = new ArrayList<>();
+        ResultSet resultSet = null;
+        int lastOrderId = -1;
+        try(Connection connection = getConnection()) {
+            resultSet = select(connection, supplierId);
+            while(resultSet.next()){
+                days.add(resultSet.getInt(DAY_COLUMN));
+                lastOrderId = resultSet.getInt(LAST_ORDER_ID_COLUMN);
             }
-
-            d = days.charAt(i)-'0';
-
-            // if the given number is 0 or more than 7 we ignore it
-            if(d>=1 && d<=7){
-                list.add(d);
-            }
-
-            i++;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-        Collections.sort(list);
-        return list;
+
+        return new RoutineAgreement(days, lastOrderId);
+    }
+
+    public void setLastOrderId(int supplierId, int orderId) throws SQLException {
+        // (List<Integer> columnsLocationToUpdate,List<Object> valuesToUpdate,List<Integer> conditionColumnLocation,List<Object> conditionValues) throws SQLException {
+        update(Arrays.asList(LAST_ORDER_ID_COLUMN), Arrays.asList(orderId), Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
     }
 }

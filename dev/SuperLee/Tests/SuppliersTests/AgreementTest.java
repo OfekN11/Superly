@@ -58,7 +58,7 @@ public class AgreementTest {
         }
 
         try{
-            agreement.setItemsFromString(list);
+            agreement.setItemsFromString(list, 1, null);
 
             assertEquals(aiList.size(),agreement.getItems().size());
         }

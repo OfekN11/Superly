@@ -1,5 +1,7 @@
 package Domain.BusinessLayer.Supplier;
 
+import Domain.PersistenceLayer.Controllers.OrderDAO;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,13 +50,14 @@ public class Order {
 
 
     //For uploading from dal
-    public Order(int id, int supplierId, Date creationDate, Date arrivalTime, int storeID){
+    public Order(int id, int supplierId, Date creationDate, Date arrivalTime, int storeID, ArrayList<OrderItem> orderItems){
         this.id = id;
         this.supplierID = supplierId;
         this.creationDate = creationDate;
         this.arrivalTime = arrivalTime;
         globalID++;
         this.storeID = storeID;
+        this.orderItems = orderItems;
     }
 
 
@@ -82,11 +85,13 @@ public class Order {
     }
 
 
-    public void addItem(int productId, int idBySupplier, String name, int quantity, float ppu, int discount, Double finalPrice) throws Exception {
+    public void addItem(int productId, int idBySupplier, String name, int quantity, float ppu, int discount, Double finalPrice, OrderDAO orderDAO) throws Exception {
         if(!changeable()){
             throw new Exception("This order can't be changed!");
         }
-        orderItems.add(new OrderItem(productId, idBySupplier,  name, quantity, ppu, discount, finalPrice));
+        OrderItem orderItem = new OrderItem(productId, idBySupplier,  name, quantity, ppu, discount, finalPrice);
+        orderDAO.addItem(id, orderItem);
+        orderItems.add(orderItem);
     }
 
     public boolean itemExists(int itemId) {
@@ -98,20 +103,21 @@ public class Order {
 
     }
 
-    public void removeItem(int itemId) throws Exception {
+    public void removeItem(int itemId, OrderDAO orderDAO) throws Exception {
         if(!changeable()){
             throw new Exception("This order can't be changed!");
         }
 
         for(OrderItem orderItem : orderItems){
             if(orderItem.getProductId() == itemId){
+                orderDAO.removeOrderItem(id, orderItem.getProductId());
                 orderItems.remove(orderItem);
                 return;
             }
         }
     }
 
-    public void updateItemQuantity(int id, int quantity, int discount, double finalPrice)throws Exception{
+    public void updateItemQuantity(int id, int quantity, int discount, double finalPrice, OrderDAO orderDAO)throws Exception{
         if(!changeable()){
             throw new Exception("This order can't be changed!");
         }
@@ -126,6 +132,9 @@ public class Order {
 
         for(OrderItem item : orderItems){
             if(item.getProductId() == id){
+                orderDAO.updateItemQuantity(id, item.getProductId(), quantity);
+                orderDAO.updateItemDiscount(id, item.getProductId(), discount);
+                orderDAO.updateItemFinalPrice(id, item.getProductId(), finalPrice);
                 item.setQuantity(quantity);
                 item.setDiscount(discount);
                 item.setFinalPrice(finalPrice);
@@ -186,5 +195,13 @@ public class Order {
                 return orderItem.getQuantity();
         }
         return 0;
+    }
+
+    public Date getCreationTime() {
+        return creationDate;
+    }
+
+    public Date getArrivaltime() {
+        return arrivalTime;
     }
 }

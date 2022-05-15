@@ -1,8 +1,11 @@
 package Domain.BusinessLayer.Supplier.Agreement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NotTransportingAgreement extends Agreement {
 
-    public NotTransportingAgreement(){
+    public NotTransportingAgreement() {
         super();
     }
 
@@ -14,5 +17,11 @@ public class NotTransportingAgreement extends Agreement {
     @Override
     public int daysToDelivery() {
         return -1; // means not delivering
+    }
+
+    public List<Integer> getDays() {
+        List<Integer> result = new ArrayList<>();
+        result.add(-1);
+        return result;
     }
 }

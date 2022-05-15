@@ -259,6 +259,7 @@ public class SupplierService {
         }
     }
 
+    /*
     public void setAgreement(int supplierId, int agreementType, String agreementDays){
         try {
             controller.setAgreement(supplierId, agreementType, agreementDays);
@@ -266,6 +267,8 @@ public class SupplierService {
             System.out.println(e.getMessage());
         }
     }
+
+     */
 
     public Result<Boolean> isRoutineAgreement(int supplierId){
         try{

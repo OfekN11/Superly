@@ -15,6 +15,12 @@ public class ContactDAO extends DAO {
 
     private static final ArrayList<Contact> contacts = new ArrayList<>();
 
+
+    private final static int SUPPLIER_ID_COLUMN = 1;
+    private final static int NAME_COLUMN = 2;
+    private final static int PHONE_COLUMN = 3;
+
+
     public ContactDAO() {
         super("SupplierContacts");
     }

@@ -1,5 +1,11 @@
 package Domain.BusinessLayer.Supplier.Agreement;
 
+import Domain.PersistenceLayer.Controllers.AgreementController;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ByOrderAgreement extends Agreement{
 
     private int deliveryDays;
@@ -19,11 +25,21 @@ public class ByOrderAgreement extends Agreement{
         return deliveryDays;
     }
 
+    @Override
+    public List<Integer> getDays() {
+        List<Integer> result = new ArrayList<>();
+        result.add(deliveryDays);
+        return result;
+    }
+
     public int getDeliveryDays(){
         return deliveryDays;
     }
 
-    public void setDeliveryDays(int _delivery){
-        deliveryDays = _delivery;
+    public void setDeliveryDays(int days, int supplierId, AgreementController agreementController) throws SQLException {
+        List<Integer> daysList = new ArrayList<>();
+        daysList.add(days);
+        agreementController.setDeliveryDays(supplierId, daysList);
+        deliveryDays = days;
     }
 }
