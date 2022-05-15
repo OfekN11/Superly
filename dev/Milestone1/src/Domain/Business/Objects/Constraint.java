@@ -42,4 +42,8 @@ public class Constraint {
     public void unregister(String id) {
         employees.remove(id);
     }
+
+    public boolean isEmpty() {
+        return employees.isEmpty();
+    }
 }

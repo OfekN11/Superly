@@ -1,14 +1,11 @@
 package Domain.DAL.Controllers;
 
 import Domain.Business.Objects.Constraint;
-import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Abstract.ObjectDateMapper;
 import Globals.Enums.ShiftTypes;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -47,12 +44,12 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
     }
 
     @Override
-    protected Constraint buildObject(ResultSet result) throws SQLException {
+    protected Constraint buildObject(ResultSet result) throws Exception {
         return new Constraint(result.getDate(2).toLocalDate(),ShiftTypes.valueOf(result.getString(3)),constraintsEmployeesLink.get(result.getString(1)));
     }
 
     @Override
-    public void insert(Constraint instance) throws SQLException {
+    public void insert(Constraint instance) throws Exception {
         String id = instance.getDate().toString()+instance.getType().toString();
         constraintsEmployeesLink.replaceSet(id,instance.getEmployees());
         super.remove(id);
@@ -66,15 +63,19 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
         return daos;
     }
 
-    public void update(Constraint constraint) throws SQLException {
+    public void update(Constraint constraint) throws Exception {
         insert(constraint);
     }
 
-    public void save(Constraint constraint) throws SQLException {
+    public void save(Constraint constraint) throws Exception {
         save(constraint.getDate().toString()+constraint.getType().toString(),constraint);
     }
 
-    public int delete(Constraint instance) throws SQLException {
+    public int delete(Constraint instance) throws Exception {
         return super.delete(instance.getDate().toString()+instance.getType().toString(),instance);
+    }
+
+    //TODO
+    public Set<Constraint> getConstraintsBetween(LocalDate start, LocalDate end) {
     }
 }
