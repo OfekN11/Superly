@@ -20,7 +20,8 @@ public class EmployeesMenu extends Screen {
                 "Print all Sorters",            //5
                 "Print all HR Managers",        //6
                 "Print all Logistics Managers", //7
-                "Exit"                          //8
+                "Print all Transport Managers", //8
+                "Exit"                          //9
         };
 
         public EmployeesViewer(Screen caller) {
@@ -64,6 +65,10 @@ public class EmployeesMenu extends Screen {
                             printEmployees(controller.getAllLogistics_Managers());
                             break;
                         case 8:
+                            System.out.println("\nPrinting all Transport managers:");
+                            printEmployees(controller.getAllTransport_Managers());
+                            break;
+                        case 9:
                             endRun();
                             break;
                     }
@@ -74,7 +79,7 @@ public class EmployeesMenu extends Screen {
             }
         }
 
-        public static void printEmployees(Set<Employee> employees) {
+        public static void printEmployees(Set<? extends Employee> employees) {
             for (Employee e : employees.stream().sorted(new EmployeeComparator()).collect(Collectors.toList())) {
                 System.out.println("ID: " + e.id + " , Name :" + e.name);
             }

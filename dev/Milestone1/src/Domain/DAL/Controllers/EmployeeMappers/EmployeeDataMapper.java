@@ -2,7 +2,6 @@ package Domain.DAL.Controllers.EmployeeMappers;
 import Domain.Business.Objects.*;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeTypeLink;
 import Globals.Enums.JobTitles;
-import java.sql.SQLException;
 import java.util.*;
 
 public class EmployeeDataMapper  {
@@ -30,7 +29,7 @@ public class EmployeeDataMapper  {
         transportManagerDataMapper = new TransportManagerDataMapper();
     }
 
-    public Employee get(String id) throws SQLException {
+    public Employee get(String id) throws Exception {
         Set<JobTitles> type = employeeTypeLink.get(id);
         if (type.isEmpty())
             return null;
@@ -60,100 +59,91 @@ public class EmployeeDataMapper  {
                 throw new IllegalArgumentException("Illegal employee type saved in the db");
         }
     }
-    public void save(Employee toSave) throws SQLException{
+    public void save(Employee toSave) throws Exception{
         toSave.save(this);
     }
 
-    public void save(Carrier toSave) throws SQLException {
+    public void save(Carrier toSave) throws Exception {
         employeeTypeLink.add(toSave.getId(),JobTitles.Carrier);
         carrierDataMapper.save(toSave.getId(),toSave);
     }
 
-    public void save(Cashier toSave) throws SQLException {
+    public void save(Cashier toSave) throws Exception {
         employeeTypeLink.add(toSave.getId(),JobTitles.Cashier);
         cashierDataMapper.save(toSave.getId(),toSave);
     }
 
-    public void save(HR_Manager toSave) throws SQLException {
+    public void save(HR_Manager toSave) throws Exception {
         employeeTypeLink.add(toSave.getId(),JobTitles.HR_Manager);
         hR_managerDataMapper.save(toSave.getId(),toSave);
     }
 
-    public void save(Logistics_Manager toSave) throws SQLException {
+    public void save(Logistics_Manager toSave) throws Exception {
         employeeTypeLink.add(toSave.getId(),JobTitles.Logistics_Manager);
         logistics_managerDataMapper.save(toSave.getId(),toSave);
     }
 
-    public void save(Sorter toSave) throws SQLException {
+    public void save(Sorter toSave) throws Exception {
         employeeTypeLink.add(toSave.getId(),JobTitles.Sorter);
         sorterDataMapper.save(toSave.getId(),toSave);
     }
 
-    public void save(Storekeeper toSave) throws SQLException {
+    public void save(Storekeeper toSave) throws Exception {
         employeeTypeLink.add(toSave.getId(),JobTitles.Storekeeper);
         storekeeperDataMapper.save(toSave.getId(),toSave);
     }
 
-    public void save(Transport_Manager toSave) throws SQLException {
+    public void save(Transport_Manager toSave) throws Exception {
         employeeTypeLink.add(toSave.getId(),JobTitles.Transport_Manager);
         transportManagerDataMapper.save(toSave.getId(),toSave);
     }
 
-    public void update(Employee employee) throws SQLException {
+    public void update(Employee employee) throws Exception {
         employee.update(this);
     }
 
-    public void update(Carrier employee) throws SQLException {
+    public void update(Carrier employee) throws Exception {
         carrierDataMapper.insert(employee);
     }
-    public void update(Cashier employee) throws SQLException {
+    public void update(Cashier employee) throws Exception {
         cashierDataMapper.insert(employee);
     }
-    public void update(HR_Manager employee) throws SQLException {
+    public void update(HR_Manager employee) throws Exception {
         hR_managerDataMapper.insert(employee);
     }
-    public void update(Logistics_Manager employee) throws SQLException {
+    public void update(Logistics_Manager employee) throws Exception {
         logistics_managerDataMapper.insert(employee);
     }
-    public void update(Sorter employee) throws SQLException {
+    public void update(Sorter employee) throws Exception {
         sorterDataMapper.insert(employee);
     }
-    public void update(Storekeeper employee) throws SQLException {
+    public void update(Storekeeper employee) throws Exception {
         storekeeperDataMapper.insert(employee);
     }
-    public void update(Transport_Manager employee) throws SQLException {
+    public void update(Transport_Manager employee) throws Exception {
         transportManagerDataMapper.insert(employee);
     }
 
     //TODO
-    public Carrier getCarrier(String id) throws SQLException {}
-    public Cashier getCashier(String id) throws SQLException {}
-    public Sorter getSorter(String id) throws SQLException {}
-    public Storekeeper getStorekeeper(String id) throws SQLException {}
-    public HR_Manager getHR_Manager(String id) throws SQLException {}
-    public Logistics_Manager getLogistics_Manager(String id) throws SQLException {}
-    public Transport_Manager getTransport_Manager(String id) throws SQLException {}
+    public Carrier getCarrier(String id) throws Exception {}
+    public Cashier getCashier(String id) throws Exception {}
+    public Sorter getSorter(String id) throws Exception {}
+    public Storekeeper getStorekeeper(String id) throws Exception {}
+    public HR_Manager getHR_Manager(String id) throws Exception {}
+    public Logistics_Manager getLogistics_Manager(String id) throws Exception {}
+    public Transport_Manager getTransport_Manager(String id) throws Exception {}
 
-    //remember not to insert nulls
-    public Set<Employee> gets(Set<String> ids) throws SQLException {}
-    public Set<Carrier> getCarriers(Set<String> ids) throws SQLException {}
-    public Set<Cashier> getCashiers(Set<String> ids) throws SQLException {}
-    public Set<Sorter> getSorters(Set<String> ids) throws SQLException {}
-    public Set<Storekeeper> getStorekeepers(Set<String> ids) throws SQLException {}
-    public Set<HR_Manager> getHR_Managers(Set<String> ids) throws SQLException {}
-    public Set<Logistics_Manager> getLogistics_Managers(Set<String> ids) throws SQLException {}
-    public Set<Transport_Manager> getTransport_Managers(Set<String> ids) throws SQLException {}
-
-    public Set<Employee> getAll() throws SQLException {}
-    public Set<Carrier> getAllCarriers() throws SQLException {}
-    public Set<Cashier> getAllCashiers() throws SQLException {}
-    public Set<Sorter> getAllSorters() throws SQLException {}
-    public Set<Storekeeper> getAllStorekeepers() throws SQLException {}
-    public Set<HR_Manager> getAllHR_Managers() throws SQLException {}
-    public Set<Logistics_Manager> getAllLogistics_Managers() throws SQLException {}
-    public Set<Transport_Manager> getAllTransport_Managers() throws SQLException {}
+    //return ALL of type
+    public Set<Employee> get() throws Exception {}
+    public Set<Carrier> getCarrier() throws Exception {}
+    public Set<Cashier> getCashier() throws Exception {}
+    public Set<Sorter> getSorter() throws Exception {}
+    public Set<Storekeeper> getStorekeeper() throws Exception {}
+    public Set<HR_Manager> getHR_Manager() throws Exception {}
+    public Set<Logistics_Manager> getLogistics_Manager() throws Exception {}
+    public Set<Transport_Manager> getTransport_Manager() throws Exception {}
 
 
-    //throw RuntimeException if ID doesnt exist
-    public void delete(String id) throws SQLException{}
+    //throw Exception if ID doesnt exist
+    public void delete(String id) throws Exception{}
 }

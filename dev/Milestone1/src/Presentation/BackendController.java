@@ -6,85 +6,172 @@ import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.LicenseTypes;
 import Globals.Enums.ShiftTypes;
-import Presentation.Screens.Carrier;
-import jdk.internal.org.objectweb.asm.Handle;
 
 import java.time.LocalDate;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class BackendController {
     private final EmployeeService employeeService = new EmployeeService();
     private final ShiftService shiftService = new ShiftService();
     private final ConstraintService constraintService = new ConstraintService();
 
-    public Set<Employee> getAllEmployees() throws Exception {
-        Result<Set<Employee>> result = employeeService.getAllEmployees();
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-        return result.getValue();
-    }
 
-    public Set<Employee> getAllCashiers() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x instanceof Cashier).collect(Collectors.toSet());
-    }
-
-    public Set<Employee> getAllCarriers() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x instanceof Domain.Service.Objects.Carrier).collect(Collectors.toSet());
-    }
-
-    public Set<Employee> getAllStorekeepers() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x instanceof Storekeeper).collect(Collectors.toSet());
-    }
-
-    public Set<Employee> getAllSorters() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x instanceof Sorter).collect(Collectors.toSet());
-    }
-
-    public Set<Employee> getAllHR_Managers() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x instanceof HR_Manager).collect(Collectors.toSet());
-    }
-
-    public Set<Employee> getAllLogistics_Managers() throws Exception {
-        return getAllEmployees().stream().filter((x) -> x instanceof Logistics_Manager).collect(Collectors.toSet());
-    }
-
-    public void removeEmployee(String id) throws Exception {
-        Result<Object> result = employeeService.removeEmployee(id);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-    }
-
-    public Employee getEmployee(String id) throws Exception {
-        Result<Employee> result = employeeService.getEmployee(id);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-        return result.getValue();
-    }
-
-    public void checkUnusedEmployeeID(String id) throws Exception {
-        Result<Object> result = employeeService.checkUnusedEmployeeID(id);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-    }
-
-    public void validateID(String id) throws Exception {
-        Result<Object> result = employeeService.validateID(id);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-    }
-
-    public void validateIDs(Set<String> ids) throws Exception {
-        Result<Object> result = employeeService.validateIDs(ids);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-    }
+    ///EMPLOYEES
+    //CREATE
 
     public void addEmployee(JobTitles jobTitle, String id, String name, String bankDetails, Integer salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         Result<Object> result = employeeService.registerEmployee(jobTitle, id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
+
+    //READ
+
+    public Employee getEmployee(String id) throws Exception {
+        Result<Employee> result = employeeService.getEmployee(id);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Carrier getCarrier(String id) throws Exception {
+        Result<Carrier> result = employeeService.getCarrier(id);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Cashier getCashier(String id) throws Exception {
+        Result<Cashier> result = employeeService.getCashier(id);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Sorter getSorter(String id) throws Exception {
+        Result<Sorter> result = employeeService.getSorter(id);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Storekeeper getStorekeeper(String id) throws Exception {
+        Result<Storekeeper> result = employeeService.getStorekeeper(id);
+        isError(result);
+        return result.getValue();
+    }
+
+    public HR_Manager getHR_Manager(String id) throws Exception {
+        Result<HR_Manager> result = employeeService.getHR_Manager(id);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Logistics_Manager getLogistics_Manager(String id) throws Exception {
+        Result<Logistics_Manager> result = employeeService.getLogistics_Manager(id);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Transport_Manager getTransport_Manager(String id) throws Exception {
+        Result<Transport_Manager> result = employeeService.getTransport_Manager(id);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Employee> getEmployees(Set<String> employeeIDs) throws Exception {
+        Result<Set<Employee>> result = employeeService.getEmployees(employeeIDs);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Carrier> getCarriers(Set<String> employeeIDs) throws Exception {
+        Result<Set<Carrier>> result = employeeService.getCarriers(employeeIDs);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Cashier> getCashiers(Set<String> employeeIDs) throws Exception {
+        Result<Set<Cashier>> result = employeeService.getCashiers(employeeIDs);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Sorter> getSorters(Set<String> employeeIDs) throws Exception {
+        Result<Set<Sorter>> result = employeeService.getSorters(employeeIDs);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Storekeeper> getStorekeepers(Set<String> employeeIDs) throws Exception {
+        Result<Set<Storekeeper>> result = employeeService.getStorekeepers(employeeIDs);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<HR_Manager> getHR_Managers(Set<String> employeeIDs) throws Exception {
+        Result<Set<HR_Manager>> result = employeeService.getHR_Managers(employeeIDs);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Logistics_Manager> getLogistics_Managers(Set<String> employeeIDs) throws Exception {
+        Result<Set<Logistics_Manager>> result = employeeService.getLogistics_Managers(employeeIDs);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Transport_Manager> getTransport_Managers(Set<String> employeeIDs) throws Exception {
+        Result<Set<Transport_Manager>> result = employeeService.getTransport_Managers(employeeIDs);
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Employee> getAllEmployees() throws Exception {
+        Result<Set<Employee>> result = employeeService.getAllEmployees();
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Cashier> getAllCashiers() throws Exception {
+        Result<Set<Cashier>> result = employeeService.getAllCashiers();
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Carrier> getAllCarriers() throws Exception {
+        Result<Set<Carrier>> result = employeeService.getAllCarriers();
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Storekeeper> getAllStorekeepers() throws Exception {
+        Result<Set<Storekeeper>> result = employeeService.getAllStorekeepers();
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Sorter> getAllSorters() throws Exception {
+        Result<Set<Sorter>> result = employeeService.getAllSorters();
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<HR_Manager> getAllHR_Managers() throws Exception {
+        Result<Set<HR_Manager>> result = employeeService.getAllHR_Managers();
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Logistics_Manager> getAllLogistics_Managers() throws Exception {
+        Result<Set<Logistics_Manager>> result = employeeService.getAllLogistics_Managers();
+        isError(result);
+        return result.getValue();
+    }
+
+    public Set<Transport_Manager> getAllTransport_Managers() throws Exception {
+        Result<Set<Transport_Manager>> result = employeeService.getAllTransport_Managers();
+        isError(result);
+        return result.getValue();
+    }
+
+    //UPDATE
 
     public void editEmployeeName(Presentation.Screens.Employee employee, String newName) throws Exception {
         Result<Object> result = employeeService.editEmployeeName(employee.getID(), newName);
@@ -110,44 +197,43 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editCarrierLicenses(Carrier carrier, Set<LicenseTypes> newLicenses) throws Exception {
+    public void editCarrierLicenses(Presentation.Screens.Carrier carrier, Set<LicenseTypes> newLicenses) throws Exception {
         Result<Object> result = employeeService.editCarrierLicenses(carrier.getID(), newLicenses);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public Set<Shift> getEmployeeShiftsBetween(String id, LocalDate start, LocalDate end) throws Exception {
-        Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(id, start, end);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-        return result.getValue();
-    }
+    //DELETE
 
-    public Set<Constraint> getEmployeeConstraintsBetween(String id, LocalDate today, LocalDate nextMonth) throws Exception {
-        Result<Set<Constraint>> result = constraintService.getEmployeeConstraintsBetween(id, today, nextMonth);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-        return result.getValue();
-    }
-
-    public void registerToConstraint(String id, LocalDate date, ShiftTypes shift) throws Exception {
-        Result<Object> result = constraintService.registerToConstraint(id, date, shift);
+    public void removeEmployee(String id) throws Exception {
+        Result<Object> result = employeeService.removeEmployee(id);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void unregisterToConstraint(String id, LocalDate date, ShiftTypes shift) throws Exception {
-        Result<Object> result = constraintService.unregisterFromConstraint(id, date, shift);
+    //MISC
+
+    public void checkUnusedEmployeeID(String id) throws Exception {
+        Result<Object> result = employeeService.checkUnusedEmployeeID(id);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public Set<Shift> getShiftsBetween(LocalDate start, LocalDate end) throws Exception {
-        Result<Set<Shift>> result = shiftService.getShiftsBetween(start, end);
+    public void validateID(String id) throws Exception {
+        Result<Object> result = employeeService.validateID(id);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
-        return result.getValue();
     }
+
+    public void validateIDs(Set<String> ids) throws Exception {
+        Result<Object> result = employeeService.validateIDs(ids);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+    }
+
+    ///SHIFTS
+
+    //CREATE
 
     public void createShift(LocalDate date, ShiftTypes type, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) throws Exception {
         Result<Object> result = shiftService.createShift(date, type, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount);
@@ -155,15 +241,10 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public Constraint getConstraint(LocalDate date, ShiftTypes type) throws Exception {
-        Result<Constraint> result = constraintService.getConstraint(date, type);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-        return result.getValue();
-    }
+    //READ
 
-    public Set<Employee> getEmployees(Set<String> employeeIDs) throws Exception {
-        Result<Set<Employee>> result = employeeService.getEmployees(employeeIDs);
+    public Shift getShift(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Shift> result = shiftService.getShift(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
@@ -176,18 +257,21 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Shift getShift(LocalDate date, ShiftTypes type) throws Exception {
-        Result<Shift> result = shiftService.getShift(date, type);
+    public Set<Shift> getShiftsBetween(LocalDate start, LocalDate end) throws Exception {
+        Result<Set<Shift>> result = shiftService.getShiftsBetween(start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public void removeShift(LocalDate date, ShiftTypes type) throws Exception {
-        Result<Object> result = shiftService.removeShift(date, type);
+    public Set<Shift> getEmployeeShiftsBetween(String id, LocalDate start, LocalDate end) throws Exception {
+        Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(id, start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
     }
+
+    //UPDATE
 
     public void editShiftManagerID(Presentation.Screens.Shift shift, String shiftManagerId) throws Exception {
         validateID(shiftManagerId);
@@ -274,11 +358,63 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void loadData() {
-        employeeService.loadData();
-        constraintService.loadData();
-        shiftService.loadData();
+    //DELETE
+
+    public void removeShift(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Object> result = shiftService.removeShift(date, type);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
     }
+
+    //MISC
+
+
+    ///CONSTRAINTS
+
+    //CREATE
+
+    //READ
+
+    public Constraint getConstraint(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Constraint> result = constraintService.getConstraint(date, type);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
+    public Set<Constraint> getEmployeeConstraintsBetween(String id, LocalDate today, LocalDate nextMonth) throws Exception {
+        Result<Set<Constraint>> result = constraintService.getEmployeeConstraintsBetween(id, today, nextMonth);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
+    //UPDATE
+
+    public void registerToConstraint(String id, LocalDate date, ShiftTypes shift) throws Exception {
+        Result<Object> result = constraintService.registerToConstraint(id, date, shift);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+    }
+
+    public void unregisterToConstraint(String id, LocalDate date, ShiftTypes shift) throws Exception {
+        Result<Object> result = constraintService.unregisterFromConstraint(id, date, shift);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+    }
+
+    //DELETE
+
+    //MISC
+
+
+    //private
+    private static void isError(Result result) throws Exception {
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+    }
+
+    //TODO: try to get rid of this
 
     public String getEmploymentConditionsOf(String id) throws Exception {
         Result<String> result = employeeService.getEmploymentConditionsOf(id);
