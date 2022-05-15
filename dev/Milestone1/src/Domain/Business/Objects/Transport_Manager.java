@@ -1,7 +1,6 @@
 package Domain.Business.Objects;
 
 import Domain.DAL.Controllers.EmployeeDataMapper;
-import Domain.DAL.Objects.DEmployee;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
@@ -11,6 +10,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public class Transport_Manager extends Employee{
+
     public Transport_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
     }
@@ -28,5 +28,10 @@ public class Transport_Manager extends Employee{
     @Override
     public void save(EmployeeDataMapper employeeDataMapper) throws SQLException {
         employeeDataMapper.save(this);
+    }
+
+    @Override
+    public void update(EmployeeDataMapper employeeDataMapper) throws SQLException {
+        employeeDataMapper.update(this);
     }
 }

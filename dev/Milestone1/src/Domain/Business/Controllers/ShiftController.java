@@ -2,7 +2,7 @@ package Domain.Business.Controllers;
 
 import Domain.Business.BusinessShiftFactory;
 import Domain.Business.Objects.*;
-import Domain.DAL.Controllers.DShiftController;
+import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.DAL.Objects.DShift;
 import Globals.Enums.ShiftTypes;
 import Globals.Pair;
@@ -23,14 +23,14 @@ public class ShiftController {
     // properties
     //Map<String, EveningShift> nightShifts; // string representing the date
     //Map<String, MorningShift> dayShifts;// string representing the date
-    private final DShiftController dShiftController = new DShiftController();
+    private final ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
     private final EmployeeController employeeController = new EmployeeController();
 
     private final Map<LocalDate, Map<ShiftTypes,Shift>> shifts = new HashMap<>();
     private final BusinessShiftFactory shiftFactory = new BusinessShiftFactory();
 
     public void loadData() {
-        Set<DShift> dShifts = dShiftController.loadData();
+        Set<DShift> dShifts = shiftDataMapper.loadData();
         for(DShift dShift : dShifts) {
             if (!shifts.containsKey(dShift.getWorkday()))
                 shifts.put(dShift.getWorkday(),new HashMap<>());

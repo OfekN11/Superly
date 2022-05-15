@@ -1,11 +1,11 @@
 package Domain.Business.Objects;
 
-import Domain.DAL.Objects.DEmployee;
-import Domain.DAL.Objects.DLogistics_Manager;
+import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -14,11 +14,12 @@ import java.util.Set;
  */
 public class Logistics_Manager extends Employee{
     public Logistics_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
-        super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications,new DLogistics_Manager(id,name,bankDetails,salary,employmentConditions,startingDate));
+        super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
     }
 
-    public Logistics_Manager(DEmployee dEmployee) {
-        super(dEmployee);
+    @Override
+    public void save(EmployeeDataMapper employeeDataMapper) throws SQLException {
+        employeeDataMapper.save(this);
     }
 
     @Override
@@ -29,5 +30,10 @@ public class Logistics_Manager extends Employee{
     @Override
     public Domain.Service.Objects.Employee accept(ServiceEmployeeFactory factory) {
         return factory.createServiceEmployee(this);
+    }
+
+    @Override
+    public void update(EmployeeDataMapper employeeDataMapper) throws SQLException {
+        employeeDataMapper.update(this);
     }
 }

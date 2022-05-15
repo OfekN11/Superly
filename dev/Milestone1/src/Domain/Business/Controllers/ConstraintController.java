@@ -1,50 +1,50 @@
 package Domain.Business.Controllers;
 
 import Domain.Business.Objects.Constraint;
-import Domain.DAL.Controllers.DConstraintController;
-import Domain.DAL.Objects.DConstraint;
+import Domain.DAL.Controllers.ConstraintDataMapper;
 import Globals.Enums.ShiftTypes;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 
 public class ConstraintController {
-    private final Map<LocalDate, Map<ShiftTypes, Constraint>> constraints = new HashMap<>();
-    private final DConstraintController dConstraintController = new DConstraintController();
 
-    public void loadData() {
-        Set<DConstraint> dConstraints = dConstraintController.loadData();
-        for(DConstraint dConstraint: dConstraints){
-            if (!constraints.containsKey(dConstraint.getDate()))
-                constraints.put(dConstraint.getDate(),new HashMap<>());
-            constraints.get(dConstraint.getDate()).put(dConstraint.getShiftType(),new Constraint(dConstraint));
+    private ConstraintDataMapper constraintDataMapper;
+
+    public ConstraintController() {
+        this.constraintDataMapper = new ConstraintDataMapper();
+    }
+
+    public Constraint getConstraint(LocalDate workday, ShiftTypes shiftType){
+        Constraint constraint = constraintDataMapper.get(workday,shiftType);
+        if (constraint != null)
+            return constraint;
+
+        try {
+            constraint =new Constraint(workday,shiftType,new HashSet<>());
+            constraintDataMapper.save(workday,shiftType,constraint);
+            return constraint;
+        } catch (SQLException throwables) {
+            throw new RuntimeException("saving constraint has failed");
         }
-
-    }
-
-    public void deleteData() {
-    }
-
-    public Constraint getConstraint(LocalDate workday, ShiftTypes shift){
-        if (!constraints.containsKey(workday))
-            constraints.put(workday, new HashMap<>());
-        if (!constraints.get(workday).containsKey(shift))
-            constraints.get(workday).put(shift, new Constraint(workday, shift, new HashSet<>()));
-        return constraints.get(workday).get(shift);
     }
 
     public void registerToConstraint(String id, LocalDate workday, ShiftTypes shift) {
         Constraint constraint = getConstraint(workday, shift);
         constraint.register(id);
+        try {
+            constraintDataMapper.update(constraint);
+        } catch (SQLException throwables) {
+            throw new RuntimeException("updating constraint has failed");
+        }
     }
 
     public void unregisterFromConstraint(String id, LocalDate workday, ShiftTypes shift) {
-        if (!constraints.containsKey(workday) || !constraints.get(workday).containsKey(shift))
+        if (constraintDataMapper.get(workday.toString()+shift.toString()) == null)
             return;
         Constraint constraint = getConstraint(workday, shift);
         constraint.unregister(id);

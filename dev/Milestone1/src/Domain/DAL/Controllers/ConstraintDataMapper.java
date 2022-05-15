@@ -15,32 +15,20 @@ import java.util.*;
 public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
     private final static Map<String, Constraint> CONSTRAINT_IDENTITY_MAP = new HashMap<>();
     // properties
-
+    ConstraintsEmployeesLink constraintsEmployeesLink;
 
     //constructor
     public ConstraintDataMapper() {
         super("Constraints");
+        constraintsEmployeesLink = new ConstraintsEmployeesLink();
     }
 
 
     // function
-    @Override
-    protected  <K> void addToSet(String id, String listName, K toAdd) throws SQLException{
-        Constraint constraint = CONSTRAINT_IDENTITY_MAP.get(id);
-        super.insert(Arrays.asList(id,constraint.getDate(),constraint.getType(),toAdd));
-    }
 
-    @Override
-    protected  <K> void removeFromSet(String id, String listName, K toRemove) throws SQLException{
-        super.remove(Arrays.asList(1,4),Arrays.asList(id,toRemove));
-    }
 
-    @Override
-    protected <K> void replaceSet(String id, String listName, Set<K> toReplace) throws SQLException{
-        super.remove(id);
-        Constraint constraint = CONSTRAINT_IDENTITY_MAP.get(id);
-        for(K employeeId: toReplace)
-            insert(Arrays.asList(employeeId,constraint.getDate(),constraint.getType(),employeeId));
+    public Constraint get(LocalDate localDate,ShiftTypes shiftTypes){
+        return get(localDate.toString()+shiftTypes.toString());
     }
 
     @Override
@@ -50,25 +38,32 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
 
     @Override
     protected LinkDAO getLinkDTO(String setName) {
-        throw new IllegalArgumentException("this function should not be used cause there is no Link DAO in Constraint");
+        switch (setName){
+            case "employees":
+                return constraintsEmployeesLink;
+            default:
+                throw new IllegalArgumentException("not define set");
+        }
     }
 
     @Override
     protected Constraint buildObject(ResultSet result) throws SQLException {
-        Set<String> ids = new HashSet<>();
-        LocalDate date = result.getDate(2).toLocalDate();
-        ShiftTypes shiftType = ShiftTypes.valueOf(result.getString(3));
-        ids.add(result.getString(4));
-        while (result.next())
-            ids.add(result.getString(4));
-        return  new Constraint(date,shiftType,ids);
+        return new Constraint(result.getDate(2).toLocalDate(),ShiftTypes.valueOf(result.getString(3)),constraintsEmployeesLink.get(result.getString(1)));
     }
 
     @Override
     public void insert(Constraint instance) throws SQLException {
-        for (String employeeID : instance.getEmployees())
-            super.insert(Arrays.asList(instance.getDate().toString()+instance.getType().toString(),instance.getDate(),instance.getType(),employeeID));
+        String id = instance.getDate().toString()+instance.getType().toString();
+        constraintsEmployeesLink.replaceSet(id,instance.getEmployees());
+        super.remove(id);
+        super.insert(Arrays.asList(id,instance.getDate(),instance.getType()));
     }
 
+    public void update(Constraint constraint) throws SQLException {
+        insert(constraint);
+    }
 
+    public void save(LocalDate workday, ShiftTypes shiftType, Constraint constraint) throws SQLException {
+        save(workday.toString()+shiftType.toString(),constraint);
+    }
 }

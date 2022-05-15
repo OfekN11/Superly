@@ -1,7 +1,10 @@
-package Domain.DAL.Controllers;
+package Domain.DAL.Controllers.EmployeeMappers;
 import Domain.Business.Objects.Carrier;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Abstract.ObjectDateMapper;
+import Domain.DAL.Controllers.EmployeeLinks.CarrierLicensesDAO;
+import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -48,6 +51,7 @@ public class CarrierDataMapper extends ObjectDateMapper<Carrier> {
     public void insert(Carrier instance) throws SQLException {
         employeeCertificationDAO.replaceSet(instance.getId(),instance.getCertifications());
         carrierLicensesDAO.replaceSet(instance.getId(),instance.getLicenses());
+        super.remove(instance.getId());
         super.insert(Arrays.asList(instance.getId(),instance.getName(),instance.getBankDetails(),instance.getSalary(),instance.getEmploymentConditions(),instance.getStartingDate()));
     }
 }

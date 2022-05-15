@@ -1,11 +1,11 @@
 package Domain.Business.Objects;
 
-import Domain.DAL.Objects.DEmployee;
-import Domain.DAL.Objects.DHR_Manager;
+import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -14,11 +14,7 @@ import java.util.Set;
  */
 public class HR_Manager extends Employee{
     public HR_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
-        super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications,new DHR_Manager(id,name,bankDetails,salary,employmentConditions,startingDate));
-    }
-
-    public HR_Manager(DEmployee dEmployee) {
-        super(dEmployee);
+        super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
     }
 
     @Override
@@ -29,5 +25,15 @@ public class HR_Manager extends Employee{
     @Override
     public Domain.Service.Objects.Employee accept(ServiceEmployeeFactory factory) {
         return factory.createServiceEmployee(this);
+    }
+
+    @Override
+    public void save(EmployeeDataMapper employeeDataMapper) throws SQLException {
+        employeeDataMapper.save(this);
+    }
+
+    @Override
+    public void update(EmployeeDataMapper employeeDataMapper) throws SQLException {
+        employeeDataMapper.update(this);
     }
 }
