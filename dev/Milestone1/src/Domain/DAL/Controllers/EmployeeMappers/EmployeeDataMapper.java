@@ -8,14 +8,14 @@ import java.util.*;
 public class EmployeeDataMapper  {
 
     // properties
-    private CarrierDataMapper carrierDataMapper;
-    private CashierDataMapper cashierDataMapper;
-    private HR_ManagerDataMapper hR_managerDataMapper;
-    private Logistics_ManagerDataMapper logistics_managerDataMapper;
-    private SorterDataMapper sorterDataMapper;
-    private StorekeeperDataMapper storekeeperDataMapper;
-    private TransportManagerDataMapper transportManagerDataMapper;
-    private EmployeeTypeLink employeeTypeLink;
+    private final CarrierDataMapper carrierDataMapper;
+    private final CashierDataMapper cashierDataMapper;
+    private final HR_ManagerDataMapper hR_managerDataMapper;
+    private final Logistics_ManagerDataMapper logistics_managerDataMapper;
+    private final SorterDataMapper sorterDataMapper;
+    private final StorekeeperDataMapper storekeeperDataMapper;
+    private final TransportManagerDataMapper transportManagerDataMapper;
+    private final EmployeeTypeLink employeeTypeLink;
 
 
     // constructor
@@ -31,7 +31,7 @@ public class EmployeeDataMapper  {
     }
 
     public Employee get(String id) throws SQLException {
-        Set<JobTitles>  type= employeeTypeLink.get(id);
+        Set<JobTitles> type = employeeTypeLink.get(id);
         if (type.isEmpty())
             return null;
 
@@ -125,4 +125,35 @@ public class EmployeeDataMapper  {
         transportManagerDataMapper.insert(employee);
     }
 
+    //TODO
+    public Carrier getCarrier(String id) throws SQLException {}
+    public Cashier getCashier(String id) throws SQLException {}
+    public Sorter getSorter(String id) throws SQLException {}
+    public Storekeeper getStorekeeper(String id) throws SQLException {}
+    public HR_Manager getHR_Manager(String id) throws SQLException {}
+    public Logistics_Manager getLogistics_Manager(String id) throws SQLException {}
+    public Transport_Manager getTransport_Manager(String id) throws SQLException {}
+
+    //remember not to insert nulls
+    public Set<Employee> gets(Set<String> ids) throws SQLException {}
+    public Set<Carrier> getCarriers(Set<String> ids) throws SQLException {}
+    public Set<Cashier> getCashiers(Set<String> ids) throws SQLException {}
+    public Set<Sorter> getSorters(Set<String> ids) throws SQLException {}
+    public Set<Storekeeper> getStorekeepers(Set<String> ids) throws SQLException {}
+    public Set<HR_Manager> getHR_Managers(Set<String> ids) throws SQLException {}
+    public Set<Logistics_Manager> getLogistics_Managers(Set<String> ids) throws SQLException {}
+    public Set<Transport_Manager> getTransport_Managers(Set<String> ids) throws SQLException {}
+
+    public Set<Employee> getAll() throws SQLException {}
+    public Set<Carrier> getAllCarriers() throws SQLException {}
+    public Set<Cashier> getAllCashiers() throws SQLException {}
+    public Set<Sorter> getAllSorters() throws SQLException {}
+    public Set<Storekeeper> getAllStorekeepers() throws SQLException {}
+    public Set<HR_Manager> getAllHR_Managers() throws SQLException {}
+    public Set<Logistics_Manager> getAllLogistics_Managers() throws SQLException {}
+    public Set<Transport_Manager> getAllTransport_Managers() throws SQLException {}
+
+
+    //throw RuntimeException if ID doesnt exist
+    public void delete(String id) throws SQLException{}
 }
