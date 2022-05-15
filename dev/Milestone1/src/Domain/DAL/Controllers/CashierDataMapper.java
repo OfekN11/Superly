@@ -1,13 +1,12 @@
 package Domain.DAL.Controllers;
 import Domain.Business.Objects.Cashier;
-import Domain.DAL.Abstract.DataMapper;
-
-import java.sql.Connection;
+import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.Abstract.ObjectDateMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class CashierDataMapper extends DataMapper {
+public class CashierDataMapper extends ObjectDateMapper<Cashier> {
     //static fields
     private final static Map<String, Cashier> CASHIER_IDENTITY_MAP = new HashMap<>();
 
@@ -21,24 +20,30 @@ public class CashierDataMapper extends DataMapper {
         employeeCertificationController = new EmployeeCertificationDAO();
     }
 
-    public Cashier get(String id){
-        Cashier output = CASHIER_IDENTITY_MAP.get(id);
-        if (output != null)
-            return output;
 
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection,id);
-            if (!instanceResult.next())
-                return null;
+    @Override
+    protected Map<String, Cashier> getMap() {
+        return CASHIER_IDENTITY_MAP;
+    }
 
-
-            output = new Cashier(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getString(5),instanceResult.getDate(6).toLocalDate(),employeeCertificationController.get(id));
-            CASHIER_IDENTITY_MAP.put(id,output);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+    @Override
+    protected  LinkDAO getLinkDTO(String setName) {
+        switch (setName){
+            case "certifications":
+                return  employeeCertificationController;
+            default:
+                throw new IllegalArgumentException("no such set");
         }
-        throw new RuntimeException("something went wrong in Cashier DataMapper");
+    }
+
+    @Override
+    protected Cashier buildObject(ResultSet instanceResult) throws Exception {
+        return new Cashier(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getString(5),instanceResult.getDate(6).toLocalDate(),employeeCertificationController.get(instanceResult.getString(1)));
+    }
+
+    @Override
+    public void insert(Cashier instance) throws SQLException {
+        employeeCertificationController.replaceSet(instance.getId(),instance.getCertifications());
+        super.insert(Arrays.asList(instance.getId(),instance.getName(),instance.getBankDetails(),instance.getSalary(),instance.getEmploymentConditions(),instance.getStartingDate()));
     }
 }

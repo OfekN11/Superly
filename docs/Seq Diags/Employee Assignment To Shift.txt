@@ -1,0 +1,64 @@
+title Employee Assignment To Shift
+
+actor HR Manager
+participant System
+
+//manager chooses shift to manage
+activate System
+System->System:1.1 printMenu()
+activate System
+space -0.5
+deactivate System
+HR Manager->System:1.2 Manage existing shifts()
+activate System
+loop date is illegal
+System->HR Manager:1.2.1 "Enter Date"
+HR Manager-->System:1.2.2 date
+end
+System->HR Manager: 1.2.3 "Enter shift type"
+HR Manager-->System:1.2.4 shiftType
+System->(2)System:1.2.5 OpenShiftScreen()
+deactivate System
+space -2.5
+deactivate System
+space -0.5
+
+//manager chooses to assign employees
+activate System
+System->System:2.1 printMenu()
+activate System
+space -0.5
+deactivate System
+HR Manager->System: 2.2 assignEmployees()
+activate System
+System->HR Manager:2.2.1 "Enter employee type"
+HR Manager-->System:2.2.2 employeeType
+System->System:2.2.3 assignEmployee(employeeType)
+activate System
+
+alt currentlyAssigned.count < maxOfType
+System ->System:2.2.3.1A showAvailable()
+activate System
+space -0.5
+deactivate System
+HR Manager->System:2.2.3.2A choosenID
+System ->System : 2.2.3.3A assign(choosenID)
+activate System
+space -0.5
+deactivate System
+alt currentlyAssigned.count  < maxOfType
+System->HR Manager:2.2.3.4AA "stop or add more?"
+HR Manager-->System:2.2.3.5AA stop()
+System->HR Manager:2.2.3.6AA emplyeeTypeForShiftNotCompleteMessage
+else currentlyAssigned.count = maxOfType
+System ->HR Manager:2.2.3.4AB employeeTypeForShiftCompleteMessage
+end 
+else currentlyAssigned.count = maxOfType
+System->HR Manager: 2.2.3.1B resetMaxOrRemoveMessage
+end
+space -0.5
+deactivate System
+space -0.5
+deactivate System
+space -0.5
+deactivate System
