@@ -8,8 +8,10 @@ import org.junit.Test;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -56,7 +58,7 @@ public class ObjectDateMapperTest {
             dataMapper.updateProperty(morningId,3,evening);
             dataMapper.updateProperty(morningId,1,eveningId);
             assertNotNull(dataMapper.get(eveningId));
-            assertEquals(dataMapper.get(eveningId));
+            assertEquals(dataMapper.get(eveningId).getType(),ShiftTypes.Evening);
             removeConstraint(dataMapper.get(eveningId));
         } catch (SQLException throwables) {
             fail();
@@ -65,14 +67,41 @@ public class ObjectDateMapperTest {
 
     @Test
     public void addToSet() {
+        try {
+            saveConstraint(morningConstraint);
+            assertEquals(link.get(morningId).size(),1);
+            dataMapper.addToSet(morningId,"employees","14");
+            assertEquals(link.get(morningId).size(),2);
+        } catch (SQLException throwables) {
+            fail();
+        }
     }
 
     @Test
     public void removeFromSet() {
+        try {
+            saveConstraint(morningConstraint);
+            assertEquals(link.get(morningId).size(),1);
+            dataMapper.removeFromSet(morningId,"employees","12");
+            assertEquals(link.get(morningId).size(),0);
+        } catch (SQLException throwables) {
+            fail();
+        }
     }
 
     @Test
     public void replaceSet() {
+        try {
+            saveConstraint(morningConstraint);
+            assertEquals(link.get(morningId).size(),1);
+            Set<String> newSet = new HashSet<>();
+            newSet.add("14");
+            dataMapper.replaceSet(morningId,"employees",newSet);
+            assertEquals(link.get(morningId).size(),1);
+            assertEquals(new ArrayList<>(link.get(morningId)).get(0),"14");
+        } catch (SQLException throwables) {
+            fail();
+        }
     }
 
     @Test
