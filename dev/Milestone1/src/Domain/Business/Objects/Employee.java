@@ -6,6 +6,7 @@ import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -154,5 +155,5 @@ public abstract class Employee {
      * visitor pattern with the function save in {@param employeeDataMapper}
      * @param employeeDataMapper the data mapper to call employeeDataMapper.save(this)
      */
-    public abstract void save(EmployeeDataMapper employeeDataMapper);
+    public abstract void save(EmployeeDataMapper employeeDataMapper) throws SQLException;
 }
