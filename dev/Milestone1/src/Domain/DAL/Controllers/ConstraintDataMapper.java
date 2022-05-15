@@ -75,6 +75,6 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
     }
 
     public int delete(Constraint instance) throws SQLException {
-        return super.delete(instance.getDate().toString()+instance.getType().toString(),instance);
+        return super.delete(instance.getDate().toString()+instance.getType().toString());
     }
 }
