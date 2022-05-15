@@ -25,6 +25,8 @@ public class ObjectDateMapperTest {
     String morningId = birthday.toString()+morning.toString();
     String eveningId = birthday.toString()+evening.toString();
     Constraint morningConstraint = new Constraint(birthday,morning,new HashSet<>());
+    Constraint eveningConstraint = new Constraint(birthday,ShiftTypes.Evening,new HashSet<>());
+
     @Test
     public void get() {
         try {
@@ -55,6 +57,8 @@ public class ObjectDateMapperTest {
     public void updateProperty() {
         try {
             saveConstraint(morningConstraint);
+            if (dataMapper.get(eveningId)!=null)
+                removeConstraint(eveningConstraint);
             dataMapper.updateProperty(morningId,3,evening);
             dataMapper.updateProperty(morningId,1,eveningId);
             assertNotNull(dataMapper.get(eveningId));

@@ -23,10 +23,12 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
 
             output = buildObject(instanceResult);
             map.put(id,output);
+            return output;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("this is bad");
         }
         throw new RuntimeException("this is bad");
     }
