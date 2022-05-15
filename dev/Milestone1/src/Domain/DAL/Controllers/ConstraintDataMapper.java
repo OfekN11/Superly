@@ -60,7 +60,7 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
     }
 
     @Override
-    protected Set<LinkDAO> getLinks() {
+    protected Set<LinkDAO> getAllLinkDTOs() {
         Set<LinkDAO> daos = new HashSet<>();
         daos.add(constraintsEmployeesLink);
         return daos;

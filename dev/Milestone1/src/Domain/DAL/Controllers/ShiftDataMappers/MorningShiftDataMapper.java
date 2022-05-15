@@ -79,7 +79,7 @@ public class MorningShiftDataMapper extends ObjectDateMapper<MorningShift> {
     }
 
     @Override
-    protected Set<LinkDAO> getLinks() {
+    protected Set<LinkDAO> getAllLinkDTOs() {
         Set<LinkDAO> linkDAOS = new HashSet<>();
         linkDAOS.add(shiftsCarriersLink);
         linkDAOS.add(shiftsCashiersLink);

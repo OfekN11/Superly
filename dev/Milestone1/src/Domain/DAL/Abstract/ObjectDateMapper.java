@@ -70,7 +70,7 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
         getMap().remove(id);
     }
     public int delete(String id, T instance) throws SQLException {
-        Set<LinkDAO> links =getLinks();
+        Set<LinkDAO> links = getAllLinkDTOs();
 
         for (LinkDAO link : links)
             link.remove(id);
@@ -80,6 +80,11 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
     protected abstract  LinkDAO getLinkDTO(String setName);
     protected abstract T buildObject(ResultSet instanceResult) throws Exception;
     public abstract void insert(T instance) throws SQLException;
-    protected abstract Set<LinkDAO> getLinks();
+
+    /**
+     *
+     * @return a set of all the linkDAOs that the objects holds
+     */
+    protected abstract Set<LinkDAO> getAllLinkDTOs();
 }
 

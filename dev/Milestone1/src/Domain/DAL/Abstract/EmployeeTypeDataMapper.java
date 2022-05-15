@@ -35,7 +35,7 @@ public abstract class EmployeeTypeDataMapper<T extends Employee> extends ObjectD
     }
 
     @Override
-    protected  Set<LinkDAO> getLinks(){
+    protected  Set<LinkDAO> getAllLinkDTOs(){
         Set<LinkDAO> output = new HashSet<>();
         output.add(employeeCertificationController);
         return output;
