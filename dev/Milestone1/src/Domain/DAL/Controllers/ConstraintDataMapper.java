@@ -63,7 +63,7 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
         insert(constraint);
     }
 
-    public void save(LocalDate workday, ShiftTypes shiftType, Constraint constraint) throws SQLException {
-        save(workday.toString()+shiftType.toString(),constraint);
+    public void save(Constraint constraint) throws SQLException {
+        save(constraint.getDate().toString()+constraint.getType().toString(),constraint);
     }
 }
