@@ -59,11 +59,22 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
         super.insert(Arrays.asList(id,instance.getDate(),instance.getType()));
     }
 
+    @Override
+    protected Set<LinkDAO> getLinks() {
+        Set<LinkDAO> daos = new HashSet<>();
+        daos.add(constraintsEmployeesLink);
+        return daos;
+    }
+
     public void update(Constraint constraint) throws SQLException {
         insert(constraint);
     }
 
     public void save(Constraint constraint) throws SQLException {
         save(constraint.getDate().toString()+constraint.getType().toString(),constraint);
+    }
+
+    public int delete(Constraint instance) throws SQLException {
+        return super.delete(instance.getDate().toString()+instance.getType().toString(),instance);
     }
 }

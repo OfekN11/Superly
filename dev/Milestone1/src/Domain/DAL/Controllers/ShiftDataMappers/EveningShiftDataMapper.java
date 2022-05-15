@@ -8,12 +8,10 @@ import Globals.Enums.ShiftTypes;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class EveningShiftDataMapper extends ObjectDateMapper<EveningShift> {
-    private static Map<String,EveningShift> EVENING_SHIFTS_MAP = new HashMap<>();
+    private static final Map<String,EveningShift> EVENING_SHIFTS_MAP = new HashMap<>();
 
     private ShiftsCarriersLink shiftsCarriersLink;
     private ShiftsCashiersLink shiftsCashiersLink;
@@ -80,5 +78,18 @@ public class EveningShiftDataMapper extends ObjectDateMapper<EveningShift> {
         shiftsTransportManagers.replaceSet(id,instance.getTransportManagersIDs());
         super.remove(instance.getWorkday().toString()+ShiftTypes.Evening.toString());
         super.insert(Arrays.asList(id,instance.getWorkday(),instance.getShiftManagerId(),instance.getCarrierCount(),instance.getCashierCount(),instance.getStorekeeperCount(),instance.getSorterCount(),instance.getHr_managersCount(),instance.getLogistics_managersCount(),instance.getTransportManagersCount()));
+    }
+
+    @Override
+    protected Set<LinkDAO> getLinks() {
+        Set<LinkDAO> linkDAOS = new HashSet<>();
+        linkDAOS.add(shiftsCarriersLink);
+        linkDAOS.add(shiftsCashiersLink);
+        linkDAOS.add(shiftsHRManagers);
+        linkDAOS.add(shiftsLogisticManagersLink);
+        linkDAOS.add(shiftsSortersLink);
+        linkDAOS.add(shiftsStorekeepersLink);
+        linkDAOS.add(shiftsTransportManagers);
+        return linkDAOS;
     }
 }

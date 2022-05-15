@@ -69,11 +69,17 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
     protected void removeFromIdentityMap(String id){
         getMap().remove(id);
     }
+    public int delete(String id, T instance) throws SQLException {
+        Set<LinkDAO> links =getLinks();
 
+        for (LinkDAO link : links)
+            link.remove(id);
+        return remove(id);
+    }
     protected abstract Map<String, T> getMap();
     protected abstract  LinkDAO getLinkDTO(String setName);
     protected abstract T buildObject(ResultSet instanceResult) throws Exception;
     public abstract void insert(T instance) throws SQLException;
-
+    protected abstract Set<LinkDAO> getLinks();
 }
 

@@ -77,4 +77,17 @@ public class MorningShiftDataMapper extends ObjectDateMapper<MorningShift> {
         super.remove(instance.getWorkday().toString()+ShiftTypes.Morning.toString());
         super.insert(Arrays.asList(id,instance.getWorkday(),instance.getShiftManagerId(),instance.getCarrierCount(),instance.getCashierCount(),instance.getStorekeeperCount(),instance.getSorterCount(),instance.getHr_managersCount(),instance.getLogistics_managersCount(),instance.getTransportManagersCount()));
     }
+
+    @Override
+    protected Set<LinkDAO> getLinks() {
+        Set<LinkDAO> linkDAOS = new HashSet<>();
+        linkDAOS.add(shiftsCarriersLink);
+        linkDAOS.add(shiftsCashiersLink);
+        linkDAOS.add(shiftsHRManagers);
+        linkDAOS.add(shiftsLogisticManagersLink);
+        linkDAOS.add(shiftsSortersLink);
+        linkDAOS.add(shiftsStorekeepersLink);
+        linkDAOS.add(shiftsTransportManagers);
+        return linkDAOS;
+    }
 }
