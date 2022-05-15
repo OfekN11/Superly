@@ -1,6 +1,6 @@
 package Domain.Business.Objects;
 
-import Domain.DAL.Controllers.EmployeeDataMapper;
+import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
