@@ -261,55 +261,56 @@ public class EmployeeDataMapper  {
             output.addAll(getHR_Manager());
             output.addAll(getLogistics_Manager());
             output.addAll(getTransport_Manager());
+            return output;
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
     public Set<Carrier> getCarrier() throws Exception {
         try {
-
+            return carrierDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
     public Set<Cashier> getCashier() throws Exception {
         try {
-
+            return cashierDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
     public Set<Sorter> getSorter() throws Exception {
         try {
-
+            return sorterDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
     public Set<Storekeeper> getStorekeeper() throws Exception {
         try {
-
+            return storekeeperDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
     public Set<HR_Manager> getHR_Manager() throws Exception {
         try {
-
+            return hR_managerDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
     public Set<Logistics_Manager> getLogistics_Manager() throws Exception {
         try {
-
+            return logistics_managerDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
     public Set<Transport_Manager> getTransport_Manager() throws Exception {
         try {
-
+            return transportManagerDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
@@ -324,6 +325,36 @@ public class EmployeeDataMapper  {
     }
     public void delete(String id) throws Exception{
         try {
+            Set<JobTitles> type = employeeTypeLink.get(id);
+            if (type.isEmpty())
+                return ;
+
+            switch (new ArrayList<>(type).get(0)){
+                case Carrier:
+                    carrierDataMapper.delete(id);
+                    break;
+                case Cashier:
+                    cashierDataMapper.delete(id);
+                    break;
+                case HR_Manager:
+                    hR_managerDataMapper.delete(id);
+                    break;
+                case Logistics_Manager:
+                    logistics_managerDataMapper.delete(id);
+                    break;
+                case Sorter:
+                    sorterDataMapper.delete(id);
+                    break;
+                case Storekeeper:
+                    storekeeperDataMapper.delete(id);
+                    break;
+                case Transport_Manager:
+                    transportManagerDataMapper.delete(id);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Illegal employee type saved in the db");
+            }
+            employeeTypeLink.remove(id);
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
