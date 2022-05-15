@@ -1,5 +1,4 @@
 package Domain.Business.Objects;
-import Domain.DAL.Objects.DConstraint;
 import Globals.Enums.ShiftTypes;
 
 import java.time.LocalDate;
@@ -18,10 +17,7 @@ public class Constraint {
         this.employees = new HashSet<>(employees);
     }
 
-    public Constraint(DConstraint dConstraint){
-        type = dConstraint.getShiftType();
-        employees = new HashSet<>(dConstraint.getEmployees());
-    }
+
 
     public LocalDate getDate() {
         return date;

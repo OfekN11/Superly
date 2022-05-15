@@ -1,7 +1,9 @@
-package Domain.DAL.Controllers;
+package Domain.DAL.Controllers.EmployeeMappers;
 import Domain.Business.Objects.Cashier;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Abstract.ObjectDateMapper;
+import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -44,6 +46,7 @@ public class CashierDataMapper extends ObjectDateMapper<Cashier> {
     @Override
     public void insert(Cashier instance) throws SQLException {
         employeeCertificationController.replaceSet(instance.getId(),instance.getCertifications());
+        super.remove(instance.getId());
         super.insert(Arrays.asList(instance.getId(),instance.getName(),instance.getBankDetails(),instance.getSalary(),instance.getEmploymentConditions(),instance.getStartingDate()));
     }
 }

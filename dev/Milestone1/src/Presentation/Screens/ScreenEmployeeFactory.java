@@ -7,27 +7,31 @@ public class ScreenEmployeeFactory {
         return sEmployee.accept(this);
     }
 
-    public Carrier createScreenEmployee(Domain.Service.Objects.Carrier sCarrier){
-        return new Carrier(caller, sCarrier);
+    public Carrier createScreenEmployee(Domain.Service.Objects.Carrier sEmployee){
+        return new Carrier(caller, sEmployee);
     }
 
-    public Cashier createScreenEmployee(Domain.Service.Objects.Cashier sCashier){
-        return new Cashier(caller, sCashier);
+    public Cashier createScreenEmployee(Domain.Service.Objects.Cashier sEmployee){
+        return new Cashier(caller, sEmployee);
     }
 
-    public HR_Manager createScreenEmployee(Domain.Service.Objects.HR_Manager sHR_Manager){
-        return new HR_Manager(caller, sHR_Manager);
+    public HR_Manager createScreenEmployee(Domain.Service.Objects.HR_Manager sEmployee){
+        return new HR_Manager(caller, sEmployee);
     }
 
-    public Logistics_Manager createScreenEmployee(Domain.Service.Objects.Logistics_Manager sLogistics_Manager){
-        return new Logistics_Manager(caller, sLogistics_Manager);
+    public Logistics_Manager createScreenEmployee(Domain.Service.Objects.Logistics_Manager sEmployee){
+        return new Logistics_Manager(caller, sEmployee);
     }
 
-    public Sorter createScreenEmployee(Domain.Service.Objects.Sorter sSorter){
-        return new Sorter(caller, sSorter);
+    public Sorter createScreenEmployee(Domain.Service.Objects.Sorter sEmployee){
+        return new Sorter(caller, sEmployee);
     }
 
-    public Storekeeper createScreenEmployee(Domain.Service.Objects.Storekeeper sStorekeeper){
-        return new Storekeeper(caller, sStorekeeper);
+    public Storekeeper createScreenEmployee(Domain.Service.Objects.Storekeeper sEmployee){
+        return new Storekeeper(caller, sEmployee);
+    }
+
+    public Transport_Manager createScreenEmployee(Domain.Service.Objects.Transport_Manager sEmployee){
+        return new Transport_Manager(caller, sEmployee);
     }
 }

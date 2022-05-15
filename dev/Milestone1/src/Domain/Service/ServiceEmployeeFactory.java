@@ -13,27 +13,31 @@ public class ServiceEmployeeFactory {
         return bEmployee.accept(this);
     }
 
-    public Carrier createServiceEmployee(Domain.Business.Objects.Carrier bCarrier){
-        return new Carrier(bCarrier);
+    public Carrier createServiceEmployee(Domain.Business.Objects.Carrier bEmployee){
+        return new Carrier(bEmployee);
     }
 
-    public Cashier createServiceEmployee(Domain.Business.Objects.Cashier bCashier){
-        return new Cashier(bCashier);
+    public Cashier createServiceEmployee(Domain.Business.Objects.Cashier bEmployee){
+        return new Cashier(bEmployee);
     }
 
-    public HR_Manager createServiceEmployee(Domain.Business.Objects.HR_Manager bHR_Manager){
-        return new HR_Manager(bHR_Manager);
+    public HR_Manager createServiceEmployee(Domain.Business.Objects.HR_Manager bEmployee){
+        return new HR_Manager(bEmployee);
     }
 
-    public Logistics_Manager createServiceEmployee(Domain.Business.Objects.Logistics_Manager bLogistics_Manager){
-        return new Logistics_Manager(bLogistics_Manager);
+    public Logistics_Manager createServiceEmployee(Domain.Business.Objects.Logistics_Manager bEmployee){
+        return new Logistics_Manager(bEmployee);
     }
 
-    public Sorter createServiceEmployee(Domain.Business.Objects.Sorter bSorter){
-        return new Sorter(bSorter);
+    public Sorter createServiceEmployee(Domain.Business.Objects.Sorter bEmployee){
+        return new Sorter(bEmployee);
     }
 
-    public Storekeeper createServiceEmployee(Domain.Business.Objects.Storekeeper bStorekeeper){
-        return new Storekeeper(bStorekeeper);
+    public Storekeeper createServiceEmployee(Domain.Business.Objects.Storekeeper bEmployee){
+        return new Storekeeper(bEmployee);
+    }
+
+    public Transport_Manager createServiceEmployee(Domain.Business.Objects.Transport_Manager bEmployee){
+        return new Transport_Manager(bEmployee);
     }
 }
