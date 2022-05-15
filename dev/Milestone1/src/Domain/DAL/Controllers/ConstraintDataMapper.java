@@ -24,7 +24,7 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
     // function
 
 
-    public Constraint get(LocalDate localDate,ShiftTypes shiftTypes){
+    public Constraint get(LocalDate localDate,ShiftTypes shiftTypes) throws Exception {
         return get(localDate.toString()+shiftTypes.toString());
     }
 

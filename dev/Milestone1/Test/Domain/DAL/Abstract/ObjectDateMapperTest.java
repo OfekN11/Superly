@@ -28,7 +28,7 @@ public class ObjectDateMapperTest {
     Constraint eveningConstraint = new Constraint(birthday,ShiftTypes.Evening,new HashSet<>());
 
     @Test
-    public void get() {
+    public void get() throws Exception {
         try {
             removeConstraint(morningConstraint);
             assertNull(dataMapper.get(morningId));
@@ -54,7 +54,7 @@ public class ObjectDateMapperTest {
     }
 
     @Test
-    public void updateProperty() {
+    public void updateProperty() throws Exception {
         try {
             saveConstraint(morningConstraint);
             if (dataMapper.get(eveningId)!=null)
@@ -109,7 +109,7 @@ public class ObjectDateMapperTest {
     }
 
     @Test
-    public void save() {
+    public void save() throws Exception {
         try {
             removeConstraint(morningConstraint);
             morningConstraint.getEmployees().add("12");
