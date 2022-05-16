@@ -221,34 +221,13 @@ public class InventoryController {
         }
     }
 
-    public Order orderArrived(int orderID) {
-        return null;
-//        return  getProduct(productID).addItems(storeID, new Date(), supplierID, amountBought, pricePaid, originalPrice, orderID);
-//        Order arrivedOrder = supplierController.getOrder(orderID);
-//        supplierController.orderHasArrived(orderID);
-//        int storeID = arrivedOrder.getStoreID();
-//        int supplierID = arrivedOrder.getSupplierID();
-//        int amount;
-//        double pricePaid;
-//        double originalPrice;
-//        Product product;
-//        for (OrderItem orderItem: arrivedOrder.getOrderItems()) {
-//            product = getProduct(orderItem.getProdectID());
-//            amount = orderItem.getQuantity();
-//            pricePaid = orderItem.getFinalPrice();
-//            originalPrice = orderItem.getOriginalPrice();
-//            product.addItems(storeID, new Date(), supplierID, amount, pricePaid, originalPrice, orderID);
-//        }
-//        return arrivedOrder;
+    public void orderArrived(int orderID, int supplierID) throws Exception {
+        Order arrivedOrder = supplierController.orderHasArrived(orderID, supplierID);
+        int orderStoreID = arrivedOrder.getStoreID();
+        for (OrderItem orderItem : arrivedOrder.getOrderItems()) {
+            getProduct(orderItem.getProductId()).addItems(orderStoreID, orderItem.getQuantity());
+        }
     }
-
-//    public List<PurchaseFromSupplier> getPurchaseFromSupplierHistory(int productID) {
-//        return getProduct(productID).getPurchaseFromSupplierList();
-//    }
-//
-//    public List<PurchaseFromSupplier> getDiscountFromSupplierHistory(int productID) {
-//        return getProduct(productID).getDiscountFromSupplierHistory();
-//    }
 
     public List<SaleToCustomer> getSaleHistoryByProduct(int productID) {
         return getProduct(productID).getSaleHistory();

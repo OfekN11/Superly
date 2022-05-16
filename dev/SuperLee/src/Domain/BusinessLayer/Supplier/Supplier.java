@@ -655,4 +655,7 @@ public class Supplier {
     }
 
 
+    public Order getOrderObject(int orderID, OrderDAO orderDAO) throws Exception {
+        return getOrderFromALlLists(orderID, orderDAO);
+    }
 }

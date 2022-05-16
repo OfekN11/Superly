@@ -182,14 +182,14 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the info on the purchase
      */
-    public Result<ServiceOrderObject> orderArrived(int orderID){
+    public Result<Object> orderArrived(int orderID, int supplierID){
         try {
-            Order order = controller.orderArrived(orderID);
-            return Result.makeOk(new ServiceOrderObject(orderID, new Date(), new ArrayList<>()));
+            controller.orderArrived(orderID, supplierID);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
+        return Result.makeOk(null);
     }
 
     /**

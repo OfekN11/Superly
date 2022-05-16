@@ -497,12 +497,17 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supID).orderExists(orderID, orderDAO);
     }
 
+    public Order orderHasArrived(int orderID, int supplierID) throws Exception {
+        Order order = getOrderObject(supplierID, orderID);
+        return order;
+    }
 
-    // TODO: 13/05/2022 We DON'T need this function!
-    /*
-    public void orderHasArrived(int orderID) {
-        //order has arrived, can be moved from current to past
-    }*/
+    private Order getOrderObject(int supplierID, int orderID) throws Exception {
+        if(!supplierExist(supplierID)){
+            throw new Exception("The supplier does not exists!");
+        }
+        return suppliersDAO.getSupplier(supplierID).getOrderObject(orderID, orderDAO);
+    }
 
     //returns all orders that cannot be changed anymore (routine) + everything needed because of MinAmounts
     public List<Order> createAllOrders(Map<Integer, Map<Integer, Integer>> orderItemMinAmounts) throws Exception { //map<productID, Map<store, amount>>
