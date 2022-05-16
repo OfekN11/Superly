@@ -52,12 +52,7 @@ public class TransportController {
         }
     }
 
-    public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {
-        Source src = siteController.getSource(srcID);
-        Destination dst = siteController.getDestination(dstID);
-        TransportOrder transportOrder = new TransportOrder(src, dst, productList);
-        orders.put(transportOrder.getID(), transportOrder);
-    }
+
 
     public void placeTruck(int transportSN, int licenseNumber) throws Exception {
         if(pendingTransports.containsKey(transportSN))
