@@ -23,7 +23,7 @@ public class IntegrationTest {
     static EmployeeDataMapper employeeDataMapper =new EmployeeDataMapper();
     static ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
     static TransportService transportService = new TransportService();
-    static SiteController siteController = SiteController.getInstance();
+    static SiteController siteController = new SiteController();
     static HashMap<String,Integer> productMap = new HashMap<>();
     static TransportDataMapper transportDataMapper =new TransportDataMapper();
 
