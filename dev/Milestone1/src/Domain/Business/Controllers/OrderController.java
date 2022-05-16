@@ -13,9 +13,13 @@ public class OrderController {
     public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) throws Exception {
         //TODO not implemented yet
     }
-    private TransportOrder getTransportOrder(int orderID) throws Exception {
+    public TransportOrder getTransportOrder(int orderID) throws Exception {
         //TODO not implemented yet
         return null;
+    }
+
+    public void deleteOrder(int orderID){
+        //TODO not implemented yet
     }
 
 }

@@ -112,12 +112,12 @@ public class Transport {
         return new TransportDocument(startTime, truckNumber, driverName, getSrcIDs(), getDstIDs());
     }
 
-    public void addOrder(TransportOrder order)
+    public void addOrder(TransportOrder order,ShippingAreas src,ShippingAreas dst)
     {
         sourcesID.add(order.getSrc());
         destinationsID.add(order.getDst());
-        addShippingArea(order.getSrc().getAddress().getShippingAreas());
-        addShippingArea(order.getDst().getAddress().getShippingAreas());
+        addShippingArea(src);
+        addShippingArea(dst);
         transportOrders.add(order.getID());
     }
 
