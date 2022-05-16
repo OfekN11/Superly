@@ -55,16 +55,16 @@ public class Truck {
         switch (lt)
         {
             case B:
-                ans = model == TruckModel.A;
+                ans = model == TruckModel.Van;
                 break;
             case C:
-                ans = model  == TruckModel.A ||  model == TruckModel.B;
+                ans = model  == TruckModel.Van ||  model == TruckModel.SemiTrailer;
                 break;
             case C1:
-                ans = model  == TruckModel.A ||  model == TruckModel.B ||  model == TruckModel.C;
+                ans = model  == TruckModel.Van ||  model == TruckModel.SemiTrailer ||  model == TruckModel.DoubleTrailer;
                 break;
             case CE:
-                ans = model  == TruckModel.A ||  model == TruckModel.B ||  model == TruckModel.C ||  model == TruckModel.D;
+                ans = model  == TruckModel.Van ||  model == TruckModel.SemiTrailer ||  model == TruckModel.DoubleTrailer ||  model == TruckModel.FullTrailer;
                 break;
             default:
         }

@@ -1,12 +1,13 @@
 package Domain.Service.Objects;
 
+import Domain.Business.Objects.Shift.MorningShift;
 import Globals.Enums.ShiftTypes;
 import Presentation.Screens.ScreenShiftFactory;
 
 import java.text.SimpleDateFormat;
 
 public class MorningShift extends Shift{
-    public MorningShift(MorningShift bShift) {
+    public MorningShift(Domain.Business.Objects.Shift.MorningShift bShift) {
         super(bShift);
     }
 
