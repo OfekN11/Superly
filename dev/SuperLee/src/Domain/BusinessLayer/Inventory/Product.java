@@ -1,7 +1,5 @@
 package Domain.BusinessLayer.Inventory;
 
-import Domain.BusinessLayer.Inventory.DiscountsAndSales.PurchaseFromSupplier;
-import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
 import Domain.PersistenceLayer.Controllers.ProductDataMapper;
 import Domain.PersistenceLayer.Controllers.StockReportDataMapper;
 import Globals.Defect;
@@ -23,10 +21,9 @@ public class Product {
     private String manufacturer;
     private double price;
     private List<SaleToCustomer> sales;
-    private List<PurchaseFromSupplier> purchaseFromSupplierList;
     private static int locationIDCounter=1;
     private static int defectReportCounter=1;
-    private static final ProductDataMapper productDataMapper = new ProductDataMapper();
+    public static final ProductDataMapper productDataMapper = new ProductDataMapper();
     private final static StockReportDataMapper stockReportDataMapper = new StockReportDataMapper();
 
     public Set<Integer> getStoreIDs() { return stockReports.keySet(); }
@@ -61,7 +58,6 @@ public class Product {
         sales = new ArrayList<>();
         damagedItemReport = new ArrayList<>();
         expiredItemReport = new ArrayList<>();
-        purchaseFromSupplierList = new ArrayList<>();
         locations = new ArrayList<>();
         stockReports = new HashMap<>();
     }
@@ -115,15 +111,7 @@ public class Product {
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
         stockReports.get(storeID).moveItems(amount);
     }
-    public PurchaseFromSupplier addItems(int storeId, Date date, int supplierID, int amountBought, double pricePaid, double originalPrice, int orderID) {
-        if (!stockReports.containsKey(storeId))
-            throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
-        stockReports.get(storeId).addItems(amountBought);
-        PurchaseFromSupplier p = new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, storeId, id, date, supplierID, amountBought, pricePaid, originalPrice);
-        purchaseFromSupplierList.add(p);
-        return p;
 
-    }
     public double returnItems(int storeId, int amount, Date dateBought) { //from customer to store
         if (!stockReports.containsKey(storeId))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
@@ -259,18 +247,6 @@ public class Product {
         return result;
     }
 
-    public List<PurchaseFromSupplier> getPurchaseFromSupplierList() {
-        return purchaseFromSupplierList;
-    }
-
-    public List<PurchaseFromSupplier> getDiscountFromSupplierHistory() {
-        List<PurchaseFromSupplier> purchaseFromSuppliers = new ArrayList<>();
-        for (PurchaseFromSupplier p : purchaseFromSupplierList)
-            if (p.isDiscount())
-                purchaseFromSuppliers.add(p);
-        return purchaseFromSuppliers;
-    }
-
     public boolean isLow(int storeID) {
         return getStockReport(storeID).isLow();
     }
@@ -278,18 +254,6 @@ public class Product {
     public void removeSale(SaleToCustomer sale) {
         sales.remove(sale);
     }
-
-//    public void addSupplier(int supplierID, int productIDWithSupplier) {
-//        if (supplierIdToProductIdOfTheSupplier.containsKey(supplierID))
-//            throw new IllegalArgumentException("Supplier" + supplierID + " is already listed as a supplier");
-//        supplierIdToProductIdOfTheSupplier.put(supplierID, productIDWithSupplier);
-//    }
-//
-//    public void removeSupplier(int supplierID) {
-//        if (!supplierIdToProductIdOfTheSupplier.containsKey(supplierID))
-//            throw new IllegalArgumentException("Supplier" + supplierID + " is not registered as a supplier of " + id);
-//        supplierIdToProductIdOfTheSupplier.remove(supplierID);
-//    }
 
     public boolean belongsToCategory(Category category) {
         return (this.category==category || this.category.belongsToCategory(category));

@@ -1,10 +1,8 @@
 package Domain.PersistenceLayer.Controllers;
 
-import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
 import Domain.BusinessLayer.Inventory.Location;
 import Domain.PersistenceLayer.Abstract.DataMapper;
 import Domain.PersistenceLayer.Abstract.LinkDAO;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

@@ -63,6 +63,7 @@ public class StockReport {
         amountInWarehouse+=amount;
         dataMapper.updateInWarehouse(productID, storeID, amountInWarehouse);
         amountInDeliveries-=amount;
+        dataMapper.updateInDelivery(productID, storeID, amountInDeliveries);
     }
 
     public void returnItems(int amount) {

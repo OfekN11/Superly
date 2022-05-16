@@ -18,7 +18,7 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
     private final static int AMOUNT_IN_WAREHOUSE_COLUMN = 4;
     private final static int MIN_COLUMN = 5;
     private final static int TARGET_COLUMN = 6;
-    private final static int IN_DELIVERY_COLUMN = 6;
+    private final static int IN_DELIVERY_COLUMN = 7;
 
     private final static Map<Pair<Integer, Integer>, StockReport> IDENTITY_MAP = new HashMap<>();
 

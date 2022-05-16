@@ -2,8 +2,7 @@ package Domain.BusinessLayer;
 
 import Domain.BusinessLayer.Inventory.Category;
 import Domain.BusinessLayer.Inventory.DefectiveItems;
-import Domain.BusinessLayer.Inventory.DiscountsAndSales.PurchaseFromSupplier;
-import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
+import Domain.BusinessLayer.Inventory.SaleToCustomer;
 import Domain.BusinessLayer.Inventory.Product;
 import Domain.BusinessLayer.Inventory.StockReport;
 import Domain.BusinessLayer.Supplier.Order;
@@ -25,7 +24,7 @@ public class InventoryController {
     private int productID;
     private int storeID;
     private SupplierController supplierController;
-    private final static ProductDataMapper PRODUCT_DATA_MAPPER = new ProductDataMapper();
+    private final static ProductDataMapper PRODUCT_DATA_MAPPER = Product.productDataMapper;
     private final static CategoryDataMapper CATEGORY_DATA_MAPPER = new CategoryDataMapper();
     private final static SalesDataMapper SALE_DATA_MAPPER = new SalesDataMapper();
     public InventoryController() {
@@ -90,7 +89,20 @@ public class InventoryController {
     }
 
     private SaleToCustomer getSale(int saleID) {
-        return SALE_DATA_MAPPER.get(Integer.toString(saleID));
+        try {
+            SaleToCustomer output = sales.get(saleID);
+            if (output==null) {
+                output = SALE_DATA_MAPPER.get(Integer.toString(saleID));
+                if (output==null) {
+                    throw new IllegalArgumentException("Sale ID Invalid: " + saleID);
+                }
+            }
+            return output;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<SaleToCustomer> getRemovableSales() {
@@ -209,13 +221,9 @@ public class InventoryController {
         }
     }
 
-    //needs to be deleted
-    private PurchaseFromSupplier addItems(int storeID, int productID, int supplierID, int amountBought, double pricePaid, double originalPrice, int orderID) {
-        return  getProduct(productID).addItems(storeID, new Date(), supplierID, amountBought, pricePaid, originalPrice, orderID);
-    }
-
     public Order orderArrived(int orderID) {
         return null;
+//        return  getProduct(productID).addItems(storeID, new Date(), supplierID, amountBought, pricePaid, originalPrice, orderID);
 //        Order arrivedOrder = supplierController.getOrder(orderID);
 //        supplierController.orderHasArrived(orderID);
 //        int storeID = arrivedOrder.getStoreID();
@@ -234,13 +242,13 @@ public class InventoryController {
 //        return arrivedOrder;
     }
 
-    public List<PurchaseFromSupplier> getPurchaseFromSupplierHistory(int productID) {
-        return getProduct(productID).getPurchaseFromSupplierList();
-    }
-
-    public List<PurchaseFromSupplier> getDiscountFromSupplierHistory(int productID) {
-        return getProduct(productID).getDiscountFromSupplierHistory();
-    }
+//    public List<PurchaseFromSupplier> getPurchaseFromSupplierHistory(int productID) {
+//        return getProduct(productID).getPurchaseFromSupplierList();
+//    }
+//
+//    public List<PurchaseFromSupplier> getDiscountFromSupplierHistory(int productID) {
+//        return getProduct(productID).getDiscountFromSupplierHistory();
+//    }
 
     public List<SaleToCustomer> getSaleHistoryByProduct(int productID) {
         return getProduct(productID).getSaleHistory();

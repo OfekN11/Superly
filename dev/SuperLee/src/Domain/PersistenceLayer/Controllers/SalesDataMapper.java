@@ -1,8 +1,6 @@
 package Domain.PersistenceLayer.Controllers;
 
-import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
-import Domain.BusinessLayer.Inventory.Product;
-import Domain.BusinessLayer.Inventory.StockReport;
+import Domain.BusinessLayer.Inventory.SaleToCustomer;
 import Domain.PersistenceLayer.Abstract.DataMapper;
 import Domain.PersistenceLayer.Abstract.LinkDAO;
 

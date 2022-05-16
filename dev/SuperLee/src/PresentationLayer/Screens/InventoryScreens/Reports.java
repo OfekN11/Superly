@@ -1,11 +1,8 @@
 package PresentationLayer.Screens.InventoryScreens;
 
-import Domain.ServiceLayer.InventoryObjects.PurchaseFromSupplierReport;
-import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class Reports extends Screen {
@@ -39,35 +36,35 @@ public class Reports extends Screen {
         }
     }
 
-    private void getDiscountFromSupplierHistory() {
-        System.out.println("Please insert product ID for which you would like to see history");
-        int id = scanner.nextInt();
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<List<PurchaseFromSupplierReport>> r = controller.getDiscountFromSupplierHistory(id);
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
-            for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
-                System.out.println(dr);
-            if (purchaseFromSupplierReports.isEmpty())
-                System.out.println("there are no discounts from suppliers for this product in the system");
-        }
-    }
+//    private void getDiscountFromSupplierHistory() {
+//        System.out.println("Please insert product ID for which you would like to see history");
+//        int id = scanner.nextInt();
+//        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
+//        Result<List<PurchaseFromSupplierReport>> r = controller.getDiscountFromSupplierHistory(id);
+//        if (r.isError())
+//            System.out.println(r.getError());
+//        else {
+//            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
+//            for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
+//                System.out.println(dr);
+//            if (purchaseFromSupplierReports.isEmpty())
+//                System.out.println("there are no discounts from suppliers for this product in the system");
+//        }
+//    }
 
-    private void getPurchaseFromSupplierHistory() {
-        System.out.println("Please insert product ID for which you would like to see history");
-        int id = scanner.nextInt();
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<List<PurchaseFromSupplierReport>> r = controller.getPurchaseFromSupplierHistory(id);
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
-            for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
-                System.out.println(dr);
-            if (purchaseFromSupplierReports.isEmpty())
-                System.out.println("there are no purchases from suppliers for this product in the system");
-        }
-    }
+//    private void getPurchaseFromSupplierHistory() {
+//        System.out.println("Please insert product ID for which you would like to see history");
+//        int id = scanner.nextInt();
+//        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
+//        Result<List<PurchaseFromSupplierReport>> r = controller.getPurchaseFromSupplierHistory(id);
+//        if (r.isError())
+//            System.out.println(r.getError());
+//        else {
+//            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
+//            for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
+//                System.out.println(dr);
+//            if (purchaseFromSupplierReports.isEmpty())
+//                System.out.println("there are no purchases from suppliers for this product in the system");
+//        }
+//    }
 }

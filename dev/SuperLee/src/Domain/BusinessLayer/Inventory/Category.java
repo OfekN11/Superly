@@ -1,6 +1,5 @@
 package Domain.BusinessLayer.Inventory;
 
-import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
 import Domain.PersistenceLayer.Controllers.CategoryDataMapper;
 
 import java.util.*;
