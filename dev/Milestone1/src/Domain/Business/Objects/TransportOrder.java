@@ -68,17 +68,5 @@ public class TransportOrder {
         return newProductList;
     }
 
-    public TransportOrder splitOrder()
-    {
-        if(productList.size() == 0)
-        {
-            return null;
-        }
-        else {
-            TransportOrder newOrder = new TransportOrder(src, dst);
-            newOrder.productList = splitProductList();
-            return newOrder;
-        }
-    }
 
 }

@@ -7,6 +7,7 @@ import Domain.Business.Objects.Document.TransportDocument;
 import java.util.HashMap;
 
 public class DocumentController {
+    //TODO move to DAL objects
     private HashMap<Integer, TransportDocument> transportDocuments;
     private HashMap<Integer, DestinationDocument> destinationDocuments;
 
@@ -18,13 +19,13 @@ public class DocumentController {
 
 
     public void uploadDestinationDocument(DestinationDocument document) throws Exception {
+        //TODO not right implementation
         if(document != null && !destinationDocuments.containsKey(document.getSN()))
         {
             destinationDocuments.put(document.getSN(), document);
         }
         throw new Exception("The document already exist!");
     }
-
     public void updateDestinationDocument(DestinationDocument document) throws Exception {
         if(document != null && destinationDocuments.containsKey(document.getSN()))
         {
