@@ -113,39 +113,33 @@ public class TransportController {
     }
 
     public void startTransport(int transportSN) throws Exception {
-        if(pendingTransports.containsKey(transportSN))
-        {
-            Transport transport = pendingTransports.get(transportSN);
-            if(transport.readyToGo())
-            {
-                inProgressTransports.put(transportSN, transport);
-                pendingTransports.remove(transportSN);
+        Transport transport = getTransport(transportSN);
+        if(transport.getStatus()==TransportStatus.padding){
+            if(transport.readyToGo()){
+                //TODO insert check of sorter in the transport's shift
+                transport.startTransport();
             }
-            else {
-                throw new Exception("Transport not ready to go!");
+            else{
+                throw new Exception("this is not a padding transport");
             }
         }
-        else {
-            throw new Exception("The transport is not on the list of pending transport!");
+        else{
+            throw new Exception("this is not a padding transport");
         }
     }
 
     public void endTransport(int transportSN) throws Exception {
-        if(inProgressTransports.containsKey(transportSN))
-        {
-            Transport transport = inProgressTransports.get(transportSN);
-            if(true)//transport.end())
-            {
-                completedTransports.put(transportSN, transport);
-                inProgressTransports.remove(transportSN);
-                transport.toDocument();
+        Transport transport = getTransport(transportSN);
+        if(transport.getStatus()==TransportStatus.inProgress){
+            if(transport.isDoneTransport()){//TODO implement isDoneTransport() in transport class
+                transport.endTransport();
             }
-            else {
-                throw new Exception("Transport not ready to go!");
+            else{
+                throw new Exception("this transport is not done yet");
             }
         }
-        else {
-            throw new Exception("The transport is not on the list of in progress transport!");
+        else{
+            throw new Exception("this is not a inProgress transport");
         }
     }
 
@@ -169,7 +163,8 @@ public class TransportController {
             throw new Exception("The transport is not on the list of redesign transport!");
         }
     }
-
+    //GETTERS
+    //TODO fix the getters after DAL fix
     public HashMap<Integer, Transport> getPendingTransports() {
         return pendingTransports;
     }

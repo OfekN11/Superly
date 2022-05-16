@@ -22,6 +22,7 @@ public class Transport {
     private List<Integer> transportOrders;
     private HashMap<ShippingAreas, Integer> shippingAreas;
     private TransportStatus status;
+    //TODO maybe add filed of current site visited to check when the transport is over
 
     public Transport() {
         driverName = null;
@@ -32,15 +33,24 @@ public class Transport {
         transportOrders = new ArrayList<>();
         status = TransportStatus.padding;
     }
-
-    public boolean startTransport()
-    {
-        if (startTime == null)
+    public void startTransport() throws Exception {
+        if (status == TransportStatus.padding)
         {
             startTime = LocalDateTime.now();
-            //TODO: calcEndTime();
-            return true;
+            status = TransportStatus.inProgress;
         }
+        throw new Exception("transport already started");
+    }
+    public void endTransport() throws Exception {
+        if (status == TransportStatus.inProgress)
+        {
+            endTime = LocalDateTime.now();
+            status = TransportStatus.done;
+        }
+        throw new Exception("transport is not in Progress");
+    }
+    public boolean isDoneTransport(){
+        //TODO need to be implemented
         return false;
     }
 
@@ -123,6 +133,7 @@ public class Transport {
 
     public boolean updateWeight(int newWeight, int maxCapacityWeight) throws Exception {
         if(truckWeight+newWeight > maxCapacityWeight){
+            status = TransportStatus.redesign;
             return false;
         }
         else{
