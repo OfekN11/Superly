@@ -4,6 +4,7 @@ import Domain.Business.Objects.Document.TransportDocument;
 import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
 import Globals.Enums.ShippingAreas;
+import Globals.Enums.TransportStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,18 +17,20 @@ public class Transport {
     private String driverName;
     private  int truckNumber;
     private  int truckWeight;
-    private List<Source> sources;
-    private List<Destination> destinations;
+    private List<Integer> sourcesID;
+    private List<Integer> destinationsID;
     private List<Integer> transportOrders;
     private HashMap<ShippingAreas, Integer> shippingAreas;
+    private TransportStatus status;
 
     public Transport() {
         driverName = null;
         truckNumber = -1;
         truckWeight = -1;
-        sources = new ArrayList<>();
-        destinations = new ArrayList<>();
+        sourcesID = new ArrayList<>();
+        destinationsID = new ArrayList<>();
         transportOrders = new ArrayList<>();
+        status = TransportStatus.padding;
     }
 
     public boolean startTransport()
@@ -63,7 +66,7 @@ public class Transport {
 
     public boolean readyToGo()
     {
-        return !sources.isEmpty() && !destinations.isEmpty() && driverPlaced() && truckPlaced();
+        return !sourcesID.isEmpty() && !destinationsID.isEmpty() && driverPlaced() && truckPlaced();
     }
 
     private void addShippingArea(ShippingAreas sa)
@@ -98,20 +101,12 @@ public class Transport {
 
     private List<Integer> getSrcIDs()
     {
-        List<Integer> IDs = new ArrayList<>();
-        for (Source src: sources) {
-            IDs.add(src.getId());
-        }
-        return IDs;
+        return sourcesID;
     }
 
     private List<Integer> getDstIDs()
     {
-        List<Integer> IDs = new ArrayList<>();
-        for (Destination dst: destinations) {
-            IDs.add(dst.getId());
-        }
-        return IDs;
+        return destinationsID;
     }
     public TransportDocument toDocument() {
         return new TransportDocument(startTime, truckNumber, driverName, getSrcIDs(), getDstIDs());
@@ -119,8 +114,8 @@ public class Transport {
 
     public void addOrder(TransportOrder order)
     {
-        sources.add(order.getSrc());
-        destinations.add(order.getDst());
+        sourcesID.add(order.getSrc());
+        destinationsID.add(order.getDst());
         addShippingArea(order.getSrc().getAddress().getShippingAreas());
         addShippingArea(order.getDst().getAddress().getShippingAreas());
         transportOrders.add(order.getID());
@@ -134,6 +129,9 @@ public class Transport {
             truckWeight = newWeight;
             return true;
         }
+    }
+    public TransportStatus getStatus(){
+        return status;
     }
 
     public LocalDateTime getStartTime() {

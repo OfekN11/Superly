@@ -4,17 +4,20 @@ import Domain.Business.Objects.*;
 import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
 import Globals.Enums.ShippingAreas;
+import Globals.Enums.TransportStatus;
 
 import java.util.*;
 
 public class TransportController {
+    //TODO all the hashMaps need to be in DAL object
     private HashMap<Integer, Transport> pendingTransports;
     private HashMap<Integer, Transport> inProgressTransports;
     private HashMap<Integer, Transport> redesignTransports;
     private HashMap<Integer, Transport> completedTransports;
-    private HashMap<Integer, TransportOrder> orders;
+    private OrderController orderController;
     private TruckController truckController;
-    private DriverController driverController;
+
+    private EmployeeController employeeController;
     private DocumentController documentController;
     private SiteController siteController;
 
@@ -23,12 +26,12 @@ public class TransportController {
         inProgressTransports =  new HashMap<>();
         redesignTransports =  new HashMap<>();
         completedTransports =  new HashMap<>();
-        orders = new HashMap<>();
         truckController = new TruckController();
-        driverController = new DriverController();
+        employeeController = new EmployeeController();
+        orderController = new OrderController();
     }
 
-
+    //TODO not the right implementation
     public Transport getTransport(int transportSN) throws Exception {
         if (pendingTransports.containsKey(transportSN))
         {
@@ -51,13 +54,21 @@ public class TransportController {
         }
     }
 
-    public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) throws Exception {
-        Source src = siteController.getSource(srcID);
-        Destination dst = siteController.getDestination(dstID);
-        TransportOrder transportOrder = new TransportOrder(src, dst, productList);
-        orders.put(transportOrder.getID(), transportOrder);
+    //TODO check implementation
+    public void addOrderToTransport(int transportSN, int orderID) throws Exception {
+        Transport transport = getTransport(transportSN);
+        if(transport.getStatus()== TransportStatus.padding)
+        {
+            TransportOrder order = orderController.getTransportOrder(orderID);
+            ShippingAreas destShip =
+            transport.addOrder(order);
+            orders.remove(orderID);
+        }
+        else {
+            throw new Exception("The transport is not on the list of pending transport!");
+        }
     }
-
+    //TODO reimplement
     public void placeTruck(int transportSN, int licenseNumber) throws Exception {
         if(pendingTransports.containsKey(transportSN))
         {
@@ -71,7 +82,7 @@ public class TransportController {
             throw new Exception("The transport is not on the list of pending transport!");
         }
     }
-
+    //TODO reimplement
     public void placeDriver(int transportSN, String driverName) throws Exception {
         if(pendingTransports.containsKey(transportSN))
         {
@@ -91,7 +102,7 @@ public class TransportController {
             throw new Exception("The transport is not on the list of pending transport!");
         }
     }
-
+    //TODO reimplement
     public void startTransport(int transportSN) throws Exception {
         if(pendingTransports.containsKey(transportSN))
         {
@@ -109,7 +120,7 @@ public class TransportController {
             throw new Exception("The transport is not on the list of pending transport!");
         }
     }
-
+    //TODO reimplement
     public void endTransport(int transportSN) throws Exception {
         if(inProgressTransports.containsKey(transportSN))
         {
@@ -128,7 +139,7 @@ public class TransportController {
             throw new Exception("The transport is not on the list of in progress transport!");
         }
     }
-
+    //TODO see if we can delete this function
     public void redesignTransport(int transportSN) throws Exception {
         if(inProgressTransports.containsKey(transportSN))
         {
@@ -149,7 +160,25 @@ public class TransportController {
             throw new Exception("The transport is not on the list of redesign transport!");
         }
     }
+    public void updateWeight(int transportSN,int newWeight) throws Exception {
+        if(inProgressTransports.containsKey(transportSN))
+        {
+            Transport transport = inProgressTransports.get(transportSN);
+            Truck truck = truckController.getTruck(transport.getTruckNumber());
+            if(!transport.updateWeight(newWeight, truck.getMaxCapacityWeight()))
+            {
+                inProgressTransports.remove(transportSN);
+                redesignTransports.put(transportSN, transport);
+                throw new Exception("Weight Warning!");
+            }
+        }
+        else{
+            throw new Exception("The transport can not start!");
+        }
 
+    }
+    //GETTERS
+    //TODO need to reimplement all the getters after the DAL change
     public HashMap<Integer, Transport> getPendingTransports() {
         return pendingTransports;
     }
@@ -175,18 +204,7 @@ public class TransportController {
             throw new Exception("The transport order doesn't exist!");
         }
     }
-    public void addOrderToTransport(int transportSN, int orderID) throws Exception {
-        if(pendingTransports.containsKey(transportSN))
-        {
-            Transport transport = pendingTransports.get(transportSN);
-            TransportOrder order = getTransportOrder(orderID);
-            transport.addOrder(order);
-            orders.remove(orderID);
-        }
-        else {
-            throw new Exception("The transport is not on the list of pending transport!");
-        }
-    }
+
 
     private List<TransportOrder> getTransportOrderInSameArea(List<ShippingAreas> as) throws Exception {
         List<TransportOrder> orderList = new ArrayList<>();
@@ -213,23 +231,7 @@ public class TransportController {
         }
     }
 
-    public void updateWeight(int transportSN,int newWeight) throws Exception {
-        if(inProgressTransports.containsKey(transportSN))
-        {
-            Transport transport = inProgressTransports.get(transportSN);
-            Truck truck = truckController.getTruck(transport.getTruckNumber());
-            if(!transport.updateWeight(newWeight, truck.getMaxCapacityWeight()))
-            {
-                inProgressTransports.remove(transportSN);
-                redesignTransports.put(transportSN, transport);
-                throw new Exception("Weight Warning!");
-            }
-        }
-        else{
-            throw new Exception("The transport can not start!");
-        }
 
-    }
     public List<TransportOrder> getTransportOrders() {
         List<TransportOrder> orderList = new ArrayList<>();
         for(int orderID: orders.keySet())

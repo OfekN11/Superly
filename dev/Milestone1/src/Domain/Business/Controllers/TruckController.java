@@ -6,12 +6,13 @@ import Globals.Enums.TruckModel;
 import java.util.HashMap;
 
 public class TruckController {
+    //TODO need to change to DAL
     private HashMap<TruckModel, HashMap<Integer, Truck>> trucksFleet;
     public TruckController() {
         trucksFleet = new HashMap<>();
     }
 
-
+    //TODO not right implementation
     public void removeTruck(int licenseNumber) throws Exception {
         boolean deleted = false;
         for(TruckModel tm: trucksFleet.keySet())
@@ -27,7 +28,7 @@ public class TruckController {
         }
     }
 
-
+    //TODO not right implementation
     public void addTruck(int licenseNumber, TruckModel model, int netWeight, int maxCapacityWeight) throws Exception {
         if (!trucksFleet.containsKey(model))
         {
@@ -41,7 +42,7 @@ public class TruckController {
             throw new Exception("The truck fleet contain the truck!");
         }
     }
-
+    //TODO not right implementation
     public Truck getTruck(int truckNumber) throws Exception {
         for(TruckModel tm: trucksFleet.keySet())
         {

@@ -8,6 +8,7 @@ import Globals.Enums.ShippingAreas;
 import java.util.HashMap;
 
 public class SiteController {
+    //TODO need to replace to DAL objects
     private HashMap<Integer, Source> sources;
     private HashMap<Integer, Destination> destinations;
     private static SiteController instance = null;
@@ -24,7 +25,7 @@ public class SiteController {
         }
         return instance;
     }
-
+    //TODO not right implementation
     public Source getSource(int id) throws Exception {
         if(sources.containsKey(id))
         {
@@ -32,7 +33,7 @@ public class SiteController {
         }
         throw new Exception("The source doesn't exist!");
     }
-
+    //TODO not right implementation
     public Destination getDestination(int id) throws Exception {
         if(destinations.containsKey(id))
         {
