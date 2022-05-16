@@ -125,7 +125,7 @@ public abstract class Employee {
      * visitor pattern with the function save in {@param employeeDataMapper}
      * @param employeeDataMapper the data mapper to call employeeDataMapper.save(this)
      */
-    public abstract void save(EmployeeDataMapper employeeDataMapper) throws SQLException;
+    public abstract void save(EmployeeDataMapper employeeDataMapper) throws Exception;
 
-    public abstract void update(EmployeeDataMapper employeeDataMapper) throws SQLException;
+    public abstract void update(EmployeeDataMapper employeeDataMapper) throws Exception;
 }

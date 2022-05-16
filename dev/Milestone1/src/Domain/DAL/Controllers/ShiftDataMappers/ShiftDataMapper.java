@@ -21,14 +21,19 @@ public class ShiftDataMapper {
 
     // functions
    public Shift get(LocalDate date, ShiftTypes shiftType){
-        switch (shiftType){
-            case Morning:
-                return morningShiftDataMapper.get(date.toString()+shiftType.toString());
-            case Evening:
-                return eveningShiftDataMapper.get(date.toString()+shiftType.toString());
-            default:
-                throw new IllegalArgumentException("no case for this ShiftType");
-        }
+       try {
+            switch (shiftType){
+                case Morning:
+                    return morningShiftDataMapper.get(date.toString()+shiftType.toString());
+                case Evening:
+                    return eveningShiftDataMapper.get(date.toString()+shiftType.toString());
+                default:
+                    throw new IllegalArgumentException("no case for this ShiftType");
+            }
+        } catch (Exception e) {
+           e.printStackTrace();
+           throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+       }
    }
 
 

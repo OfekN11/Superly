@@ -25,6 +25,9 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
             map.put(id, output);
             return output;
         }
+        catch (SQLException e){
+            throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+        }
     }
 
     /**
@@ -63,7 +66,7 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
     protected void removeFromIdentityMap(String id){
         getMap().remove(id);
     }
-    public int delete(String id, T instance) throws SQLException {
+    public int delete(String id) throws SQLException {
         Set<LinkDAO> links = getAllLinkDTOs();
 
         for (LinkDAO link : links)
@@ -71,7 +74,7 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
         return remove(id);
     }
 
-    public Set<T>getAll()throws SQLException{
+    public Set<T>getAll()throws Exception{
         Set<T> output = new HashSet<>();
         try(Connection connection =getConnection()){
             ResultSet resultSet = super.select(connection);
@@ -82,7 +85,7 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
     }
     protected abstract Map<String, T> getMap();
     protected abstract  LinkDAO getLinkDTO(String setName);
-    protected abstract T buildObject(ResultSet instanceResult) throws SQLException;
+    protected abstract T buildObject(ResultSet instanceResult) throws Exception;
     public abstract void insert(T instance) throws SQLException;
 
     /**

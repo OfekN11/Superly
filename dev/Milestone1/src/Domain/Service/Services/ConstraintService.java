@@ -12,19 +12,6 @@ public class ConstraintService {
 
     private final ConstraintController controller = new ConstraintController();
 
-    public Result<Object> loadData() {
-        try {
-            controller.loadData();
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
-
-    public void deleteData() {
-    }
-
     public Result<Constraint> getConstraint(LocalDate workday, ShiftTypes shift){
         try {
             return Result.makeOk(new Constraint(controller.getConstraint(workday, shift)));

@@ -1,16 +1,17 @@
 package Domain.DAL.Controllers;
 
 import Domain.Business.Objects.Constraint;
-import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Abstract.ObjectDateMapper;
 import Globals.Enums.ShiftTypes;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
     private final static Map<String, Constraint> CONSTRAINT_IDENTITY_MAP = new HashMap<>();
@@ -27,7 +28,7 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
     // function
 
 
-    public Constraint get(LocalDate localDate,ShiftTypes shiftTypes){
+    public Constraint get(LocalDate localDate,ShiftTypes shiftTypes) throws Exception {
         return get(localDate.toString()+shiftTypes.toString());
     }
 
@@ -52,11 +53,15 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
     }
 
     @Override
-    public void insert(Constraint instance) throws SQLException {
+    public void insert(Constraint instance) {
         String id = instance.getDate().toString()+instance.getType().toString();
-        constraintsEmployeesLink.replaceSet(id,instance.getEmployees());
-        super.remove(id);
-        super.insert(Arrays.asList(id,instance.getDate(),instance.getType()));
+        try {
+            constraintsEmployeesLink.replaceSet(id,instance.getEmployees());
+            super.remove(id);
+            super.insert(Arrays.asList(id,instance.getDate(),instance.getType()));
+        } catch (SQLException throwables) {
+            throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+        }
     }
 
     @Override
@@ -66,15 +71,40 @@ public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
         return daos;
     }
 
-    public void update(Constraint constraint) throws SQLException {
+    public void update(Constraint constraint) throws Exception {
         insert(constraint);
     }
 
-    public void save(Constraint constraint) throws SQLException {
+    public void save(Constraint constraint) throws Exception {
         save(constraint.getDate().toString()+constraint.getType().toString(),constraint);
     }
 
-    public int delete(Constraint instance) throws SQLException {
-        return super.delete(instance.getDate().toString()+instance.getType().toString(),instance);
+    public int delete(Constraint instance) throws Exception {
+        return super.delete(instance.getDate().toString()+instance.getType().toString());
+    }
+
+    //TODO
+    public Set<Constraint> getConstraintsBetween(LocalDate start, LocalDate end)  {
+        Set<Constraint> output = new HashSet<>();
+
+        long numOfDays = ChronoUnit.DAYS.between(start, end.plusDays(1));
+
+        List<LocalDate> listOfDates = Stream.iterate(start, date -> date.plusDays(1))
+                .limit(numOfDays)
+                .collect(Collectors.toList());
+
+        for (LocalDate date:listOfDates){
+            try {
+                Constraint morning = get(date,ShiftTypes.Morning);
+                Constraint evening = get(date,ShiftTypes.Evening);
+                if (morning != null)
+                    output.add(morning);
+                if (evening != null)
+                    output.add(evening);
+            } catch (Exception e) {
+                throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+            }
+        }
+        return output;
     }
 }
