@@ -1,10 +1,9 @@
 package Domain.Business.Objects;
 
-import Domain.Business.Objects.Document.DestinationDocument;
+import Domain.Business.Objects.Site.Destination;
+import Domain.Business.Objects.Site.Source;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TransportOrder {
     private static int incID = 0;

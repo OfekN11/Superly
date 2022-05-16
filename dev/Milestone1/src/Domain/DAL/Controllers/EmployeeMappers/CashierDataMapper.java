@@ -1,12 +1,9 @@
 package Domain.DAL.Controllers.EmployeeMappers;
-import Domain.Business.Objects.Cashier;
+import Domain.Business.Objects.Employee.Cashier;
 import Domain.DAL.Abstract.EmployeeTypeDataMapper;
-import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.ObjectDateMapper;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 public class CashierDataMapper extends EmployeeTypeDataMapper<Cashier> {

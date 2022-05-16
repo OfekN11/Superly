@@ -6,7 +6,7 @@ import Presentation.Screens.ScreenShiftFactory;
 import java.time.format.DateTimeFormatter;
 
 public class EveningShift extends Shift{
-    public EveningShift(Domain.Business.Objects.EveningShift bShift) {
+    public EveningShift(EveningShift bShift) {
         super(bShift);
     }
 

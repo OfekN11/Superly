@@ -10,7 +10,7 @@ public class Transport_Manager extends Employee{
      *
      * @param bEmployee Business type representing the employee
      */
-    public Transport_Manager(Domain.Business.Objects.Transport_Manager bEmployee) {
+    public Transport_Manager(Domain.Business.Objects.Employee.Transport_Manager bEmployee) {
         super(bEmployee);
     }
 

@@ -1,5 +1,7 @@
 package Domain.DAL.Controllers.ShiftDataMappers;
-import Domain.Business.Objects.MorningShift;
+
+
+import Domain.Business.Objects.Shift.MorningShift;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Abstract.ObjectDateMapper;
 import Domain.DAL.Controllers.ShiftEmployeesLink.*;

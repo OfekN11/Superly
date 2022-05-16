@@ -1,14 +1,10 @@
 package Domain.DAL.Controllers.EmployeeMappers;
-import Domain.Business.Objects.HR_Manager;
+
+import Domain.Business.Objects.Employee.HR_Manager;
 import Domain.DAL.Abstract.EmployeeTypeDataMapper;
-import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.ObjectDateMapper;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class HR_ManagerDataMapper extends EmployeeTypeDataMapper<HR_Manager> {

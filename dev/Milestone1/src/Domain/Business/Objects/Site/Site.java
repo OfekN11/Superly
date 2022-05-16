@@ -1,4 +1,4 @@
-package Domain.Business.Objects;
+package Domain.Business.Objects.Site;
 
 public abstract class Site {
     private static int incID = 0;

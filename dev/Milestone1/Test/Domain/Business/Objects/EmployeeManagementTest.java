@@ -1,5 +1,5 @@
 package Domain.Business.Objects;
-import Domain.Business.Controllers.EmployeeController;
+import Domain.Business.Objects.Employee.Employee;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 

@@ -1,7 +1,7 @@
 package Domain.Business.Controllers;
 
 import Domain.Business.BusinessShiftFactory;
-import Domain.Business.Objects.*;
+import Domain.Business.Objects.Shift.Shift;
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.DAL.Objects.DShift;
 import Globals.Enums.ShiftTypes;
@@ -26,7 +26,7 @@ public class ShiftController {
     private final ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
     private final EmployeeController employeeController = new EmployeeController();
 
-    private final Map<LocalDate, Map<ShiftTypes,Shift>> shifts = new HashMap<>();
+    private final Map<LocalDate, Map<ShiftTypes, Shift>> shifts = new HashMap<>();
     private final BusinessShiftFactory shiftFactory = new BusinessShiftFactory();
 
     public void loadData() {

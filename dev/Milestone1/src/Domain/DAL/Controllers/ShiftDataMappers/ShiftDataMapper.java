@@ -1,7 +1,9 @@
 package Domain.DAL.Controllers.ShiftDataMappers;
-import Domain.Business.Objects.EveningShift;
-import Domain.Business.Objects.MorningShift;
-import Domain.Business.Objects.Shift;
+
+
+import Domain.Business.Objects.Shift.EveningShift;
+import Domain.Business.Objects.Shift.MorningShift;
+import Domain.Business.Objects.Shift.Shift;
 import Globals.Enums.ShiftTypes;
 
 import java.sql.SQLException;

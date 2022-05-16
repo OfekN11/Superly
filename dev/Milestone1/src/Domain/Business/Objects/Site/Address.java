@@ -1,4 +1,4 @@
-package Domain.Business.Objects;
+package Domain.Business.Objects.Site;
 
 import Globals.Enums.ShippingAreas;
 

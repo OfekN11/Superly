@@ -1,5 +1,8 @@
 package Domain.DAL.Controllers.EmployeeMappers;
-import Domain.Business.Objects.*;
+
+import Domain.Business.Objects.Employee.*;
+import Domain.Business.Objects.Employee.Transport_Manager;
+import Domain.Business.Objects.Employee.Sorter;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeTypeLink;
 import Globals.Enums.JobTitles;
 

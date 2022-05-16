@@ -1,6 +1,8 @@
 package Domain.Business.Objects;
 
 import Domain.Business.Objects.Document.TransportDocument;
+import Domain.Business.Objects.Site.Destination;
+import Domain.Business.Objects.Site.Source;
 import Globals.Enums.ShippingAreas;
 
 import java.time.LocalDateTime;

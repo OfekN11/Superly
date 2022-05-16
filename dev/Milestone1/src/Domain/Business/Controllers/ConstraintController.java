@@ -1,11 +1,9 @@
 package Domain.Business.Controllers;
 
 import Domain.Business.Objects.Constraint;
-import Domain.Business.Objects.Logistics_Manager;
 import Domain.DAL.Controllers.ConstraintDataMapper;
 import Globals.Enums.ShiftTypes;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;

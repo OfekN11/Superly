@@ -1,10 +1,8 @@
 package Domain.Business;
-import Domain.Business.Objects.*;
+import Domain.Business.Objects.Shift.Shift;
 import Domain.DAL.Objects.DEveningShift;
 import Domain.DAL.Objects.DMorningShift;
 import Domain.DAL.Objects.DShift;
-
-import java.util.Set;
 
 public class BusinessShiftFactory {
     public Shift createBusinessShift(DShift dShift){

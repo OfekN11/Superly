@@ -7,7 +7,7 @@ import Presentation.Screens.ScreenEmployeeFactory;
  * Service model of the Storekeeper
  */
 public class Storekeeper extends Employee{
-    public Storekeeper(Domain.Business.Objects.Storekeeper bStorekeeper){
+    public Storekeeper(Storekeeper bStorekeeper){
         super(bStorekeeper);
     }
 

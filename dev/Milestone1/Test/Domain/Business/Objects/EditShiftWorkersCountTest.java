@@ -1,21 +1,13 @@
 package Domain.Business.Objects;
 
-import Domain.Business.Controllers.EmployeeController;
 import Domain.Business.Controllers.ShiftController;
-import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
-import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
-import Globals.Enums.Certifications;
-import Globals.Enums.JobTitles;
-import Globals.Enums.ShiftTypes;
+import Domain.Business.Objects.Shift.Shift;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 

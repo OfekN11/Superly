@@ -6,7 +6,7 @@ import Presentation.Screens.ScreenShiftFactory;
 import java.text.SimpleDateFormat;
 
 public class MorningShift extends Shift{
-    public MorningShift(Domain.Business.Objects.MorningShift bShift) {
+    public MorningShift(MorningShift bShift) {
         super(bShift);
     }
 

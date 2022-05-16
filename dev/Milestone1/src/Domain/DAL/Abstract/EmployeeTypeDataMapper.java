@@ -1,5 +1,5 @@
 package Domain.DAL.Abstract;
-import Domain.Business.Objects.Employee;
+import Domain.Business.Objects.Employee.Employee;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.SQLException;
