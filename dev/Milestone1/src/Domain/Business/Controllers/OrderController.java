@@ -1,7 +1,6 @@
 package Domain.Business.Controllers;
 
-import Domain.Business.Objects.Destination;
-import Domain.Business.Objects.Source;
+import Domain.Business.Objects.Site.*;
 import Domain.Business.Objects.TransportOrder;
 
 import java.util.HashMap;

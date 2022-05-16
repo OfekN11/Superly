@@ -3,6 +3,7 @@ package Domain.Business.Controllers;
 import Domain.Business.Objects.*;
 import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
+import Domain.Service.Objects.Carrier;
 import Globals.Enums.ShippingAreas;
 
 import java.util.*;
@@ -14,7 +15,7 @@ public class TransportController {
     private HashMap<Integer, Transport> completedTransports;
     private HashMap<Integer, TransportOrder> orders;
     private TruckController truckController;
-    private DriverController driverController;
+    private EmployeeController employeeController;
     private DocumentController documentController;
     private SiteController siteController;
 
@@ -25,7 +26,7 @@ public class TransportController {
         completedTransports =  new HashMap<>();
         orders = new HashMap<>();
         truckController = new TruckController();
-        driverController = new DriverController();
+        employeeController = new EmployeeController();
     }
 
 
@@ -51,7 +52,7 @@ public class TransportController {
         }
     }
 
-    public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) throws Exception {
+    public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {
         Source src = siteController.getSource(srcID);
         Destination dst = siteController.getDestination(dstID);
         TransportOrder transportOrder = new TransportOrder(src, dst, productList);
@@ -78,8 +79,8 @@ public class TransportController {
             Transport transport = pendingTransports.get(transportSN);
             Truck truck = truckController.getTruck(transport.getTruckNumber());
             //throw new Exception("First, a truck must be place for transport!");
-            Driver driver = driverController.getDriver(driverName);
-            if(truck.canDriveOn(driver.getLicenseTypes()))
+            Carrier carrier = null;// = driverController.getDriver(driverName);
+            if(truck.canDriveOn(carrier.getLicenseTypes()))
             {
                 transport.placeDriver(driverName);
             }

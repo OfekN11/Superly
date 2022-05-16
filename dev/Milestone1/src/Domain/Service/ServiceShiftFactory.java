@@ -7,11 +7,12 @@ public class ServiceShiftFactory {
         return bShift.accept(this);
     }
 
-    public MorningShift createServiceShift(MorningShift bShift){
+    public MorningShift createServiceShift(Domain.Business.Objects.Shift.MorningShift bShift){
         return new MorningShift(bShift);
     }
 
-    public EveningShift createServiceShift(EveningShift bShift){
+    public EveningShift createServiceShift(Domain.Business.Objects.Shift.EveningShift bShift){
         return new EveningShift(bShift);
     }
+
 }
