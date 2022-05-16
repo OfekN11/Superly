@@ -18,13 +18,13 @@ public class Main {
     public static void main(String[] args) {
 
 
-        //BackendController controller = new BackendController();
-//        controller.addNewCategory("catName", 0);
-//        controller.newProduct("catName", 1,1,1,"1");
-        //new Thread(new MainMenu(controller)).start();
+        BackendController controller = new BackendController();
+        controller.addNewCategory("catName", 0);
+        controller.newProduct("productName", 1,1,1,"1");
+        new Thread(new MainMenu(controller)).start();
 
 
-        testSuppliers();
+//        testSuppliers();
 
     }
 

@@ -1,0 +1,180 @@
+package Domain.PersistenceLayer.Controllers;
+
+import Domain.BusinessLayer.Inventory.Product;
+import Domain.BusinessLayer.Inventory.StockReport;
+import Domain.PersistenceLayer.Abstract.DAO;
+import Domain.PersistenceLayer.Abstract.DataMapper;
+import Domain.PersistenceLayer.Abstract.LinkDAO;
+import Globals.Pair;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+
+public class StockReportDataMapper extends DataMapper<StockReport> {
+
+    private final static int STORE_COLUMN = 1;
+    private final static int PRODUCT_COLUMN = 2;
+    private final static int AMOUNT_IN_STORE_COLUMN = 3;
+    private final static int AMOUNT_IN_WAREHOUSE_COLUMN = 4;
+    private final static int MIN_COLUMN = 5;
+    private final static int TARGET_COLUMN = 6;
+
+    private final static Map<Pair<Integer, Integer>, StockReport> IDENTITY_MAP = new HashMap<>();
+
+    public StockReportDataMapper() {
+        super("StockReport");
+    }
+
+
+    @Override
+    protected Map<String, StockReport> getMap() {
+        return null;
+    }
+
+    @Override
+    protected LinkDAO getLinkDTO(String setName) {
+        return null;
+    }
+
+    protected StockReport buildObject(ResultSet resultSet){
+        try {
+            return new StockReport(resultSet.getInt(STORE_COLUMN),
+                    resultSet.getInt(PRODUCT_COLUMN),
+                    resultSet.getInt(AMOUNT_IN_STORE_COLUMN),
+                    resultSet.getInt(AMOUNT_IN_WAREHOUSE_COLUMN),
+                    resultSet.getInt(MIN_COLUMN),
+                    resultSet.getInt(TARGET_COLUMN)
+            );
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void insert(StockReport instance) throws SQLException {
+        try {
+            insert(Arrays.asList(instance.getStoreID(),
+                    instance.getProductID(),
+                    instance.getAmountInStore(),
+                    instance.getAmountInWarehouse(),
+                    instance.getMinAmountInStore(),
+                    instance.getTargetAmountInStore()));
+            IDENTITY_MAP.put(new Pair<>(instance.getStoreID(), instance.getProductID()), instance);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public StockReport get(int storeId, int productID) throws SQLException {
+        Pair<Integer, Integer> key = new Pair(storeId, productID);
+        StockReport output = IDENTITY_MAP.get(key);
+        if (output != null)
+            return output;
+
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = select(connection,Arrays.asList(STORE_COLUMN, PRODUCT_COLUMN), Arrays.asList(storeId, productID));
+            if (!instanceResult.next())
+                return null;
+            output = buildObject(instanceResult);
+            IDENTITY_MAP.put(key,output);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        throw new RuntimeException("this is bad");
+    }
+
+    public Collection<StockReport> getAll() {
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = select(connection);
+            while (instanceResult.next()) {
+                IDENTITY_MAP.put(new Pair<>(instanceResult.getInt(STORE_COLUMN), instanceResult.getInt(PRODUCT_COLUMN)), buildObject(instanceResult));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return IDENTITY_MAP.values();
+    }
+
+    public Collection<StockReport> getByProduct(int productID) {
+        List<StockReport> output = new ArrayList<>();
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = select(connection, Arrays.asList(PRODUCT_COLUMN), Arrays.asList(productID));
+            while (instanceResult.next()) {
+                StockReport curr = buildObject(instanceResult);
+                output.add(curr);
+                IDENTITY_MAP.put(new Pair<>(curr.getStoreID(), curr.getProductID()), curr);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output;
+    }
+
+    public Collection<StockReport> getByStore(int storeID) {
+        List<StockReport> output = new ArrayList<>();
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = select(connection, Arrays.asList(STORE_COLUMN), Arrays.asList(storeID));
+            while (instanceResult.next()) {
+                StockReport curr = buildObject(instanceResult);
+                output.add(curr);
+                IDENTITY_MAP.put(new Pair<>(curr.getStoreID(), curr.getProductID()), curr);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output;
+    }
+
+    public void updateMin(int productID, int storeID, int min) {
+        try {
+            update(Arrays.asList(MIN_COLUMN),
+                    Arrays.asList(min),
+                    Arrays.asList(PRODUCT_COLUMN, STORE_COLUMN),
+                    Arrays.asList(productID, storeID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateTarget(int productID, int storeID, int target) {
+        try {
+            update(Arrays.asList(TARGET_COLUMN),
+                    Arrays.asList(target),
+                    Arrays.asList(PRODUCT_COLUMN, STORE_COLUMN),
+                    Arrays.asList(productID, storeID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateInStore(int productID, int storeID, int amount) {
+        try {
+            update(Arrays.asList(AMOUNT_IN_STORE_COLUMN),
+                    Arrays.asList(amount),
+                    Arrays.asList(PRODUCT_COLUMN, STORE_COLUMN),
+                    Arrays.asList(productID, storeID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateInWarehouse(int productID, int storeID, int amount) {
+        try {
+            update(Arrays.asList(AMOUNT_IN_WAREHOUSE_COLUMN),
+                    Arrays.asList(amount),
+                    Arrays.asList(PRODUCT_COLUMN, STORE_COLUMN),
+                    Arrays.asList(productID, storeID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}

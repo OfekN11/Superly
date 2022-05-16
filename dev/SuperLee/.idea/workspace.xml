@@ -2,9 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14db89f2-b157-448b-aea3-2353a64a0cb5" name="Default Changelist" comment="stock warning changed">
+      <change beforePath="$PROJECT_DIR$/../../.idea/adss_group_l.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/adss_group_l.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/InventoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/SupplierController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/SupplierController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperLee.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SuperLee.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/CategoryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/CategoryTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Category.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/StockReport.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/StockReport.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/InventoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/InventoryController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Abstract/DAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Abstract/DAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/StockReport.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/StockReport.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/BackendController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/BackendController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Inventory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Inventory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Catalogs.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Catalogs.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/CategoryTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/CategoryTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/ProductTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/ProductTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/SuppliersTests/AgreementItemTest$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/SuppliersTests/AgreementItemTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/SuppliersTests/AgreementTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/SuppliersTests/ByOrderAgreementTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/SuppliersTests/RoutineAgreementTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +59,9 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="MavenRunner">
+    <option name="delegateBuildToMaven" value="true" />
+  </component>
   <component name="ProjectId" id="27vjh96yOLsyBDKZkKUmDBcqvhi" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -55,11 +79,11 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="create.test.in.the.same.root" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/Tests" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Tests" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.112359524" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.excludes" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.runner" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">

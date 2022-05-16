@@ -15,10 +15,10 @@ public class SalesToCategoryDAO extends DAO {
     }
     public List<Integer> getCategoriesOfSale(int sale) {
         try {
-            ResultSet rs = select(getConnection(), Arrays.asList(CATEGORY_COLUMN), Arrays.asList(SALE_COLUMN), Arrays.asList(sale));
+            ResultSet rs = select(getConnection(), Arrays.asList(SALE_COLUMN), Arrays.asList(sale));
             List<Integer> categories = new ArrayList<>();
             while (rs.next()) {
-                categories.add(rs.getInt(1));
+                categories.add(rs.getInt(CATEGORY_COLUMN));
             }
             return categories;
         }
@@ -30,10 +30,10 @@ public class SalesToCategoryDAO extends DAO {
 
     public List<Integer> getSales(int category) {
         try {
-            ResultSet rs = select(getConnection(), Arrays.asList(SALE_COLUMN), Arrays.asList(CATEGORY_COLUMN), Arrays.asList(category));
+            ResultSet rs = select(getConnection(), Arrays.asList(CATEGORY_COLUMN), Arrays.asList(category));
             List<Integer> sales = new ArrayList<>();
             while (rs.next()) {
-                sales.add(rs.getInt(1));
+                sales.add(rs.getInt(SALE_COLUMN));
             }
             return sales;
         }

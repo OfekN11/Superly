@@ -23,6 +23,8 @@ public class Product {
     private double price;
     private List<SaleToCustomer> sales;
     private List<PurchaseFromSupplier> purchaseFromSupplierList;
+    private static int locationIDCounter=1;
+    private static int defectReportCounter=1;
     private static final ProductDataMapper productDataMapper = new ProductDataMapper();
 
     public Set<Integer> getStoreIDs() { return stockReports.keySet(); }
@@ -151,21 +153,21 @@ public class Product {
 
     public DefectiveItems reportDamaged(int storeID, int amount, int employeeID, String description, boolean inWarehouse) {
         removeItems(storeID, amount, inWarehouse);
-        DefectiveItems dir = new DefectiveItems(Damaged, new Date(), storeID, id, amount, employeeID, description, inWarehouse);
+        DefectiveItems dir = new DefectiveItems(defectReportCounter++, Damaged, new Date(), storeID, id, amount, employeeID, description, inWarehouse);
         damagedItemReport.add(dir);
         return dir;
     }
 
     public DefectiveItems reportExpired(int storeID, int amount, int employeeID, String description, boolean inWarehouse) {
         removeItems(storeID, amount, inWarehouse);
-        DefectiveItems eir = new DefectiveItems(Expired, new Date(), storeID, id, amount, employeeID, description, inWarehouse);
+        DefectiveItems eir = new DefectiveItems(defectReportCounter++, Expired, new Date(), storeID, id, amount, employeeID, description, inWarehouse);
         expiredItemReport.add(eir);
         return eir;
     }
 
     public DefectiveItems reportDefectiveForTest(int storeID, int amount, int employeeID, String description, Defect defect, Date date, boolean inWarehouse) {
         removeItems(storeID, amount, inWarehouse);
-        DefectiveItems eir = new DefectiveItems(defect, date, storeID, id, amount, employeeID, description, inWarehouse);
+        DefectiveItems eir = new DefectiveItems(defectReportCounter++, defect, date, storeID, id, amount, employeeID, description, inWarehouse);
         if (defect==Expired)
             expiredItemReport.add(eir);
         else
@@ -222,11 +224,11 @@ public class Product {
     }
 
     public void addLocation(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int minAmount, int targetAmount) {
-        Location storeLocation = new Location(storeID, false, shelvesInStore);
-        Location warehouseLocation = new Location(storeID, true, shelvesInWarehouse);
+        Location storeLocation = new Location(locationIDCounter++, storeID, false, shelvesInStore);
+        Location warehouseLocation = new Location(locationIDCounter++, storeID, true, shelvesInWarehouse);
         if (stockReports.containsKey(storeID))
             throw new IllegalArgumentException("Product " + name + " is already sold at store " + storeID);
-        stockReports.put(storeID, new StockReport(storeID, id, name, 0, 0, minAmount, targetAmount));
+        stockReports.put(storeID, new StockReport(storeID, id, 0, 0, minAmount, targetAmount));
         locations.add(storeLocation);
         locations.add(warehouseLocation);
     }
