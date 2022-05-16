@@ -1,9 +1,5 @@
 package Domain.Service.Services;
 
-import Domain.Business.Controllers.DriverController;
-import Domain.Business.Controllers.TruckController;
-import Globals.Enums.LicenseTypes;
-import Domain.Service.Objects.*;
 public class DriverService {
     private DriverController controller;
 

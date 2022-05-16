@@ -26,6 +26,7 @@ public class DocumentController {
         }
         throw new Exception("The document already exist!");
     }
+    //TODO check if the function is needed
     public void updateDestinationDocument(DestinationDocument document) throws Exception {
         if(document != null && destinationDocuments.containsKey(document.getSN()))
         {
@@ -34,7 +35,7 @@ public class DocumentController {
         }
         throw new Exception("The document you requested does not exist!");
     }
-
+    //TODO not the right implementation
     public DestinationDocument getDestinationDocument(int destinationDocumentSN) throws Exception {
         if(destinationDocuments.containsKey(destinationDocumentSN))
         {
@@ -42,7 +43,7 @@ public class DocumentController {
         }
         throw new Exception("The document you requested does not exist!");
     }
-
+    //TODO not the right implementation
     public void uploadTransportDocument(TransportDocument document) throws Exception {
         if(document != null && !transportDocuments.containsKey(document.getSN()))
         {
@@ -50,7 +51,7 @@ public class DocumentController {
         }
         throw new Exception("The document already exist!");
     }
-
+    //TODO check if the function is needed
     public void updateTransportDocument(TransportDocument document) throws Exception {
         if(document != null && transportDocuments.containsKey(document.getSN()))
         {
@@ -59,7 +60,7 @@ public class DocumentController {
         }
         throw new Exception("The document you requested does not exist!");
     }
-
+    //TODO not the right implementation
     public TransportDocument getTransportDocument(int transportDocumentSN) throws Exception {
         if(transportDocuments.containsKey(transportDocumentSN))
         {
