@@ -5,6 +5,7 @@ import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
 import Domain.Service.Objects.Carrier;
 import Globals.Enums.ShippingAreas;
+import Globals.Enums.TransportStatus;
 
 import java.util.*;
 
@@ -13,8 +14,8 @@ public class TransportController {
     private HashMap<Integer, Transport> inProgressTransports;
     private HashMap<Integer, Transport> redesignTransports;
     private HashMap<Integer, Transport> completedTransports;
-    private HashMap<Integer, TransportOrder> orders;
     private TruckController truckController;
+    private OrderController orderController;
     private EmployeeController employeeController;
     private DocumentController documentController;
     private SiteController siteController;
@@ -24,9 +25,10 @@ public class TransportController {
         inProgressTransports =  new HashMap<>();
         redesignTransports =  new HashMap<>();
         completedTransports =  new HashMap<>();
-        orders = new HashMap<>();
         truckController = new TruckController();
         employeeController = new EmployeeController();
+        orderController = new OrderController();
+        siteController = new SiteController();
     }
 
 
@@ -50,6 +52,40 @@ public class TransportController {
         else {
             throw new Exception("The transport doesn't exist!");
         }
+    }
+    //TODO reimplement
+    public void addOrderToTransport(int transportSN, int orderID) throws Exception {
+        Transport transport = getTransport(transportSN);
+        if(transport.getStatus()== TransportStatus.padding)
+        {
+            TransportOrder order = orderController.getTransportOrder(orderID);
+            //TODO check weight conditions and update
+            ShippingAreas sourceShip = siteController.getSource(order.getSrc()).getAddress().getShippingAreas();
+            ShippingAreas destShip = siteController.getDestination(order.getDst()).getAddress().getShippingAreas();
+            transport.addOrder(order,sourceShip,destShip);
+            orderController.deleteOrder(orderID);
+        }
+        else {
+            throw new Exception("The transport is not on the list of pending transport!");
+        }
+    }
+    //TODO reimplement
+    public void updateWeight(int transportSN,int newWeight) throws Exception {
+        if(inProgressTransports.containsKey(transportSN))
+        {
+            Transport transport = inProgressTransports.get(transportSN);
+            Truck truck = truckController.getTruck(transport.getTruckNumber());
+            if(!transport.updateWeight(newWeight, truck.getMaxCapacityWeight()))
+            {
+                inProgressTransports.remove(transportSN);
+                redesignTransports.put(transportSN, transport);
+                throw new Exception("Weight Warning!");
+            }
+        }
+        else{
+            throw new Exception("The transport can not start!");
+        }
+
     }
 
 
@@ -171,18 +207,7 @@ public class TransportController {
             throw new Exception("The transport order doesn't exist!");
         }
     }
-    public void addOrderToTransport(int transportSN, int orderID) throws Exception {
-        if(pendingTransports.containsKey(transportSN))
-        {
-            Transport transport = pendingTransports.get(transportSN);
-            TransportOrder order = getTransportOrder(orderID);
-            transport.addOrder(order);
-            orders.remove(orderID);
-        }
-        else {
-            throw new Exception("The transport is not on the list of pending transport!");
-        }
-    }
+
 
     private List<TransportOrder> getTransportOrderInSameArea(List<ShippingAreas> as) throws Exception {
         List<TransportOrder> orderList = new ArrayList<>();
@@ -209,23 +234,7 @@ public class TransportController {
         }
     }
 
-    public void updateWeight(int transportSN,int newWeight) throws Exception {
-        if(inProgressTransports.containsKey(transportSN))
-        {
-            Transport transport = inProgressTransports.get(transportSN);
-            Truck truck = truckController.getTruck(transport.getTruckNumber());
-            if(!transport.updateWeight(newWeight, truck.getMaxCapacityWeight()))
-            {
-                inProgressTransports.remove(transportSN);
-                redesignTransports.put(transportSN, transport);
-                throw new Exception("Weight Warning!");
-            }
-        }
-        else{
-            throw new Exception("The transport can not start!");
-        }
 
-    }
     public List<TransportOrder> getTransportOrders() {
         List<TransportOrder> orderList = new ArrayList<>();
         for(int orderID: orders.keySet())
