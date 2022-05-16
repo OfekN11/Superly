@@ -14,7 +14,7 @@ public abstract class DataMapper<T> extends DAO {
         super(tableName);
     }
 
-    public T get(String id) throws SQLException {
+    public T get(String id) {
         Map<String,T> map = getMap();
         T output = map.get(id);
         if (output != null)

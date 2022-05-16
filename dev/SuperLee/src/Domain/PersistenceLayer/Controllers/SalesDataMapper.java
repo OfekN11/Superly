@@ -63,6 +63,8 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
     }
 
     public int remove(Object id) {
+        salesToProductDAO.removeBySale(id);
+        salesToCategoryDAO.removeBySale(id);
         return remove(id);
     }
 

@@ -43,4 +43,13 @@ public class SalesToProductDAO extends DAO {
             return null;
         }
     }
+
+    public void removeBySale(Object id) {
+        try {
+            remove(Arrays.asList(SALE_COLUMN), Arrays.asList(id));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

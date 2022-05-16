@@ -10,6 +10,7 @@ import Domain.BusinessLayer.Supplier.Order;
 import Domain.BusinessLayer.Supplier.OrderItem;
 import Domain.PersistenceLayer.Controllers.CategoryDataMapper;
 import Domain.PersistenceLayer.Controllers.ProductDataMapper;
+import Domain.PersistenceLayer.Controllers.SalesDataMapper;
 import Globals.Pair;
 
 import java.util.*;
@@ -17,20 +18,21 @@ import java.util.*;
 public class InventoryController {
     private List<Integer> storeIds;
     private Map<Integer, Category> categories;
-    private List<SaleToCustomer> sales;
+    private Map<Integer, SaleToCustomer> sales;
     private Map<Integer, Product> products;
     private int saleID;
     private int catID;
     private int productID;
     private int storeID;
     private SupplierController supplierController;
-    private final static ProductDataMapper productDataMapper = new ProductDataMapper();
+    private final static ProductDataMapper PRODUCT_DATA_MAPPER = new ProductDataMapper();
     private final static CategoryDataMapper CATEGORY_DATA_MAPPER = new CategoryDataMapper();
+    private final static SalesDataMapper SALE_DATA_MAPPER = new SalesDataMapper();
     public InventoryController() {
         storeIds = new ArrayList<>();
         categories = CATEGORY_DATA_MAPPER.getMap();
-        sales = new ArrayList<>();
-        products = productDataMapper.getMap();
+        sales = SALE_DATA_MAPPER.getMap();
+        products = PRODUCT_DATA_MAPPER.getMap();
         storeID=1;
         saleID=1;
         catID=1;
@@ -41,8 +43,8 @@ public class InventoryController {
     public void loadTestData() {
         //initialize stuff for tests
         //add stores
-        for (int i = 1; i <= 10; i++)
-            addStore();
+//        for (int i = 1; i <= 10; i++)
+//            addStore();
 //        addCategoriesForTests();
 //        addProductsForTests();
 //        addSalesForTests();
@@ -70,7 +72,7 @@ public class InventoryController {
         try {
             Product output = products.get(productID);
             if (output==null) {
-                output = productDataMapper.get(Integer.toString(productID));
+                output = PRODUCT_DATA_MAPPER.get(Integer.toString(productID));
                 if (output==null) {
                     throw new IllegalArgumentException("Product ID Invalid: " + productID);
                 }
@@ -83,9 +85,17 @@ public class InventoryController {
         return null;
     }
 
+    private Collection<SaleToCustomer> getAllSales() {
+        return SALE_DATA_MAPPER.getAll();
+    }
+
+    private SaleToCustomer getSale(int saleID) {
+        return SALE_DATA_MAPPER.get(Integer.toString(saleID));
+    }
+
     public List<SaleToCustomer> getRemovableSales() {
         List<SaleToCustomer> removableSales = new ArrayList<>();
-        for (SaleToCustomer sale: sales) {
+        for (SaleToCustomer sale: getAllSales()) {
             if (!sale.isPassed())
                 removableSales.add(sale);
         }
@@ -137,7 +147,7 @@ public class InventoryController {
         redundantCategories(categoriesList);
         redundantProducts(productIDs, categoriesList);
         SaleToCustomer sale = new SaleToCustomer(saleID++, start, end, percent, categoriesList, productIDs);
-        sales.add(sale);
+        SALE_DATA_MAPPER.insert(sale);
 
         Product product;
         for (Integer pID: productIDs) {
@@ -159,7 +169,7 @@ public class InventoryController {
         endOfToday.setMinutes(1);
         endOfToday.setSeconds(-1);
         SaleToCustomer newSale = new SaleToCustomer(saleID++, sale.getStartDate(), endOfToday, sale.getPercent(), sale.getCategories(), sale.getProducts());
-        sales.add(newSale);
+        SALE_DATA_MAPPER.insert(newSale);
         Product product;
         for (Integer pID: newSale.getProducts()) {
             //should we throw error if only one of them is illegal
@@ -172,6 +182,7 @@ public class InventoryController {
             if (category!=null)
                 category.addSale(newSale);        }
     }
+
     private void removeSaleFromProductsAndCategories(SaleToCustomer sale) {
         Product product;
         for (Integer pID: sale.getProducts()) {
@@ -184,21 +195,17 @@ public class InventoryController {
             if (category!=null)
                 category.removeSale(sale);
         }
-        sales.remove(sale);
     }
 
     public void removeSale(int saleID) {
-        for (SaleToCustomer sale : sales) {
-            if (sale.getId()==saleID) {
-                if (sale.isActive()) {
-                    copySale(sale);
-                    removeSaleFromProductsAndCategories(sale);
-                }
-                else if (sale.isUpcoming()) {
-                    sales.remove(sale);
-                    removeSaleFromProductsAndCategories(sale);
-                }
-            }
+        SaleToCustomer sale = getSale(saleID);
+        if (sale.isActive()) {
+            copySale(sale);
+            removeSaleFromProductsAndCategories(sale);
+        }
+        else if (sale.isUpcoming()) {
+            SALE_DATA_MAPPER.remove(sale);
+            removeSaleFromProductsAndCategories(sale);
         }
     }
 
@@ -265,7 +272,7 @@ public class InventoryController {
     }
 
     public Collection<Product> getProducts() {
-        return productDataMapper.getAll();
+        return PRODUCT_DATA_MAPPER.getAll();
     }
 
     public Collection<Category> getCategories() {
@@ -327,12 +334,12 @@ public class InventoryController {
         int id = productID++;
         Product product = new Product(id, name, category, weight, price, manufacturer);
         category.addProduct(product);
-        productDataMapper.insert(product);
+        PRODUCT_DATA_MAPPER.insert(product);
         return product;
     }
 
     public void deleteProduct(int id){
-        productDataMapper.remove(id);
+        PRODUCT_DATA_MAPPER.remove(id);
         //remove sales? remove empty categories?
     }
 

@@ -2,26 +2,23 @@ package Domain.BusinessLayer.Inventory;
 
 import Domain.PersistenceLayer.Controllers.StockReportDataMapper;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class StockReport {
 
     private int storeID;
     private int productID;
     private int amountInStore;
     private int amountInWarehouse;
-    private Map<Integer, Integer> amountInDeliveries; //orderID, amount
+    private int amountInDeliveries;
     private int minAmountInStore;
     private int targetAmountInStore;
     private final static StockReportDataMapper dataMapper = new StockReportDataMapper();
 
-    public StockReport(int storeID, int productID, int amountInStore, int amountInWarehouse, int minAmountInStore, int targetAmountInStore) {
+    public StockReport(int storeID, int productID, int amountInStore, int amountInWarehouse, int minAmountInStore, int targetAmountInStore, int amountInDelivery) {
         this.storeID = storeID;
         this.productID = productID;
         this.amountInStore = amountInStore;
         this.amountInWarehouse = amountInWarehouse;
-        this.amountInDeliveries = new HashMap<>();
+        this.amountInDeliveries = amountInDelivery;
         this.minAmountInStore = minAmountInStore;
         this.targetAmountInStore = targetAmountInStore;
     }
@@ -38,7 +35,7 @@ public class StockReport {
         return minAmountInStore;
     }
     public int getTargetAmountInStore() { return targetAmountInStore; }
-    public Map<Integer, Integer> getAmountInDeliveries() { return amountInDeliveries; }
+    public Integer getAmountInDeliveries() { return amountInDeliveries; }
 
     public void removeItemsFromStore(int amount, boolean inWarehouse) {
         if ((!inWarehouse && amountInStore-amount<0) || (inWarehouse && amountInWarehouse-amount<0))
@@ -62,10 +59,10 @@ public class StockReport {
         dataMapper.updateInStore(productID, storeID, amountInStore);
     }
 
-    public void addItems(int amount, int orderID) {
+    public void addItems(int amount) {
         amountInWarehouse+=amount;
         dataMapper.updateInWarehouse(productID, storeID, amountInWarehouse);
-        amountInDeliveries.remove(orderID); //@TODO maybe we need to add this to db
+        amountInDeliveries-=amount;
     }
 
     public void returnItems(int amount) {
@@ -98,16 +95,14 @@ public class StockReport {
 //    }
 
     private int getTotalAmountInDeliveries() {
-        int total = 0;
-        for (int amount: amountInDeliveries.values())
-            total += amount;
-        return total;
+        return amountInDeliveries;
     }
     private int getTotalAmount() { return getTotalAmountInDeliveries()+amountInStore+amountInWarehouse;}
     public int getAmountForOrder() {
         return targetAmountInStore - getTotalAmount();
     }
-    public void addDelivery(int orderID, int amount) {
-        amountInDeliveries.put(orderID, amount);
+    public void addDelivery(int amount) {
+        amountInDeliveries+=amount;
+        dataMapper.updateInDelivery(productID, storeID, amountInDeliveries);
     }
 }

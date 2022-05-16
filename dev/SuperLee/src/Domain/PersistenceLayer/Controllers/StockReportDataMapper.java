@@ -1,8 +1,6 @@
 package Domain.PersistenceLayer.Controllers;
 
-import Domain.BusinessLayer.Inventory.Product;
 import Domain.BusinessLayer.Inventory.StockReport;
-import Domain.PersistenceLayer.Abstract.DAO;
 import Domain.PersistenceLayer.Abstract.DataMapper;
 import Domain.PersistenceLayer.Abstract.LinkDAO;
 import Globals.Pair;
@@ -20,6 +18,7 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
     private final static int AMOUNT_IN_WAREHOUSE_COLUMN = 4;
     private final static int MIN_COLUMN = 5;
     private final static int TARGET_COLUMN = 6;
+    private final static int IN_DELIVERY_COLUMN = 6;
 
     private final static Map<Pair<Integer, Integer>, StockReport> IDENTITY_MAP = new HashMap<>();
 
@@ -45,7 +44,8 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
                     resultSet.getInt(AMOUNT_IN_STORE_COLUMN),
                     resultSet.getInt(AMOUNT_IN_WAREHOUSE_COLUMN),
                     resultSet.getInt(MIN_COLUMN),
-                    resultSet.getInt(TARGET_COLUMN)
+                    resultSet.getInt(TARGET_COLUMN),
+                    resultSet.getInt(IN_DELIVERY_COLUMN)
             );
         }
         catch (Exception e) {
@@ -54,14 +54,15 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
         }
     }
 
-    public void insert(StockReport instance) throws SQLException {
+    public void insert(StockReport instance) {
         try {
             insert(Arrays.asList(instance.getStoreID(),
                     instance.getProductID(),
                     instance.getAmountInStore(),
                     instance.getAmountInWarehouse(),
                     instance.getMinAmountInStore(),
-                    instance.getTargetAmountInStore()));
+                    instance.getTargetAmountInStore(),
+                    instance.getAmountInDeliveries()));
             IDENTITY_MAP.put(new Pair<>(instance.getStoreID(), instance.getProductID()), instance);
         }
         catch (Exception e) {
@@ -69,7 +70,18 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
         }
     }
 
-    public StockReport get(int storeId, int productID) throws SQLException {
+    public void remove(int storeId, int productID) {
+        Pair<Integer, Integer> key = new Pair(storeId, productID);
+        try {
+            remove(Arrays.asList(STORE_COLUMN, PRODUCT_COLUMN), Arrays.asList(storeId, productID));
+            IDENTITY_MAP.remove(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        throw new RuntimeException("this is bad");
+    }
+
+    public StockReport get(int storeId, int productID) {
         Pair<Integer, Integer> key = new Pair(storeId, productID);
         StockReport output = IDENTITY_MAP.get(key);
         if (output != null)
@@ -177,4 +189,15 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
         }
     }
 
+    public void updateInDelivery(int productID, int storeID, int amount) {
+        try {
+            update(Arrays.asList(IN_DELIVERY_COLUMN),
+                    Arrays.asList(amount),
+                    Arrays.asList(PRODUCT_COLUMN, STORE_COLUMN),
+                    Arrays.asList(productID, storeID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

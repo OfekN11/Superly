@@ -3,6 +3,7 @@ package Domain.BusinessLayer.Inventory;
 import Domain.BusinessLayer.Inventory.DiscountsAndSales.PurchaseFromSupplier;
 import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
 import Domain.PersistenceLayer.Controllers.ProductDataMapper;
+import Domain.PersistenceLayer.Controllers.StockReportDataMapper;
 import Globals.Defect;
 
 import java.util.*;
@@ -26,6 +27,7 @@ public class Product {
     private static int locationIDCounter=1;
     private static int defectReportCounter=1;
     private static final ProductDataMapper productDataMapper = new ProductDataMapper();
+    private final static StockReportDataMapper stockReportDataMapper = new StockReportDataMapper();
 
     public Set<Integer> getStoreIDs() { return stockReports.keySet(); }
     public int getId() { return id; }
@@ -35,9 +37,6 @@ public class Product {
     public void setName(String name) {
         this.name = name;
         productDataMapper.updateName(id, name);
-//        for (StockReport s : stockReports.values()) {
-//            s.changeName(name);
-//        }
     }
     public void setPrice(double price) {
         this.price = price;
@@ -78,7 +77,7 @@ public class Product {
     public Integer getInStore(int store) {
 //        if (inStore.get(store)==null)
 //            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
-        return stockReports.get(store).getAmountInStore();
+        return getStockReport(store).getAmountInStore();
     }
     public Integer getInWarehouse(int store) {
 //        if (inWarehouse.get(store)==null)
@@ -119,7 +118,7 @@ public class Product {
     public PurchaseFromSupplier addItems(int storeId, Date date, int supplierID, int amountBought, double pricePaid, double originalPrice, int orderID) {
         if (!stockReports.containsKey(storeId))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
-        stockReports.get(storeId).addItems(amountBought, orderID);
+        stockReports.get(storeId).addItems(amountBought);
         PurchaseFromSupplier p = new PurchaseFromSupplier(purchaseFromSupplierList.size()+1, storeId, id, date, supplierID, amountBought, pricePaid, originalPrice);
         purchaseFromSupplierList.add(p);
         return p;
@@ -226,23 +225,29 @@ public class Product {
     public void addLocation(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int minAmount, int targetAmount) {
         Location storeLocation = new Location(locationIDCounter++, storeID, false, shelvesInStore);
         Location warehouseLocation = new Location(locationIDCounter++, storeID, true, shelvesInWarehouse);
-        if (stockReports.containsKey(storeID))
+        if (getStockReport(storeID)!=null)
             throw new IllegalArgumentException("Product " + name + " is already sold at store " + storeID);
-        stockReports.put(storeID, new StockReport(storeID, id, 0, 0, minAmount, targetAmount));
+        stockReports.put(storeID, new StockReport(storeID, id, 0, 0, minAmount, targetAmount, 0));
+        stockReportDataMapper.insert(getStockReport(storeID));
         locations.add(storeLocation);
         locations.add(warehouseLocation);
     }
 
     public void removeLocation(int storeID) {
-        if (!stockReports.containsKey(storeID))
+        if (getStockReport(storeID)==null)
             throw new IllegalArgumentException("Product " + name + " is not being sold at store " + storeID);
-        stockReports.remove(storeID);
+        removeStockReport(storeID);
         for (int i=0; i<locations.size(); i++) {
             if (locations.get(i).getStoreID()==storeID) {
                 locations.remove(i);
                 i--;
             }
         }
+    }
+
+    private void removeStockReport(int storeID) {
+        stockReportDataMapper.remove(storeID, getStockReport(storeID).getProductID());
+        stockReports.remove(storeID);
     }
 
     public List<SaleToCustomer> getSaleHistory() {
@@ -267,7 +272,7 @@ public class Product {
     }
 
     public boolean isLow(int storeID) {
-        return stockReports.get(storeID).isLow();
+        return getStockReport(storeID).isLow();
     }
 
     public void removeSale(SaleToCustomer sale) {
@@ -291,26 +296,30 @@ public class Product {
     }
 
     public void changeProductMin(int store, int min) {
-        if (stockReports.get(store)==null)
+        if (getStockReport(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no min");
         stockReports.get(store).changeMin(min);
     }
 
     public void changeProductTarget(int store, int target) {
-        if (stockReports.get(store)==null)
+        if (getStockReport(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no min");
         stockReports.get(store).changeTarget(target);
     }
 
     public StockReport getStockReport(int store) {
-        return stockReports.get(store);
+        StockReport stockReport = stockReports.get(store);
+        if (stockReport==null) {
+            stockReport = stockReportDataMapper.get(store, id);
+        }
+        return stockReport;
     }
 
     public int getAmountForOrder(int storeID) {
-        return stockReports.get(storeID).getAmountForOrder();
+        return getStockReport(storeID).getAmountForOrder();
     }
 
     public void addDelivery(int orderID, int storeID, int amount) {
-        getStockReport(storeID).addDelivery(orderID, amount);
+        getStockReport(storeID).addDelivery(amount);
     }
 }
