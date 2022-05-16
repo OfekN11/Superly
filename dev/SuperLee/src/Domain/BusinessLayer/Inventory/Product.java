@@ -23,8 +23,8 @@ public class Product {
     private List<SaleToCustomer> sales;
     private static int locationIDCounter=1;
     private static int defectReportCounter=1;
-    public static final ProductDataMapper productDataMapper = new ProductDataMapper();
-    private final static StockReportDataMapper stockReportDataMapper = new StockReportDataMapper();
+    public static final ProductDataMapper PRODUCT_DATA_MAPPER = new ProductDataMapper();
+    private final static StockReportDataMapper STOCK_REPORT_DATA_MAPPER = new StockReportDataMapper();
 
     public Set<Integer> getStoreIDs() { return stockReports.keySet(); }
     public int getId() { return id; }
@@ -33,18 +33,18 @@ public class Product {
     public double getOriginalPrice() { return price; }
     public void setName(String name) {
         this.name = name;
-        productDataMapper.updateName(id, name);
+        PRODUCT_DATA_MAPPER.updateName(id, name);
     }
     public void setPrice(double price) {
         this.price = price;
-        productDataMapper.updatePrice(id, price);
+        PRODUCT_DATA_MAPPER.updatePrice(id, price);
     }
     public void setCategory(Category category) {
         if (category!=null)
             category.removeProduct(this);
         this.category = category;
         category.addProduct(this);
-        productDataMapper.updateCategory(id, getCategoryID());
+        PRODUCT_DATA_MAPPER.updateCategory(id, getCategoryID());
     }
 
     public Product(int id, String name, Category category, double weight, double price, String manufacturer) {
@@ -65,19 +65,17 @@ public class Product {
     public double getWeight() {
         return weight;
     }
-
     public String getManufacturer() {
         return manufacturer;
     }
-
     public Integer getInStore(int store) {
-//        if (inStore.get(store)==null)
-//            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
+        if (getStockReport(store)==null)
+            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
         return getStockReport(store).getAmountInStore();
     }
     public Integer getInWarehouse(int store) {
-//        if (inWarehouse.get(store)==null)
-//            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
+        if (stockReports.get(store)==null)
+            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
         return stockReports.get(store).getAmountInWarehouse();
     }
 
@@ -222,7 +220,7 @@ public class Product {
         if (getStockReport(storeID)!=null)
             throw new IllegalArgumentException("Product " + name + " is already sold at store " + storeID);
         stockReports.put(storeID, new StockReport(storeID, id, 0, 0, minAmount, targetAmount, 0));
-        stockReportDataMapper.insert(getStockReport(storeID));
+        STOCK_REPORT_DATA_MAPPER.insert(getStockReport(storeID));
         locations.add(storeLocation);
         locations.add(warehouseLocation);
     }
@@ -240,7 +238,7 @@ public class Product {
     }
 
     private void removeStockReport(int storeID) {
-        stockReportDataMapper.remove(storeID, getStockReport(storeID).getProductID());
+        STOCK_REPORT_DATA_MAPPER.remove(storeID, getStockReport(storeID).getProductID());
         stockReports.remove(storeID);
     }
 
@@ -280,7 +278,7 @@ public class Product {
     public StockReport getStockReport(int store) {
         StockReport stockReport = stockReports.get(store);
         if (stockReport==null) {
-            stockReport = stockReportDataMapper.get(store, id);
+            stockReport = STOCK_REPORT_DATA_MAPPER.get(store, id);
         }
         return stockReport;
     }

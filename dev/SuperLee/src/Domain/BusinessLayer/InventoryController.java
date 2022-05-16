@@ -24,8 +24,8 @@ public class InventoryController {
     private int productID;
     private int storeID;
     private SupplierController supplierController;
-    private final static ProductDataMapper PRODUCT_DATA_MAPPER = Product.productDataMapper;
-    private final static CategoryDataMapper CATEGORY_DATA_MAPPER = new CategoryDataMapper();
+    private final static ProductDataMapper PRODUCT_DATA_MAPPER = Product.PRODUCT_DATA_MAPPER;
+    private final static CategoryDataMapper CATEGORY_DATA_MAPPER = Category.CATEGORY_DATA_MAPPER;
     private final static SalesDataMapper SALE_DATA_MAPPER = new SalesDataMapper();
     public InventoryController() {
         storeIds = new ArrayList<>();
@@ -212,6 +212,7 @@ public class InventoryController {
     public void removeSale(int saleID) {
         SaleToCustomer sale = getSale(saleID);
         if (sale.isActive()) {
+            //Probably should be changed to: setEndDate(sale), which set the end date to today 23:59:59. and then update the db.
             copySale(sale);
             removeSaleFromProductsAndCategories(sale);
         }

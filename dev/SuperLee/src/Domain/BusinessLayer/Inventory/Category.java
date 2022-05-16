@@ -1,6 +1,7 @@
 package Domain.BusinessLayer.Inventory;
 
 import Domain.PersistenceLayer.Controllers.CategoryDataMapper;
+import Domain.PersistenceLayer.Controllers.ProductDataMapper;
 
 import java.util.*;
 
@@ -11,22 +12,16 @@ public class Category {
     private Category parentCategory;
     private List<Product> products;
     private List<SaleToCustomer> sales;
+    public final static CategoryDataMapper CATEGORY_DATA_MAPPER = new CategoryDataMapper();
 
     public int getID() { return ID; }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-        CATEGORY_DATA_MAPPER.updateName(getID(), name);
-    }
+    public String getName() { return name; }
     public Set<Category> getSubcategories() {
         return subcategories;
     }
     public Category getParentCategory() {
         return parentCategory;
     }
-    private final static CategoryDataMapper CATEGORY_DATA_MAPPER = new CategoryDataMapper();
 
     public Category(int ID, String name, Set<Category> subcategories, List<Product> products, Category parentCategory) {
         this.ID = ID;
@@ -41,6 +36,10 @@ public class Category {
         sales = new ArrayList<>();
     }
 
+    public void setName(String name) {
+        this.name = name;
+        CATEGORY_DATA_MAPPER.updateName(getID(), name);
+    }
     public void changeParentCategory(Category newParentCategory) {
         if (parentCategory!=null)
             parentCategory.removeSubcategory(this);
@@ -58,9 +57,7 @@ public class Category {
         return output;
     }
 
-    private boolean removeSubcategory(Category category) {
-        return subcategories.remove(category);
-    }
+    private boolean removeSubcategory(Category category) { return subcategories.remove(category); }
     private boolean addSubcategory(Category category) {
         return subcategories.add(category);
     }
@@ -68,10 +65,13 @@ public class Category {
         return products.remove(product);
     }
     public boolean addProduct(Product product) { return products.add(product); }
-
+    public boolean removeSale(SaleToCustomer sale) {
+        return sales.remove(sale);
+    }
     public boolean addSale(SaleToCustomer sale) {
         return sales.add(sale);
     }
+
     public SaleToCustomer findCurrentBestSale(SaleToCustomer currentSale) {
         for (SaleToCustomer sale: sales)
             if ((sale.isActive() && currentSale==null) || (sale.isActive() && currentSale.getPercent()<sale.getPercent()))
@@ -130,10 +130,6 @@ public class Category {
             dirList.addAll(c.getDamagedItemReports(start, end));
         }
         return dirList;
-    }
-
-    public void removeSale(SaleToCustomer sale) {
-        sales.remove(sale);
     }
 
     public boolean belongsToCategory(Category category) {

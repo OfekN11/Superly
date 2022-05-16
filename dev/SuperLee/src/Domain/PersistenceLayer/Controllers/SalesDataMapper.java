@@ -75,7 +75,7 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
                     instance.getPercent()));
             IDENTITY_MAP.put(Integer.toString(instance.getId()), instance);
             for (int c : instance.getCategories())
-                salesToProductDAO.insert(Arrays.asList(instance.getId(), c));
+                salesToCategoryDAO.insert(Arrays.asList(instance.getId(), c));
             for (int p : instance.getProducts())
                 salesToProductDAO.insert(Arrays.asList(instance.getId(), p));
         }
