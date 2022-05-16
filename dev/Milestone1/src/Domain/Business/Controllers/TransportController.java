@@ -53,13 +53,13 @@ public class TransportController {
             throw new Exception("The transport doesn't exist!");
         }
     }
-    //TODO reimplement
     public void addOrderToTransport(int transportSN, int orderID) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()== TransportStatus.padding)
         {
             TransportOrder order = orderController.getTransportOrder(orderID);
-            //TODO check weight conditions and update
+            int extraWeight  = orderController.getExtraWeight(order);
+            updateWeight(transport,extraWeight);
             ShippingAreas sourceShip = siteController.getSource(order.getSrc()).getAddress().getShippingAreas();
             ShippingAreas destShip = siteController.getDestination(order.getDst()).getAddress().getShippingAreas();
             transport.addOrder(order,sourceShip,destShip);
@@ -70,26 +70,14 @@ public class TransportController {
         }
     }
     //TODO reimplement
-    public void updateWeight(int transportSN,int newWeight) throws Exception {
-        if(inProgressTransports.containsKey(transportSN))
-        {
-            Transport transport = inProgressTransports.get(transportSN);
+    public void updateWeight(Transport transport,int newWeight) throws Exception {
             Truck truck = truckController.getTruck(transport.getTruckNumber());
             if(!transport.updateWeight(newWeight, truck.getMaxCapacityWeight()))
             {
-                inProgressTransports.remove(transportSN);
-                redesignTransports.put(transportSN, transport);
                 throw new Exception("Weight Warning!");
             }
         }
-        else{
-            throw new Exception("The transport can not start!");
-        }
-
-    }
-
-
-
+//TODO need to combine with shift
     public void placeTruck(int transportSN, int licenseNumber) throws Exception {
         if(pendingTransports.containsKey(transportSN))
         {
@@ -103,7 +91,7 @@ public class TransportController {
             throw new Exception("The transport is not on the list of pending transport!");
         }
     }
-
+    //TODO need to combine with shift
     public void placeDriver(int transportSN, String driverName) throws Exception {
         if(pendingTransports.containsKey(transportSN))
         {

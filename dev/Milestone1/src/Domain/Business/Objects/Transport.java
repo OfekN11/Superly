@@ -122,16 +122,19 @@ public class Transport {
     }
 
     public boolean updateWeight(int newWeight, int maxCapacityWeight) throws Exception {
-        if(newWeight > maxCapacityWeight){
+        if(truckWeight+newWeight > maxCapacityWeight){
             return false;
         }
         else{
-            truckWeight = newWeight;
+            truckWeight = truckWeight+newWeight;
             return true;
         }
     }
     public TransportStatus getStatus(){
         return status;
+    }
+    public void changeStatus(TransportStatus stat){
+        status = stat;
     }
 
     public LocalDateTime getStartTime() {
