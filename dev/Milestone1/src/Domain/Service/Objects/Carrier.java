@@ -13,7 +13,7 @@ import java.util.Set;
 public class Carrier extends Employee {
     public final Set<LicenseTypes> licenses;
 
-    public Carrier(Carrier bCarrier){
+    public Carrier(Domain.Business.Objects.Employee.Carrier bCarrier){
         super(bCarrier);
         licenses = Collections.unmodifiableSet(bCarrier.getLicenses());
     }

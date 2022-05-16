@@ -80,7 +80,7 @@ public class TransportController {
             Truck truck = truckController.getTruck(transport.getTruckNumber());
             //throw new Exception("First, a truck must be place for transport!");
             Carrier carrier = null;// = driverController.getDriver(driverName);
-            if(truck.canDriveOn(carrier.getLicenseTypes()))
+            if(truck.canDriveOn(carrier.getLicenses()))
             {
                 transport.placeDriver(driverName);
             }

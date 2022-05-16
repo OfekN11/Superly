@@ -49,4 +49,5 @@ public class Carrier extends Employee {
     public void update(EmployeeDataMapper employeeDataMapper) throws SQLException {
         employeeDataMapper.update(this);
     }
+
 }
