@@ -15,7 +15,7 @@ public class TransportService {
         this.controller = new TransportController();
     }
 
-    public Result addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) {
+    public Result addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) {
         try {
             controller.addTransportOrder(srcID, dstID, productList);
             return Result.makeOk(null);

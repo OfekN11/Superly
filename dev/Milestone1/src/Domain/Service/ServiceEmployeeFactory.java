@@ -13,19 +13,19 @@ public class ServiceEmployeeFactory {
         return bEmployee.accept(this);
     }
 
-    public Carrier createServiceEmployee(Carrier bEmployee){
+    public Carrier createServiceEmployee(Domain.Business.Objects.Employee.Carrier bEmployee){
         return new Carrier(bEmployee);
     }
 
-    public Cashier createServiceEmployee(Cashier bEmployee){
+    public Cashier createServiceEmployee(Domain.Business.Objects.Employee.Cashier bEmployee){
         return new Cashier(bEmployee);
     }
 
-    public HR_Manager createServiceEmployee(HR_Manager bEmployee){
+    public HR_Manager createServiceEmployee(Domain.Business.Objects.Employee.HR_Manager bEmployee){
         return new HR_Manager(bEmployee);
     }
 
-    public Logistics_Manager createServiceEmployee(Logistics_Manager bEmployee){
+    public Logistics_Manager createServiceEmployee(Domain.Business.Objects.Employee.Logistics_Manager bEmployee){
         return new Logistics_Manager(bEmployee);
     }
 
@@ -33,7 +33,7 @@ public class ServiceEmployeeFactory {
         return new Sorter(bEmployee);
     }
 
-    public Storekeeper createServiceEmployee(Storekeeper bEmployee){
+    public Storekeeper createServiceEmployee(Domain.Business.Objects.Employee.Storekeeper bEmployee){
         return new Storekeeper(bEmployee);
     }
 
