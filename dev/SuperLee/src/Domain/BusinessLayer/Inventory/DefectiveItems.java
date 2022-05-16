@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DefectiveItems {
+    private int id;
     private Date date;
     private int storeID;
     private int productID;
@@ -16,7 +17,8 @@ public class DefectiveItems {
     private String description;
     private Defect defect;
 
-    public DefectiveItems(Defect defect ,Date date, int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
+    public DefectiveItems(int id, Defect defect, Date date, int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
+        this.id = id;
         this.date = date;
         this.storeID = storeID;
         this.productID = productID;
@@ -27,6 +29,9 @@ public class DefectiveItems {
         this.defect = defect;
     }
 
+    public int getId() {
+        return id;
+    }
     public Date getDate() {
         return date;
     }

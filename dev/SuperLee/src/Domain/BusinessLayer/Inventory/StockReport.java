@@ -1,9 +1,6 @@
 package Domain.BusinessLayer.Inventory;
 
-import Domain.PersistenceLayer.Controllers.StockReportDAO;
-
-import java.util.HashMap;
-import java.util.Map;
+import Domain.PersistenceLayer.Controllers.StockReportDataMapper;
 
 public class StockReport {
 
@@ -11,17 +8,17 @@ public class StockReport {
     private int productID;
     private int amountInStore;
     private int amountInWarehouse;
-    private Map<Integer, Integer> amountInDeliveries; //orderID, amount
+    private int amountInDeliveries;
     private int minAmountInStore;
     private int targetAmountInStore;
-    private final static StockReportDAO dao = new StockReportDAO();
+    private final static StockReportDataMapper dataMapper = new StockReportDataMapper();
 
-    public StockReport(int storeID, int productID, String productName, int amountInStore, int amountInWarehouse, int minAmountInStore, int targetAmountInStore) {
+    public StockReport(int storeID, int productID, int amountInStore, int amountInWarehouse, int minAmountInStore, int targetAmountInStore, int amountInDelivery) {
         this.storeID = storeID;
         this.productID = productID;
         this.amountInStore = amountInStore;
         this.amountInWarehouse = amountInWarehouse;
-        this.amountInDeliveries = new HashMap<>();
+        this.amountInDeliveries = amountInDelivery;
         this.minAmountInStore = minAmountInStore;
         this.targetAmountInStore = targetAmountInStore;
     }
@@ -38,18 +35,18 @@ public class StockReport {
         return minAmountInStore;
     }
     public int getTargetAmountInStore() { return targetAmountInStore; }
-    public Map<Integer, Integer> getAmountInDeliveries() { return amountInDeliveries; }
+    public Integer getAmountInDeliveries() { return amountInDeliveries; }
 
     public void removeItemsFromStore(int amount, boolean inWarehouse) {
         if ((!inWarehouse && amountInStore-amount<0) || (inWarehouse && amountInWarehouse-amount<0))
             throw new IllegalArgumentException("Can not buy or remove more items than in stock - please check amount");
         if (inWarehouse) {
             amountInWarehouse -= amount;
-            dao.updateInWarehouse(productID, storeID, amountInWarehouse);
+            dataMapper.updateInWarehouse(productID, storeID, amountInWarehouse);
         }
         else {
             amountInStore -= amount;
-            dao.updateInStore(productID, storeID, amountInStore);
+            dataMapper.updateInStore(productID, storeID, amountInStore);
         }
     }
 
@@ -58,19 +55,19 @@ public class StockReport {
             throw new IllegalArgumentException("Can not move more items than in the warehouse");
         amountInWarehouse-=amount;
         amountInStore+=amount;
-        dao.updateInWarehouse(productID, storeID, amountInWarehouse);
-        dao.updateInStore(productID, storeID, amountInStore);
+        dataMapper.updateInWarehouse(productID, storeID, amountInWarehouse);
+        dataMapper.updateInStore(productID, storeID, amountInStore);
     }
 
-    public void addItems(int amount, int orderID) {
+    public void addItems(int amount) {
         amountInWarehouse+=amount;
-        dao.updateInWarehouse(productID, storeID, amountInWarehouse);
-        amountInDeliveries.remove(orderID); //@TODO maybe we need to add this to db
+        dataMapper.updateInWarehouse(productID, storeID, amountInWarehouse);
+        amountInDeliveries-=amount;
     }
 
     public void returnItems(int amount) {
         amountInStore+=amount;
-        dao.updateInStore(productID, storeID, amountInStore);
+        dataMapper.updateInStore(productID, storeID, amountInStore);
     }
 
     public boolean isLow() { return minAmountInStore > getTotalAmount(); }
@@ -81,7 +78,7 @@ public class StockReport {
         if (min > targetAmountInStore)
             throw new IllegalArgumentException("New min cannot be greater than target. target is currently " + targetAmountInStore);
         minAmountInStore = min;
-        dao.updateMin(productID, storeID, minAmountInStore);
+        dataMapper.updateMin(productID, storeID, minAmountInStore);
     }
 
     public void changeTarget(int target) {
@@ -90,7 +87,7 @@ public class StockReport {
         if (target < minAmountInStore)
             throw new IllegalArgumentException("New target cannot be less than min. Min is currently " + minAmountInStore);
         targetAmountInStore = target;
-        dao.updateTarget(productID, storeID, targetAmountInStore);
+        dataMapper.updateTarget(productID, storeID, targetAmountInStore);
     }
 
 //    public void changeName(String name) {
@@ -98,16 +95,14 @@ public class StockReport {
 //    }
 
     private int getTotalAmountInDeliveries() {
-        int total = 0;
-        for (int amount: amountInDeliveries.values())
-            total += amount;
-        return total;
+        return amountInDeliveries;
     }
     private int getTotalAmount() { return getTotalAmountInDeliveries()+amountInStore+amountInWarehouse;}
     public int getAmountForOrder() {
         return targetAmountInStore - getTotalAmount();
     }
-    public void addDelivery(int orderID, int amount) {
-        amountInDeliveries.put(orderID, amount);
+    public void addDelivery(int amount) {
+        amountInDeliveries+=amount;
+        dataMapper.updateInDelivery(productID, storeID, amountInDeliveries);
     }
 }

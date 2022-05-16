@@ -16,10 +16,10 @@ public class SalesToProductDAO extends DAO {
     }
     public List<Integer> getProductsOfSale(int sale) {
         try {
-            ResultSet rs = select(getConnection(), Arrays.asList(PRODUCT_COLUMN), Arrays.asList(SALE_COLUMN), Arrays.asList(sale));
+            ResultSet rs = select(getConnection(), Arrays.asList(SALE_COLUMN), Arrays.asList(sale));
             List<Integer> products = new ArrayList<>();
             while (rs.next()) {
-                products.add(rs.getInt(1));
+                products.add(rs.getInt(PRODUCT_COLUMN));
             }
             return products;
         }
@@ -31,16 +31,25 @@ public class SalesToProductDAO extends DAO {
 
     public List<Integer> getSales(int product) {
         try {
-            ResultSet rs = select(getConnection(), Arrays.asList(SALE_COLUMN), Arrays.asList(PRODUCT_COLUMN), Arrays.asList(product));
+            ResultSet rs = select(getConnection(), Arrays.asList(PRODUCT_COLUMN), Arrays.asList(product));
             List<Integer> sales = new ArrayList<>();
             while (rs.next()) {
-                sales.add(rs.getInt(1));
+                sales.add(rs.getInt(SALE_COLUMN));
             }
             return sales;
         }
         catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void removeBySale(Object id) {
+        try {
+            remove(Arrays.asList(SALE_COLUMN), Arrays.asList(id));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

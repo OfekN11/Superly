@@ -39,10 +39,9 @@ public class ProductDataMapper extends DataMapper<Product> {
     @Override
     protected Product buildObject(ResultSet resultSet) {
         try {
-            Category c = categoryDataMapper.get(Integer.toString(resultSet.getInt(CATEGORY_COLUMN)));
             return new Product(resultSet.getInt(ID_COLUMN),
                     resultSet.getString(NAME_COLUMN),
-                    c,
+                    categoryDataMapper.get(Integer.toString(resultSet.getInt(CATEGORY_COLUMN))),
                     resultSet.getDouble(WEIGHT_COLUMN),
                     resultSet.getDouble(PRICE_COLUMN),
                     resultSet.getString(MANUFACTURER_COLUMN)
@@ -55,7 +54,13 @@ public class ProductDataMapper extends DataMapper<Product> {
     }
 
     public int remove(Object id) {
-        return remove(id);
+        try {
+            super.remove(id);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
@@ -102,8 +107,8 @@ public class ProductDataMapper extends DataMapper<Product> {
     }
 
     public Collection<Product> getAll() {
+        categoryDataMapper.getAll();
         try(Connection connection = getConnection()) {
-            categoryDataMapper.getAll();
             ResultSet instanceResult = select(connection);
             while (instanceResult.next()) {
                 Product_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));

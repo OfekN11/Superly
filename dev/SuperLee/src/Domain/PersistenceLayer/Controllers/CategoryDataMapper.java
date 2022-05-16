@@ -53,6 +53,7 @@ public class CategoryDataMapper extends DataMapper<Category> {
             insert(Arrays.asList(instance.getID(),
                     instance.getName(),
                     parentID));
+            Category_IDENTITY_MAP.put(Integer.toString(instance.getID()), instance);
         }
         catch (Exception e) {
             e.printStackTrace();

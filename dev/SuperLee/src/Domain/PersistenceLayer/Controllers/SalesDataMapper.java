@@ -2,6 +2,7 @@ package Domain.PersistenceLayer.Controllers;
 
 import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
 import Domain.BusinessLayer.Inventory.Product;
+import Domain.BusinessLayer.Inventory.StockReport;
 import Domain.PersistenceLayer.Abstract.DataMapper;
 import Domain.PersistenceLayer.Abstract.LinkDAO;
 
@@ -12,8 +13,8 @@ import java.util.*;
 public class SalesDataMapper extends DataMapper<SaleToCustomer> {
 
     private final static Map<String, SaleToCustomer> IDENTITY_MAP = new HashMap<>();
-    private final static CategoryDataMapper categoryDataMapper = new CategoryDataMapper();
-    private final static ProductDataMapper productDataMapper = new ProductDataMapper();
+//    private final static CategoryDataMapper categoryDataMapper = new CategoryDataMapper();
+//    private final static ProductDataMapper productDataMapper = new ProductDataMapper();
     private final static SalesToProductDAO salesToProductDAO = new SalesToProductDAO();
     private final static SalesToCategoryDAO salesToCategoryDAO = new SalesToCategoryDAO();
 
@@ -62,6 +63,8 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
     }
 
     public int remove(Object id) {
+        salesToProductDAO.removeBySale(id);
+        salesToCategoryDAO.removeBySale(id);
         return remove(id);
     }
 
@@ -96,24 +99,30 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
     }
 
     public Collection<SaleToCustomer> getSalesByCategory(int category) {
+        List<SaleToCustomer> output = new ArrayList<>();
         List<Integer> saleIDs = salesToCategoryDAO.getSales(category);
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection, ID_COLUMN, Collections.singletonList(saleIDs));
             while (instanceResult.next()) {
-                IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
+                SaleToCustomer curr = buildObject(instanceResult);
+                output.add(curr);
+                IDENTITY_MAP.put(Integer.toString(curr.getId()), curr);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return IDENTITY_MAP.values();
+        return output;
     }
 
     public Collection<SaleToCustomer> getSalesByProduct(int product) {
+        List<SaleToCustomer> output = new ArrayList<>();
         List<Integer> saleIDs = salesToProductDAO.getSales(product);
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection, ID_COLUMN, Collections.singletonList(saleIDs));
             while (instanceResult.next()) {
-                IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
+                SaleToCustomer curr = buildObject(instanceResult);
+                output.add(curr);
+                IDENTITY_MAP.put(Integer.toString(curr.getId()), curr);
             }
         } catch (Exception e) {
             e.printStackTrace();
