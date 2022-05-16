@@ -106,6 +106,12 @@ public class Product {
         stockReports.get(storeID).removeItemsFromStore(amount, inWarehouse);
     }
 
+    public void addItems(int storeId, Date date, int supplierID, int amountBought, double pricePaid, double originalPrice, int orderID) {
+        if (!stockReports.containsKey(storeId))
+            throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
+        stockReports.get(storeId).addItems(amountBought);
+    }
+
     public void moveItems(int storeID, int amount) { //from warehouse to store
         if (!stockReports.containsKey(storeID))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");

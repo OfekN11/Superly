@@ -1,7 +1,7 @@
 package InventoryTests;
 
 import Domain.BusinessLayer.Inventory.Category;
-import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
+import Domain.BusinessLayer.Inventory.SaleToCustomer;
 import Domain.BusinessLayer.Inventory.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
