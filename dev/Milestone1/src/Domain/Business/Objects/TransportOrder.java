@@ -11,7 +11,7 @@ public class TransportOrder {
     private int ID;
     private Source src;
     private Destination dst;
-    private HashMap<String, Integer> productList;
+    private HashMap<Integer, Integer> productList;
 
     public TransportOrder(Source src, Destination dst) {
         ID = incID++;
@@ -20,7 +20,7 @@ public class TransportOrder {
         this.productList = new HashMap<>();
     }
 
-    public TransportOrder(Source src, Destination dst, HashMap<String, Integer> productList) {
+    public TransportOrder(Source src, Destination dst, HashMap<Integer, Integer> productList) {
         ID = incID++;
         this.src = src;
         this.dst = dst;
@@ -47,18 +47,18 @@ public class TransportOrder {
         this.dst = dst;
     }
 
-    public HashMap<String, Integer> getProductList() {
+    public HashMap<Integer, Integer> getProductList() {
         return productList;
     }
 
-    public void setProductList(HashMap<String, Integer> productList) {
+    public void setProductList(HashMap<Integer, Integer> productList) {
         this.productList = productList;
     }
 
-    private HashMap<String, Integer> splitProductList()
+    private HashMap<Integer, Integer> splitProductList()
     {
-        HashMap<String, Integer> newProductList = new HashMap<>();
-        for (String item: productList.keySet()) {
+        HashMap<Integer, Integer> newProductList = new HashMap<>();
+        for (Integer item: productList.keySet()) {
             if (productList.size() / 2 > newProductList.size())
             {
                 newProductList.put(item, productList.get(item));
@@ -81,18 +81,4 @@ public class TransportOrder {
         }
     }
 
-    private List<String> getProductNameList()
-    {
-        List<String> pl = new ArrayList<>();
-        for(String product: productList.keySet())
-        {
-            pl.add(product);
-        }
-        return pl;
-    }
-
-    public DestinationDocument toDocument()
-    {
-        return new DestinationDocument(dst.getId(), getProductNameList());
-    }
 }

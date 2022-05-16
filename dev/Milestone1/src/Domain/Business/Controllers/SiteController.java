@@ -1,18 +1,21 @@
 package Domain.Business.Controllers;
 
+import Domain.Business.Objects.Address;
 import Domain.Business.Objects.Destination;
 import Domain.Business.Objects.Source;
+import Globals.Enums.ShippingAreas;
 
 import java.util.HashMap;
 
 public class SiteController {
-    //TODO: visitor pattren
     private HashMap<Integer, Source> sources;
     private HashMap<Integer, Destination> destinations;
     private static SiteController instance = null;
     private SiteController() {
         sources = new HashMap<>();
         destinations = new HashMap<>();
+        //TODO: In Milestone 3 connect the data to DB
+        sources.put(1, new Source(new Address(ShippingAreas.North, "Tiberia Shlomo Hamelech 136"), "Shalom", "050"));
     }
 
     public static SiteController getInstance(){
