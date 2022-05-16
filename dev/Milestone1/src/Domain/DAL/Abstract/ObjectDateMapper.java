@@ -68,7 +68,6 @@ public abstract class ObjectDateMapper<T> extends DataMapper {
     }
     public int delete(String id) throws SQLException {
         Set<LinkDAO> links = getAllLinkDTOs();
-
         for (LinkDAO link : links)
             link.remove(id);
         return remove(id);
