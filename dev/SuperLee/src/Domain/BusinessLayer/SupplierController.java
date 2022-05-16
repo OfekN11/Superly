@@ -16,7 +16,7 @@ public class SupplierController {
 
     public SupplierController(){
         suppliersDAO = new SuppliersDAO();
-        //orderDAO = new OrderDAO();
+        orderDAO = new OrderDAO();
 
         //maybe add dataBase to save globalId for orders and suppliers and transfer the id to suppliersDAO and OrderDAO
 
@@ -25,7 +25,8 @@ public class SupplierController {
 
     public void loadSuppliersData(){
         try {
-            suppliersDAO.loadAllSuppliersInfo();
+            int largestId = suppliersDAO.loadAllSuppliersInfo();
+            Supplier.setGlobalId(largestId + 1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

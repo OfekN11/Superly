@@ -57,7 +57,6 @@ public class Supplier {
         this.bankNumber = bankNumber;
         this.address = address;
         this.payingAgreement = payingAgreement;
-        globalID ++;
 
         this.manufacturers = new ArrayList<>();
         this.contacts = new ArrayList<>();
@@ -73,7 +72,6 @@ public class Supplier {
         this.bankNumber = bankNumber;
         this.address = address;
         this.payingAgreement = payingAgreement;
-        globalID ++;
 
         this.contacts = contacts;
         this.manufacturers = manufacturers;
@@ -83,6 +81,9 @@ public class Supplier {
         agreement = null;
     }
 
+    public static void setGlobalId(int id){
+        globalID = id + 1;
+    }
 
     public int getId() {
         return id;

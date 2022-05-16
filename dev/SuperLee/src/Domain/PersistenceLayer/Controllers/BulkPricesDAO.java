@@ -15,7 +15,7 @@ public class BulkPricesDAO extends DAO {
 
 
     public BulkPricesDAO() {
-        super("BulkPrices");
+        super("BukPrices");
     }
 
 

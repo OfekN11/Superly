@@ -80,7 +80,7 @@ public class AgreementController {
         byOrderDAO.addTime(supplierId, list);
     }
 
-    public Agreement loadAgreement(int supplierId, int agreementType) throws SQLException {
+    public Agreement loadAgreementAndItems(int supplierId, int agreementType) throws SQLException {
         Agreement agreement;
         switch(agreementType){
             case ROUTINE :

@@ -307,19 +307,19 @@ public class SuppliersDAO extends DataMapper<Supplier> {
     }
 
 
-    public void loadAllSuppliersInfo() throws SQLException {
-        loadAllSuppliers();
-        loadAllAgreements();
-        //loadAllAgreementsItems();
+    public int loadAllSuppliersInfo() throws SQLException {
+        int largestId = loadAllSuppliers();
+        loadAllAgreementsAndAgreementItems();
+        return largestId;
     }
 
-    private void loadAllAgreements()  {
+    private void loadAllAgreementsAndAgreementItems()  {
         try(Connection connection = getConnection()) {
             for(String id : SUPPLIER_IDENTITY_MAP.keySet()){
                 ResultSet resultSet = select(connection, Arrays.asList(AGREEMENTTYPE_COLUMN), Arrays.asList(ID_COLUMN), Arrays.asList(Integer.parseInt(id)));
                 if(resultSet.next()){
                     int agreementType = resultSet.getInt(1);
-                    Agreement currAgreement = agreementController.loadAgreement(Integer.parseInt(id), agreementType);
+                    Agreement currAgreement = agreementController.loadAgreementAndItems(Integer.parseInt(id), agreementType);
                     SUPPLIER_IDENTITY_MAP.get(id).addAgreementFromDB(currAgreement);
                 }
             }
@@ -329,7 +329,8 @@ public class SuppliersDAO extends DataMapper<Supplier> {
     }
 
 
-    private void loadAllSuppliers() {
+    private int loadAllSuppliers() {
+        ArrayList<Integer> supplierIds = new ArrayList<>();  // get the largest one and set global id to be biggest+1
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection);
             while (instanceResult.next()) {
@@ -340,6 +341,7 @@ public class SuppliersDAO extends DataMapper<Supplier> {
 
                 //Load everything!
                 int id = instanceResult.getInt(1);
+                supplierIds.add(id);
                 Supplier currSupplier = new Supplier(id, instanceResult.getInt(2),
                         instanceResult.getString(3), instanceResult.getString(4), instanceResult.getString(5)
                         , contactDAO.getAllSupplierContact(id), manufacturerDAO.getAllSupplierManufacturer(id));
@@ -348,5 +350,8 @@ public class SuppliersDAO extends DataMapper<Supplier> {
         } catch (Exception throwables) {
             System.out.println(throwables.getMessage());
         }
+
+        Collections.sort(supplierIds);
+        return supplierIds.get(0);
     }
 }

@@ -32,18 +32,10 @@ public class Main {
 
 
     private static void testSuppliers() {
-                /*
-        ArrayList<Contact> contacts = new ArrayList<>();
-        contacts.add(new Contact("Yael", "0508647894"));      contacts.add(new Contact("Avi", "086475421"));
-        ArrayList<String> manufacturers = new ArrayList<>();
-        manufacturers.add("Osem") ; manufacturers.add("Elit");
-        suppliersDAO.addSupplier(new Supplier("Avi", 123456, "Beer sheva" , "check", contacts, manufacturers), contacts, manufacturers);
-        suppliersDAO.addSupplierManufacturer(1, "Osem");
-        suppliersDAO.addSupplierManufacturer(1, "Elit");
-         */
 
-        /*
+
         SupplierController supplierController = new SupplierController();
+        /*
         try {
             supplierController.loadSuppliersData();
             ArrayList<Pair<String, String >> contacts = new ArrayList<>();
