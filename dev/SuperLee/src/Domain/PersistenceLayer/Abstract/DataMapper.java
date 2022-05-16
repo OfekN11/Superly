@@ -14,25 +14,27 @@ public abstract class DataMapper<T> extends DAO {
         super(tableName);
     }
 
-    public T get(String id) throws SQLException {
+    public T get(String id) throws Exception {
         Map<String,T> map = getMap();
         T output = map.get(id);
         if (output != null)
             return output;
 
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection,id);
+        try(Connection connection = getConnection()){
+            ResultSet instanceResult = select(connection, id);
             if (!instanceResult.next())
                 return null;
+
+
             output = buildObject(instanceResult);
-            map.put(id,output);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            map.put(id, output);
+            return output;
         }
-        throw new RuntimeException("this is bad");
+        catch (SQLException e){
+            throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+        }
     }
+
 
     /**
      *

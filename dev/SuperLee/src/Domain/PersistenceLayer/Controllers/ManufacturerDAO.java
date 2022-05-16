@@ -28,7 +28,8 @@ public class ManufacturerDAO extends DAO {
 
     public void addManufacturer(int id, String manufacturer) {
         try {
-            insert(Arrays.asList( String.valueOf(id) , manufacturer));
+            if(!manufacturers.contains(manufacturer))
+                insert(Arrays.asList( String.valueOf(id) , manufacturer));
         } catch (SQLException throwables) {
             System.out.println(throwables.getMessage());
         }

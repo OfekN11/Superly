@@ -11,6 +11,7 @@ import Domain.PersistenceLayer.Controllers.SuppliersDAO;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Supplier {
@@ -82,7 +83,7 @@ public class Supplier {
     }
 
     public static void setGlobalId(int id){
-        globalID = id + 1;
+        globalID = id ;
     }
 
     public int getId() {
@@ -579,8 +580,15 @@ public class Supplier {
             return finishedOrders.get(orderId);
     }
 
-    public boolean orderExists(int id, OrderDAO orderDAO) throws SQLException {
-        return ordersToBe.containsKey(id) || ordersInTheNext24Hours.containsKey(id) || finishedOrders.containsKey(id) || orderDAO.containsKey(id);
+    public boolean orderExists(int id, OrderDAO orderDAO) throws Exception {
+        if(ordersToBe.containsKey(id) || ordersInTheNext24Hours.containsKey(id) || finishedOrders.containsKey(id))
+            return true;
+        if(orderDAO.containsKey(id)){
+            Order order = orderDAO.getOrder(id);
+            //Where do I put the Order? in what list
+            return true;
+        }
+        return false;
     }
 
 
@@ -613,7 +621,7 @@ public class Supplier {
         //check all orders dates and return the ones for tomorrow
         ArrayList<Order> orders = new ArrayList<>();
         for(Order order : ordersToBe.values()){
-            if(order.getDaysUntilOrder(Calendar.getInstance().getTime()) == 1){
+            if(order.getDaysUntilOrder(LocalDate.now()) == 1){
                 orders.add(order);
             }
         }

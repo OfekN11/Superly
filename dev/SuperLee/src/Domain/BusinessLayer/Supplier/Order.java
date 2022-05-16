@@ -2,6 +2,9 @@ package Domain.BusinessLayer.Supplier;
 
 import Domain.PersistenceLayer.Controllers.OrderDAO;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,10 +13,11 @@ import java.util.List;
 public class Order {
 
 
+
     private int id;
     private int supplierID;
-    private Date creationDate;
-    private Date arrivalTime;
+    private LocalDate creationDate;
+    private LocalDate arrivalTime;
     private ArrayList<OrderItem> orderItems;
     private int storeID;
     private static int globalID = 1;
@@ -23,14 +27,25 @@ public class Order {
         this.supplierID = supplierID;
         this.id = globalID;
         globalID++;
-        //creationDate = new Date();
-        creationDate = Calendar.getInstance().getTime();
+
+        //this.creationDate = Calendar.getInstance().getTime();
+        this.creationDate = getTodayDate();
         this.orderItems = new ArrayList<>();
         this.storeID = storeID;
 
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, daysToArrival);
-        arrivalTime = cal.getTime();
+        //Calendar cal = Calendar.getInstance();
+        //cal.add(Calendar.DATE, daysToArrival);
+        //arrivalTime = cal.getTime();
+
+        arrivalTime = calculateArrivalTime(creationDate, daysToArrival);
+    }
+
+    private LocalDate calculateArrivalTime(LocalDate creationDate, int daysToArrival) {
+        return creationDate.plusDays(daysToArrival);
+    }
+
+    private LocalDate getTodayDate() {
+        return LocalDate.now();
     }
 
     public Order(int daysToArrival, int supplierID, int storeID, OrderItem item){
@@ -38,26 +53,28 @@ public class Order {
         this.id = globalID;
         globalID++;
         //creationDate = new Date();
-        creationDate = Calendar.getInstance().getTime();
+        this.creationDate = getTodayDate();
         this.orderItems = new ArrayList<>();
         this.storeID = storeID;
 
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, daysToArrival);
-        arrivalTime = cal.getTime();
+        //Calendar cal = Calendar.getInstance();
+        //cal.add(Calendar.DATE, daysToArrival);
+        //arrivalTime = cal.getTime();
+        arrivalTime = calculateArrivalTime(creationDate, daysToArrival);
+
         orderItems.add(item);
     }
 
 
     //For uploading from dal
-    public Order(int id, int supplierId, Date creationDate, Date arrivalTime, int storeID, ArrayList<OrderItem> orderItems){
+    public Order(int id, int supplierId, LocalDate creationDate, LocalDate arrivalTime, int storeID){
         this.id = id;
         this.supplierID = supplierId;
         this.creationDate = creationDate;
         this.arrivalTime = arrivalTime;
-        globalID++;
+        //globalID++;
         this.storeID = storeID;
-        this.orderItems = orderItems;
+        this.orderItems = new ArrayList<>();
     }
 
 
@@ -65,23 +82,30 @@ public class Order {
     public Order(Order orderArriavalTimePassed) {
         this.id = globalID;
         this.supplierID = orderArriavalTimePassed.getSupplierId();
-        this.creationDate = Calendar.getInstance().getTime();
+        this.creationDate = getTodayDate();
         this.orderItems = orderArriavalTimePassed.getOrderItems();
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 1);
-        arrivalTime = cal.getTime();
+//        Calendar cal = Calendar.getInstance();
+//        cal.add(Calendar.DATE, 1);
+//        arrivalTime = cal.getTime();
+        arrivalTime = calculateArrivalTime(creationDate, 1);
+
         globalID++;
         this.storeID = orderArriavalTimePassed.getStoreID();
     }
 
     public Order(Order order, ArrayList<OrderItem> orderItems) {
         this.supplierID = order.getSupplierId();
-        this.creationDate = Calendar.getInstance().getTime();
+        this.creationDate = getTodayDate();
         this.orderItems = orderItems;
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 1);
-        arrivalTime = cal.getTime();
+//        Calendar cal = Calendar.getInstance();
+//        cal.add(Calendar.DATE, 1);
+//        arrivalTime = cal.getTime();
+        arrivalTime = calculateArrivalTime(creationDate, 1);
         this.storeID = order.getStoreID();
+    }
+
+    public static void setGlobalId(int i) {
+        globalID = i;
     }
 
 
@@ -143,7 +167,7 @@ public class Order {
         }
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return creationDate;
     }
     public int getStoreID() { return storeID; } //WROTE BY AMIR
@@ -156,11 +180,14 @@ public class Order {
     }
 
     public boolean changeable(){
-        return arrivalTime.after(Calendar.getInstance().getTime());
+        return arrivalTime.isAfter(LocalDate.now());
+        //return arrivalTime.after(Calendar.getInstance().getTime());
     }
 
     public boolean passed(){
-        return arrivalTime.before(Calendar.getInstance().getTime());
+        return arrivalTime.isBefore(LocalDate.now());
+
+//        return arrivalTime.before(Calendar.getInstance().getTime());
     }
 
 
@@ -184,9 +211,11 @@ public class Order {
         return null;
     }
 
-    public int getDaysUntilOrder(Date currDate) {
-        long diff = arrivalTime.getTime() - currDate.getTime();
-        return (int) (diff / (1000*60*60*24));
+    public int getDaysUntilOrder(LocalDate currDate) {
+        Period period = Period.between(arrivalTime, currDate);
+        return period.getDays();
+        //long diff = arrivalTime.getTime() - currDate.getTime();
+        //return (int) (diff / (1000*60*60*24));
     }
 
     public int getQuantityOfItem(int productId) {
@@ -197,11 +226,15 @@ public class Order {
         return 0;
     }
 
-    public Date getCreationTime() {
+    public LocalDate getCreationTime() {
         return creationDate;
     }
 
-    public Date getArrivaltime() {
+    public LocalDate getArrivaltime() {
         return arrivalTime;
+    }
+
+    public void uploadItemsFromDB(ArrayList<OrderItem> items) {
+        this.orderItems = items;
     }
 }

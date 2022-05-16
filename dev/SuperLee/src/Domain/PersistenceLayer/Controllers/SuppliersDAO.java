@@ -81,8 +81,8 @@ public class SuppliersDAO extends DataMapper<Supplier> {
 
         try {
             return get(String.valueOf(id));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
         /*
@@ -351,7 +351,9 @@ public class SuppliersDAO extends DataMapper<Supplier> {
             System.out.println(throwables.getMessage());
         }
 
-        Collections.sort(supplierIds);
+        Collections.sort(supplierIds, Collections.reverseOrder());
+        if(supplierIds.isEmpty())
+            return 0;
         return supplierIds.get(0);
     }
 }

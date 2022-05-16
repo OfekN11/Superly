@@ -10,6 +10,7 @@ import Domain.ServiceLayer.SupplierService;
 import PresentationLayer.Screens.MainMenu;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,13 +19,14 @@ public class Main {
     public static void main(String[] args) {
 
 
+        /*
         BackendController controller = new BackendController();
         controller.addNewCategory("catName", 0);
         controller.newProduct("productName", 1,1,1,"1");
         new Thread(new MainMenu(controller)).start();
+         */
 
-
-//        testSuppliers();
+        testSuppliers();
 
     }
 
@@ -33,11 +35,14 @@ public class Main {
 
     private static void testSuppliers() {
 
-
         SupplierController supplierController = new SupplierController();
-        /*
+
         try {
             supplierController.loadSuppliersData();
+            supplierController.orderExists(1, 1);
+            supplierController.uploadOrderItems(1);
+
+            /*
             ArrayList<Pair<String, String >> contacts = new ArrayList<>();
             contacts.add(new Pair<>("Yael", "0508647894"));             contacts.add(new Pair<>("Avi", "086475421"));
             ArrayList<String> manufacturers = new ArrayList<>();        manufacturers.add("Osem") ; manufacturers.add("Elit");
@@ -46,17 +51,21 @@ public class Main {
             ArrayList<String> items = new ArrayList<>();        items.add("1 , 1,  bamba , Osem , 5 , 100 , 20 ");      items.add("2 , 2, Halva , Elit , 10 , 100 , 20 ");
             supplierController.addItemsToAgreement(1, items);
 
-            supplierController.removeSupplier(1);
+            int orderId = supplierController.addNewOrder(1,1);
+            int orderId2 = supplierController.addNewOrder(1,1);
 
+            supplierController.addItemToOrder(1, orderId, 1, 50);
+            supplierController.addItemToOrder(1, orderId2, 2, 100);
+
+            supplierController.updateItemQuantityInOrder(1, orderId, 1, 1000);
+            //supplierController.removeSupplier(1);
+
+
+             */
         } catch (Exception e) {
-            try {
-                supplierController.removeSupplier(1);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
             e.printStackTrace();
         }
-        */
+
 
     }
 

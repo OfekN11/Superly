@@ -2,8 +2,6 @@ package Domain.PersistenceLayer.Controllers;
 
 import Domain.BusinessLayer.Supplier.*;
 import Domain.PersistenceLayer.Abstract.DAO;
-import Domain.PersistenceLayer.Abstract.DataMapper;
-import Domain.PersistenceLayer.Abstract.LinkDAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -40,8 +38,8 @@ public class OrderItemDAO extends DAO {
         ORDER_ITEM_IDENTITY_MAP.put(String.valueOf(orderItem.getProductId()), orderItem);
     }
 
-    public List<OrderItem> uploadAllItemsFromOrder(int orderId, AgreementItemDAO agreementItemDAO){
-        List<OrderItem> output = new ArrayList<>();
+    public ArrayList<OrderItem> uploadAllItemsFromOrder(int orderId, AgreementItemDAO agreementItemDAO){
+        ArrayList<OrderItem> output = new ArrayList<>();
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection, orderId);
 
@@ -52,6 +50,7 @@ public class OrderItemDAO extends DAO {
                         itemName, instanceResult.getInt(4), instanceResult.getFloat(5),
                         instanceResult.getInt(6), instanceResult.getDouble(7));
                 ORDER_ITEM_IDENTITY_MAP.put(String.valueOf(currItem.getProductId()), currItem);
+                output.add(currItem);
             }
         } catch (Exception throwables) {
             System.out.println(throwables.getMessage());
@@ -75,4 +74,10 @@ public class OrderItemDAO extends DAO {
     public void updateItemFinalPrice(int orderId, int productId, double finalPrice) throws SQLException {
         update(Arrays.asList(FINAL_PRICE_COLUMN), Arrays.asList(finalPrice), Arrays.asList(PRODUCT_ID_COLUMN,ORDER_ID_COLUMN), Arrays.asList(productId, orderId));
     }
+
+    public void removeOrders(List<Object> ordersIds) throws SQLException {
+        remove(Arrays.asList(ORDER_ID_COLUMN), ordersIds);
+    }
+
+
 }

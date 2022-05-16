@@ -1,11 +1,14 @@
 package Domain.BusinessLayer;
 
 import Domain.BusinessLayer.Supplier.*;
+import Domain.PersistenceLayer.Controllers.AgreementController;
+import Domain.PersistenceLayer.Controllers.AgreementItemDAO;
 import Domain.PersistenceLayer.Controllers.OrderDAO;
 import Domain.PersistenceLayer.Controllers.SuppliersDAO;
 import Globals.Pair;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 
 public class SupplierController {
@@ -13,12 +16,9 @@ public class SupplierController {
     private SuppliersDAO suppliersDAO;
     private OrderDAO orderDAO;
 
-
     public SupplierController(){
         suppliersDAO = new SuppliersDAO();
         orderDAO = new OrderDAO();
-
-        //maybe add dataBase to save globalId for orders and suppliers and transfer the id to suppliersDAO and OrderDAO
 
     }
 
@@ -27,6 +27,8 @@ public class SupplierController {
         try {
             int largestId = suppliersDAO.loadAllSuppliersInfo();
             Supplier.setGlobalId(largestId + 1);
+            int largerstOrderid = orderDAO.getGlobalId();
+            Order.setGlobalId(largerstOrderid + 1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -56,6 +58,7 @@ public class SupplierController {
     public void removeSupplier(int id) throws Exception {
         if(!supplierExist(id))
             throw new Exception("There is no supplier with this ID!");
+        orderDAO.removeSupplierOrders(id);
         suppliersDAO.removeSupplier(id);
     }
 
@@ -500,6 +503,7 @@ public class SupplierController {
 
     public Order orderHasArrived(int orderID, int supplierID) throws Exception {
         Order order = getOrderObject(supplierID, orderID);
+        order.uploadItemsFromDB(uploadOrderItems(order.getId()));
         return order;
     }
 
@@ -701,7 +705,7 @@ public class SupplierController {
     private ArrayList<Order> filterOrdersArrivalTomorrow(ArrayList<Order> orders) {
         ArrayList<Order> result = new ArrayList<>();
         for(Order order : orders){
-            if(order.getDaysUntilOrder(Calendar.getInstance().getTime()) == 1);
+            if(order.getDaysUntilOrder(LocalDate.now()) == 1);
                 result.add(order);
         }
         return result;
@@ -743,6 +747,10 @@ public class SupplierController {
 
     private void updateOrderDAO(Order newOrder) throws SQLException {
         orderDAO.updateOrder(newOrder);
+    }
+
+    public ArrayList<OrderItem> uploadOrderItems(int orderId){
+        return orderDAO.uploadAllItemsFromOrder(orderId, suppliersDAO.getAgreementItemDAO());
     }
 
 

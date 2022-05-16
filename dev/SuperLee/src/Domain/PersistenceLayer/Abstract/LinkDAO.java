@@ -13,12 +13,14 @@ public abstract class LinkDAO<T> extends DataMapper{
         super(tableName);
     }
 
-    public Set<T> get(String id) throws SQLException {
+    public Set<T> get(String id){
         Set<T> output = new HashSet<>();
         try(Connection connection = getConnection()){
             ResultSet resultSet = select(connection,id);
             while (resultSet.next())
                 output.add(buildObject(resultSet));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return output;
     }

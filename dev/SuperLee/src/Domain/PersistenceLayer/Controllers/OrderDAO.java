@@ -1,6 +1,7 @@
 package Domain.PersistenceLayer.Controllers;
 
 import Domain.BusinessLayer.Inventory.Category;
+import Domain.BusinessLayer.Supplier.Contact;
 import Domain.BusinessLayer.Supplier.Order;
 import Domain.BusinessLayer.Supplier.OrderItem;
 import Domain.BusinessLayer.Supplier.Supplier;
@@ -10,6 +11,9 @@ import Domain.PersistenceLayer.Abstract.LinkDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class OrderDAO extends DataMapper<Order> {
@@ -27,12 +31,13 @@ public class OrderDAO extends DataMapper<Order> {
 
 
     public OrderDAO(){
-        super("Order");
+        super("Orders");
         orderItemDAO = new OrderItemDAO();
     }
 
-    public Order getOrder(int orderId) throws SQLException {
-
+    public Order getOrder(int orderId) throws Exception {
+        if(ORDER_IDENTITY_MAP.containsKey(String.valueOf(orderId)))
+            return ORDER_IDENTITY_MAP.get(String.valueOf(orderId));
         return get(String.valueOf(orderId));
     }
 
@@ -49,13 +54,12 @@ public class OrderDAO extends DataMapper<Order> {
 
     @Override
     protected Order buildObject(ResultSet instanceResult) throws Exception {
+
         return new Order(instanceResult.getInt(ORDER_ID_COLUMN),
                 instanceResult.getInt(SUPPLIER_ID_COLUMN),
-                instanceResult.getDate(CREATION_TIME_COLUMN),
-                instanceResult.getDate(ARRIVAL_TIME_COLUMN),
-                instanceResult.getInt(STORE_ID_COLUMN)
-                , null/*upload here OrderItems too? , how can I get access to agreementDAO */);
-                // TODO: 15/05/2022
+                LocalDate.parse(instanceResult.getString(CREATION_TIME_COLUMN)),
+                LocalDate.parse(instanceResult.getString(ARRIVAL_TIME_COLUMN)),
+                instanceResult.getInt(STORE_ID_COLUMN));
     }
 
     @Override
@@ -102,14 +106,12 @@ public class OrderDAO extends DataMapper<Order> {
         orderItemDAO.updateItemFinalPrice( orderId, productId, finalPrice);
     }
 
-    public boolean containsKey(int id) throws SQLException {
+    public boolean containsKey(int id) throws Exception {
         if(ORDER_IDENTITY_MAP.containsKey(String.valueOf(id)))
             return true;
         Order order = getOrder(id);
-        if(order == null)
-            return false;
-        ORDER_IDENTITY_MAP.put(String.valueOf(order.getId()), order);
-        return true;
+
+        return order != null;
     }
 
     public void updateOrder(Order newOrder) throws SQLException {
@@ -133,4 +135,47 @@ public class OrderDAO extends DataMapper<Order> {
 
         return result;
     }
+
+    public int getGlobalId() {
+        ArrayList<Integer> ids = new ArrayList<>();
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = select(connection);
+            while (instanceResult.next()) {
+                ids.add(instanceResult.getInt(1));
+            }
+        } catch (Exception throwables) {
+            System.out.println(throwables.getMessage());
+        }
+        Collections.sort(ids, Collections.reverseOrder());
+        if(ids.isEmpty())
+            return 0;
+        return ids.get(0);
+    }
+
+    public void removeSupplierOrders(int supplierId) throws SQLException {
+        List<Object> ordersIds = getSupplierOrdersIds(supplierId);
+        orderItemDAO.removeOrders(ordersIds);
+        remove(Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
+    }
+
+    private ArrayList<Object> getSupplierOrdersIds(int supplierId) {
+        ArrayList<Object> ids = new ArrayList<>();
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = select(connection, Arrays.asList(ORDER_ID_COLUMN),  Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
+            while (instanceResult.next()) {
+                ids.add(instanceResult.getInt(1));
+            }
+        } catch (Exception throwables) {
+            System.out.println(throwables.getMessage());
+        }
+        return ids;
+    }
+
+    public ArrayList<OrderItem> uploadAllItemsFromOrder(int orderId, AgreementItemDAO agreementItemDAO) {
+        return orderItemDAO.uploadAllItemsFromOrder(orderId, agreementItemDAO);
+    }
+
+
+
 }
+
