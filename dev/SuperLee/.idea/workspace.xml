@@ -2,30 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14db89f2-b157-448b-aea3-2353a64a0cb5" name="Default Changelist" comment="stock warning changed">
-      <change beforePath="$PROJECT_DIR$/../../.idea/adss_group_l.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/adss_group_l.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperLee.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SuperLee.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/CategoryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/CategoryTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Category.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/StockReport.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/StockReport.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/InventoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/InventoryController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Abstract/DAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Abstract/DAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/StockReport.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/StockReport.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/BackendController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/BackendController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Inventory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Inventory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Catalogs.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Catalogs.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/CategoryTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/CategoryTests.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/ProductTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/ProductTests.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/SuppliersTests/AgreementItemTest$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/SuppliersTests/AgreementItemTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/SuppliersTests/AgreementTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/SuppliersTests/ByOrderAgreementTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/SuppliersTests/RoutineAgreementTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/ProductTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/ProductTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/SaleToCustomerTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/SaleToCustomerTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/Inventory/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Inventory/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/PersistenceLayer/Controllers/DefectiveItemsDataMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/PersistenceLayer/Controllers/DefectiveItemsDataMapper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

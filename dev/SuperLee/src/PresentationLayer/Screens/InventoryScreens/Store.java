@@ -90,16 +90,16 @@ public class Store extends Screen {
     }
 
     private void addItems() {
-        System.out.println("Which Order arrived? (insert ID)");
+        System.out.println("Please insert the ID of the arrived order");
         int orderID = scanner.nextInt();
+        System.out.println("Please insert the ID of the supplier of the arrived order");
+        int supplierID = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<ServiceOrderObject> r = controller.orderArrived(orderID); //needs to be changed to orderID
+        Result<Object> r = controller.orderArrived(orderID, supplierID);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            ServiceOrderObject dr = r.getValue();
             System.out.println("Order inserted into system successfully");
-            System.out.println(dr);
         }
     }
 

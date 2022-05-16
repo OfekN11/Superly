@@ -1,4 +1,4 @@
-package Domain.BusinessLayer.Inventory.DiscountsAndSales;
+package Domain.BusinessLayer.Inventory;
 
 import java.util.*;
 

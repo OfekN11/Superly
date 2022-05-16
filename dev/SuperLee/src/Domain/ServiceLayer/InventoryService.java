@@ -2,8 +2,7 @@ package Domain.ServiceLayer;
 
 
 import Domain.BusinessLayer.Inventory.DefectiveItems;
-import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
-import Domain.BusinessLayer.Inventory.DiscountsAndSales.PurchaseFromSupplier;
+import Domain.BusinessLayer.Inventory.SaleToCustomer;
 import Domain.BusinessLayer.InventoryController;
 import Domain.BusinessLayer.Supplier.Order;
 import Domain.ServiceLayer.InventoryObjects.*;
@@ -183,50 +182,14 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the info on the purchase
      */
-    public Result<ServiceOrderObject> orderArrived(int orderID){
+    public Result<Object> orderArrived(int orderID, int supplierID){
         try {
-            Order order = controller.orderArrived(orderID);
-            return Result.makeOk(new ServiceOrderObject(orderID, new Date(), new ArrayList<>()));
+            controller.orderArrived(orderID, supplierID);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-    }
-
-    /**
-     * Get History of all purchase from the different suppliers on specified product
-     *
-     * @return Result detailing success of operation, containing the info on the purchase
-     */
-    public Result<List<PurchaseFromSupplierReport>> getPurchaseFromSupplierHistory(int productId){
-        try {
-            List<PurchaseFromSupplier> purchaseFromSupplierList = controller.getPurchaseFromSupplierHistory(productId);
-            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = new ArrayList<>();
-            for (PurchaseFromSupplier d : purchaseFromSupplierList)
-                purchaseFromSupplierReports.add(new PurchaseFromSupplierReport(d));
-            return Result.makeOk(purchaseFromSupplierReports);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-    }
-
-    /**
-     * Get History of all discounts from the different suppliers on specified product
-     *
-     * @return Result detailing success of operation, containing the info on the discounts
-     */
-    public Result<List<PurchaseFromSupplierReport>> getDiscountFromSupplierHistory(int productId){
-        try {
-            List<PurchaseFromSupplier> purchaseFromSupplierList = controller.getDiscountFromSupplierHistory(productId);
-            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = new ArrayList<>();
-            for (PurchaseFromSupplier d : purchaseFromSupplierList)
-                purchaseFromSupplierReports.add(new PurchaseFromSupplierReport(d));
-            return Result.makeOk(purchaseFromSupplierReports);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
+        return Result.makeOk(null);
     }
 
     /**

@@ -1,6 +1,6 @@
 package Domain.ServiceLayer.InventoryObjects;
 
-import Domain.BusinessLayer.Inventory.DiscountsAndSales.SaleToCustomer;
+import Domain.BusinessLayer.Inventory.SaleToCustomer;
 
 import java.util.Date;
 import java.util.List;

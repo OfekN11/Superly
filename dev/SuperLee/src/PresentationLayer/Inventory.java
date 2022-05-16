@@ -123,10 +123,6 @@ public class Inventory {
             saleHistoryByProduct();
         else if (command.equals("sale history by category"))
             saleHistoryByCategory();
-        else if (command.equals("purchase from supplier history"))
-            getPurchaseFromSupplierHistory();
-        else if (command.equals("discount from supplier history"))
-            getDiscountFromSupplierHistory();
         else if (command.equals("add sale"))
             addSale();
         else if (command.equals("list products in category"))
@@ -986,37 +982,37 @@ public class Inventory {
         }
     }
 
-    private static void getPurchaseFromSupplierHistory() {
-        System.out.println("Please insert product ID for which you would like to see history");
-        int id = scanner.nextInt();
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<List<PurchaseFromSupplierReport>> r = is.getPurchaseFromSupplierHistory(id);
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
-            for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
-                System.out.println(dr);
-            if (purchaseFromSupplierReports.isEmpty())
-                System.out.println("there are no purchases from suppliers for this product in the system");
-        }
-    }
-
-    private static void getDiscountFromSupplierHistory() {
-        System.out.println("Please insert product ID for which you would like to see history");
-        int id = scanner.nextInt();
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<List<PurchaseFromSupplierReport>> r = is.getDiscountFromSupplierHistory(id);
-        if (r.isError())
-            System.out.println(r.getError());
-        else {
-            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
-            for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
-                System.out.println(dr);
-            if (purchaseFromSupplierReports.isEmpty())
-                System.out.println("there are no discounts from suppliers for this product in the system");
-        }
-    }
+//    private static void getPurchaseFromSupplierHistory() {
+//        System.out.println("Please insert product ID for which you would like to see history");
+//        int id = scanner.nextInt();
+//        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
+//        Result<List<PurchaseFromSupplierReport>> r = is.getPurchaseFromSupplierHistory(id);
+//        if (r.isError())
+//            System.out.println(r.getError());
+//        else {
+//            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
+//            for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
+//                System.out.println(dr);
+//            if (purchaseFromSupplierReports.isEmpty())
+//                System.out.println("there are no purchases from suppliers for this product in the system");
+//        }
+//    }
+//
+//    private static void getDiscountFromSupplierHistory() {
+//        System.out.println("Please insert product ID for which you would like to see history");
+//        int id = scanner.nextInt();
+//        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
+//        Result<List<PurchaseFromSupplierReport>> r = is.getDiscountFromSupplierHistory(id);
+//        if (r.isError())
+//            System.out.println(r.getError());
+//        else {
+//            List<PurchaseFromSupplierReport> purchaseFromSupplierReports = r.getValue();
+//            for (PurchaseFromSupplierReport dr : purchaseFromSupplierReports)
+//                System.out.println(dr);
+//            if (purchaseFromSupplierReports.isEmpty())
+//                System.out.println("there are no discounts from suppliers for this product in the system");
+//        }
+//    }
 
     private static void addSale() {
         List<Integer> categories;

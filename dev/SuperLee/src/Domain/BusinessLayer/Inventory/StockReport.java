@@ -35,7 +35,7 @@ public class StockReport {
         return minAmountInStore;
     }
     public int getTargetAmountInStore() { return targetAmountInStore; }
-    public Integer getAmountInDeliveries() { return amountInDeliveries; }
+    public int getAmountInDeliveries() { return amountInDeliveries; }
 
     public void removeItemsFromStore(int amount, boolean inWarehouse) {
         if ((!inWarehouse && amountInStore-amount<0) || (inWarehouse && amountInWarehouse-amount<0))
@@ -63,14 +63,18 @@ public class StockReport {
         amountInWarehouse+=amount;
         dataMapper.updateInWarehouse(productID, storeID, amountInWarehouse);
         amountInDeliveries-=amount;
+        dataMapper.updateInDelivery(productID, storeID, amountInDeliveries);
+    }
+
+    public void addDelivery(int amount) {
+        amountInDeliveries+=amount;
+        dataMapper.updateInDelivery(productID, storeID, amountInDeliveries);
     }
 
     public void returnItems(int amount) {
         amountInStore+=amount;
         dataMapper.updateInStore(productID, storeID, amountInStore);
     }
-
-    public boolean isLow() { return minAmountInStore > getTotalAmount(); }
 
     public void changeMin(int min) {
         if (min<1)
@@ -90,19 +94,13 @@ public class StockReport {
         dataMapper.updateTarget(productID, storeID, targetAmountInStore);
     }
 
-//    public void changeName(String name) {
-//        productName=name;
-//    }
+    public boolean isLow() { return minAmountInStore > getTotalAmount(); }
+    public int getAmountForOrder() {
+        return targetAmountInStore - getTotalAmount();
+    }
 
     private int getTotalAmountInDeliveries() {
         return amountInDeliveries;
     }
     private int getTotalAmount() { return getTotalAmountInDeliveries()+amountInStore+amountInWarehouse;}
-    public int getAmountForOrder() {
-        return targetAmountInStore - getTotalAmount();
-    }
-    public void addDelivery(int amount) {
-        amountInDeliveries+=amount;
-        dataMapper.updateInDelivery(productID, storeID, amountInDeliveries);
-    }
 }
