@@ -3,10 +3,13 @@ package Domain.Business.Controllers;
 import Domain.Business.Objects.*;
 import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
-import Domain.Service.Objects.Carrier;
+import Domain.Business.Objects.Employee.Carrier;
+import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
 import Globals.Enums.TransportStatus;
+import Globals.Pair;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class TransportController {
@@ -19,6 +22,7 @@ public class TransportController {
     private EmployeeController employeeController;
     private DocumentController documentController;
     private SiteController siteController;
+    private ShiftController shiftController;
 
     public TransportController() {
         pendingTransports =  new HashMap<>();
@@ -29,9 +33,19 @@ public class TransportController {
         employeeController = new EmployeeController();
         orderController = new OrderController();
         siteController = new SiteController();
+        shiftController = new ShiftController();
     }
+    //TODO need to be implemented in DAL objects
+    public void createTransport(Pair<LocalDate,ShiftTypes> shift) throws Exception {
+        if(shiftController.getShift(shift.getLeft(),shift.getRight()).getSorterCount()>0){
+            //TODO create new transport and save in DataBase
+        }
+        else{
+            throw new Exception("there is no sorter in this shift");
+        }
 
-
+    }
+    //TODO implement with DAL objects
     public Transport getTransport(int transportSN) throws Exception {
         if (pendingTransports.containsKey(transportSN))
         {
@@ -57,19 +71,23 @@ public class TransportController {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()== TransportStatus.padding)
         {
-            TransportOrder order = orderController.getTransportOrder(orderID);
-            int extraWeight  = orderController.getExtraWeight(order);
-            updateWeight(transport,extraWeight);
-            ShippingAreas sourceShip = siteController.getSource(order.getSrc()).getAddress().getShippingAreas();
-            ShippingAreas destShip = siteController.getDestination(order.getDst()).getAddress().getShippingAreas();
-            transport.addOrder(order,sourceShip,destShip);
-            orderController.deleteOrder(orderID);
+            if(transport.isPlacedTruck()){
+                TransportOrder order = orderController.getTransportOrder(orderID);
+                int extraWeight  = orderController.getExtraWeight(order);
+                updateWeight(transport,extraWeight);
+                ShippingAreas sourceShip = siteController.getSource(order.getSrc()).getAddress().getShippingAreas();
+                ShippingAreas destShip = siteController.getDestination(order.getDst()).getAddress().getShippingAreas();
+                transport.addOrder(order,sourceShip,destShip);
+                orderController.deleteOrder(orderID);
+            }
+            else{
+                throw new Exception("the truck is not placed yet");
+            }
         }
         else {
             throw new Exception("The transport is not on the list of pending transport!");
         }
     }
-    //TODO reimplement
     public void updateWeight(Transport transport,int newWeight) throws Exception {
             Truck truck = truckController.getTruck(transport.getTruckNumber());
             if(!transport.updateWeight(newWeight, truck.getMaxCapacityWeight()))
@@ -77,46 +95,52 @@ public class TransportController {
                 throw new Exception("Weight Warning!");
             }
         }
-//TODO need to combine with shift
-    public void placeTruck(int transportSN, int licenseNumber) throws Exception {
-        if(pendingTransports.containsKey(transportSN))
-        {
-            Transport transport = pendingTransports.get(transportSN);
-            if(!transport.placeTruck(licenseNumber))
+    public void placeTruck(int transportSN, int licenseNumber, Pair<LocalDate, ShiftTypes> shift) throws Exception {
+        Transport transport = getTransport(transportSN);
+        if(transport.getStatus()==TransportStatus.padding){
+            Truck truck = truckController.getTruck(licenseNumber);
+            if(truck.isFree(shift)&&transport.placeTruck(licenseNumber))
             {
-                throw new Exception("Can't place this truck to the transport!");
+                truck.addShift(shift);
+            }
+            else{
+                throw new Exception("truck cant be placed");
             }
         }
-        else {
-            throw new Exception("The transport is not on the list of pending transport!");
+        else{
+            throw new Exception("the transport is not in padding list");
         }
     }
     //TODO need to combine with shift
-    public void placeDriver(int transportSN, String driverName) throws Exception {
-        if(pendingTransports.containsKey(transportSN))
-        {
-            Transport transport = pendingTransports.get(transportSN);
+    public void placeDriver(int transportSN, String empID,Pair<LocalDate, ShiftTypes> shift) throws Exception {
+        Transport transport = getTransport(transportSN);
+        if(transport.isPlacedTruck()){
+            Carrier carrier = employeeController.getCarrier(empID);// = driverController.getDriver(driverName);
             Truck truck = truckController.getTruck(transport.getTruckNumber());
-            //throw new Exception("First, a truck must be place for transport!");
-            Carrier carrier = null;// = driverController.getDriver(driverName);
             if(truck.canDriveOn(carrier.getLicenses()))
             {
-                transport.placeDriver(driverName);
+                if(!transport.isPlacedCarrier()) {
+                    //TODO check if the carrier is free in the shift
+                    transport.placeDriver(empID, carrier.getName());
+                }
+                else{
+                    throw new Exception("carrier is already placed");
+                }
             }
             else {
-                throw new Exception("The driver can't drive on this truck!");
+                throw new Exception("The carrier can't drive on this truck!");
             }
         }
-        else {
-            throw new Exception("The transport is not on the list of pending transport!");
+        else{
+            throw new Exception("carrier cannot be placed before the truck");
         }
+
     }
 
     public void startTransport(int transportSN) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()==TransportStatus.padding){
             if(transport.readyToGo()){
-                //TODO insert check of sorter in the transport's shift
                 transport.startTransport();
             }
             else{
@@ -142,7 +166,7 @@ public class TransportController {
             throw new Exception("this is not a inProgress transport");
         }
     }
-
+    //TODO see if the function is needed
     public void redesignTransport(int transportSN) throws Exception {
         if(inProgressTransports.containsKey(transportSN))
         {

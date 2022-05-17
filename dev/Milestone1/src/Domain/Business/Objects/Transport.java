@@ -3,9 +3,12 @@ package Domain.Business.Objects;
 import Domain.Business.Objects.Document.TransportDocument;
 import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
+import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
 import Globals.Enums.TransportStatus;
+import Globals.Pair;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +18,7 @@ public class Transport {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String driverName;
+    private String driverID;
     private  int truckNumber;
     private  int truckWeight;
     private List<Integer> sourcesID;
@@ -22,10 +26,14 @@ public class Transport {
     private List<Integer> transportOrders;
     private HashMap<ShippingAreas, Integer> shippingAreas;
     private TransportStatus status;
+    //TODO need to change the shift restart
+    private Pair<LocalDate, ShiftTypes> shift = null;
+    //
     //TODO maybe add filed of current site visited to check when the transport is over
 
     public Transport() {
-        driverName = null;
+        driverID = "";
+        driverName = "";
         truckNumber = -1;
         truckWeight = -1;
         sourcesID = new ArrayList<>();
@@ -56,12 +64,16 @@ public class Transport {
 
     public boolean placeTruck(int licenseNumber)
     {
-        truckNumber = licenseNumber;
-        return true;
+        if(truckNumber==-1){
+            truckNumber = licenseNumber;
+            return true;
+        }
+        return false;
     }
 
-    public void placeDriver(String driverName)
+    public void placeDriver(String driverId,String driverName)
     {
+        this.driverID = driverId;
         this.driverName = driverName;
     }
     public boolean driverPlaced()
@@ -78,6 +90,9 @@ public class Transport {
     {
         return !sourcesID.isEmpty() && !destinationsID.isEmpty() && driverPlaced() && truckPlaced();
     }
+    public Pair<LocalDate,ShiftTypes> getShift(){
+        return shift;
+    }
 
     private void addShippingArea(ShippingAreas sa)
     {
@@ -88,6 +103,12 @@ public class Transport {
         else {
             shippingAreas.replace(sa, shippingAreas.get(sa) + 1);
         }
+    }
+    public boolean isPlacedTruck(){
+        return truckNumber==-1;
+    }
+    public boolean isPlacedCarrier(){
+        return !(driverName==""&&driverID=="");
     }
 
     private void removeShippingArea(ShippingAreas sa)
