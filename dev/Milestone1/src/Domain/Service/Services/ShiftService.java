@@ -199,9 +199,9 @@ public class ShiftService {
         }
     }
 
-    public Result<Object> createShift(LocalDate date, ShiftTypes type, String managerId, int carrierCount,int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount) {
+    public Result<Object> createShift(LocalDate date, ShiftTypes type, String managerId, int carrierCount,int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transport_managerCount) {
         try {
-            controller.createShift(date,type, managerId, carrierCount,cashierCount, storekeeperCount,sorterCount, hr_managerCount, logistics_managerCount);
+            controller.createShift(date,type, managerId, carrierCount,cashierCount, storekeeperCount,sorterCount, hr_managerCount, logistics_managerCount, transport_managerCount);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

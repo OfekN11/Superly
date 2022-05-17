@@ -300,7 +300,7 @@ public class ShiftsMenu extends Screen {
             System.out.println("Chosen shift manager: " + manager.name);
 
             try {
-                controller.createShift(date, type, manager.id, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount);
+                controller.createShift(date, type, manager.id, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, );
                 System.out.println("Shift added successfully! Remember to assign employees");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
