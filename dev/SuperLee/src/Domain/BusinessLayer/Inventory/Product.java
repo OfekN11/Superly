@@ -30,7 +30,6 @@ public class Product {
     private static final LocationDataMapper LOCATION_DATA_MAPPER = Location.LOCATION_DATA_MAPPER;
 
 
-    public Set<Integer> getStoreIDs() { return stockReports.keySet(); }
     public int getId() { return id; }
     public String getName() { return name; }
     public int getCategoryID() {return category.getID();}
@@ -276,7 +275,10 @@ public class Product {
     }
 
     public int getAmountForOrder(int storeID) {
-        return getStockReport(storeID).getAmountForOrder();
+        StockReport stockReport = getStockReport(storeID);
+        if (stockReport!=null)
+            return stockReport.getAmountForOrder();
+        return -1;
     }
 
     public void addDelivery(int storeID, int amount) {

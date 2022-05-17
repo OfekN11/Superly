@@ -1,6 +1,7 @@
 package Domain.ServiceLayer.SupplierObjects;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -8,11 +9,11 @@ public class ServiceOrderObject {
 
 
     private int id;
-    private Date date;
+    private LocalDate date;
     List<ServiceOrderItemObject> orderItems;
 
 
-    public ServiceOrderObject(int id, Date date, List<ServiceOrderItemObject> orderItems ){
+    public ServiceOrderObject(int id, LocalDate date, List<ServiceOrderItemObject> orderItems ){
         this.id = id;
         this.date = date;
         this.orderItems = orderItems;
@@ -26,7 +27,7 @@ public class ServiceOrderObject {
         return orderItems;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

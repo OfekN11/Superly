@@ -6,6 +6,8 @@ import Domain.BusinessLayer.SupplierController;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 
 
@@ -542,9 +544,10 @@ public class SupplierService {
     private ServiceOrderObject createServiceOrderObject(List<String> result) throws ParseException {
 
         int orderId = Integer.parseInt(result.get(0));
-        String sDate1= result.get(1) ;
-        Date orderDate =new SimpleDateFormat("MM/dd/yyyy").parse(sDate1);
-
+        String[] sDate1= result.get(1).split("/") ;
+        //format is "MM/dd/yyyy"
+        LocalDate orderDate = LocalDate.of(Integer.parseInt(sDate1[2]), Integer.parseInt(sDate1[0]), Integer.parseInt(sDate1[1]));
+//        Date orderDate =new SimpleDateFormat("MM/dd/yyyy").parse(sDate1);
         List<ServiceOrderItemObject> items = new ArrayList<>();
 
         for(int i = 2; i < result.size(); i+=6){
