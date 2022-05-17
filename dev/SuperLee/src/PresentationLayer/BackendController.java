@@ -21,6 +21,21 @@ public class BackendController {
     public BackendController(){
         this.supplierService = new SupplierService();
         this.inventoryService = new InventoryService();
+        getAvailableOrders();
+    }
+
+    private void getAvailableOrders() {
+        Result<Collection<ServiceOrderObject>> r = inventoryService.getAvailableOrders();
+        if (r.isOk()) {
+            for (ServiceOrderObject soo: r.getValue()) {
+                System.out.println(soo);
+            }
+            if (r.getValue().isEmpty())
+                System.out.println("No orders to make");
+        }
+        else {
+            System.out.println("Error receiving relevant orders");
+        }
     }
 
     //For testing

@@ -546,7 +546,7 @@ public class InventoryController {
     private Map<Integer, Integer> getAmountsForMinOrders(Product product) {
         Map<Integer, Integer> amounts = new HashMap<>();
         int amount;
-        for (int storeID: product.getStoreIDs()) {
+        for (int storeID: storeIds) {
             amount = product.getAmountForOrder(storeID);
             if (amount>0)
                 amounts.put(storeID, amount);
@@ -555,14 +555,21 @@ public class InventoryController {
     }
 
     //needs to be called every morning from service by some kind of trigger
-    public List<Order> getOrdersOfTomorrow() throws Exception {
+    public List<Order> getAvailableOrders() throws Exception {
         Map<Integer, Map<Integer,Integer>> thingsToOrder = new HashMap<>(); // <productID, <storeID, amount>>
         Map<Integer, Integer> amounts;
-        for (Product product: getProducts()) {
+        Collection<Integer> productIds = StockReport.dataMapper.getProductsUnderMin();
+        for (Integer productID: productIds) {
+            Product product = getProduct(productID);
             amounts = getAmountsForMinOrders(product);
             if (amounts.size()>0)
                 thingsToOrder.put(product.getId(), amounts);
         }
+//        for (Product product: getProducts()) {
+//            amounts = getAmountsForMinOrders(product);
+//            if (amounts.size()>0)
+//                thingsToOrder.put(product.getId(), amounts);
+//        }
         List<Order> orders = supplierController.createAllOrders(thingsToOrder); //orders we print on screen (=order to issue from suppliers) (new orders and edited order)
         //document every order we print on screen (new orders or edit amount of existed orders)
         for (Order order: orders) {

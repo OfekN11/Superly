@@ -18,7 +18,7 @@ public abstract class DAO {
 
 
     // properties
-    private String tableName; // this field will be valid if we will save data in tables
+    protected String tableName; // this field will be valid if we will save data in tables
     private List<String> tableColumnNames;
     // constructor
     public DAO(String tableName) {

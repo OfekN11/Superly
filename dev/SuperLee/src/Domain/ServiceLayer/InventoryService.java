@@ -4,7 +4,11 @@ package Domain.ServiceLayer;
 import Domain.BusinessLayer.Inventory.DefectiveItems;
 import Domain.BusinessLayer.Inventory.SaleToCustomer;
 import Domain.BusinessLayer.InventoryController;
+import Domain.BusinessLayer.Supplier.Order;
+import Domain.BusinessLayer.Supplier.OrderItem;
 import Domain.ServiceLayer.InventoryObjects.*;
+import Domain.ServiceLayer.SupplierObjects.ServiceOrderItemObject;
+import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
 import Globals.Pair;
 
 import java.time.LocalDate;
@@ -772,6 +776,24 @@ public class InventoryService {
     public Result<Product> getProduct(int product) {
         try {
             return Result.makeOk(new Product(controller.getProduct(product)));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Collection<ServiceOrderObject>> getAvailableOrders() {
+        try {
+            Collection<Order> orders = controller.getAvailableOrders();
+            Collection<ServiceOrderObject> serviceOrders = new ArrayList<>();
+            for (Order o : orders) {
+                List<ServiceOrderItemObject> oItems = new ArrayList<>();
+                for (OrderItem oItem : o.getOrderItems()) {
+                    oItems.add(new ServiceOrderItemObject(oItem.getProductId(), oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice()));
+                }
+                serviceOrders.add(new ServiceOrderObject(o.getId(), o.getDate(), oItems));
+            }
+            return Result.makeOk(serviceOrders);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

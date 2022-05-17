@@ -93,10 +93,11 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
                 return null;
             output = buildObject(instanceResult);
             IDENTITY_MAP.put(key,output);
+            return output;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        throw new RuntimeException("Report may not exist");
+        return null;
     }
 
     public Collection<StockReport> getAll() {
@@ -198,6 +199,27 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
         }
         catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public Collection<Integer> getProductsUnderMin() {
+        try (Connection connection = getConnection()){
+            Set<Integer> products = new HashSet<>();
+            ResultSet resultSet = executeQuery(connection, String.format("Select %s from %s where %s+%s+%s<%s",
+                    getColumnName(PRODUCT_COLUMN),
+                    tableName,
+                    getColumnName(IN_DELIVERY_COLUMN),
+                    getColumnName(AMOUNT_IN_STORE_COLUMN),
+                    getColumnName(AMOUNT_IN_WAREHOUSE_COLUMN),
+                    getColumnName(MIN_COLUMN)));
+            while (resultSet.next()) {
+                products.add(resultSet.getInt(1));
+            }
+            return products;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
