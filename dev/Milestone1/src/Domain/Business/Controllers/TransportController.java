@@ -45,6 +45,12 @@ public class TransportController {
         }
 
     }
+    //TODO the function will check the valid of the function.
+    //TODO the function will remove from the transport the site that visited site
+    //TODO the in case of destination visit the function will create new destination document
+    public void advanceSite(int transportSN,int siteID){
+
+    }
     //TODO implement with DAL objects
     public Transport getTransport(int transportSN) throws Exception {
         if (pendingTransports.containsKey(transportSN))

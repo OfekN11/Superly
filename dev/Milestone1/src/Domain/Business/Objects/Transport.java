@@ -117,9 +117,6 @@ public class Transport {
         }
     }
 
-    public String getDriverName() {
-        return driverName;
-    }
 
     public int getTruckNumber() {
         return truckNumber;
@@ -134,9 +131,9 @@ public class Transport {
     {
         return destinationsID;
     }
-    public TransportDocument toDocument() {
+    /*public TransportDocument toDocument() {
         return new TransportDocument(startTime, truckNumber, driverName, getSrcIDs(), getDstIDs());
-    }
+    }*/
 
     public void addOrder(TransportOrder order,ShippingAreas src,ShippingAreas dst)
     {
