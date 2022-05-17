@@ -17,7 +17,6 @@ import java.util.List;
 public class Transport {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private String driverName;
     private String driverID;
     private  int truckNumber;
     private  int truckWeight;
@@ -33,7 +32,6 @@ public class Transport {
 
     public Transport() {
         driverID = "";
-        driverName = "";
         truckNumber = -1;
         truckWeight = -1;
         sourcesID = new ArrayList<>();
@@ -71,24 +69,14 @@ public class Transport {
         return false;
     }
 
-    public void placeDriver(String driverId,String driverName)
+    public void placeDriver(String driverId)
     {
         this.driverID = driverId;
-        this.driverName = driverName;
-    }
-    public boolean driverPlaced()
-    {
-        return driverName != null;
-    }
-
-    public boolean truckPlaced()
-    {
-        return driverName != null;
     }
 
     public boolean readyToGo()
     {
-        return !sourcesID.isEmpty() && !destinationsID.isEmpty() && driverPlaced() && truckPlaced();
+        return !sourcesID.isEmpty() && !destinationsID.isEmpty() && isPlacedTruck() && isPlacedCarrier();
     }
     public Pair<LocalDate,ShiftTypes> getShift(){
         return shift;
@@ -105,10 +93,10 @@ public class Transport {
         }
     }
     public boolean isPlacedTruck(){
-        return truckNumber==-1;
+        return truckNumber!=-1;
     }
     public boolean isPlacedCarrier(){
-        return !(driverName==""&&driverID=="");
+        return !(driverID=="");
     }
     private void removeShippingArea(ShippingAreas sa)
     {

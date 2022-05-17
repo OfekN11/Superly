@@ -121,7 +121,7 @@ public class TransportController {
             {
                 if(!transport.isPlacedCarrier()) {
                     //TODO check if the carrier is free in the shift
-                    transport.placeDriver(empID, carrier.getName());
+                    transport.placeDriver(empID);
                 }
                 else{
                     throw new Exception("carrier is already placed");
