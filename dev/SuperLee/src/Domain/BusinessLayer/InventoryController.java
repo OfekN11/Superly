@@ -178,7 +178,7 @@ public class InventoryController {
         return sale;
     }
 
-    private void copySale(SaleToCustomer sale) {
+    /*private void copySale(SaleToCustomer sale) {
         SaleToCustomer newSale = new SaleToCustomer(saleID++, sale.getStartDate(), LocalDate.now(), sale.getPercent(), sale.getCategories(), sale.getProducts());
         SALE_DATA_MAPPER.insert(newSale);
         Product product;
@@ -192,7 +192,7 @@ public class InventoryController {
             category = getCategory(cID);
             if (category!=null)
                 category.addSale(newSale);        }
-    }
+    }*/
 
     private void removeSaleFromProductsAndCategories(SaleToCustomer sale) {
         Product product;
@@ -212,12 +212,14 @@ public class InventoryController {
         SaleToCustomer sale = getSale(saleID);
         if (sale.isActive()) {
             //Probably should be changed to: setEndDate(sale), which set the end date to today 23:59:59. and then update the db.
-            copySale(sale);
-            removeSaleFromProductsAndCategories(sale);
+            //copySale(sale);
+            //removeSaleFromProductsAndCategories(sale);
+            sale.setEndDateForToday();
         }
         else if (sale.isUpcoming()) {
-            SALE_DATA_MAPPER.remove(sale);
             removeSaleFromProductsAndCategories(sale);
+            sales.remove(saleID);
+            SALE_DATA_MAPPER.remove(sale);
         }
     }
 

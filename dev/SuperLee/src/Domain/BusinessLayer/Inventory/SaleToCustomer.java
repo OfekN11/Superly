@@ -33,11 +33,9 @@ public class SaleToCustomer {
     public int getId() {
         return id;
     }
-
     public List<Integer> getCategories() {
         return categoryIDs;
     }
-
     public List<Integer> getProducts() {
         return productIDs;
     }
@@ -50,7 +48,7 @@ public class SaleToCustomer {
     public int getPercent() {
         return percent;
     }
-    //"new Date()" returns the current date.
+
     public boolean isUpcoming() {
         return startDate.isAfter(LocalDate.now());
     }
@@ -61,4 +59,9 @@ public class SaleToCustomer {
         return !(isUpcoming() || isPassed());
     }
     public boolean wasActive(LocalDate dateBought) { return !(startDate.isAfter(dateBought) || endDate.isBefore(dateBought)); }
+
+    public void setEndDateForToday() {
+        endDate = LocalDate.now().plusDays(1);
+        //SALES_DATA_MAPPER.update() UPDATE END DATE.
+    }
 }
