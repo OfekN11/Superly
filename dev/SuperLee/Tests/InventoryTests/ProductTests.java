@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class ProductTests {
@@ -126,41 +127,17 @@ public class ProductTests {
     }
     @Test
     public void testReturnItems() {
-        Date yesterday = new Date();
-        yesterday.setHours(0);
-        yesterday.setMinutes(0);
-        yesterday.setSeconds(0);
-        yesterday.setHours(-24);
+        LocalDate yesterday = LocalDate.now().minusDays(1);
 
-        Date beforeTwoDays = new Date();
-        beforeTwoDays.setHours(0);
-        beforeTwoDays.setMinutes(0);
-        beforeTwoDays.setSeconds(0);
-        beforeTwoDays.setHours(-24*2);
+        LocalDate beforeTwoDays = LocalDate.now().minusDays(2);
 
-        Date beforeThreeDays = new Date();
-        beforeThreeDays.setHours(0);
-        beforeThreeDays.setMinutes(0);
-        beforeThreeDays.setSeconds(0);
-        beforeThreeDays.setHours(-24*3);
+        LocalDate beforeThreeDays = LocalDate.now().minusDays(3);
 
-        Date beforeFourDays = new Date();
-        beforeFourDays.setHours(0);
-        beforeFourDays.setMinutes(0);
-        beforeFourDays.setSeconds(0);
-        beforeFourDays.setHours(-24*4);
+        LocalDate beforeFourDays = LocalDate.now().minusDays(4);
 
-        Date beforeFiveDays = new Date();
-        beforeFiveDays.setHours(0);
-        beforeFiveDays.setMinutes(0);
-        beforeFiveDays.setSeconds(0);
-        beforeFiveDays.setHours(-24*5);
+        LocalDate beforeFiveDays = LocalDate.now().minusDays(5);
 
-        Date beforeSixDays = new Date();
-        beforeSixDays.setHours(0);
-        beforeSixDays.setMinutes(0);
-        beforeSixDays.setSeconds(0);
-        beforeSixDays.setHours(-24*6);
+        LocalDate beforeSixDays = LocalDate.now().minusDays(6);
 
         SaleToCustomer sale0 = new SaleToCustomer(0, beforeFourDays, beforeTwoDays, 30, new LinkedList<>(), new ArrayList<>());
         product0.addSale(sale0);

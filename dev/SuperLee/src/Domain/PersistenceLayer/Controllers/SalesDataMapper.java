@@ -39,8 +39,8 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
     protected SaleToCustomer buildObject(ResultSet resultSet) {
         try {
             return new SaleToCustomer(resultSet.getInt(ID_COLUMN),
-                    resultSet.getDate(START_DATE_COLUMN),
-                    resultSet.getDate(END_DATE_COLUMN),
+                    resultSet.getDate(START_DATE_COLUMN).toLocalDate(),
+                    resultSet.getDate(END_DATE_COLUMN).toLocalDate(),
                     resultSet.getInt(PERCENT_COLUMN),
                     getCategories(resultSet.getInt(ID_COLUMN)),
                     getProducts(resultSet.getInt(ID_COLUMN))
@@ -100,7 +100,7 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
         List<SaleToCustomer> output = new ArrayList<>();
         List<Integer> saleIDs = salesToCategoryDAO.getSales(category);
         try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, ID_COLUMN, Collections.singletonList(saleIDs));
+            ResultSet instanceResult = select(connection, ID_COLUMN, saleIDs);
             while (instanceResult.next()) {
                 SaleToCustomer curr = buildObject(instanceResult);
                 output.add(curr);
@@ -116,7 +116,7 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
         List<SaleToCustomer> output = new ArrayList<>();
         List<Integer> saleIDs = salesToProductDAO.getSales(product);
         try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, ID_COLUMN, Collections.singletonList(saleIDs));
+            ResultSet instanceResult = select(connection, ID_COLUMN, saleIDs);
             while (instanceResult.next()) {
                 SaleToCustomer curr = buildObject(instanceResult);
                 output.add(curr);
@@ -126,5 +126,17 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
             e.printStackTrace();
         }
         return IDENTITY_MAP.values();
+    }
+
+    public Integer getIDCount() {
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = getMax(connection, ID_COLUMN);
+            while (instanceResult.next()) {
+                return instanceResult.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

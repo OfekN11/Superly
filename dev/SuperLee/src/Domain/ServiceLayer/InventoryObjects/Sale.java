@@ -2,14 +2,15 @@ package Domain.ServiceLayer.InventoryObjects;
 
 import Domain.BusinessLayer.Inventory.SaleToCustomer;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 public class Sale {
     private final int id;
     private final int percent;
-    private final Date startDate;
-    private final Date endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
     private final List<Integer> categories;
     private final List<Integer> products;
     public Sale(SaleToCustomer s) {

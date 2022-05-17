@@ -4,6 +4,8 @@ import Domain.BusinessLayer.Inventory.SaleToCustomer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -19,34 +21,14 @@ public class SaleToCustomerTests {
     SaleToCustomer sale8;
     @BeforeEach
     void createDatesAndSales() {
-        Date today = new Date();
-        today.setHours(0);
-        today.setMinutes(0);
-        today.setSeconds(0);
+        LocalDate today = LocalDate.now();
 
-        Date tomorrow = new Date();
-        tomorrow.setHours(0);
-        tomorrow.setMinutes(0);
-        tomorrow.setSeconds(0);
-        tomorrow.setHours(24);
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
 
-        Date yesterday = new Date();
-        yesterday.setHours(0);
-        yesterday.setMinutes(0);
-        yesterday.setSeconds(0);
-        yesterday.setHours(-24);
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDate beforeTwoDays = LocalDate.now().minusDays(2);
 
-        Date beforeTwoDays = new Date();
-        beforeTwoDays.setHours(0);
-        beforeTwoDays.setMinutes(0);
-        beforeTwoDays.setSeconds(0);
-        beforeTwoDays.setHours(-48);
-
-        Date afterTwoDays = new Date();
-        afterTwoDays.setHours(0);
-        afterTwoDays.setMinutes(0);
-        afterTwoDays.setSeconds(0);
-        afterTwoDays.setHours(48);
+        LocalDate afterTwoDays = LocalDate.now().plusDays(2);
 
         sale1 = new SaleToCustomer(0, yesterday, tomorrow, 30, new LinkedList<>(), new LinkedList<>());
         sale2 = new SaleToCustomer(1, today, tomorrow, 30, new LinkedList<>(), new LinkedList<>());

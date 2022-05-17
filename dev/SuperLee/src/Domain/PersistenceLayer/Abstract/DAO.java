@@ -1,5 +1,7 @@
 package Domain.PersistenceLayer.Abstract;
 
+import org.sqlite.util.StringUtils;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -139,21 +141,13 @@ public abstract class DAO {
      * @return ResultSet witch contains the row where column=value
      * @throws SQLException
      */
-    public ResultSet select(Connection connection, Integer columnLocation, List<Object> values) throws SQLException {
+    public ResultSet select(Connection connection, Integer columnLocation, List<?> values) throws SQLException {
         validateColumnsNames(Arrays.asList(columnLocation));
-        return executeQuery(connection,String.format(SELECT_QUERY,'*',tableName, selectInQuery(columnLocation, values)));
-    }
-
-    private String selectInQuery(Integer columnLocation, List<Object> values) {
-        String output = "";
-        output+=getColumnName(columnLocation);
-        output+=" in (";
-        for (Object o : values)
-        {
-            output+=(String.format(" %s,", o));
-        }
-        output=output.substring(0,output.length()-1);
-        return output+")";
+        String selectColumnsString = Arrays.asList(columnLocation).stream().map(this::getColumnName).collect(Collectors.joining(", "));
+        String test = values.stream().
+                map(i -> String.valueOf(i)).
+                collect(Collectors.joining(",", "(", ")"));
+        return executeQuery(connection,String.format("SELECT * from %s where %s in %s", tableName, selectColumnsString, test));
     }
 
     /**
@@ -170,6 +164,19 @@ public abstract class DAO {
         validateColumnsNames(whereColumnsLocation);
         String selectColumnsString = selectColumnsLocation.stream().map(this::getColumnName).collect(Collectors.joining(", "));
         return executeQuery(connection,String.format(SELECT_QUERY,selectColumnsString,tableName, makeColumnEqualsQuestionMarkString(whereColumnsLocation,"AND")),values);
+    }
+
+    /**
+     * gets all the rows which withstands the constraints from {@param column } in {@param value}
+     * @param connection a connection to the DB, should be close from the calling function when finish to read the result!
+     * @param columnLocation the column location in the db, starting with 1 which are going to be the conditions in the "where" statement.
+     * @return ResultSet witch contains the row where column=value
+     * @throws SQLException
+     */
+    public ResultSet getMax(Connection connection, Integer columnLocation) throws SQLException {
+        validateColumnsNames(Arrays.asList(columnLocation));
+        String selectColumnsString = Arrays.asList(columnLocation).stream().map(this::getColumnName).collect(Collectors.joining(", "));
+        return executeQuery(connection,String.format("SELECT max(%s) from %s",selectColumnsString, tableName));
     }
 
     /**
@@ -312,5 +319,7 @@ public abstract class DAO {
     protected String getColumnName(int index){
         return tableColumnNames.get(index-1);
     }
+
+
 }
 

@@ -89,4 +89,16 @@ public class CategoryDataMapper extends DataMapper<Category> {
         }
         return Category_IDENTITY_MAP.values();
     }
+
+    public Integer getIDCount() {
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = getMax(connection, ID_COLUMN);
+            while (instanceResult.next()) {
+                return instanceResult.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -4,11 +4,10 @@ package Domain.ServiceLayer;
 import Domain.BusinessLayer.Inventory.DefectiveItems;
 import Domain.BusinessLayer.Inventory.SaleToCustomer;
 import Domain.BusinessLayer.InventoryController;
-import Domain.BusinessLayer.Supplier.Order;
 import Domain.ServiceLayer.InventoryObjects.*;
-import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
 import Globals.Pair;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -44,7 +43,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, holding list of store ids
      */
-    public Result<List<Integer>> getStoreIDs(){
+    public Result<Collection<Integer>> getStoreIDs(){
         try {
             return Result.makeOk(controller.getStoreIDs());
         }
@@ -122,7 +121,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the new sale
      */
-    public Result<Sale> addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end){
+    public Result<Sale> addSale(List<Integer> categories, List<Integer> products, int percent, LocalDate start, LocalDate end){
         try {
             SaleToCustomer s = controller.addSale(categories, products, percent, start, end);
             return Result.makeOk(new Sale(s));
@@ -235,7 +234,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the list of the reports
      */
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByStore(Date start, Date end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
         try {
             List<DefectiveItems> dirs = controller.getDefectiveItemsByStore(start, end, storeIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
@@ -253,7 +252,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the list of the reports
      */
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByCategory(Date start, Date end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
         try {
             List<DefectiveItems> dirs = controller.getDefectiveItemsByCategory(start, end, categoryIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
@@ -271,7 +270,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the list of the reports
      */
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByProduct(Date start, Date end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
         try {
             List<DefectiveItems> dirs = controller.getDefectiveItemsByProduct(start, end, productIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
@@ -378,7 +377,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, with list of stockreports
      */
-    public Result<List<StockReport>> storeStockReport(List<Integer> storeIDs, List<Integer> categories){
+    public Result<List<StockReport>> storeStockReport(Collection<Integer> storeIDs, List<Integer> categories){
         try {
             List<Domain.BusinessLayer.Inventory.StockReport> stock = controller.getStockReport(storeIDs, categories);
             List<StockReport> stockReports = new ArrayList<>();
@@ -440,7 +439,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing a list of the reports
      */
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(Date start, Date end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
         try {
             List<Domain.BusinessLayer.Inventory.DefectiveItems> dirs = controller.getDamagedItemReportsByStore(start, end, storeIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
@@ -458,7 +457,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing a list of the reports
      */
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByCategory(Date start, Date end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
         try {
             List<Domain.BusinessLayer.Inventory.DefectiveItems> dirs = controller.getDamagedItemReportsByCategory(start, end, categoryIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
@@ -476,7 +475,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing a list of the reports
      */
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByProduct(Date start, Date end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
         try {
             List<Domain.BusinessLayer.Inventory.DefectiveItems> dirs = controller.getDamagedItemReportsByProduct(start, end, productIDs);
             List<DefectiveItemReport> SLdirs = new ArrayList<>();
@@ -494,7 +493,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing a list of the reports
      */
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
         try {
             List<Domain.BusinessLayer.Inventory.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByStore(start, end, storeIDs);
             List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
@@ -512,7 +511,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing a list of the reports
      */
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByCategory(Date start, Date end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
         try {
             List<Domain.BusinessLayer.Inventory.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByCategory(start, end, categoryIDs);
             List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
@@ -530,7 +529,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing a list of the reports
      */
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
         try {
             List<Domain.BusinessLayer.Inventory.DefectiveItems> expiredItemReports = controller.getExpiredItemReportsByProduct(start, end, productIDs);
             List<DefectiveItemReport> expiredItemReportList = new ArrayList<>();
@@ -563,7 +562,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the price the customer paid for the items
      */
-    public Result<Double> returnItems(int storeID, int productID, int amount, Date dateBought){
+    public Result<Double> returnItems(int storeID, int productID, int amount, LocalDate dateBought){
         try {
             return Result.makeOk(controller.returnItems(storeID, productID, amount, dateBought));
         }

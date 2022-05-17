@@ -2,7 +2,9 @@ package Domain.BusinessLayer.Inventory;
 
 import Domain.PersistenceLayer.Controllers.CategoryDataMapper;
 import Domain.PersistenceLayer.Controllers.ProductDataMapper;
+import Domain.PersistenceLayer.Controllers.SalesDataMapper;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class Category {
@@ -13,6 +15,7 @@ public class Category {
     private List<Product> products;
     private List<SaleToCustomer> sales;
     public final static CategoryDataMapper CATEGORY_DATA_MAPPER = new CategoryDataMapper();
+    private final static SalesDataMapper SALE_DATA_MAPPER = SaleToCustomer.SALES_DATA_MAPPER;
 
     public int getID() { return ID; }
     public String getName() { return name; }
@@ -86,7 +89,7 @@ public class Category {
              result = new ArrayList<>();
         else
             result = parentCategory.getSaleHistory();
-        for (SaleToCustomer sale : sales) {
+        for (SaleToCustomer sale : SALE_DATA_MAPPER.getSalesByCategory(ID)) {
             if (sale.isPassed() || sale.isActive())
                 result.add(sale);
         }
@@ -97,7 +100,7 @@ public class Category {
             return "";
         return parentCategory.getName();
     }
-    public List<SaleToCustomer> getSalesOnDate(Date date) {
+    public List<SaleToCustomer> getSalesOnDate(LocalDate date) {
         List<SaleToCustomer> result;
         if (parentCategory==null)
             result = new ArrayList<>();
@@ -110,7 +113,7 @@ public class Category {
         return result;
     }
 
-    public Collection<DefectiveItems> getExpiredItemReports(Date start, Date end) {
+    public Collection<DefectiveItems> getExpiredItemReports(LocalDate start, LocalDate end) {
         List<DefectiveItems> eirList = new ArrayList<>();
         for (Product p : products) {
             eirList.addAll(p.getExpiredItemReports(start, end));
@@ -121,7 +124,7 @@ public class Category {
         return eirList;
     }
 
-    public Collection<DefectiveItems> getDamagedItemReports(Date start, Date end) {
+    public Collection<DefectiveItems> getDamagedItemReports(LocalDate start, LocalDate end) {
         List<DefectiveItems> dirList = new ArrayList<>();
         for (Product p : products) {
             dirList.addAll(p.getDamagedItemReports(start, end));

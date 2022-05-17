@@ -10,12 +10,14 @@ import Domain.BusinessLayer.Supplier.OrderItem;
 import Domain.PersistenceLayer.Controllers.CategoryDataMapper;
 import Domain.PersistenceLayer.Controllers.ProductDataMapper;
 import Domain.PersistenceLayer.Controllers.SalesDataMapper;
+import Domain.PersistenceLayer.Controllers.StoreDAO;
 import Globals.Pair;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class InventoryController {
-    private List<Integer> storeIds;
+    private Collection<Integer> storeIds;
     private Map<Integer, Category> categories;
     private Map<Integer, SaleToCustomer> sales;
     private Map<Integer, Product> products;
@@ -24,18 +26,19 @@ public class InventoryController {
     private int productID;
     private int storeID;
     private SupplierController supplierController;
+    private final static StoreDAO STORE_DAO = new StoreDAO();
     private final static ProductDataMapper PRODUCT_DATA_MAPPER = Product.PRODUCT_DATA_MAPPER;
     private final static CategoryDataMapper CATEGORY_DATA_MAPPER = Category.CATEGORY_DATA_MAPPER;
-    private final static SalesDataMapper SALE_DATA_MAPPER = new SalesDataMapper();
+    private final static SalesDataMapper SALE_DATA_MAPPER = SaleToCustomer.SALES_DATA_MAPPER;
     public InventoryController() {
-        storeIds = new ArrayList<>();
+        storeIds = STORE_DAO.getAll();
         categories = CATEGORY_DATA_MAPPER.getMap();
         sales = SALE_DATA_MAPPER.getMap();
         products = PRODUCT_DATA_MAPPER.getMap();
-        storeID=1;
-        saleID=1;
-        catID=1;
-        productID=1;
+        storeID=STORE_DAO.getIDCount() + 1;
+        saleID=SALE_DATA_MAPPER.getIDCount() + 1;
+        catID=CATEGORY_DATA_MAPPER.getIDCount() + 1;
+        productID=PRODUCT_DATA_MAPPER.getIDCount() + 1;
         supplierController = new SupplierController();
     }
 
@@ -149,7 +152,7 @@ public class InventoryController {
         }
         productIDs.removeAll(redundantProducts);
     }
-    public SaleToCustomer addSale(List<Integer> categoriesList, List<Integer> productIDs, int percent, Date start, Date end) {
+    public SaleToCustomer addSale(List<Integer> categoriesList, List<Integer> productIDs, int percent, LocalDate start, LocalDate end) {
         /*if (!start.before(end)) //could add more restrictions regarding adding past sales but would be problematic for tests
             throw new IllegalArgumentException("Illegal dates. start must be before end");
         if (!(percent>0 && percent<100))
@@ -176,11 +179,7 @@ public class InventoryController {
     }
 
     private void copySale(SaleToCustomer sale) {
-        Date endOfToday = new Date();
-        endOfToday.setHours(24);
-        endOfToday.setMinutes(1);
-        endOfToday.setSeconds(-1);
-        SaleToCustomer newSale = new SaleToCustomer(saleID++, sale.getStartDate(), endOfToday, sale.getPercent(), sale.getCategories(), sale.getProducts());
+        SaleToCustomer newSale = new SaleToCustomer(saleID++, sale.getStartDate(), LocalDate.now(), sale.getPercent(), sale.getCategories(), sale.getProducts());
         SALE_DATA_MAPPER.insert(newSale);
         Product product;
         for (Integer pID: newSale.getProducts()) {
@@ -238,21 +237,21 @@ public class InventoryController {
         return getCategory(categoryID).getSaleHistory();
     }
 
-    public List<DefectiveItems> getDefectiveItemsByStore(Date start, Date end, List<Integer> storeIDs) {
+    public List<DefectiveItems> getDefectiveItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs) {
         List<DefectiveItems> defective = new ArrayList<>();
         defective.addAll(getDamagedItemReportsByStore(start, end, storeIDs));
         defective.addAll(getExpiredItemReportsByStore(start, end, storeIDs));
         return defective;
     }
 
-    public List<DefectiveItems> getDefectiveItemsByCategory(Date start, Date end, List<Integer> catIDs) {
+    public List<DefectiveItems> getDefectiveItemsByCategory(LocalDate start, LocalDate end, List<Integer> catIDs) {
         List<DefectiveItems> defective = new ArrayList<>();
         defective.addAll(getDamagedItemReportsByCategory(start, end, catIDs));
         defective.addAll(getExpiredItemReportsByCategory(start, end, catIDs));
         return defective;
     }
 
-    public List<DefectiveItems> getDefectiveItemsByProduct(Date start, Date end, List<Integer> productIDs) {
+    public List<DefectiveItems> getDefectiveItemsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs) {
         List<DefectiveItems> defective = new ArrayList<>();
         defective.addAll(getDamagedItemReportsByProduct(start, end, productIDs));
         defective.addAll(getExpiredItemReportsByProduct(start, end, productIDs));
@@ -280,7 +279,7 @@ public class InventoryController {
         product.moveItems(storeID, amount);
     }
 
-    public double returnItems(int storeID, int productID, int amount, Date dateBought) {
+    public double returnItems(int storeID, int productID, int amount, LocalDate dateBought) {
         //find product add amount
         Product product = getProduct(productID);
         return product.returnItems(storeID, amount, dateBought);
@@ -289,6 +288,7 @@ public class InventoryController {
     public int addStore() {
         int id = storeID++;
         storeIds.add(id);
+        STORE_DAO.addStore(id);
         return id;
     }
 
@@ -299,6 +299,7 @@ public class InventoryController {
             removeProductFromStore(storeID, p.getId());
         }
         storeIds.remove(storeID);
+        STORE_DAO.removeStore(storeID);
     }
 
     public Product addProductToStore(int storeID, List<Integer> shelvesInStore, List<Integer> shelvesInWarehouse, int productID, int minAmount, int targetAmount) {
@@ -357,13 +358,13 @@ public class InventoryController {
         return "WARNING: product with ID " + productID + " is in low stock in store " + storeID;
     }
 
-    private void checkDates(Date start, Date end) {
-        Date today = new Date(); today.setHours(24); today.setMinutes(0); today.setSeconds(0);
-        if (!start.before(today) || end.before(start))
+    private void checkDates(LocalDate start, LocalDate end) {
+        LocalDate today = LocalDate.now();
+        if (!start.isBefore(today) || end.isAfter(start))
             throw new IllegalArgumentException("Illegal Dates. Cannot be in the future and end cannot be before start");
     }
     //why is storeIDS a list?
-    public List<DefectiveItems> getDamagedItemReportsByStore(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
+    public List<DefectiveItems> getDamagedItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
         checkDates(start, end);
         List<DefectiveItems> dirList = new ArrayList<>();
         Collection<Product> productList = getProducts();
@@ -372,7 +373,7 @@ public class InventoryController {
         }
         return dirList;
     }
-    public List<DefectiveItems> getDamagedItemReportsByCategory(Date start, Date end, List<Integer> categoryID) {
+    public List<DefectiveItems> getDamagedItemReportsByCategory(LocalDate start, LocalDate end, List<Integer> categoryID) {
         checkDates(start, end);
         List<DefectiveItems> dirList = new ArrayList<>();
         for (Integer c: categoryID) {
@@ -381,7 +382,7 @@ public class InventoryController {
         return dirList;
     }
 
-    public List<DefectiveItems> getDamagedItemReportsByProduct(Date start, Date end, List<Integer> productID) {
+    public List<DefectiveItems> getDamagedItemReportsByProduct(LocalDate start, LocalDate end, List<Integer> productID) {
         checkDates(start, end);
         List<DefectiveItems> dirList = new ArrayList<>();
         for (Integer p: productID) {
@@ -390,7 +391,7 @@ public class InventoryController {
         return dirList;
     }
 
-    public List<DefectiveItems> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
+    public List<DefectiveItems> getExpiredItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
         checkDates(start, end);
         List<DefectiveItems> eirList = new ArrayList<>();
         Collection<Product> productList = getProducts();
@@ -400,7 +401,7 @@ public class InventoryController {
         return eirList;
     }
 
-    public List<DefectiveItems> getExpiredItemReportsByCategory(Date start, Date end, List<Integer> categoryID) {
+    public List<DefectiveItems> getExpiredItemReportsByCategory(LocalDate start, LocalDate end, List<Integer> categoryID) {
         checkDates(start, end);
         List<DefectiveItems> eirList = new ArrayList<>();
         for (Integer c: categoryID) {
@@ -409,7 +410,7 @@ public class InventoryController {
         return eirList;
     }
 
-    public List<DefectiveItems> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productID) {
+    public List<DefectiveItems> getExpiredItemReportsByProduct(LocalDate start, LocalDate end, List<Integer> productID) {
         checkDates(start, end);
         List<DefectiveItems> eirList = new ArrayList<>();
         for (Integer p: productID) {
@@ -418,7 +419,7 @@ public class InventoryController {
         return eirList;
     }
 
-    public List<Integer> getStoreIDs() {
+    public Collection<Integer> getStoreIDs() {
         return storeIds;
     }
 
@@ -497,7 +498,7 @@ public class InventoryController {
         return p.getInStore(storeID)+p.getInWarehouse(storeID);
     }
 
-    public List<StockReport> getStockReport(List<Integer> storeIDs, List<Integer> categoryIDs) {
+    public List<StockReport> getStockReport(Collection<Integer> storeIDs, List<Integer> categoryIDs) {
         redundantCategories(categoryIDs);
         List<StockReport> stock = new ArrayList<>();
         for (Integer store : storeIDs) {

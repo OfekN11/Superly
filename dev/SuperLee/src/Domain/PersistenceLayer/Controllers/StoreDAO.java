@@ -42,4 +42,16 @@ public class StoreDAO extends DAO {
             e.printStackTrace();
         }
     }
+
+    public Integer getIDCount() {
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = getMax(connection, 1);
+            while (instanceResult.next()) {
+                return instanceResult.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

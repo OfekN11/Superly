@@ -5,6 +5,7 @@ import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -58,7 +59,7 @@ public class StockReports extends Screen {
         System.out.println(controller.getStoreIDs().getValue());
         System.out.println("If you would like all stores, you can enter a blank list");
         String input = scanner.nextLine();
-        List<Integer> storeIDs;
+        Collection<Integer> storeIDs;
         if (input.equals(""))
             storeIDs = controller.getStoreIDs().getValue();
         else

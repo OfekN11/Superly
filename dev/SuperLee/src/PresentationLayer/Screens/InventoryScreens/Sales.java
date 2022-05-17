@@ -4,6 +4,7 @@ import Domain.ServiceLayer.InventoryObjects.Sale;
 import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -78,11 +79,11 @@ public class Sales extends Screen {
         int percent = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<Sale> r = controller.addSale(categories, products, percent, start, end);

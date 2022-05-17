@@ -2,13 +2,14 @@ package Domain.BusinessLayer.Inventory;
 
 import Globals.Defect;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 import java.util.Date;
 
 public class DefectiveItems {
     private int id;
-    private Date date;
+    private LocalDate date;
     private int storeID;
     private int productID;
     private int amount;
@@ -17,7 +18,7 @@ public class DefectiveItems {
     private String description;
     private Defect defect;
 
-    public DefectiveItems(int id, Defect defect, Date date, int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
+    public DefectiveItems(int id, Defect defect, LocalDate date, int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
         this.id = id;
         this.date = date;
         this.storeID = storeID;
@@ -32,7 +33,7 @@ public class DefectiveItems {
     public int getId() {
         return id;
     }
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
     public int getStoreID() {
@@ -55,12 +56,7 @@ public class DefectiveItems {
         return defect;
     }
 
-    public boolean inDates(Date startDate, Date endDate) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(endDate);
-        c.add(Calendar.DATE, 1);
-        endDate = c.getTime();
-        endDate.setSeconds(-1);
-        return (!(startDate.after(date) || endDate.before(date)));
+    public boolean inDates(LocalDate startDate, LocalDate endDate) {
+        return (!(startDate.isAfter(date) || endDate.isBefore(date)));
     }
 }

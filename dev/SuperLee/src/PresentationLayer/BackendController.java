@@ -9,10 +9,8 @@ import Domain.ServiceLayer.SupplierObjects.ServiceSupplierObject;
 import Domain.ServiceLayer.SupplierService;
 import Globals.Pair;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 
 public class BackendController {
 
@@ -295,7 +293,7 @@ public class BackendController {
         return inventoryService.loadTestData();
     }
 
-    public Result<List<Integer>> getStoreIDs(){
+    public Result<Collection<Integer>> getStoreIDs(){
         return inventoryService.getStoreIDs();
     }
 
@@ -315,7 +313,7 @@ public class BackendController {
         return inventoryService.deleteProduct(id);
     }
 
-    public Result<Sale> addSale(List<Integer> categories, List<Integer> products, int percent, Date start, Date end){
+    public Result<Sale> addSale(List<Integer> categories, List<Integer> products, int percent, LocalDate start, LocalDate end){
         return inventoryService.addSale(categories, products, percent, start, end);
     }
 
@@ -339,15 +337,15 @@ public class BackendController {
         return inventoryService.getSaleHistoryByCategory(categoryID);
     }
 
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByStore(Date start, Date end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
         return inventoryService.getDefectiveItemsByStore(start, end, storeIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByCategory(Date start, Date end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
         return inventoryService.getDefectiveItemsByCategory(start, end, categoryIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByProduct(Date start, Date end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
         return inventoryService.getDefectiveItemsByProduct(start, end, productIDs);
     }
 
@@ -375,7 +373,7 @@ public class BackendController {
         return inventoryService.getMinStockReport();
     }
 
-    public Result<List<StockReport>> storeStockReport(List<Integer> storeIDs, List<Integer> categories){
+    public Result<List<StockReport>> storeStockReport(Collection<Integer> storeIDs, List<Integer> categories){
         return inventoryService.storeStockReport(storeIDs, categories);
     }
 
@@ -391,27 +389,27 @@ public class BackendController {
         return inventoryService.reportExpired(storeID, productID, amount, employeeID, description, inWarehouse);
     }
 
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(Date start, Date end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
         return inventoryService.getDamagedItemsReportByStore(start, end, storeIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByCategory(Date start, Date end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
         return inventoryService.getDamagedItemsReportByCategory(start, end, categoryIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByProduct(Date start, Date end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsReportByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
         return inventoryService.getDamagedItemsReportByProduct(start, end, productIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
         return inventoryService.getExpiredItemReportsByStore(start, end, storeIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByCategory(Date start, Date end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
         return inventoryService.getExpiredItemReportsByCategory(start, end, categoryIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByProduct(Date start, Date end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemReportsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
         return inventoryService.getExpiredItemReportsByProduct(start, end, productIDs);
     }
 
@@ -419,7 +417,7 @@ public class BackendController {
         return inventoryService.moveItems(storeID, productID, amount);
     }
 
-    public Result<Double> returnItems(int storeID, int productID, int amount, Date dateBought){
+    public Result<Double> returnItems(int storeID, int productID, int amount, LocalDate dateBought){
         return inventoryService.returnItems(storeID, productID, amount, dateBought);
     }
 

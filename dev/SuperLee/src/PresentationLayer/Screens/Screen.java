@@ -5,6 +5,7 @@ import PresentationLayer.BackendController;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -197,7 +198,7 @@ public abstract class Screen implements Runnable{
         return input;
     }
 
-    protected Date getDate() {
+    protected LocalDate getDate() {
         while (true) {
             try {
                 System.out.println("Please insert date in format: DD/MM/YYYY");
@@ -206,8 +207,9 @@ public abstract class Screen implements Runnable{
                     System.out.println("Cancelling command");
                     return null;
                 }
-                return new SimpleDateFormat("dd/MM/yyyy").parse(dateInput);
-            } catch (ParseException p) {
+                String[] date = dateInput.split("/");
+                return LocalDate.of(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]));
+            } catch (Exception p) {
                 System.out.println("Date in wrong format! please try again. c to cancel command");
             }
         }

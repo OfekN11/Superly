@@ -3,6 +3,7 @@ package InventoryTests;
 import Domain.BusinessLayer.InventoryController;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -96,18 +97,14 @@ class InventoryControllerTest {
     @org.junit.jupiter.api.Test
     void getExpiredItemReportsByProductIllegalEntries() {
         is.loadTestData();
-        Date today = new Date();
-        Date yesterday = new Date();
-        yesterday.setHours(-24);
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = LocalDate.now().minusDays(1);
 
-        Date beforeTwoDays = new Date();
-        beforeTwoDays.setHours(-48);
+        LocalDate beforeTwoDays = LocalDate.now().minusDays(2);
 
-        Date tomorrow = new Date();
-        tomorrow.setHours(24);
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
 
-        Date afterTwoDays = new Date();
-        afterTwoDays.setHours(48);
+        LocalDate afterTwoDays = LocalDate.now().plusDays(2);
 
         List<Integer> pIDs = new ArrayList<>();
         pIDs.add(1);

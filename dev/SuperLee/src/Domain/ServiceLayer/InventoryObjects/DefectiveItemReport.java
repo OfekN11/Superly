@@ -2,6 +2,7 @@ package Domain.ServiceLayer.InventoryObjects;
 
 import Globals.Defect;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class DefectiveItemReport {
@@ -11,7 +12,7 @@ public class DefectiveItemReport {
     private final int employeeID;
     private final boolean inWarehouse;
     private final String description;
-    private final Date date;
+    private final LocalDate date;
     private final Defect defect;
     public DefectiveItemReport(Domain.BusinessLayer.Inventory.DefectiveItems report) {
         this.productID=report.getProductID();

@@ -11,27 +11,17 @@ import PresentationLayer.Screens.MainMenu;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Main {
+
     public static void main(String[] args) {
-
-
-        /*
         BackendController controller = new BackendController();
-        controller.addNewCategory("catName", 0);
-        controller.newProduct("productName", 1,1,1,"1");
-        new Thread(new MainMenu(controller)).start();
-         */
-
-        testSuppliers();
-
+        ArrayList products = new ArrayList(); products.add(1);
+        controller.addSale(products, products, 5, LocalDate.of(2022, 05, 15),LocalDate.of(2022, 05, 18));
+//        testSuppliers();
+//        new Thread(new MainMenu(controller)).start();
     }
-
-
-
 
     private static void testSuppliers() {
 

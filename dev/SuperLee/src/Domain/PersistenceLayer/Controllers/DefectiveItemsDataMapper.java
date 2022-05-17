@@ -56,7 +56,7 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
             }
             return new DefectiveItems(resultSet.getInt(ID_COLUMN),
                     defect,
-                    resultSet.getDate(DATE_COLUMN),
+                    resultSet.getDate(DATE_COLUMN).toLocalDate(),
                     resultSet.getInt(STORE_COLUMN),
                     resultSet.getInt(PRODUCT_COLUMN),
                     resultSet.getInt(AMOUNT_COLUMN),

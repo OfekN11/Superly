@@ -4,6 +4,7 @@ import Domain.ServiceLayer.InventoryObjects.DefectiveItemReport;
 import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -86,11 +87,11 @@ public class DefectiveItemReports extends Screen {
 
     private void expiredItemsAll() {
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getExpiredItemReportsByStore(start, end, new ArrayList<>());
@@ -109,11 +110,11 @@ public class DefectiveItemReports extends Screen {
         System.out.println("Please insert store IDs, separated by commas without spaces");
         List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getExpiredItemReportsByStore(start, end, storeIDs);
@@ -132,11 +133,11 @@ public class DefectiveItemReports extends Screen {
         System.out.println("Please insert category IDs, separated by commas without spaces");
         List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getExpiredItemReportsByCategory(start, end, categoryIDs);
@@ -155,11 +156,11 @@ public class DefectiveItemReports extends Screen {
         System.out.println("Please insert product IDs, separated by commas without spaces");
         List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getExpiredItemReportsByProduct(start, end, productIDs);
@@ -201,11 +202,11 @@ public class DefectiveItemReports extends Screen {
     }
     private void defectiveItemsAll() {
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getDefectiveItemsByStore(start, end, new ArrayList<>());
@@ -224,11 +225,11 @@ public class DefectiveItemReports extends Screen {
         System.out.println("Please insert store IDs, separated by commas without spaces");
         List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getDefectiveItemsByStore(start, end, storeIDs);
@@ -247,11 +248,11 @@ public class DefectiveItemReports extends Screen {
         System.out.println("Please insert category IDs, separated by commas without spaces");
         List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getDefectiveItemsByCategory(start, end, categoryIDs);
@@ -270,11 +271,11 @@ public class DefectiveItemReports extends Screen {
         System.out.println("Please insert product IDs, separated by commas without spaces");
         List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getDefectiveItemsByProduct(start, end, productIDs);
@@ -317,11 +318,11 @@ public class DefectiveItemReports extends Screen {
 
     private void damagedItemsAll() {
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getDamagedItemsReportByStore(start, end, new ArrayList<>());
@@ -340,11 +341,11 @@ public class DefectiveItemReports extends Screen {
         System.out.println("Please insert store IDs, separated by commas without spaces");
         List<Integer> storeIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getDamagedItemsReportByStore(start, end, storeIDs);
@@ -363,11 +364,11 @@ public class DefectiveItemReports extends Screen {
         System.out.println("Please insert category IDs, separated by commas without spaces");
         List<Integer> categoryIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getDamagedItemsReportByCategory(start, end, categoryIDs);
@@ -386,11 +387,11 @@ public class DefectiveItemReports extends Screen {
         System.out.println("Please insert product IDs, separated by commas without spaces");
         List<Integer> productIDs = Arrays.asList(scanner.nextLine().split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         System.out.println("Please insert start date");
-        Date start = getDate();
+        LocalDate start = getDate();
         if (start==null)
             return;
         System.out.println("Please insert end date");
-        Date end = getDate();
+        LocalDate end = getDate();
         if (end==null)
             return;
         Result<List<DefectiveItemReport>> r = controller.getDamagedItemsReportByProduct(start, end, productIDs);

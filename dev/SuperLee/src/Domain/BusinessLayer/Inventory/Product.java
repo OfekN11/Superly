@@ -1,9 +1,11 @@
 package Domain.BusinessLayer.Inventory;
 
 import Domain.PersistenceLayer.Controllers.ProductDataMapper;
+import Domain.PersistenceLayer.Controllers.SalesDataMapper;
 import Domain.PersistenceLayer.Controllers.StockReportDataMapper;
 import Globals.Defect;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static Globals.Defect.Damaged;
@@ -24,7 +26,9 @@ public class Product {
     private static int locationIDCounter=1;
     private static int defectReportCounter=1;
     public static final ProductDataMapper PRODUCT_DATA_MAPPER = new ProductDataMapper();
-    private final static StockReportDataMapper STOCK_REPORT_DATA_MAPPER = new StockReportDataMapper();
+    private static final StockReportDataMapper STOCK_REPORT_DATA_MAPPER = new StockReportDataMapper();
+    private final static SalesDataMapper SALE_DATA_MAPPER = SaleToCustomer.SALES_DATA_MAPPER;
+
 
     public Set<Integer> getStoreIDs() { return stockReports.keySet(); }
     public int getId() { return id; }
@@ -116,15 +120,15 @@ public class Product {
         stockReports.get(storeID).moveItems(amount);
     }
 
-    public double returnItems(int storeId, int amount, Date dateBought) { //from customer to store
+    public double returnItems(int storeId, int amount, LocalDate dateBought) { //from customer to store
         if (!stockReports.containsKey(storeId))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
         stockReports.get(storeId).returnItems(amount);
         return amount*getPriceOnDate(dateBought);
     }
 
-    private double getPriceOnDate(Date dateBought) {
-        if (dateBought.after(new Date()))
+    private double getPriceOnDate(LocalDate dateBought) {
+        if (dateBought.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("An item isn't able to be bought after present time");
         List<SaleToCustomer> salesActive = new ArrayList<>();
         for (SaleToCustomer s : sales) {
@@ -144,19 +148,19 @@ public class Product {
 
     public DefectiveItems reportDamaged(int storeID, int amount, int employeeID, String description, boolean inWarehouse) {
         removeItems(storeID, amount, inWarehouse);
-        DefectiveItems dir = new DefectiveItems(defectReportCounter++, Damaged, new Date(), storeID, id, amount, employeeID, description, inWarehouse);
+        DefectiveItems dir = new DefectiveItems(defectReportCounter++, Damaged, LocalDate.now(), storeID, id, amount, employeeID, description, inWarehouse);
         damagedItemReport.add(dir);
         return dir;
     }
 
     public DefectiveItems reportExpired(int storeID, int amount, int employeeID, String description, boolean inWarehouse) {
         removeItems(storeID, amount, inWarehouse);
-        DefectiveItems eir = new DefectiveItems(defectReportCounter++, Expired, new Date(), storeID, id, amount, employeeID, description, inWarehouse);
+        DefectiveItems eir = new DefectiveItems(defectReportCounter++, Expired, LocalDate.now(), storeID, id, amount, employeeID, description, inWarehouse);
         expiredItemReport.add(eir);
         return eir;
     }
 
-    public DefectiveItems reportDefectiveForTest(int storeID, int amount, int employeeID, String description, Defect defect, Date date, boolean inWarehouse) {
+    public DefectiveItems reportDefectiveForTest(int storeID, int amount, int employeeID, String description, Defect defect, LocalDate date, boolean inWarehouse) {
         removeItems(storeID, amount, inWarehouse);
         DefectiveItems eir = new DefectiveItems(defectReportCounter++, defect, date, storeID, id, amount, employeeID, description, inWarehouse);
         if (defect==Expired)
@@ -166,10 +170,7 @@ public class Product {
         return eir;
     }
 
-    public List<DefectiveItems> getDamagedItemReportsByStore(Date start, Date end, List<Integer> storeID) {
-        end.setHours(24);
-        end.setMinutes(0);
-        end.setSeconds(-1);
+    public List<DefectiveItems> getDamagedItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeID) {
         List<DefectiveItems> dirList = new ArrayList<>();
         for (DefectiveItems dir: damagedItemReport) {
             if (dir.inDates(start, end) && (storeID.contains(dir.getStoreID()) || storeID.size()==0))
@@ -178,10 +179,7 @@ public class Product {
         return dirList;
     }
 
-    public Collection<DefectiveItems> getDamagedItemReports(Date start, Date end) {
-        end.setHours(24);
-        end.setMinutes(0);
-        end.setSeconds(-1);
+    public Collection<DefectiveItems> getDamagedItemReports(LocalDate start, LocalDate end) {
         List<DefectiveItems> dirList = new ArrayList<>();
         for (DefectiveItems dir: damagedItemReport) {
             if (dir.inDates(start, end))
@@ -190,10 +188,7 @@ public class Product {
         return dirList;
     }
 
-    public List<DefectiveItems> getExpiredItemReportsByStore(Date start, Date end, List<Integer> storeID) {
-        end.setHours(24);
-        end.setMinutes(0);
-        end.setSeconds(-1);
+    public List<DefectiveItems> getExpiredItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeID) {
         List<DefectiveItems> eirList = new ArrayList<>();
         for (DefectiveItems eir: expiredItemReport) {
             if (eir.inDates(start, end) && (storeID.contains(eir.getStoreID()) || storeID.size()==0))
@@ -202,10 +197,7 @@ public class Product {
         return eirList;
     }
 
-    public Collection<DefectiveItems> getExpiredItemReports(Date start, Date end) {
-        end.setHours(24);
-        end.setMinutes(0);
-        end.setSeconds(-1);
+    public Collection<DefectiveItems> getExpiredItemReports(LocalDate start, LocalDate end) {
         List<DefectiveItems> eirList = new ArrayList<>();
         for (DefectiveItems eir: expiredItemReport) {
             if (eir.inDates(start, end))
@@ -244,7 +236,7 @@ public class Product {
 
     public List<SaleToCustomer> getSaleHistory() {
         List<SaleToCustomer> result = category.getSaleHistory();
-        for (SaleToCustomer sale : sales) {
+        for (SaleToCustomer sale : SALE_DATA_MAPPER.getSalesByProduct(id)) {
             if (sale.isPassed() || sale.isActive())
                 result.add(sale);
         }

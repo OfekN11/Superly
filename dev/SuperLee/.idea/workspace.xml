@@ -1,11 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="14db89f2-b157-448b-aea3-2353a64a0cb5" name="Default Changelist" comment="stock warning changed">
-      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/ProductTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/ProductTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/InventoryTests/SaleToCustomerTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/InventoryTests/SaleToCustomerTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/BusinessLayer/Inventory/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/BusinessLayer/Inventory/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/PersistenceLayer/Controllers/DefectiveItemsDataMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/PersistenceLayer/Controllers/DefectiveItemsDataMapper.java" afterDir="false" />
+    <list default="true" id="14db89f2-b157-448b-aea3-2353a64a0cb5" name="Default Changelist" comment="adding back Product.addItems">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperLee.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SuperLee.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Category.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/DefectiveItems.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/DefectiveItems.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/DiscountsAndSales/PurchaseFromSupplier.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/DiscountsAndSales/SaleToCustomer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Location.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Location.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/StockReport.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Inventory/StockReport.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/InventoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/InventoryController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Agreement/Agreement.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Agreement/Agreement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Agreement/ByOrderAgreement.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Agreement/ByOrderAgreement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Agreement/NotTransportingAgreement.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Agreement/NotTransportingAgreement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Agreement/RoutineAgreement.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Agreement/RoutineAgreement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Order.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Order.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Supplier.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/Supplier/Supplier.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/SupplierController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/BusinessLayer/SupplierController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Abstract/DAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Abstract/DAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Abstract/DataMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Abstract/DataMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/AgreementItemDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/AgreementItemDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/ByOrderDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/ByOrderDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/CategoryDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/ContactDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/ContactDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/DefectiveItemsDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/LocationDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/LocationToShelfDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/LocationToShelfDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/ManufacturerDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/ManufacturerDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/OrderDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/OrderDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/ProductDataMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/ProductDataMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/RoutineDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/RoutineDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/SalesDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/SalesToCategoryDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/SalesToCategoryDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/SalesToProductDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/SalesToProductDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/SelfTransportingDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/SelfTransportingDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/StockReportDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/SuppliersDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/PersistenceLayer/Controllers/SuppliersDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/PurchaseFromSupplierReport.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/Sale.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/Sale.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/StockReport.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryObjects/StockReport.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/InventoryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/SupplierService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/Domain/ServiceLayer/SupplierService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/BackendController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/BackendController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Inventory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Inventory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Catalogs.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Category.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/DefectiveItemReports.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/InventoryMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Product.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/ReportDefective.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Reports.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Sales.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/StockReports.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/InventorySreens/Store.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/MainMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/MainMenu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/Screen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SuperLee/PresentationLayer/Screens/Screen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/CategoryTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/CategoryTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/ProductTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/ProductTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/SaleToCustomerTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/SuperLee/InventoryTests/SaleToCustomerTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/Tests/SuppliersTests/AgreementItemTest$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/Tests/SuppliersTests/AgreementItemTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/Tests/SuppliersTests/AgreementTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/Tests/SuppliersTests/ByOrderAgreementTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/SuperLee/Tests/SuppliersTests/RoutineAgreementTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +123,7 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="create.test.in.the.same.root" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/Tests" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../.." />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.112359524" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -177,13 +241,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1650207572858</updated>
-    </task>
-    <task id="LOCAL-00009" summary="PL and SL">
-      <created>1650448435807</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1650448435807</updated>
     </task>
     <task id="LOCAL-00010" summary="CLI starting">
       <created>1650450782914</created>
@@ -521,7 +578,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652105704525</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="adding back Product.addItems">
+      <created>1652726354279</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1652726354279</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -537,7 +601,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add product in test" />
     <MESSAGE value="list products in category" />
     <MESSAGE value="next line bug" />
     <MESSAGE value="fixed add sale bad loops" />
@@ -562,7 +625,8 @@
     <MESSAGE value="changes with amir after zoom with everyone" />
     <MESSAGE value="small plchanges" />
     <MESSAGE value="stock warning changed" />
-    <option name="LAST_COMMIT_MESSAGE" value="stock warning changed" />
+    <MESSAGE value="adding back Product.addItems" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding back Product.addItems" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="XDebuggerManager">

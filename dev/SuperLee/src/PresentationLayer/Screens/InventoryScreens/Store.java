@@ -5,6 +5,7 @@ import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
 import Globals.Pair;
 import PresentationLayer.Screens.Screen;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.stream.Stream;
@@ -128,7 +129,7 @@ public class Store extends Screen {
         int amount = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please insert the date the items were bought");
-        Date dateBought = getDate();
+        LocalDate dateBought = getDate();
         if (dateBought==null)
             return;
         Result<Double> r = controller.returnItems(storeID, productId, amount, dateBought);

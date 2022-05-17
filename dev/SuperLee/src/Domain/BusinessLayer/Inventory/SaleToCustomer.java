@@ -1,20 +1,25 @@
 package Domain.BusinessLayer.Inventory;
 
+import Domain.PersistenceLayer.Controllers.ProductDataMapper;
+import Domain.PersistenceLayer.Controllers.SalesDataMapper;
+
+import java.time.LocalDate;
 import java.util.*;
 
 public class SaleToCustomer {
 
     private int id;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private int percent;
     private List<Integer> categoryIDs;
     private List<Integer> productIDs;
+    public static final SalesDataMapper SALES_DATA_MAPPER = new SalesDataMapper();
 
-    public SaleToCustomer(int id, Date startDate, Date endDate, int percent, List<Integer> categoriesList, List<Integer> products) {
+    public SaleToCustomer(int id, LocalDate startDate, LocalDate endDate, int percent, List<Integer> categoriesList, List<Integer> products) {
         if (percent>=100 || percent<=0)
             throw new IllegalArgumentException("Percent sale must be between 1 and 99. Received: " + percent);
-        if (endDate.before(startDate))
+        if (endDate.isBefore(startDate))
             throw new IllegalArgumentException("SaleToCustomer: Constructor: end date is before the start date");
         this.id = id;
         this.percent = percent;
@@ -22,12 +27,7 @@ public class SaleToCustomer {
         this.productIDs = products;
         this.startDate = startDate;
         //add 1 day to the endDate in order to include the endDate's day in the sale.
-        Calendar c = Calendar.getInstance();
-        c.setTime(endDate);
-        c.add(Calendar.DATE, 1);
-        endDate = c.getTime();
-        endDate.setSeconds(-1);
-        this.endDate = endDate;
+        this.endDate = endDate.plusDays(1);
     }
 
     public int getId() {
@@ -41,10 +41,10 @@ public class SaleToCustomer {
     public List<Integer> getProducts() {
         return productIDs;
     }
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
     public int getPercent() {
@@ -52,13 +52,13 @@ public class SaleToCustomer {
     }
     //"new Date()" returns the current date.
     public boolean isUpcoming() {
-        return startDate.after(new Date());
+        return startDate.isAfter(LocalDate.now());
     }
     public boolean isPassed() {
-        return endDate.before(new Date());
+        return endDate.isBefore(LocalDate.now());
     }
     public boolean isActive() {
         return !(isUpcoming() || isPassed());
     }
-    public boolean wasActive(Date dateBought) { return !(startDate.after(dateBought) || endDate.before(dateBought)); }
+    public boolean wasActive(LocalDate dateBought) { return !(startDate.isAfter(dateBought) || endDate.isBefore(dateBought)); }
 }
