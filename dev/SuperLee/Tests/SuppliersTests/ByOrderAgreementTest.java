@@ -1,6 +1,7 @@
 package SuppliersTests;
 
 import Domain.BusinessLayer.Supplier.Agreement.*;
+import Domain.PersistenceLayer.Controllers.AgreementController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,11 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ByOrderAgreementTest {
-    private ByOrderAgreement agreement = new ByOrderAgreement(22);;
+    private ByOrderAgreement agreement; /* = new ByOrderAgreement(22);*/
+    private AgreementController controller;
 
     @BeforeEach
     public void setUp(){
-        //agreement = new ByOrderAgreement(22);
+        agreement = new ByOrderAgreement(22);
+        controller = new AgreementController();
     }
 
     @Test
@@ -31,7 +34,7 @@ public class ByOrderAgreementTest {
     @Test
     public void test_setDeliveryDays(){
         try {
-            agreement.setDeliveryDays(17, 1, null);
+            agreement.setDeliveryDays(17, 1, controller);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
