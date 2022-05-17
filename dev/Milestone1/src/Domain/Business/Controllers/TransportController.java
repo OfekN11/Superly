@@ -95,6 +95,7 @@ public class TransportController {
                 throw new Exception("Weight Warning!");
             }
         }
+        //TODO use the shift from the transport
     public void placeTruck(int transportSN, int licenseNumber, Pair<LocalDate, ShiftTypes> shift) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()==TransportStatus.padding){
