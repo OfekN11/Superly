@@ -1,5 +1,7 @@
 package Domain.BusinessLayer.Inventory;
 
+import Domain.PersistenceLayer.Controllers.DefectiveItemsDataMapper;
+import Domain.PersistenceLayer.Controllers.LocationDataMapper;
 import Globals.Defect;
 
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ public class DefectiveItems {
     private boolean inWarehouse;
     private String description;
     private Defect defect;
+    public static final DefectiveItemsDataMapper DEFECTIVE_ITEMS_DATA_MAPPER = new DefectiveItemsDataMapper();
 
     public DefectiveItems(int id, Defect defect, LocalDate date, int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
         this.id = id;

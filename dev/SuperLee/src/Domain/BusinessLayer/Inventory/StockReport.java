@@ -11,7 +11,7 @@ public class StockReport {
     private int amountInDeliveries;
     private int minAmountInStore;
     private int targetAmountInStore;
-    private final static StockReportDataMapper dataMapper = new StockReportDataMapper();
+    public final static StockReportDataMapper dataMapper = new StockReportDataMapper();
 
     public StockReport(int storeID, int productID, int amountInStore, int amountInWarehouse, int minAmountInStore, int targetAmountInStore, int amountInDelivery) {
         this.storeID = storeID;

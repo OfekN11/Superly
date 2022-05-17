@@ -237,7 +237,9 @@ public class InventoryController {
         return getCategory(categoryID).getSaleHistory();
     }
 
-    public List<DefectiveItems> getDefectiveItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs) {
+    public List<DefectiveItems> getDefectiveItemsByStore(LocalDate start, LocalDate end, Collection<Integer> storeIDs) {
+        if (storeIDs.isEmpty())
+            storeIDs=storeIds;
         List<DefectiveItems> defective = new ArrayList<>();
         defective.addAll(getDamagedItemReportsByStore(start, end, storeIDs));
         defective.addAll(getExpiredItemReportsByStore(start, end, storeIDs));
@@ -364,7 +366,7 @@ public class InventoryController {
             throw new IllegalArgumentException("Illegal Dates. Cannot be in the future and end cannot be before start");
     }
     //why is storeIDS a list?
-    public List<DefectiveItems> getDamagedItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
+    public List<DefectiveItems> getDamagedItemReportsByStore(LocalDate start, LocalDate end, Collection<Integer> storeID) { //when storeID is empty, then no restrictions.
         checkDates(start, end);
         List<DefectiveItems> dirList = new ArrayList<>();
         Collection<Product> productList = getProducts();
@@ -391,7 +393,7 @@ public class InventoryController {
         return dirList;
     }
 
-    public List<DefectiveItems> getExpiredItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeID) { //when storeID is empty, then no restrictions.
+    public List<DefectiveItems> getExpiredItemReportsByStore(LocalDate start, LocalDate end, Collection<Integer> storeID) { //when storeID is empty, then no restrictions.
         checkDates(start, end);
         List<DefectiveItems> eirList = new ArrayList<>();
         Collection<Product> productList = getProducts();

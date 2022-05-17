@@ -1,8 +1,6 @@
 package Domain.BusinessLayer.Inventory;
 
-import Domain.PersistenceLayer.Controllers.ProductDataMapper;
-import Domain.PersistenceLayer.Controllers.SalesDataMapper;
-import Domain.PersistenceLayer.Controllers.StockReportDataMapper;
+import Domain.PersistenceLayer.Controllers.*;
 import Globals.Defect;
 
 import java.time.LocalDate;
@@ -26,8 +24,10 @@ public class Product {
     private static int locationIDCounter=1;
     private static int defectReportCounter=1;
     public static final ProductDataMapper PRODUCT_DATA_MAPPER = new ProductDataMapper();
-    private static final StockReportDataMapper STOCK_REPORT_DATA_MAPPER = new StockReportDataMapper();
-    private final static SalesDataMapper SALE_DATA_MAPPER = SaleToCustomer.SALES_DATA_MAPPER;
+    private static final StockReportDataMapper STOCK_REPORT_DATA_MAPPER = StockReport.dataMapper;
+    private static final SalesDataMapper SALE_DATA_MAPPER = SaleToCustomer.SALES_DATA_MAPPER;
+    private static final DefectiveItemsDataMapper DEFECTIVE_ITEMS_DATA_MAPPER = DefectiveItems.DEFECTIVE_ITEMS_DATA_MAPPER;
+    private static final LocationDataMapper LOCATION_DATA_MAPPER = Location.LOCATION_DATA_MAPPER;
 
 
     public Set<Integer> getStoreIDs() { return stockReports.keySet(); }
@@ -150,6 +150,7 @@ public class Product {
         removeItems(storeID, amount, inWarehouse);
         DefectiveItems dir = new DefectiveItems(defectReportCounter++, Damaged, LocalDate.now(), storeID, id, amount, employeeID, description, inWarehouse);
         damagedItemReport.add(dir);
+        DEFECTIVE_ITEMS_DATA_MAPPER.insert(dir);
         return dir;
     }
 
@@ -157,49 +158,44 @@ public class Product {
         removeItems(storeID, amount, inWarehouse);
         DefectiveItems eir = new DefectiveItems(defectReportCounter++, Expired, LocalDate.now(), storeID, id, amount, employeeID, description, inWarehouse);
         expiredItemReport.add(eir);
+        DEFECTIVE_ITEMS_DATA_MAPPER.insert(eir);
         return eir;
     }
 
-    public DefectiveItems reportDefectiveForTest(int storeID, int amount, int employeeID, String description, Defect defect, LocalDate date, boolean inWarehouse) {
-        removeItems(storeID, amount, inWarehouse);
-        DefectiveItems eir = new DefectiveItems(defectReportCounter++, defect, date, storeID, id, amount, employeeID, description, inWarehouse);
-        if (defect==Expired)
-            expiredItemReport.add(eir);
-        else
-            damagedItemReport.add(eir);
-        return eir;
-    }
-
-    public List<DefectiveItems> getDamagedItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeID) {
+    public List<DefectiveItems> getDamagedItemReportsByStore(LocalDate start, LocalDate end, Collection<Integer> storeIDs) {
         List<DefectiveItems> dirList = new ArrayList<>();
-        for (DefectiveItems dir: damagedItemReport) {
-            if (dir.inDates(start, end) && (storeID.contains(dir.getStoreID()) || storeID.size()==0))
-                dirList.add(dir);
+        for (int store : storeIDs) {
+            for (DefectiveItems dir : DEFECTIVE_ITEMS_DATA_MAPPER.getDamagedByStore(store)) {
+                if (dir.inDates(start, end))
+                    dirList.add(dir);
+            }
         }
         return dirList;
     }
 
     public Collection<DefectiveItems> getDamagedItemReports(LocalDate start, LocalDate end) {
         List<DefectiveItems> dirList = new ArrayList<>();
-        for (DefectiveItems dir: damagedItemReport) {
+        for (DefectiveItems dir: DEFECTIVE_ITEMS_DATA_MAPPER.getByDefect(Damaged)) {
             if (dir.inDates(start, end))
                 dirList.add(dir);
         }
         return dirList;
     }
 
-    public List<DefectiveItems> getExpiredItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeID) {
+    public List<DefectiveItems> getExpiredItemReportsByStore(LocalDate start, LocalDate end, Collection<Integer> storeIDs) {
         List<DefectiveItems> eirList = new ArrayList<>();
-        for (DefectiveItems eir: expiredItemReport) {
-            if (eir.inDates(start, end) && (storeID.contains(eir.getStoreID()) || storeID.size()==0))
-                eirList.add(eir);
+        for (int store : storeIDs) {
+            for (DefectiveItems eir : DEFECTIVE_ITEMS_DATA_MAPPER.getExpiredByStore(store)) {
+                if (eir.inDates(start, end))
+                    eirList.add(eir);
+            }
         }
         return eirList;
     }
 
     public Collection<DefectiveItems> getExpiredItemReports(LocalDate start, LocalDate end) {
         List<DefectiveItems> eirList = new ArrayList<>();
-        for (DefectiveItems eir: expiredItemReport) {
+        for (DefectiveItems eir: DEFECTIVE_ITEMS_DATA_MAPPER.getByDefect(Expired)) {
             if (eir.inDates(start, end))
                 eirList.add(eir);
         }
@@ -214,7 +210,9 @@ public class Product {
         stockReports.put(storeID, new StockReport(storeID, id, 0, 0, minAmount, targetAmount, 0));
         STOCK_REPORT_DATA_MAPPER.insert(getStockReport(storeID));
         locations.add(storeLocation);
+        LOCATION_DATA_MAPPER.insert(storeLocation, id);
         locations.add(warehouseLocation);
+        LOCATION_DATA_MAPPER.insert(warehouseLocation, id);
     }
 
     public void removeLocation(int storeID) {
@@ -227,6 +225,7 @@ public class Product {
                 i--;
             }
         }
+        LOCATION_DATA_MAPPER.removeByStore(storeID);
     }
 
     private void removeStockReport(int storeID) {
