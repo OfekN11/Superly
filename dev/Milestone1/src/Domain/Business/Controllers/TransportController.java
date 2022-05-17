@@ -96,13 +96,13 @@ public class TransportController {
             }
         }
         //TODO use the shift from the transport
-    public void placeTruck(int transportSN, int licenseNumber, Pair<LocalDate, ShiftTypes> shift) throws Exception {
+    public void placeTruck(int transportSN, int licenseNumber) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()==TransportStatus.padding){
             Truck truck = truckController.getTruck(licenseNumber);
-            if(truck.isFree(shift)&&transport.placeTruck(licenseNumber))
+            if(truck.isFree(transport.getShift())&&transport.placeTruck(licenseNumber))
             {
-                truck.addShift(shift);
+                truck.addShift(transport.getShift());
             }
             else{
                 throw new Exception("truck cant be placed");
@@ -113,7 +113,7 @@ public class TransportController {
         }
     }
     //TODO need to combine with shift
-    public void placeDriver(int transportSN, String empID,Pair<LocalDate, ShiftTypes> shift) throws Exception {
+    public void placeDriver(int transportSN, String empID) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.isPlacedTruck()){
             Carrier carrier = employeeController.getCarrier(empID);// = driverController.getDriver(driverName);
