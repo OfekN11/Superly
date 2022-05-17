@@ -554,8 +554,8 @@ public class InventoryController {
         return amounts;
     }
 
-    //needs to be called every morning from service by some kind of trigger
-    public List<Order> getOrdersOfTomorrow() throws Exception {
+    //needs to be called every morning from service by some kind of trigger.Get new and updated orders.
+    public List<Order> getAvailableOrders() throws Exception {
         Map<Integer, Map<Integer,Integer>> thingsToOrder = new HashMap<>(); // <productID, <storeID, amount>>
         Map<Integer, Integer> amounts;
         for (Product product: getProducts()) {
