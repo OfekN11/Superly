@@ -22,6 +22,7 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
     private final static int EMPLOYEE_ID_COLUMN = 6;
     private final static int DESCRIPTION_COLUMN = 7;
     private final static int DEFECT_COLUMN = 8;
+    private final static int IN_WAREHOUSE_COLUMN = 9;
 
     private final static Map<String, DefectiveItems> IDENTITY_MAP = new HashMap<>();
 
@@ -62,7 +63,7 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
                     resultSet.getInt(AMOUNT_COLUMN),
                     resultSet.getInt(EMPLOYEE_ID_COLUMN),
                     resultSet.getString(DESCRIPTION_COLUMN),
-                    resultSet.getInt(EMPLOYEE_ID_COLUMN)==1);
+                    resultSet.getInt(IN_WAREHOUSE_COLUMN)==1);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -79,7 +80,8 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
                     instance.getAmount(),
                     instance.getEmployeeID(),
                     instance.getDescription(),
-                    instance.getDefect()));
+                    instance.getDefect(),
+                    (instance.getInWarehouse()) ? (1) : (0)));
             IDENTITY_MAP.put(Integer.toString(instance.getId()), instance);
         }
         catch (Exception e) {
