@@ -9,17 +9,19 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AgreementTest {
 
-    private Agreement agreement = new NotTransportingAgreement();
+    private Agreement agreement; /* = new NotTransportingAgreement();*/
     private HashMap<Integer, Integer> bulkPrices;
 
     @BeforeEach
     public void setUp(){
-        //agreement = new NotTransportingAgreement();
+        agreement = new NotTransportingAgreement();
     }
 
     private List<AgreementItem> makeItemList(){
@@ -81,10 +83,28 @@ public class AgreementTest {
             agreement.addItem(item1);
 
             aiList = makeItemList();
-            aiList.add(1, item1);
+            aiList.add(item1);
+
 
             assertEquals(item1, agreement.getItem(item1.getProductId()));
-            //assertEquals(aiList, agreement.getItems());
+
+            List<AgreementItem> fromAgreement = agreement.getItems();
+            fromAgreement = fromAgreement.stream().sorted(new Comparator<AgreementItem>() {
+                @Override
+                public int compare(AgreementItem o1, AgreementItem o2) {
+                    return o1.getProductId()-o2.getProductId();
+                }
+            }).collect(Collectors.toList());
+
+            AgreementItem t1;
+            AgreementItem t2;
+
+            for(int i=0; i<fromAgreement.size(); i++){
+                t1 = aiList.get(i);
+                t2 = fromAgreement.get(i);
+                assertEquals(t1.toString(), t2.toString());
+            }
+
 
             agreement.addItem(item2);
             agreement.addItem(item3);
@@ -95,10 +115,23 @@ public class AgreementTest {
             aiList.add(item3);
 
 
+            fromAgreement = agreement.getItems();
+            fromAgreement = fromAgreement.stream().sorted(new Comparator<AgreementItem>() {
+                @Override
+                public int compare(AgreementItem o1, AgreementItem o2) {
+                    return o1.getProductId()-o2.getProductId();
+                }
+            }).collect(Collectors.toList());
+
             assertEquals(item1, agreement.getItem(item1.getProductId()));
             assertEquals(item2, agreement.getItem(item2.getProductId()));
             assertEquals(item3, agreement.getItem(item3.getProductId()));
-            // assertEquals(aiList, agreement.getItems());
+
+            for(int i=0; i<fromAgreement.size(); i++){
+                t1 = aiList.get(i);
+                t2 = fromAgreement.get(i);
+                assertEquals(t1.toString(), t2.toString());
+            }
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -114,17 +147,34 @@ public class AgreementTest {
 
             assertEquals(aiList.size(), agreement.getItems().size());
             agreement.removeItem(1);
-            //aiList = makeItemList();
-            //aiList.remove(0);
-            //aiList.remove(new AgreementItem(1, "item1", "m1", 5.11f, new HashMap<>()));
+            aiList = makeItemList();
             assertEquals(aiList.size() - 1, agreement.getItems().size());
 
 
             agreement.removeItem(5);
-            //aiList = makeItemList();
-            //aiList.remove(new AgreementItem(5, "item5", "m5", 1123f, new HashMap<>()));
-            //assertEquals(aiList, agreement.getItems());
-            assertEquals(aiList.size() - 2, agreement.getItems().size());
+            aiList = makeItemList();
+            aiList.remove(0);
+            aiList.remove(3);
+
+            List<AgreementItem> fromAgreement = agreement.getItems();
+            fromAgreement = fromAgreement.stream().sorted(new Comparator<AgreementItem>() {
+                @Override
+                public int compare(AgreementItem o1, AgreementItem o2) {
+                    return o1.getProductId()-o2.getProductId();
+                }
+            }).collect(Collectors.toList());
+
+            AgreementItem t1;
+            AgreementItem t2;
+
+            for(int i=0; i<fromAgreement.size(); i++){
+                t1 = aiList.get(i);
+                t2 = fromAgreement.get(i);
+                assertEquals(t1.toString(), t2.toString());
+            }
+
+
+            assertEquals(aiList.size(), agreement.getItems().size());
 
         }
         catch (Exception e){
@@ -143,33 +193,33 @@ public class AgreementTest {
         try{
             agreement.setItems(aiList);
 
-            //aiList = makeItemList();
+            aiList = makeItemList();
 
             agreement.addItem(item3);
-            //aiList.add(item3);
+            aiList.add(item3);
             assertEquals(item3, agreement.getItem(item3.getProductId()));
-            assertEquals(aiList.size() + 1, agreement.getItems().size());
+            assertEquals(aiList.size(), agreement.getItems().size());
 
             agreement.removeItem(4);
-            //aiList.remove(new AgreementItem(4, "item4", "m4", 184.2f, new HashMap<>()));
+            aiList.remove(3);
             assertEquals(aiList.size(), agreement.getItems().size());
 
             agreement.removeItem(2);
-            //aiList.remove(new AgreementItem(2, "item2", "m2", 7.11f, new HashMap<>()));
-            assertEquals(aiList.size() - 1, agreement.getItems().size());
+            aiList.remove(1);
+            assertEquals(aiList.size(), agreement.getItems().size());
 
             agreement.addItem(item1);
-            //aiList.add(item1);
+            aiList.add(item1);
             assertEquals(aiList.size(), agreement.getItems().size());
             assertEquals(item1, agreement.getItem(item1.getProductId()));
 
             agreement.addItem(item2);
-            //aiList.add(item2);
-            assertEquals(aiList.size() + 1, agreement.getItems().size());
+            aiList.add(item2);
+            assertEquals(aiList.size(), agreement.getItems().size());
             assertEquals(item2, agreement.getItem(item2.getProductId()));
 
             agreement.removeItem(3);
-            //aiList.remove(new AgreementItem(3, "item3", "m3", 12.876f, new HashMap<>()));
+            aiList.remove(1);
             assertEquals(aiList.size() , agreement.getItems().size());
 
         }

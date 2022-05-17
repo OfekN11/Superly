@@ -139,7 +139,7 @@ public class AgreementItem {
     }
     //Format : " id , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
     public String toString(){
-        if(bulkPrices.isEmpty()){
+        if(bulkPrices==null || bulkPrices.isEmpty()){
             return "" + productId + ", " + name + ", " + manufacturer + ", " + pricePerUnit + ", [NO BULK PRICES]";
         }
         else{
