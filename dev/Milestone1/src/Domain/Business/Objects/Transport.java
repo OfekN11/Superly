@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Transport {
+    private static int incSN = 0;
+    private int SN;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String driverName;
@@ -32,6 +34,7 @@ public class Transport {
     //TODO maybe add filed of current site visited to check when the transport is over
 
     public Transport() {
+        SN = incSN++;
         driverID = "";
         driverName = "";
         truckNumber = -1;
@@ -41,6 +44,11 @@ public class Transport {
         transportOrders = new ArrayList<>();
         status = TransportStatus.padding;
     }
+
+    public int getSN() {
+        return SN;
+    }
+
     public void startTransport() throws Exception {
         if (status == TransportStatus.padding)
         {

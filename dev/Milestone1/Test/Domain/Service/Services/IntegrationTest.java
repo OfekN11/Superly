@@ -25,7 +25,7 @@ public class IntegrationTest {
     static TransportService transportService = new TransportService();
     static SiteController siteController = new SiteController();
     static HashMap<String,Integer> productMap = new HashMap<>();
-    static TransportDataMapper transportDataMapper =new TransportDataMapper();
+    static TransportDataMapper transportDataMapper = new TransportDataMapper();
 
     @BeforeClass
     public static void beforeAll() throws Exception {

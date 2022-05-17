@@ -11,11 +11,13 @@ public class TransportOrder {
     private int srcID;
     private int dstID;
     private HashMap<Integer, Integer> productList;
+    private int transportID;
 
     public TransportOrder(int src, int dst) {
         ID = incID++;
         this.srcID = src;
         this.dstID = dst;
+        transportID = -1;
         this.productList = new HashMap<>();
     }
 
@@ -24,6 +26,13 @@ public class TransportOrder {
         this.srcID = src;
         this.dstID = dst;
         this.productList = productList;
+    }
+
+    public TransportOrder(int ID, int srcID, int dstID, int transportID) {
+        this.ID = ID;
+        this.srcID = srcID;
+        this.dstID = dstID;
+        this.transportID = transportID;
     }
 
     public int getID() {
@@ -52,6 +61,14 @@ public class TransportOrder {
 
     public void setProductList(HashMap<Integer, Integer> productList) {
         this.productList = productList;
+    }
+
+    public int getTransportID() {
+        return transportID;
+    }
+
+    public void setTransportID(int transportID) {
+        this.transportID = transportID;
     }
 
     //TODO need to see if delete the function
