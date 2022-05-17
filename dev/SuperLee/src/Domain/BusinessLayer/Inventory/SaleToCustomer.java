@@ -27,7 +27,7 @@ public class SaleToCustomer {
         this.productIDs = products;
         this.startDate = startDate;
         //add 1 day to the endDate in order to include the endDate's day in the sale.
-        this.endDate = endDate.plusDays(1);
+        this.endDate = endDate;
     }
 
     public int getId() {

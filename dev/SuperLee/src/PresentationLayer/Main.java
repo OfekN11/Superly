@@ -5,6 +5,7 @@ import Domain.BusinessLayer.Supplier.Supplier;
 import Domain.BusinessLayer.SupplierController;
 import Domain.PersistenceLayer.Controllers.ManufacturerDAO;
 import Domain.PersistenceLayer.Controllers.SuppliersDAO;
+import Domain.ServiceLayer.Result;
 import Globals.Pair;
 import Domain.ServiceLayer.SupplierService;
 import PresentationLayer.Screens.MainMenu;
@@ -18,7 +19,9 @@ public class Main {
     public static void main(String[] args) {
         BackendController controller = new BackendController();
         ArrayList products = new ArrayList(); products.add(1);
-        controller.addSale(products, products, 5, LocalDate.of(2022, 05, 15),LocalDate.of(2022, 05, 18));
+        Result addSale = controller.addSale(products, products, 5, LocalDate.of(2022, 05, 15),LocalDate.of(2022, 05, 18));
+        Result getSale = controller.getSaleHistoryByProduct(1);
+        System.out.println("done");
 //        testSuppliers();
 //        new Thread(new MainMenu(controller)).start();
     }

@@ -56,32 +56,24 @@ public class SaleToCustomerTests {
     }
     @Test
     public void testIsPassed() {
-        try {
-            Assertions.assertFalse(sale1.isPassed());
-            Assertions.assertFalse(sale2.isPassed());
-            Assertions.assertFalse(sale3.isPassed());
-            Assertions.assertFalse(sale4.isPassed());
-            Assertions.assertTrue(sale5.isPassed());
-            Assertions.assertFalse(sale6.isPassed());
-            Assertions.assertTrue(sale7.isPassed());
-            Assertions.assertFalse(sale8.isPassed());
-        } catch (Exception e) {
-            Assertions.fail("isPassed isn't working");
-        }
+        Assertions.assertFalse(sale1.isPassed());
+        Assertions.assertFalse(sale2.isPassed());
+        Assertions.assertFalse(sale3.isPassed());
+        Assertions.assertFalse(sale4.isPassed());
+        Assertions.assertTrue(sale5.isPassed());
+        Assertions.assertFalse(sale6.isPassed());
+        Assertions.assertTrue(sale7.isPassed());
+        Assertions.assertFalse(sale8.isPassed());
     }
     @Test
     public void testIsActive() {
-        try {
-            Assertions.assertTrue(sale1.isActive());
-            Assertions.assertTrue(sale2.isActive());
-            Assertions.assertTrue(sale3.isActive());
-            Assertions.assertTrue(sale4.isActive());
-            Assertions.assertFalse(sale5.isActive());
-            Assertions.assertFalse(sale6.isActive());
-            Assertions.assertFalse(sale7.isActive());
-            Assertions.assertFalse(sale8.isActive());
-        } catch (Exception e) {
-            Assertions.fail("isActive isn't working");
-        }
+        Assertions.assertTrue(sale1.isActive());
+        Assertions.assertTrue(sale2.isActive());
+        Assertions.assertTrue(sale3.isActive());
+        Assertions.assertTrue(sale4.isActive());
+        Assertions.assertFalse(sale5.isActive());
+        Assertions.assertFalse(sale6.isActive());
+        Assertions.assertFalse(sale7.isActive());
+        Assertions.assertFalse(sale8.isActive());
     }
 }

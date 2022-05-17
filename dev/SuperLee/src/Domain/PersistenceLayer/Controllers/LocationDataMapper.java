@@ -58,11 +58,15 @@ public class LocationDataMapper extends DataMapper<Location> {
 
     public void insert(Location instance, int productID){
         try {
-            insert(Arrays.asList(instance.getLocationID(),
+            int id = instance.getLocationID();
+            insert(Arrays.asList(id,
                     productID,
                     instance.getStoreID(),
                     instance.getInWarehouse()));
             IDENTITY_MAP.put(Integer.toString(instance.getLocationID()), instance);
+            for (Integer shelf : instance.getShelves()) {
+                locationToShelfDAO.insert(Arrays.asList(id, shelf));
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -71,7 +75,7 @@ public class LocationDataMapper extends DataMapper<Location> {
 
     @Override
     public void insert(Location instance) {
-//        throw new Exception("Will not be implemented for Location. Use insert(Location l, int product) instead");
+        throw new RuntimeException("Will not be implemented for Location. Use insert(Location l, int product) instead");
 //        try {
 //            insert(Arrays.asList(instance.getLocationID(),
 //                    instance.getStartDate(),
@@ -128,5 +132,22 @@ public class LocationDataMapper extends DataMapper<Location> {
             e.printStackTrace();
         }
         return output;
+    }
+
+    public void removeByStore(int storeID) {
+        try(Connection connection = getConnection()) {
+            ResultSet locationsToRemove = select(connection, Arrays.asList(STORE_COLUMN), Arrays.asList(storeID));
+            List<Integer> locationsIDs = new ArrayList<>();
+            while (locationsToRemove.next()) {
+                locationsIDs.add(locationsToRemove.getInt(STORE_COLUMN));
+            }
+            for (Integer i : locationsIDs) {
+                locationToShelfDAO.remove(Arrays.asList(1),Arrays.asList(i));
+            }
+            remove(Arrays.asList(STORE_COLUMN), Arrays.asList(storeID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

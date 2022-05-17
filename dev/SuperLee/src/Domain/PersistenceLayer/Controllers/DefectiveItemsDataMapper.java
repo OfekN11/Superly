@@ -70,7 +70,7 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
         }
     }
 
-    public void insert(DefectiveItems instance) throws SQLException {
+    public void insert(DefectiveItems instance) {
         try {
             insert(Arrays.asList(instance.getId(),
                     instance.getStoreID(),
@@ -163,6 +163,36 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
         List<DefectiveItems> output = new ArrayList<>();
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN), Arrays.asList(defect));
+            while (instanceResult.next()) {
+                DefectiveItems curr = buildObject(instanceResult);
+                output.add(curr);
+                IDENTITY_MAP.put(Integer.toString(instanceResult.getInt(ID_COLUMN)), buildObject(instanceResult));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output;
+    }
+
+    public Collection<DefectiveItems> getDamagedByStore(int store) {
+        List<DefectiveItems> output = new ArrayList<>();
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN, STORE_COLUMN), Arrays.asList(Defect.Damaged, store));
+            while (instanceResult.next()) {
+                DefectiveItems curr = buildObject(instanceResult);
+                output.add(curr);
+                IDENTITY_MAP.put(Integer.toString(instanceResult.getInt(ID_COLUMN)), buildObject(instanceResult));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output;
+    }
+
+    public Collection<DefectiveItems> getExpiredByStore(int store) {
+        List<DefectiveItems> output = new ArrayList<>();
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN, STORE_COLUMN), Arrays.asList(Defect.Expired, store));
             while (instanceResult.next()) {
                 DefectiveItems curr = buildObject(instanceResult);
                 output.add(curr);
