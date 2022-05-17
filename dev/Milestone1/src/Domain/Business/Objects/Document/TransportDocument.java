@@ -5,7 +5,7 @@ import Domain.Service.ServiceDocumentFactory;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-
+//TODO the transport document need to hold the destination documents
 public class TransportDocument extends Document{
     private LocalDateTime startTime;
     private int truckNumber;

@@ -112,7 +112,6 @@ public class TransportController {
             throw new Exception("the transport is not in padding list");
         }
     }
-    //TODO use the shift from the transport
     //TODO need to combine with shift
     public void placeDriver(int transportSN, String empID,Pair<LocalDate, ShiftTypes> shift) throws Exception {
         Transport transport = getTransport(transportSN);

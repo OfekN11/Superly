@@ -110,7 +110,6 @@ public class Transport {
     public boolean isPlacedCarrier(){
         return !(driverName==""&&driverID=="");
     }
-
     private void removeShippingArea(ShippingAreas sa)
     {
         if(shippingAreas.get(sa) > 1)

@@ -1,9 +1,12 @@
 package Domain.Service.Services;
 
 import Domain.Business.Controllers.TransportController;
+import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
 import Domain.Service.Objects.*;
+import Globals.Pair;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,15 +18,7 @@ public class TransportService {
         this.controller = new TransportController();
     }
 
-    public Result addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) {
-        try {
-            controller.addTransportOrder(srcID, dstID, productList);
-            return Result.makeOk(null);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-    }
+    //TODO fix the function
     private HashMap<Integer, Transport> toServiceTransports(HashMap<Integer, Domain.Business.Objects.Transport> transports)
     {
         HashMap<Integer, Transport> transportList = new HashMap<>();
@@ -32,9 +27,28 @@ public class TransportService {
         }
         return transportList;
     }
+    //TODO still not fixed in the business
     public Result getInProgressTransports() {
         try {
             return Result.makeOk(toServiceTransports(controller.getInProgressTransports()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+    //TODO still not fixed in the business
+    public Result getPaddingTransport(){
+        try {
+            return Result.makeOk(toServiceTransports(controller.getPendingTransports()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+    //TODO still not fixed in the business
+    public Result getCompletedTransport(){
+        try {
+            return Result.makeOk(toServiceTransports(controller.getCompletedTransports()));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -57,7 +71,7 @@ public class TransportService {
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-    }*/
+    }
 
     public Result getTransportOrders() {
         try {
@@ -67,7 +81,7 @@ public class TransportService {
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-    }
+    }*/
 
     /*public Result getTransportOrders(ShippingAreas areas) {
         try {
@@ -77,6 +91,11 @@ public class TransportService {
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
+    }
+
+    public Result getRedesignTransports() {
+        //TODO:
+        return null;
     }*/
 
     public Result startTransport(int transportSN) {
@@ -89,14 +108,9 @@ public class TransportService {
         }
     }
 
-    public Result getRedesignTransports() {
-        //TODO:
-        return null;
-    }
-
-    public Result placeDriver(int transportSN, String driverName) {
+    public Result placeDriver(int transportSN, String driverID) {
         try {
-            controller.placeDriver(transportSN, driverName);
+            controller.placeDriver(transportSN, driverID);
             return Result.makeOk(null);
         }
         catch (Exception e){
@@ -107,6 +121,44 @@ public class TransportService {
     public Result placeTruck(int transportSN, int truckLN) {
         try {
             controller.placeTruck(transportSN, truckLN);
+            return Result.makeOk(null);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+    public Result createTransport (Pair<LocalDate, ShiftTypes> shift){
+        try {
+            controller.createTransport(shift);
+            return Result.makeOk(null);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+    public Result addOrderToTransport(int transportSN,int orderId){
+        try {
+            controller.addOrderToTransport(transportSN,orderId);
+            return Result.makeOk(null);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+    //TODO the function need to be implemented in business
+    public Result EndTransport(int transportSN){
+        try {
+            controller.endTransport(transportSN);
+            return Result.makeOk(null);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+    //TODO the function need to be implemented in business
+    public Result advanceSite(int transportSN,int siteID){
+        try {
+            controller.advanceSite(transportSN,siteID);
             return Result.makeOk(null);
         }
         catch (Exception e){

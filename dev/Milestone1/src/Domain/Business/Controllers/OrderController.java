@@ -15,7 +15,7 @@ public class OrderController {
     public void createProducts(){
         //TODO not implemented yet, creates the products list
     }
-    public void addTransportOrder(int srcID, int dstID, HashMap<String, Integer> productList) throws Exception {
+    public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {
         //TODO not implemented yet
     }
     public TransportOrder getTransportOrder(int orderID) throws Exception {
