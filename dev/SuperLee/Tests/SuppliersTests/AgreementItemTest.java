@@ -11,12 +11,12 @@ import java.util.HashMap;
 
 public class AgreementItemTest {
 
-    private AgreementItem item =  new AgreementItem(1, 1,"Bamaba", "Osem", 8.99f, new HashMap()
+    private AgreementItem item; /* =  new AgreementItem(1, 1,"Bamaba", "Osem", 8.99f, new HashMap()
     {{
         put(20, 15);
         put(50, 20);
         put(100, 30);
-    }} );
+    }} );*/
 
     @BeforeEach
     public void setUp(){
