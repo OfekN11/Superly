@@ -35,6 +35,7 @@ public class Product {
     public String getName() { return name; }
     public int getCategoryID() {return category.getID();}
     public double getOriginalPrice() { return price; }
+
     public void setName(String name) {
         this.name = name;
         PRODUCT_DATA_MAPPER.updateName(id, name);
@@ -278,7 +279,7 @@ public class Product {
         return getStockReport(storeID).getAmountForOrder();
     }
 
-    public void addDelivery(int orderID, int storeID, int amount) {
+    public void addDelivery(int storeID, int amount) {
         getStockReport(storeID).addDelivery(amount);
     }
 }

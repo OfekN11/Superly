@@ -567,7 +567,7 @@ public class InventoryController {
         //document every order we print on screen (new orders or edit amount of existed orders)
         for (Order order: orders) {
             for (OrderItem orderItem: order.getOrderItems()) {
-                getProduct(orderItem.getProductId()).addDelivery(order.getId(), order.getStoreID(), orderItem.getQuantity());
+                getProduct(orderItem.getProductId()).addDelivery(order.getStoreID(), orderItem.getQuantity());
             }
         }
         return orders;
