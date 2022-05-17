@@ -60,8 +60,8 @@ public class SaleToCustomer {
     }
     public boolean wasActive(LocalDate dateBought) { return !(startDate.isAfter(dateBought) || endDate.isBefore(dateBought)); }
 
-    public void setEndDateForToday() {
-        endDate = LocalDate.now().plusDays(1);
-        //SALES_DATA_MAPPER.update() UPDATE END DATE.
+    public void setEndDate(LocalDate newEndDate) {
+        endDate = newEndDate;
+        SALES_DATA_MAPPER.updateEndDate(id, newEndDate);
     }
 }

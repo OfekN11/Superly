@@ -211,10 +211,7 @@ public class InventoryController {
     public void removeSale(int saleID) {
         SaleToCustomer sale = getSale(saleID);
         if (sale.isActive()) {
-            //Probably should be changed to: setEndDate(sale), which set the end date to today 23:59:59. and then update the db.
-            //copySale(sale);
-            //removeSaleFromProductsAndCategories(sale);
-            sale.setEndDateForToday();
+            sale.setEndDate(LocalDate.now().plusDays(1));
         }
         else if (sale.isUpcoming()) {
             removeSaleFromProductsAndCategories(sale);

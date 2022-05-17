@@ -6,6 +6,7 @@ import Domain.PersistenceLayer.Abstract.LinkDAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.*;
 
 public class SalesDataMapper extends DataMapper<SaleToCustomer> {
@@ -138,5 +139,14 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void updateEndDate(int saleID, LocalDate date) {
+        try {
+            updateProperty(Integer.toString(saleID), END_DATE_COLUMN, date);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
