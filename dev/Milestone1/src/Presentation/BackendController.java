@@ -13,7 +13,7 @@ public class BackendController {
     private final ShiftService shiftService = new ShiftService();
     private final ConstraintService constraintService = new ConstraintService();
     private final TruckService truckService = new TruckService();
-
+    private final DocumentService documentService = new DocumentService();
     ///EMPLOYEES
     //CREATE
 
@@ -421,10 +421,13 @@ public class BackendController {
         return result.getValue();
     }
 
+    //
     private void throwIfError(Result result) throws Exception {
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
+
+    //Truck:
     public void addTruck(int licenseNumber, TruckModel truckModel, int netWeight, int maxCapacityWeight) throws Exception {
         Result result =  truckService.addTruck(licenseNumber, truckModel, netWeight, maxCapacityWeight);
         throwIfError(result);
@@ -433,5 +436,18 @@ public class BackendController {
     public void removeTruck(int licenseNumber) throws Exception {
         Result result =  truckService.removeTruck(licenseNumber);
         throwIfError(result);
+    }
+
+    //Document:
+    public TransportDocument getTransportDocument(int tdSN) throws Exception {
+        Result<TransportDocument> result = documentService.getTransportDocument(tdSN);
+        throwIfError(result);
+        return result.getValue();
+    }
+
+    public DestinationDocument getDestinationDocument(int ddSN) throws Exception {
+        Result<DestinationDocument> result = documentService.getTransportDocument(ddSN);
+        throwIfError(result);
+        return result.getValue();
     }
 }

@@ -1,14 +1,7 @@
 package Presentation.Screens;
 
-import Domain.Service.Objects.Shift;
-import Globals.Enums.LicenseTypes;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.TruckModel;
-import Globals.util.ShiftComparator;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TruckMenu extends Screen{
     private static final String[] menuOptions = {
