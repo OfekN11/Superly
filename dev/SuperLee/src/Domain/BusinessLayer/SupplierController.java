@@ -35,7 +35,7 @@ public class SupplierController {
 
     public int addSupplier(String name, int bankNumber, String address, String payingAgreement, ArrayList<Pair<String,String>> contactPairs, ArrayList<String> manufacturers) throws Exception {
         ArrayList<Contact> contacts = createContacts(contactPairs);
-        Supplier supplier = new Supplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
+        Supplier supplier = new Supplier(name, bankNumber, address, payingAgreement, contacts, manufacturers, suppliersDAO);
 
         suppliersDAO.save(String.valueOf(supplier.getId()), supplier);
         //suppliersDAO.addSupplier(supplier, contacts, manufacturers);

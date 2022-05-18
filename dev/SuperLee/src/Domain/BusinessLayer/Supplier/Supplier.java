@@ -34,10 +34,15 @@ public class Supplier {
     private final int BY_ORDER  = 2;
     private final int NOT_TRANSPORTING  = 3;
 
-    private static int globalID = 1;
+    private static int globalID = -1;
 
 
-    public Supplier(String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts, ArrayList<String> manufacturers){
+    public Supplier(String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts, ArrayList<String> manufacturers, SuppliersDAO dao){
+
+        if(globalID == -1){
+            findGlobalIDFromDataBase(dao);
+        }
+
         this.id = globalID;
         globalID++;
         this.name = name;
@@ -50,6 +55,10 @@ public class Supplier {
         this.finishedOrders = new HashMap<>();
         this.ordersInTheNext24Hours = new HashMap<>();
         agreement = null;
+    }
+
+    private void findGlobalIDFromDataBase(SuppliersDAO dao){
+        globalID = dao.findSupplierGlobalID();
     }
 
     public Supplier(int id, int bankNumber, String address, String name, String payingAgreement){

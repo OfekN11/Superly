@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ByOrderAgreementTest {
-    private ByOrderAgreement agreement; /* = new ByOrderAgreement(22);*/
+    private ByOrderAgreement agreement;
     private AgreementController controller;
 
     @BeforeEach
