@@ -1,5 +1,8 @@
 package Presentation.Screens;
 
+import Presentation.Objects.DestinationDocument;
+import Presentation.Objects.TransportDocument;
+
 public class DocumentMenu extends Screen{
     private static final String[] menuOptions = {
             "Get transport document",    //1
@@ -39,8 +42,8 @@ public class DocumentMenu extends Screen{
         int ddSN = 0;
         try {
             ddSN = getSNOfDocument("Destination");
-            //DestinationDocument dd = controller.getDestinationDocument(ddSN);
-            //TODO: td.display();
+            DestinationDocument dd = controller.getDestinationDocument(ddSN);
+            dd.display();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -51,8 +54,8 @@ public class DocumentMenu extends Screen{
         int tdSN = 0;
         try {
             tdSN = getSNOfDocument("Transport");
-            //TransportDocument td = controller.getTransportDocument(tdSN);
-            //TODO: td.display();
+            TransportDocument td = controller.getTransportDocument(tdSN);
+            td.display();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

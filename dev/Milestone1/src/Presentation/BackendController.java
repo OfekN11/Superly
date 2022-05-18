@@ -2,7 +2,10 @@ package Presentation;
 
 import Domain.Service.Objects.*;
 import Domain.Service.Services.*;
+import Presentation.Objects.*;
 import Globals.Enums.*;
+import Presentation.Objects.DestinationDocument;
+import Presentation.Objects.TransportDocument;
 
 import java.time.LocalDate;
 import java.util.Set;
