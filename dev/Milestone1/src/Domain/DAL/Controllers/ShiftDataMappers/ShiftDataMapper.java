@@ -1,4 +1,5 @@
 package Domain.DAL.Controllers.ShiftDataMappers;
+import Domain.Business.Objects.Constraint;
 import Domain.Business.Objects.EveningShift;
 import Domain.Business.Objects.MorningShift;
 import Domain.Business.Objects.Shift;
@@ -6,7 +7,12 @@ import Globals.Enums.ShiftTypes;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ShiftDataMapper {
     // properties
@@ -70,10 +76,42 @@ public class ShiftDataMapper {
 
     //should return all shifts (of any type) between date start and date end (inclusive)
     public Set<Shift> getBetween(LocalDate start, LocalDate end) {
+        Set<Shift> shifts =getBetween(start,end,ShiftTypes.Morning);
+        shifts.addAll(getBetween(start,end,ShiftTypes.Evening));
+        return shifts;
     }
 
     //should return all shifts of type 'type' between date start and date end (inclusive)
-    public Object getBetween(LocalDate left, LocalDate left1, ShiftTypes type) {
+    public Set<Shift> getBetween(LocalDate start, LocalDate end, ShiftTypes type) {
+        Set<Shift> output = new HashSet<>();
+
+        long numOfDays = ChronoUnit.DAYS.between(start, end.plusDays(1));
+
+        List<LocalDate> listOfDates = Stream.iterate(start, date -> date.plusDays(1))
+                .limit(numOfDays)
+                .collect(Collectors.toList());
+
+        for (LocalDate date:listOfDates){
+            try{
+            Shift shift;
+                switch (type) {
+                    case Morning:
+                        shift = morningShiftDataMapper.get(date.toString() + type.toString());
+                        break;
+                    case Evening:
+                        shift = eveningShiftDataMapper.get(date.toString() + type.toString());
+                        break;
+                    default:
+                        throw new RuntimeException("undefine case");
+                }
+                if (shift != null)
+                    output.add(shift);
+            } catch (Exception e) {
+                throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+            }
+        }
+        return output;
     }
+
 }
 
