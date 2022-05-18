@@ -3,6 +3,7 @@ package SuppliersTests;
 import Domain.BusinessLayer.Supplier.Agreement.Agreement;
 import Domain.BusinessLayer.Supplier.Agreement.NotTransportingAgreement;
 import Domain.BusinessLayer.Supplier.AgreementItem;
+import Domain.PersistenceLayer.Controllers.AgreementController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,10 +19,13 @@ public class AgreementTest {
 
     private Agreement agreement;
     private HashMap<Integer, Integer> bulkPrices;
+    private AgreementController dao;
 
     @BeforeEach
     public void setUp(){
         agreement = new NotTransportingAgreement();
+        bulkPrices = new HashMap<>();
+        dao = new AgreementController();
     }
 
     private List<AgreementItem> makeItemList(){
@@ -60,7 +64,7 @@ public class AgreementTest {
         }
 
         try{
-            agreement.setItemsFromString(list, 1, null);
+            agreement.setItemsFromString(list, 1, dao);
 
             assertEquals(aiList.size(),agreement.getItems().size());
         }
