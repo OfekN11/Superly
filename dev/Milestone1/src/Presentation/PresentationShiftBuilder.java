@@ -30,16 +30,7 @@ public class PresentationShiftBuilder {
 
     public PresentationShiftBuilder() {
         controller = new BackendController();
-        date = null;
-        type = null;
-        managerId = null;
-        this.carrierCount = 0;
-        this.cashierCount = 0;
-        this.storekeeperCount = 0;
-        this.sorterCount = 0;
-        this.hr_managerCount = 0;
-        this.logistics_managerCount = 0;
-        this.transportManagerCount = 0;
+        reset();
     }
 
     private void printExitMassage() {
@@ -332,6 +323,22 @@ public class PresentationShiftBuilder {
             System.out.println("Please try again");
             throw new RuntimeException(" you should set the date type and manager before ");
         }
+        finally {
+            reset();
+        }
+    }
+
+    private void reset(){
+        date = null;
+        type = null;
+        managerId = null;
+        this.carrierCount = 0;
+        this.cashierCount = 0;
+        this.storekeeperCount = 0;
+        this.sorterCount = 0;
+        this.hr_managerCount = 0;
+        this.logistics_managerCount = 0;
+        this.transportManagerCount = 0;
     }
 
     private static boolean areYouSure(){
