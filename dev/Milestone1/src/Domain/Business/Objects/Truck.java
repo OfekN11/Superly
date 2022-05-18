@@ -17,14 +17,12 @@ public class Truck {
     private TruckModel model;
     private int netWeight;
     private int maxCapacityWeight;
-    private List<Pair<LocalDate, ShiftTypes>> takenShifts;
 
     public Truck(int licenseNumber, TruckModel model, int netWeight, int maxCapacityWeight) {
         this.licenseNumber = licenseNumber;
         this.model = model;
         this.netWeight = netWeight;
         this.maxCapacityWeight = maxCapacityWeight;
-        takenShifts = new ArrayList<>();
     }
 
     public int getLicenseNumber() {
@@ -80,11 +78,5 @@ public class Truck {
             default:
         }
         return ans;
-    }
-    public boolean isFree(Pair<LocalDate, ShiftTypes> shift){
-        return !takenShifts.contains(shift);
-    }
-    public void addShift(Pair<LocalDate, ShiftTypes> shift){
-        takenShifts.add(shift);
     }
 }

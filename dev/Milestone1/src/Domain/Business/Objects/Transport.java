@@ -116,7 +116,9 @@ public class Transport {
             shippingAreas.remove(sa);
         }
     }
-
+    public String getDriverID(){
+        return driverID;
+    }
 
     public int getTruckNumber() {
         return truckNumber;

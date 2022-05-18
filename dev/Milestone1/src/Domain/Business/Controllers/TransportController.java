@@ -4,6 +4,7 @@ import Domain.Business.Objects.*;
 import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
 import Domain.Business.Objects.Employee.Carrier;
+import Domain.Business.Objects.Shift.Shift;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
 import Globals.Enums.TransportStatus;
@@ -44,6 +45,10 @@ public class TransportController {
             throw new Exception("there is no sorter in this shift");
         }
 
+    }
+    //TODO not implemented yet, can do after adding DAL objects
+    public List<Transport> getAllTransports(){
+        return null;
     }
     //TODO the function will check the valid of the function.
     //TODO the function will remove from the transport the site that visited site
@@ -101,16 +106,13 @@ public class TransportController {
                 throw new Exception("Weight Warning!");
             }
         }
-        //TODO use the shift from the transport
     public void placeTruck(int transportSN, int licenseNumber) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()==TransportStatus.padding){
             Truck truck = truckController.getTruck(licenseNumber);
-            if(truck.isFree(transport.getShift())&&transport.placeTruck(licenseNumber))
+            List<Transport> allTransports = getAllTransports();
+            if(!(isAvailable(allTransports,truck)&&transport.placeTruck(licenseNumber)))
             {
-                truck.addShift(transport.getShift());
-            }
-            else{
                 throw new Exception("truck cant be placed");
             }
         }
@@ -122,13 +124,26 @@ public class TransportController {
     public void placeDriver(int transportSN, String empID) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.isPlacedTruck()){
-            Carrier carrier = employeeController.getCarrier(empID);// = driverController.getDriver(driverName);
+            Carrier carrier = employeeController.getCarrier(empID);
             Truck truck = truckController.getTruck(transport.getTruckNumber());
-            if(truck.canDriveOn(carrier.getLicenses()))
+            if(truck.canDriveOn(carrier.getLicenses()))//TODO not implemented yet
             {
                 if(!transport.isPlacedCarrier()) {
-                    //TODO check if the carrier is free in the shift
-                    transport.placeDriver(empID);
+                    Shift shift = shiftController.getShift(transport.getShift().getLeft(),transport.getShift().getRight());
+                    Set<String> carriersInShift = shift.getCarrierIDs();
+                    if(carriersInShift.contains(carrier.getId())){
+                        List<Transport> allTransports = getAllTransports();
+                        if(!isAvailable(allTransports,carrier)){
+                            throw new Exception("The carrier is already in a transport in this shift");
+                        }
+                        else{
+                            transport.placeDriver(empID);
+                        }
+                    }
+                    else{
+                        throw new Exception("The Carrier is not in this shift");
+                    }
+
                 }
                 else{
                     throw new Exception("carrier is already placed");
@@ -193,6 +208,22 @@ public class TransportController {
         else {
             throw new Exception("The transport is not on the list of redesign transport!");
         }
+    }
+    private boolean isAvailable(List<Transport> transports,Truck c){
+        for (Transport t:transports) {
+            if(t.getTruckNumber()==c.getLicenseNumber()){
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean isAvailable(List<Transport> transports,Carrier c){
+        for (Transport t:transports) {
+            if(t.getDriverID()==c.getId()){
+                return false;
+            }
+        }
+        return true;
     }
     //GETTERS
     //TODO fix the getters after DAL fix
