@@ -19,19 +19,19 @@ public class ShiftController {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     // properties
     private final ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
-    private final ConstraintController constraintController = new ConstraintController();
+    private final EmployeeController employeeController = new EmployeeController();
 
     //CREATE
 
-    public void createShift(LocalDate date, ShiftTypes type, String managerId, int carrierCount,int cashierCount, int storekeeperCount,int sorterCount, int hr_managerCount, int logistics_managerCount, int transport_managerCount) throws Exception {
+    public void createShift(LocalDate date, ShiftTypes type, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transport_managerCount) throws Exception {
         if (shiftDataMapper.get(date, type) != null)
             throw new Exception(String.format(SHIFT_ALREADY_EXIST, type, date.format(DATE_FORMAT)));
-        switch (type){
+        switch (type) {
             case Evening:
-                shiftDataMapper.save(new EveningShift(date,managerId,carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount, transport_managerCount));
+                shiftDataMapper.save(new EveningShift(date, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transport_managerCount));
                 break;
             case Morning:
-                shiftDataMapper.save(new MorningShift(date,managerId,carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount, transport_managerCount));
+                shiftDataMapper.save(new MorningShift(date, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transport_managerCount));
         }
     }
 
@@ -45,8 +45,7 @@ public class ShiftController {
     }
 
     public Set<Shift> getShiftsBetween(LocalDate start, LocalDate end) {
-        Set<Shift> shifts = shiftDataMapper.getBetween(start, end);
-        return shifts;
+        return shiftDataMapper.getBetween(start, end);
     }
 
     //UPDATE
@@ -153,22 +152,62 @@ public class ShiftController {
     //MISC
 
     public Set<Shift> getEmployeeShiftsBetween(String id, LocalDate start, LocalDate end) {
-        return getShiftsBetween(start,end).stream()
+        return getShiftsBetween(start, end).stream()
                 .filter((shift) -> shift.isIdInclude(id)).collect(Collectors.toSet());
     }
 
     public String getEmployeeWorkDetailsForCurrentMonth(String id) {
-        Pair<LocalDate,LocalDate> monthEdges = getMonthDatesEdges();
+        Pair<LocalDate, LocalDate> monthEdges = getMonthDatesEdges();
         return "Shifts during " + LocalDate.now().format(DateTimeFormatter.ofPattern("MMM")) + ": " +
                 Arrays.stream(ShiftTypes.values())
                         .map((type) -> type + " - " + shiftDataMapper.getBetween(monthEdges.getLeft(), monthEdges.getLeft(), type))
                         .collect(Collectors.joining(", "));
     }
 
-    private Pair<LocalDate,LocalDate> getMonthDatesEdges() {
+    public Set<Carrier> getShiftCarriers(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getCarrier(getShift(workday, type).getCarrierIDs());
+    }
+
+    public Set<Cashier> getShiftCashiers(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getCashier(getShift(workday, type).getCashierIDs());
+    }
+
+    public Set<Sorter> getShiftSorters(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getSorter(getShift(workday, type).getSorterIDs());
+    }
+
+    public Set<Storekeeper> getShiftStorekeepers(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getStorekeeper(getShift(workday, type).getStorekeeperIDs());
+    }
+
+    public Set<HR_Manager> getShiftHR_Managers(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getHR_Manager(getShift(workday, type).getHr_managerIDs());
+    }
+
+    public Set<Logistics_Manager> getShiftLogistics_Managers(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getLogistics_Manager(getShift(workday, type).getLogistics_managerIDs());
+    }
+
+    public Set<Transport_Manager> getShiftTransport_Managers(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getTransport_Manager(getShift(workday, type).getTransport_managerIDs());
+    }
+
+    public Set<Employee> getShiftEmployees(LocalDate workday, ShiftTypes type) throws Exception {
+        Set<Employee> employees = new HashSet<>();
+        employees.addAll(getShiftCarriers(workday, type));
+        employees.addAll(getShiftCashiers(workday, type));
+        employees.addAll(getShiftSorters(workday, type));
+        employees.addAll(getShiftStorekeepers(workday, type));
+        employees.addAll(getShiftHR_Managers(workday, type));
+        employees.addAll(getShiftLogistics_Managers(workday, type));
+        employees.addAll(getShiftTransport_Managers(workday, type));
+        return employees;
+    }
+
+    private Pair<LocalDate, LocalDate> getMonthDatesEdges() {
         LocalDate initial = LocalDate.now();
         LocalDate start = initial.withDayOfMonth(1);
         LocalDate end = initial.withDayOfMonth(initial.getMonth().length(initial.isLeapYear()));
-        return new Pair<>(start,end);
+        return new Pair<>(start, end);
     }
 }
