@@ -8,6 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
 
+/**
+ * NOTE: The Tests assumes that the DB is empty
+ */
+
 
 class SupplierControllerTest {
 
