@@ -34,19 +34,21 @@ class SupplierControllerTest {
 
     @Test
     void addSupplier() {
-        try {
-            controller.addSupplier( "name", 3, "address", "credit card", contacts, manufacturers);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertTrue(controller.supplierExist(3));
+        int supID = -1;
 
         try {
-            controller.addSupplier("name", 4, "address", "credit card", contacts, manufacturers);
+            supID = controller.addSupplier( "name", 3, "address", "credit card", contacts, manufacturers);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assertTrue(controller.supplierExist(4));
+        assertTrue(controller.supplierExist(supID));
+
+        try {
+            supID = controller.addSupplier("name", 4, "address", "credit card", contacts, manufacturers);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        assertTrue(controller.supplierExist(supID));
     }
 
     @Test

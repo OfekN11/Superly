@@ -11,11 +11,14 @@ import java.util.List;
 
 public class RoutineAgreementTest {
 
-    private RoutineAgreement agreement = new RoutineAgreement(new ArrayList<>());
+    private RoutineAgreement agreement;
+    private List<Integer> days;
 
     @BeforeEach
     public void setUp(){
-        //agreement = new RoutineAgreement("1 2 3 4 5 6 7");
+        days = new ArrayList<>();
+        days.add(1); days.add(2); days.add(3); days.add(4); days.add(5); days.add(6); days.add(7);
+        agreement = new RoutineAgreement(days);
     }
 
     @Test

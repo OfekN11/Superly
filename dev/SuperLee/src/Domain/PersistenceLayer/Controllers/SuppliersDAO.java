@@ -356,4 +356,28 @@ public class SuppliersDAO extends DataMapper<Supplier> {
             return 0;
         return supplierIds.get(0);
     }
+
+    /**
+     * @return the globalID for the Supplier objects
+     */
+    public int findSupplierGlobalID(){
+        int finalID = 0;  // get the largest one and set global id to be biggest+1
+        int tempID;
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = select(connection);
+            while (instanceResult.next()) {
+                tempID = instanceResult.getInt(1);
+
+                if(tempID > finalID){
+                    finalID = tempID;
+                }
+
+            }
+        }
+        catch (Exception throwables) {
+            System.out.println(throwables.getMessage());
+        }
+
+        return finalID + 1;
+    }
 }

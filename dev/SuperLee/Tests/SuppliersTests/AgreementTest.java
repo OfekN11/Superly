@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class AgreementTest {
 
-    private Agreement agreement; /* = new NotTransportingAgreement();*/
+    private Agreement agreement;
     private HashMap<Integer, Integer> bulkPrices;
 
     @BeforeEach
