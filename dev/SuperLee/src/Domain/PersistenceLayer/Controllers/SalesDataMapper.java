@@ -11,7 +11,7 @@ import java.util.*;
 
 public class SalesDataMapper extends DataMapper<SaleToCustomer> {
 
-    private final static Map<String, SaleToCustomer> IDENTITY_MAP = new HashMap<>();
+    private final static Map<String, SaleToCustomer> SALE_IDENTITY_MAP = new HashMap<>();
 //    private final static CategoryDataMapper categoryDataMapper = new CategoryDataMapper();
 //    private final static ProductDataMapper productDataMapper = new ProductDataMapper();
     private final static SalesToProductDAO salesToProductDAO = new SalesToProductDAO();
@@ -26,9 +26,17 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
         super("Sales");
     }
 
+    public Map<Integer, SaleToCustomer> getIntegerMap() {
+        Map<Integer, SaleToCustomer> output = new HashMap<>();
+        for (Map.Entry<String, SaleToCustomer> entry: SALE_IDENTITY_MAP.entrySet()) {
+            output.put(Integer.parseInt(entry.getKey()), entry.getValue());
+        }
+        return output;
+    }
+
     @Override
     public Map getMap() {
-        return IDENTITY_MAP;
+        return SALE_IDENTITY_MAP;
     }
 
     @Override
@@ -74,7 +82,7 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
                     instance.getStartDate(),
                     instance.getEndDate(),
                     instance.getPercent()));
-            IDENTITY_MAP.put(Integer.toString(instance.getId()), instance);
+            SALE_IDENTITY_MAP.put(Integer.toString(instance.getId()), instance);
             for (int c : instance.getCategories())
                 salesToCategoryDAO.insert(Arrays.asList(instance.getId(), c));
             for (int p : instance.getProducts())
@@ -89,12 +97,12 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection);
             while (instanceResult.next()) {
-                IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
+                SALE_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return IDENTITY_MAP.values();
+        return SALE_IDENTITY_MAP.values();
     }
 
     public Collection<SaleToCustomer> getSalesByCategory(int category) {
@@ -105,7 +113,7 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
             while (instanceResult.next()) {
                 SaleToCustomer curr = buildObject(instanceResult);
                 output.add(curr);
-                IDENTITY_MAP.put(Integer.toString(curr.getId()), curr);
+                SALE_IDENTITY_MAP.put(Integer.toString(curr.getId()), curr);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,12 +129,12 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
             while (instanceResult.next()) {
                 SaleToCustomer curr = buildObject(instanceResult);
                 output.add(curr);
-                IDENTITY_MAP.put(Integer.toString(curr.getId()), curr);
+                SALE_IDENTITY_MAP.put(Integer.toString(curr.getId()), curr);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return IDENTITY_MAP.values();
+        return SALE_IDENTITY_MAP.values();
     }
 
     public Integer getIDCount() {

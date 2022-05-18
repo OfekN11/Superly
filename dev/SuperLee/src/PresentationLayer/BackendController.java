@@ -15,7 +15,7 @@ import java.util.*;
 public class BackendController {
 
     private SupplierService supplierService ;
-    private InventoryService inventoryService = new InventoryService();
+    private InventoryService inventoryService; // = new InventoryService();
 
 
     public BackendController(){

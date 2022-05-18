@@ -12,6 +12,7 @@ import Domain.PersistenceLayer.Controllers.ProductDataMapper;
 import Domain.PersistenceLayer.Controllers.SalesDataMapper;
 import Domain.PersistenceLayer.Controllers.StoreDAO;
 import Globals.Pair;
+import sun.awt.geom.AreaOp;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -32,9 +33,9 @@ public class InventoryController {
     private final static SalesDataMapper SALE_DATA_MAPPER = SaleToCustomer.SALES_DATA_MAPPER;
     public InventoryController() {
         storeIds = STORE_DAO.getAll();
-        categories = CATEGORY_DATA_MAPPER.getMap();
-        sales = SALE_DATA_MAPPER.getMap();
-        products = PRODUCT_DATA_MAPPER.getMap();
+        categories = CATEGORY_DATA_MAPPER.getIntegerMap();
+        sales = SALE_DATA_MAPPER.getIntegerMap();
+        products = PRODUCT_DATA_MAPPER.getIntegerMap();
         storeID=STORE_DAO.getIDCount() + 1;
         saleID=SALE_DATA_MAPPER.getIDCount() + 1;
         catID=CATEGORY_DATA_MAPPER.getIDCount() + 1;
@@ -277,14 +278,21 @@ public class InventoryController {
     }
 
     public Collection<Category> getCategories() {
-        return CATEGORY_DATA_MAPPER.getAll();
+        Collection<Category> categoryCollection = CATEGORY_DATA_MAPPER.getAll();
+        for (Category category: categoryCollection) {
+            categories.put(category.getID(), category);
+        }
+        Collection<Product> productCollection = getProducts();
+        for (Product product: productCollection) {
+            categories.get(product.getCategoryID()).addProduct(product);
+        }
+        return categories.values();
     }
 
     public List<Product> getProductsFromCategory(List<Integer> categoryIDs) {
         List<Product> products = new ArrayList<>();
-        //remove redundancies? no, because those products are the same instance
         for (int i : categoryIDs)
-            products.addAll(getCategory(i).getAllProductsInCategory());
+            products.addAll(PRODUCT_DATA_MAPPER.getProductsFromCategory(i));
         return products;
     }
 

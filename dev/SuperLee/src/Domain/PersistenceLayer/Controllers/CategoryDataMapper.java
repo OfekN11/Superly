@@ -2,17 +2,18 @@ package Domain.PersistenceLayer.Controllers;
 
 import Domain.BusinessLayer.Inventory.Category;
 import Domain.BusinessLayer.Inventory.Product;
+import Domain.BusinessLayer.InventoryController;
 import Domain.PersistenceLayer.Abstract.DataMapper;
 import Domain.PersistenceLayer.Abstract.LinkDAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 public class CategoryDataMapper extends DataMapper<Category> {
 
-    private final static Map<String, Category> Category_IDENTITY_MAP = new HashMap<>();
+    private final static Map<String, Category> CATEGORY_IDENTITY_MAP = new HashMap<>();
+
     private final static int ID_COLUMN = 1;
     private final static int NAME_COLUMN = 2;
     private final static int PARENT_COLUMN = 3;
@@ -21,9 +22,17 @@ public class CategoryDataMapper extends DataMapper<Category> {
         super("Category");
     }
 
+    public Map<Integer, Category> getIntegerMap() {
+        Map<Integer, Category> output = new HashMap<>();
+        for (Map.Entry<String, Category> entry: CATEGORY_IDENTITY_MAP.entrySet()) {
+            output.put(Integer.parseInt(entry.getKey()), entry.getValue());
+        }
+        return output;
+    }
+
     @Override
     public Map getMap() {
-        return Category_IDENTITY_MAP;
+        return CATEGORY_IDENTITY_MAP;
     }
 
     @Override
@@ -50,7 +59,7 @@ public class CategoryDataMapper extends DataMapper<Category> {
             insert(Arrays.asList(instance.getID(),
                     instance.getName(),
                     instance.getParentCategory()==null ? null : instance.getParentCategory().getID()));
-            Category_IDENTITY_MAP.put(Integer.toString(instance.getID()), instance);
+            CATEGORY_IDENTITY_MAP.put(Integer.toString(instance.getID()), instance);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -79,12 +88,13 @@ public class CategoryDataMapper extends DataMapper<Category> {
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection);
             while (instanceResult.next()) {
-                Category_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
+                CATEGORY_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Category_IDENTITY_MAP.values();
+        Collection<Category> categories= CATEGORY_IDENTITY_MAP.values();
+        return categories;
     }
 
     public Integer getIDCount() {
