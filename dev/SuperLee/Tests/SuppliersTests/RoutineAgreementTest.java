@@ -1,6 +1,7 @@
 package SuppliersTests;
 
 import Domain.BusinessLayer.Supplier.Agreement.RoutineAgreement;
+import Domain.PersistenceLayer.Controllers.AgreementController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,12 +14,14 @@ public class RoutineAgreementTest {
 
     private RoutineAgreement agreement;
     private List<Integer> days;
+    private AgreementController dao;
 
     @BeforeEach
     public void setUp(){
         days = new ArrayList<>();
         days.add(1); days.add(2); days.add(3); days.add(4); days.add(5); days.add(6); days.add(7);
         agreement = new RoutineAgreement(days);
+        dao = new AgreementController();
     }
 
     @Test
@@ -41,7 +44,7 @@ public class RoutineAgreementTest {
         list.add(1); list.add(2); list.add(3);
 
         try{
-            agreement.setDaysOfDelivery(s, 1, null);
+            agreement.setDaysOfDelivery(s, 1, dao);
 
             assertEquals(list, agreement.getDaysOfDelivery());
         }
@@ -57,7 +60,7 @@ public class RoutineAgreementTest {
         list.add(1); list.add(2); list.add(5); list.add(6);
 
         try{
-            agreement.setDaysOfDelivery("1 2", 1, null);
+            agreement.setDaysOfDelivery("1 2", 1, dao);
 
             agreement.addDaysOfDelivery(s);
 
