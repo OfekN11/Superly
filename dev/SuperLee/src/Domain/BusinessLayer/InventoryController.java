@@ -282,7 +282,7 @@ public class InventoryController {
 
     public List<Product> getProductsFromCategory(List<Integer> categoryIDs) {
         List<Product> products = new ArrayList<>();
-        //remove redundancies?
+        //remove redundancies? no, because those products are the same instance
         for (int i : categoryIDs)
             products.addAll(getCategory(i).getAllProductsInCategory());
         return products;
