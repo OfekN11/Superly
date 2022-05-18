@@ -62,7 +62,7 @@ public class LocationDataMapper extends DataMapper<Location> {
             insert(Arrays.asList(id,
                     productID,
                     instance.getStoreID(),
-                    instance.getInWarehouse()));
+                    instance.getInWarehouse() ? 1 : 0));
             IDENTITY_MAP.put(Integer.toString(instance.getLocationID()), instance);
             for (Integer shelf : instance.getShelves()) {
                 locationToShelfDAO.insert(Arrays.asList(id, shelf));
@@ -148,6 +148,17 @@ public class LocationDataMapper extends DataMapper<Location> {
         }
         catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public Integer getMax() {
+        try(Connection connection = getConnection()) {
+            ResultSet max = getMax(connection, ID_COLUMN);
+            return max.getInt(1);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

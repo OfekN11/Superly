@@ -21,13 +21,13 @@ public class Product {
     private String manufacturer;
     private double price;
     private List<SaleToCustomer> sales;
-    private static int locationIDCounter=1;
-    private static int defectReportCounter=1;
     public static final ProductDataMapper PRODUCT_DATA_MAPPER = new ProductDataMapper();
     private static final StockReportDataMapper STOCK_REPORT_DATA_MAPPER = StockReport.dataMapper;
     private static final SalesDataMapper SALE_DATA_MAPPER = SaleToCustomer.SALES_DATA_MAPPER;
     private static final DefectiveItemsDataMapper DEFECTIVE_ITEMS_DATA_MAPPER = DefectiveItems.DEFECTIVE_ITEMS_DATA_MAPPER;
     private static final LocationDataMapper LOCATION_DATA_MAPPER = Location.LOCATION_DATA_MAPPER;
+    private static int locationIDCounter = LOCATION_DATA_MAPPER.getMax()+1;
+    private static int defectReportCounter = DEFECTIVE_ITEMS_DATA_MAPPER.getMax()+1;
 
 
     public int getId() { return id; }
@@ -217,7 +217,7 @@ public class Product {
 
     public void removeLocation(int storeID) {
         if (getStockReport(storeID)==null)
-            throw new IllegalArgumentException("Product " + name + " is not being sold at store " + storeID);
+            return;
         removeStockReport(storeID);
         for (int i=0; i<locations.size(); i++) {
             if (locations.get(i).getStoreID()==storeID) {

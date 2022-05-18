@@ -42,6 +42,19 @@ public class InventoryController {
         supplierController = new SupplierController();
     }
 
+    //for tests
+    public InventoryController(boolean isTest) {
+        storeIds = new ArrayList<>();
+        categories = new HashMap<>();
+        sales = new HashMap<>();
+        products = new HashMap<>();
+        storeID=1;
+        saleID=1;
+        catID=1;
+        productID=1;
+        supplierController = new SupplierController();
+    }
+
     public void loadTestData() {
         //initialize stuff for tests
         //add stores

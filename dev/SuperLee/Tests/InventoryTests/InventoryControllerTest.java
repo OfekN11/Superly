@@ -4,10 +4,9 @@ import Domain.BusinessLayer.InventoryController;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
+import static java.util.Collections.max;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryControllerTest {
@@ -19,79 +18,75 @@ class InventoryControllerTest {
     @org.junit.jupiter.api.Test
     void addStore() {
         //empty
-        assertIterableEquals(new ArrayList<>(), is.getStoreIDs());
-
-        assertEquals(1, is.addStore());
+        int currStore = max(is.getStoreIDs());
+        List<Integer> currStores = new ArrayList<>(is.getStoreIDs());
+//        assertIterableEquals(new ArrayList<>(), is.getStoreIDs());
+        assertEquals(currStore+1, is.addStore());
         Integer[] actual = is.getStoreIDs().toArray(new Integer[0]);
-        Integer[] expected = {1};
+        currStores.add(currStore+1);
+        Integer[] expected = currStores.toArray(new Integer[0]);
         assertArrayEquals(actual, expected);
-        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(1, 1));
+        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(currStore+1, 1));
 
-        assertEquals(2, is.addStore());
+        assertEquals(currStore+2, is.addStore());
         actual = is.getStoreIDs().toArray(new Integer[0]);
-        expected = new Integer[]{1, 2};
+        currStores.add(currStore+2);
+        expected = currStores.toArray(new Integer[0]);
         assertArrayEquals(actual, expected);
-        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(2, 2));
+        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(currStore+2, 2));
 
-        assertEquals(3, is.addStore());
+        is.removeStore(currStore+2);
+        assertEquals(currStore+3, is.addStore());
         actual = is.getStoreIDs().toArray(new Integer[0]);
-        expected = new Integer[]{1, 2, 3};
+        currStores.remove(Integer.valueOf(currStore+2));
+        currStores.add(currStore+3);
+        expected = currStores.toArray(new Integer[0]);
         assertArrayEquals(actual, expected);
-        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(3, 3));
-
-        is.removeStore(2);
-        assertEquals(4, is.addStore());
-        actual = is.getStoreIDs().toArray(new Integer[0]);
-        expected = new Integer[]{1, 3, 4};
-        assertArrayEquals(actual, expected);
-        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(4, 4));
+        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(currStore+2, 1));
+        //need to add a cleanup method
     }
 
     @org.junit.jupiter.api.Test
     void removeStore() {
-        is.loadTestData();
-
         //first
+        Integer[] start = new ArrayList<Integer>(is.getStoreIDs()).toArray(new Integer[0]);
+        int store = is.addStore();
+        int cat = is.addCategory("TestCategory", 0).getID();
+        int prod = is.newProduct("TestProduct", cat,2,2,"testManu").getId();
+        is.addProductToStore(store, Arrays.asList(1), Arrays.asList(1), prod, 5,5);
+        assertDoesNotThrow(()->is.getAmountInStore(store, prod));
+
+        is.removeStore(store);
         Integer[] actual = is.getStoreIDs().toArray(new Integer[0]);
-        Integer[] expected = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        assertArrayEquals(actual, expected);
-        for (int i=1; i<=10; i++) {
-            int finalI = i;
-            assertDoesNotThrow(()->is.getAmountInStore(finalI, 3));
-        }
-
-        is.removeStore(10);
-        actual = is.getStoreIDs().toArray(new Integer[0]);
-        expected = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
-        assertArrayEquals(actual, expected);
-        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(10, 3));
-
-        is.removeStore(1);
-        actual = is.getStoreIDs().toArray(new Integer[0]);
-        expected = new Integer[]{2, 3, 4, 5, 6, 7, 8, 9};
-        assertArrayEquals(actual, expected);
-        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(1, 3));
-
-        is.removeStore(2);
-        actual = is.getStoreIDs().toArray(new Integer[0]);
-        expected = new Integer[]{3, 4, 5, 6, 7, 8, 9};
-        assertArrayEquals(actual, expected);
-        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(2, 3));
-
-        is.removeStore(6);
-        actual = is.getStoreIDs().toArray(new Integer[0]);
-        expected = new Integer[]{3, 4, 5, 7, 8, 9};
-        assertArrayEquals(actual, expected);
-        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(6, 3));
-
-        assertThrows(IllegalArgumentException.class, () -> is.removeStore(6));
-        actual = is.getStoreIDs().toArray(new Integer[0]);
-        expected = new Integer[]{3, 4, 5, 7, 8, 9};
-        assertArrayEquals(actual, expected);
-        for (int i=0; i<expected.length; i++) {
-            int finalI = expected[i];
-            assertDoesNotThrow(()->is.getAmountInStore(finalI, 3));
-        }
+        assertArrayEquals(actual, start);
+        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(store, prod));
+        assertThrows(IllegalArgumentException.class, () -> is.removeStore(store));
+//        is.removeStore(1);
+//        actual = is.getStoreIDs().toArray(new Integer[0]);
+//        expected = new Integer[]{2, 3, 4, 5, 6, 7, 8, 9};
+//        assertArrayEquals(actual, expected);
+//        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(1, 3));
+//
+//        is.removeStore(2);
+//        actual = is.getStoreIDs().toArray(new Integer[0]);
+//        expected = new Integer[]{3, 4, 5, 6, 7, 8, 9};
+//        assertArrayEquals(actual, expected);
+//        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(2, 3));
+//
+//        is.removeStore(6);
+//        actual = is.getStoreIDs().toArray(new Integer[0]);
+//        expected = new Integer[]{3, 4, 5, 7, 8, 9};
+//        assertArrayEquals(actual, expected);
+//        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(6, 3));
+//
+//        assertThrows(IllegalArgumentException.class, () -> is.removeStore(6));
+//        actual = is.getStoreIDs().toArray(new Integer[0]);
+//        expected = new Integer[]{3, 4, 5, 7, 8, 9};
+//        assertArrayEquals(actual, expected);
+//        for (int i=0; i<expected.length; i++) {
+//            int finalI = expected[i];
+//            assertDoesNotThrow(()->is.getAmountInStore(finalI, 3));
+//        }
     }
 
     @org.junit.jupiter.api.Test

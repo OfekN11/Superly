@@ -205,4 +205,14 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
         }
         return output;
     }
+    public Integer getMax() {
+        try (Connection connection = getConnection()) {
+            ResultSet max = getMax(connection, ID_COLUMN);
+            return max.getInt(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

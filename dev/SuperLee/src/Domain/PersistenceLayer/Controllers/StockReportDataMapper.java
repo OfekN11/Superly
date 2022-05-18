@@ -78,7 +78,6 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        throw new RuntimeException("this is bad");
     }
 
     public StockReport get(int storeId, int productID) {
