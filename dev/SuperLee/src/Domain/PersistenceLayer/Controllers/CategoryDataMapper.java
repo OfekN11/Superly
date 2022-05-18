@@ -47,12 +47,9 @@ public class CategoryDataMapper extends DataMapper<Category> {
     @Override
     public void insert(Category instance) {
         try {
-            Integer parentID = 0;
-            if (instance.getParentCategory()!=null)
-                parentID=instance.getParentCategory().getID();
             insert(Arrays.asList(instance.getID(),
                     instance.getName(),
-                    parentID));
+                    instance.getParentCategory()==null ? null : instance.getParentCategory().getID()));
             Category_IDENTITY_MAP.put(Integer.toString(instance.getID()), instance);
         }
         catch (Exception e) {
@@ -100,5 +97,13 @@ public class CategoryDataMapper extends DataMapper<Category> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void removeTestCategories() {
+        try {
+            executeNonQuery(String.format("DELETE FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

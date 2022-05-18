@@ -130,4 +130,12 @@ public class ProductDataMapper extends DataMapper<Product> {
         }
         return null;
     }
+
+    public void removeTestProducts() {
+        try{
+            executeNonQuery(String.format("DELETE FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

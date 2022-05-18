@@ -1,6 +1,10 @@
 package InventoryTests;
 
+import Domain.BusinessLayer.Inventory.Product;
 import Domain.BusinessLayer.InventoryController;
+import Domain.PersistenceLayer.Controllers.CategoryDataMapper;
+import Domain.PersistenceLayer.Controllers.ProductDataMapper;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.time.LocalDate;
@@ -11,10 +15,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryControllerTest {
     private InventoryController is;
+
     @BeforeEach
     void init() {
         is = new InventoryController();
     }
+
+    @AfterAll
+    public static void removeData() {
+        ProductDataMapper pdm = new ProductDataMapper();
+        pdm.removeTestProducts();
+        CategoryDataMapper cdm = new CategoryDataMapper();
+        cdm.removeTestCategories();
+    }
+
     @org.junit.jupiter.api.Test
     void addStore() {
         //empty
@@ -91,16 +105,11 @@ class InventoryControllerTest {
 
     @org.junit.jupiter.api.Test
     void getExpiredItemReportsByProductIllegalEntries() {
-        is.loadTestData();
         LocalDate today = LocalDate.now();
         LocalDate yesterday = LocalDate.now().minusDays(1);
-
         LocalDate beforeTwoDays = LocalDate.now().minusDays(2);
-
         LocalDate tomorrow = LocalDate.now().plusDays(1);
-
         LocalDate afterTwoDays = LocalDate.now().plusDays(2);
-
         List<Integer> pIDs = new ArrayList<>();
         pIDs.add(1);
         //empty
@@ -110,4 +119,6 @@ class InventoryControllerTest {
         //illegal - start>end
         assertThrows(IllegalArgumentException.class, () -> is.getExpiredItemReportsByProduct(today, yesterday, pIDs));
     }
+
+
 }

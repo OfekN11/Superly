@@ -374,7 +374,7 @@ public class InventoryController {
 
     private void checkDates(LocalDate start, LocalDate end) {
         LocalDate today = LocalDate.now();
-        if (!start.isBefore(today) || end.isAfter(start))
+        if (start.isAfter(today) || end.isBefore(start))
             throw new IllegalArgumentException("Illegal Dates. Cannot be in the future and end cannot be before start");
     }
     //why is storeIDS a list?
@@ -467,7 +467,7 @@ public class InventoryController {
         return c;
     }
 
-    public Category addCategory(String name, int parentCategoryID) {
+    public Category addCategory(String name, Integer parentCategoryID) {
         int id = catID++;
         if (parentCategoryID==0) {
             CATEGORY_DATA_MAPPER.insert(new Category(id, name, new HashSet<>(), new ArrayList<>(), null));
