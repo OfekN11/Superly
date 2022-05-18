@@ -2,10 +2,7 @@ package Presentation;
 
 import Domain.Service.Objects.*;
 import Domain.Service.Services.*;
-import Globals.Enums.Certifications;
-import Globals.Enums.JobTitles;
-import Globals.Enums.LicenseTypes;
-import Globals.Enums.ShiftTypes;
+import Globals.Enums.*;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -15,7 +12,7 @@ public class BackendController {
     private final EmployeeService employeeService = new EmployeeService();
     private final ShiftService shiftService = new ShiftService();
     private final ConstraintService constraintService = new ConstraintService();
-
+    private final TruckService truckService = new TruckService();
 
     ///EMPLOYEES
     //CREATE
@@ -422,5 +419,19 @@ public class BackendController {
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
+    }
+
+    private void throwIfError(Result result) throws Exception {
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+    }
+    public void addTruck(int licenseNumber, TruckModel truckModel, int netWeight, int maxCapacityWeight) throws Exception {
+        Result result =  truckService.addTruck(licenseNumber, truckModel, netWeight, maxCapacityWeight);
+        throwIfError(result);
+    }
+
+    public void removeTruck(int licenseNumber) throws Exception {
+        Result result =  truckService.removeTruck(licenseNumber);
+        throwIfError(result);
     }
 }
