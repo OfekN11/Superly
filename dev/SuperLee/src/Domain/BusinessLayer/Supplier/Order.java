@@ -94,6 +94,16 @@ public class Order {
         this.storeID = orderArriavalTimePassed.getStoreID();
     }
 
+    public Order (Order order, OrderItem orderItem, int storeID){
+        id = order.id;
+        supplierID = order.supplierID;
+        this.creationDate = getTodayDate();
+        this.orderItems = new ArrayList<>();
+        orderItems.add(orderItem);
+        arrivalTime = calculateArrivalTime(creationDate, 1);
+        this.storeID = storeID;
+    }
+
     public Order(Order order, OrderItem orderItem) {
         this.id = globalID;
         globalID++;
@@ -191,10 +201,13 @@ public class Order {
 
     public boolean changeable(){
         return arrivalTime.isAfter(LocalDate.now());
+        //return arrivalTime.after(Calendar.getInstance().getTime());
     }
 
     public boolean passed(){
         return arrivalTime.isBefore(LocalDate.now());
+
+//        return arrivalTime.before(Calendar.getInstance().getTime());
     }
 
 
@@ -219,8 +232,11 @@ public class Order {
     }
 
     public int getDaysUntilOrder(LocalDate currDate) {
-        Period period = Period.between(arrivalTime, currDate);
-        return period.getDays();
+        Period period = Period.between(currDate, arrivalTime);
+        if(currDate.isBefore(arrivalTime)){
+            return period.getDays();
+        }
+        return -1;
         //long diff = arrivalTime.getTime() - currDate.getTime();
         //return (int) (diff / (1000*60*60*24));
     }
