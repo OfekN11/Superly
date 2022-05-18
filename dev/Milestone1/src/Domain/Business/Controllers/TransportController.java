@@ -120,13 +120,12 @@ public class TransportController {
             throw new Exception("the transport is not in padding list");
         }
     }
-    //TODO need to combine with shift
     public void placeDriver(int transportSN, String empID) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.isPlacedTruck()){
             Carrier carrier = employeeController.getCarrier(empID);
             Truck truck = truckController.getTruck(transport.getTruckNumber());
-            if(truck.canDriveOn(carrier.getLicenses()))//TODO not implemented yet
+            if(truck.canDriveOn(carrier.getLicenses()))
             {
                 if(!transport.isPlacedCarrier()) {
                     Shift shift = shiftController.getShift(transport.getShift().getLeft(),transport.getShift().getRight());
@@ -177,36 +176,10 @@ public class TransportController {
     public void endTransport(int transportSN) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()==TransportStatus.inProgress){
-            if(transport.isDoneTransport()){//TODO implement isDoneTransport() in transport class
-                transport.endTransport();
-            }
-            else{
-                throw new Exception("this transport is not done yet");
-            }
+            transport.endTransport();
         }
         else{
             throw new Exception("this is not a inProgress transport");
-        }
-    }
-    //TODO see if the function is needed
-    public void redesignTransport(int transportSN) throws Exception {
-        if(inProgressTransports.containsKey(transportSN))
-        {
-            Transport transport = redesignTransports.get(transportSN);
-            if(true)
-            {
-                //TODO: 1. Place another truck with bigger capacity by the transport wight
-            }
-            else if(true)
-            {
-                //TODO: 2. Split the transport orders
-            }
-            else if (false){
-                //TODO: 3. Transport order number is 1 -> split transport order product list
-            }
-        }
-        else {
-            throw new Exception("The transport is not on the list of redesign transport!");
         }
     }
     private boolean isAvailable(List<Transport> transports,Truck c){
@@ -235,25 +208,12 @@ public class TransportController {
         return inProgressTransports;
     }
 
-    public HashMap<Integer, Transport> getRedesignTransports() {
-        return redesignTransports;
-    }
-
     public HashMap<Integer, Transport> getCompletedTransports() {
         return completedTransports;
     }
 
-    private TransportOrder getTransportOrder(int orderID) throws Exception {
-        if(orders.containsKey(orderID))
-        {
-            return orders.get(orderID);
-        }
-        else {
-            throw new Exception("The transport order doesn't exist!");
-        }
-    }
-
-
+    //TODO will be added in the next assignment
+    /*
     private List<TransportOrder> getTransportOrderInSameArea(List<ShippingAreas> as) throws Exception {
         List<TransportOrder> orderList = new ArrayList<>();
         for (Integer orderID: orders.keySet())
@@ -277,15 +237,5 @@ public class TransportController {
         else {
             throw new Exception("The transport is not on the list of pending transport!");
         }
-    }
-
-
-    public List<TransportOrder> getTransportOrders() {
-        List<TransportOrder> orderList = new ArrayList<>();
-        for(int orderID: orders.keySet())
-        {
-            orderList.add(orders.get(orderID));
-        }
-        return orderList;
-    }
+    }*/
 }

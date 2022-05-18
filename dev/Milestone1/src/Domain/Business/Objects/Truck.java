@@ -58,22 +58,21 @@ public class Truck {
     }
 
     public boolean canDriveOn(Set<LicenseTypes> lt) {
-        //TODO change the function according to the set
         boolean ans = false;
         LicenseTypes l = null;
-        switch (l)
+        switch (model)
         {
-            case B:
-                ans = model == TruckModel.Van;
+            case Van:
+                ans = lt.contains(B)||lt.contains(C)||lt.contains(C1)||lt.contains(CE);
                 break;
-            case C:
-                ans = model  == TruckModel.Van ||  model == TruckModel.SemiTrailer;
+            case SemiTrailer:
+                ans = lt.contains(C)||lt.contains(C1)||lt.contains(CE);
                 break;
-            case C1:
-                ans = model  == TruckModel.Van ||  model == TruckModel.SemiTrailer ||  model == TruckModel.DoubleTrailer;
+            case DoubleTrailer:
+                ans = lt.contains(C1)||lt.contains(CE);
                 break;
-            case CE:
-                ans = model  == TruckModel.Van ||  model == TruckModel.SemiTrailer ||  model == TruckModel.DoubleTrailer ||  model == TruckModel.FullTrailer;
+            case FullTrailer:
+                ans = lt.contains(CE);
                 break;
             default:
         }

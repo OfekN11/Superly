@@ -84,7 +84,7 @@ public class Transport {
 
     public boolean readyToGo()
     {
-        return !sourcesID.isEmpty() && !destinationsID.isEmpty() && isPlacedTruck() && isPlacedCarrier();
+        return !sourcesID.isEmpty() && !destinationsID.isEmpty() && isPlacedTruck() && isPlacedCarrier() && !transportOrders.isEmpty();
     }
     public Pair<LocalDate,ShiftTypes> getShift(){
         return shift;
