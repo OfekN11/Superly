@@ -24,6 +24,7 @@ class InventoryControllerTest {
         is = new InventoryController();
         maxStoreCount = max(is.getStoreIDs());
     }
+
     @AfterAll
     public static void removeData() {
         ProductDataMapper pdm = new ProductDataMapper();
