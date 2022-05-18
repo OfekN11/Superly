@@ -191,13 +191,10 @@ public class Order {
 
     public boolean changeable(){
         return arrivalTime.isAfter(LocalDate.now());
-        //return arrivalTime.after(Calendar.getInstance().getTime());
     }
 
     public boolean passed(){
         return arrivalTime.isBefore(LocalDate.now());
-
-//        return arrivalTime.before(Calendar.getInstance().getTime());
     }
 
 
