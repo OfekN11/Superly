@@ -24,6 +24,7 @@ public class ShiftsMenu extends Screen {
     };
 
     private static final ScreenShiftFactory factory = new ScreenShiftFactory();
+    private static final PresentationShiftBuilder presentationShiftBuilder = new PresentationShiftBuilder();
 
     public ShiftsMenu(Screen caller) {
         super(caller, menuOptions);
@@ -82,7 +83,6 @@ public class ShiftsMenu extends Screen {
     }
 
     private void addShifts() throws Exception {
-        PresentationShiftBuilder presentationShiftBuilder = new PresentationShiftBuilder();
         presentationShiftBuilder.setDate();
         presentationShiftBuilder.setShiftType();
         presentationShiftBuilder.setShiftManager();
