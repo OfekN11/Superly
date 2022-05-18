@@ -19,7 +19,7 @@ public abstract class Shift {
     private static final int MIN_LOGISTICS_MANAGERS = 0;
     private static final int MIN_TRANSPORT_MANAGERS = 0;
     // properties
-    private LocalDate workday;
+    private final LocalDate workday;
     private String shiftManagerId;
     private int carrierCount;
     private int cashierCount;
@@ -27,7 +27,7 @@ public abstract class Shift {
     private int sorterCount;
     private int hr_managersCount;
     private int logistics_managersCount;
-    private int transportManagersCount;
+    private int transport_managersCount;
 
     private Set<String> carrierIDs;
     private Set<String> cashierIDs;
@@ -35,12 +35,12 @@ public abstract class Shift {
     private Set<String> sorterIDs;
     private Set<String> hr_managerIDs;
     private Set<String> logistics_managerIDs;
-    private Set<String> transportManagerIDs;
+    private Set<String> transport_managerIDs;
 
 
     // constructors
     public Shift(LocalDate workday, String shiftManagerId,
-                 int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,int transportManagersCount,
+                 int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,int transport_managersCount,
                  Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs,Set<String>transportManagerIDs) throws Exception {
         this.workday = workday;
         if (shiftManagerId == null)
@@ -59,8 +59,8 @@ public abstract class Shift {
         this.hr_managersCount = hr_managersCount;
         checkCountValidity(logistics_managersCount, MIN_LOGISTICS_MANAGERS, JobTitles.Logistics_Manager);
         this.logistics_managersCount = logistics_managersCount;
-        checkCountValidity(transportManagersCount, MIN_TRANSPORT_MANAGERS, JobTitles.Transport_Manager);
-        this.transportManagersCount =transportManagersCount;
+        checkCountValidity(transport_managersCount, MIN_TRANSPORT_MANAGERS, JobTitles.Transport_Manager);
+        this.transport_managersCount =transport_managersCount;
 
         this.carrierIDs =new HashSet<>(carrierIDs);
         this.carrierIDs = new HashSet<>(cashierIDs);
@@ -69,7 +69,7 @@ public abstract class Shift {
         this.sorterIDs = new HashSet<>(sorterIDs);
         this.hr_managerIDs = new HashSet<>(hr_managerIDs);
         this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
-        this.transportManagerIDs = new HashSet<>(transportManagerIDs);
+        this.transport_managerIDs = new HashSet<>(transportManagerIDs);
     }
 
     public Shift(LocalDate date, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transportManagersCount) throws Exception {
@@ -172,6 +172,16 @@ public abstract class Shift {
         this.logistics_managersCount = logistics_managersCount;
     }
 
+    public int getTransport_managersCount() {
+        return transport_managersCount;
+    }
+
+    public void setTransport_managersCount(int transport_managersCount) throws Exception {
+        checkCountValidity(transport_managersCount, MIN_TRANSPORT_MANAGERS, JobTitles.Transport_Manager);
+        checkSizeValidity(transport_managersCount, transport_managerIDs.size());
+        this.transport_managersCount = transport_managersCount;
+    }
+
     public Set<String> getCarrierIDs() {
         return carrierIDs;
     }
@@ -238,6 +248,17 @@ public abstract class Shift {
         this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
     }
 
+    public Set<String> getTransport_managerIDs() {
+        return transport_managerIDs;
+    }
+
+    public void setTransport_managerIDs(Set<String> transport_managerIDs) throws Exception {
+        checkSizeValidity(transport_managersCount, transport_managerIDs.size());
+        if (transport_managerIDs.contains(shiftManagerId))
+            throw new Exception("One of these logistics managers (" + shiftManagerId + ") is assigned as manager of this shift, please assign someone else");
+        this.transport_managerIDs = new HashSet<>(transport_managerIDs);
+    }
+
     public abstract Domain.Service.Objects.Shift accept(ServiceShiftFactory factory);
 
     private void checkCountValidity(int count, int minimum, JobTitles type) throws Exception {
@@ -260,14 +281,6 @@ public abstract class Shift {
                 logistics_managerIDs.contains(id);
     }
     public abstract String printDayAndType();
-
-    public Set<String> getTransportManagersIDs() {
-        return this.transportManagerIDs;
-    }
-
-    public int getTransportManagersCount() {
-        return transportManagersCount;
-    }
 
     public abstract void save(ShiftDataMapper shiftDataMapper) throws SQLException;
 

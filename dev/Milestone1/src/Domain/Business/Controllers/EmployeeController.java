@@ -7,6 +7,7 @@ import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EmployeeController {
     private static final String EmployeeNotFoundErrorMsg = "Employee id %s could not be found";
@@ -17,9 +18,9 @@ public class EmployeeController {
     //CREATE
     public void registerEmployee(JobTitles title, String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         checkUnusedEmployeeID(id);
-            Employee employee = employeeDataMapper.get(id);
-            if (employee != null)
-                throw new Exception(String.format("An employee with ID: %s already exists: %s", id, employee.getName()));
+        Employee employee = employeeDataMapper.get(id);
+        if (employee != null)
+            throw new Exception(String.format("An employee with ID: %s already exists: %s", id, employee.getName()));
         switch (title) {
             case Carrier:
                 employeeDataMapper.save(new Carrier(id, name, bankDetails, salary, employmentConditions, startingDate, certifications, new HashSet<>()));
@@ -103,59 +104,83 @@ public class EmployeeController {
     }
 
     public Set<Employee> getEmployee(Set<String> workersId) throws Exception {
-        Set<Employee> employees = new HashSet<>();
-        for (String id : workersId)
-            employees.add(getEmployee(id));
-        return employees;
+        return workersId.stream().map((id) -> {
+            try {
+                return employeeDataMapper.get(id);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
     public Set<Carrier> getCarrier(Set<String> workersId) throws Exception {
-        Set<Carrier> carriers = new HashSet<>();
-        for (String id : workersId)
-            carriers.add(getCarrier(id));
-        return carriers;
+        return workersId.stream().map((id) -> {
+            try {
+                return employeeDataMapper.getCarrier(id);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
     public Set<Cashier> getCashier(Set<String> workersId) throws Exception {
-        Set<Cashier> cashiers = new HashSet<>();
-        for (String id : workersId)
-            cashiers.add(getCashier(id));
-        return cashiers;
+        return workersId.stream().map((id) -> {
+            try {
+                return employeeDataMapper.getCashier(id);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
     public Set<Sorter> getSorter(Set<String> workersId) throws Exception {
-        Set<Sorter> sorters = new HashSet<>();
-        for (String id : workersId)
-            sorters.add(getSorter(id));
-        return sorters;
+        return workersId.stream().map((id) -> {
+            try {
+                return employeeDataMapper.getSorter(id);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
     public Set<Storekeeper> getStorekeeper(Set<String> workersId) throws Exception {
-        Set<Storekeeper> storekeepers = new HashSet<>();
-        for (String id : workersId)
-            storekeepers.add(getStorekeeper(id));
-        return storekeepers;
+        return workersId.stream().map((id) -> {
+            try {
+                return employeeDataMapper.getStorekeeper(id);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
     public Set<HR_Manager> getHR_Manager(Set<String> workersId) throws Exception {
-        Set<HR_Manager> hr_managers = new HashSet<>();
-        for (String id : workersId)
-            hr_managers.add(getHR_Manager(id));
-        return hr_managers;
+        return workersId.stream().map((id) -> {
+            try {
+                return employeeDataMapper.getHR_Manager(id);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
     public Set<Logistics_Manager> getLogistics_Manager(Set<String> workersId) throws Exception {
-        Set<Logistics_Manager> logistics_managers = new HashSet<>();
-        for (String id : workersId)
-            logistics_managers.add(getLogistics_Manager(id));
-        return logistics_managers;
+        return workersId.stream().map((id) -> {
+            try {
+                return employeeDataMapper.getLogistics_Manager(id);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
     public Set<Transport_Manager> getTransport_Manager(Set<String> workersId) throws Exception {
-        Set<Transport_Manager> transport_managers = new HashSet<>();
-        for (String id : workersId)
-            transport_managers.add(getTransport_Manager(id));
-        return transport_managers;
+        return workersId.stream().map((id) -> {
+            try {
+                return employeeDataMapper.getTransport_Manager(id);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
     public Set<Employee> getEmployee() throws Exception {
@@ -245,6 +270,15 @@ public class EmployeeController {
         if (employee != null)
             throw new Exception(String.format("An employee with ID: %s already exists: %s", id, employee.getName()));
         Employee.validateLegalID(id);
+    }
+
+    public void validateID(String id) throws Exception {
+        getEmployee(id);
+    }
+
+    public void validateIDs(Set<String> ids) throws Exception {
+        for (String id : ids)
+            validateID(id);
     }
 
     //TODO: get rid of this if possible

@@ -9,20 +9,26 @@ import java.util.Set;
 
 public  class EveningShift extends Shift {
 
-    public EveningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transportManagersCount) throws Exception {
-        super(workday, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount,transportManagersCount);
+    public EveningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transport_managersCount) throws Exception {
+        super(workday, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount,transport_managersCount);
+        validateManagerialCount(hr_managerCount);
+        validateManagerialCount(logistics_managerCount);
+        validateManagerialCount(transport_managersCount);
     }
 
-    public EveningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transportManagersCount
+    public EveningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transport_managersCount
                          , Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs, Set<String> transportManagersIDs
     ) throws Exception {
-        super(workday, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount,transportManagersCount,carrierIDs,
+        super(workday, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount,transport_managersCount,carrierIDs,
                 cashierIDs,
                 storekeeperIDs,
                 sorterIDs,
                 hr_managerIDs,
                 logistics_managerIDs,
                  transportManagersIDs );
+        validateManagerialCount(hr_managerCount);
+        validateManagerialCount(logistics_managerCount);
+        validateManagerialCount(transport_managersCount);
     }
 
     public ShiftTypes getType() {
@@ -45,6 +51,12 @@ public  class EveningShift extends Shift {
     public void setLogistics_managersCount(int logistics_managersCount) throws Exception {
         validateManagerialCount(logistics_managersCount);
         super.setLogistics_managersCount(logistics_managersCount);
+    }
+
+    @Override
+    public void setTransport_managersCount(int transport_managersCount) throws Exception {
+        validateManagerialCount(transport_managersCount);
+        super.setTransport_managersCount(transport_managersCount);
     }
 
     private void validateManagerialCount(int count) throws Exception {
