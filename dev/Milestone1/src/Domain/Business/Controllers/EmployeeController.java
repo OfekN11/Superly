@@ -272,6 +272,15 @@ public class EmployeeController {
         Employee.validateLegalID(id);
     }
 
+    public void validateID(String id) throws Exception {
+        getEmployee(id);
+    }
+
+    public void validateIDs(Set<String> ids) throws Exception {
+        for (String id : ids)
+            validateID(id);
+    }
+
     //TODO: get rid of this if possible
     public String getEmploymentConditionsOf(String id) throws Exception {
         Employee employee = employeeDataMapper.get(id);

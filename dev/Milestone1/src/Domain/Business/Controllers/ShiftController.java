@@ -19,7 +19,6 @@ public class ShiftController {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     // properties
     private final ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
-    private final ConstraintController constraintController = new ConstraintController();
     private final EmployeeController employeeController = new EmployeeController();
 
     //CREATE

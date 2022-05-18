@@ -1,12 +1,11 @@
 package Domain.Business.Controllers;
 
-import Domain.Business.Objects.Constraint;
-import Domain.Business.Objects.Logistics_Manager;
+import Domain.Business.Objects.*;
 import Domain.DAL.Controllers.ConstraintDataMapper;
 import Globals.Enums.ShiftTypes;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,6 +14,8 @@ import java.util.stream.Collectors;
 public class ConstraintController {
 
     private final ConstraintDataMapper constraintDataMapper = new ConstraintDataMapper();
+    private final EmployeeController employeeController = new EmployeeController();
+    private final ShiftController shiftController = new ShiftController();
 
     //CREATE
 
@@ -33,17 +34,11 @@ public class ConstraintController {
         return constraint;
     }
 
-    public Set<String> getConstraintEmployeeIDs(LocalDate workday, ShiftTypes shift) throws Exception{
+    public Set<String> getAvailableEmployeeIDs(LocalDate workday, ShiftTypes shift) throws Exception{
         Constraint constraint = getConstraint(workday, shift);
         if (constraint == null)
             return new HashSet<>();
         return constraint.getEmployees();
-    }
-
-    public Set<Constraint> getEmployeeConstraintsBetween(String id, LocalDate start, LocalDate end) {
-        Set<Constraint> constraints = constraintDataMapper.getConstraintsBetween(start, end);
-        constraints = constraints.stream().filter(c -> c.getEmployees().contains(id)).collect(Collectors.toSet());
-        return constraints;
     }
 
     //UPDATE
@@ -58,6 +53,8 @@ public class ConstraintController {
         Constraint constraint = getConstraint(workday, shift);
         if (constraint == null)
             return;
+        if (shiftController.getShift(workday, shift).isIdInclude(id))
+            throw new Exception(String.format("Cannot unregister %s from constraint for %s at date %s: assigned to shift", id + " - " + employeeController.getEmployee(id).getName(), shift, workday.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
         constraint.unregister(id);
         if (constraint.isEmpty())
             removeConstraint(constraint);
@@ -76,4 +73,70 @@ public class ConstraintController {
     }
 
     //MISC
+
+    public Set<Constraint> getEmployeeConstraintsBetween(String id, LocalDate start, LocalDate end) {
+        Set<Constraint> constraints = constraintDataMapper.getConstraintsBetween(start, end);
+        constraints = constraints.stream().filter(c -> c.getEmployees().contains(id)).collect(Collectors.toSet());
+        return constraints;
+    }
+
+    public Set<Carrier> getAvailableCarriersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getCarrier(getConstraint(workday,type).getEmployees());
+    }
+
+    public Set<Cashier> getAvailableCashiersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getCashier(getConstraint(workday,type).getEmployees());
+    }
+
+    public Set<Sorter> getAvailableSortersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getSorter(getConstraint(workday,type).getEmployees());
+    }
+
+    public Set<Storekeeper> getAvailableStorekeepersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getStorekeeper(getConstraint(workday,type).getEmployees());
+    }
+
+    public Set<HR_Manager> getAvailableHR_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getHR_Manager(getConstraint(workday,type).getEmployees());
+    }
+
+    public Set<Logistics_Manager> getAvailableLogistics_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getLogistics_Manager(getConstraint(workday,type).getEmployees());
+    }
+
+    public Set<Transport_Manager> getAvailableTransport_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getTransport_Manager(getConstraint(workday,type).getEmployees());
+    }
+
+    public Set<Employee> getAvailableEmployeesFor(LocalDate workday, ShiftTypes type) throws Exception{
+        return employeeController.getEmployee(getConstraint(workday, type).getEmployees());
+    }
+
+    public Set<String> getAvailableCarriersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getCarrier(getConstraint(workday,type).getEmployees()).stream().map(Employee::getId).collect(Collectors.toSet());
+    }
+
+    public Set<String> getAvailableCashiersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getCashier(getConstraint(workday,type).getEmployees()).stream().map(Employee::getId).collect(Collectors.toSet());
+    }
+
+    public Set<String> getAvailableSortersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getSorter(getConstraint(workday,type).getEmployees()).stream().map(Employee::getId).collect(Collectors.toSet());
+    }
+
+    public Set<String> getAvailableStorekeepersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getStorekeeper(getConstraint(workday,type).getEmployees()).stream().map(Employee::getId).collect(Collectors.toSet());
+    }
+
+    public Set<String> getAvailableHR_ManagersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getHR_Manager(getConstraint(workday,type).getEmployees()).stream().map(Employee::getId).collect(Collectors.toSet());
+    }
+
+    public Set<String> getAvailableLogistics_ManagersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getLogistics_Manager(getConstraint(workday,type).getEmployees()).stream().map(Employee::getId).collect(Collectors.toSet());
+    }
+
+    public Set<String> getAvailableTransport_ManagersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getTransport_Manager(getConstraint(workday,type).getEmployees()).stream().map(Employee::getId).collect(Collectors.toSet());
+    }
 }
