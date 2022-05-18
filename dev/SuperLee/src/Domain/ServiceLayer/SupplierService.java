@@ -17,6 +17,7 @@ public class SupplierService {
 
     public SupplierService(){
         controller = new SupplierController();
+        controller.loadSuppliersData();
     }
 
 

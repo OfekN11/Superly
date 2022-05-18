@@ -25,9 +25,7 @@ public class Supplier {
     private Agreement agreement;
     private ArrayList<String> manufacturers;
 
-    private HashMap<Integer, Order> ordersToBe;    //orders that will be in the future
-    private HashMap<Integer, Order> finishedOrders;
-    private HashMap<Integer, Order> ordersInTheNext24Hours;
+    private HashMap<Integer, Order> orders;
 
 
     private final int ROUTINE  = 1;
@@ -51,9 +49,7 @@ public class Supplier {
         this.payingAgreement = payingAgreement;
         this.contacts = contacts;
         this.manufacturers = manufacturers;
-        this.ordersToBe = new HashMap<>();
-        this.finishedOrders = new HashMap<>();
-        this.ordersInTheNext24Hours = new HashMap<>();
+        this.orders = new HashMap<>();
         agreement = null;
     }
 
@@ -70,9 +66,7 @@ public class Supplier {
 
         this.manufacturers = new ArrayList<>();
         this.contacts = new ArrayList<>();
-        this.ordersToBe = new HashMap<>();
-        this.finishedOrders = new HashMap<>();
-        this.ordersInTheNext24Hours = new HashMap<>();
+        this.orders = new HashMap<>();
         agreement = null;
     }
 
@@ -85,9 +79,7 @@ public class Supplier {
 
         this.contacts = contacts;
         this.manufacturers = manufacturers;
-        this.ordersToBe = new HashMap<>();
-        this.finishedOrders = new HashMap<>();
-        this.ordersInTheNext24Hours = new HashMap<>();
+        this.orders = new HashMap<>();
         agreement = null;
     }
 
@@ -483,7 +475,7 @@ public class Supplier {
 
         Order order = new Order(agreement.daysToDelivery(), id, storeId);
         orderDAO.addOrder(order);
-        ordersToBe.put(order.getId(), order);
+        orders.put(order.getId(), order);
 
         setLastOrderId(agreementController, order.getId());
 
@@ -502,21 +494,18 @@ public class Supplier {
             throw new Exception("Can't add 0 items to the order!");
         }
 
-        // TODO: 07/05/2022  this is replaced by the list?
-        /*
+
         if(!orders.get(orderId).changeable()){
             throw new Exception("Can't change order: time exception.");
         }
-         */
-        if(ordersInTheNext24Hours.containsKey(orderId) || finishedOrders.containsKey(orderId)){
-            throw new Exception("Can't change order: time exception.");
-        }
+
         AgreementItem currItem = agreement.getItem(itemId);
 
         float ppu = currItem.getPricePerUnit();
         int discount = agreement.getItem(itemId).getDiscount(itemQuantity);
         Double finalPrice = agreement.getItem(itemId).calculateTotalPrice(itemQuantity);
-        ordersToBe.get(orderId).addItem(itemId, agreement.getItem(itemId).getIdBySupplier() , agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice, orderDAO);
+
+        orders.get(orderId).addItem(itemId, agreement.getItem(itemId).getIdBySupplier() , agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice, orderDAO);
 
     }
 
@@ -524,11 +513,12 @@ public class Supplier {
         if(!orderExists(orderId, orderDAO))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
 
-        if(ordersInTheNext24Hours.containsKey(orderId) || finishedOrders.containsKey(orderId)){
+        if(!orders.get(orderId).changeable()){
             throw new Exception("Can't change order: time exception.");
         }
+
         orderDAO.removeOrder(orderId);
-        ordersToBe.remove(orderId);
+        orders.remove(orderId);
     }
 
     public void updateOrder(int orderID, int itemID, int quantity, OrderDAO orderDAO) throws Exception {
@@ -537,30 +527,32 @@ public class Supplier {
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderID));
         }
 
-        if(ordersInTheNext24Hours.containsKey(orderID) || finishedOrders.containsKey(orderID)){
+        if(!orders.get(orderID).changeable()){
             throw new Exception("Can't change order: time exception.");
         }
+
 
         if(!agreement.itemExists(itemID)){
             throw new Exception(String.format("Item with ID: %d does not Exists!", itemID));
         }
 
-        ordersToBe.get(orderID).updateItemQuantity(itemID, quantity, agreement.getItem(itemID).getDiscount(quantity), agreement.getOrderPrice(itemID, quantity), orderDAO);
+        orders.get(orderID).updateItemQuantity(itemID, quantity, agreement.getItem(itemID).getDiscount(quantity), agreement.getOrderPrice(itemID, quantity), orderDAO);
     }
 
     public void removeItemFromOrder(int orderId, int itemId, OrderDAO orderDAO) throws Exception {
         if(!orderExists(orderId, orderDAO))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
-        if(ordersInTheNext24Hours.containsKey(orderId) || finishedOrders.containsKey(orderId))
+        if(!orders.get(orderId).changeable()){
             throw new Exception("Can't change order: time exception.");
-        if(!ordersToBe.get(orderId).itemExists(itemId))
+        }
+        if(!orders.get(orderId).itemExists(itemId))
             throw new Exception("Item with this ID does not exist in thins order!");
-        ordersToBe.get(orderId).removeItem(itemId, orderDAO);
+        orders.get(orderId).removeItem(itemId, orderDAO);
     }
 
 
     public List<String> getOrder(int orderId, OrderDAO orderDAO) throws Exception {
-        Order currOrder = getOrderFromALlLists(orderId, orderDAO);
+        Order currOrder = getOrderFromList(orderId, orderDAO);
         List<String> result = new ArrayList<>();
         result.add(String.valueOf(currOrder.getId()));
 
@@ -575,23 +567,20 @@ public class Supplier {
         return result;
     }
 
-    private Order getOrderFromALlLists(int orderId, OrderDAO orderDAO) throws Exception {
+    private Order getOrderFromList(int orderId, OrderDAO orderDAO) throws Exception {
         if(!orderExists(orderId, orderDAO))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
-        if(ordersToBe.containsKey(orderId))
-            return ordersToBe.get(orderId);
-        else if(ordersInTheNext24Hours.containsKey(orderId))
-            return ordersInTheNext24Hours.get(orderId);
-        else
-            return finishedOrders.get(orderId);
+        if(!orders.containsKey(orderId))
+            throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
+        return orders.get(orderId);
     }
 
     public boolean orderExists(int id, OrderDAO orderDAO) throws Exception {
-        if(ordersToBe.containsKey(id) || ordersInTheNext24Hours.containsKey(id) || finishedOrders.containsKey(id))
+        if(orders.containsKey(id) )
             return true;
         if(orderDAO.containsKey(id)){
             Order order = orderDAO.getOrder(id);
-            //Where do I put the Order? in what list
+            orders.put(order.getId(), order);
             return true;
         }
         return false;
@@ -618,22 +607,20 @@ public class Supplier {
 
     public ArrayList<Order> getFutureOrders() {
         ArrayList<Order> result = new ArrayList<>();
-        result.addAll(ordersToBe.values());    //This should be the "future" orders
+        result.addAll(orders.values());    //This should be the "future" orders
         return result;
     }
 
     public ArrayList<Order> getOrdersForTomorrow() {
 
         //check all orders dates and return the ones for tomorrow
-        ArrayList<Order> orders = new ArrayList<>();
-        for(Order order : ordersToBe.values()){
+        ArrayList<Order> result = new ArrayList<>();
+        for(Order order : orders.values()){
             if(order.getDaysUntilOrder(LocalDate.now()) == 1){
-                orders.add(order);
+                result.add(order);
             }
         }
-        // also move them to the other list (from to be to 24 hours)
-
-        return null;
+        return result;
     }
 
     public Order orderForThisAMount(int productId, int quantity){
@@ -679,7 +666,7 @@ public class Supplier {
 
 
     public Order getOrderObject(int orderID, OrderDAO orderDAO) throws Exception {
-        return getOrderFromALlLists(orderID, orderDAO);
+        return getOrderFromList(orderID, orderDAO);
     }
 
     //I dont think this function work well!
