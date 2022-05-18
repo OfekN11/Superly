@@ -69,6 +69,8 @@ public class InventoryController {
 
     public Category getCategory(int categoryID) {
         try {
+            if (categoryID==0)
+                return null;
             Category output = categories.get(categoryID);
             if (output==null) {
                 output = CATEGORY_DATA_MAPPER.get(Integer.toString(categoryID));
