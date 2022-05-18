@@ -147,13 +147,14 @@ public class SuppliersDAO extends DataMapper<Supplier> {
             agreementController.removeSupplier(id);
 
             remove(id);
-            SUPPLIER_IDENTITY_MAP.remove(id);
+            SUPPLIER_IDENTITY_MAP.remove("" + id);
         } catch (SQLException throwables) {
             System.out.println(throwables.getMessage());
         }
     }
 
     public boolean supplierExist(int id){
+        makeSureSupplierInMap(id);
         //If we upload all the suppliers from the beginning we should have all of them in the map
         if(SUPPLIER_IDENTITY_MAP.containsKey(String.valueOf(id)))
             return true;
@@ -379,5 +380,22 @@ public class SuppliersDAO extends DataMapper<Supplier> {
         }
 
         return finalID + 1;
+    }
+
+    private void makeSureSupplierInMap(int id){
+        String _id = ""+id;
+
+        if (!SUPPLIER_IDENTITY_MAP.containsKey(_id)){
+            try(Connection connection = getConnection()) {
+                ResultSet instanceResult = select(connection, id);
+                Supplier currSupplier = new Supplier(id, instanceResult.getInt(2),
+                        instanceResult.getString(3), instanceResult.getString(4), instanceResult.getString(5)
+                        , contactDAO.getAllSupplierContact(id), manufacturerDAO.getAllSupplierManufacturer(id));
+                SUPPLIER_IDENTITY_MAP.put(String.valueOf(currSupplier.getId()), currSupplier);
+            }
+            catch (Exception throwables) {
+                // in this case the table does not contain the supplier, nothing to do
+            }
+        }
     }
 }
