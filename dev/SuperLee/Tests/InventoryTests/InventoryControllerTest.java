@@ -4,7 +4,9 @@ import Domain.BusinessLayer.Inventory.Product;
 import Domain.BusinessLayer.InventoryController;
 import Domain.PersistenceLayer.Controllers.CategoryDataMapper;
 import Domain.PersistenceLayer.Controllers.ProductDataMapper;
+import Domain.PersistenceLayer.Controllers.StoreDAO;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.time.LocalDate;
@@ -14,19 +16,32 @@ import static java.util.Collections.max;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryControllerTest {
-    private InventoryController is;
+    private static InventoryController is;
+    private static int maxStoreCount;
 
-    @BeforeEach
-    void init() {
+    @BeforeAll
+    public static void getMaxStoreCount() {
         is = new InventoryController();
+        maxStoreCount = max(is.getStoreIDs());
     }
-
     @AfterAll
     public static void removeData() {
         ProductDataMapper pdm = new ProductDataMapper();
         pdm.removeTestProducts();
         CategoryDataMapper cdm = new CategoryDataMapper();
         cdm.removeTestCategories();
+        StoreDAO storeDAO = new StoreDAO();
+        Collection<Integer> stores = storeDAO.getAll();
+        for (int store : stores) {
+            if (store>maxStoreCount) {
+                try {
+                    storeDAO.remove(store);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @org.junit.jupiter.api.Test
