@@ -53,7 +53,14 @@ public class LocationDataMapper extends DataMapper<Location> {
 
 
     public int remove(Object id) {
-        return remove(id);
+        try {
+            locationToShelfDAO.remove(id);
+            return super.remove(id);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     public void insert(Location instance, int productID){
@@ -139,10 +146,10 @@ public class LocationDataMapper extends DataMapper<Location> {
             ResultSet locationsToRemove = select(connection, Arrays.asList(STORE_COLUMN), Arrays.asList(storeID));
             List<Integer> locationsIDs = new ArrayList<>();
             while (locationsToRemove.next()) {
-                locationsIDs.add(locationsToRemove.getInt(STORE_COLUMN));
+                locationsIDs.add(locationsToRemove.getInt(ID_COLUMN));
             }
             for (Integer i : locationsIDs) {
-                locationToShelfDAO.remove(Arrays.asList(1),Arrays.asList(i));
+                locationToShelfDAO.remove(i);
             }
             remove(Arrays.asList(STORE_COLUMN), Arrays.asList(storeID));
         }
