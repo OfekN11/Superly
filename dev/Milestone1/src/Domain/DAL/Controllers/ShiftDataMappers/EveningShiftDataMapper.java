@@ -76,9 +76,9 @@ public class EveningShiftDataMapper extends ObjectDateMapper<EveningShift> {
         shiftsLogisticManagersLink.replaceSet(id,instance.getLogistics_managerIDs());
         shiftsSortersLink.replaceSet(id,instance.getSorterIDs());
         shiftsStorekeepersLink.replaceSet(id,instance.getStorekeeperIDs());
-        shiftsTransportManagers.replaceSet(id,instance.getTransportManagersIDs());
+        shiftsTransportManagers.replaceSet(id,instance.getTransport_managerIDs());
         super.remove(instance.getWorkday().toString()+ShiftTypes.Evening.toString());
-        super.insert(Arrays.asList(id,instance.getWorkday(),instance.getShiftManagerId(),instance.getCarrierCount(),instance.getCashierCount(),instance.getStorekeeperCount(),instance.getSorterCount(),instance.getHr_managersCount(),instance.getLogistics_managersCount(),instance.getTransportManagersCount()));
+        super.insert(Arrays.asList(id,instance.getWorkday(),instance.getShiftManagerId(),instance.getCarrierCount(),instance.getCashierCount(),instance.getStorekeeperCount(),instance.getSorterCount(),instance.getHr_managersCount(),instance.getLogistics_managersCount(),instance.getTransport_managersCount()));
     }
 
     @Override

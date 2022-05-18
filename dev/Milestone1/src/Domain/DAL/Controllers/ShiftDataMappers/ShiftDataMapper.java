@@ -8,6 +8,7 @@ import Globals.Enums.ShiftTypes;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Set;
 
 public class ShiftDataMapper {
     // properties
@@ -62,6 +63,19 @@ public class ShiftDataMapper {
 
     public void update(EveningShift shift) throws SQLException {
         eveningShiftDataMapper.insert(shift);
+    }
+
+    //TODO
+    //should delete shift with this key
+    public void delete(LocalDate date, ShiftTypes type) {
+    }
+
+    //should return all shifts (of any type) between date start and date end (inclusive)
+    public Set<Shift> getBetween(LocalDate start, LocalDate end) {
+    }
+
+    //should return all shifts of type 'type' between date start and date end (inclusive)
+    public Object getBetween(LocalDate left, LocalDate left1, ShiftTypes type) {
     }
 }
 
