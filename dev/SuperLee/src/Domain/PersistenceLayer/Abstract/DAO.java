@@ -270,7 +270,9 @@ public abstract class DAO {
      */
     private static void replaceQuestionMarks(PreparedStatement preparedStatement, List<Object> values) throws SQLException {
         for(int i =0; i< values.size();i++){
-            if (Integer.class.equals(values.get(i).getClass())) {
+            if (values.get(i)==null) {
+                preparedStatement.setNull(i+1, Types.NULL);
+            } else if (Integer.class.equals(values.get(i).getClass())) {
                 preparedStatement.setInt(i + 1, (Integer) values.get(i));
             } else if (String.class.equals(values.get(i).getClass())) {
                 preparedStatement.setString(i + 1, (String) values.get(i));

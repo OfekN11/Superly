@@ -60,7 +60,7 @@ public class CategoryDataMapper extends DataMapper<Category> {
         }
     }
 
-    public void updateParentCategory(int category, int newParent) {
+    public void updateParentCategory(int category, Integer newParent) {
         try {
             updateProperty(Integer.toString(category), PARENT_COLUMN,newParent);
         }

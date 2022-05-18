@@ -49,7 +49,7 @@ public class Category {
         parentCategory = newParentCategory;
         if (parentCategory!= null)
             parentCategory.addSubcategory(this);
-        CATEGORY_DATA_MAPPER.updateParentCategory(getID(), newParentCategory.getID());
+        CATEGORY_DATA_MAPPER.updateParentCategory(getID(),newParentCategory==null ? null : newParentCategory.getID());
     }
     public List<Product> getAllProductsInCategory() {
         List<Product> output = new ArrayList<>();
