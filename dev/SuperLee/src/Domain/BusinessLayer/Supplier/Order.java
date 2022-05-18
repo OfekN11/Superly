@@ -23,6 +23,14 @@ public class Order {
     private static int globalID = 1;
 
 
+    private LocalDate calculateArrivalTime(LocalDate creationDate, int daysToArrival) {
+        return creationDate.plusDays(daysToArrival);
+    }
+
+    private LocalDate getTodayDate() {
+        return LocalDate.now();
+    }
+
     public Order(int daysToArrival, int supplierID, int storeID){
         this.supplierID = supplierID;
         this.id = globalID;
@@ -40,13 +48,6 @@ public class Order {
         arrivalTime = calculateArrivalTime(creationDate, daysToArrival);
     }
 
-    private LocalDate calculateArrivalTime(LocalDate creationDate, int daysToArrival) {
-        return creationDate.plusDays(daysToArrival);
-    }
-
-    private LocalDate getTodayDate() {
-        return LocalDate.now();
-    }
 
     public Order(int daysToArrival, int supplierID, int storeID, OrderItem item){
         this.supplierID = supplierID;
@@ -93,13 +94,22 @@ public class Order {
         this.storeID = orderArriavalTimePassed.getStoreID();
     }
 
+    public Order(Order order, OrderItem orderItem) {
+        this.id = globalID;
+        globalID++;
+        this.supplierID = order.getSupplierId();
+        this.creationDate = getTodayDate();
+        this.orderItems = new ArrayList<>();
+        orderItems.add(orderItem);
+        arrivalTime = calculateArrivalTime(creationDate, 1);
+        this.storeID = order.getStoreID();
+    }
+
     public Order(Order order, ArrayList<OrderItem> orderItems) {
+        this.id = order.getId();
         this.supplierID = order.getSupplierId();
         this.creationDate = getTodayDate();
         this.orderItems = orderItems;
-//        Calendar cal = Calendar.getInstance();
-//        cal.add(Calendar.DATE, 1);
-//        arrivalTime = cal.getTime();
         arrivalTime = calculateArrivalTime(creationDate, 1);
         this.storeID = order.getStoreID();
     }
@@ -141,12 +151,12 @@ public class Order {
         }
     }
 
-    public void updateItemQuantity(int id, int quantity, int discount, double finalPrice, OrderDAO orderDAO)throws Exception{
+    public void updateItemQuantity(int itemId, int quantity, int discount, double finalPrice, OrderDAO orderDAO)throws Exception{
         if(!changeable()){
             throw new Exception("This order can't be changed!");
         }
 
-        if(!itemExists(id)){
+        if(!itemExists(itemId)){
             throw new Exception("The requested item is not ordered!");
         }
 

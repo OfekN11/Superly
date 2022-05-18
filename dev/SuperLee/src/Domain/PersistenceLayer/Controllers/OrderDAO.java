@@ -82,11 +82,15 @@ public class OrderDAO extends DataMapper<Order> {
     }
 
     public void addItem(int orderId, OrderItem orderItem) throws SQLException {
+
         orderItemDAO.addItem(orderId, orderItem);
     }
 
     public void removeOrder(int orderId) throws SQLException {
         remove(orderId);
+        ArrayList<Integer> ids = new ArrayList<>();
+        ids.add(orderId);
+        orderItemDAO.removeOrders(ids);
         ORDER_IDENTITY_MAP.remove(String.valueOf(orderId));
     }
 
@@ -117,6 +121,9 @@ public class OrderDAO extends DataMapper<Order> {
     public void updateOrder(Order newOrder) throws SQLException {
         removeOrder(newOrder.getId());
         addOrder(newOrder);
+        //orderItemDAO.updateItems(newOrder.getId(), newOrder.getOrderItems());  its updates the items in the addOrder
+        ORDER_IDENTITY_MAP.replace(String.valueOf(newOrder.getId()), newOrder);
+
     }
 
     public ArrayList<Order> getLastOrdersFromALlSuppliers(ArrayList<Integer> orderIds) {
@@ -153,13 +160,13 @@ public class OrderDAO extends DataMapper<Order> {
     }
 
     public void removeSupplierOrders(int supplierId) throws SQLException {
-        List<Object> ordersIds = getSupplierOrdersIds(supplierId);
+        List<Integer> ordersIds = getSupplierOrdersIds(supplierId);
         orderItemDAO.removeOrders(ordersIds);
         remove(Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
     }
 
-    private ArrayList<Object> getSupplierOrdersIds(int supplierId) {
-        ArrayList<Object> ids = new ArrayList<>();
+    private ArrayList<Integer> getSupplierOrdersIds(int supplierId) {
+        ArrayList<Integer> ids = new ArrayList<>();
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection, Arrays.asList(ORDER_ID_COLUMN),  Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
             while (instanceResult.next()) {

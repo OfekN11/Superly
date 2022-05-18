@@ -476,10 +476,7 @@ public class Supplier {
         orderDAO.addOrder(order);
         ordersToBe.put(order.getId(), order);
 
-        if(isRoutineAgreement()){
-            agreementController.setLastOrderId(id, order.getId());
-            ( (RoutineAgreement) agreement).setLastOrderId(order.getId());
-        }
+        setLastOrderId(agreementController, order.getId());
 
         return order;
     }
@@ -643,6 +640,14 @@ public class Supplier {
         return -1;
     }
 
+    public void setLastOrderId(AgreementController agreementController, int orderId) throws SQLException {
+        if(isRoutineAgreement()){
+            agreementController.setLastOrderId(id, orderId);
+            ((RoutineAgreement)agreement).setLastOrderId(orderId);
+        }
+    }
+
+
     public boolean itemExists(int productId) {
         return agreement.itemExists(productId);
     }
@@ -666,5 +671,32 @@ public class Supplier {
 
     public Order getOrderObject(int orderID, OrderDAO orderDAO) throws Exception {
         return getOrderFromALlLists(orderID, orderDAO);
+    }
+
+    //I dont think this function work well!
+    public ArrayList<OrderItem> checkifOrderItemAlreayExists(Order order, OrderItem orderItem, OrderDAO orderDAO) throws Exception {
+        if(!order.itemExists(orderItem.getProductId())){
+            return null;
+        }
+        int addQuantity = 0;
+        ArrayList<OrderItem> result = new ArrayList<>();
+        for(OrderItem item : order.getOrderItems()){
+            if(item.getProductId() != orderItem.getProductId())
+                result.add(item);
+            else{
+                addQuantity = item.getQuantity();
+
+            }
+        }
+        //if I do this line there is no bug!
+        addQuantity += order.getQuantityOfItem(orderItem.getProductId());
+
+        //addQuantity += orderItem.getQuantity();
+        int itemID = orderItem.getProductId();
+        orderItem.setQuantity(addQuantity);
+        orderItem.setDiscount(agreement.getItem(itemID).getDiscount(addQuantity));
+        orderItem.setFinalPrice(agreement.getOrderPrice(itemID, addQuantity));
+        result.add(orderItem);
+        return result;
     }
 }

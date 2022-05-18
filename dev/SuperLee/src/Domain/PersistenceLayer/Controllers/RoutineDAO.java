@@ -48,7 +48,6 @@ public class RoutineDAO extends DAO {
     }
 
     public void setLastOrderId(int supplierId, int orderId) throws SQLException {
-        // (List<Integer> columnsLocationToUpdate,List<Object> valuesToUpdate,List<Integer> conditionColumnLocation,List<Object> conditionValues) throws SQLException {
         update(Arrays.asList(LAST_ORDER_ID_COLUMN), Arrays.asList(orderId), Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
     }
 }

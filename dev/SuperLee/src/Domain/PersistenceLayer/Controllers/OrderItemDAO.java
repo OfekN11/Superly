@@ -41,10 +41,10 @@ public class OrderItemDAO extends DAO {
     public ArrayList<OrderItem> uploadAllItemsFromOrder(int orderId, AgreementItemDAO agreementItemDAO){
         ArrayList<OrderItem> output = new ArrayList<>();
         try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, orderId);
+            ResultSet instanceResult = select(connection, Arrays.asList(ORDER_ID_COLUMN), Arrays.asList(orderId));
 
             while (instanceResult.next()) {
-                String itemName = agreementItemDAO.getNameOfItem(instanceResult.getInt(1));
+                String itemName = agreementItemDAO.getNameOfItem(instanceResult.getInt(PRODUCT_ID_COLUMN));
 
                 OrderItem currItem = new OrderItem(instanceResult.getInt(1), instanceResult.getInt(3),
                         itemName, instanceResult.getInt(4), instanceResult.getFloat(5),
@@ -75,9 +75,17 @@ public class OrderItemDAO extends DAO {
         update(Arrays.asList(FINAL_PRICE_COLUMN), Arrays.asList(finalPrice), Arrays.asList(PRODUCT_ID_COLUMN,ORDER_ID_COLUMN), Arrays.asList(productId, orderId));
     }
 
-    public void removeOrders(List<Object> ordersIds) throws SQLException {
-        remove(Arrays.asList(ORDER_ID_COLUMN), ordersIds);
+    public void removeOrders(List<Integer> ordersIds) throws SQLException {
+        for(Integer id : ordersIds){
+            remove(Arrays.asList(ORDER_ID_COLUMN), Arrays.asList(id));
+        }
     }
 
 
+    public void updateItems(int orderId, ArrayList<OrderItem> orderItems) throws SQLException {
+        for(OrderItem orderItem : orderItems){
+            removeItem(orderId, orderItem.getProductId());
+            addItem(orderId, orderItem);
+        }
+    }
 }
