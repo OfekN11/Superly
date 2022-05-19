@@ -14,5 +14,5 @@ public abstract class Document {
         return SN;
     }
 
-    public abstract Domain.Service.Objects.Document accept(ServiceDocumentFactory serviceDocumentFactory);
+    public abstract Domain.Service.Objects.Document.Document accept(ServiceDocumentFactory serviceDocumentFactory);
 }

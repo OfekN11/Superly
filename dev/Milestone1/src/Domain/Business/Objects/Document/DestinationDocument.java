@@ -30,7 +30,7 @@ public class DestinationDocument extends  Document{
     }
 
     @Override
-    public Domain.Service.Objects.Document accept(ServiceDocumentFactory serviceDocumentFactory) {
+    public Domain.Service.Objects.Document.Document accept(ServiceDocumentFactory serviceDocumentFactory) {
         return serviceDocumentFactory.createServiceDocument(this);
     }
 }

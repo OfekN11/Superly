@@ -3,11 +3,12 @@ package Domain.Business.Objects.Document;
 import Domain.Service.ServiceDocumentFactory;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 //TODO the transport document need to hold the destination documents
 public class TransportDocument extends Document{
+    private int transportID;
     private LocalDateTime startTime;
+
     private int truckNumber;
     private String driverName;
     private List<Integer> srcsID;
@@ -23,6 +24,28 @@ public class TransportDocument extends Document{
         this.destsID = destsID;
         this.doRedesign = false;
         this.redesign = "";
+    }
+
+    public TransportDocument(int transportID, LocalDateTime startTime, int truckNumber, String driverName, List<Integer> srcsID, List<Integer> destsID) {
+        this.transportID = transportID;
+        this.startTime = startTime;
+        this.truckNumber = truckNumber;
+        this.driverName = driverName;
+        this.srcsID = srcsID;
+        this.destsID = destsID;
+        this.doRedesign = false;
+        this.redesign = "";
+    }
+
+    public TransportDocument(int transportID, LocalDateTime startTime, int truckNumber, String driverName, List<Integer> srcsID, List<Integer> destsID, String redesign) {
+        this.transportID = transportID;
+        this.startTime = startTime;
+        this.truckNumber = truckNumber;
+        this.driverName = driverName;
+        this.srcsID = srcsID;
+        this.destsID = destsID;
+        this.doRedesign = true;
+        this.redesign = redesign;
     }
 
     public LocalDateTime getStartTime() {
@@ -82,7 +105,7 @@ public class TransportDocument extends Document{
     }
 
     @Override
-    public Domain.Service.Objects.Document accept(ServiceDocumentFactory serviceDocumentFactory) {
+    public Domain.Service.Objects.Document.Document accept(ServiceDocumentFactory serviceDocumentFactory) {
         return serviceDocumentFactory.createServiceDocument(this);
     }
 }

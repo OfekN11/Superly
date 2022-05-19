@@ -1,9 +1,9 @@
-package Presentation.Screens;
+package Presentation.Screens.Document;
 
-import Presentation.Objects.DestinationDocument;
-import Presentation.Objects.TransportDocument;
+import Presentation.Objects.Document.*;
+import Presentation.Screens.Screen;
 
-public class DocumentMenu extends Screen{
+public class DocumentMenu extends Screen {
     private static final String[] menuOptions = {
             "Get transport document",    //1
             "Get destination document",  //2

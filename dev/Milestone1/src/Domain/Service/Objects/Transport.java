@@ -20,7 +20,7 @@ public class Transport {
     public Transport(Domain.Business.Objects.Transport transport) {
         startTime = transport.getStartTime();
         endTime = transport.getEndTime();
-        driverName = transport.getDriverName();
+        //driverName = transport.getDriverName();
         truckNumber = transport.getTruckNumber();
         truckWeight = transport.getTruckWeight();
     }

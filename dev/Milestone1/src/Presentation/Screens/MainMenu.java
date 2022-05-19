@@ -1,6 +1,7 @@
 package Presentation.Screens;
 
 import Presentation.BackendController;
+import Presentation.Screens.Document.DocumentMenu;
 
 public class MainMenu extends Screen{
 

@@ -1,10 +1,10 @@
-package Domain.Service.Objects;
+package Domain.Service.Objects.Document;
 
 import Domain.Service.ServiceDocumentFactory;
 
-public class DestinationDocument extends Document{
+public class DestinationDocument extends Document {
     public DestinationDocument(Domain.Business.Objects.Document.DestinationDocument destinationDoc) {
-        super();
+        super(destinationDoc.getSN());
     }
 
     @Override
