@@ -5,10 +5,12 @@ import Domain.Service.ServiceDocumentFactory;
 import java.util.List;
 
 public class DestinationDocument extends  Document{
+    private int ID;
     private int destID;
     private List<String> providedProducts;
 
-    public DestinationDocument(int destID, List<String> providedProducts) {
+    public DestinationDocument(int id,int destID, List<String> providedProducts) {
+        ID = id;
         this.destID = destID;
         this.providedProducts = providedProducts;
     }
@@ -30,7 +32,7 @@ public class DestinationDocument extends  Document{
     }
 
     @Override
-    public Domain.Service.Objects.Document accept(ServiceDocumentFactory serviceDocumentFactory) {
+    public Domain.Service.Objects.Document.Document accept(ServiceDocumentFactory serviceDocumentFactory) {
         return serviceDocumentFactory.createServiceDocument(this);
     }
 }

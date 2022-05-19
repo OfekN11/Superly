@@ -1,8 +1,7 @@
 package Domain.Service;
 
-import Domain.Service.Objects.DestinationDocument;
-import Domain.Service.Objects.Document;
-import Domain.Service.Objects.TransportDocument;
+
+import Domain.Service.Objects.Document.*;
 
 public class ServiceDocumentFactory {
     public Document createServiceDocument(Domain.Business.Objects.Document.Document doc){

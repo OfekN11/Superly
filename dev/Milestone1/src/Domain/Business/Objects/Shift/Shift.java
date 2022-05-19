@@ -1,4 +1,4 @@
-package Domain.Business.Objects;
+package Domain.Business.Objects.Shift;
 
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.Service.ServiceShiftFactory;
@@ -37,11 +37,12 @@ public abstract class Shift {
     private Set<String> logistics_managerIDs;
     private Set<String> transport_managerIDs;
 
+    private Set<String> constraints;
 
     // constructors
     public Shift(LocalDate workday, String shiftManagerId,
                  int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,int transport_managersCount,
-                 Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs,Set<String>transportManagerIDs) throws Exception {
+                 Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs,Set<String>transportManagerIDs, Set<String> constraints) throws Exception {
         this.workday = workday;
         if (shiftManagerId == null)
             throw new Exception("A shift has to have a shift manager");
@@ -70,12 +71,15 @@ public abstract class Shift {
         this.hr_managerIDs = new HashSet<>(hr_managerIDs);
         this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
         this.transport_managerIDs = new HashSet<>(transportManagerIDs);
+        this.constraints = constraints;
     }
 
-    public Shift(LocalDate date, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transportManagersCount) throws Exception {
+
+
+    public Shift(LocalDate date, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transportManagersCount) throws Exception {
         this(date,managerId,
                 carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount,transportManagersCount,
-                new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),new HashSet<>(),new HashSet<>());
 
     }
 
@@ -248,10 +252,6 @@ public abstract class Shift {
         this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
     }
 
-    public Set<String> getTransport_managerIDs() {
-        return transport_managerIDs;
-    }
-
     public void setTransport_managerIDs(Set<String> transport_managerIDs) throws Exception {
         checkSizeValidity(transport_managersCount, transport_managerIDs.size());
         if (transport_managerIDs.contains(shiftManagerId))
@@ -259,12 +259,27 @@ public abstract class Shift {
         this.transport_managerIDs = new HashSet<>(transport_managerIDs);
     }
 
+    public Set<String> getTransport_managerIDs() {
+        return transport_managerIDs;
+    }
+
+    public Set<String> getConstraints() {
+        return constraints;
+    }
+
+    public void setConstraints(Set<String> constraints) {
+        this.constraints = constraints;
+    }
+
+
     public abstract Domain.Service.Objects.Shift accept(ServiceShiftFactory factory);
 
     private void checkCountValidity(int count, int minimum, JobTitles type) throws Exception {
         if (count < minimum)
             throw new Exception(String.format("A shift can't have less than %s %s(s)", minimum, type));
     }
+
+
 
     private void checkSizeValidity(int count, int size) throws Exception {
         if (count < size)

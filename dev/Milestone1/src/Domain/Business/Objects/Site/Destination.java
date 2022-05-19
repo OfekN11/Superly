@@ -1,6 +1,8 @@
-package Domain.Business.Objects;
+package Domain.Business.Objects.Site;
 
-public class Destination extends Source{
+import Domain.Business.Objects.Site.Source;
+
+public class Destination extends Source {
     public Destination(Address address, String contactName, String phoneNumber) {
         super(address, contactName, phoneNumber);
     }

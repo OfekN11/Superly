@@ -1,4 +1,5 @@
-package Domain.Business.Objects;
+package Domain.Business.Objects.Shift;
+
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.Service.ServiceShiftFactory;
 import Globals.Enums.ShiftTypes;
@@ -16,8 +17,10 @@ public  class EveningShift extends Shift {
         validateManagerialCount(transport_managersCount);
     }
 
-    public EveningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transport_managersCount
-                         , Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs, Set<String> transportManagersIDs
+    public EveningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount,
+                        int hr_managerCount, int logistics_managerCount,int transport_managersCount, Set<String> carrierIDs,
+                        Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs,
+                        Set<String> logistics_managerIDs, Set<String> transportManagersIDs,Set<String> canWorkInIds
     ) throws Exception {
         super(workday, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount,transport_managersCount,carrierIDs,
                 cashierIDs,
@@ -25,7 +28,7 @@ public  class EveningShift extends Shift {
                 sorterIDs,
                 hr_managerIDs,
                 logistics_managerIDs,
-                 transportManagersIDs );
+                 transportManagersIDs,canWorkInIds );
         validateManagerialCount(hr_managerCount);
         validateManagerialCount(logistics_managerCount);
         validateManagerialCount(transport_managersCount);

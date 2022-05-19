@@ -3,14 +3,11 @@ package Presentation;
 import Domain.Service.Objects.Employee;
 import Globals.Enums.Certifications;
 import Globals.Enums.ShiftTypes;
-import Presentation.Screens.Screen;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static Globals.util.HumanInteraction.*;
@@ -163,7 +160,7 @@ public class PresentationShiftBuilder {
         }
     }
 
-    public void setShiftManager() throws Exception {
+    public void setShiftManager() throws Exception{
         //Shift Manager
         printExitMassage();
         List<Employee> managers = null;

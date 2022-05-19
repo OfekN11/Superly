@@ -1,15 +1,11 @@
 package Domain.DAL.Controllers.EmployeeMappers;
-import Domain.Business.Objects.Storekeeper;
-import Domain.DAL.Abstract.EmployeeTypeDataMapper;
-import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.ObjectDateMapper;
+import Domain.Business.Objects.Employee.Storekeeper;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
-public class StorekeeperDataMapper extends EmployeeTypeDataMapper<Storekeeper> {
+public class StorekeeperDataMapper extends AbstractEmployeeDataMapper<Storekeeper> {
     private static Map<String, Storekeeper> STOREKEEPER_IDENTITY_MAP = new HashMap<>();
     EmployeeCertificationDAO employeeCertificationController ;
 

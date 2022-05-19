@@ -5,6 +5,7 @@ import Domain.Business.Controllers.ShiftController;
 import Domain.Business.Controllers.SiteController;
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
+import Domain.DAL.Controllers.TransportDataMapper;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
@@ -23,9 +24,9 @@ public class IntegrationTest {
     static EmployeeDataMapper employeeDataMapper =new EmployeeDataMapper();
     static ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
     static TransportService transportService = new TransportService();
-    static SiteController siteController = SiteController.getInstance();
+    static SiteController siteController = new SiteController();
     static HashMap<String,Integer> productMap = new HashMap<>();
-    static TransportDataMapper transportDataMapper =new TransportDataMapper();
+    static TransportDataMapper transportDataMapper = new TransportDataMapper();
 
     @BeforeClass
     public static void beforeAll() throws Exception {

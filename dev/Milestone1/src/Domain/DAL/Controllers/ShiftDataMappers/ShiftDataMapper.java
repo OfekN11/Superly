@@ -1,15 +1,13 @@
 package Domain.DAL.Controllers.ShiftDataMappers;
-import Domain.Business.Objects.Constraint;
-import Domain.Business.Objects.EveningShift;
-import Domain.Business.Objects.MorningShift;
-import Domain.Business.Objects.Shift;
+import java.util.*;
+import Domain.Business.Objects.Shift.EveningShift;
+import Domain.Business.Objects.Shift.MorningShift;
+import Domain.Business.Objects.Shift.Shift;
 import Globals.Enums.ShiftTypes;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -72,6 +70,22 @@ public class ShiftDataMapper {
     //TODO
     //should delete shift with this key
     public void delete(LocalDate date, ShiftTypes type) {
+        try {
+            switch (type){
+                case Evening:
+                    eveningShiftDataMapper.delete(date.toString()+type.toString());
+                    break;
+
+                case Morning:
+                    morningShiftDataMapper.delete(date.toString()+type.toString());
+                    break;
+                default:
+                    throw new RuntimeException("no such type is define");
+                }
+        }
+        catch (SQLException throwables) {
+            throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+        }
     }
 
     //should return all shifts (of any type) between date start and date end (inclusive)
@@ -87,13 +101,13 @@ public class ShiftDataMapper {
 
         long numOfDays = ChronoUnit.DAYS.between(start, end.plusDays(1));
 
-        List<LocalDate> listOfDates = Stream.iterate(start, date -> date.plusDays(1))
+        java.util.List<LocalDate> listOfDates = Stream.iterate(start, date -> date.plusDays(1))
                 .limit(numOfDays)
                 .collect(Collectors.toList());
 
         for (LocalDate date:listOfDates){
             try{
-            Shift shift;
+                Shift shift;
                 switch (type) {
                     case Morning:
                         shift = morningShiftDataMapper.get(date.toString() + type.toString());

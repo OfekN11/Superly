@@ -1,5 +1,6 @@
-package Domain.Business.Objects;
+package Domain.Business.Objects.Employee;
 
+import Domain.Business.Objects.Employee.Employee;
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
@@ -10,21 +11,17 @@ import java.time.LocalDate;
 import java.util.Set;
 
 /**
- * Business model of the Logistics Manager
+ * Business model of the Sorter
  */
-public class Logistics_Manager extends Employee{
-    public Logistics_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
+public class Sorter extends Employee {
+    public Sorter(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
     }
 
-    @Override
-    public void save(EmployeeDataMapper employeeDataMapper) throws SQLException {
-        employeeDataMapper.save(this);
-    }
 
     @Override
     protected void updateEmploymentConditions() {
-       super.updateEmploymentConditions(JobTitles.Logistics_Manager);
+       super.updateEmploymentConditions(JobTitles.Sorter);
     }
 
     @Override
@@ -33,7 +30,13 @@ public class Logistics_Manager extends Employee{
     }
 
     @Override
-    public void update(EmployeeDataMapper employeeDataMapper) throws SQLException {
+    public void save(EmployeeDataMapper employeeDataMapper) throws Exception {
+        employeeDataMapper.save(this);
+    }
+
+
+    @Override
+    public void update(EmployeeDataMapper employeeDataMapper) throws Exception {
         employeeDataMapper.update(this);
     }
 }

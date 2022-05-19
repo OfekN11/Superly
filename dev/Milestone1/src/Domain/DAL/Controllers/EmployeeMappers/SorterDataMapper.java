@@ -1,17 +1,12 @@
 package Domain.DAL.Controllers.EmployeeMappers;
 
-import Domain.Business.Objects.Logistics_Manager;
-import Domain.Business.Objects.Sorter;
-import Domain.DAL.Abstract.EmployeeTypeDataMapper;
-import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.ObjectDateMapper;
+import Domain.Business.Objects.Employee.Sorter;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
-public class SorterDataMapper extends EmployeeTypeDataMapper<Sorter> {
+public class SorterDataMapper extends AbstractEmployeeDataMapper<Sorter> {
     private static Map<String, Sorter> SORTER_IDENTITY_MAP = new HashMap<>();
     EmployeeCertificationDAO employeeCertificationController ;
 

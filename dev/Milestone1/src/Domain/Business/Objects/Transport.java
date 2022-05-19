@@ -1,67 +1,92 @@
 package Domain.Business.Objects;
 
 import Domain.Business.Objects.Document.TransportDocument;
+import Domain.Business.Objects.Site.Destination;
+import Domain.Business.Objects.Site.Source;
+import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
+import Globals.Enums.TransportStatus;
+import Globals.Pair;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Transport {
+    private static int incSN = 0;
+    private int SN;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private String driverName;
+    private String driverID;
     private  int truckNumber;
     private  int truckWeight;
-    private List<Source> sources;
-    private List<Destination> destinations;
+    private List<Integer> sourcesID;
+    private List<Integer> destinationsID;
     private List<Integer> transportOrders;
     private HashMap<ShippingAreas, Integer> shippingAreas;
+    private TransportStatus status;
+    //TODO need to change the shift restart. the restart of Transport need to be with shift as argument
+
+    private Pair<LocalDate, ShiftTypes> shift = null;
 
     public Transport() {
-        driverName = null;
+        SN = incSN++;
+        driverID = "";
         truckNumber = -1;
         truckWeight = -1;
-        sources = new ArrayList<>();
-        destinations = new ArrayList<>();
+        sourcesID = new ArrayList<>();
+        destinationsID = new ArrayList<>();
         transportOrders = new ArrayList<>();
+        status = TransportStatus.padding;
     }
 
-    public boolean startTransport()
-    {
-        if (startTime == null)
+    public int getSN() {
+        return SN;
+    }
+
+    public void startTransport() throws Exception {
+        if (status == TransportStatus.padding)
         {
             startTime = LocalDateTime.now();
-            //TODO: calcEndTime();
-            return true;
+            status = TransportStatus.inProgress;
         }
+        throw new Exception("transport already started");
+    }
+    public void endTransport() throws Exception {
+        if (status == TransportStatus.inProgress)
+        {
+            endTime = LocalDateTime.now();
+            status = TransportStatus.done;
+        }
+        throw new Exception("transport is not in Progress");
+    }
+    public boolean isDoneTransport(){
+        //TODO need to be implemented
         return false;
     }
 
     public boolean placeTruck(int licenseNumber)
     {
-        truckNumber = licenseNumber;
-        return true;
+        if(truckNumber==-1){
+            truckNumber = licenseNumber;
+            return true;
+        }
+        return false;
     }
 
-    public void placeDriver(String driverName)
+    public void placeDriver(String driverId)
     {
-        this.driverName = driverName;
-    }
-    public boolean driverPlaced()
-    {
-        return driverName != null;
-    }
-
-    public boolean truckPlaced()
-    {
-        return driverName != null;
+        this.driverID = driverId;
     }
 
     public boolean readyToGo()
     {
-        return !sources.isEmpty() && !destinations.isEmpty() && driverPlaced() && truckPlaced();
+        return !sourcesID.isEmpty() && !destinationsID.isEmpty() && isPlacedTruck() && isPlacedCarrier() && !transportOrders.isEmpty();
+    }
+    public Pair<LocalDate,ShiftTypes> getShift(){
+        return shift;
     }
 
     private void addShippingArea(ShippingAreas sa)
@@ -74,7 +99,12 @@ public class Transport {
             shippingAreas.replace(sa, shippingAreas.get(sa) + 1);
         }
     }
-
+    public boolean isPlacedTruck(){
+        return truckNumber!=-1;
+    }
+    public boolean isPlacedCarrier(){
+        return !(driverID=="");
+    }
     private void removeShippingArea(ShippingAreas sa)
     {
         if(shippingAreas.get(sa) > 1)
@@ -85,9 +115,8 @@ public class Transport {
             shippingAreas.remove(sa);
         }
     }
-
-    public String getDriverName() {
-        return driverName;
+    public String getDriverID(){
+        return driverID;
     }
 
     public int getTruckNumber() {
@@ -96,42 +125,42 @@ public class Transport {
 
     private List<Integer> getSrcIDs()
     {
-        List<Integer> IDs = new ArrayList<>();
-        for (Source src: sources) {
-            IDs.add(src.getId());
-        }
-        return IDs;
+        return sourcesID;
     }
 
     private List<Integer> getDstIDs()
     {
-        List<Integer> IDs = new ArrayList<>();
-        for (Destination dst: destinations) {
-            IDs.add(dst.getId());
-        }
-        return IDs;
+        return destinationsID;
     }
-    public TransportDocument toDocument() {
+    /*public TransportDocument toDocument() {
         return new TransportDocument(startTime, truckNumber, driverName, getSrcIDs(), getDstIDs());
-    }
+    }*/
 
-    public void addOrder(TransportOrder order)
+    public void addOrder(TransportOrder order,ShippingAreas src,ShippingAreas dst)
     {
-        sources.add(order.getSrc());
-        destinations.add(order.getDst());
-        addShippingArea(order.getSrc().getAddress().getShippingAreas());
-        addShippingArea(order.getDst().getAddress().getShippingAreas());
+        sourcesID.add(order.getSrc());
+        destinationsID.add(order.getDst());
+        addShippingArea(src);
+        addShippingArea(dst);
         transportOrders.add(order.getID());
     }
 
     public boolean updateWeight(int newWeight, int maxCapacityWeight) throws Exception {
-        if(newWeight > maxCapacityWeight){
+        if(truckWeight+newWeight > maxCapacityWeight){
+            status = TransportStatus.redesign;
             return false;
         }
         else{
-            truckWeight = newWeight;
+            truckWeight = truckWeight+newWeight;
             return true;
         }
+    }
+    public List<Integer> gerOrders(){return transportOrders;}
+    public TransportStatus getStatus(){
+        return status;
+    }
+    public void changeStatus(TransportStatus stat){
+        status = stat;
     }
 
     public LocalDateTime getStartTime() {
@@ -144,5 +173,31 @@ public class Transport {
 
     public int getTruckWeight() {
         return truckWeight;
+    }
+
+    public boolean destVisit(int siteID) {
+        if(sourcesID.size()==0 && destinationsID.contains(siteID)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean visitSite(int siteID) throws Exception {
+        if(sourcesID.contains(siteID)){
+            for (Integer src:sourcesID) {
+                sourcesID.remove(src);
+            }
+        }
+        else{
+            if(destVisit(siteID)){
+                for (Integer src:destinationsID) {
+                    destinationsID.remove(src);
+                }
+            }
+            else{
+                throw new Exception("this is not valid site. the site ID is not in the order or all the sources not visited yet");
+            }
+        }
+        return sourcesID.size()==0 && destinationsID.size()==0;
     }
 }

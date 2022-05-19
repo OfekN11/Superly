@@ -1,10 +1,11 @@
-package Domain.Service.Objects;
+package Domain.Service.Objects.Document;
 
+import Domain.Service.Objects.Document.Document;
 import Domain.Service.ServiceDocumentFactory;
 
-public class TransportDocument extends Document{
+public class TransportDocument extends Document {
     public TransportDocument(Domain.Business.Objects.Document.TransportDocument transportDoc) {
-        super();
+        super(transportDoc.getSN());
     }
 
     @Override

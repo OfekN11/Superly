@@ -46,7 +46,7 @@ public abstract class Employee {
      *
      * @param bEmployee Business type representing the employee
      */
-    public Employee(Domain.Business.Objects.Employee bEmployee){
+    public Employee(Domain.Business.Objects.Employee.Employee bEmployee){
         this(bEmployee.getId(), bEmployee.getName(), bEmployee.getBankDetails(), bEmployee.getSalary(), bEmployee.getEmploymentConditions(), bEmployee.getStartingDate(), bEmployee.getCertifications());
     }
 

@@ -2,20 +2,24 @@ package Presentation;
 
 import Domain.Service.Objects.*;
 import Domain.Service.Services.*;
-import Globals.Enums.Certifications;
-import Globals.Enums.JobTitles;
-import Globals.Enums.LicenseTypes;
-import Globals.Enums.ShiftTypes;
+import Globals.Enums.*;
+import Globals.Pair;
+import Presentation.Objects.Document.*;
+import Presentation.Objects.Transport.TransportOrder;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Set;
 
 public class BackendController {
+    //TODO add the transport functions and controllers
     private final EmployeeService employeeService = new EmployeeService();
     private final ShiftService shiftService = new ShiftService();
     private final ConstraintService constraintService = new ConstraintService();
-
-
+    private final TruckService truckService = new TruckService();
+    private final DocumentService documentService = new DocumentService();
+    private final TransportService transportService = new TransportService();
+    private final OrderService orderService = new OrderService();
     ///EMPLOYEES
     //CREATE
 
@@ -421,6 +425,64 @@ public class BackendController {
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
+    }
+
+    //
+    private void throwIfError(Result result) throws Exception {
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+    }
+
+    //Truck:
+    public void addTruck(int licenseNumber, TruckModel truckModel, int netWeight, int maxCapacityWeight) throws Exception {
+        Result result =  truckService.addTruck(licenseNumber, truckModel, netWeight, maxCapacityWeight);
+        throwIfError(result);
+    }
+
+    public void removeTruck(int licenseNumber) throws Exception {
+        Result result =  truckService.removeTruck(licenseNumber);
+        throwIfError(result);
+    }
+
+    //Document:
+    public TransportDocument getTransportDocument(int tdSN) throws Exception {
+        Result<TransportDocument> result = documentService.getTransportDocument(tdSN);
+        throwIfError(result);
+        return result.getValue();
+    }
+
+    public DestinationDocument getDestinationDocument(int ddSN) throws Exception {
+        Result<DestinationDocument> result = documentService.getTransportDocument(ddSN);
+        throwIfError(result);
+        return result.getValue();
+    }
+
+    //Transport Order
+    public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {
+        Result result = orderService.addOrder(srcID, dstID, productList);
+        throwIfError(result);
+    }
+
+    //Transport
+
+    public void getCompleteTransports() throws Exception {
+        Result result = transportService.getCompletedTransport();
+        throwIfError(result);
+    }
+
+    public void getInProgressTransports() throws Exception {
+        Result result = transportService.getInProgressTransports();
+        throwIfError(result);
+    }
+
+    public void getPendingTransports() throws Exception {
+        Result result = transportService.getInProgressTransports();
+        throwIfError(result);
+    }
+
+    public void createNewTransport(Pair<LocalDate, ShiftTypes> localDateShiftTypesPair) throws Exception {
+        Result result = transportService.createTransport(localDateShiftTypesPair);
+        throwIfError(result);
     }
 
     public Set<Employee> getAvailableEmployeesFor(LocalDate date, ShiftTypes type) throws Exception {

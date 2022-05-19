@@ -1,23 +1,25 @@
-package Domain.Business.Objects;
+package Domain.Business.Objects.Employee;
 
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Set;
 
-public class Transport_Manager extends Employee{
+/**
+ * Business model of the Storekeeper
+ */
+public class Storekeeper extends Employee {
 
-    public Transport_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
+    public Storekeeper(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
     }
 
     @Override
     protected void updateEmploymentConditions() {
-        super.updateEmploymentConditions(JobTitles.Transport_Manager);
+       super.updateEmploymentConditions(JobTitles.Storekeeper);
     }
 
     @Override
@@ -26,12 +28,13 @@ public class Transport_Manager extends Employee{
     }
 
     @Override
-    public void save(EmployeeDataMapper employeeDataMapper) throws SQLException {
+    public void save(EmployeeDataMapper employeeDataMapper) throws Exception {
         employeeDataMapper.save(this);
     }
 
+
     @Override
-    public void update(EmployeeDataMapper employeeDataMapper) throws SQLException {
+    public void update(EmployeeDataMapper employeeDataMapper) throws Exception {
         employeeDataMapper.update(this);
     }
 }
