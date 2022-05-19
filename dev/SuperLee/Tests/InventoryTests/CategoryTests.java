@@ -4,10 +4,11 @@ import Domain.BusinessLayer.Inventory.Category;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-
+@NotThreadSafe
 public class CategoryTests {
 
     @Test

@@ -11,6 +11,7 @@ import Domain.PersistenceLayer.Controllers.StoreDAO;
 import PresentationLayer.Screens.InventoryScreens.StockReports;
 import org.junit.jupiter.api.*;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -18,25 +19,26 @@ import static java.util.Collections.max;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@NotThreadSafe
 public class ProductTests {
     static Category category0;
     static Product product;
     static Product product0;
     static Product product1;
-    private static InventoryController is;
+    private static final InventoryController is =  InventoryController.getInventoryController();
+    private static List<Integer> stores;
     private static int maxStoreCount;
 
     @BeforeAll
-    public static void getMaxStoreCount() {
-        is = new InventoryController();
+    public synchronized static void getMaxStoreCount() {
+        stores=new ArrayList<>();
         maxStoreCount = max(is.getStoreIDs());
-        is.addStore();
-        is.addStore();
-        is.addStore();
+        stores.add(is.addStore());
+        stores.add(is.addStore());
+        stores.add(is.addStore());
     }
     @BeforeEach
     void addLocations() {
-        is = new InventoryController();
         category0 = is.addCategory("Test-Milk",  0);
         product = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
         product0 = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
@@ -69,7 +71,6 @@ public class ProductTests {
         CategoryDataMapper cdm = new CategoryDataMapper();
         cdm.removeTestCategories();
         StoreDAO storeDAO = new StoreDAO();
-        Collection<Integer> stores = storeDAO.getAll();
         for (int store : stores) {
             if (store > maxStoreCount) {
                 try {
@@ -81,21 +82,9 @@ public class ProductTests {
         }
     }
 
-    @AfterEach
-    public void removeLocationData() {
-        List<Integer> products = Arrays.asList(product0.getId(), product1.getId());
-        StoreDAO storeDAO = new StoreDAO();
-        Collection<Integer> stores = storeDAO.getAll();
-        StockReportDataMapper srdm = new StockReportDataMapper();
-        for (int store : stores) {
-            for (Integer p : products) {
-                srdm.remove(store, p);
-            }
-        }
-    }
     @Test
     void addDelivery() {
-        assertThrows(Exception.class, () -> product.addDelivery(maxStoreCount+3, 200));
+        assertThrows(Exception.class, () -> product.addDelivery(0, 200));
         product.addLocation(maxStoreCount+3, Arrays.asList(1), Arrays.asList(2), 100, 200);
         assertDoesNotThrow(() -> product.addDelivery(maxStoreCount+3, 200));
     }

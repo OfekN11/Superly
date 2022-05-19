@@ -5,10 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
 
+@NotThreadSafe
 public class SaleToCustomerTests {
 
     SaleToCustomer sale1;

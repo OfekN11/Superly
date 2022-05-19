@@ -3,29 +3,31 @@ package InventoryTests;
 import Domain.BusinessLayer.Inventory.Product;
 import Domain.BusinessLayer.Inventory.StockReport;
 import Domain.BusinessLayer.InventoryController;
-import Domain.PersistenceLayer.Controllers.CategoryDataMapper;
-import Domain.PersistenceLayer.Controllers.ProductDataMapper;
-import Domain.PersistenceLayer.Controllers.StockReportDataMapper;
-import Domain.PersistenceLayer.Controllers.StoreDAO;
+import Domain.PersistenceLayer.Controllers.*;
 import org.junit.jupiter.api.*;
 
+import javax.annotation.concurrent.NotThreadSafe;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static java.util.Collections.max;
 import static org.junit.jupiter.api.Assertions.*;
 
+@NotThreadSafe
 class StockReportTest {
     Product product;
-    private static InventoryController is;
+    private static final InventoryController is  =  InventoryController.getInventoryController();
     private static int maxStoreCount;
     int store;
     static int cat;
     StockReport stockReport;
+    private static List<Integer> stores;
 
     @BeforeAll
-    public static void setup() {
-        is = new InventoryController();
+    public synchronized static void setup() {
+        stores=new ArrayList<>();
         maxStoreCount = max(is.getStoreIDs());
         cat = is.addCategory("TestCategory", 0).getID();
     }
@@ -33,6 +35,7 @@ class StockReportTest {
     @BeforeEach
     public void refresh() {
         store = is.addStore();
+        stores.add(store);
         product = is.newProduct("TestProduct", cat,2,2,"testManu");
         product.addLocation(store, Arrays.asList(1), Arrays.asList(2), 100, 200);
         stockReport = product.getStockReport(store);
@@ -46,10 +49,11 @@ class StockReportTest {
         CategoryDataMapper cdm = new CategoryDataMapper();
         cdm.removeTestCategories();
         StoreDAO storeDAO = new StoreDAO();
-        Collection<Integer> stores = storeDAO.getAll();
+        LocationDataMapper locationDataMapper = new LocationDataMapper();
         for (int store : stores) {
             if (store>maxStoreCount) {
                 try {
+                    locationDataMapper.removeByStore(store);
                     srdm.remove(store);
                     storeDAO.remove(store);
                 }
