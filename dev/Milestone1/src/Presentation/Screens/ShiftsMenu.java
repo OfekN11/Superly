@@ -8,7 +8,6 @@ import Presentation.PresentationShiftBuilder;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -98,12 +97,13 @@ public class ShiftsMenu extends Screen {
             while (!success) {
                 System.out.println("\nEnter shift's date");
                 date = buildDate();
-                if (date == null)
-                    return;
-                System.out.println("Entered date: " + new SimpleDateFormat("dd-MM-yyyy").format(date));
+                System.out.println("Chosen starting date: " + new SimpleDateFormat("dd-MM-yyyy").format(date));
                 success = areYouSure();
+                if (!date.isAfter(LocalDate.now())){
+                    System.out.println("Can only delete shifts in the future");
+                    success = false;
+                }
             }
-            System.out.println("Chosen starting date: " + new SimpleDateFormat("dd-MM-yyyy").format(date));
 
             //ShiftType
             ShiftTypes type = null;
@@ -112,26 +112,10 @@ public class ShiftsMenu extends Screen {
                 System.out.println("\nEnter shift's type");
                 for (int i = 0; i < ShiftTypes.values().length; i++)
                     System.out.println((i + 1) + " -- " + ShiftTypes.values()[i]);
-                try {
-                    int ordinal = Integer.parseInt(scanner.nextLine());
-                    if (ordinal == -1) {
-                        System.out.println("Operation Canceled");
-                        return;
-                    } else if (ordinal < 1 || ordinal > ShiftTypes.values().length)
-                        System.out.println("Please enter an integer between 1 and " + ShiftTypes.values().length);
-                    else {
-                        type = ShiftTypes.values()[ordinal - 1];
-                        System.out.println("Entered type: " + type);
-                        success = areYouSure();
-                    }
-                } catch (NumberFormatException ex) {
-                    System.out.println("Please enter an integer between 1 and " + ShiftTypes.values().length);
-                } catch (Exception ex) {
-                    System.out.println("Unexpected error occurred");
-                    System.out.println("Please try again");
-                }
+                type = ShiftTypes.values()[getNumber(1, ShiftTypes.values().length) - 1];
+                System.out.println("Chosen shift type: " + type);
+                success = areYouSure();
             }
-            System.out.println("Chosen shift type: " + type);
 
             Shift shift = controller.getShift(date, type);
             System.out.println("We are about to delete");
@@ -142,37 +126,17 @@ public class ShiftsMenu extends Screen {
     }
 
     private void manageShift() throws Exception {
-        System.out.println("\nEnter details of the shift you want to manage");
+        System.out.println("\nEnter details of the shift you want to manage:");
 
         //Date
         System.out.println("\nEnter shift's date");
         LocalDate date = buildDate();
-        if (date == null)
-            return;
 
         //ShiftType
-        ShiftTypes type = null;
-        while (type == null) {
-            System.out.println("\nEnter shift's type");
-            for (int i = 0; i < ShiftTypes.values().length; i++)
-                System.out.println((i + 1) + " -- " + ShiftTypes.values()[i]);
-            try {
-                int ordinal = Integer.parseInt(scanner.nextLine());
-                if (ordinal == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                } else if (ordinal < 1 || ordinal > ShiftTypes.values().length)
-                    System.out.println("Please enter an integer between 1 and " + ShiftTypes.values().length);
-                else {
-                    type = ShiftTypes.values()[ordinal - 1];
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 1 and " + ShiftTypes.values().length);
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
-        }
+        System.out.println("\nEnter shift's type");
+        for (int i = 0; i < ShiftTypes.values().length; i++)
+            System.out.println((i + 1) + " -- " + ShiftTypes.values()[i]);
+        ShiftTypes type = ShiftTypes.values()[getNumber(1, ShiftTypes.values().length) - 1];
 
         new Thread(factory.createScreenShift(this, controller.getShift(date, type))).start();
     }
