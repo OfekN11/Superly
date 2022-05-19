@@ -162,7 +162,7 @@ public class OrderDAO extends DataMapper<Order> {
         remove(Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
     }
 
-    private ArrayList<Integer> getSupplierOrdersIds(int supplierId) {
+    public ArrayList<Integer> getSupplierOrdersIds(int supplierId) {
         ArrayList<Integer> ids = new ArrayList<>();
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection, Arrays.asList(ORDER_ID_COLUMN),  Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
@@ -193,6 +193,19 @@ public class OrderDAO extends DataMapper<Order> {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public List<OrderItem> getItemsInDiscountInSUpplier(int supplierId,AgreementItemDAO agreementItemDAO) {
+        List<OrderItem> items = new ArrayList<>();
+        List<Integer> ids = getSupplierOrdersIds(supplierId);
+        for(Integer orderId : ids){
+            for(OrderItem orderItem : uploadAllItemsFromOrder(orderId, agreementItemDAO)){
+                if(orderItem.getDiscount() != 0)
+                    items.add(orderItem);
+            }
+        }
+        return items;
     }
 }
 

@@ -33,7 +33,7 @@ public class Main {
         SupplierController supplierController = new SupplierController();
 
         try {
-            //supplierController.insertFirstDataToDB();
+            supplierController.insertFirstDataToDB();
             supplierController.loadSuppliersData();
             testOrder(supplierController);
         } catch (Exception exception) {
@@ -48,9 +48,9 @@ public class Main {
         Map<Integer, Integer> item1 = new HashMap<>();
         //Map<Integer, Integer> item2 = new HashMap<>();
 
-        shortage.put(1, item1);
+        shortage.put(2, item1);
 
-        item1.put(5, 200);
+        item1.put(1, 1);
 
         try{
             supplierController.createAllOrders(shortage);

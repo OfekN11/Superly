@@ -590,4 +590,52 @@ public class SupplierService {
             return  Result.makeError(e.getMessage());
         }
     }
+
+    public Result<ArrayList<ServiceOrderObject>> getAllOrdersForSupplier(int supplierId) {
+        try{
+            ArrayList<ServiceOrderObject> orderObjects = new ArrayList<>();
+            List<Integer> orderIds = controller.getAllOrderIdsForSupplier(supplierId);
+            for(Integer orderId : orderIds){
+                List<String> result = controller.getOrder(supplierId, orderId);
+                orderObjects.add(createServiceOrderObject(result));
+            }
+            return Result.makeOk(orderObjects);
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<ArrayList<ServiceOrderItemObject>> getAllOrdersItemsInDiscounts(int supplierId) {
+        try{
+            List<String> result = controller.getAllOrdersItemsInDiscount(supplierId);
+            return Result.makeOk(createServiceOrderItemObject(result));
+        }
+        catch(Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    private ArrayList<ServiceOrderItemObject> createServiceOrderItemObject(List<String> result) {
+        ArrayList<ServiceOrderItemObject> items = new ArrayList<>();
+        for(int i = 0; i < result.size(); i+=6 ){
+            int itemId = Integer.parseInt(result.get(i));
+            String name = result.get(i+1);
+            int quantity =  Integer.parseInt(result.get(i+2));
+            float ppu = Float.parseFloat(result.get(i+3));
+            int discount = Integer.parseInt(result.get(i+4));
+            double finalPrice = Double.parseDouble(result.get(i+5));
+            items.add(new ServiceOrderItemObject(itemId, name, quantity, ppu, discount, finalPrice));
+        }
+        return items;
+    }
+
+    public Result<List<Integer>> getOrdersIds(int supplierId) {
+        try {
+            List<Integer> result = controller.getAllOrderIdsForSupplier(supplierId);
+            return Result.makeOk(result);
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
 }

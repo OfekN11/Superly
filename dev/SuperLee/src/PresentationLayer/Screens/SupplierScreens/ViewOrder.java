@@ -3,6 +3,9 @@ package PresentationLayer.Screens.SupplierScreens;
 import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
+
+import java.util.ArrayList;
+import java.util.List;
 //import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class ViewOrder extends Screen {
@@ -139,6 +142,13 @@ public class ViewOrder extends Screen {
     private void viewOrder() {
         int input;
 
+        try {
+            List<Integer> ordersIds = controller.geOrdersID(supplierId);
+            System.out.println("Orders available:  " + ordersIds);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         System.out.println("Insert the ID of the order you wish to watch.");
         System.out.println("If you want to return, insert \"-1\"");
 
@@ -163,6 +173,7 @@ public class ViewOrder extends Screen {
 
 
     }
+
 
     private void editOrder(){
         boolean _continue = true, correctInput;

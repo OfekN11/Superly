@@ -4,6 +4,7 @@ import Domain.BusinessLayer.Supplier.Agreement.Agreement;
 import Domain.BusinessLayer.Supplier.Contact;
 import Domain.BusinessLayer.Supplier.Supplier;
 import Domain.PersistenceLayer.Controllers.SuppliersDAO;
+import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * NOTE: the tests assumes that the DB is empty.
  */
 
+@NotThreadSafe
 class SupplierTest {
 
     private Agreement agreement;
@@ -31,6 +33,7 @@ class SupplierTest {
         manufacturers.add("Elit");
         contacts.add(new Contact("name", "phone"));
         dao = new SuppliersDAO();
+
         supplier = new Supplier("name",23, "address", "credit", contacts, manufacturers, dao);
     }
 
@@ -59,6 +62,7 @@ class SupplierTest {
             e.printStackTrace();
         }
 
+        dao.removeSupplier(1);
 
     }
 

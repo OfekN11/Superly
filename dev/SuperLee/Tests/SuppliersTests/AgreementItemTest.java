@@ -2,6 +2,7 @@ package SuppliersTests;
 
 import Domain.BusinessLayer.Supplier.AgreementItem;
 //import org.testng.annotations.Test;
+import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
 
+@NotThreadSafe
 public class AgreementItemTest {
 
     private AgreementItem item;

@@ -48,4 +48,8 @@ public class ServiceOrderItemObject {
                 + ", Final Price: " + finalPrice;
     }
 
+    public String toStringDiscount(float originalPrice) {
+        return "ID: " + id + ", Name: " + name + "\nQuantity: " + quantity + ", Price Per Unit: " + ppu + "\nDiscount: " + discount
+                + "\nFinal Price: " + finalPrice + ", Original Price: " + originalPrice;
+    }
 }

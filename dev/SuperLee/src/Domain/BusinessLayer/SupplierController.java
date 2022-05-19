@@ -508,7 +508,8 @@ public class SupplierController {
         return order;
     }
 
-    private Order getOrderObject(int supplierID, int orderID) throws Exception {
+    //public for testing
+    public Order getOrderObject(int supplierID, int orderID) throws Exception {
         if(!supplierExist(supplierID)){
             throw new Exception("The supplier does not exists!");
         }
@@ -549,7 +550,7 @@ public class SupplierController {
                 if(supplierId == -1)
                     throw new Exception("No supplier supplies product " + productId);
                 if( !checkIfOrderFromThisSupplierAlreadyExists(supplierId, orders, productId, entry.getKey(), entry.getValue()) )
-                    createNewOrderForThisProduct(supplierId, productId, entry.getKey(), entry.getValue());
+                    createNewOrderForThisProduct(supplierId, productId, entry.getKey(), entry.getValue(), orders);
             }
         }
     }
@@ -610,13 +611,14 @@ public class SupplierController {
     }
 
 
-    private void createNewOrderForThisProduct(int supplierId, int productId, int storeId, int quantity) {
+    private void createNewOrderForThisProduct(int supplierId, int productId, int storeId, int quantity, Map<String, ArrayList<Order>> orders) {
         Supplier supplier = suppliersDAO.getSupplier(supplierId);
         OrderItem orderItem  = createNewOrderItem(supplierId, productId, quantity);
         try {
             Order newOrder =  new Order(supplier.daysToDelivery() , supplierId, storeId, orderItem);
             insertToOrderDAO(newOrder);
             suppliersDAO.getSupplier(newOrder.getSupplierId()).setLastOrderId(suppliersDAO.getAgreementController(), newOrder.getId());
+            orders.get("not deletable").add(newOrder);
 
             // Add the new Order to some list in Supplier
             //suppliersDAO.getSupplier(order.getSupplierId()).addOrderToList();
@@ -755,7 +757,8 @@ public class SupplierController {
         return result;
     }
 
-    private ArrayList<Order> filterOrdersArrivalTimePassed(ArrayList<Order> orders) {
+    //public for testing
+    public ArrayList<Order> filterOrdersArrivalTimePassed(ArrayList<Order> orders) {
         ArrayList<Order> result = new ArrayList<>();
         for(Order order : orders){
             if(order.passed())
@@ -952,4 +955,20 @@ public class SupplierController {
     public ArrayList<Integer> getSuppliersIds() {
         return suppliersDAO.getAllSuppliersIds();
     }
+
+
+    public List<Integer> getAllOrderIdsForSupplier(int supplierId) {
+        return orderDAO.getSupplierOrdersIds(supplierId);
+    }
+
+    public List<String> getAllOrdersItemsInDiscount(int supplierId) {
+        List<String> result = new ArrayList<>();
+        List<OrderItem> items = orderDAO.getItemsInDiscountInSUpplier(supplierId, suppliersDAO.getAgreementItemDAO());
+        for(OrderItem item : items){
+            result.addAll(item.getStringInfo());
+        }
+        return result;
+    }
+
+
 }
