@@ -26,6 +26,8 @@ public class Main {
         new Thread(new MainMenu(controller)).start();
     }
 
+
+
     private static void testSuppliers() {
 
         SupplierController supplierController = new SupplierController();
