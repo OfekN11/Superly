@@ -572,11 +572,6 @@ public class InventoryController {
             if (amounts.size()>0)
                 thingsToOrder.put(product.getId(), amounts);
         }
-//        for (Product product: getProducts()) {
-//            amounts = getAmountsForMinOrders(product);
-//            if (amounts.size()>0)
-//                thingsToOrder.put(product.getId(), amounts);
-//        }
         List<Order> orders = supplierController.createAllOrders(thingsToOrder); //orders we print on screen (=order to issue from suppliers) (new orders and edited order)
         //document every order we print on screen (new orders or edit amount of existed orders)
         for (Order order: orders) {

@@ -22,7 +22,11 @@ public class Main {
 //        Result addSale = controller.addSale(products, products, 5, LocalDate.of(2022, 05, 15),LocalDate.of(2022, 05, 18));
 //        Result getSale = controller.getSaleHistoryByProduct(1);
         //System.out.println("done");
+<<<<<<< HEAD
         //testSuppliers();
+=======
+//        testSuppliers();
+>>>>>>> d29c3a4a656113f71a606e96b590ef0c288d16b1
         new Thread(new MainMenu(controller)).start();
     }
 
