@@ -1,4 +1,4 @@
-package Domain.DAL.Controllers;
+package Domain.DAL.Controllers.TransportModul;
 
 import Domain.Business.Objects.Constraint;
 import Domain.Business.Objects.Truck;
@@ -51,6 +51,7 @@ public class TruckDataMapper extends ObjectDateMapper<Truck> {
         String id = Integer.toString(instance.getLicenseNumber());
         try
         {
+            super.delete(id);
             super.insert(Arrays.asList(id, instance.getModel(), instance.getNetWeight(), instance.getMaxCapacityWeight()));
         }
         catch (SQLException throwables) {

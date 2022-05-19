@@ -1,10 +1,9 @@
 package Domain.Business.Controllers;
 
 import Domain.Business.Objects.Truck;
-import Domain.DAL.Controllers.TruckDataMapper;
+import Domain.DAL.Controllers.TransportModul.TruckDataMapper;
 import Globals.Enums.TruckModel;
 
-import java.util.HashMap;
 //TODO not finished methods (ADD,GET,REMOVE)
 public class TruckController {
     private final TruckDataMapper truckDataMapper = new TruckDataMapper();

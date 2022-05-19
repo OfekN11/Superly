@@ -1,4 +1,4 @@
-package Domain.DAL.Controllers;
+package Domain.DAL.Controllers.TransportModul;
 
 import Domain.Business.Objects.Transport;
 import Domain.Business.Objects.Truck;
