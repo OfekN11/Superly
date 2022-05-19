@@ -34,12 +34,12 @@ public class Category extends Screen {
     public void run() {
         System.out.println("\nWelcome to the Management Menu of the category: " + name);
         int option = 0;
-        while (option != 4) {
+        while (option!=3 && option != 4) {
             option = runMenu();
             try {
-                if (option <= 8)
+                if (option <= 3)
                     handleBaseOptions(option);
-                else if (option == 9)
+                if (option == 3 || option==4)
                     endRun();
             }
             catch (Exception e){
@@ -60,6 +60,7 @@ public class Category extends Screen {
                 break;
             case 3:
                 deleteCategory();
+                endRun();
                 break;
             case 4:
                 endRun();
@@ -77,7 +78,7 @@ public class Category extends Screen {
     }
 
     private void changeCatParent() {
-        System.out.println("Please insert new category parent ID (0 for no parent");
+        System.out.println("Please insert new category parent ID (0 for no parent)");
         int parent = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<Domain.ServiceLayer.InventoryObjects.Category> r = controller.changeCategoryParent(id, parent);

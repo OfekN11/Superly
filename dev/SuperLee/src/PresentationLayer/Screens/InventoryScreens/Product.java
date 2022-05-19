@@ -43,12 +43,12 @@ public class Product extends Screen {
     public void run() {
         System.out.println("\nWelcome to the Management Menu of " + name + "!");
         int option = 0;
-        while (option != 10) {
+        while (option != 10 && option!=9) {
             option = runMenu();
             try {
-                if (option <= 10)
+                if (option <= 9)
                     handleBaseOptions(option);
-                else if (option == 9)
+                if (option==9 || option == 10)
                     endRun();
             }
             catch (Exception e){

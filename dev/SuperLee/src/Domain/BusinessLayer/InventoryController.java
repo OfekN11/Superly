@@ -335,7 +335,7 @@ public class InventoryController {
 
     public void deleteProduct(int id){
         products.remove(id);
-        PRODUCT_DATA_MAPPER.remove(id);
+        PRODUCT_DATA_MAPPER.remove(Integer.toString(id));
     }
 
     public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
@@ -513,7 +513,8 @@ public class InventoryController {
             for (Integer catID : categoryIDs) {
                 Category category = getCategory(catID);
                 for (Product p : category.getAllProductsInCategory()) {
-                    stock.add(p.getStockReport(store));
+                    if (p.getStockReport(store) != null)
+                        stock.add(p.getStockReport(store));
                 }
             }
         }
@@ -532,8 +533,8 @@ public class InventoryController {
         if (!categoryToRemove.getAllProductsInCategory().isEmpty())
             throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
         categoryToRemove.changeParentCategory(null);
-
-        CATEGORY_DATA_MAPPER.remove(catID);
+        categories.remove(catID);
+        CATEGORY_DATA_MAPPER.remove(Integer.toString(catID));
     }
 
     public Product changeProductMin(int store, int product, int min) {
@@ -571,11 +572,6 @@ public class InventoryController {
             if (amounts.size()>0)
                 thingsToOrder.put(product.getId(), amounts);
         }
-//        for (Product product: getProducts()) {
-//            amounts = getAmountsForMinOrders(product);
-//            if (amounts.size()>0)
-//                thingsToOrder.put(product.getId(), amounts);
-//        }
         List<Order> orders = supplierController.createAllOrders(thingsToOrder); //orders we print on screen (=order to issue from suppliers) (new orders and edited order)
         //document every order we print on screen (new orders or edit amount of existed orders)
         for (Order order: orders) {
