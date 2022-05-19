@@ -64,6 +64,7 @@ public class ProductDataMapper extends DataMapper<Product> {
 
     public int remove(Object id) {
         try {
+            PRODUCT_IDENTITY_MAP.remove(id);
             super.remove(id);
         }
         catch (Exception e) {

@@ -250,7 +250,10 @@ public class Product {
     }
 
     public boolean isLow(int storeID) {
-        return getStockReport(storeID).isLow();
+        StockReport stockReport = getStockReport(storeID);
+        if (stockReport != null)
+            return getStockReport(storeID).isLow();
+        return false;
     }
 
     public void removeSale(SaleToCustomer sale) {

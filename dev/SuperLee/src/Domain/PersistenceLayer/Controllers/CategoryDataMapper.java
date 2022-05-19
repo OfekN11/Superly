@@ -50,7 +50,14 @@ public class CategoryDataMapper extends DataMapper<Category> {
     }
 
     public int remove(Object id) {
-        return remove(id);
+        try {
+            CATEGORY_IDENTITY_MAP.remove(id);
+            return super.remove(id);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override

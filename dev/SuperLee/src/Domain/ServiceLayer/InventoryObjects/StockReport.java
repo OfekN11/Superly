@@ -25,6 +25,14 @@ public class StockReport {
         this.targetAmountInStore = stockReport.getTargetAmountInStore();
     }
 
+    public int getStoreID() { return storeID; }
+    public int getProductID() { return productID; }
+    public int getAmountInStore() { return amountInStore; }
+    public int getAmountInWarehouse() { return amountInWarehouse; }
+    public int getAmountInDeliveries() { return amountInDeliveries; }
+    public int getMinAmountInStore() { return minAmountInStore; }
+    public int getTargetAmountInStore() { return targetAmountInStore; }
+
     @Override
     public String toString() {
         return "StockReport{" +

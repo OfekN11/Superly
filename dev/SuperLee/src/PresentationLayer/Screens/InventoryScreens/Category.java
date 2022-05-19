@@ -77,7 +77,7 @@ public class Category extends Screen {
     }
 
     private void changeCatParent() {
-        System.out.println("Please insert new category parent ID (0 for no parent");
+        System.out.println("Please insert new category parent ID (0 for no parent)");
         int parent = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         Result<Domain.ServiceLayer.InventoryObjects.Category> r = controller.changeCategoryParent(id, parent);

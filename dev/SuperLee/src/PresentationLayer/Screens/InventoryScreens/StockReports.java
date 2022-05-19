@@ -53,6 +53,10 @@ public class StockReports extends Screen {
         }
     }
 
+    private String printStockReport(StockReport s) {
+        return "Store ID: " + s.getStoreID() + "\nProduct ID: " + s.getProductID() + "\nAmount In Store: " + s.getAmountInStore() + "\nAmount In Warehouse: " + s.getAmountInWarehouse() + "\nAmount In Deliveries: " + s.getAmountInDeliveries() + "\nMinimum Amount: " + s.getMinAmountInStore() + "\nTarget Amount: " + s.getTargetAmountInStore();
+    }
+
     private void storeStockReport() {
         System.out.println("Please insert store IDs, separated by commas without spaces");
         System.out.println("Current store IDs are:");
@@ -78,8 +82,10 @@ public class StockReports extends Screen {
             System.out.println(r.getError());
         else {
             List<StockReport> stockReports = r.getValue();
-            for (StockReport s : stockReports)
-                System.out.println(s);
+            for (StockReport s : stockReports) {
+
+                System.out.println(printStockReport(s) + "\n");
+            }
             if (stockReports.isEmpty())
                 System.out.println("the store has no products registered to it in the system or it has been removed");
         }
@@ -92,7 +98,7 @@ public class StockReports extends Screen {
         else {
             List<StockReport> stockReports = r.getValue();
             for (StockReport s : stockReports)
-                System.out.println(s);
+                System.out.println(printStockReport(s) + "\n");
             if (stockReports.isEmpty())
                 System.out.println("There are no products under the min amount");
         }
