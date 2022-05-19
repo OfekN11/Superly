@@ -5,7 +5,7 @@ import Domain.DAL.Controllers.TruckDataMapper;
 import Globals.Enums.TruckModel;
 
 import java.util.HashMap;
-
+//TODO not finished methods (ADD,GET,REMOVE)
 public class TruckController {
     private final TruckDataMapper truckDataMapper = new TruckDataMapper();
     public TruckController() {
