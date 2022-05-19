@@ -507,4 +507,12 @@ public class BackendController {
     public Result<Object> orderArrived(int orderID, int supplierID) {
         return inventoryService.orderArrived(orderID, supplierID);
     }
+
+
+    public ArrayList<Integer> getSuppliersID() throws Exception {
+        Result<ArrayList<Integer>> result = supplierService.getSuppliersIds();
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
 }

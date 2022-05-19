@@ -582,4 +582,12 @@ public class SupplierService {
         }
     }
 
+    public Result<ArrayList<Integer>> getSuppliersIds() {
+        try {
+            ArrayList<Integer> result = controller.getSuppliersIds();
+            return Result.makeOk(result);
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
 }

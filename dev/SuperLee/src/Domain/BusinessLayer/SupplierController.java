@@ -941,4 +941,7 @@ public class SupplierController {
     }
 
 
+    public ArrayList<Integer> getSuppliersIds() {
+        return suppliersDAO.getAllSuppliersIds();
+    }
 }

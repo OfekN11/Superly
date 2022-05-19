@@ -398,4 +398,12 @@ public class SuppliersDAO extends DataMapper<Supplier> {
             }
         }
     }
+
+    public ArrayList<Integer> getAllSuppliersIds() {
+        ArrayList<Integer> ids = new ArrayList<>();
+        for(String id : SUPPLIER_IDENTITY_MAP.keySet()){
+            ids.add(Integer.parseInt(id));
+        }
+        return ids;
+    }
 }
