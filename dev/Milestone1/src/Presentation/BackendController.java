@@ -4,8 +4,10 @@ import Domain.Service.Objects.*;
 import Domain.Service.Services.*;
 import Globals.Enums.*;
 import Presentation.Objects.Document.*;
+import Presentation.Objects.Transport.TransportOrder;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Set;
 
 public class BackendController {
@@ -15,6 +17,8 @@ public class BackendController {
     private final ConstraintService constraintService = new ConstraintService();
     private final TruckService truckService = new TruckService();
     private final DocumentService documentService = new DocumentService();
+    private final TransportService transportService = new TransportService();
+
     ///EMPLOYEES
     //CREATE
 
@@ -450,5 +454,11 @@ public class BackendController {
         Result<DestinationDocument> result = documentService.getTransportDocument(ddSN);
         throwIfError(result);
         return result.getValue();
+    }
+
+
+    public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {
+        Result result = transportService.addTransportOrder(srcID, dstID, productList);
+        throwIfError(result);
     }
 }

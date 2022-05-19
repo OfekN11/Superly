@@ -5,6 +5,7 @@ import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
 import Domain.Service.Objects.*;
 import Globals.Pair;
+import Presentation.Objects.Transport.TransportOrder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -164,5 +165,10 @@ public class TransportService {
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
+    }
+
+    public Result addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) {
+        //TODO: Implement
+        return null;
     }
 }
