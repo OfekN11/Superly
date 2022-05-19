@@ -98,6 +98,8 @@ public class ShiftsMenu extends Screen {
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
             addShifts();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
     }
 
