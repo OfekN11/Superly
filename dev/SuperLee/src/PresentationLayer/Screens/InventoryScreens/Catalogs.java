@@ -171,11 +171,15 @@ public class Catalogs extends Screen {
         if (r.isError())
             System.out.println(r.getError());
         else {
+            Formatter fmt = new Formatter();
+            fmt.format("%20s %21s %26s\n", "Category ID", "Category's Name", "Parent Category Name");
             List<Domain.ServiceLayer.InventoryObjects.Category> categoryList = r.getValue();
             for (Domain.ServiceLayer.InventoryObjects.Category c : categoryList)
-                System.out.println(c);
+                fmt.format("%20s %21s %26s\n", c.getID(), c.getName(), c.getParentCategory());
             if (categoryList.isEmpty())
                 System.out.println("there are no categories in the system");
+            else
+                System.out.println(fmt);
         }
     }
 }

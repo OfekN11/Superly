@@ -256,13 +256,13 @@ public class Product {
 
     public void changeProductMin(int store, int min) {
         if (getStockReport(store)==null)
-            throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no min");
+            throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no min amount");
         stockReports.get(store).changeMin(min);
     }
 
     public void changeProductTarget(int store, int target) {
         if (getStockReport(store)==null)
-            throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no min");
+            throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no target amount");
         stockReports.get(store).changeTarget(target);
     }
 

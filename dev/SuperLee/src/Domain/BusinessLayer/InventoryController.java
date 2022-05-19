@@ -467,12 +467,14 @@ public class InventoryController {
     }
 
     public Category editCategoryName(int categoryID, String newName) {
+        getCategories();
         Category c = getCategory(categoryID);
         c.setName(newName);
         return c;
     }
 
     public Category changeParentCategory(int categoryID, int newCatID) {
+        getCategories();
         Category c = getCategory(categoryID);
         c.changeParentCategory(getCategory(newCatID));
         return c;
@@ -540,6 +542,7 @@ public class InventoryController {
 
 
     public void deleteCategory(int catID) {
+        getCategories();
         Category categoryToRemove = getCategory(catID);
         if (categoryToRemove==null)
             throw new IllegalArgumentException("There is no category with id " + catID);
