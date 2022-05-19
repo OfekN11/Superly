@@ -547,9 +547,10 @@ public class SupplierController {
         ArrayList<Order> deletableOrders = orders.get("deletable");
         ArrayList<Order> notDeletableOrders = orders.get("not deletable");
         for(Order order : deletableOrders){
-            if(order.getStoreID() == storeId && order.getSupplierId() == supplierId){
+            if(order.getSupplierId() == supplierId){
+
                 OrderItem orderItem = createNewOrderItem(supplierId, productId, quantity);
-                Order newOrder = new Order(order, orderItem);
+                Order newOrder = new Order(order, orderItem, storeId);
 
                 deletableOrders.remove(order);
                 notDeletableOrders.add(newOrder);
@@ -557,37 +558,38 @@ public class SupplierController {
                 insertToOrderDAO(newOrder);
                 suppliersDAO.getSupplier(newOrder.getSupplierId()).setLastOrderId(suppliersDAO.getAgreementController(), newOrder.getId());
 
-                // replace the old order with the mew One
+                // replace the old order with the new One
                 //suppliersDAO.getSupplier(order.getSupplierId()).ReplaceOrderInList();
+
+
 
                 return true;
             }
         }
 
+        boolean contains = false;
+
         for(Order order : notDeletableOrders){
             if(order.getStoreID() == storeId && order.getSupplierId() == supplierId){
                 OrderItem orderItem = createNewOrderItem(supplierId, productId, quantity);
 
-                /*
-                Order newOrder = null;
-                // TODO: 18/05/2022 I dont think this function works well !
-                ArrayList<OrderItem> items = checkIfOrderItemAlreadyExists(order, orderItem);
-                if(items != null){
-                    newOrder = new Order(order, items);
-                }
-                else{
-                    items = order.getOrderItems();
-                    items.add(orderItem);
-                    newOrder = new Order(order, items);
-                }
-                 */
-
-                //OLD VERSION, DOESN'T WORK WELL
                 ArrayList<OrderItem> items = order.getOrderItems();
-                items.add(orderItem);
+
+                for(OrderItem item : items){
+                    if (item.getProductId() == orderItem.getProductId()){
+                        item.setQuantity(item.getQuantity() + orderItem.getQuantity());
+                        contains = true;
+                        break;
+                    }
+                }
+
+                if(!contains){
+                    items.add(orderItem);
+                }
+
                 Order newOrder = new Order(order, items);   //why this function add +1 to global Id , its creating new Id for this order but it shouldn't
 
-                // replace the old order with the mew One
+                // replace the old order with the new One
                 //suppliersDAO.getSupplier(order.getSupplierId()).ReplaceOrderInList();
 
                 notDeletableOrders.remove(order);
@@ -597,11 +599,6 @@ public class SupplierController {
             }
         }
         return false;
-    }
-
-
-    private ArrayList<OrderItem> checkIfOrderItemAlreadyExists(Order order, OrderItem orderItem) throws Exception {
-        return suppliersDAO.getSupplier(order.getSupplierId()).checkifOrderItemAlreayExists(order, orderItem, orderDAO);
     }
 
 
@@ -743,7 +740,7 @@ public class SupplierController {
     private ArrayList<Order> filterOrdersArrivalTomorrow(ArrayList<Order> orders) {
         ArrayList<Order> result = new ArrayList<>();
         for(Order order : orders){
-            if(order.getDaysUntilOrder(LocalDate.now()) == 1);
+            if(order.getDaysUntilOrder(LocalDate.now()) == 1)
                 result.add(order);
         }
         return result;
@@ -810,7 +807,7 @@ public class SupplierController {
         ArrayList<String> manufacturers1 = new ArrayList<>();  manufacturers1.add("Tnuva") ;       manufacturers1.add("Osem") ; manufacturers1.add("Elit");  manufacturers1.add("Struass");   manufacturers1.add("Sarit Hadad");
         int supplierId1 = addSupplier("Avi", 123456, "Hertzel", "check", contacts1,manufacturers1);
 
-        addAgreement(supplierId1, 1, "2 4");
+        addAgreement(supplierId1, 1, "2 5");
 
         ArrayList<String> items = new ArrayList<>();
         items.add("1 , 1,  tomato ,Sarit Hadad, 7.2 , 100 , 20 ");

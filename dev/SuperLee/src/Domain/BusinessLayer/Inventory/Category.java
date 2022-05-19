@@ -16,6 +16,7 @@ public class Category {
     private List<SaleToCustomer> sales;
     public final static CategoryDataMapper CATEGORY_DATA_MAPPER = new CategoryDataMapper();
     private final static SalesDataMapper SALE_DATA_MAPPER = SaleToCustomer.SALES_DATA_MAPPER;
+    private final static ProductDataMapper PRODUCT_DATA_MAPPER = Product.PRODUCT_DATA_MAPPER;
 
     public int getID() { return ID; }
     public String getName() { return name; }
@@ -32,11 +33,11 @@ public class Category {
         this.subcategories = subcategories;
         for (Category c : subcategories)
             c.changeParentCategory(this);
-        this.products = products;
         this.parentCategory = parentCategory;
         if (parentCategory!=null)
             parentCategory.addSubcategory(this);
         sales = new ArrayList<>();
+        this.products = products;
     }
 
     public void setName(String name) {
@@ -53,6 +54,10 @@ public class Category {
     }
     public List<Product> getAllProductsInCategory() {
         List<Product> output = new ArrayList<>();
+        //if (products.isEmpty()) {
+        //output = PRODUCT_DATA_MAPPER.getProductsFromCategory(ID);
+        //}
+        //else
         output.addAll(products);
         for (Category c : subcategories) {
             output.addAll(c.getAllProductsInCategory());

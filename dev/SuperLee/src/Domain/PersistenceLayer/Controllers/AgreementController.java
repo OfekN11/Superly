@@ -82,6 +82,11 @@ public class AgreementController {
 
     public Agreement loadAgreementAndItems(int supplierId, int agreementType) throws SQLException {
         Agreement agreement;
+        /*
+        ROUTINE  = 1;
+    private final int BY_ORDER  = 2;
+    private final int NOT_TRANSPORTING
+         */
         switch(agreementType){
             case ROUTINE :
                 agreement = routineDAO.loadAgreement(supplierId);

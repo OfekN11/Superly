@@ -2,6 +2,7 @@ package Domain.PersistenceLayer.Controllers;
 
 import Domain.BusinessLayer.Inventory.Category;
 import Domain.BusinessLayer.Inventory.Product;
+import Domain.BusinessLayer.Inventory.SaleToCustomer;
 import Domain.PersistenceLayer.Abstract.DataMapper;
 import Domain.PersistenceLayer.Abstract.LinkDAO;
 
@@ -12,8 +13,8 @@ import java.util.*;
 public class ProductDataMapper extends DataMapper<Product> {
 
 
-    private final static Map<String, Product> Product_IDENTITY_MAP = new HashMap<>();
-    private final static CategoryDataMapper categoryDataMapper = new CategoryDataMapper();
+    private final static Map<String, Product> PRODUCT_IDENTITY_MAP = new HashMap<>();
+    private final static CategoryDataMapper CATEGORY_DATA_MAPPER = Category.CATEGORY_DATA_MAPPER;
 
     private final static int ID_COLUMN = 1;
     private final static int CATEGORY_COLUMN = 2;
@@ -26,9 +27,17 @@ public class ProductDataMapper extends DataMapper<Product> {
         super("Product");
     }
 
+    public Map<Integer, Product> getIntegerMap() {
+        Map<Integer, Product> output = new HashMap<>();
+        for (Map.Entry<String, Product> entry: PRODUCT_IDENTITY_MAP.entrySet()) {
+            output.put(Integer.parseInt(entry.getKey()), entry.getValue());
+        }
+        return output;
+    }
+
     @Override
     public Map getMap() {
-        return Product_IDENTITY_MAP;
+        return PRODUCT_IDENTITY_MAP;
     }
 
     @Override
@@ -41,7 +50,7 @@ public class ProductDataMapper extends DataMapper<Product> {
         try {
             return new Product(resultSet.getInt(ID_COLUMN),
                     resultSet.getString(NAME_COLUMN),
-                    categoryDataMapper.get(Integer.toString(resultSet.getInt(CATEGORY_COLUMN))),
+                    CATEGORY_DATA_MAPPER.get(Integer.toString(resultSet.getInt(CATEGORY_COLUMN))),
                     resultSet.getDouble(WEIGHT_COLUMN),
                     resultSet.getDouble(PRICE_COLUMN),
                     resultSet.getString(MANUFACTURER_COLUMN)
@@ -72,7 +81,7 @@ public class ProductDataMapper extends DataMapper<Product> {
                     instance.getWeight(),
                     instance.getManufacturer(),
                     instance.getOriginalPrice()));
-            Product_IDENTITY_MAP.put(Integer.toString(instance.getId()), instance);
+            PRODUCT_IDENTITY_MAP.put(Integer.toString(instance.getId()), instance);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -107,16 +116,37 @@ public class ProductDataMapper extends DataMapper<Product> {
     }
 
     public Collection<Product> getAll() {
-        categoryDataMapper.getAll();
+        CATEGORY_DATA_MAPPER.getAll();
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection);
             while (instanceResult.next()) {
-                Product_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
+                PRODUCT_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Product_IDENTITY_MAP.values();
+        return PRODUCT_IDENTITY_MAP.values();
+    }
+
+    public List<Product> getProductsFromCategory(int id) {
+        try(Connection connection = getConnection()) {
+            List<Integer> productIDs = new ArrayList<>();
+            ResultSet resultSet = executeQuery(connection, String.format("Select %s from %s where %s=" + id,
+                    getColumnName(ID_COLUMN),
+                    tableName,
+                    getColumnName(CATEGORY_COLUMN)));
+            while (resultSet.next()) {
+                productIDs.add(resultSet.getInt(1));
+            }
+            List<Product> products = new ArrayList<>();
+            for (Integer productID: productIDs) {
+                products.add(get(Integer.toString(productID)));
+            }
+            return products;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Integer getIDCount() {

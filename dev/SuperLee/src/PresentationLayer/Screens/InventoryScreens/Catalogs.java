@@ -2,7 +2,7 @@ package PresentationLayer.Screens.InventoryScreens;
 
 import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
-
+import java.util.Formatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -133,11 +133,16 @@ public class Catalogs extends Screen {
         if (r.isError())
             System.out.println(r.getError());
         else {
+            Formatter fmt = new Formatter();
+            fmt.format("%20s %20s %17s %20s %19s %12s %25s\n", "Product ID", "Product's Name", "Category ID", "Original Price", "Current Price", "Weight", "Manufacturer's Name");
             List<Domain.ServiceLayer.InventoryObjects.Product> productList = r.getValue();
-            for (Domain.ServiceLayer.InventoryObjects.Product p : productList)
-                System.out.println(p);
+            for (Domain.ServiceLayer.InventoryObjects.Product p : productList) {
+                fmt.format("%20s %20s %17s %20s %19s %12s %25s\n", p.getId(), p.getName(), p.getCategoryID(), p.getOriginalPrice(), p.getCurrentPrice(), p.getWeight(), p.getManufacturer());
+            }
             if (productList.isEmpty())
                 System.out.println("there are no products in the system");
+            else
+                System.out.println(fmt);
         }
     }
 
@@ -149,11 +154,15 @@ public class Catalogs extends Screen {
         if (r.isError())
             System.out.println(r.getError());
         else {
+            Formatter fmt = new Formatter();
+            fmt.format("%20s %20s %17s %20s %19s %12s %25s\n", "Product ID", "Product's Name", "Category ID", "Original Price", "Current Price", "Weight", "Manufacturer's Name");
             List<Domain.ServiceLayer.InventoryObjects.Product> productList = r.getValue();
             for (Domain.ServiceLayer.InventoryObjects.Product p : productList)
-                System.out.println(p);
+                fmt.format("%20s %20s %17s %20s %19s %12s %25s\n", p.getId(), p.getName(), p.getCategoryID(), p.getOriginalPrice(), p.getCurrentPrice(), p.getWeight(), p.getManufacturer());
             if (productList.isEmpty())
                 System.out.println("there are no products in specified categories");
+            else
+                System.out.println(fmt);
         }
     }
 
