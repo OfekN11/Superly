@@ -4,10 +4,12 @@ import Domain.BusinessLayer.Inventory.Product;
 import Domain.BusinessLayer.InventoryController;
 import Domain.PersistenceLayer.Controllers.CategoryDataMapper;
 import Domain.PersistenceLayer.Controllers.ProductDataMapper;
+import Domain.PersistenceLayer.Controllers.StockReportDataMapper;
 import Domain.PersistenceLayer.Controllers.StoreDAO;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -27,6 +29,7 @@ class InventoryControllerTest {
 
     @AfterAll
     public static void removeData() {
+        StockReportDataMapper srdm = new StockReportDataMapper();
         ProductDataMapper pdm = new ProductDataMapper();
         pdm.removeTestProducts();
         CategoryDataMapper cdm = new CategoryDataMapper();
@@ -36,6 +39,7 @@ class InventoryControllerTest {
         for (int store : stores) {
             if (store>maxStoreCount) {
                 try {
+                    srdm.remove(store);
                     storeDAO.remove(store);
                 }
                 catch (Exception e) {
@@ -136,5 +140,32 @@ class InventoryControllerTest {
         assertThrows(IllegalArgumentException.class, () -> is.getExpiredItemReportsByProduct(today, yesterday, pIDs));
     }
 
+    @Test
+    void getAmountsForMinOrdersTest() {
+        int store1 = is.addStore();
+        int store2 = is.addStore();
+        int cat = is.addCategory("TestCategory", 0).getID();
+        Product prod1 = is.newProduct("TestProduct", cat,2,2,"testManu");
+        Product prod2 = is.newProduct("TestProduct", cat,2,2,"testManu");
+        assertEquals(new HashMap<>(), is.getAmountsForMinOrders(prod1));
+        assertEquals(new HashMap<>(), is.getAmountsForMinOrders(prod2));
+
+        is.addProductToStore(store1,Arrays.asList(1), Arrays.asList(1),prod1.getId(), 100, 200);
+        Map<Integer, Integer> singletonMap = new HashMap<>(Collections.singletonMap(store1, 200));
+        assertEquals(singletonMap,is.getAmountsForMinOrders(prod1));
+        is.addProductToStore(store2,Arrays.asList(1), Arrays.asList(1),prod1.getId(), 200, 300);
+        singletonMap.put(store2, 300);
+        assertEquals(singletonMap,is.getAmountsForMinOrders(prod1));
+
+        prod1.addDelivery(store1, 100);
+        singletonMap.remove(store1);
+        assertEquals(singletonMap,is.getAmountsForMinOrders(prod1));
+        prod1.addDelivery(store2, 100);
+        singletonMap.put(store2, 200);
+        assertEquals(singletonMap,is.getAmountsForMinOrders(prod1));
+        prod1.addDelivery(store2, 100);
+        singletonMap.remove(store2);
+        assertEquals(singletonMap,is.getAmountsForMinOrders(prod1));
+    }
 
 }

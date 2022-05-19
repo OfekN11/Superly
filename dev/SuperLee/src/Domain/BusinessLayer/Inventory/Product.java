@@ -276,7 +276,7 @@ public class Product {
 
     public int getAmountForOrder(int storeID) {
         StockReport stockReport = getStockReport(storeID);
-        if (stockReport!=null)
+        if (stockReport!=null && stockReport.isLow())
             return stockReport.getAmountForOrder();
         return -1;
     }

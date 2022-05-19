@@ -15,9 +15,12 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static java.util.Collections.max;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProductTests {
     static Category category0;
+    static Product product;
     static Product product0;
     static Product product1;
     private static InventoryController is;
@@ -29,11 +32,13 @@ public class ProductTests {
         maxStoreCount = max(is.getStoreIDs());
         is.addStore();
         is.addStore();
+        is.addStore();
     }
     @BeforeEach
     void addLocations() {
         is = new InventoryController();
         category0 = is.addCategory("Test-Milk",  0);
+        product = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
         product0 = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
         product1 = is.newProduct("Test-Milk-Tara-1L", category0.getID(), 1.0, 4, "25");
         List<Integer> shelves1 = new LinkedList<Integer>();
@@ -87,6 +92,12 @@ public class ProductTests {
                 srdm.remove(store, p);
             }
         }
+    }
+    @Test
+    void addDelivery() {
+        assertThrows(Exception.class, () -> product.addDelivery(maxStoreCount+3, 200));
+        product.addLocation(maxStoreCount+3, Arrays.asList(1), Arrays.asList(2), 100, 200);
+        assertDoesNotThrow(() -> product.addDelivery(maxStoreCount+3, 200));
     }
 
     @Test
