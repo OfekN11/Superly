@@ -6,7 +6,7 @@ import Domain.Business.Objects.Site.Source;
 import Globals.Enums.ShippingAreas;
 
 import java.util.HashMap;
-
+//TODO not finished methods (GET) for each site
 public class SiteController {
     private HashMap<Integer, Source> sources;
     private HashMap<Integer, Destination> destinations;

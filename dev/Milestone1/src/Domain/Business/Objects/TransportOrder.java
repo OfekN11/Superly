@@ -2,16 +2,20 @@ package Domain.Business.Objects;
 
 import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
+import Globals.Enums.OrderStatus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TransportOrder {
     private static int incID = 0;
     private int ID;
     private int srcID;
     private int dstID;
-    private HashMap<Integer, Integer> productList;
+    private HashMap<String, Integer> productList;
     private int transportID;
+    private OrderStatus status;
 
     public TransportOrder(int src, int dst) {
         ID = incID++;
@@ -19,9 +23,10 @@ public class TransportOrder {
         this.dstID = dst;
         transportID = -1;
         this.productList = new HashMap<>();
+        status = OrderStatus.waiting;
     }
 
-    public TransportOrder(int src, int dst, HashMap<Integer, Integer> productList) {
+    public TransportOrder(int src, int dst, HashMap<String, Integer> productList) {
         ID = incID++;
         this.srcID = src;
         this.dstID = dst;
@@ -55,11 +60,18 @@ public class TransportOrder {
         this.dstID = dst;
     }
 
-    public HashMap<Integer, Integer> getProductList() {
+    public HashMap<String, Integer> getProductList() {
         return productList;
     }
+    public List<String> getProducts(){
+        List<String> pro = new ArrayList<>();
+        for (String s:productList.keySet()) {
+            pro.add(s);
+        }
+        return pro;
+    }
 
-    public void setProductList(HashMap<Integer, Integer> productList) {
+    public void setProductList(HashMap<String, Integer> productList) {
         this.productList = productList;
     }
 
@@ -70,20 +82,8 @@ public class TransportOrder {
     public void setTransportID(int transportID) {
         this.transportID = transportID;
     }
-
-    //TODO need to see if delete the function
-    private HashMap<Integer, Integer> splitProductList()
-    {
-        HashMap<Integer, Integer> newProductList = new HashMap<>();
-        for (Integer item: productList.keySet()) {
-            if (productList.size() / 2 > newProductList.size())
-            {
-                newProductList.put(item, productList.get(item));
-            }
-        }
-        productList.remove(newProductList);
-        return newProductList;
-    }
+    public OrderStatus getStatus(){return status;}
+    public void order(){ status = OrderStatus.ordered;}
 
 
 }

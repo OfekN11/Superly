@@ -146,7 +146,6 @@ public class TransportService {
             return Result.makeError(e.getMessage());
         }
     }
-    //TODO the function need to be implemented in business
     public Result EndTransport(int transportSN){
         try {
             controller.endTransport(transportSN);
@@ -156,7 +155,6 @@ public class TransportService {
             return Result.makeError(e.getMessage());
         }
     }
-    //TODO the function need to be implemented in business
     public Result advanceSite(int transportSN,int siteID){
         try {
             controller.advanceSite(transportSN,siteID);

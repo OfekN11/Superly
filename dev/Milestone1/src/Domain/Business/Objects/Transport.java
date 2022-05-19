@@ -27,10 +27,9 @@ public class Transport {
     private List<Integer> transportOrders;
     private HashMap<ShippingAreas, Integer> shippingAreas;
     private TransportStatus status;
-    //TODO need to change the shift restart
+    //TODO need to change the shift restart. the restart of Transport need to be with shift as argument
+
     private Pair<LocalDate, ShiftTypes> shift = null;
-    //
-    //TODO maybe add filed of current site visited to check when the transport is over
 
     public Transport() {
         SN = incSN++;
@@ -156,6 +155,7 @@ public class Transport {
             return true;
         }
     }
+    public List<Integer> gerOrders(){return transportOrders;}
     public TransportStatus getStatus(){
         return status;
     }
@@ -173,5 +173,31 @@ public class Transport {
 
     public int getTruckWeight() {
         return truckWeight;
+    }
+
+    public boolean destVisit(int siteID) {
+        if(sourcesID.size()==0 && destinationsID.contains(siteID)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean visitSite(int siteID) throws Exception {
+        if(sourcesID.contains(siteID)){
+            for (Integer src:sourcesID) {
+                sourcesID.remove(src);
+            }
+        }
+        else{
+            if(destVisit(siteID)){
+                for (Integer src:destinationsID) {
+                    destinationsID.remove(src);
+                }
+            }
+            else{
+                throw new Exception("this is not valid site. the site ID is not in the order or all the sources not visited yet");
+            }
+        }
+        return sourcesID.size()==0 && destinationsID.size()==0;
     }
 }

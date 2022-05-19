@@ -5,7 +5,7 @@ import Domain.Business.Objects.Document.DestinationDocument;
 import Domain.Business.Objects.Document.TransportDocument;
 
 import java.util.HashMap;
-
+//TODO not finished methods (ADD and GET) for each document
 public class DocumentController {
     //TODO move to DAL objects
     private HashMap<Integer, TransportDocument> transportDocuments;
@@ -60,6 +60,7 @@ public class DocumentController {
         }
         throw new Exception("The document you requested does not exist!");
     }
+    //TODO will return null if the object is not found!!
     //TODO not the right implementation
     public TransportDocument getTransportDocument(int transportDocumentSN) throws Exception {
         if(transportDocuments.containsKey(transportDocumentSN))

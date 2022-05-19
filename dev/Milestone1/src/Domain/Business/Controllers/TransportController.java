@@ -1,10 +1,13 @@
 package Domain.Business.Controllers;
 
 import Domain.Business.Objects.*;
+import Domain.Business.Objects.Document.DestinationDocument;
+import Domain.Business.Objects.Document.TransportDocument;
 import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
 import Domain.Business.Objects.Employee.Carrier;
 import Domain.Business.Objects.Shift.Shift;
+import Globals.Enums.OrderStatus;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
 import Globals.Enums.TransportStatus;
@@ -12,7 +15,7 @@ import Globals.Pair;
 
 import java.time.LocalDate;
 import java.util.*;
-
+//TODO not finished methods(ADD,GET,getAllTransports,getPendingTransports,getInProgressTransports,getCompletedTransports)
 public class TransportController {
     private HashMap<Integer, Transport> pendingTransports;
     private HashMap<Integer, Transport> inProgressTransports;
@@ -50,10 +53,37 @@ public class TransportController {
     public List<Transport> getAllTransports(){
         return null;
     }
-    //TODO the function will check the valid of the function.
-    //TODO the function will remove from the transport the site that visited site
-    //TODO the in case of destination visit the function will create new destination document
-    public void advanceSite(int transportSN,int siteID){
+
+
+
+    public void advanceSite(int transportSN,int siteID) throws Exception {
+        Transport transport = getTransport(transportSN);
+        if(transport.getStatus()==TransportStatus.inProgress){
+            boolean isDestVisit = transport.destVisit(siteID);
+            boolean lastSite = transport.visitSite(siteID);
+            if(isDestVisit){
+                List<Integer> orders = transport.gerOrders();
+                for (Integer orderID:orders) {
+                   TransportOrder order = orderController.getTransportOrder(orderID);
+                   if(siteID==order.getDst()){
+                       DestinationDocument document = new DestinationDocument(orderID,siteID,order.getProducts());
+                       documentController.uploadDestinationDocument(document);
+                       TransportDocument trd = documentController.getTransportDocument(transportSN);
+                       if(trd == null){
+                           trd = new TransportDocument(transport.getStartTime(),transport.getTruckNumber(),transport.getDriverID());
+                           documentController.uploadTransportDocument(trd);
+                       }
+                       trd.addDoc(orderID);
+                   }
+                }
+            }
+            if(lastSite){
+                endTransport(transportSN);
+            }
+        }
+        else{
+            throw new Exception("This transport is not in progress");
+        }
 
     }
     //TODO implement with DAL objects
@@ -78,18 +108,24 @@ public class TransportController {
             throw new Exception("The transport doesn't exist!");
         }
     }
+
     public void addOrderToTransport(int transportSN, int orderID) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()== TransportStatus.padding)
         {
             if(transport.isPlacedTruck()){
                 TransportOrder order = orderController.getTransportOrder(orderID);
-                int extraWeight  = orderController.getExtraWeight(order);
-                updateWeight(transport,extraWeight);
-                ShippingAreas sourceShip = siteController.getSource(order.getSrc()).getAddress().getShippingAreas();
-                ShippingAreas destShip = siteController.getDestination(order.getDst()).getAddress().getShippingAreas();
-                transport.addOrder(order,sourceShip,destShip);
-                orderController.deleteOrder(orderID);
+                if(order.getStatus()== OrderStatus.waiting){
+                    int extraWeight  = orderController.getExtraWeight(order);
+                    updateWeight(transport,extraWeight);
+                    ShippingAreas sourceShip = siteController.getSource(order.getSrc()).getAddress().getShippingAreas();
+                    ShippingAreas destShip = siteController.getDestination(order.getDst()).getAddress().getShippingAreas();
+                    transport.addOrder(order,sourceShip,destShip);
+                    order.order();
+                }
+                else{
+                    throw new Exception("this order already out");
+                }
             }
             else{
                 throw new Exception("the truck is not placed yet");
