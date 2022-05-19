@@ -72,8 +72,8 @@ public class Category extends Screen {
             str += subcat.getID() + ",";
         }
         if (str.endsWith(","))
-            str = str.substring(0, str.length()-1) + "]";
-        return str;
+            str = str.substring(0, str.length()-1);
+        return str + "]";
     }
 
     private void changeCatParent() {
