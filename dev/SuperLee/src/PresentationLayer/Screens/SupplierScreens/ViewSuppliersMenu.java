@@ -3,6 +3,7 @@ package PresentationLayer.Screens.SupplierScreens;
 import PresentationLayer.Screens.Screen;
 import Domain.ServiceLayer.SupplierObjects.ServiceSupplierObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +43,10 @@ public class ViewSuppliersMenu extends Screen {
                 scanner.nextLine();
                 endRun();
                 return;
+            }
+            else{
+                ArrayList<Integer> supplierIds = controller.getSuppliersID();
+                System.out.println("Suppliers available:  " + supplierIds);
             }
         } catch (Exception e) {
             System.out.println("Something went wrong, please try again");

@@ -71,7 +71,8 @@ public class Category extends Screen {
         for (Domain.ServiceLayer.InventoryObjects.Category subcat: c.getSubCategories()) {
             str += subcat.getID() + ",";
         }
-        str = str.substring(0, str.length()-1) + "]";
+        if (str.endsWith(","))
+            str = str.substring(0, str.length()-1) + "]";
         return str;
     }
 

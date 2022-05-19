@@ -20,26 +20,28 @@ public class BulkPricesDAO extends DAO {
 
 
 
-    public void addBulkPrices(int productId, Map<Integer, Integer> bulkPrices) throws SQLException {
+    public void addBulkPrices(int supID, int productId, Map<Integer, Integer> bulkPrices) throws SQLException {
 
         for(Map.Entry<Integer, Integer> enrty : bulkPrices.entrySet()){
-            insert(Arrays.asList(String.valueOf(productId) , String.valueOf(enrty.getKey()) , String.valueOf(enrty.getValue())));
+            insert(Arrays.asList(String.valueOf(productId), String.valueOf(supID), String.valueOf(enrty.getKey()) , String.valueOf(enrty.getValue())));
         }
 
     }
 
-    public void updateBulkPrice(int itemID, Map<Integer, Integer> newBulkPrices) throws SQLException {
+    public void updateBulkPrice(int supID,int itemID, Map<Integer, Integer> newBulkPrices) throws SQLException {
         remove(itemID);
-        addBulkPrices(itemID, newBulkPrices);
+        addBulkPrices(supID, itemID, newBulkPrices);
     }
 
 
-    public Map<Integer, Integer> getAllBulkPrices(int itemId) {
+    public Map<Integer, Integer> getAllBulkPrices(int supID, int itemId) {
         Map<Integer, Integer> output = new HashMap<>();
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection, itemId);
             while (instanceResult.next()) {
-                output.put(instanceResult.getInt(2), instanceResult.getInt(3));
+                if(supID == instanceResult.getInt(2)){
+                    output.put(instanceResult.getInt(3), instanceResult.getInt(4));
+                }
             }
         } catch (Exception throwables) {
             System.out.println(throwables.getMessage());

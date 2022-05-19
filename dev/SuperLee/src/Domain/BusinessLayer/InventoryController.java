@@ -353,8 +353,8 @@ public class InventoryController {
     }
 
     public void deleteProduct(int id){
+        products.remove(id);
         PRODUCT_DATA_MAPPER.remove(id);
-        //remove sales? remove empty categories?
     }
 
     public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
@@ -551,6 +551,7 @@ public class InventoryController {
         if (!categoryToRemove.getAllProductsInCategory().isEmpty())
             throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
         categoryToRemove.changeParentCategory(null);
+
         CATEGORY_DATA_MAPPER.remove(catID);
     }
 

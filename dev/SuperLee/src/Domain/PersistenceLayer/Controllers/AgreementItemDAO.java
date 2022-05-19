@@ -49,12 +49,12 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
                 instanceResult.getString(NAME_COLUMN),
                 instanceResult.getString(MANUFACTURER_COLUMN),
                 instanceResult.getFloat(PPU_COLUMN),
-                getBulkMap(instanceResult.getInt(PRODUCT_ID_COLUMN)));
+                getBulkMap(instanceResult.getInt(SUPPLIER_ID_COLUMN), instanceResult.getInt(PRODUCT_ID_COLUMN)));
     }
 
 
-    private Map<Integer, Integer> getBulkMap(int itemId) {
-        return bulkPricesDAO.getAllBulkPrices(itemId);
+    private Map<Integer, Integer> getBulkMap(int supId, int itemId) {
+        return bulkPricesDAO.getAllBulkPrices(supId, itemId);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
         insert(Arrays.asList(String.valueOf(supplierId), String.valueOf(item.getProductId()),
                 item.getManufacturer(), item.getName(),String.valueOf(item.getPricePerUnit()), String.valueOf(item.getIdBySupplier())));
 
-        bulkPricesDAO.addBulkPrices( item.getProductId(), item.getBulkPrices());
+        bulkPricesDAO.addBulkPrices( supplierId, item.getProductId(), item.getBulkPrices());
 
         AGREEMENT_ITEM_IDENTITY_MAP.put(String.valueOf(item.getProductId()), item);
     }
@@ -113,8 +113,8 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
         }
     }
 
-    public void updateBulkPrice(int itemID, Map<Integer, Integer> newBulkPrices) throws SQLException {
-        bulkPricesDAO.updateBulkPrice(itemID, newBulkPrices);
+    public void updateBulkPrice(int supId, int itemID, Map<Integer, Integer> newBulkPrices) throws SQLException {
+        bulkPricesDAO.updateBulkPrice(supId, itemID, newBulkPrices);
     }
 
     public void updatePPU(int itemID, float newPrice) throws SQLException {

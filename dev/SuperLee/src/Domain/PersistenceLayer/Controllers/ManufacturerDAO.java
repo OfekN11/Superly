@@ -28,8 +28,16 @@ public class ManufacturerDAO extends DAO {
 
     public void addManufacturer(int id, String manufacturer) {
         try {
-            if(!manufacturers.contains(manufacturer))
+            ArrayList<String> manu = getAllSupplierManufacturer(id);
+
+            if(!manu.contains(manufacturer)){
                 insert(Arrays.asList( String.valueOf(id) , manufacturer));
+            }
+
+            if(!manufacturers.contains(manufacturer)){
+                manufacturers.add(manufacturer);
+            }
+
         } catch (SQLException throwables) {
             System.out.println(throwables.getMessage());
         }
@@ -44,7 +52,6 @@ public class ManufacturerDAO extends DAO {
         }
     }
 
-    // TODO: 13/05/2022  How to check if manu already exists in the list??, in this case we don't need to upload him
     public ArrayList<String> getAllSupplierManufacturer(int supID) {
         ArrayList<String> output = new ArrayList<>();
         try(Connection connection = getConnection()) {
@@ -52,7 +59,9 @@ public class ManufacturerDAO extends DAO {
             while (instanceResult.next()) {
                 String manufacturer = instanceResult.getString(2);
                 output.add(manufacturer);
-                manufacturers.add(manufacturer);
+                if(!manufacturers.contains(manufacturer)){
+                    manufacturers.add(manufacturer);
+                }
             }
         } catch (Exception throwables) {
             System.out.println(throwables.getMessage());

@@ -49,17 +49,21 @@ class SupplierControllerTest {
 
         try {
             supID = controller.addSupplier( "name", 3, "address", "credit card", contacts, manufacturers);
+            assertTrue(controller.supplierExist(supID));
+            controller.removeSupplier(supID);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assertTrue(controller.supplierExist(supID));
+
 
         try {
             supID = controller.addSupplier("name", 4, "address", "credit card", contacts, manufacturers);
+            assertTrue(controller.supplierExist(supID));
+            controller.removeSupplier(supID);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assertTrue(controller.supplierExist(supID));
+
     }
 
     @Test
@@ -106,6 +110,8 @@ class SupplierControllerTest {
             assertEquals(controller.getTheCheapestSupplier(1, 100), supId2);
             assertEquals(controller.getTheCheapestSupplier(1, 15), supId2);
 
+            controller.removeSupplier(supId1);
+            controller.removeSupplier(supId2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,6 +128,9 @@ class SupplierControllerTest {
             ArrayList<Integer> result = controller.getAllRoutineSuppliersDeliveringTomorrow();
 
             assertEquals(result.get(0), supId1);
+
+            controller.removeSupplier(supId1);
+            controller.removeSupplier(supId2);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,7 +156,8 @@ class SupplierControllerTest {
             assertEquals(ids.get(0).getId(), orderId);
             assertEquals(ids.get(0).getSupplierId(), supId1);
 
-
+            controller.removeSupplier(supId1);
+            controller.removeSupplier(supId2);
         } catch (Exception e) {
             e.printStackTrace();
         }

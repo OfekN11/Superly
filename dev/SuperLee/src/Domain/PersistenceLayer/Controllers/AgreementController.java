@@ -62,8 +62,8 @@ public class AgreementController {
         agreementItemDAO.addItemstoAgreement(supplierId, items);
     }
 
-    public void updateBulkPriceForItem(int itemID, Map<Integer, Integer> newBulkPrices) throws SQLException {
-        agreementItemDAO.updateBulkPrice(itemID, newBulkPrices);
+    public void updateBulkPriceForItem(int supId, int itemID, Map<Integer, Integer> newBulkPrices) throws SQLException {
+        agreementItemDAO.updateBulkPrice(supId, itemID, newBulkPrices);
     }
 
     public AgreementItemDAO getAgreementItemDAO() {
