@@ -85,6 +85,10 @@ public class DefectiveItemReports extends Screen {
         }
     }
 
+    private String printDefective(DefectiveItemReport d) {
+        return "Product ID: " + d.getProductID() + "\nStore ID: " + d.getStoreID() + "\nAmount Thrown: " + d.getAmount() + "\nEmployee ID: " + d.getEmployeeID() + "\nLocation: " + ((d.getInWarehouse()) ? ("Warehouse") : ("Store")) + "\nDescription: " + d.getDescription() + "\nDate: " + d.getDate() + "\nDefect: " + d.getDefect() + "\n";
+    }
+
     private void expiredItemsAll() {
         System.out.println("Please insert start date");
         LocalDate start = getDate();
@@ -100,7 +104,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport eir : reportList)
-                System.out.println(eir);
+                System.out.println(printDefective(eir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }
@@ -123,7 +127,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport eir : reportList)
-                System.out.println(eir);
+                System.out.println(printDefective(eir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }
@@ -146,7 +150,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport eir : reportList)
-                System.out.println(eir);
+                System.out.println(printDefective(eir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }
@@ -169,7 +173,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport eir : reportList)
-                System.out.println(eir);
+                System.out.println(printDefective(eir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }
@@ -200,6 +204,7 @@ public class DefectiveItemReports extends Screen {
                 System.out.println("Incorrect command, please try again");
         }
     }
+
     private void defectiveItemsAll() {
         System.out.println("Please insert start date");
         LocalDate start = getDate();
@@ -215,7 +220,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
-                System.out.println(dir);
+                System.out.println(printDefective(dir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }
@@ -238,7 +243,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
-                System.out.println(dir);
+                System.out.println(printDefective(dir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }
@@ -261,7 +266,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
-                System.out.println(dir);
+                System.out.println(printDefective(dir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }
@@ -284,7 +289,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
-                System.out.println(dir);
+                System.out.println(printDefective(dir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }
@@ -331,7 +336,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
-                System.out.println(dir);
+                System.out.println(printDefective(dir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }
@@ -354,7 +359,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
-                System.out.println(dir);
+                System.out.println(printDefective(dir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }
@@ -377,7 +382,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
-                System.out.println(dir);
+                System.out.println(printDefective(dir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }
@@ -400,7 +405,7 @@ public class DefectiveItemReports extends Screen {
         else {
             List<DefectiveItemReport> reportList = r.getValue();
             for (DefectiveItemReport dir : reportList)
-                System.out.println(dir);
+                System.out.println(printDefective(dir));
             if (reportList.isEmpty())
                 System.out.println("There were no reports matching search");
         }

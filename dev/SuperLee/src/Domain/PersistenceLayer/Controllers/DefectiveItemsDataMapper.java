@@ -5,12 +5,14 @@ import Domain.BusinessLayer.Inventory.StockReport;
 import Domain.PersistenceLayer.Abstract.DataMapper;
 import Domain.PersistenceLayer.Abstract.LinkDAO;
 import Globals.Defect;
+import java.sql.Date.*;
 import Globals.Pair;
 //import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 
 public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
@@ -46,10 +48,10 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
             Defect defect;
             String d = resultSet.getString(DEFECT_COLUMN);
             switch (d) {
-                case ("expired"):
+                case ("Expired"):
                     defect = Defect.Expired;
                     break;
-                case ("damaged"):
+                case ("Damaged"):
                     defect = Defect.Damaged;
                     break;
                 default:
@@ -57,7 +59,8 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
             }
             return new DefectiveItems(resultSet.getInt(ID_COLUMN),
                     defect,
-                    resultSet.getDate(DATE_COLUMN).toLocalDate(),
+                    (java.sql.Date.valueOf(resultSet.getString(DATE_COLUMN))).toLocalDate(),
+                    //resultSet.getDate(DATE_COLUMN).toLocalDate(),
                     resultSet.getInt(STORE_COLUMN),
                     resultSet.getInt(PRODUCT_COLUMN),
                     resultSet.getInt(AMOUNT_COLUMN),
@@ -72,11 +75,14 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
     }
 
     public void insert(DefectiveItems instance) {
+        //Formatter fmt = new Formatter()
+        //String date = instance.getDate().format(fmt);
+        String date = "" + instance.getDate().getYear() + "-" + ((instance.getDate().getMonthValue()<10) ? ("0" + instance.getDate().getMonthValue()) : (instance.getDate().getMonthValue())) + "-" + ((instance.getDate().getDayOfMonth()<10) ? ("0" + instance.getDate().getDayOfMonth()) : (instance.getDate().getDayOfMonth()));
         try {
             insert(Arrays.asList(instance.getId(),
                     instance.getStoreID(),
                     instance.getProductID(),
-                    instance.getDate(),
+                    date,
                     instance.getAmount(),
                     instance.getEmployeeID(),
                     instance.getDescription(),
@@ -161,10 +167,10 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
         return output;
     }
 
-    public Collection<DefectiveItems> getByDefect(Defect defect) {
+    public Collection<DefectiveItems> getByDefect(Defect defect, int id) {
         List<DefectiveItems> output = new ArrayList<>();
         try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN), Arrays.asList(defect));
+            ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN, PRODUCT_COLUMN), Arrays.asList((defect==Defect.Damaged) ? ("Damaged") : ("Expired"), id));
             while (instanceResult.next()) {
                 DefectiveItems curr = buildObject(instanceResult);
                 output.add(curr);
@@ -176,10 +182,10 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
         return output;
     }
 
-    public Collection<DefectiveItems> getDamagedByStore(int store) {
+    public Collection<DefectiveItems> getDamagedByStore(int store, int product) {
         List<DefectiveItems> output = new ArrayList<>();
         try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN, STORE_COLUMN), Arrays.asList(Defect.Damaged, store));
+            ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN, STORE_COLUMN, PRODUCT_COLUMN), Arrays.asList("Damaged", store, product));
             while (instanceResult.next()) {
                 DefectiveItems curr = buildObject(instanceResult);
                 output.add(curr);
@@ -191,10 +197,10 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
         return output;
     }
 
-    public Collection<DefectiveItems> getExpiredByStore(int store) {
+    public Collection<DefectiveItems> getExpiredByStore(int store, int product) {
         List<DefectiveItems> output = new ArrayList<>();
         try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN, STORE_COLUMN), Arrays.asList(Defect.Expired, store));
+            ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN, STORE_COLUMN, PRODUCT_COLUMN), Arrays.asList("Expired", store, product));
             while (instanceResult.next()) {
                 DefectiveItems curr = buildObject(instanceResult);
                 output.add(curr);

@@ -14,6 +14,7 @@ public class DefectiveItemReport {
     private final String description;
     private final LocalDate date;
     private final Defect defect;
+
     public DefectiveItemReport(Domain.BusinessLayer.Inventory.DefectiveItems report) {
         this.productID=report.getProductID();
         this.storeID=report.getStoreID();
@@ -24,6 +25,15 @@ public class DefectiveItemReport {
         this.date=report.getDate();
         this.defect=report.getDefect();
     }
+
+    public int getProductID() { return productID; }
+    public int getStoreID() { return storeID; }
+    public int getAmount() { return amount; }
+    public int getEmployeeID() { return employeeID; }
+    public boolean getInWarehouse() { return inWarehouse; }
+    public String getDescription() { return description; }
+    public LocalDate getDate() { return date; }
+    public Defect getDefect() { return defect; }
 
     @Override
     public String toString() {

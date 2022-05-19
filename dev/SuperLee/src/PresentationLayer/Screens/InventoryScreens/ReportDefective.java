@@ -50,6 +50,10 @@ public class ReportDefective extends Screen {
         }
     }
 
+    private String printDefective(DefectiveItemReport d) {
+        return "Product ID: " + d.getProductID() + "\nStore ID: " + d.getStoreID() + "\nAmount Thrown: " + d.getAmount() + "\nEmployee ID: " + d.getEmployeeID() + "\nLocation: " + ((d.getInWarehouse()) ? ("Warehouse") : ("Store")) + "\nDescription: " + d.getDescription() + "\nDate: " + d.getDate() + "\nDefect: " + d.getDefect() + "\n";
+    }
+
     private void reportDamaged() {
         int store = getStoreID();
         System.out.println("Please enter 0 for report in warehouse or any other number for report in store");
@@ -61,13 +65,14 @@ public class ReportDefective extends Screen {
         System.out.println("Please enter your ID");
         int employeeID = scanner.nextInt();
         System.out.println("Please describe the damage");
+        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         String description = scanner.nextLine();
-        Result<Pair<DefectiveItemReport, String>> r = controller.reportDamaged(store, productID, amount, employeeID, description, (inWarehouse==0) ? (true) : (false));
+        Result<Pair<DefectiveItemReport, String>> r = controller.reportDamaged(store, productID, amount, employeeID, description, inWarehouse==0);
         if (r.isError())
             System.out.println(r.getError());
         else {
             DefectiveItemReport dir = r.getValue().getFirst();
-            System.out.println(dir);
+            System.out.println(printDefective(dir));
             if (r.getValue().getSecond()!=null)
                 System.out.println(r.getValue().getSecond());
         }
@@ -86,12 +91,12 @@ public class ReportDefective extends Screen {
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
         System.out.println("Please add a description (not mandatory)");
         String description = scanner.nextLine();
-        Result<Pair<DefectiveItemReport, String>> r = controller.reportExpired(store, productID, amount, employeeID, description, (inWarehouse==0) ? (true) : (false));
+        Result<Pair<DefectiveItemReport, String>> r = controller.reportExpired(store, productID, amount, employeeID, description, inWarehouse==0);
         if (r.isError())
             System.out.println(r.getError());
         else {
             DefectiveItemReport eir = r.getValue().getFirst();
-            System.out.println(eir);
+            System.out.println(printDefective(eir));
             if (r.getValue().getSecond()!=null)
                 System.out.println(r.getValue().getSecond());
         }

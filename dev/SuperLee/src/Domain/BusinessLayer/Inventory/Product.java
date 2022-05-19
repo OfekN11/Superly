@@ -110,8 +110,11 @@ public class Product {
     }
 
     public void removeItems(int storeID, int amount, boolean inWarehouse) { //bought
+        StockReport stockReport = STOCK_REPORT_DATA_MAPPER.get(storeID, id);
+        if (stockReport != null)
+            stockReports.put(storeID, stockReport);
         if (!stockReports.containsKey(storeID))
-            throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
+            throw new IllegalArgumentException("Product: " + name + ", hasn't been added to store: " + storeID);
         stockReports.get(storeID).removeItemsFromStore(amount, inWarehouse);
     }
 
@@ -172,9 +175,12 @@ public class Product {
     public List<DefectiveItems> getDamagedItemReportsByStore(LocalDate start, LocalDate end, Collection<Integer> storeIDs) {
         List<DefectiveItems> dirList = new ArrayList<>();
         for (int store : storeIDs) {
-            for (DefectiveItems dir : DEFECTIVE_ITEMS_DATA_MAPPER.getDamagedByStore(store)) {
-                if (dir.inDates(start, end))
-                    dirList.add(dir);
+            for (DefectiveItems dir : DEFECTIVE_ITEMS_DATA_MAPPER.getDamagedByStore(store, id)) {
+                if (dir != null) {
+                    damagedItemReport.add(dir);
+                    if (dir.inDates(start, end))
+                        dirList.add(dir);
+                }
             }
         }
         return dirList;
@@ -182,9 +188,12 @@ public class Product {
 
     public Collection<DefectiveItems> getDamagedItemReports(LocalDate start, LocalDate end) {
         List<DefectiveItems> dirList = new ArrayList<>();
-        for (DefectiveItems dir: DEFECTIVE_ITEMS_DATA_MAPPER.getByDefect(Damaged)) {
-            if (dir.inDates(start, end))
-                dirList.add(dir);
+        for (DefectiveItems dir: DEFECTIVE_ITEMS_DATA_MAPPER.getByDefect(Damaged, id)) {
+            if (dir != null) {
+                damagedItemReport.add(dir);
+                if (dir.inDates(start, end))
+                    dirList.add(dir);
+            }
         }
         return dirList;
     }
@@ -192,9 +201,12 @@ public class Product {
     public List<DefectiveItems> getExpiredItemReportsByStore(LocalDate start, LocalDate end, Collection<Integer> storeIDs) {
         List<DefectiveItems> eirList = new ArrayList<>();
         for (int store : storeIDs) {
-            for (DefectiveItems eir : DEFECTIVE_ITEMS_DATA_MAPPER.getExpiredByStore(store)) {
-                if (eir.inDates(start, end))
-                    eirList.add(eir);
+            for (DefectiveItems eir : DEFECTIVE_ITEMS_DATA_MAPPER.getExpiredByStore(store, id)) {
+                if (eir != null) {
+                    expiredItemReport.add(eir);
+                    if (eir.inDates(start, end))
+                        eirList.add(eir);
+                }
             }
         }
         return eirList;
@@ -202,9 +214,12 @@ public class Product {
 
     public Collection<DefectiveItems> getExpiredItemReports(LocalDate start, LocalDate end) {
         List<DefectiveItems> eirList = new ArrayList<>();
-        for (DefectiveItems eir: DEFECTIVE_ITEMS_DATA_MAPPER.getByDefect(Expired)) {
-            if (eir.inDates(start, end))
-                eirList.add(eir);
+        for (DefectiveItems eir: DEFECTIVE_ITEMS_DATA_MAPPER.getByDefect(Expired, id)) {
+            if (eir != null) {
+                expiredItemReport.add(eir);
+                if (eir.inDates(start, end))
+                    eirList.add(eir);
+            }
         }
         return eirList;
     }

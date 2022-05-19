@@ -340,6 +340,8 @@ public class InventoryController {
 
     public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
         Product product = getProduct(productID);
+        if (product==null)
+            throw new IllegalArgumentException("Product ID: " + productID + " is not exist");
         DefectiveItems DI = product.reportDamaged(storeID, amount, employeeID, description, inWarehouse);
         boolean underMin = product.isLow(storeID);
         return new Pair<>(DI, underMin ? underMinMessage(productID, storeID) : null);
@@ -370,7 +372,9 @@ public class InventoryController {
             throw new IllegalArgumentException("Illegal Dates. Cannot be in the future and end cannot be before start");
     }
     //why is storeIDS a list?
-    public List<DefectiveItems> getDamagedItemReportsByStore(LocalDate start, LocalDate end, Collection<Integer> storeID) { //when storeID is empty, then no restrictions.
+    public List<DefectiveItems> getDamagedItemReportsByStore(LocalDate start, LocalDate end, Collection<Integer> storeID) {
+        if (storeID.isEmpty())
+            storeID=storeIds;
         checkDates(start, end);
         List<DefectiveItems> dirList = new ArrayList<>();
         Collection<Product> productList = getProducts();
@@ -380,6 +384,7 @@ public class InventoryController {
         return dirList;
     }
     public List<DefectiveItems> getDamagedItemReportsByCategory(LocalDate start, LocalDate end, List<Integer> categoryID) {
+        getCategories();
         checkDates(start, end);
         List<DefectiveItems> dirList = new ArrayList<>();
         for (Integer c: categoryID) {
@@ -389,6 +394,7 @@ public class InventoryController {
     }
 
     public List<DefectiveItems> getDamagedItemReportsByProduct(LocalDate start, LocalDate end, List<Integer> productID) {
+        getProducts();
         checkDates(start, end);
         List<DefectiveItems> dirList = new ArrayList<>();
         for (Integer p: productID) {
@@ -397,7 +403,9 @@ public class InventoryController {
         return dirList;
     }
 
-    public List<DefectiveItems> getExpiredItemReportsByStore(LocalDate start, LocalDate end, Collection<Integer> storeID) { //when storeID is empty, then no restrictions.
+    public List<DefectiveItems> getExpiredItemReportsByStore(LocalDate start, LocalDate end, Collection<Integer> storeID) {
+        if (storeID.isEmpty())
+            storeID=storeIds;
         checkDates(start, end);
         List<DefectiveItems> eirList = new ArrayList<>();
         Collection<Product> productList = getProducts();
@@ -408,6 +416,7 @@ public class InventoryController {
     }
 
     public List<DefectiveItems> getExpiredItemReportsByCategory(LocalDate start, LocalDate end, List<Integer> categoryID) {
+        getCategories();
         checkDates(start, end);
         List<DefectiveItems> eirList = new ArrayList<>();
         for (Integer c: categoryID) {
@@ -417,6 +426,7 @@ public class InventoryController {
     }
 
     public List<DefectiveItems> getExpiredItemReportsByProduct(LocalDate start, LocalDate end, List<Integer> productID) {
+        getProducts();
         checkDates(start, end);
         List<DefectiveItems> eirList = new ArrayList<>();
         for (Integer p: productID) {

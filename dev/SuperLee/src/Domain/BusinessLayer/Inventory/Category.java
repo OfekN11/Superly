@@ -119,6 +119,7 @@ public class Category {
     }
 
     public Collection<DefectiveItems> getExpiredItemReports(LocalDate start, LocalDate end) {
+        //products.addAll(PRODUCT_DATA_MAPPER.getProductsFromCategory(ID));
         List<DefectiveItems> eirList = new ArrayList<>();
         for (Product p : products) {
             eirList.addAll(p.getExpiredItemReports(start, end));
@@ -130,6 +131,7 @@ public class Category {
     }
 
     public Collection<DefectiveItems> getDamagedItemReports(LocalDate start, LocalDate end) {
+        //products.addAll(PRODUCT_DATA_MAPPER.getProductsFromCategory(ID));
         List<DefectiveItems> dirList = new ArrayList<>();
         for (Product p : products) {
             dirList.addAll(p.getDamagedItemReports(start, end));
