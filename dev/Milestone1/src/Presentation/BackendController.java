@@ -18,7 +18,7 @@ public class BackendController {
     private final TruckService truckService = new TruckService();
     private final DocumentService documentService = new DocumentService();
     private final TransportService transportService = new TransportService();
-
+    private final OrderService orderService = new OrderService();
     ///EMPLOYEES
     //CREATE
 
@@ -458,7 +458,7 @@ public class BackendController {
 
 
     public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {
-        Result result = transportService.addTransportOrder(srcID, dstID, productList);
+        Result result = orderService.addOrder(srcID, dstID, productList);
         throwIfError(result);
     }
 }

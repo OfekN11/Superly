@@ -164,9 +164,4 @@ public class TransportService {
             return Result.makeError(e.getMessage());
         }
     }
-
-    public Result addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) {
-        //TODO: Implement
-        return null;
-    }
 }

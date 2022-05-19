@@ -19,5 +19,13 @@ public class OrderService {
             return Result.makeError(e.getMessage());
         }
     }
+    public Result getPendingOrders() {
+        try {
+            return Result.makeOk(order.getPendingOrder());
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
 
 }

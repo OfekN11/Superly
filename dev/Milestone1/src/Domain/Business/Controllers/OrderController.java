@@ -5,6 +5,8 @@ import Domain.Business.Objects.Site.*;
 import Domain.Business.Objects.TransportOrder;
 
 import java.util.HashMap;
+import java.util.List;
+
 //TODO not finished methods (ADD and GET)
 public class OrderController {
     private HashMap<Integer, Product> products;
@@ -36,4 +38,8 @@ public class OrderController {
         return weight;
     }
 
+    public List<TransportOrder> getPendingOrder() {
+        //TODO: Implement
+        return null;
+    }
 }
