@@ -300,8 +300,9 @@ public class SupplierController {
         if(!supplierExist(supplierID)){
             throw new Exception("The supplier does not exists!");
         }
-
-        suppliersDAO.getSupplier(supplierID).addDaysOfDelivery(days, suppliersDAO.getAgreementController());
+        else{
+            suppliersDAO.getSupplier(supplierID).addDaysOfDelivery(days, suppliersDAO.getAgreementController());
+        }
 
     }
 
@@ -309,9 +310,10 @@ public class SupplierController {
         if(!supplierExist(supplierID)){
             throw new Exception("The supplier does not exists!");
         }
-
-        suppliersDAO.getSupplier(supplierID).removeDayOfDelivery(day);
-        suppliersDAO.getAgreementController().removeDayOfDelivery(supplierID,day);
+        else{
+            suppliersDAO.getSupplier(supplierID).removeDayOfDelivery(day);
+            suppliersDAO.getAgreementController().removeDayOfDelivery(supplierID,day);
+        }
     }
 
     public String getItem(int supplierID, int itemId) throws Exception {
