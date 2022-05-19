@@ -1,7 +1,14 @@
 package Domain.Business.Objects;
 
 import Globals.Enums.LicenseTypes;
+import Globals.Enums.ShiftTypes;
 import Globals.Enums.TruckModel;
+import Globals.Pair;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import static Globals.Enums.LicenseTypes.*;
 
@@ -50,21 +57,22 @@ public class Truck {
         this.maxCapacityWeight = maxCapacityWeight;
     }
 
-    public boolean canDriveOn(LicenseTypes lt) {
+    public boolean canDriveOn(Set<LicenseTypes> lt) {
         boolean ans = false;
-        switch (lt)
+        LicenseTypes l = null;
+        switch (model)
         {
-            case B:
-                ans = model == TruckModel.A;
+            case Van:
+                ans = lt.contains(B)||lt.contains(C)||lt.contains(C1)||lt.contains(CE);
                 break;
-            case C:
-                ans = model  == TruckModel.A ||  model == TruckModel.B;
+            case SemiTrailer:
+                ans = lt.contains(C)||lt.contains(C1)||lt.contains(CE);
                 break;
-            case C1:
-                ans = model  == TruckModel.A ||  model == TruckModel.B ||  model == TruckModel.C;
+            case DoubleTrailer:
+                ans = lt.contains(C1)||lt.contains(CE);
                 break;
-            case CE:
-                ans = model  == TruckModel.A ||  model == TruckModel.B ||  model == TruckModel.C ||  model == TruckModel.D;
+            case FullTrailer:
+                ans = lt.contains(CE);
                 break;
             default:
         }

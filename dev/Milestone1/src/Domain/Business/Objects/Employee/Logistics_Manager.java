@@ -1,4 +1,4 @@
-package Domain.Business.Objects;
+package Domain.Business.Objects.Employee;
 
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.Service.ServiceEmployeeFactory;
@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * Business model of the Logistics Manager
  */
-public class Logistics_Manager extends Employee{
+public class Logistics_Manager extends Employee {
     public Logistics_Manager(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
     }

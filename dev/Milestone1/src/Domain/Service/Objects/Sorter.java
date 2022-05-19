@@ -7,7 +7,7 @@ import Presentation.Screens.ScreenEmployeeFactory;
  * Service model of the sorter
  */
 public class Sorter extends Employee{
-    public Sorter(Domain.Business.Objects.Sorter bSorter){
+    public Sorter(Domain.Business.Objects.Employee.Sorter bSorter){
         super(bSorter);
     }
 

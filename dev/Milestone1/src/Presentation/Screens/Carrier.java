@@ -9,7 +9,8 @@ import java.util.Set;
 public class Carrier extends Employee{
     private static String[] extraMenuOptions  = {
             "Update Licenses",  //9
-            "Exit"              //10
+            "Advance Site",     //10
+            "Exit"              //11
     };
 
     private Set<LicenseTypes> licenses;
@@ -23,7 +24,7 @@ public class Carrier extends Employee{
     public void run() {
         System.out.println("\nWelcome to the Management Menu of " + name + "!");
         int option = 0;
-        while (option != 10) {
+        while (option != 11) {
             option = runMenu();
             try {
                 if (option <= 8)
@@ -31,6 +32,8 @@ public class Carrier extends Employee{
                 else if (option == 9)
                     updateLicenses();
                 else if (option == 10)
+                    advanceSite();
+                else if (option == 11)
                     endRun();
             }
             catch (Exception e) {
@@ -38,6 +41,10 @@ public class Carrier extends Employee{
                 System.out.println("Please try again");
             }
         }
+    }
+
+    private void advanceSite() {
+        //TODO: Implement
     }
 
     private void setLicenses(Set<LicenseTypes> curr) throws Exception {
