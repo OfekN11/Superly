@@ -32,7 +32,7 @@ public class Carrier extends Employee {
     }
 
     @Override
-    public void save(EmployeeDataMapper employeeDataMapper) throws SQLException {
+    public void save(EmployeeDataMapper employeeDataMapper) throws Exception {
         employeeDataMapper.save(this);
     }
 
@@ -46,7 +46,7 @@ public class Carrier extends Employee {
 
 
     @Override
-    public void update(EmployeeDataMapper employeeDataMapper) throws SQLException {
+    public void update(EmployeeDataMapper employeeDataMapper) throws Exception {
         employeeDataMapper.update(this);
     }
 

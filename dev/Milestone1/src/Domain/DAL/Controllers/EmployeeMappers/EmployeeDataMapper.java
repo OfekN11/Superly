@@ -13,26 +13,26 @@ public class EmployeeDataMapper  {
 
     private static String RUNTIME_ERROR_MSG = "FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!";
     // properties
-    private final CarrierDataMapperAbstract carrierDataMapper;
-    private final CashierDataMapperAbstract cashierDataMapper;
-    private final HR_ManagerDataMapperAbstract hR_managerDataMapper;
-    private final Logistics_ManagerDataMapperAbstract logistics_managerDataMapper;
-    private final SorterDataMapperAbstract sorterDataMapper;
-    private final StorekeeperDataMapperAbstract storekeeperDataMapper;
-    private final TransportManagerDataMapperAbstract transportManagerDataMapper;
+    private final CarrierDataMapper carrierDataMapper;
+    private final CashierDataMapper cashierDataMapper;
+    private final HR_ManagerDataMapper hR_managerDataMapper;
+    private final Logistics_ManagerDataMapper logistics_managerDataMapper;
+    private final SorterDataMapper sorterDataMapper;
+    private final StorekeeperDataMapper storekeeperDataMapper;
+    private final TransportManagerDataMapper transportManagerDataMapper;
     private final EmployeeTypeLink employeeTypeLink;
 
 
     // constructor
     public EmployeeDataMapper() {
-        carrierDataMapper = new CarrierDataMapperAbstract();
-        cashierDataMapper = new CashierDataMapperAbstract();
-        hR_managerDataMapper = new HR_ManagerDataMapperAbstract();
-        logistics_managerDataMapper = new Logistics_ManagerDataMapperAbstract();
-        sorterDataMapper = new SorterDataMapperAbstract();
-        storekeeperDataMapper = new StorekeeperDataMapperAbstract();
+        carrierDataMapper = new CarrierDataMapper();
+        cashierDataMapper = new CashierDataMapper();
+        hR_managerDataMapper = new HR_ManagerDataMapper();
+        logistics_managerDataMapper = new Logistics_ManagerDataMapper();
+        sorterDataMapper = new SorterDataMapper();
+        storekeeperDataMapper = new StorekeeperDataMapper();
         employeeTypeLink = new EmployeeTypeLink();
-        transportManagerDataMapper = new TransportManagerDataMapperAbstract();
+        transportManagerDataMapper = new TransportManagerDataMapper();
     }
 
     public Employee get(String id) throws Exception {

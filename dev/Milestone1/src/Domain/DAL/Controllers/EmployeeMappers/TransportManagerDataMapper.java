@@ -7,12 +7,12 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TransportManagerDataMapperAbstract extends AbstractEmployeeDataMapper<Transport_Manager> {
+public class TransportManagerDataMapper extends AbstractEmployeeDataMapper<Transport_Manager> {
     private static Map<String, Transport_Manager> TRANSPORT_MANAGER_IDENTITY_MAP = new HashMap<>();
     EmployeeCertificationDAO employeeCertificationController ;
 
 
-    public TransportManagerDataMapperAbstract() {
+    public TransportManagerDataMapper() {
         super("TransportManagers");
     }
 

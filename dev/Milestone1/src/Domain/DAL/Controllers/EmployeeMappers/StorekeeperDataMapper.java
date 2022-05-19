@@ -5,12 +5,12 @@ import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 import java.sql.ResultSet;
 import java.util.*;
 
-public class StorekeeperDataMapperAbstract extends AbstractEmployeeDataMapper<Storekeeper> {
+public class StorekeeperDataMapper extends AbstractEmployeeDataMapper<Storekeeper> {
     private static Map<String, Storekeeper> STOREKEEPER_IDENTITY_MAP = new HashMap<>();
     EmployeeCertificationDAO employeeCertificationController ;
 
 
-    public StorekeeperDataMapperAbstract() {
+    public StorekeeperDataMapper() {
         super("Storekeepers");
         employeeCertificationController= new EmployeeCertificationDAO();
     }

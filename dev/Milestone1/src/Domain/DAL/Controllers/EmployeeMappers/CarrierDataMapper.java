@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CarrierDataMapperAbstract extends AbstractEmployeeDataMapper<Carrier> {
+public class CarrierDataMapper extends AbstractEmployeeDataMapper<Carrier> {
 
     private final static Map<String, Carrier> CARRIER_IDENTITY_MAP = new HashMap<>();
     private final CarrierLicensesDAO carrierLicensesDAO;
 
-    public CarrierDataMapperAbstract() {
+    public CarrierDataMapper() {
         super("Carriers");
         carrierLicensesDAO = new CarrierLicensesDAO();
     }
