@@ -283,7 +283,7 @@ public abstract class Shift {
 
     public Set<String> getOnlyAvailableEmployeeIDs() {
         return availableEmployees.stream()
-                .filter(id -> !Objects.equals(id, shiftManagerId))
+                .filter(id -> !id.equals(shiftManagerId))
                 .filter(id -> !carrierIDs.contains(id))
                 .filter(id -> !cashierIDs.contains(id))
                 .filter(id -> !sorterIDs.contains(id))

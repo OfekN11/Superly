@@ -12,14 +12,13 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class BackendController {
-    //TODO add the transport functions and controllers
     private final EmployeeService employeeService = new EmployeeService();
     private final ShiftService shiftService = new ShiftService();
-    private final ConstraintService constraintService = new ConstraintService();
     private final TruckService truckService = new TruckService();
     private final DocumentService documentService = new DocumentService();
     private final TransportService transportService = new TransportService();
     private final OrderService orderService = new OrderService();
+
     ///EMPLOYEES
     //CREATE
 
@@ -236,7 +235,6 @@ public class BackendController {
     }
 
     ///SHIFTS
-
     //CREATE
 
     public void createShift(LocalDate date, ShiftTypes type, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transport_managerCount) throws Exception {
@@ -273,6 +271,54 @@ public class BackendController {
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
+    }
+
+    public Set<Employee> getAvailableShiftManagersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public void editShiftTransport_ManagerCount(Presentation.Screens.Shift shift, int logistics_managersCount) {
+    }
+
+    public Set<Employee> getAssignedSortersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAssignedStorekeepersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAssignedCarriersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAssignedCashiersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAssignedHR_ManagersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAssignedLogistics_ManagersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAssignedTrasnports_ManagersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAvailableSortersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAvailableStorekeepersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAvailableCarriersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAvailableCashiersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAvailableHR_ManagersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAvailableLogistics_ManagersFor(Presentation.Screens.Shift shift) {
+    }
+
+    public Set<Employee> getAvailableTrasnports_ManagersFor(Presentation.Screens.Shift shift) {
     }
 
     //UPDATE
@@ -318,6 +364,9 @@ public class BackendController {
         Result<Object> result = shiftService.editShiftLogistics_ManagerCount(shift.getDate(), shift.getType(), newLogistics_managersCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
+    }
+
+    public void editShiftTransport_ManagerIDs(Presentation.Screens.Shift shift, Set<String> assignedIDs) {
     }
 
     public void editShiftCarrierIDs(Presentation.Screens.Shift shift, Set<String> newCarrierIDs) throws Exception {
@@ -369,45 +418,6 @@ public class BackendController {
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
-
-    //MISC
-
-
-    ///CONSTRAINTS
-
-    //CREATE
-
-    //READ
-
-    public Constraint getConstraint(LocalDate date, ShiftTypes type) throws Exception {
-        Result<Constraint> result = constraintService.getConstraint(date, type);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-        return result.getValue();
-    }
-
-    public Set<Constraint> getEmployeeConstraintsBetween(String id, LocalDate today, LocalDate nextMonth) throws Exception {
-        Result<Set<Constraint>> result = constraintService.getEmployeeConstraintsBetween(id, today, nextMonth);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-        return result.getValue();
-    }
-
-    //UPDATE
-
-    public void registerToConstraint(String id, LocalDate date, ShiftTypes shift) throws Exception {
-        Result<Object> result = constraintService.registerToConstraint(id, date, shift);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-    }
-
-    public void unregisterToConstraint(String id, LocalDate date, ShiftTypes shift) throws Exception {
-        Result<Object> result = constraintService.unregisterFromConstraint(id, date, shift);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-    }
-
-    //DELETE
 
     //MISC
 
