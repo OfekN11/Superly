@@ -9,9 +9,9 @@ import Domain.PersistenceLayer.Controllers.ProductDataMapper;
 import Domain.PersistenceLayer.Controllers.StockReportDataMapper;
 import Domain.PersistenceLayer.Controllers.StoreDAO;
 import PresentationLayer.Screens.InventoryScreens.StockReports;
+import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.*;
 
-import javax.annotation.concurrent.NotThreadSafe;
 import java.time.LocalDate;
 import java.util.*;
 
