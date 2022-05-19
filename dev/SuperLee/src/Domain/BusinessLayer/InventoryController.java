@@ -353,8 +353,8 @@ public class InventoryController {
     }
 
     public void deleteProduct(int id){
+        products.remove(id);
         PRODUCT_DATA_MAPPER.remove(id);
-        //remove sales? remove empty categories?
     }
 
     public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
@@ -467,12 +467,14 @@ public class InventoryController {
     }
 
     public Category editCategoryName(int categoryID, String newName) {
+        getCategories();
         Category c = getCategory(categoryID);
         c.setName(newName);
         return c;
     }
 
     public Category changeParentCategory(int categoryID, int newCatID) {
+        getCategories();
         Category c = getCategory(categoryID);
         c.changeParentCategory(getCategory(newCatID));
         return c;
@@ -540,6 +542,7 @@ public class InventoryController {
 
 
     public void deleteCategory(int catID) {
+        getCategories();
         Category categoryToRemove = getCategory(catID);
         if (categoryToRemove==null)
             throw new IllegalArgumentException("There is no category with id " + catID);
@@ -548,6 +551,7 @@ public class InventoryController {
         if (!categoryToRemove.getAllProductsInCategory().isEmpty())
             throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
         categoryToRemove.changeParentCategory(null);
+
         CATEGORY_DATA_MAPPER.remove(catID);
     }
 

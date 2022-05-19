@@ -66,7 +66,15 @@ public class Category extends Screen {
         }
     }
 
-
+    private String printCategory(Domain.ServiceLayer.InventoryObjects.Category c) {
+        String str = "Category ID: " + c.getID() + "\nCateogry Name: " + c.getName() + "\nParent Category Name: " + c.getParentCategory() + "\nSubcategories IDs: [";
+        for (Domain.ServiceLayer.InventoryObjects.Category subcat: c.getSubCategories()) {
+            str += subcat.getID() + ",";
+        }
+        if (str.endsWith(","))
+            str = str.substring(0, str.length()-1) + "]";
+        return str;
+    }
 
     private void changeCatParent() {
         System.out.println("Please insert new category parent ID (0 for no parent");
@@ -77,7 +85,7 @@ public class Category extends Screen {
             System.out.println(r.getError());
         else {
             Domain.ServiceLayer.InventoryObjects.Category c = r.getValue();
-            System.out.println(c);
+            System.out.println(printCategory(c));
         }
     }
 
@@ -89,7 +97,7 @@ public class Category extends Screen {
             System.out.println(r.getError());
         else {
             Domain.ServiceLayer.InventoryObjects.Category c = r.getValue();
-            System.out.println(c);
+            System.out.println(printCategory(c));
         }
     }
 

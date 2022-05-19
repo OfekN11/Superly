@@ -93,6 +93,10 @@ public class Product extends Screen {
         }
     }
 
+    private String printProduct(Domain.ServiceLayer.InventoryObjects.Product p) {
+        return "Product ID: " + p.getId() + "\nProduct Name: " + p.getName() + "\nProduct's Category ID: " + p.getCategoryID() + "\nOriginal Price: " + p.getOriginalPrice() + "\nCurrent Price: " + p.getCurrentPrice() + "\nProduct Weight: " + p.getWeight() + "\nProduct's Manufacturer: " + p.getManufacturer();
+    }
+
     private void changeProductMin() {
         int store = getStoreID();
         System.out.println("What would you like the new min amount to be?");
@@ -104,13 +108,13 @@ public class Product extends Screen {
         }
         else {
             System.out.println("Min changed successfully");
-            System.out.println(r.getValue());
+            System.out.println(printProduct(r.getValue()));
         }
     }
 
     private void changeProductTarget() {
         int store = getStoreID();
-        System.out.println("What would you like the new max amount to be?");
+        System.out.println("What would you like the new target amount to be?");
         int max = scanner.nextInt();
         scanner.nextLine(); //to remove extra \n
         Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.changeProductMax(store, id, max);
@@ -118,42 +122,10 @@ public class Product extends Screen {
             System.out.println(r.getError());
         }
         else {
-            System.out.println("Max changed successfully");
-            System.out.println(r.getValue());
+            System.out.println("Target changed successfully");
+            System.out.println(printProduct(r.getValue()));
         }
     }
-
-//    public void removeSupplierFromProduct() {
-//        System.out.println("Which product would you like to remove a supplier from? (insert ID)");
-//        int productID = scanner.nextInt();
-//        System.out.println("Which supplier would you like to remove? (insert ID)");
-//        int supplierID = scanner.nextInt();
-//        scanner.nextLine(); //to remove extra \n
-//        Result<Domain.ServiceLayer.Objects.Product> r = controller.removeSupplierFromProduct(productID, supplierID);
-//        if (r.isError())
-//            System.out.println(r.getError());
-//        else {
-//            System.out.println("Supplier successfully removed");
-//            System.out.println(r.getValue());
-//        }
-//    }
-
-//    public void addSupplierToProduct() {
-//        System.out.println("Which product would you like to add a supplier to? (insert ID)");
-//        int productID = scanner.nextInt();
-//        System.out.println("Which supplier would you like to add? (insert ID)");
-//        int supplierID = scanner.nextInt();
-//        System.out.println("What is the supplier's ID for the product?");
-//        int productIDWithSupplier = scanner.nextInt();
-//        scanner.nextLine(); //to remove extra \n
-//        Result<Domain.ServiceLayer.Objects.Product> r = controller.addSupplierToProduct(productID, supplierID, productIDWithSupplier);
-//        if (r.isError())
-//            System.out.println(r.getError());
-//        else {
-//            System.out.println("Supplier successfully added");
-//            System.out.println(r.getValue());
-//        }
-//    }
 
     private void addProductToStore() {
         int store = getStoreID();
@@ -172,7 +144,7 @@ public class Product extends Screen {
             System.out.println(r.getError());
         else {
             System.out.println("Product added");
-            System.out.println(r.getValue());
+            System.out.println(printProduct(r.getValue()));
         }
     }
 
@@ -184,7 +156,7 @@ public class Product extends Screen {
             System.out.println(r.getError());
         else {
             System.out.println("Product removed");
-            System.out.println(r.getValue());
+            System.out.println(printProduct(r.getValue()));
         }
     }
 
@@ -198,7 +170,7 @@ public class Product extends Screen {
         else {
             System.out.println("product successfully moved to new category");
             Domain.ServiceLayer.InventoryObjects.Product p = r.getValue();
-            System.out.println(p);
+            System.out.println(printProduct(p));
             this.categoryID=p.getCategoryID();
         }
     }
@@ -235,7 +207,7 @@ public class Product extends Screen {
         else {
             Domain.ServiceLayer.InventoryObjects.Product p = r.getValue();
             originalPrice = p.getOriginalPrice();
-            System.out.println(p);
+            System.out.println(printProduct(p));
         }
     }
 
@@ -247,7 +219,7 @@ public class Product extends Screen {
             System.out.println(r.getError());
         else {
             Domain.ServiceLayer.InventoryObjects.Product p = r.getValue();
-            System.out.println(p);
+            System.out.println(printProduct(p));
             this.name=p.getName();
         }
     }
