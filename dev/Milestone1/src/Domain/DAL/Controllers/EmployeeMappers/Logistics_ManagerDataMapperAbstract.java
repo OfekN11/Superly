@@ -1,20 +1,16 @@
 package Domain.DAL.Controllers.EmployeeMappers;
 import Domain.Business.Objects.Logistics_Manager;
-import Domain.DAL.Abstract.EmployeeTypeDataMapper;
-import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.ObjectDateMapper;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
-public class Logistics_ManagerDataMapper extends EmployeeTypeDataMapper<Logistics_Manager> {
+public class Logistics_ManagerDataMapperAbstract extends AbstractEmployeeDataMapper<Logistics_Manager> {
     private static Map<String, Logistics_Manager> LOGISTIC_MANAGERS_MAP = new HashMap<>();
     EmployeeCertificationDAO employeeCertificationController ;
 
 
-    public Logistics_ManagerDataMapper() {
+    public Logistics_ManagerDataMapperAbstract() {
         super("Logistics_Manager");
         employeeCertificationController = new EmployeeCertificationDAO();
     }

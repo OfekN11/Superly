@@ -1,5 +1,7 @@
-package Domain.DAL.Abstract;
+package Domain.DAL.Controllers.EmployeeMappers;
 import Domain.Business.Objects.Employee;
+import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.Abstract.ObjectDateMapper;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.SQLException;
@@ -7,18 +9,18 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class EmployeeTypeDataMapper<T extends Employee> extends ObjectDateMapper<T> {
+public abstract class AbstractEmployeeDataMapper<T extends Employee> extends ObjectDateMapper<T> {
 
     // fields
     private final EmployeeCertificationDAO employeeCertificationController;
 
-    public EmployeeTypeDataMapper(String tableName) {
+    public AbstractEmployeeDataMapper(String tableName) {
         super(tableName);
         employeeCertificationController = new EmployeeCertificationDAO();
     }
 
     @Override
-    protected  LinkDAO getLinkDTO(String setName) {
+    protected LinkDAO getLinkDTO(String setName) {
         switch (setName){
             case "certifications":
                 return  employeeCertificationController;

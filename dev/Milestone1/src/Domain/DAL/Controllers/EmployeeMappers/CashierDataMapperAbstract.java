@@ -1,15 +1,11 @@
 package Domain.DAL.Controllers.EmployeeMappers;
 import Domain.Business.Objects.Cashier;
-import Domain.DAL.Abstract.EmployeeTypeDataMapper;
-import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.ObjectDateMapper;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
-public class CashierDataMapper extends EmployeeTypeDataMapper<Cashier> {
+public class CashierDataMapperAbstract extends AbstractEmployeeDataMapper<Cashier> {
     //static fields
     private final static Map<String, Cashier> CASHIER_IDENTITY_MAP = new HashMap<>();
 
@@ -18,7 +14,7 @@ public class CashierDataMapper extends EmployeeTypeDataMapper<Cashier> {
 
     //constructor
 
-    public CashierDataMapper() {
+    public CashierDataMapperAbstract() {
         super("Cashiers");
         employeeCertificationController = new EmployeeCertificationDAO();
     }
