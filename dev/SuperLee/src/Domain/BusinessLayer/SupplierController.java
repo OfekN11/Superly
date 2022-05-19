@@ -550,7 +550,7 @@ public class SupplierController {
                 if(supplierId == -1)
                     throw new Exception("No supplier supplies product " + productId);
                 if( !checkIfOrderFromThisSupplierAlreadyExists(supplierId, orders, productId, entry.getKey(), entry.getValue()) )
-                    createNewOrderForThisProduct(supplierId, productId, entry.getKey(), entry.getValue());
+                    createNewOrderForThisProduct(supplierId, productId, entry.getKey(), entry.getValue(), orders);
             }
         }
     }
@@ -611,13 +611,14 @@ public class SupplierController {
     }
 
 
-    private void createNewOrderForThisProduct(int supplierId, int productId, int storeId, int quantity) {
+    private void createNewOrderForThisProduct(int supplierId, int productId, int storeId, int quantity, Map<String, ArrayList<Order>> orders) {
         Supplier supplier = suppliersDAO.getSupplier(supplierId);
         OrderItem orderItem  = createNewOrderItem(supplierId, productId, quantity);
         try {
             Order newOrder =  new Order(supplier.daysToDelivery() , supplierId, storeId, orderItem);
             insertToOrderDAO(newOrder);
             suppliersDAO.getSupplier(newOrder.getSupplierId()).setLastOrderId(suppliersDAO.getAgreementController(), newOrder.getId());
+            orders.get("not deletable").add(newOrder);
 
             // Add the new Order to some list in Supplier
             //suppliersDAO.getSupplier(order.getSupplierId()).addOrderToList();
