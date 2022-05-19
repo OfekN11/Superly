@@ -255,12 +255,18 @@ public class Product {
     }
 
     public void changeProductMin(int store, int min) {
+        StockReport stockReport = STOCK_REPORT_DATA_MAPPER.getProductStockReport(id, store);
+        if (stockReport!=null)
+            stockReports.put(store, stockReport);
         if (getStockReport(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no min amount");
         stockReports.get(store).changeMin(min);
     }
 
     public void changeProductTarget(int store, int target) {
+        StockReport stockReport = STOCK_REPORT_DATA_MAPPER.getProductStockReport(id, store);
+        if (stockReport!=null)
+            stockReports.put(store, stockReport);
         if (getStockReport(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not being sold in store " + store + " and has no target amount");
         stockReports.get(store).changeTarget(target);

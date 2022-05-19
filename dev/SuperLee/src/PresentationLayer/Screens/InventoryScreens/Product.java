@@ -108,22 +108,22 @@ public class Product extends Screen {
         }
         else {
             System.out.println("Min changed successfully");
-            System.out.println(printProduct(r.getValue()));
+            //System.out.println(printProduct(r.getValue()));
         }
     }
 
     private void changeProductTarget() {
         int store = getStoreID();
         System.out.println("What would you like the new target amount to be?");
-        int max = scanner.nextInt();
+        int target = scanner.nextInt();
         scanner.nextLine(); //to remove extra \n
-        Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.changeProductMax(store, id, max);
+        Result<Domain.ServiceLayer.InventoryObjects.Product> r = controller.changeProductTarget(store, id, target);
         if (r.isError()) {
             System.out.println(r.getError());
         }
         else {
             System.out.println("Target changed successfully");
-            System.out.println(printProduct(r.getValue()));
+            //System.out.println(printProduct(r.getValue()));
         }
     }
 

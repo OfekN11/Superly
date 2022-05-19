@@ -750,7 +750,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the edited product
      */
-    public Result<Product> changeProductMax(int store, int product, int max) {
+    public Result<Product> changeProductTarget(int store, int product, int max) {
         try {
             return Result.makeOk(new Product(controller.changeProductTarget(store, product, max)));
         }
