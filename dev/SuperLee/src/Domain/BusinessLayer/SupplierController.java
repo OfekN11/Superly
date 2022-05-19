@@ -533,6 +533,7 @@ public class SupplierController {
         return result;
     }
 
+    //
     private void insertToSuppliersBusiness(ArrayList<Order> result) {
         for(Order order : result){
             suppliersDAO.getSupplier(order.getSupplierId()).addOrderNotToDB(order);
