@@ -1,11 +1,11 @@
 package Domain.Business.Controllers;
 
-import Domain.Business.Objects.*;
 import Domain.Business.Objects.Employee.*;
 import Domain.Business.Objects.Shift.EveningShift;
 import Domain.Business.Objects.Shift.MorningShift;
 import Domain.Business.Objects.Shift.Shift;
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
+import Globals.Enums.Certifications;
 import Globals.Enums.ShiftTypes;
 import Globals.Pair;
 
@@ -140,7 +140,19 @@ public class ShiftController {
 
     public void editShiftTransport_ManagerIDs(LocalDate workday, ShiftTypes type, Set<String> ids) throws Exception {
         Shift shift = getShift(workday, type);
-        shift.setLogistics_managerIDs(ids);
+        shift.setTransport_managerIDs(ids);
+        shiftDataMapper.save(shift);
+    }
+
+    public void registerAsAvailable(LocalDate workday, ShiftTypes type, String id) throws Exception {
+        Shift shift = getShift(workday, type);
+        shift.registerAsAvailable(id);
+        shiftDataMapper.save(shift);
+    }
+
+    public void unregisterFromAvailable(LocalDate workday, ShiftTypes type, String id) throws Exception {
+        Shift shift = getShift(workday, type);
+        shift.unregisterFromAvailable(id);
         shiftDataMapper.save(shift);
     }
 
@@ -157,7 +169,7 @@ public class ShiftController {
 
     public Set<Shift> getEmployeeShiftsBetween(String id, LocalDate start, LocalDate end) {
         return getShiftsBetween(start, end).stream()
-                .filter((shift) -> shift.isIdInclude(id)).collect(Collectors.toSet());
+                .filter((shift) -> shift.isEmployeeAssigned(id)).collect(Collectors.toSet());
     }
 
     public String getEmployeeWorkDetailsForCurrentMonth(String id) {
@@ -168,44 +180,95 @@ public class ShiftController {
                         .collect(Collectors.joining(", "));
     }
 
-    public Set<Carrier> getShiftCarriers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Employee getAssignedShiftManagerFor(LocalDate workday, ShiftTypes types) throws Exception{
+        return employeeController.getEmployee(getShift(workday, types).getShiftManagerId());
+    }
+
+    public Set<Carrier> getAssignedCarriersFor(LocalDate workday, ShiftTypes type) throws Exception {
         return employeeController.getCarrier(getShift(workday, type).getCarrierIDs());
     }
 
-    public Set<Cashier> getShiftCashiers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Set<Cashier> getAssignedCashiersFor(LocalDate workday, ShiftTypes type) throws Exception {
         return employeeController.getCashier(getShift(workday, type).getCashierIDs());
     }
 
-    public Set<Sorter> getShiftSorters(LocalDate workday, ShiftTypes type) throws Exception {
+    public Set<Sorter> getAssignedSortersFor(LocalDate workday, ShiftTypes type) throws Exception {
         return employeeController.getSorter(getShift(workday, type).getSorterIDs());
     }
 
-    public Set<Storekeeper> getShiftStorekeepers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Set<Storekeeper> getAssignedStorekeepersFor(LocalDate workday, ShiftTypes type) throws Exception {
         return employeeController.getStorekeeper(getShift(workday, type).getStorekeeperIDs());
     }
 
-    public Set<HR_Manager> getShiftHR_Managers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Set<HR_Manager> getAssignedHR_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
         return employeeController.getHR_Manager(getShift(workday, type).getHr_managerIDs());
     }
 
-    public Set<Logistics_Manager> getShiftLogistics_Managers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Set<Logistics_Manager> getAssignedLogistics_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
         return employeeController.getLogistics_Manager(getShift(workday, type).getLogistics_managerIDs());
     }
 
-    public Set<Transport_Manager> getShiftTransport_Managers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Set<Transport_Manager> getAssignedTransport_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
         return employeeController.getTransport_Manager(getShift(workday, type).getTransport_managerIDs());
     }
 
-    public Set<Employee> getShiftEmployees(LocalDate workday, ShiftTypes type) throws Exception {
+    public Set<Employee> getAssignedEmployeesFor(LocalDate workday, ShiftTypes type) throws Exception {
         Set<Employee> employees = new HashSet<>();
-        employees.addAll(getShiftCarriers(workday, type));
-        employees.addAll(getShiftCashiers(workday, type));
-        employees.addAll(getShiftSorters(workday, type));
-        employees.addAll(getShiftStorekeepers(workday, type));
-        employees.addAll(getShiftHR_Managers(workday, type));
-        employees.addAll(getShiftLogistics_Managers(workday, type));
-        employees.addAll(getShiftTransport_Managers(workday, type));
+        employees.add(getAssignedShiftManagerFor(workday, type));
+        employees.addAll(getAssignedCarriersFor(workday, type));
+        employees.addAll(getAssignedCashiersFor(workday, type));
+        employees.addAll(getAssignedSortersFor(workday, type));
+        employees.addAll(getAssignedStorekeepersFor(workday, type));
+        employees.addAll(getAssignedHR_ManagersFor(workday, type));
+        employees.addAll(getAssignedLogistics_ManagersFor(workday, type));
+        employees.addAll(getAssignedTransport_ManagersFor(workday, type));
         return employees;
+    }
+
+    public Set<Carrier> getAvailableCarriersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getCarrier(getShift(workday, type).getOnlyAvailableEmployeeIDs());
+    }
+
+    public Set<Cashier> getAvailableCashiersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getCashier(getShift(workday, type).getOnlyAvailableEmployeeIDs());
+    }
+
+    public Set<Sorter> getAvailableSortersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getSorter(getShift(workday, type).getOnlyAvailableEmployeeIDs());
+    }
+
+    public Set<Storekeeper> getAvailableStorekeepersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getStorekeeper(getShift(workday, type).getOnlyAvailableEmployeeIDs());
+    }
+
+    public Set<HR_Manager> getAvailableHR_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getHR_Manager(getShift(workday, type).getOnlyAvailableEmployeeIDs());
+    }
+
+    public Set<Logistics_Manager> getAvailableLogistics_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getLogistics_Manager(getShift(workday, type).getOnlyAvailableEmployeeIDs());
+    }
+
+    public Set<Transport_Manager> getAvailableTransport_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return employeeController.getTransport_Manager(getShift(workday, type).getOnlyAvailableEmployeeIDs());
+    }
+
+    public Set<Employee> getAvailableEmployeesFor(LocalDate workday, ShiftTypes type) throws Exception {
+        Set<Employee> employees = new HashSet<>();
+        employees.addAll(getAvailableCarriersFor(workday, type));
+        employees.addAll(getAvailableCashiersFor(workday, type));
+        employees.addAll(getAvailableSortersFor(workday, type));
+        employees.addAll(getAvailableStorekeepersFor(workday, type));
+        employees.addAll(getAvailableHR_ManagersFor(workday, type));
+        employees.addAll(getAvailableLogistics_ManagersFor(workday, type));
+        employees.addAll(getAvailableTransport_ManagersFor(workday, type));
+        return employees;
+    }
+
+    public Set<Employee> getAvailableShiftManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
+        return getAvailableEmployeesFor(workday, type).stream()
+                .filter(e -> e.getCertifications().contains(Certifications.ShiftManagement))
+                .collect(Collectors.toSet());
     }
 
     private Pair<LocalDate, LocalDate> getMonthDatesEdges() {

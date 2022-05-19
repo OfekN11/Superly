@@ -7,7 +7,9 @@ import Globals.Enums.JobTitles;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class Shift {
 
@@ -65,22 +67,18 @@ public abstract class Shift {
 
         this.carrierIDs =new HashSet<>(carrierIDs);
         this.carrierIDs = new HashSet<>(cashierIDs);
-        this.cashierIDs = new HashSet<>(cashierIDs);
         this.storekeeperIDs = new HashSet<>(storekeeperIDs);
         this.sorterIDs = new HashSet<>(sorterIDs);
         this.hr_managerIDs = new HashSet<>(hr_managerIDs);
         this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
         this.transport_managerIDs = new HashSet<>(transportManagerIDs);
-        this.availableEmployees = availableEmployees;
+        this.availableEmployees = new HashSet<>(availableEmployees);
     }
 
-
-
     public Shift(LocalDate date, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transportManagersCount) throws Exception {
-        this(date,managerId,
-                carrierCount,cashierCount,storekeeperCount,sorterCount,hr_managerCount,logistics_managerCount,transportManagersCount,
-                new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),new HashSet<>(),new HashSet<>());
-
+        this(date, managerId,
+                carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transportManagersCount,
+                new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
 
@@ -113,6 +111,9 @@ public abstract class Shift {
         if (logistics_managerIDs.contains(shiftManagerId))
             throw new Exception("This manager is already assigned for this shift as a logistics manager. " +
                     "\nIf you'd like him to manager this shift please remove him from from the logistics manager list of this shift");
+        if (transport_managerIDs.contains(shiftManagerId))
+            throw new Exception("This manager is already assigned for this shift as a transport manager. " +
+                    "\nIf you'd like him to manager this shift please remove him from from the transport manager list of this shift");
         this.shiftManagerId = shiftManagerId;
     }
 
@@ -263,14 +264,55 @@ public abstract class Shift {
         return transport_managerIDs;
     }
 
-    public Set<String> getAvailableEmployees() {
+    public Set<String> getAssignedEmployeesIDs() {
+        Set<String> assigned = new HashSet<>();
+        assigned.add(shiftManagerId);
+        assigned.addAll(carrierIDs);
+        assigned.addAll(cashierIDs);
+        assigned.addAll(sorterIDs);
+        assigned.addAll(storekeeperIDs);
+        assigned.addAll(hr_managerIDs);
+        assigned.addAll(logistics_managerIDs);
+        assigned.addAll(transport_managerIDs);
+        return assigned;
+    }
+
+    public Set<String> getAvailableEmployeeIDs() {
         return availableEmployees;
     }
 
-    public void setAvailableEmployees(Set<String> availableEmployees) {
-        this.availableEmployees = availableEmployees;
+    public Set<String> getOnlyAvailableEmployeeIDs() {
+        return availableEmployees.stream()
+                .filter(id -> !Objects.equals(id, shiftManagerId))
+                .filter(id -> !carrierIDs.contains(id))
+                .filter(id -> !cashierIDs.contains(id))
+                .filter(id -> !sorterIDs.contains(id))
+                .filter(id -> !storekeeperIDs.contains(id))
+                .filter(id -> !hr_managerIDs.contains(id))
+                .filter(id -> !logistics_managerIDs.contains(id))
+                .filter(id -> !transport_managerIDs.contains(id))
+                .collect(Collectors.toSet());
     }
 
+    public void registerAsAvailable(String id){
+        availableEmployees.add(id);
+    }
+
+    public void unregisterFromAvailable(String id) throws Exception {
+        if (getAssignedEmployeesIDs().contains(id))
+            throw new Exception("Cannot unregister, already assigned for this shift. Please remove assignment first.");
+        availableEmployees.remove(id);
+    }
+
+    public boolean isEmployeeAssigned(String id){
+        return shiftManagerId.equals(id) ||
+                carrierIDs.contains(id) ||
+                cashierIDs.contains(id) ||
+                storekeeperIDs.contains(id) ||
+                sorterIDs.contains(id) ||
+                hr_managerIDs.contains(id) ||
+                logistics_managerIDs.contains(id);
+    }
 
     public abstract Domain.Service.Objects.Shift accept(ServiceShiftFactory factory);
 
@@ -286,15 +328,6 @@ public abstract class Shift {
             throw new Exception("A shift can't hold more employees more than configured count");
     }
 
-    public boolean isIdInclude(String id){
-        return shiftManagerId.equals(id) ||
-                carrierIDs.contains(id) ||
-                cashierIDs.contains(id) ||
-                storekeeperIDs.contains(id) ||
-                sorterIDs.contains(id) ||
-                hr_managerIDs.contains(id) ||
-                logistics_managerIDs.contains(id);
-    }
     public abstract String printDayAndType();
 
     public abstract void save(ShiftDataMapper shiftDataMapper) throws SQLException;

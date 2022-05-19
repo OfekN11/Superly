@@ -2,10 +2,10 @@ package Domain.Business.Objects.Shift;
 
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.Service.ServiceShiftFactory;
-import Globals.Enums.ShiftTypes;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 public class MorningShift extends Shift {
@@ -29,10 +29,6 @@ public class MorningShift extends Shift {
                 transportManagersIDs,canWorkInIds );
     }
 
-    public ShiftTypes getType() {
-        return ShiftTypes.Morning;
-    }
-
     @Override
     public Domain.Service.Objects.Shift accept(ServiceShiftFactory factory) {
         return factory.createServiceShift(this);
@@ -41,7 +37,7 @@ public class MorningShift extends Shift {
 
     @Override
     public String printDayAndType() {
-        return "Morning- " + getWorkday().toString();
+        return "Morning- " + getWorkday().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }
 
     @Override

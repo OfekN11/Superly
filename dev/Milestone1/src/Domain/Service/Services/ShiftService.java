@@ -189,6 +189,26 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
+    public Result<Object> registerAsAvailable(LocalDate workday, ShiftTypes type, String id) throws Exception {
+        try {
+            controller.registerAsAvailable(workday, type, id);
+        }
+        catch (Exception e) {
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
+    }
+
+    public Result<Object> unregisterFromAvailable(LocalDate workday, ShiftTypes type, String id) throws Exception {
+        try {
+            controller.unregisterFromAvailable(workday, type, id);
+        }
+        catch (Exception e) {
+            return Result.makeError(e.getMessage());
+        }
+        return Result.makeOk(null);
+    }
+
     //REMOVE
 
     public Result<Object> removeShift(LocalDate date, ShiftTypes type) {
@@ -232,66 +252,146 @@ public class ShiftService {
         }
     }
 
-    public Result<Set<Carrier>> getShiftCarriers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Employee> getAssignedShiftManagerFor(LocalDate workday, ShiftTypes type) throws Exception {
         try {
-            return Result.makeOk(controller.getShiftCarriers(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+            return Result.makeOk(employeeFactory.createServiceEmployee(controller.getAssignedShiftManagerFor(workday, type)));
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }
     }
 
-    public Result<Set<Cashier>> getShiftCashiers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Carrier>> getAssignedCarriersFor(LocalDate workday, ShiftTypes type) throws Exception {
         try {
-            return Result.makeOk(controller.getShiftCashiers(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+            return Result.makeOk(controller.getAssignedCarriersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }
     }
 
-    public Result<Set<Sorter>> getShiftSorters(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Cashier>> getAssignedCashiersFor(LocalDate workday, ShiftTypes type) throws Exception {
         try {
-            return Result.makeOk(controller.getShiftSorters(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+            return Result.makeOk(controller.getAssignedCashiersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }
     }
 
-    public Result<Set<Storekeeper>> getShiftStorekeepers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Sorter>> getAssignedSortersFor(LocalDate workday, ShiftTypes type) throws Exception {
         try {
-            return Result.makeOk(controller.getShiftStorekeepers(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+            return Result.makeOk(controller.getAssignedSortersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }
     }
 
-    public Result<Set<HR_Manager>> getShiftHR_Managers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Storekeeper>> getAssignedStorekeepersFor(LocalDate workday, ShiftTypes type) throws Exception {
         try {
-            return Result.makeOk(controller.getShiftHR_Managers(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+            return Result.makeOk(controller.getAssignedStorekeepersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }
     }
 
-    public Result<Set<Logistics_Manager>> getShiftLogistics_Managers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<HR_Manager>> getAssignedHR_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
         try {
-            return Result.makeOk(controller.getShiftLogistics_Managers(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+            return Result.makeOk(controller.getAssignedHR_ManagersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }
     }
 
-    public Result<Set<Transport_Manager>> getShiftTransport_Managers(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Logistics_Manager>> getAssignedLogistics_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
         try {
-            return Result.makeOk(controller.getShiftTransport_Managers(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+            return Result.makeOk(controller.getAssignedLogistics_ManagersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }
     }
 
-    public Result<Set<Employee>> getShiftEmployees(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Transport_Manager>> getAssignedTransport_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
         try {
-            return Result.makeOk(controller.getShiftEmployees(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+            return Result.makeOk(controller.getAssignedTransport_ManagersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         } catch (Exception e) {
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Set<Employee>> getAssignedEmployeesFor(LocalDate workday, ShiftTypes type) throws Exception {
+        try {
+            return Result.makeOk(controller.getAssignedEmployeesFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+        } catch (Exception e) {
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Set<Carrier>> getAvailableCarriersFor(LocalDate workday, ShiftTypes type)  {
+        try {
+            return Result.makeOk(controller.getAvailableCarriersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Set<Cashier>> getAvailableCashiersFor(LocalDate workday, ShiftTypes type)  {
+        try {
+            return Result.makeOk(controller.getAvailableCashiersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Set<Sorter>> getAvailableSortersFor(LocalDate workday, ShiftTypes type)  {
+        try {
+            return Result.makeOk(controller.getAvailableSortersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Set<Storekeeper>> getAvailableStorekeepersFor(LocalDate workday, ShiftTypes type)  {
+        try {
+            return Result.makeOk(controller.getAvailableStorekeepersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Set<HR_Manager>> getAvailableHR_ManagersFor(LocalDate workday, ShiftTypes type)  {
+        try {
+            return Result.makeOk(controller.getAvailableHR_ManagersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Set<Logistics_Manager>> getAvailableLogistics_ManagersFor(LocalDate workday, ShiftTypes type)  {
+        try {
+            return Result.makeOk(controller.getAvailableLogistics_ManagersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Set<Transport_Manager>> getAvailableTransport_ManagersFor(LocalDate workday, ShiftTypes type)  {
+        try {
+            return Result.makeOk(controller.getAvailableTransport_ManagersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Set<Employee>> getAvailableEmployeesFor(LocalDate workday, ShiftTypes type) {
+        try {
+            return Result.makeOk(controller.getAvailableEmployeesFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+        }
+        catch (Exception e){
             return Result.makeError(e.getMessage());
         }
     }

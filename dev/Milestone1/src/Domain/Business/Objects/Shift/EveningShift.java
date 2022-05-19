@@ -2,10 +2,10 @@ package Domain.Business.Objects.Shift;
 
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.Service.ServiceShiftFactory;
-import Globals.Enums.ShiftTypes;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 public  class EveningShift extends Shift {
@@ -32,10 +32,6 @@ public  class EveningShift extends Shift {
         validateManagerialCount(hr_managerCount);
         validateManagerialCount(logistics_managerCount);
         validateManagerialCount(transport_managersCount);
-    }
-
-    public ShiftTypes getType() {
-        return ShiftTypes.Evening;
     }
 
     @Override
@@ -69,7 +65,7 @@ public  class EveningShift extends Shift {
 
     @Override
     public String printDayAndType() {
-        return "Evening- " + getWorkday().toString();
+        return "Evening- " + getWorkday().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }
 
     @Override

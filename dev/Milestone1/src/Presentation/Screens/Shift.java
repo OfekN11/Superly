@@ -1,6 +1,5 @@
 package Presentation.Screens;
 
-import Domain.Service.Objects.Constraint;
 import Domain.Service.Objects.Employee;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
@@ -14,6 +13,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static Globals.util.HumanInteraction.*;
 
 public abstract class Shift extends Screen {
 
@@ -74,33 +75,21 @@ public abstract class Shift extends Screen {
         }
     }
 
-    private void assignEmployees() throws Exception {
+    private void assignEmployees() throws OperationCancelledException {
         System.out.println("Which type of employee would you like to assign for this shift?");
-        while (true) {
-            System.out.println("1 -- ShiftManager");
-            for (int i = 0; i < JobTitles.values().length; i++)
-                System.out.println((i + 2) + " -- " + JobTitles.values()[i]);
-            try {
-                int ordinal = Integer.parseInt(scanner.nextLine());
-                if (ordinal == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                } else if (ordinal < 1 || ordinal > (JobTitles.values().length + 1))
-                    System.out.println("Please enter an integer between 1 and " + (JobTitles.values().length + 1));
-                else if (ordinal == 1) {
-                    assignShiftManager();
-                    return;
-                } else {
-                    assignEmployee(JobTitles.values()[ordinal - 2]);
-                    return;
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 1 and " + (JobTitles.values().length + 1));
-            }
+        System.out.println("1 -- ShiftManager");
+        for (int i = 0; i < JobTitles.values().length; i++)
+            System.out.println((i + 2) + " -- " + JobTitles.values()[i]);
+        int ordinal = getNumber(1, JobTitles.values().length + 1);
+            System.out.println("Please enter an integer between 1 and " + (JobTitles.values().length + 1));
+        else if (ordinal == 1) {
+            assignShiftManager();
+        } else {
+            assignEmployee(JobTitles.values()[ordinal - 2]);
         }
     }
 
-    private void assignEmployee(JobTitles type) throws Exception {
+    private void assignEmployee(JobTitles type) {
         Set<Employee> curr = controller.getEmployees(getIDsByType(type));
         System.out.println("\nCurrent " + type + "s assigned to this shift:");
         for (Employee employee : curr)
@@ -155,7 +144,7 @@ public abstract class Shift extends Screen {
         }
     }
 
-    private void assignShiftManager() throws Exception {
+    private void assignShiftManager() {
         Employee currManager = controller.getEmployee(shiftManagerId);
         System.out.println("\nCurrent shift manager: " + currManager.name + ", ID: " + currManager.id);
         Constraint constraint = controller.getConstraint(date, getType());

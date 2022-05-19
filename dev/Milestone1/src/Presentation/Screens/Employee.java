@@ -1,11 +1,8 @@
 package Presentation.Screens;
 
-import Domain.Service.Objects.Constraint;
 import Domain.Service.Objects.Shift;
 import Globals.Enums.Certifications;
-import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
-import Globals.util.ConstraintComparator;
 import Globals.util.ShiftComparator;
 
 import java.time.LocalDate;
