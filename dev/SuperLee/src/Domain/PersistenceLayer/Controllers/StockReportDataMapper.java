@@ -80,6 +80,14 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
         }
     }
 
+    public void remove(int storeId) {
+        try {
+            remove(Arrays.asList(STORE_COLUMN), Arrays.asList(storeId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public StockReport get(int storeId, int productID) {
         Pair<Integer, Integer> key = new Pair(storeId, productID);
         StockReport output = IDENTITY_MAP.get(key);

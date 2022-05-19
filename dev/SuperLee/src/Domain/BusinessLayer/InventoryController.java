@@ -293,8 +293,9 @@ public class InventoryController {
 
     public List<Product> getProductsFromCategory(List<Integer> categoryIDs) {
         List<Product> products = new ArrayList<>();
+        redundantCategories(categoryIDs);
         for (int i : categoryIDs)
-            products.addAll(PRODUCT_DATA_MAPPER.getProductsFromCategory(i));
+            products.addAll(getCategory(i).getAllProductsInCategory());
         return products;
     }
 
@@ -562,11 +563,8 @@ public class InventoryController {
         return p;
     }
 
-    private int getAmountForOrder(int storeID, int productID) { //Periodically
-        return getProduct(productID).getAmountForOrder(storeID);
-    }
-
-    private Map<Integer, Integer> getAmountsForMinOrders(Product product) {
+    //public for tests
+    public Map<Integer, Integer> getAmountsForMinOrders(Product product) {
         Map<Integer, Integer> amounts = new HashMap<>();
         int amount;
         for (int storeID: storeIds) {
