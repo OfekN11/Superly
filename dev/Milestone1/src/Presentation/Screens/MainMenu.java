@@ -2,7 +2,7 @@ package Presentation.Screens;
 
 import Presentation.BackendController;
 import Presentation.Screens.Document.DocumentMenu;
-import Presentation.Screens.Transport.TransportMenu;
+import Presentation.Screens.Transport.TransportsMenu;
 
 public class MainMenu extends Screen{
 
@@ -37,7 +37,7 @@ public class MainMenu extends Screen{
                 new Thread(new TruckMenu(this)).start();
                 break;
             case 4:
-                new Thread(new TransportMenu(this)).start();
+                new Thread(new TransportsMenu(this)).start();
                 break;
             case 5:
                 new Thread(new DocumentMenu(this)).start();

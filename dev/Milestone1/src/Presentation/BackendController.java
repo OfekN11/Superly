@@ -3,6 +3,7 @@ package Presentation;
 import Domain.Service.Objects.*;
 import Domain.Service.Services.*;
 import Globals.Enums.*;
+import Globals.Pair;
 import Presentation.Objects.Document.*;
 import Presentation.Objects.Transport.TransportOrder;
 
@@ -456,9 +457,31 @@ public class BackendController {
         return result.getValue();
     }
 
-
+    //Transport Order
     public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {
         Result result = orderService.addOrder(srcID, dstID, productList);
+        throwIfError(result);
+    }
+
+    //Transport
+
+    public void getCompleteTransports() throws Exception {
+        Result result = transportService.getCompletedTransport();
+        throwIfError(result);
+    }
+
+    public void getInProgressTransports() throws Exception {
+        Result result = transportService.getInProgressTransports();
+        throwIfError(result);
+    }
+
+    public void getPendingTransports() throws Exception {
+        Result result = transportService.getInProgressTransports();
+        throwIfError(result);
+    }
+
+    public void createNewTransport(Pair<LocalDate, ShiftTypes> localDateShiftTypesPair) throws Exception {
+        Result result = transportService.createTransport(localDateShiftTypesPair);
         throwIfError(result);
     }
 }

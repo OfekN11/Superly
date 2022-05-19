@@ -128,7 +128,7 @@ public class TransportService {
             return Result.makeError(e.getMessage());
         }
     }
-    public Result createTransport (Pair<LocalDate, ShiftTypes> shift){
+    public Result createTransport(Pair<LocalDate, ShiftTypes> shift){
         try {
             controller.createTransport(shift);
             return Result.makeOk(null);
