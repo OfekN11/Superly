@@ -1,9 +1,8 @@
 package Presentation.Screens;
 
-import Domain.Service.Objects.Employee;
 import Domain.Service.Objects.Shift;
-import Globals.Enums.Certifications;
 import Globals.Enums.ShiftTypes;
+import static Globals.util.HumanInteraction.*;
 import Globals.util.ShiftComparator;
 import Presentation.PresentationShiftBuilder;
 
@@ -11,8 +10,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+
 
 public class ShiftsMenu extends Screen {
     private static final String[] menuOptions = {
@@ -54,35 +53,27 @@ public class ShiftsMenu extends Screen {
                         endRun();
                         break;
                 }
-            }
-            catch (Exception e) {
+            } catch (OperationCancelledException ignored) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }
         }
     }
 
-    private void viewShifts() {
+    private void viewShifts() throws Exception {
         System.out.println("Enter first and last dates to see shifts between the dates");
         System.out.println("Enter first date");
         LocalDate start = buildDate();
-        if (start == null)
-            return;
         System.out.println("Enter ending date");
         LocalDate end = buildDate();
-        if (end == null)
-            return;
-        try {
-            List<Shift> shifts = new ArrayList<>(controller.getShiftsBetween(start, end));
-            shifts.sort(new ShiftComparator());
-            for (Shift shift : shifts)
-                System.out.println(shift);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        List<Shift> shifts = controller.getShiftsBetween(start, end).stream().sorted(new ShiftComparator()).collect(Collectors.toList());
+        for (Shift shift : shifts)
+            System.out.println(shift);
     }
 
     private void addShifts() throws Exception {
+        presentationShiftBuilder.reset();
         presentationShiftBuilder.setDate();
         presentationShiftBuilder.setShiftType();
         presentationShiftBuilder.setShiftManager();
@@ -93,12 +84,7 @@ public class ShiftsMenu extends Screen {
         presentationShiftBuilder.setHr_managerCount();
         presentationShiftBuilder.setLogistics_managerCount();
         presentationShiftBuilder.setTransportManagerCount();
-        try {
-            presentationShiftBuilder.buildObject();
-        }catch (RuntimeException e){
-            System.out.println(e.getMessage());
-            addShifts();
-        }
+        presentationShiftBuilder.buildObject();
     }
 
     private void removeShifts() throws Exception {
@@ -188,6 +174,6 @@ public class ShiftsMenu extends Screen {
             }
         }
 
-            new Thread(factory.createScreenShift(this, controller.getShift(date, type))).start();
+        new Thread(factory.createScreenShift(this, controller.getShift(date, type))).start();
     }
 }

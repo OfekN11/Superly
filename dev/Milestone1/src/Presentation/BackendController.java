@@ -422,4 +422,11 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
+
+    public Set<Employee> getAvailableEmployeesFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAvailableEmployeesFor(date, type);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
 }

@@ -70,7 +70,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<Carrier>> getAvailableCarriersFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Carrier>> getAvailableCarriersFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableCarriersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         }
@@ -79,7 +79,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<Cashier>> getAvailableCashiersFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Cashier>> getAvailableCashiersFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableCashiersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         }
@@ -88,7 +88,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<Sorter>> getAvailableSortersFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Sorter>> getAvailableSortersFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableSortersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         }
@@ -97,7 +97,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<Storekeeper>> getAvailableStorekeepersFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Storekeeper>> getAvailableStorekeepersFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableStorekeepersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         }
@@ -106,7 +106,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<HR_Manager>> getAvailableHR_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<HR_Manager>> getAvailableHR_ManagersFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableHR_ManagersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         }
@@ -115,7 +115,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<Logistics_Manager>> getAvailableLogistics_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Logistics_Manager>> getAvailableLogistics_ManagersFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableLogistics_ManagersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         }
@@ -124,7 +124,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<Transport_Manager>> getAvailableTransport_ManagersFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<Transport_Manager>> getAvailableTransport_ManagersFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableTransport_ManagersFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         }
@@ -133,7 +133,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<Employee>> getAvailableEmployeesFor(LocalDate workday, ShiftTypes type) throws Exception{
+    public Result<Set<Employee>> getAvailableEmployeesFor(LocalDate workday, ShiftTypes type) {
         try {
             return Result.makeOk(controller.getAvailableEmployeesFor(workday, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
         }
@@ -142,7 +142,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<String>> getAvailableCarriersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<String>> getAvailableCarriersIDsFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableCarriersIDsFor(workday, type));
         }
@@ -151,7 +151,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<String>> getAvailableCashiersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<String>> getAvailableCashiersIDsFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableCashiersIDsFor(workday, type));
         }
@@ -160,7 +160,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<String>> getAvailableSortersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<String>> getAvailableSortersIDsFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableSortersIDsFor(workday, type));
         }
@@ -169,7 +169,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<String>> getAvailableStorekeepersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<String>> getAvailableStorekeepersIDsFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableStorekeepersIDsFor(workday, type));
         }
@@ -178,7 +178,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<String>> getAvailableHR_ManagersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<String>> getAvailableHR_ManagersIDsFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableHR_ManagersIDsFor(workday, type));
         }
@@ -187,7 +187,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<String>> getAvailableLogistics_ManagersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<String>> getAvailableLogistics_ManagersIDsFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableLogistics_ManagersIDsFor(workday, type));
         }
@@ -196,7 +196,7 @@ public class ConstraintService {
         }
     }
 
-    public Result<Set<String>> getAvailableTransport_ManagersIDsFor(LocalDate workday, ShiftTypes type) throws Exception {
+    public Result<Set<String>> getAvailableTransport_ManagersIDsFor(LocalDate workday, ShiftTypes type)  {
         try {
             return Result.makeOk(controller.getAvailableTransport_ManagersIDsFor(workday, type));
         }
