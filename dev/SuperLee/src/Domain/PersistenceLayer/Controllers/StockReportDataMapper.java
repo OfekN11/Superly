@@ -229,4 +229,8 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
             return null;
         }
     }
+
+    public StockReport getProductStockReport(int productID, int storeID) {
+        return get(storeID, productID);
+    }
 }
