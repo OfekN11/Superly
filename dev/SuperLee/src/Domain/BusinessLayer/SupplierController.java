@@ -569,7 +569,7 @@ public class SupplierController {
             }
         }
 
-        boolean contains = false;
+        boolean cantains = false;
 
         for(Order order : notDeletableOrders){
             if(order.getStoreID() == storeId && order.getSupplierId() == supplierId){
@@ -580,12 +580,12 @@ public class SupplierController {
                 for(OrderItem item : items){
                     if (item.getProductId() == orderItem.getProductId()){
                         item.setQuantity(item.getQuantity() + orderItem.getQuantity());
-                        contains = true;
+                        cantains = true;
                         break;
                     }
                 }
 
-                if(!contains){
+                if(!cantains){
                     items.add(orderItem);
                 }
 
@@ -638,15 +638,15 @@ public class SupplierController {
         int supplierId = -1;
         double finalPrice = Double.MAX_VALUE;
         try {
-        for(Supplier supplier : suppliersDAO.getAllSuppliers()){
-            if( supplier.itemExists(productId)){
-                double currFinalPrice = supplier.getToatalPriceForItem(productId, quantity);
-                if( currFinalPrice < finalPrice){
-                    finalPrice = currFinalPrice;
-                    supplierId = supplier.getId();
+            for(Supplier supplier : suppliersDAO.getAllSuppliers()){
+                if( supplier.itemExists(productId)){
+                    double currFinalPrice = supplier.getToatalPriceForItem(productId, quantity);
+                    if( currFinalPrice < finalPrice){
+                        finalPrice = currFinalPrice;
+                        supplierId = supplier.getId();
+                    }
                 }
             }
-        }
         } catch (Exception e) {               //will never reach here
             System.out.println(e.getMessage());
         }
@@ -672,7 +672,6 @@ public class SupplierController {
         ArrayList<Order> deletableOrders = orders.get("deletable");
         ArrayList<Order> notDeletableOrders = orders.get("not deletable");
 
-        // TODO: 17/05/2022  WHy we are not checking the notDeletableOrders?
 
         int quantityInOrder = quantity;
         for(Order order : deletableOrders){
@@ -706,7 +705,7 @@ public class SupplierController {
     }
 
 
-    //public for testing!
+    //public for testing
     public ArrayList<Integer> getAllRoutineSuppliersDeliveringTomorrow() {
         ArrayList<Integer> result = new ArrayList<>();
         for(Supplier supplier : suppliersDAO.getAllSuppliers()){
@@ -789,6 +788,7 @@ public class SupplierController {
     public ArrayList<OrderItem> uploadOrderItems(int orderId){
         return orderDAO.uploadAllItemsFromOrder(orderId, suppliersDAO.getAgreementItemDAO());
     }
+
 
 
 

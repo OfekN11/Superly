@@ -177,7 +177,7 @@ public class Supplier {
 
     public void updateBulkPriceForItem(int itemID, Map<Integer, Integer> newBulkPrices, AgreementController agreementController) throws Exception {
         agreementExists();
-        agreementController.updateBulkPriceForItem(itemID, newBulkPrices);
+        agreementController.updateBulkPriceForItem(id, itemID, newBulkPrices);
         agreement.getItem(itemID).setBulkPrices(newBulkPrices);
     }
 
