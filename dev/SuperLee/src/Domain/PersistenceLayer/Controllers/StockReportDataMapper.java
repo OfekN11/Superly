@@ -233,4 +233,12 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
     public StockReport getProductStockReport(int productID, int storeID) {
         return get(storeID, productID);
     }
+
+    public void removeProduct(Integer product) {
+        try {
+            remove(Arrays.asList(PRODUCT_COLUMN), Arrays.asList(product));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

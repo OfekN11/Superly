@@ -179,7 +179,20 @@ public class OrderDAO extends DataMapper<Order> {
         return orderItemDAO.uploadAllItemsFromOrder(orderId, agreementItemDAO);
     }
 
-
-
+    //for tests
+    public void removeByStore(int store) {
+        try (Connection connection = getConnection()){
+            ResultSet resultSet = select(connection, Arrays.asList(STORE_ID_COLUMN), Arrays.asList(store));
+            List<Integer> ordersIds = new ArrayList<>();
+            while (resultSet.next()) {
+                ordersIds.add(resultSet.getInt(ORDER_ID_COLUMN));
+            }
+            orderItemDAO.removeOrders(ordersIds);
+            remove(Arrays.asList(STORE_ID_COLUMN),Arrays.asList(store));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 

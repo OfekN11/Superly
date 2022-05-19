@@ -102,5 +102,10 @@ public class StockReport {
     private int getTotalAmountInDeliveries() {
         return amountInDeliveries;
     }
-    private int getTotalAmount() { return getTotalAmountInDeliveries()+amountInStore+amountInWarehouse;}
+    public int getTotalAmount() { return getTotalAmountInDeliveries()+amountInStore+amountInWarehouse;}
+
+    //for tests only!
+    public void setInDelivery(int i) {
+        amountInDeliveries=i;
+    }
 }

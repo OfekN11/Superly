@@ -168,4 +168,21 @@ public class LocationDataMapper extends DataMapper<Location> {
             return null;
         }
     }
+
+    public void removeByProduct(Integer product) {
+        try(Connection connection = getConnection()) {
+            ResultSet locationsToRemove = select(connection, Arrays.asList(PRODUCT_COLUMN), Arrays.asList(product));
+            List<Integer> locationsIDs = new ArrayList<>();
+            while (locationsToRemove.next()) {
+                locationsIDs.add(locationsToRemove.getInt(ID_COLUMN));
+            }
+            for (Integer i : locationsIDs) {
+                locationToShelfDAO.remove(i);
+            }
+            remove(Arrays.asList(PRODUCT_COLUMN), Arrays.asList(product));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -2,28 +2,34 @@ package InventoryTests;
 
 import Domain.BusinessLayer.Inventory.Product;
 import Domain.BusinessLayer.InventoryController;
-import Domain.PersistenceLayer.Controllers.CategoryDataMapper;
-import Domain.PersistenceLayer.Controllers.ProductDataMapper;
-import Domain.PersistenceLayer.Controllers.StockReportDataMapper;
-import Domain.PersistenceLayer.Controllers.StoreDAO;
+import Domain.BusinessLayer.Supplier.Order;
+import Domain.BusinessLayer.Supplier.OrderItem;
+import Domain.BusinessLayer.SupplierController;
+import Domain.PersistenceLayer.Controllers.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import java.time.LocalDate;
 import java.util.*;
 
 import static java.util.Collections.max;
 import static org.junit.jupiter.api.Assertions.*;
 
+@NotThreadSafe
 class InventoryControllerTest {
-    private static InventoryController is;
+    private static final InventoryController is = InventoryController.getInventoryController();
+    private static SupplierController sc;
     private static int maxStoreCount;
+    private static List<Integer> stores;
 
     @BeforeAll
-    public static void getMaxStoreCount() {
-        is = new InventoryController();
+    public synchronized static void getMaxStoreCount() {
+        stores = new ArrayList<>();
+        sc = new SupplierController();
+        sc.loadSuppliersData();
         maxStoreCount = max(is.getStoreIDs());
     }
 
@@ -34,11 +40,16 @@ class InventoryControllerTest {
         pdm.removeTestProducts();
         CategoryDataMapper cdm = new CategoryDataMapper();
         cdm.removeTestCategories();
+        SuppliersDAO suppliersDAO = new SuppliersDAO();
+        suppliersDAO.removeTestSuppliers();
         StoreDAO storeDAO = new StoreDAO();
-        Collection<Integer> stores = storeDAO.getAll();
+        OrderDAO orderDAO = new OrderDAO();
+        LocationDataMapper locationDataMapper = new LocationDataMapper();
         for (int store : stores) {
             if (store>maxStoreCount) {
                 try {
+                    locationDataMapper.removeByStore(store);
+                    orderDAO.removeByStore(store);
                     srdm.remove(store);
                     storeDAO.remove(store);
                 }
@@ -49,15 +60,53 @@ class InventoryControllerTest {
         }
     }
 
+    //integration test
+    @Test
+    void orderArrived() throws Exception {
+        //setup
+        int cat = is.addCategory("TestCategory", 0).getID();
+        Product prod1 = is.newProduct("TestProduct", cat,2,2,"testManu");
+        Product prod2 = is.newProduct("TestProduct", cat,2,2,"testManu");
+        int supplier = sc.addSupplier("Test-OrderArrived", 2, "address", "Agreement", new ArrayList<>(), new ArrayList<>());
+        sc.addAgreement(supplier,1, "1 2 3 4 5 6 7");
+        sc.addItemToAgreement(supplier, prod1.getId(), 1, "", "", 3, new HashMap<>());
+        sc.addItemToAgreement(supplier, prod2.getId(), 1, "", "", 3, new HashMap<>());
+        int store = is.addStore();
+        stores.add(store);
+        is.addProductToStore(store,Arrays.asList(1),Arrays.asList(1),prod1.getId(),100,200);
+        is.addProductToStore(store,Arrays.asList(1),Arrays.asList(1),prod2.getId(),100,200);
+        int order = sc.addNewOrder(supplier, store);
+        //check for error
+        assertThrows(Exception.class, ()->is.orderArrived(0,0));
+        //check preconditions
+        assertEquals(0,prod1.getTotalInStore(store));
+        assertEquals(0,prod2.getTotalInStore(store));
+        sc.addItemToOrder(supplier,order, prod1.getId(), 200);
+        prod1.getStockReport(store).setInDelivery(200);
+        sc.addItemToOrder(supplier,order, prod2.getId(), 200);
+        prod2.getStockReport(store).setInDelivery(200);
+        //check post conditions
+        assertDoesNotThrow(()->is.orderArrived(order, supplier));
+        assertEquals(200,prod1.getTotalInStore(store));
+        assertEquals(200,prod2.getTotalInStore(store));
+
+    }
+
+//    Order arrivedOrder = supplierController.orderHasArrived(orderID, supplierID);
+//    int orderStoreID = arrivedOrder.getStoreID();
+//        for (OrderItem orderItem : arrivedOrder.getOrderItems()) {
+//        getProduct(orderItem.getProductId()).addItems(orderStoreID, orderItem.getQuantity());
+//    }
+
     @org.junit.jupiter.api.Test
     void addStore() {
         //empty
         int currStore = max(is.getStoreIDs());
         List<Integer> currStores = new ArrayList<>(is.getStoreIDs());
-//        assertIterableEquals(new ArrayList<>(), is.getStoreIDs());
         assertEquals(currStore+1, is.addStore());
         Integer[] actual = is.getStoreIDs().toArray(new Integer[0]);
         currStores.add(currStore+1);
+        stores.add(currStore+1);
         Integer[] expected = currStores.toArray(new Integer[0]);
         assertArrayEquals(actual, expected);
         assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(currStore+1, 1));
@@ -65,6 +114,7 @@ class InventoryControllerTest {
         assertEquals(currStore+2, is.addStore());
         actual = is.getStoreIDs().toArray(new Integer[0]);
         currStores.add(currStore+2);
+        stores.add(currStore+2);
         expected = currStores.toArray(new Integer[0]);
         assertArrayEquals(actual, expected);
         assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(currStore+2, 2));
@@ -74,6 +124,7 @@ class InventoryControllerTest {
         actual = is.getStoreIDs().toArray(new Integer[0]);
         currStores.remove(Integer.valueOf(currStore+2));
         currStores.add(currStore+3);
+        stores.add(currStore+3);
         expected = currStores.toArray(new Integer[0]);
         assertArrayEquals(actual, expected);
         assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(currStore+2, 1));
@@ -85,6 +136,7 @@ class InventoryControllerTest {
         //first
         Integer[] start = new ArrayList<Integer>(is.getStoreIDs()).toArray(new Integer[0]);
         int store = is.addStore();
+        stores.add(store);
         int cat = is.addCategory("TestCategory", 0).getID();
         int prod = is.newProduct("TestProduct", cat,2,2,"testManu").getId();
         is.addProductToStore(store, Arrays.asList(1), Arrays.asList(1), prod, 5,5);
@@ -95,39 +147,12 @@ class InventoryControllerTest {
         assertArrayEquals(actual, start);
         assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(store, prod));
         assertThrows(IllegalArgumentException.class, () -> is.removeStore(store));
-//        is.removeStore(1);
-//        actual = is.getStoreIDs().toArray(new Integer[0]);
-//        expected = new Integer[]{2, 3, 4, 5, 6, 7, 8, 9};
-//        assertArrayEquals(actual, expected);
-//        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(1, 3));
-//
-//        is.removeStore(2);
-//        actual = is.getStoreIDs().toArray(new Integer[0]);
-//        expected = new Integer[]{3, 4, 5, 6, 7, 8, 9};
-//        assertArrayEquals(actual, expected);
-//        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(2, 3));
-//
-//        is.removeStore(6);
-//        actual = is.getStoreIDs().toArray(new Integer[0]);
-//        expected = new Integer[]{3, 4, 5, 7, 8, 9};
-//        assertArrayEquals(actual, expected);
-//        assertThrows(IllegalArgumentException.class, ()->is.getAmountInStore(6, 3));
-//
-//        assertThrows(IllegalArgumentException.class, () -> is.removeStore(6));
-//        actual = is.getStoreIDs().toArray(new Integer[0]);
-//        expected = new Integer[]{3, 4, 5, 7, 8, 9};
-//        assertArrayEquals(actual, expected);
-//        for (int i=0; i<expected.length; i++) {
-//            int finalI = expected[i];
-//            assertDoesNotThrow(()->is.getAmountInStore(finalI, 3));
-//        }
     }
 
     @org.junit.jupiter.api.Test
     void getExpiredItemReportsByProductIllegalEntries() {
         LocalDate today = LocalDate.now();
         LocalDate yesterday = LocalDate.now().minusDays(1);
-        LocalDate beforeTwoDays = LocalDate.now().minusDays(2);
         LocalDate tomorrow = LocalDate.now().plusDays(1);
         LocalDate afterTwoDays = LocalDate.now().plusDays(2);
         List<Integer> pIDs = new ArrayList<>();
@@ -144,6 +169,7 @@ class InventoryControllerTest {
     void getAmountsForMinOrdersTest() {
         int store1 = is.addStore();
         int store2 = is.addStore();
+        stores.add(store1); stores.add(store2);
         int cat = is.addCategory("TestCategory", 0).getID();
         Product prod1 = is.newProduct("TestProduct", cat,2,2,"testManu");
         Product prod2 = is.newProduct("TestProduct", cat,2,2,"testManu");

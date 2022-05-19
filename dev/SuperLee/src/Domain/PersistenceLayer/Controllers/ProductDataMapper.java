@@ -162,7 +162,18 @@ public class ProductDataMapper extends DataMapper<Product> {
     }
 
     public void removeTestProducts() {
-        try{
+        try(Connection connection = getConnection()){
+            ResultSet resultSet = executeQuery(connection,String.format("Select * FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
+            List<Integer> products = new ArrayList<>();
+            while (resultSet.next()) {
+                products.add(resultSet.getInt(ID_COLUMN));
+            }
+            LocationDataMapper locationDataMapper = new LocationDataMapper();
+            for (Integer product : products)
+                locationDataMapper.removeByProduct(product);
+            StockReportDataMapper stockReportDataMapper = new StockReportDataMapper();
+            for (Integer product : products)
+                stockReportDataMapper.removeProduct(product);
             executeNonQuery(String.format("DELETE FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
         } catch (Exception e) {
             e.printStackTrace();

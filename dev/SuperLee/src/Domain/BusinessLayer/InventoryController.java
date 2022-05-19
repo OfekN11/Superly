@@ -44,16 +44,12 @@ public class InventoryController {
     }
 
     //for tests
-    public InventoryController(boolean isTest) {
-        storeIds = new ArrayList<>();
-        categories = new HashMap<>();
-        sales = new HashMap<>();
-        products = new HashMap<>();
-        storeID=1;
-        saleID=1;
-        catID=1;
-        productID=1;
-        supplierController = new SupplierController();
+    private static InventoryController instance;
+    public static synchronized InventoryController getInventoryController() {
+        if (instance==null) {
+            instance = new InventoryController();
+        }
+        return instance;
     }
 
     public void loadTestData() {
@@ -194,21 +190,6 @@ public class InventoryController {
         return sale;
     }
 
-    /*private void copySale(SaleToCustomer sale) {
-        SaleToCustomer newSale = new SaleToCustomer(saleID++, sale.getStartDate(), LocalDate.now(), sale.getPercent(), sale.getCategories(), sale.getProducts());
-        SALE_DATA_MAPPER.insert(newSale);
-        Product product;
-        for (Integer pID: newSale.getProducts()) {
-            //should we throw error if only one of them is illegal
-            product = getProduct(pID);
-            product.addSale(newSale);
-        }
-        Category category;
-        for (Integer cID: newSale.getCategories()) {
-            category = getCategory(cID);
-            if (category!=null)
-                category.addSale(newSale);        }
-    }*/
 
     private void removeSaleFromProductsAndCategories(SaleToCustomer sale) {
         Product product;
