@@ -528,7 +528,15 @@ public class SupplierController {
         ArrayList<Order> result = ordersForTomorrow.get("not deletable");
         result.addAll(ordersForTomorrow.get("deletable"));
 
+        insertToSuppliersBusiness(result);
+
         return result;
+    }
+
+    private void insertToSuppliersBusiness(ArrayList<Order> result) {
+        for(Order order : result){
+            suppliersDAO.getSupplier(order.getSupplierId()).addOrderNotToDB(order);
+        }
     }
 
     private void createOrderAccordingToCheapestSupplier(Map<Integer, Map<Integer, Integer>> updatedQuantity, Map<String, ArrayList<Order>> orders) throws Exception {
@@ -562,9 +570,6 @@ public class SupplierController {
 
                 // replace the old order with the new One
                 //suppliersDAO.getSupplier(order.getSupplierId()).ReplaceOrderInList();
-
-
-
                 return true;
             }
         }
@@ -700,6 +705,8 @@ public class SupplierController {
 
         ArrayList<Order> newOrdersFromArrivalTimePassed = createNewOrdersFromArrivalTimePassed(ordersArrivalTimePassed);
         result.put("deletable", newOrdersFromArrivalTimePassed);
+
+
 
         return result;
     }
