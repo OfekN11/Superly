@@ -105,4 +105,12 @@ public class AgreementController {
         routineDAO.setLastOrderId(supplierId, orderId);
 
     }
+
+    public void removeDayOfDelivery(int supplierID, int day) throws SQLException {
+        routineDAO.removeDayOfDelivery(supplierID, day);
+    }
+
+    public void changeDaysOfDelivery(int supplierId, List<Integer> daysOfDelivery, AgreementController agreementController) throws SQLException {
+        routineDAO.changeDaysOfDelivery(supplierId, daysOfDelivery);
+    }
 }

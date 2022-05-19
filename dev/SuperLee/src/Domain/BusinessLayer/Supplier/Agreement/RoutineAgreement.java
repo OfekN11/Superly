@@ -22,6 +22,7 @@ public class RoutineAgreement extends Agreement {
         daysOfDelivery = days;
         this.lastOrderId = lastOrderId;
     }
+
     public static List<Integer> daysStringToDay(String days){
         List<Integer> list = new LinkedList<>();
         int d = 0;
@@ -116,7 +117,7 @@ public class RoutineAgreement extends Agreement {
         daysOfDelivery = list;
     }
 
-    public void addDaysOfDelivery(String days) throws Exception {
+    public void addDaysOfDelivery(int supplierId, String days, AgreementController agreementController) throws Exception {
         List<Integer> list = daysStringToDay(days);
 
         if(list.isEmpty()){
@@ -130,6 +131,7 @@ public class RoutineAgreement extends Agreement {
         }
 
         Collections.sort(daysOfDelivery);
+        agreementController.changeDaysOfDelivery(supplierId, daysOfDelivery, agreementController);
     }
 
     public void removeDayOfDelivery(Integer day){

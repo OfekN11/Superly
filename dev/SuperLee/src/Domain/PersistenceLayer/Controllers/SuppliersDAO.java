@@ -345,7 +345,7 @@ public class SuppliersDAO extends DataMapper<Supplier> {
                 supplierIds.add(id);
                 Supplier currSupplier = new Supplier(id, instanceResult.getInt(2),
                         instanceResult.getString(3), instanceResult.getString(4), instanceResult.getString(5)
-                        , contactDAO.getAllSupplierContact(id), manufacturerDAO.getAllSupplierManufacturer(id));
+                        , contactDAO.getAllSupplierContact(id), manufacturerDAO.getAllSupplierManufacturer(id), this);
                 SUPPLIER_IDENTITY_MAP.put(String.valueOf(currSupplier.getId()), currSupplier);
             }
         } catch (Exception throwables) {
@@ -390,7 +390,7 @@ public class SuppliersDAO extends DataMapper<Supplier> {
                 ResultSet instanceResult = select(connection, id);
                 Supplier currSupplier = new Supplier(id, instanceResult.getInt(2),
                         instanceResult.getString(3), instanceResult.getString(4), instanceResult.getString(5)
-                        , contactDAO.getAllSupplierContact(id), manufacturerDAO.getAllSupplierManufacturer(id));
+                        , contactDAO.getAllSupplierContact(id), manufacturerDAO.getAllSupplierManufacturer(id), this);
                 SUPPLIER_IDENTITY_MAP.put(String.valueOf(currSupplier.getId()), currSupplier);
             }
             catch (Exception throwables) {

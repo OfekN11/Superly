@@ -1,19 +1,14 @@
 package Domain.PersistenceLayer.Controllers;
 
-import Domain.BusinessLayer.Inventory.Category;
-import Domain.BusinessLayer.Supplier.Contact;
 import Domain.BusinessLayer.Supplier.Order;
 import Domain.BusinessLayer.Supplier.OrderItem;
-import Domain.BusinessLayer.Supplier.Supplier;
 import Domain.PersistenceLayer.Abstract.DataMapper;
 import Domain.PersistenceLayer.Abstract.LinkDAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class OrderDAO extends DataMapper<Order> {
@@ -35,10 +30,12 @@ public class OrderDAO extends DataMapper<Order> {
         orderItemDAO = new OrderItemDAO();
     }
 
-    public Order getOrder(int orderId) throws Exception {
+    public Order getOrder(int orderId, SuppliersDAO suppliersDAO) throws Exception {
         if(ORDER_IDENTITY_MAP.containsKey(String.valueOf(orderId)))
             return ORDER_IDENTITY_MAP.get(String.valueOf(orderId));
-        return get(String.valueOf(orderId));
+        Order order = get(String.valueOf(orderId));
+        order.uploadItemsFromDB(uploadAllItemsFromOrder(order.getId(), suppliersDAO.getAgreementItemDAO()));
+        return order;
     }
 
 
@@ -110,10 +107,10 @@ public class OrderDAO extends DataMapper<Order> {
         orderItemDAO.updateItemFinalPrice( orderId, productId, finalPrice);
     }
 
-    public boolean containsKey(int id) throws Exception {
+    public boolean containsKey(int id, SuppliersDAO suppliersDAO) throws Exception {
         if(ORDER_IDENTITY_MAP.containsKey(String.valueOf(id)))
             return true;
-        Order order = getOrder(id);
+        Order order = getOrder(id, suppliersDAO);
 
         return order != null;
     }

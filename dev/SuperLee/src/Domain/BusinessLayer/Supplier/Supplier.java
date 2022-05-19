@@ -12,6 +12,7 @@ import Domain.PersistenceLayer.Controllers.SuppliersDAO;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Supplier {
@@ -27,6 +28,7 @@ public class Supplier {
 
     private HashMap<Integer, Order> orders;
 
+    private SuppliersDAO suppliersDAO;
 
     private final int ROUTINE  = 1;
     private final int BY_ORDER  = 2;
@@ -37,6 +39,7 @@ public class Supplier {
 
     public Supplier(String name, int bankNumber, String address,String payingAgreement, ArrayList<Contact> contacts, ArrayList<String> manufacturers, SuppliersDAO dao){
 
+        this.suppliersDAO = dao;
         if(globalID == -1){
             findGlobalIDFromDataBase(dao);
         }
@@ -70,7 +73,8 @@ public class Supplier {
         agreement = null;
     }
 
-    public Supplier(int id, int bankNumber, String address, String name, String payingAgreement,ArrayList<Contact> contacts, ArrayList<String> manufacturers ){
+    public Supplier(int id, int bankNumber, String address, String name, String payingAgreement,ArrayList<Contact> contacts, ArrayList<String> manufacturers ,SuppliersDAO dao){
+        suppliersDAO = dao;
         this.id = id;
         this.name = name;
         this.bankNumber = bankNumber;
@@ -397,13 +401,13 @@ public class Supplier {
         ((ByOrderAgreement) agreement).setDeliveryDays(days, id, agreementController);
     }
 
-    public void addDaysOfDelivery(String days) throws Exception {
+    public void addDaysOfDelivery(String days, AgreementController agreementController) throws Exception {
         agreementExists();
         if(!(agreement instanceof RoutineAgreement)){
             throw new Exception("The supplier's agreement is not Routine agreement");
         }
 
-        ((RoutineAgreement) agreement).addDaysOfDelivery(days);
+        ((RoutineAgreement) agreement).addDaysOfDelivery(id, days, agreementController);
     }
 
     public void removeDayOfDelivery(int day) throws Exception {
@@ -556,8 +560,10 @@ public class Supplier {
         List<String> result = new ArrayList<>();
         result.add(String.valueOf(currOrder.getId()));
 
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
         String strDate = formatter.format(currOrder.getDate());
+
         result.add(strDate);
 
         List<OrderItem> items = currOrder.getOrderItems();
@@ -578,8 +584,8 @@ public class Supplier {
     public boolean orderExists(int id, OrderDAO orderDAO) throws Exception {
         if(orders.containsKey(id) )
             return true;
-        if(orderDAO.containsKey(id)){
-            Order order = orderDAO.getOrder(id);
+        if(orderDAO.containsKey(id, suppliersDAO)){
+            Order order = orderDAO.getOrder(id, suppliersDAO);
             orders.put(order.getId(), order);
             return true;
         }

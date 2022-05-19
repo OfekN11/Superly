@@ -62,21 +62,16 @@ public class ViewOrder extends Screen {
             return;
         }
 
-
+        int orderId = -1;
         try {
-            int orderId = controller.order(supplierId, getStoreID());
+            orderId = controller.order(supplierId, getStoreID());
             System.out.println("Order " + orderId + " added successfully.");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        //if(!r){
-        //    System.out.println("Returning, please try again.\n");
-        //    return;
-        //}
-
-        addItemsToOrder(supplierId, input);
+        addItemsToOrder(supplierId, orderId);
 
         System.out.println("Order was placed successfully, returning.\n");
     }
@@ -94,16 +89,13 @@ public class ViewOrder extends Screen {
 
             itemID = getInput();
 
-            System.out.println("ID By Supplier:");
-
-            idBySupplier = getInput();
-
             System.out.println("Quantity:");
 
             quantity = getInput();
 
             boolean r = false;
             try {
+                System.out.println("Item added successfully");
                 r = controller.addItemToOrder(supplierID, orderId, itemID, quantity);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -253,9 +245,6 @@ public class ViewOrder extends Screen {
                 return;
             }
 
-            System.out.println("ID By Supplier:");
-
-            idBySupplier = getInput();
 
             System.out.println("Quantity:");
 
@@ -269,6 +258,7 @@ public class ViewOrder extends Screen {
             }
 
             if(r){
+                System.out.println("Item added successfully!\n");
                 System.out.println("Choose:");
                 System.out.println("1) Add another item");
                 System.out.println("2) Back");

@@ -2,6 +2,7 @@ package Domain.ServiceLayer.SupplierObjects;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -32,8 +33,9 @@ public class ServiceOrderObject {
     }
 
     public String toString(){
-        SimpleDateFormat d = new SimpleDateFormat("dd/MM/YY");
-        return "Order's ID: " + id + "\nDate: " + d.format(date) + "\nOrderItems:\n" + printItems();
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+        //String strDate = formatter.format(date);
+        return "Order's ID: " + id + "\nDate: " + date.toString() + "\nOrderItems:\n" + printItems();
     }
 
     private String printItems(){

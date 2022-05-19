@@ -62,7 +62,7 @@ public class RoutineAgreementTest {
         try{
             agreement.setDaysOfDelivery("1 2", 1, dao);
 
-            agreement.addDaysOfDelivery(s);
+            agreement.addDaysOfDelivery(1, s, dao);
 
             assertEquals(list, agreement.getDaysOfDelivery());
         }

@@ -165,7 +165,7 @@ public class Order {
         }
 
         for(OrderItem item : orderItems){
-            if(item.getProductId() == id){
+            if(item.getProductId() == itemId){
                 orderDAO.updateItemQuantity(id, item.getProductId(), quantity);
                 orderDAO.updateItemDiscount(id, item.getProductId(), discount);
                 orderDAO.updateItemFinalPrice(id, item.getProductId(), finalPrice);

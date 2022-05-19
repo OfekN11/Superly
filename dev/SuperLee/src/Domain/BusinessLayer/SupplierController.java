@@ -301,7 +301,8 @@ public class SupplierController {
             throw new Exception("The supplier does not exists!");
         }
 
-        suppliersDAO.getSupplier(supplierID).addDaysOfDelivery(days);
+        suppliersDAO.getSupplier(supplierID).addDaysOfDelivery(days, suppliersDAO.getAgreementController());
+
     }
 
     public void removeDayOfDelivery(int supplierID, int day) throws Exception{
@@ -310,6 +311,7 @@ public class SupplierController {
         }
 
         suppliersDAO.getSupplier(supplierID).removeDayOfDelivery(day);
+        suppliersDAO.getAgreementController().removeDayOfDelivery(supplierID,day);
     }
 
     public String getItem(int supplierID, int itemId) throws Exception {
@@ -435,7 +437,6 @@ public class SupplierController {
         }
         Order order = suppliersDAO.getSupplier(supId).addNewOrder(storeId, orderDAO, suppliersDAO.getAgreementController());
 
-        //insertToOrderDAO( order ); its happening inside addNewOrder
         return order.getId();
     }
 
@@ -633,7 +634,8 @@ public class SupplierController {
         return new OrderItem( productId, currItem.getIdBySupplier() , currItem.getName() , quantity, currItem.getPricePerUnit(), currItem.getDiscount(quantity), currItem.calculateTotalPrice(quantity));
     }
 
-    private int getTheCheapestSupplier(int productId, int quantity) {
+    //public for testing
+    public int getTheCheapestSupplier(int productId, int quantity) {
         int supplierId = -1;
         double finalPrice = Double.MAX_VALUE;
         try {
@@ -705,7 +707,8 @@ public class SupplierController {
     }
 
 
-    private ArrayList<Integer> getAllRoutineSuppliersDeliveringTomorrow() {
+    //public for testing!
+    public ArrayList<Integer> getAllRoutineSuppliersDeliveringTomorrow() {
         ArrayList<Integer> result = new ArrayList<>();
         for(Supplier supplier : suppliersDAO.getAllSuppliers()){
             try {
@@ -718,7 +721,8 @@ public class SupplierController {
         return result;
     }
 
-    private ArrayList<Order> uploadLastOrderForRoutineSupplier(ArrayList<Integer> supplierIds) {
+    //public for testing
+    public ArrayList<Order> uploadLastOrderForRoutineSupplier(ArrayList<Integer> supplierIds) {
         ArrayList<Integer> orderIds = new ArrayList<>();
         Supplier currSupplier;
         for(Integer supplierId : supplierIds){

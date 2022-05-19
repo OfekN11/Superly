@@ -295,7 +295,7 @@ public class ViewSuppliersMenu extends Screen {
                 return;
             }
 
-            System.out.println("ID:");
+            System.out.println("ID by supplier:");
             idBySupplier = getInput();
 
             System.out.println("Name:");
