@@ -77,6 +77,13 @@ public class Product {
             throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
         return getStockReport(store).getAmountInStore();
     }
+
+    public Integer getTotalInStore(int store) {
+        if (getStockReport(store)==null)
+            throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
+        return getStockReport(store).getTotalAmount();
+    }
+
     public Integer getInWarehouse(int store) {
         if (stockReports.get(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);

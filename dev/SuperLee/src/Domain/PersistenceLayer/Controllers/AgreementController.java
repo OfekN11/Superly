@@ -54,7 +54,7 @@ public class AgreementController {
         routineDAO.remove(id);
         byOrderDAO.remove(id);
         selfTransportDAO.remove(id);
-        agreementItemDAO.removeSupplier();
+        agreementItemDAO.removeSupplier(id);
     }
 
 

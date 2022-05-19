@@ -406,4 +406,22 @@ public class SuppliersDAO extends DataMapper<Supplier> {
         }
         return ids;
     }
+
+    public void removeTestSuppliers() {
+        try (Connection connection = getConnection()){
+            ResultSet resultSet = executeQuery(connection,String.format("Select * FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
+            List<Integer> suppliers = new ArrayList<>();
+            while (resultSet.next()) {
+                suppliers.add(resultSet.getInt(ID_COLUMN));
+            }
+            for (Integer supplier : suppliers) {
+                contactDAO.remove(supplier);
+                manufacturerDAO.remove(supplier);
+                agreementController.removeSupplier(supplier);
+            }
+            executeNonQuery(String.format("DELETE FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -701,4 +701,13 @@ public class Supplier {
         result.add(orderItem);
         return result;
     }
+
+    public void addOrderNotToDB(Order order) {
+        if(orders.containsKey(order.getId())){
+            orders.replace(order.getId(), order);
+        }
+        else{
+            orders.put(order.getId(), order);
+        }
+    }
 }

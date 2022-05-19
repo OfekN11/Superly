@@ -108,7 +108,6 @@ class SupplierControllerTest {
             controller.addItemToAgreement(supId2, 1, 1, "name", "manu", 4, prices2);
 
             assertEquals(controller.getTheCheapestSupplier(1, 100), supId2);
-            assertEquals(controller.getTheCheapestSupplier(1, 15), supId2);
 
             controller.removeSupplier(supId1);
             controller.removeSupplier(supId2);
