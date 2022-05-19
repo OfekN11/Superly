@@ -1,5 +1,5 @@
 package Domain.DAL.Controllers.EmployeeMappers;
-import Domain.Business.Objects.Storekeeper;
+import Domain.Business.Objects.Employee.Storekeeper;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;

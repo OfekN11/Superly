@@ -1,5 +1,5 @@
 package Domain.DAL.Controllers.EmployeeMappers;
-import Domain.Business.Objects.Employee;
+import Domain.Business.Objects.Employee.Employee;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Abstract.ObjectDateMapper;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;

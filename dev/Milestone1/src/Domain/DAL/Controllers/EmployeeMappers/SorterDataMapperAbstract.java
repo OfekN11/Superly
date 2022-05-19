@@ -1,6 +1,6 @@
 package Domain.DAL.Controllers.EmployeeMappers;
 
-import Domain.Business.Objects.Sorter;
+import Domain.Business.Objects.Employee.Sorter;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;

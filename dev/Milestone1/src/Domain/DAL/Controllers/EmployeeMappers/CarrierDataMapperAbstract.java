@@ -1,5 +1,5 @@
 package Domain.DAL.Controllers.EmployeeMappers;
-import Domain.Business.Objects.Carrier;
+import Domain.Business.Objects.Employee.Carrier;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Controllers.EmployeeLinks.CarrierLicensesDAO;
 
