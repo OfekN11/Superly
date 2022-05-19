@@ -37,12 +37,12 @@ public abstract class Shift {
     private Set<String> logistics_managerIDs;
     private Set<String> transport_managerIDs;
 
-    private Set<String> constraints;
+    private Set<String> availableEmployees;
 
     // constructors
     public Shift(LocalDate workday, String shiftManagerId,
                  int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,int transport_managersCount,
-                 Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs,Set<String>transportManagerIDs, Set<String> constraints) throws Exception {
+                 Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs,Set<String>transportManagerIDs, Set<String> availableEmployees) throws Exception {
         this.workday = workday;
         if (shiftManagerId == null)
             throw new Exception("A shift has to have a shift manager");
@@ -71,7 +71,7 @@ public abstract class Shift {
         this.hr_managerIDs = new HashSet<>(hr_managerIDs);
         this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
         this.transport_managerIDs = new HashSet<>(transportManagerIDs);
-        this.constraints = constraints;
+        this.availableEmployees = availableEmployees;
     }
 
 
@@ -263,12 +263,12 @@ public abstract class Shift {
         return transport_managerIDs;
     }
 
-    public Set<String> getConstraints() {
-        return constraints;
+    public Set<String> getAvailableEmployees() {
+        return availableEmployees;
     }
 
-    public void setConstraints(Set<String> constraints) {
-        this.constraints = constraints;
+    public void setAvailableEmployees(Set<String> availableEmployees) {
+        this.availableEmployees = availableEmployees;
     }
 
 
