@@ -1,5 +1,7 @@
 package PresentationLayer.Screens.SupplierScreens;
 
+import Domain.ServiceLayer.SupplierObjects.ServiceOrderItemObject;
+import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
 import PresentationLayer.Screens.Screen;
 import Domain.ServiceLayer.SupplierObjects.ServiceSupplierObject;
 
@@ -20,8 +22,10 @@ public class ViewSuppliersMenu extends Screen {
             "New agreement",           //4
             "View contacts",       //5
             "View represented manufacturers",            //6
-            "View order", //7
-            "Exit"                          //8
+            "View order",                   //7
+            "View all orders",              //8
+            "View all discount items",      //9
+            "Exit"                          //10
     };
 
 
@@ -117,6 +121,12 @@ public class ViewSuppliersMenu extends Screen {
                         _continue = false;
                         break;
                     case 8:
+                        viewAllOrders();
+                        break;
+                    case 9:
+                        viewOrderItemsDiscount();
+                        break;
+                    case 10:
                         _continue = false;
                         endRun();
                         break;
@@ -125,6 +135,43 @@ public class ViewSuppliersMenu extends Screen {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }
+        }
+    }
+
+    private void viewOrderItemsDiscount() {
+
+        try {
+            ArrayList<ServiceOrderItemObject> r = controller.getAllOrdersItemsInDiscounts(supplierId);
+            if(r != null){
+                for(ServiceOrderItemObject orderItemObject : r){
+                    float originalPrice = orderItemObject.getQuantity() * orderItemObject.getPricePerUnit();
+                    System.out.println(orderItemObject.toStringDiscount(originalPrice) + "\n");
+                }
+            }
+            else{
+                System.out.println("No Order Items available");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+
+        }
+    }
+
+    private void viewAllOrders() {
+
+        try {
+            ArrayList<ServiceOrderObject> r = controller.getAllOrdersForSupplier(supplierId);
+            if(r != null){
+                for(ServiceOrderObject orderObject : r){
+                    System.out.println(orderObject.toString());
+                }
+            }
+            else{
+                System.out.println("No Orders available");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+
         }
     }
 

@@ -508,7 +508,8 @@ public class SupplierController {
         return order;
     }
 
-    private Order getOrderObject(int supplierID, int orderID) throws Exception {
+    //public for testing
+    public Order getOrderObject(int supplierID, int orderID) throws Exception {
         if(!supplierExist(supplierID)){
             throw new Exception("The supplier does not exists!");
         }
@@ -755,7 +756,8 @@ public class SupplierController {
         return result;
     }
 
-    private ArrayList<Order> filterOrdersArrivalTimePassed(ArrayList<Order> orders) {
+    //public for testing
+    public ArrayList<Order> filterOrdersArrivalTimePassed(ArrayList<Order> orders) {
         ArrayList<Order> result = new ArrayList<>();
         for(Order order : orders){
             if(order.passed())
@@ -952,4 +954,20 @@ public class SupplierController {
     public ArrayList<Integer> getSuppliersIds() {
         return suppliersDAO.getAllSuppliersIds();
     }
+
+
+    public List<Integer> getAllOrderIdsForSupplier(int supplierId) {
+        return orderDAO.getSupplierOrdersIds(supplierId);
+    }
+
+    public List<String> getAllOrdersItemsInDiscount(int supplierId) {
+        List<String> result = new ArrayList<>();
+        List<OrderItem> items = orderDAO.getItemsInDiscountInSUpplier(supplierId, suppliersDAO.getAgreementItemDAO());
+        for(OrderItem item : items){
+            result.addAll(item.getStringInfo());
+        }
+        return result;
+    }
+
+
 }

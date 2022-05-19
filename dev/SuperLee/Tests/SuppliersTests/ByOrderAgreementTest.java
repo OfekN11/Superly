@@ -2,6 +2,7 @@ package SuppliersTests;
 
 import Domain.BusinessLayer.Supplier.Agreement.*;
 import Domain.PersistenceLayer.Controllers.AgreementController;
+import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
+@NotThreadSafe
 public class ByOrderAgreementTest {
     private ByOrderAgreement agreement;
     private AgreementController controller;
@@ -31,15 +33,5 @@ public class ByOrderAgreementTest {
         assertEquals(22, agreement.daysToDelivery());
     }
 
-    @Test
-    public void test_setDeliveryDays(){
-        try {
-            agreement.setDeliveryDays(17, 1, controller);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        assertEquals(17, agreement.getDeliveryDays());
-    }
 
 }

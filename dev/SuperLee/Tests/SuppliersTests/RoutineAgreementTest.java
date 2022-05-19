@@ -2,19 +2,23 @@ package SuppliersTests;
 
 import Domain.BusinessLayer.Supplier.Agreement.RoutineAgreement;
 import Domain.PersistenceLayer.Controllers.AgreementController;
+import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@NotThreadSafe
 public class RoutineAgreementTest {
 
     private RoutineAgreement agreement;
     private List<Integer> days;
     private AgreementController dao;
+    private int supplierId = 1000;
 
     @BeforeEach
     public void setUp(){
@@ -27,6 +31,8 @@ public class RoutineAgreementTest {
     @Test
     public void test_isTransporting(){
         assertTrue(agreement.isTransporting());
+        removeSup();
+
     }
 
     @Test
@@ -35,6 +41,9 @@ public class RoutineAgreementTest {
         list.add(1); list.add(2); list.add(3); list.add(4); list.add(5); list.add(6); list.add(7);
 
         assertEquals(list, agreement.getDaysOfDelivery());
+
+        removeSup();
+
     }
 
     @Test
@@ -44,13 +53,16 @@ public class RoutineAgreementTest {
         list.add(1); list.add(2); list.add(3);
 
         try{
-            agreement.setDaysOfDelivery(s, 1, dao);
+            agreement.setDaysOfDelivery(s, supplierId, dao);
 
             assertEquals(list, agreement.getDaysOfDelivery());
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+
+        removeSup();
+
     }
 
     @Test
@@ -60,15 +72,18 @@ public class RoutineAgreementTest {
         list.add(1); list.add(2); list.add(5); list.add(6);
 
         try{
-            agreement.setDaysOfDelivery("1 2", 1, dao);
+            agreement.setDaysOfDelivery("1 2", supplierId, dao);
 
-            agreement.addDaysOfDelivery(1, s, dao);
+            agreement.addDaysOfDelivery(supplierId, s, dao);
 
             assertEquals(list, agreement.getDaysOfDelivery());
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+
+        removeSup();
+
     }
 
     @Test
@@ -79,5 +94,16 @@ public class RoutineAgreementTest {
         list.add(1); list.add(2); list.add(3); list.add(4); list.add(6); list.add(7);
 
         assertEquals(list, agreement.getDaysOfDelivery());
+
+        removeSup();
+
+    }
+
+    void removeSup(){
+        try {
+            dao.removeSupplier(supplierId);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

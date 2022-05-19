@@ -4,6 +4,7 @@ import Domain.ServiceLayer.InventoryObjects.*;
 import Domain.ServiceLayer.InventoryService;
 import Domain.ServiceLayer.Result;
 import Domain.ServiceLayer.SupplierObjects.ServiceItemObject;
+import Domain.ServiceLayer.SupplierObjects.ServiceOrderItemObject;
 import Domain.ServiceLayer.SupplierObjects.ServiceOrderObject;
 import Domain.ServiceLayer.SupplierObjects.ServiceSupplierObject;
 import Domain.ServiceLayer.SupplierService;
@@ -511,6 +512,27 @@ public class BackendController {
 
     public ArrayList<Integer> getSuppliersID() throws Exception {
         Result<ArrayList<Integer>> result = supplierService.getSuppliersIds();
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
+    public ArrayList<ServiceOrderObject> getAllOrdersForSupplier(int supplierId) throws Exception {
+        Result<ArrayList<ServiceOrderObject>> result = supplierService.getAllOrdersForSupplier(supplierId);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
+    public ArrayList<ServiceOrderItemObject> getAllOrdersItemsInDiscounts(int supplierId) throws Exception {
+        Result<ArrayList<ServiceOrderItemObject>> result = supplierService.getAllOrdersItemsInDiscounts(supplierId);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
+    public List<Integer> geOrdersID(int supplierId) throws Exception {
+        Result<List<Integer>> result = supplierService.getOrdersIds(supplierId);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();

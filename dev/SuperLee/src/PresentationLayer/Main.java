@@ -17,13 +17,13 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        //BackendController controller = new BackendController();
+        BackendController controller = new BackendController();
         //ArrayList products = new ArrayList(); products.add(1);
 //        Result addSale = controller.addSale(products, products, 5, LocalDate.of(2022, 05, 15),LocalDate.of(2022, 05, 18));
 //        Result getSale = controller.getSaleHistoryByProduct(1);
         //System.out.println("done");
-        testSuppliers();
-        //new Thread(new MainMenu(controller)).start();
+        //testSuppliers();
+        new Thread(new MainMenu(controller)).start();
     }
 
 
@@ -48,9 +48,9 @@ public class Main {
         Map<Integer, Integer> item1 = new HashMap<>();
         //Map<Integer, Integer> item2 = new HashMap<>();
 
-        shortage.put(1, item1);
+        shortage.put(2, item1);
 
-        item1.put(5, 200);
+        item1.put(1, 1);
 
         try{
             supplierController.createAllOrders(shortage);
