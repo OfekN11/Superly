@@ -1,5 +1,6 @@
 package Domain.Business.Objects;
 import Domain.Business.Objects.Employee.Employee;
+import Domain.Business.Objects.Employee.Storekeeper;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
@@ -17,7 +18,7 @@ public class EmployeeManagementTest {
     public void EditName() {
         Employee employee = null;
         try {
-            employee = new Storekeeper("2","psy","asd",2,"dsd0",date,certifications);
+            employee = new Storekeeper("9","psy","asd",2,date,certifications);
             String preName =employee.getName();
             employee.setName("Roi");
             assertNotEquals(preName,employee.getName());
@@ -30,7 +31,7 @@ public class EmployeeManagementTest {
     public void EditEmployeeEmploymentConditions() {
         Employee employee = null;
         try {
-            employee = new Storekeeper("2","psy","asd",2,"dsd0",date,certifications);
+            employee = new Storekeeper("9","psy","asd",2,date,certifications);
             String preName =employee.getEmploymentConditions();
             employee.setName("Roi");
             employee.updateEmploymentConditions(JobTitles.Logistics_Manager);

@@ -36,7 +36,7 @@ public class CarrierDAO extends AbstractEmployeeDAO<Carrier> {
 
     @Override
     protected Carrier buildObject(ResultSet instanceResult) throws Exception {
-        return new Carrier(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getString(5),instanceResult.getDate(6).toLocalDate(),getEmployeeCertificationController().get(instanceResult.getString(1)),carrierLicensesDAO.get(instanceResult.getNString(1)));
+        return new Carrier(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getDate(6).toLocalDate(),getEmployeeCertificationController().get(instanceResult.getString(1)),carrierLicensesDAO.get(instanceResult.getNString(1)));
     }
 
     @Override

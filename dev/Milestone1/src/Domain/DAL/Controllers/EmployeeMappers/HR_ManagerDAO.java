@@ -7,12 +7,10 @@ import java.util.*;
 
 public class HR_ManagerDAO extends AbstractEmployeeDAO<HR_Manager> {
     private static Map<String, HR_Manager> HR_MANAGERS_MAP = new HashMap<>();
-    EmployeeCertificationDAO employeeCertificationController ;
 
 
     public HR_ManagerDAO() {
         super("HRManagers");
-        employeeCertificationController = new EmployeeCertificationDAO();
     }
 
     @Override
@@ -22,6 +20,6 @@ public class HR_ManagerDAO extends AbstractEmployeeDAO<HR_Manager> {
 
     @Override
     protected HR_Manager buildObject(ResultSet instanceResult) throws Exception {
-        return new HR_Manager(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getString(5),instanceResult.getDate(6).toLocalDate(),employeeCertificationController.get(instanceResult.getString(1)));
+        return new HR_Manager(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getDate(6).toLocalDate(),employeeCertificationController.get(instanceResult.getString(1)));
     }
 }

@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class DestinationDocumentDAO extends DAO {
     private Map<Integer, DestinationDocument> DESTINATION_DOCUMENT_IDENTITY_MAP = new HashMap<>();
-    public DestinationDocumentDAO(String tableName) {
-        super(tableName);
+    public DestinationDocumentDAO() {
+        super("DestinationsDocuments");
         try(Connection connection = getConnection()) {
             ResultSet resultSet= select(connection);
             while (resultSet.next()){

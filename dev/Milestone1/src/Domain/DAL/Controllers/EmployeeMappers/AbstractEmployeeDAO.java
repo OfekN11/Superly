@@ -12,7 +12,7 @@ import java.util.Set;
 public abstract class AbstractEmployeeDAO<T extends Employee> extends DateMapper<T> {
 
     // fields
-    private final EmployeeCertificationDAO employeeCertificationController;
+    protected final EmployeeCertificationDAO employeeCertificationController;
 
     public AbstractEmployeeDAO(String tableName) {
         super(tableName);

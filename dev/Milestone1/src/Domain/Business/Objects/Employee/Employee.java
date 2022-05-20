@@ -89,7 +89,7 @@ public abstract class Employee {
         return employmentConditions;
     }
 
-    protected void updateEmploymentConditions(JobTitles title){
+    public void updateEmploymentConditions(JobTitles title){
         this.employmentConditions =
                 "Name: " + name
                         + "\nID: " + id
