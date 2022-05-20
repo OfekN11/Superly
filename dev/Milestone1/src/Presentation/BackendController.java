@@ -174,6 +174,15 @@ public class BackendController {
         return result.getValue();
     }
 
+    //TODO: try to get rid of this
+
+    public String getEmploymentConditionsOf(String id) throws Exception {
+        Result<String> result = employeeService.getEmploymentConditionsOf(id);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
     //UPDATE
 
     public void editEmployeeName(Presentation.Screens.Employee employee, String newName) throws Exception {
@@ -266,8 +275,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Set<Shift> getEmployeeShiftsBetween(String id, LocalDate start, LocalDate end) throws Exception {
-        Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(id, start, end);
+    public Set<Shift> getEmployeeShiftsBetween(Presentation.Screens.Employee employee, LocalDate start, LocalDate end) throws Exception {
+        Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(employee.getID(), start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
@@ -322,6 +331,18 @@ public class BackendController {
     }
 
     //UPDATE
+
+    public void registerToConstraint(Presentation.Screens.Employee employee, Shift shift) throws Exception {
+        Result<Object> result = shiftService.registerAsAvailable(shift.date, shift.getType(), employee.getID());
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+    }
+
+    public void unregisterFromConstraint(Presentation.Screens.Employee employee, Shift shift) throws Exception{
+        Result<Object> result = shiftService.unregisterFromAvailable(shift.date, shift.getType(), employee.getID());
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+    }
 
     public void editShiftManagerID(Presentation.Screens.Shift shift, String shiftManagerId) throws Exception {
         validateID(shiftManagerId);
@@ -428,15 +449,6 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    //TODO: try to get rid of this
-
-    public String getEmploymentConditionsOf(String id) throws Exception {
-        Result<String> result = employeeService.getEmploymentConditionsOf(id);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-        return result.getValue();
-    }
-
     //
     private void throwIfError(Result result) throws Exception {
         if (result.isError())
@@ -497,6 +509,13 @@ public class BackendController {
 
     public Set<Employee> getAvailableEmployeesFor(LocalDate date, ShiftTypes type) throws Exception {
         Result<Set<Employee>> result = shiftService.getAvailableEmployeesFor(date, type);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
+    public Set<Shift> getEmployeeConstraintsBetween(Presentation.Screens.Employee employee, LocalDate start, LocalDate end) throws Exception {
+        Result<Set<Shift>> result = shiftService.getEmployeeConstraintsBetween(employee.getID(), start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();

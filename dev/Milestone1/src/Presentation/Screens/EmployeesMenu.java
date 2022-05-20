@@ -5,7 +5,6 @@ import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.util.EmployeeComparator;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;

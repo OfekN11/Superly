@@ -1,9 +1,8 @@
 package Domain.Service.Objects;
 
 import Globals.Enums.ShiftTypes;
+import Globals.util.HumanInteraction;
 import Presentation.Screens.ScreenShiftFactory;
-
-import java.text.SimpleDateFormat;
 
 public class MorningShift extends Shift{
     public MorningShift(Domain.Business.Objects.Shift.MorningShift bShift) {
@@ -12,7 +11,7 @@ public class MorningShift extends Shift{
 
     @Override
     public String toString() {
-        return "Morning shift: " + new SimpleDateFormat("dd-MM-yyyy").format(date);
+        return "Morning shift: " + date.format(HumanInteraction.dateFormat);
     }
 
     @Override

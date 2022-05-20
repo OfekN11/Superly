@@ -2,12 +2,14 @@ package Presentation.Screens;
 
 import Domain.Service.Objects.Shift;
 import Globals.Enums.Certifications;
-import Globals.Enums.ShiftTypes;
 import Globals.util.ShiftComparator;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static Globals.util.HumanInteraction.*;
 
 public abstract class Employee extends Screen {
     private static final String[] menuOptions = {
@@ -95,8 +97,7 @@ public abstract class Employee extends Screen {
             try {
                 name = scanner.nextLine();
                 if (name.equals("-1")) {
-                    System.out.println("Operation Canceled");
-                    return;
+                    operationCancelled();
                 }
                 else {
                     System.out.println("Entered name: " + name);
@@ -108,8 +109,8 @@ public abstract class Employee extends Screen {
                 System.out.println("Please try again");
             }
         }
-        System.out.println("Updated name: " + name);
         setName(name);
+        System.out.println("Updated name: " + name);
     }
 
     private void updateBankDetails() throws Exception {
@@ -120,8 +121,7 @@ public abstract class Employee extends Screen {
             try {
                 bankDetails = scanner.nextLine();
                 if (bankDetails.equals("-1")) {
-                    System.out.println("Operation Canceled");
-                    return;
+                    operationCancelled();
                 }
                 else {
                     System.out.println("Entered bank details: " + bankDetails);
@@ -133,125 +133,68 @@ public abstract class Employee extends Screen {
                 System.out.println("Please try again");
             }
         }
-        System.out.println("Updated bank details: " + bankDetails);
         setBankDetails(bankDetails);
+        System.out.println("Updated bank details: " + bankDetails);
     }
 
     private void updateSalary() throws Exception {
         Integer salary = null;
         boolean success = false;
-        while (!success){
-            System.out.println("\nEnter " + name +"'s salary per shift");
-            try {
-                salary = Integer.parseInt(scanner.nextLine());
-                if (salary == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                }
-                else if (salary < 0){
-                    System.out.println("Enter a valid salary");
-                }
-                else {
-                    System.out.println("Entered salary title: " + salary);
-                    success = areYouSure();
-                }
-            }
-            catch (NumberFormatException ex){
-                System.out.println("Please enter an non-negative integer");
-            }
-            catch (Exception ex){
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
+        while (!success) {
+            System.out.println("\nEnter " + name + "'s salary per shift");
+            salary = getNumber(0);
+            System.out.println("Entered salary title: " + salary);
+            success = areYouSure();
         }
-        System.out.println("Updated salary: " + salary);
         setSalary(salary);
+        System.out.println("Updated salary: " + salary);
     }
 
     private void updateCertifications() throws Exception {
         Set<Certifications> curr = new HashSet<>(certifications);
-        System.out.println(name + "'s current certifications:");
-        for (Certifications c: curr)
-            System.out.println(c);
-        System.out.println("Would you like to add or remove certifications?");
-        int ans = 0;
-        while (ans != 1 && ans != 2){
-            System.out.println("1 -- add\n2 -- remove");
-            try {
-                ans = Integer.parseInt(scanner.nextLine());
-                if (ans == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                }
-            }
-            catch (NumberFormatException ex){
-                System.out.println("Please enter an integer value (1 or 2)");
-            }
-            catch (Exception ex){
-                System.out.println("An unexpected error happened. Please try again");
-            }
-        }
+        System.out.println(name + "'s current certifications: " + String.join(", " , curr.stream().map(Enum::name).collect(Collectors.toSet())));
+        System.out.println("\nWould you like to add or remove certifications?");
+        System.out.println("1 -- add\n2 -- remove");
+        int ans = getNumber(1, 2);
+
         switch (ans) {
             case 1 : addCertifications(curr);
             break;
             case 2 : removeCertifications(curr);
         }
-        System.out.println("New certifications:");
-        for (Certifications c: curr)
-            System.out.println(c);
+
+        System.out.println("New certifications: " + String.join(", " , curr.stream().map(Enum::name).collect(Collectors.toSet())));
         System.out.println("Would you like to save?");
         if (yesOrNo())
             setCertifications(curr);
     }
 
-    private void addCertifications(Set<Certifications> curr) {
+    private void addCertifications(Set<Certifications> curr) throws OperationCancelledException {
         System.out.println("\nChoose which certifications to add");
+        System.out.println("0 -- stop adding certifications");
+        for (int i = 0; i < Certifications.values().length; i++)
+            System.out.println((i + 1) + " -- " + Certifications.values()[i]);
         int ordinal = -1;
         while (ordinal != 0) {
-            System.out.println("0 -- stop adding certifications");
-            for (int i = 0; i < Certifications.values().length; i++)
-                System.out.println((i + 1) + " -- " + Certifications.values()[i]);
-            try {
-                ordinal = Integer.parseInt(scanner.nextLine());
-                if (ordinal == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                } else if (ordinal < 0 || ordinal > Certifications.values().length) {
-                    System.out.println("Please enter an integer between 0 and " + Certifications.values().length);
-                } else if (ordinal != 0){
-                    curr.add(Certifications.values()[ordinal-1]);
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 0 and " + Certifications.values().length);
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
+            ordinal = getNumber(0, Certifications.values().length);
+            if (ordinal != 0) {
+                System.out.println("Added " + Certifications.values()[ordinal - 1]);
+                curr.add(Certifications.values()[ordinal - 1]);
             }
         }
     }
 
-    private void removeCertifications(Set<Certifications> curr) {
+    private void removeCertifications(Set<Certifications> curr) throws OperationCancelledException {
         System.out.println("\nChoose which certifications to remove");
+        System.out.println("0 -- stop removing certifications");
+        for (int i = 0; i < Certifications.values().length; i++)
+            System.out.println((i + 1) + " -- " + Certifications.values()[i]);
         int ordinal = -1;
         while (ordinal != 0) {
-            System.out.println("0 -- stop removing certifications");
-            for (int i = 0; i < Certifications.values().length; i++)
-                System.out.println((i + 1) + " -- " + Certifications.values()[i]);
-            try {
-                ordinal = Integer.parseInt(scanner.nextLine());
-                if (ordinal == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                } else if (ordinal < 0 || ordinal > Certifications.values().length) {
-                    System.out.println("Please enter an integer between 0 and " + Certifications.values().length);
-                } else if (ordinal != 0){
-                    curr.remove(Certifications.values()[ordinal-1]);
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 0 and " + Certifications.values().length);
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
+            ordinal = getNumber(0, Certifications.values().length);
+            if (ordinal != 0) {
+                System.out.println("Removed " + Certifications.values()[ordinal - 1]);
+                curr.remove(Certifications.values()[ordinal - 1]);
             }
         }
     }
@@ -259,13 +202,9 @@ public abstract class Employee extends Screen {
     private void calculateSalary() throws Exception {
         System.out.println("Enter date to start calculating from: ");
         LocalDate start = buildDate();
-        if (start == null)
-            return;
         System.out.println("Enter last date to calculate: ");
         LocalDate end = buildDate();
-        if (end == null)
-            return;
-        int numOfShifts = controller.getEmployeeShiftsBetween(id, start, end).size();
+        int numOfShifts = controller.getEmployeeShiftsBetween(this, start, end).size();
         System.out.println("Between the dates entered " + name + " has done " + numOfShifts + "shifts");
         System.out.println("With a salary of " + salary + " per shift");
         System.out.println("Calculated salary between these date is: " + (numOfShifts * salary));
@@ -274,30 +213,14 @@ public abstract class Employee extends Screen {
     private void manageConstraints() throws Exception {
         LocalDate today = LocalDate.now();
         LocalDate nextMonth = today.plusMonths(1);
-        List<Constraint> constraints = new ArrayList<>(controller.getEmployeeConstraintsBetween(id, today, nextMonth));
-        constraints.sort(new ConstraintComparator());
+        List<Shift> constraints = controller.getEmployeeConstraintsBetween(this, today, nextMonth).stream().sorted(new ShiftComparator()).collect(Collectors.toList());
         System.out.println("Current constraints for the following month");
-        for (Constraint constraint : constraints)
+        for (Shift constraint : constraints)
             System.out.println(constraint);
 
         System.out.println("Would you like to add or remove constraints?");
-        int ans = 0;
-        while (ans != 1 && ans != 2){
-            System.out.println("1 -- add\n2 -- remove");
-            try {
-                ans = Integer.parseInt(scanner.nextLine());
-                if (ans == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                }
-            }
-            catch (NumberFormatException ex){
-                System.out.println("Please enter an integer value (1 or 2)");
-            }
-            catch (Exception ex){
-                System.out.println("An unexpected error happened. Please try again");
-            }
-        }
+        System.out.println("1 -- add\n2 -- remove");
+        int ans = getNumber(1,2);
         switch (ans) {
             case 1 : addConstraints();
             break;
@@ -306,67 +229,43 @@ public abstract class Employee extends Screen {
     }
 
     private void removeConstraints() throws Exception {
-        while (true) {
-            System.out.println("When can't you work? (enter -1 to stop adding constraints)");
-            LocalDate date = buildDate();
-            if (date == null)
-                return;
-            System.out.println("What shift?");
-            int ans = 0;
-            while (ans != 1 && ans != 2){
-                System.out.println("1 -- Morning\n2 -- Evening");
-                try {
-                    ans = Integer.parseInt(scanner.nextLine());
-                    if (ans == -1) {
-                        System.out.println("Operation Canceled");
-                        return;
-                    }
-                }
-                catch (NumberFormatException ex){
-                    System.out.println("Please enter an integer value (1 or 2)");
-                }
-                catch (Exception ex){
-                    System.out.println("An unexpected error happened. Please try again");
-                }
+        LocalDate today = LocalDate.now();
+        LocalDate nextMonth = today.plusMonths(1);
+        List<Shift> registeredShifts = controller.getEmployeeConstraintsBetween(this, today, nextMonth).stream().sorted(new ShiftComparator()).collect(Collectors.toList());
+        System.out.println("Which constraint would you like to remove?");
+        System.out.println("0 -- stop removing constraints");
+        for (int i = 0; i < registeredShifts.size(); i++)
+            System.out.println((i + 1) + " -- " + registeredShifts.get(i));
+        for (int ans = getNumber(0, registeredShifts.size()); ans != 0; ans = getNumber(0, registeredShifts.size())) {
+            try {
+                controller.unregisterFromConstraint(this, registeredShifts.get(ans));
+                System.out.println("Successfully removed constraint for " + registeredShifts.get(ans));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-            ShiftTypes shift = ans == 1 ? ShiftTypes.Morning : ShiftTypes.Evening;
-            controller.unregisterToConstraint(id, date, shift);
         }
+        System.out.println("Finished adding constraints");
     }
 
     private void addConstraints() throws Exception {
-        while (true) {
-            System.out.println("When can you work? (enter -1 to stop adding constraints)");
-            LocalDate date = buildDate();
-            if (date == null)
-                return;
-            System.out.println("What shift?");
-            int ans = 0;
-            while (ans != 1 && ans != 2){
-                System.out.println("1 -- Morning\n2 -- Evening");
-                try {
-                    ans = Integer.parseInt(scanner.nextLine());
-                    if (ans == -1) {
-                        System.out.println("Operation Canceled");
-                        return;
-                    }
-                }
-                catch (NumberFormatException ex){
-                    System.out.println("Please enter an integer value (1 or 2)");
-                }
-                catch (Exception ex){
-                    System.out.println("An unexpected error happened. Please try again");
-                }
-            }
-            ShiftTypes shift = ans == 1 ? ShiftTypes.Morning : ShiftTypes.Evening;
-            controller.registerToConstraint(id, date, shift);
+        LocalDate today = LocalDate.now();
+        LocalDate nextMonth = today.plusMonths(1);
+        List<Shift> availableShifts = controller.getShiftsBetween(today, nextMonth).stream().sorted(new ShiftComparator()).collect(Collectors.toList());
+        System.out.println("When can you work? Choose available shifts out of this lists of shifts available for the next month");
+        System.out.println("0 -- stop adding constraints");
+        for (int i = 0; i < availableShifts.size(); i++)
+            System.out.println((i + 1) + " -- " + availableShifts.get(i));
+        for (int ans = getNumber(0, availableShifts.size()); ans != 0; ans = getNumber(0, availableShifts.size())) {
+            controller.registerToConstraint(this, availableShifts.get(ans));
+            System.out.println("Successfully added constraint for " + availableShifts.get(ans));
         }
+        System.out.println("Finished adding constraints");
     }
 
     private void printUpcomingShifts() throws Exception {
         LocalDate today = LocalDate.now();
         LocalDate nextWeek = today.plusWeeks(1);
-        List<Shift> shifts= new ArrayList<>(controller.getEmployeeShiftsBetween(id, today, nextWeek));
+        List<Shift> shifts= new ArrayList<>(controller.getEmployeeShiftsBetween(this, today, nextWeek));
         shifts.sort(new ShiftComparator());
         System.out.println("Upcoming shift for the following week");
         for (Shift shift : shifts)
