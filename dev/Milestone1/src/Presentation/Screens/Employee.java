@@ -1,5 +1,6 @@
 package Presentation.Screens;
 
+import Domain.Business.Objects.Constraint;
 import Domain.Service.Objects.Shift;
 import Globals.Enums.Certifications;
 import Globals.Enums.ShiftTypes;
@@ -8,6 +9,8 @@ import Globals.util.ShiftComparator;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Stream;
+
+import static Globals.util.HumanInteraction.*;
 
 public abstract class Employee extends Screen {
     private static final String[] menuOptions = {

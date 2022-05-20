@@ -4,8 +4,7 @@ import Domain.Business.Objects.Transport;
 import Globals.Enums.ShiftTypes;
 import Globals.Pair;
 import Presentation.Screens.Screen;
-import Presentation.Screens.Shift;
-
+import static Globals.util.HumanInteraction.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class TransportsMenu extends Screen {
                         createNewTransport();
                         break;
                     case 3:
-                        updateTransport();
+                        new Thread(new UpdateTransportMenu(this)).start();
                         break;
                     case 4:
                         getPendingTransports();
@@ -68,7 +67,12 @@ public class TransportsMenu extends Screen {
         LocalDate date = null;
         boolean Illegal = true;
         while (Illegal) {
-            date = buildDate();
+            try
+            {
+                date = buildDate();
+            }catch (OperationCancelledException e) {
+                Illegal = true;
+            }
             Illegal = date == null;
             if (Illegal) {
                 System.out.println("Please enter legal date!");
@@ -107,9 +111,6 @@ public class TransportsMenu extends Screen {
         controller.createNewTransport(new Pair<LocalDate, ShiftTypes>(date, shiftType));
     }
 
-    private void updateTransport() {
-
-    }
 
     private void getPendingTransports() throws Exception {
         controller.getPendingTransports();

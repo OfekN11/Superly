@@ -24,16 +24,17 @@ public class IntegrationTest {
     static EmployeeDataMapper employeeDataMapper =new EmployeeDataMapper();
     static ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
     static TransportService transportService = new TransportService();
+    static OrderService orderService = new OrderService();
     static SiteController siteController = new SiteController();
-    static HashMap<String,Integer> productMap = new HashMap<>();
+    static HashMap<Integer,Integer> productMap = new HashMap<>();
     static TransportDataMapper transportDataMapper = new TransportDataMapper();
 
     @BeforeClass
     public static void beforeAll() throws Exception {
         employeeDataMapper.delete("206618175");
         employeeDataMapper.delete("2061");
-        productMap.put("Snitzel",5);
-        productMap.put("Roi'Homus",200);
+        productMap.put(1,5);
+        productMap.put(2,200);
     }
 
     @AfterClass
@@ -59,6 +60,6 @@ public class IntegrationTest {
     @Test
     public void carrierInTransport() {
         // note that you need to check that the transport module has inserted those id and the hash map
-        transportService.addTransportOrder(1,2,productMap);
+        orderService.addOrder(1,2,productMap);
     }
 }

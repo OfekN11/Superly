@@ -21,6 +21,7 @@ public class OrderService {
     }
     public Result getPendingOrders() {
         try {
+            //TODO: Create Set of PL TransportOrder
             return Result.makeOk(order.getPendingOrder());
         }
         catch (Exception e){

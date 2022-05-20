@@ -490,6 +490,11 @@ public class BackendController {
         throwIfError(result);
     }
 
+    public void addOrderToTransport(int transportID, int orderID) throws Exception {
+        Result result = transportService.addOrderToTransport(transportID, orderID);
+        throwIfError(result);
+    }
+
     public void createNewTransport(Pair<LocalDate, ShiftTypes> localDateShiftTypesPair) throws Exception {
         Result result = transportService.createTransport(localDateShiftTypesPair);
         throwIfError(result);
@@ -500,5 +505,24 @@ public class BackendController {
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
+    }
+
+    public Set<TransportOrder> getPendingOrders() throws Exception {
+        Result<Set<TransportOrder>> result = orderService.getPendingOrders();
+        throwIfError(result);
+        return result.getValue();
+    }
+
+    public void startTransport(int transportID) throws Exception {
+        Result result = transportService.startTransport(transportID);
+        throwIfError(result);
+    }
+
+    public void placeCarrier(int transportID, int carrierID) throws Exception {
+        Result result = transportService.placeDriver(transportID, Integer.toString(carrierID));
+        throwIfError(result);
+    }
+
+    public void placeTruck(int transportID, int truckLN) {
     }
 }
