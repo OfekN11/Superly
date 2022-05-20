@@ -794,7 +794,7 @@ public class SupplierController {
         ArrayList<String> manufacturers1 = new ArrayList<>();  manufacturers1.add("Tnuva") ;       manufacturers1.add("Osem") ; manufacturers1.add("Elit");  manufacturers1.add("Struass");   manufacturers1.add("Sarit Hadad");
         int supplierId1 = addSupplier("Avi", 123456, "Hertzel", "check", contacts1,manufacturers1);
 
-        addAgreement(supplierId1, 1, "2 5");
+        addAgreement(supplierId1, 1, "2 7");
 
         ArrayList<String> items = new ArrayList<>();
         items.add("1 , 1,  tomato ,Sarit Hadad, 7.2 , 100 , 20 ");
