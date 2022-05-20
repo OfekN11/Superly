@@ -41,7 +41,7 @@ public class TransportController {
     }
     //TODO need to be implemented in DAL objects
     public void createTransport(Pair<LocalDate,ShiftTypes> shift) throws Exception {
-        if(shiftController.getShift(shift.getLeft(),shift.getRight()).getSorterCount()>0){
+        if(shiftController.getShift(shift.getLeft(),shift.getRight()).getStorekeeperCount()>0){
             //TODO create new transport and save in DataBase
         }
         else{
@@ -70,7 +70,7 @@ public class TransportController {
                        documentController.uploadDestinationDocument(document);
                        TransportDocument trd = documentController.getTransportDocument(transportSN);
                        if(trd == null){
-                           trd = new TransportDocument(transport.getStartTime(),transport.getTruckNumber(),transport.getDriverID());
+                           trd = new TransportDocument(transport.getSN(),transport.getStartTime(),transport.getTruckNumber(),transport.getDriverID());
                            documentController.uploadTransportDocument(trd);
                        }
                        trd.addDoc(orderID);
