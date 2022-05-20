@@ -55,7 +55,7 @@ public class TruckDAO extends DateMapper<Truck> {
 
     @Override
     protected Set<LinkDAO> getAllLinkDTOs() {
-        return null;
+        return new HashSet<>();
     }
 
     public void update(Truck truck) throws Exception {
@@ -63,7 +63,7 @@ public class TruckDAO extends DateMapper<Truck> {
     }
 
     public void save(Truck truck) throws Exception {
-        save(Integer.toString(truck.getLicenseNumber()), truck);
+       insert(truck);
     }
 
     public int delete(int licenseNumber) throws Exception {

@@ -28,7 +28,7 @@ public abstract class Shift extends Screen {
             new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Cashier, () -> controller.getAssignedCashiersFor(this)),
             new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.HR_Manager, () -> controller.getAssignedHR_ManagersFor(this)),
             new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Logistics_Manager, () -> controller.getAssignedLogistics_ManagersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Transport_Manager, () -> controller.getAssignedTrasnports_ManagersFor(this))
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Transport_Manager, () -> controller.getAssignedTransports_ManagersFor(this))
     ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
     private final Map<JobTitles, Supplier<Set<Employee>>> getAvailableByType = Stream.of(
@@ -38,7 +38,7 @@ public abstract class Shift extends Screen {
             new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Cashier, () -> controller.getAvailableCashiersFor(this)),
             new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.HR_Manager, () -> controller.getAvailableHR_ManagersFor(this)),
             new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Logistics_Manager, () -> controller.getAvailableLogistics_ManagersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Transport_Manager, () -> controller.getAvailableTrasnports_ManagersFor(this))
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Transport_Manager, () -> controller.getAvailableTransports_ManagersFor(this))
     ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
     protected final LocalDate date;

@@ -17,7 +17,7 @@ public class ShiftServiceTest {
     public void shiftManagerTest() {
         ShiftService shiftService = new ShiftService();
         try {
-            shiftService.createShift(LocalDate.parse("1998-07-25"), ShiftTypes.Morning,"5",6,6,6,4,4,4,6)
+            shiftService.createShift(LocalDate.parse("1998-07-25"), ShiftTypes.Morning,"5",6,6,6,4,4,4,6);
             Result<Shift> result = shiftService.getShift(LocalDate.parse("1998-07-25"), ShiftTypes.Morning);
             if (result.isError())
                 fail(result.getError());
@@ -31,7 +31,7 @@ public class ShiftServiceTest {
     @Test
     public void createAndManageShift() {
         ShiftService shiftService = new ShiftService();
-        shiftService.createShift(LocalDate.parse("2021-07-25"), ShiftTypes.Morning,"5",6,6,6,4,4,4);
+        shiftService.createShift(LocalDate.parse("2021-07-25"), ShiftTypes.Morning,"5",6,6,6,4,4,4, 4);
         Set<String> ids = new HashSet<>();
         ids.add("6");
         ids.add("20");
@@ -45,7 +45,7 @@ public class ShiftServiceTest {
         EmployeeService service1 = new EmployeeService();
         Set<Certifications> certificationsSet=new HashSet<>();
         certificationsSet.add(Certifications.ShiftManagement);
-        service1.registerEmployee(JobTitles.Cashier,"206618175","Ofek","***",10,"we just want to fire you but cant...",LocalDate.parse("2021-07-25"),certificationsSet);
+        service1.registerEmployee(JobTitles.Cashier,"206618175","Ofek","***",10, LocalDate.parse("2021-07-25"),certificationsSet);
         Result<String> a = service.getEmployeeWorkDetailsForCurrentMonth("206618175");
         if (a.isOk()) {
             System.out.println(a.getValue());
@@ -58,10 +58,9 @@ public class ShiftServiceTest {
     public void addEmployeeToShift(){
         ShiftService shiftService = new ShiftService();
         shiftService.createShift(LocalDate.parse("1998-07-25"), ShiftTypes.Morning,"5",6,6,6,4,4,4,6);
-        shiftService.loadData();
         try {
             assertTrue(shiftService.getShift(LocalDate.parse("1999-07-25"), ShiftTypes.Morning).isError());
-            assertTrue(shiftService.createShift(LocalDate.parse("1999-07-25"), ShiftTypes.Morning,"5",6,6,6,4,4,4).isOk());
+            assertTrue(shiftService.createShift(LocalDate.parse("1999-07-25"), ShiftTypes.Morning,"5",6,6,6,4,4,4, 4).isOk());
             Result<Shift> result = shiftService.getShift(LocalDate.parse("1999-07-25"), ShiftTypes.Morning);
             if (result.isError())
                 fail(result.getError());

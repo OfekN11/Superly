@@ -1,9 +1,8 @@
 package Domain.Service.Objects;
 
 import Globals.Enums.ShiftTypes;
+import Globals.util.HumanInteraction;
 import Presentation.Screens.ScreenShiftFactory;
-
-import java.time.format.DateTimeFormatter;
 
 public class EveningShift extends Shift{
     public EveningShift(Domain.Business.Objects.Shift.EveningShift bShift) {
@@ -12,7 +11,7 @@ public class EveningShift extends Shift{
 
     @Override
     public String toString() {
-        return "Evening shift: " + date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        return "Evening shift: " + date.format(HumanInteraction.dateFormat);
     }
 
     @Override

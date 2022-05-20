@@ -24,8 +24,26 @@ public class TransportDocument extends Document{
         this.redesign = "";
     }
 
+    public TransportDocument(int transportID,String startTime, int truckNumber, String driverName, boolean doRedesign, String redesign) {
+        this.transportID = transportID;
+        this.startTime =startTime;
+        this.truckNumber = truckNumber;
+        this.driverName = driverName;
+        this.doRedesign = doRedesign;
+        this.redesign = redesign;
+        destinationDocuments = new ArrayList<>();
+    }
+
     public LocalDateTime getStartTime() {
         return startTime;
+    }
+
+    public int getTransportID() {
+        return transportID;
+    }
+
+    public List<Integer> getDestinationDocuments() {
+        return destinationDocuments;
     }
 
     public void setStartTime(LocalDateTime startTime) {

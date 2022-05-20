@@ -12,27 +12,28 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TransportDAO extends DAO {
     private final static Map<Integer, Transport> TRUCK_IDENTITY_MAP = new HashMap<>();
 
-    private TransportSorceDAO transportSorceDTO;
+    private TransportSources transportSorceDTO;
     private TransportDestinationsDAO transportDestinationsDAO;
     private TransportTransportOrderDAO transportTransportOrderDAO;
     public TransportDAO() {
         super("Transports");
-        transportSorceDTO =new TransportSorceDTO();
+        transportSorceDTO =new TransportSources();
         transportDestinationsDAO =new TransportDestinationsDAO();
         transportTransportOrderDAO = new TransportTransportOrderDAO();
         try(Connection connection = getConnection()){
             ResultSet resultSet= select(connection);
             while (resultSet.next()){
                 Integer id =resultSet.getInt(1);
-                Transport transport= new Transport(resultSet.getInt(1),resultSet.getInt(2),
-                        resultSet.getDate(3).toLocalDate(),resultSet.getDate(4).toString(),resultSet.getInt(5),
+                Transport transport= new Transport(resultSet.getInt(1),resultSet.getString(2),
+                        resultSet.getString(3),resultSet.getString(4),resultSet.getInt(5),
                         resultSet.getInt(6), TransportStatus.valueOf(resultSet.getString(7)),
                         new Pair<>(resultSet.getDate(8).toLocalDate(), ShiftTypes.valueOf(resultSet.getString(9))),
-                        transportSorceDTO.get(id), transportDestinationsDAO.get(id),transportTransportOrderDAO.get(id));
+                        transportSorceDTO.get(id).stream().collect(Collectors.toList()), transportDestinationsDAO.get(id).stream().collect(Collectors.toList()),transportTransportOrderDAO.get(id).stream().collect(Collectors.toList()));
                 TRUCK_IDENTITY_MAP.put(transport.getSN(),transport);
             }
         } catch (SQLException throwables) {
@@ -54,13 +55,13 @@ public class TransportDAO extends DAO {
 
             super.insert(Arrays.asList(transport.getSN(),transport.getStartTime(),transport.getEndTime(),transport.getDriverID(),transport.getTruckNumber(),transport.getTruckWeight(),transport.getStatus(),transport.getShift().getLeft(),transport.getShift().getRight()));
             for(Integer id:transport.getSourcesID())
-                transportSorceDTO.insert(Arrays.asList(transport.getSN()),id);
+                transportSorceDTO.add(transport.getSN(),id);
 
             for(Integer id:transport.getDestinationsID())
-                transportDestinationsDAO.insert(Arrays.asList(transport.getSN()),id);
+                transportDestinationsDAO.add(transport.getSN(),id);
 
             for(Integer id:transport.getTransportOrders())
-                transportTransportOrderDAO.insert(Arrays.asList(transport.getSN()),id);
+                transportTransportOrderDAO.add(transport.getSN(),id);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

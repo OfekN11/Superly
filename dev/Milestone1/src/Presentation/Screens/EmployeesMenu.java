@@ -5,7 +5,6 @@ import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.util.EmployeeComparator;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -74,7 +73,6 @@ public class EmployeesMenu extends Screen {
                             endRun();
                             break;
                     }
-                } catch (OperationCancelledException ignored) {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     System.out.println("Please try again");

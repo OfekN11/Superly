@@ -271,6 +271,11 @@ public class ShiftController {
                 .collect(Collectors.toSet());
     }
 
+    public Set<Shift> getEmployeeConstraintsBetween(String id, LocalDate start, LocalDate end) {
+        return getShiftsBetween(start, end).stream().filter(s -> s.isEmployeeAvailable(id)).collect(Collectors.toSet());
+
+    }
+
     private Pair<LocalDate, LocalDate> getMonthDatesEdges() {
         LocalDate initial = LocalDate.now();
         LocalDate start = initial.withDayOfMonth(1);

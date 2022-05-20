@@ -314,6 +314,10 @@ public abstract class Shift {
                 logistics_managerIDs.contains(id);
     }
 
+    public boolean isEmployeeAvailable(String id) {
+        return availableEmployees.contains(id);
+    }
+
     public abstract Domain.Service.Objects.Shift accept(ServiceShiftFactory factory);
 
     private void checkCountValidity(int count, int minimum, JobTitles type) throws Exception {
