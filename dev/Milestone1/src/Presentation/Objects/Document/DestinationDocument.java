@@ -8,6 +8,8 @@ public class DestinationDocument extends Document {
     private List<String> providedProducts;
     public DestinationDocument(Domain.Service.Objects.Document.DestinationDocument destinationDocument) {
         super(destinationDocument.getDocumentSN());
+        destID = destinationDocument.getDestID();
+        providedProducts = destinationDocument.getProvidedProducts();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package Domain.Service.Objects.Document;
 
-import Domain.Service.ServiceDocumentFactory;
+import Presentation.Factories.PresentationDocumentFactory;
 
 public abstract class Document {
     private int documentSN;
@@ -13,5 +13,5 @@ public abstract class Document {
         return documentSN;
     }
 
-    public abstract Document accept(ServiceDocumentFactory serviceDocumentFactory);
+    public abstract Presentation.Objects.Document.Document accept(PresentationDocumentFactory presentationDocumentFactory);
 }

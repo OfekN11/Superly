@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TransportDocument extends Document {
     private int transportID;
-    private LocalDateTime date;
+    private String date;
     private int truckNumber;
     private String driverName;
     private List<Integer> destinationDocs;
@@ -13,7 +13,13 @@ public class TransportDocument extends Document {
     private String redesign;
     public TransportDocument(Domain.Service.Objects.Document.TransportDocument transportDocument) {
         super(transportDocument.getDocumentSN());
-
+        transportID = transportDocument.getTransportID();
+        date = transportDocument.getStartTime();
+        truckNumber = transportDocument.getTruckNumber();
+        driverName = transportDocument.getDriverName();
+        destinationDocs = transportDocument.getDestinationDocuments();
+        doRedesign = transportDocument.isDoRedesign();
+        redesign = transportDocument.getRedesign();
     }
 
     @Override
