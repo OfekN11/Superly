@@ -200,10 +200,10 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the list of the sales
      */
-    public Result<List<Sale>> getSaleHistoryByProduct(int productId){
+    public Result<Set<Sale>> getSaleHistoryByProduct(int productId){
         try {
-            List<SaleToCustomer> saleToCustomerList = controller.getSaleHistoryByProduct(productId);
-            List<Sale> sales = new ArrayList<>();
+            Set<SaleToCustomer> saleToCustomerList = controller.getSaleHistoryByProduct(productId);
+            Set<Sale> sales = new HashSet<>();
             for (SaleToCustomer sale : saleToCustomerList) {
                 sales.add(new Sale(sale));
             }
@@ -219,10 +219,10 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the list of the sales
      */
-    public Result<List<Sale>> getSaleHistoryByCategory(int categoryID){
+    public Result<Set<Sale>> getSaleHistoryByCategory(int categoryID){
         try {
-            List<SaleToCustomer> saleToCustomerList = controller.getSaleHistoryByCategory(categoryID);
-            List<Sale> saleList = new ArrayList<>();
+            Set<SaleToCustomer> saleToCustomerList = controller.getSaleHistoryByCategory(categoryID);
+            Set<Sale> saleList = new HashSet<>();
             for (SaleToCustomer s : saleToCustomerList) {
                 saleList.add(new Sale(s));
             }

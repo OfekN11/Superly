@@ -88,10 +88,10 @@ public class Category {
             currentSale = parentCategory.findCurrentBestSale(currentSale);
         return currentSale;
     }
-    public List<SaleToCustomer> getSaleHistory() {
-        List<SaleToCustomer> result;
+    public Set<SaleToCustomer> getSaleHistory() {
+        Set<SaleToCustomer> result;
         if (parentCategory==null)
-             result = new ArrayList<>();
+             result = new HashSet<>();
         else
             result = parentCategory.getSaleHistory();
         for (SaleToCustomer sale : SALE_DATA_MAPPER.getSalesByCategory(ID)) {

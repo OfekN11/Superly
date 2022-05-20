@@ -224,11 +224,11 @@ public class InventoryController {
         }
     }
 
-    public List<SaleToCustomer> getSaleHistoryByProduct(int productID) {
+    public Set<SaleToCustomer> getSaleHistoryByProduct(int productID) {
         return getProduct(productID).getSaleHistory();
     }
 
-    public List<SaleToCustomer> getSaleHistoryByCategory(int categoryID) {
+    public Set<SaleToCustomer> getSaleHistoryByCategory(int categoryID) {
         return getCategory(categoryID).getSaleHistory();
     }
 

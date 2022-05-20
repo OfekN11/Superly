@@ -255,8 +255,8 @@ public class Product {
         stockReports.remove(storeID);
     }
 
-    public List<SaleToCustomer> getSaleHistory() {
-        List<SaleToCustomer> result = category.getSaleHistory();
+    public Set<SaleToCustomer> getSaleHistory() {
+        Set<SaleToCustomer> result = category.getSaleHistory();
         for (SaleToCustomer sale : SALE_DATA_MAPPER.getSalesByProduct(id)) {
             if (sale.isPassed() || sale.isActive())
                 result.add(sale);

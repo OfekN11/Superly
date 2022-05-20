@@ -5,10 +5,7 @@ import Domain.ServiceLayer.Result;
 import PresentationLayer.Screens.Screen;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -120,11 +117,11 @@ public class Sales extends Screen {
         System.out.println("Please insert product ID for which you would like to see history");
         int id = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<List<Sale>> r = controller.getSaleHistoryByProduct(id);
+        Result<Set<Sale>> r = controller.getSaleHistoryByProduct(id);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<Sale> saleReport = r.getValue();
+            Set<Sale> saleReport = r.getValue();
             for (Sale s : saleReport)
                 System.out.println(printSale(s));
             if (saleReport.isEmpty())
@@ -136,11 +133,11 @@ public class Sales extends Screen {
         System.out.println("Please insert category ID for which you would like to see history");
         int id = scanner.nextInt();
         scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<List<Sale>> r = controller.getSaleHistoryByCategory(id);
+        Result<Set<Sale>> r = controller.getSaleHistoryByCategory(id);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            List<Sale> saleReport = r.getValue();
+            Set<Sale> saleReport = r.getValue();
             for (Sale s : saleReport)
                 System.out.println(printSale(s));
             if (saleReport.isEmpty())

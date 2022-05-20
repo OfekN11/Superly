@@ -345,11 +345,11 @@ public class BackendController {
         return inventoryService.removeProductFromStore(storeID, productID);
     }
 
-    public Result<List<Sale>> getSaleHistoryByProduct(int productId){
+    public Result<Set<Sale>> getSaleHistoryByProduct(int productId){
         return inventoryService.getSaleHistoryByProduct(productId);
     }
 
-    public Result<List<Sale>> getSaleHistoryByCategory(int categoryID){
+    public Result<Set<Sale>> getSaleHistoryByCategory(int categoryID){
         return inventoryService.getSaleHistoryByCategory(categoryID);
     }
 
