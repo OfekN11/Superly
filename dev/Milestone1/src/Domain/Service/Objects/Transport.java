@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Transport {
     private int transportID;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String startTime;
+    private String endTime;
     private String driverID;
     private  int truckNumber;
     private  int truckWeight;
@@ -31,11 +31,11 @@ public class Transport {
         return transportID;
     }
 
-    public LocalDateTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 

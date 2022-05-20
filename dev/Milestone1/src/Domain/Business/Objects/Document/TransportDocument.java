@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 public class TransportDocument extends Document{
     private int transportID;
-    private LocalDateTime startTime;
+    private String startTime;
     private int truckNumber;
     private String driverName;
     private List<Integer> destinationDocuments;
     private boolean doRedesign;
     private String redesign;//Write what do?
 
-    public TransportDocument(int transportID,LocalDateTime startTime, int truckNumber, String driverName) {
+    public TransportDocument(int transportID,String startTime, int truckNumber, String driverName) {
         transportID = transportID;
         this.startTime = startTime;
         this.truckNumber = truckNumber;
@@ -37,7 +37,7 @@ public class TransportDocument extends Document{
         destinationDocuments = new ArrayList<>();
     }
 
-    public LocalDateTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
@@ -46,7 +46,7 @@ public class TransportDocument extends Document{
     }
 
     public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+        this.startTime = startTime.toString();
     }
 
     public int getTruckNumber() {

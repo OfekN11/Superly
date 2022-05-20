@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 public class Transport {
     private int transportID;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String startTime;
+    private String endTime;
     private String driverID;
     private  int truckNumber;
     private  int truckWeight;
@@ -24,7 +24,7 @@ public class Transport {
         this.truckWeight = transport.getTruckWeight();
     }
 
-    public Transport(int transportID, LocalDateTime startTime, LocalDateTime endTime, String driverID, int truckNumber, int truckWeight) {
+    public Transport(int transportID, String startTime, String endTime, String driverID, int truckNumber, int truckWeight) {
         this.transportID = transportID;
         this.startTime = startTime;
         this.endTime = endTime;

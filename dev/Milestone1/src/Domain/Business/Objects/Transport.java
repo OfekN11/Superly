@@ -17,8 +17,8 @@ import java.util.List;
 public class Transport {
     private static int incSN = 0;
     private int SN;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String startTime;
+    private String endTime;
     private String driverID;
     private  int truckNumber;
     private  int truckWeight;
@@ -81,7 +81,7 @@ public class Transport {
     public void startTransport() throws Exception {
         if (status == TransportStatus.padding)
         {
-            startTime = LocalDateTime.now();
+            startTime = LocalDateTime.now().toString();
             status = TransportStatus.inProgress;
         }
         throw new Exception("transport already started");
@@ -89,7 +89,7 @@ public class Transport {
     public void endTransport() throws Exception {
         if (status == TransportStatus.inProgress)
         {
-            endTime = LocalDateTime.now();
+            endTime = LocalDateTime.now().toString();
             status = TransportStatus.done;
         }
         throw new Exception("transport is not in Progress");
@@ -195,11 +195,11 @@ public class Transport {
         status = stat;
     }
 
-    public LocalDateTime getStartTime() {
+    public String  getStartTime() {
         return startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 

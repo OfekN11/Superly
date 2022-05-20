@@ -70,7 +70,7 @@ public class TransportController {
                        documentController.uploadDestinationDocument(document);
                        TransportDocument trd = documentController.getTransportDocument(transportSN);
                        if(trd == null){
-                           trd = new TransportDocument(transport.getSN(),transport.getStartTime(),transport.getTruckNumber(),transport.getDriverID());
+                           trd = new TransportDocument(transport.getSN(),transport.getStartTime().toString(),transport.getTruckNumber(),transport.getDriverID());
                            documentController.uploadTransportDocument(trd);
                        }
                        trd.addDoc(orderID);
