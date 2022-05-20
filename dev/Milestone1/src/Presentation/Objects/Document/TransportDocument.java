@@ -13,6 +13,7 @@ public class TransportDocument extends Document {
     private String redesign;
     public TransportDocument(Domain.Service.Objects.Document.TransportDocument transportDocument) {
         super(transportDocument.getDocumentSN());
+
     }
 
     @Override

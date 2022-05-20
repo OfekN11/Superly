@@ -5,9 +5,12 @@ import Domain.Service.Services.*;
 import Globals.Enums.*;
 import Globals.Pair;
 import Presentation.Objects.Document.*;
+import Presentation.Objects.Transport.Transport;
+import Presentation.Objects.Transport.TransportOrder;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 public class BackendController {
@@ -548,19 +551,41 @@ public class BackendController {
     }
 
     //Transport
-
-    public void getCompleteTransports() throws RuntimeException {
-        Result result = transportService.getCompletedTransport();
+    private Set<Presentation.Objects.Transport.Transport> toPLTransports(Set<Domain.Service.Objects.Transport> transports)
+    {
+        Set<Presentation.Objects.Transport.Transport> transportList = new HashSet<>();
+        for (Domain.Service.Objects.Transport transport: transports) {
+            transportList.add(new Presentation.Objects.Transport.Transport(transport));
+        }
+        return transportList;
+    }
+    public Set<Transport> getCompleteTransports() throws Exception {
+        Result<Set<Domain.Service.Objects.Transport>> result = transportService.getCompletedTransport();
         throwIfError(result);
+        return toPLTransports(result.getValue());
     }
 
-    public void getInProgressTransports() throws RuntimeException {
-        Result result = transportService.getInProgressTransports();
+    public Set<Transport> getInProgressTransports() throws Exception {
+        Result<Set<Domain.Service.Objects.Transport>> result = transportService.getInProgressTransports();
         throwIfError(result);
+        return toPLTransports(result.getValue());
+    }
+    private Set<Presentation.Objects.Transport.TransportOrder> toPLTransportOrder(Set<Domain.Service.Objects.TransportOrder> orders)
+    {
+        Set<Presentation.Objects.Transport.TransportOrder> transportList = new HashSet<>();
+        for (Domain.Service.Objects.TransportOrder order: orders) {
+            transportList.add(new Presentation.Objects.Transport.TransportOrder(order));
+        }
+        return transportList;
+    }
+    public Set<Transport> getPendingTransports() throws Exception {
+        Result<Set<Domain.Service.Objects.Transport>> result = transportService.getInProgressTransports();
+        throwIfError(result);
+        return toPLTransports(result.getValue());
     }
 
-    public void getPendingTransports() throws RuntimeException {
-        Result result = transportService.getInProgressTransports();
+    public void addOrderToTransport(int transportID, int orderID) throws Exception {
+        Result result = transportService.addOrderToTransport(transportID, orderID);
         throwIfError(result);
     }
 
@@ -581,5 +606,26 @@ public class BackendController {
         if (result.isError())
             throw new RuntimeException("Error occurred: " + result.getError());
         return result.getValue();
+    }
+
+    public Set<TransportOrder> getPendingOrders() throws Exception {
+        Result<Set<Domain.Service.Objects.TransportOrder>> result = orderService.getPendingOrders();
+        throwIfError(result);
+        return toPLTransportOrder(result.getValue());
+    }
+
+    public void startTransport(int transportID) throws Exception {
+        Result result = transportService.startTransport(transportID);
+        throwIfError(result);
+    }
+
+    public void placeCarrier(int transportID, int carrierID) throws Exception {
+        Result result = transportService.placeDriver(transportID, Integer.toString(carrierID));
+        throwIfError(result);
+    }
+
+    public void placeTruck(int transportID, int truckLN) throws Exception {
+        Result result = transportService.placeTruck(transportID, truckLN);
+        throwIfError(result);
     }
 }

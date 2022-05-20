@@ -36,6 +36,8 @@ public class Transport {
         driverID = "";
         truckNumber = -1;
         truckWeight = -1;
+        this.startTime = null;
+        this.endTime = null;
         sourcesID = new ArrayList<>();
         destinationsID = new ArrayList<>();
         transportOrders = new ArrayList<>();

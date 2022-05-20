@@ -14,6 +14,7 @@ import org.junit.*;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 public class IntegrationTest {
     static LocalDate date=LocalDate.parse("2021-06-19");
@@ -23,16 +24,17 @@ public class IntegrationTest {
     static EmployeeDataMapper employeeDataMapper =new EmployeeDataMapper();
     static ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
     static TransportService transportService = new TransportService();
+    static OrderService orderService = new OrderService();
     static SiteController siteController = new SiteController();
-    static HashMap<String,Integer> productMap = new HashMap<>();
+    static HashMap<Integer,Integer> productMap = new HashMap<>();
     static TransportDAO transportDataMapper = new TransportDAO();
 
     @BeforeClass
     public static void beforeAll() throws Exception {
         employeeDataMapper.delete("206618175");
         employeeDataMapper.delete("2061");
-        productMap.put("Snitzel",5);
-        productMap.put("Roi'Homus",200);
+        productMap.put(1,5);
+        productMap.put(2,200);
     }
 
     @AfterClass
@@ -58,6 +60,6 @@ public class IntegrationTest {
     @Test
     public void carrierInTransport() {
         // note that you need to check that the transport module has inserted those id and the hash map
-        transportService.addTransportOrder(1,2,productMap);
+        orderService.addOrder(1,2,productMap);
     }
 }

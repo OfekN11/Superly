@@ -1,16 +1,33 @@
 package Presentation.Objects.Transport;
 
+import Globals.Pair;
+
 import java.util.HashMap;
 
 public class TransportOrder {
+    private int orderID;
     private int srcID;
     private int dstID;
     private HashMap<Integer, Integer> productList;
+
+    public TransportOrder(int orderID, int srcID, int dstID, HashMap<Integer, Integer> productList) {
+        this.orderID = orderID;
+        this.srcID = srcID;
+        this.dstID = dstID;
+        this.productList = productList;
+    }
 
     public TransportOrder(int srcID, int dstID) {
         this.srcID = srcID;
         this.dstID = dstID;
         productList = new HashMap<>();
+    }
+
+    public TransportOrder(Domain.Service.Objects.TransportOrder order) {
+        this.orderID = order.getOrderID();
+        this.srcID = order.getSrcID();
+        this.dstID = order.getDstID();
+        this.productList = order.getProducts();
     }
 
     public void canCloseOrder() throws Exception {
@@ -73,5 +90,22 @@ public class TransportOrder {
 
     public void setProductList(HashMap<Integer, Integer> productList) {
         this.productList = productList;
+    }
+    private void displayProducts()
+    {
+        for(int product: productList.keySet())
+        {
+            displayProduct(product, productList.get(product));
+        }
+    }
+    private void displayProduct(int productID, int quantity)
+    {
+        System.out.println("Product ID: " + productID + " Quantity: " + quantity);
+    }
+    public void display()
+    {
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("Order ID: " + orderID + "\nSource: " + srcID + "\nDestination: " + dstID);
+        displayProducts();
     }
 }

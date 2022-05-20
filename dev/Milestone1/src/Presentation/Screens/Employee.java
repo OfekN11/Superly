@@ -1,5 +1,6 @@
 package Presentation.Screens;
 
+import Domain.Business.Objects.Constraint;
 import Domain.Service.Objects.Shift;
 import Globals.Enums.Certifications;
 import Globals.util.ShiftComparator;
