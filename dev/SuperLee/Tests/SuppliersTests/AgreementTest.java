@@ -4,9 +4,10 @@ import Domain.BusinessLayer.Supplier.Agreement.Agreement;
 import Domain.BusinessLayer.Supplier.Agreement.NotTransportingAgreement;
 import Domain.BusinessLayer.Supplier.AgreementItem;
 import Domain.PersistenceLayer.Controllers.AgreementController;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import static org.junit.jupiter.api.Assertions.*;
 

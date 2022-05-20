@@ -1,12 +1,12 @@
 package InventoryTests;
 
 import Domain.BusinessLayer.Inventory.SaleToCustomer;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
-//import javax.annotation.concurrent.NotThreadSafe;
+import javax.annotation.concurrent.NotThreadSafe;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;

@@ -2,7 +2,8 @@ package SuppliersTests;
 
 import Domain.BusinessLayer.Supplier.Agreement.RoutineAgreement;
 import Domain.PersistenceLayer.Controllers.AgreementController;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
+import javax.annotation.concurrent.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

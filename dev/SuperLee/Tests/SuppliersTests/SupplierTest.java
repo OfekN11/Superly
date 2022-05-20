@@ -4,7 +4,8 @@ import Domain.BusinessLayer.Supplier.Agreement.Agreement;
 import Domain.BusinessLayer.Supplier.Contact;
 import Domain.BusinessLayer.Supplier.Supplier;
 import Domain.PersistenceLayer.Controllers.SuppliersDAO;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
+import javax.annotation.concurrent.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

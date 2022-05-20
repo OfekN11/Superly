@@ -2,9 +2,10 @@ package SuppliersTests;
 
 import Domain.BusinessLayer.Supplier.AgreementItem;
 //import org.testng.annotations.Test;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import static org.junit.jupiter.api.Assertions.*;
 

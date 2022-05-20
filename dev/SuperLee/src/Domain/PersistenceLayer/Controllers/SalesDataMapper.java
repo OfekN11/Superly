@@ -3,6 +3,7 @@ package Domain.PersistenceLayer.Controllers;
 import Domain.BusinessLayer.Inventory.SaleToCustomer;
 import Domain.PersistenceLayer.Abstract.DataMapper;
 import Domain.PersistenceLayer.Abstract.LinkDAO;
+import java.sql.Date.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,8 +13,6 @@ import java.util.*;
 public class SalesDataMapper extends DataMapper<SaleToCustomer> {
 
     private final static Map<String, SaleToCustomer> SALE_IDENTITY_MAP = new HashMap<>();
-//    private final static CategoryDataMapper categoryDataMapper = new CategoryDataMapper();
-//    private final static ProductDataMapper productDataMapper = new ProductDataMapper();
     private final static SalesToProductDAO salesToProductDAO = new SalesToProductDAO();
     private final static SalesToCategoryDAO salesToCategoryDAO = new SalesToCategoryDAO();
 
@@ -48,8 +47,8 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
     protected SaleToCustomer buildObject(ResultSet resultSet) {
         try {
             return new SaleToCustomer(resultSet.getInt(ID_COLUMN),
-                    resultSet.getDate(START_DATE_COLUMN).toLocalDate(),
-                    resultSet.getDate(END_DATE_COLUMN).toLocalDate(),
+                    (java.sql.Date.valueOf(resultSet.getString(START_DATE_COLUMN))).toLocalDate(),
+                    (java.sql.Date.valueOf(resultSet.getString(END_DATE_COLUMN))).toLocalDate(),
                     resultSet.getInt(PERCENT_COLUMN),
                     getCategories(resultSet.getInt(ID_COLUMN)),
                     getProducts(resultSet.getInt(ID_COLUMN))
@@ -77,10 +76,12 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
 
     @Override
     public void insert(SaleToCustomer instance){
+        String startDate = "" + instance.getStartDate().getYear() + "-" + ((instance.getStartDate().getMonthValue()<10) ? ("0" + instance.getStartDate().getMonthValue()) : (instance.getStartDate().getMonthValue())) + "-" + ((instance.getStartDate().getDayOfMonth()<10) ? ("0" + instance.getStartDate().getDayOfMonth()) : (instance.getStartDate().getDayOfMonth()));
+        String endDate = "" + instance.getEndDate().getYear() + "-" + ((instance.getEndDate().getMonthValue()<10) ? ("0" + instance.getEndDate().getMonthValue()) : (instance.getEndDate().getMonthValue())) + "-" + ((instance.getEndDate().getDayOfMonth()<10) ? ("0" + instance.getEndDate().getDayOfMonth()) : (instance.getEndDate().getDayOfMonth()));
         try {
             insert(Arrays.asList(instance.getId(),
-                    instance.getStartDate(),
-                    instance.getEndDate(),
+                    startDate,
+                    endDate,
                     instance.getPercent()));
             SALE_IDENTITY_MAP.put(Integer.toString(instance.getId()), instance);
             for (int c : instance.getCategories())

@@ -4,10 +4,10 @@ import Domain.BusinessLayer.Inventory.Product;
 import Domain.BusinessLayer.Inventory.StockReport;
 import Domain.BusinessLayer.InventoryController;
 import Domain.PersistenceLayer.Controllers.*;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.*;
 
-//import javax.annotation.concurrent.NotThreadSafe;
+import javax.annotation.concurrent.NotThreadSafe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
