@@ -42,4 +42,33 @@ public class TransportOrderDAO extends DAO {
     public TransportOrder get(int licenseNumber) throws Exception {
         return TRANSPORT_ORDER_MAP.get(licenseNumber);
     }
+
+    public void save(TransportOrder order){
+        if (!TRANSPORT_ORDER_MAP.containsKey(order.getID()))
+            TRANSPORT_ORDER_MAP.put(order.getID(),order);
+        try {
+            this.remove(order.getID());
+            super.remove(order.getID());
+            order.getProductList().forEach((k,v)-> {
+                try {
+                    super.insert(Arrays.asList(order.getID(),order.getSrc(),order.getDst(),order.getStatus(),k,v));
+                } catch (SQLException throwables) {
+                    throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+                }
+            });
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+        }
+    }
+
+    public void remove(int id){
+        TRANSPORT_ORDER_MAP.remove(id);
+        try {
+            super.remove(id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+        }
+    }
    }
