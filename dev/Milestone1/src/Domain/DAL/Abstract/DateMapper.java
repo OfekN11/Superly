@@ -70,6 +70,7 @@ public abstract class DateMapper<T> extends DAO {
         Set<LinkDAO> links = getAllLinkDTOs();
         for (LinkDAO link : links)
             link.remove(id);
+        removeFromIdentityMap(id);
         return remove(id);
     }
 
