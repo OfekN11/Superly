@@ -33,9 +33,9 @@ public class Main {
 
         insertSuppliers(supplierController);
 
-        supplierController.loadSuppliersData();
+        //supplierController.loadSuppliersData();
 
-        testOrder(supplierController);
+        //testOrder(supplierController);
 
     }
 
