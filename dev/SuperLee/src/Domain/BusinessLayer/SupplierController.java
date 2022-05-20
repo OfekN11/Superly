@@ -656,15 +656,20 @@ public class SupplierController {
         ArrayList<Order> deletableOrders = orders.get("deletable");
         ArrayList<Order> notDeletableOrders = orders.get("not deletable");
 
+        ArrayList<Order> toRemove = new ArrayList<>();
+
 
         int quantityInOrder = quantity;
         for(Order order : deletableOrders){
             if(order.getStoreID() == storeId && order.itemExists(productId)){
                 quantityInOrder -= order.getQuantityOfItem(productId);
                 notDeletableOrders.add(order);
-                deletableOrders.remove(order);
+                toRemove.add(order);
             }
         }
+
+        deletableOrders.removeAll(toRemove);
+
         return quantityInOrder;
     }
 
