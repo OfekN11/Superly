@@ -7,6 +7,7 @@ import java.sql.Date.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -68,10 +69,10 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
         return salesToCategoryDAO.getCategoriesOfSale(sale);
     }
 
-    public int remove(Object id) {
+    public int remove(Object id) throws SQLException {
         salesToProductDAO.removeBySale(id);
         salesToCategoryDAO.removeBySale(id);
-        return remove(id);
+        return super.remove(id);//super.remove(id);
     }
 
     @Override

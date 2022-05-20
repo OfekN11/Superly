@@ -14,6 +14,7 @@ import Domain.PersistenceLayer.Controllers.StoreDAO;
 import Globals.Pair;
 import sun.awt.geom.AreaOp;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -206,7 +207,7 @@ public class InventoryController {
         }
     }
 
-    public void removeSale(int saleID) {
+    public void removeSale(int saleID) throws SQLException {
         SaleToCustomer sale = getSale(saleID);
         if (sale.isActive()) {
             sale.setEndDate(LocalDate.now());
@@ -214,7 +215,7 @@ public class InventoryController {
         else if (sale.isUpcoming()) {
             removeSaleFromProductsAndCategories(sale);
             sales.remove(saleID);
-            SALE_DATA_MAPPER.remove(sale);
+            SALE_DATA_MAPPER.remove(sale.getId());
         }
     }
 
