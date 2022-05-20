@@ -118,7 +118,6 @@ public class OrderDAO extends DataMapper<Order> {
     public void updateOrder(Order newOrder) throws SQLException {
         removeOrder(newOrder.getId());
         addOrder(newOrder);
-        //orderItemDAO.updateItems(newOrder.getId(), newOrder.getOrderItems());  its updates the items in the addOrder
         ORDER_IDENTITY_MAP.replace(String.valueOf(newOrder.getId()), newOrder);
 
     }

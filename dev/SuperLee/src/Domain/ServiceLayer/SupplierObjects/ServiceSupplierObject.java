@@ -22,8 +22,6 @@ public class ServiceSupplierObject {
         this.payingAgreement = payingAgreement;
         this.contacts = new ArrayList<>();
         this.contacts = contacts;
-
-        //this.agreement = new Agreement();
     }
 
     public String getName() {

@@ -85,28 +85,6 @@ public class SuppliersDAO extends DataMapper<Supplier> {
             e.printStackTrace();
         }
         return null;
-        /*
-        Supplier output = SUPPLIER_IDENTITY_MAP.get(String.valueOf(id));
-        if (output != null)
-            return output;
-
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection,id);
-            if (!instanceResult.next())
-                return null;
-
-            //    (int id, int bankNumber, String address, String name, String payingAgreement)
-            output = new Supplier(instanceResult.getInt(1),instanceResult.getInt(2),instanceResult.getString(3),instanceResult.getString(4)
-                    ,instanceResult.getString(5));
-            SUPPLIER_IDENTITY_MAP.put( String.valueOf(id) ,output);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return output;
-
-         */
     }
 
 
@@ -118,26 +96,6 @@ public class SuppliersDAO extends DataMapper<Supplier> {
         return suppliers;
     }
 
-
-
-    //DON'T NEED THIS FOR NOW, Using save
-    /*
-    public void addSupplier(Supplier supplier, ArrayList<Contact> contacts, ArrayList<String> manufacturers) throws SQLException {
-        insert(Arrays.asList(String.valueOf(supplier.getId()), String.valueOf(supplier.getBankNumber()),
-                String.valueOf(supplier.getAddress()), String.valueOf(supplier.getName()), String.valueOf(supplier.getPayingAgreement()), String.valueOf(supplier.getAgreementType())));
-        if(contacts != null && contacts.size()> 0){
-            for(Contact contact : contacts){
-                contactDAO.addContact(supplier.getId(), contact);
-            }
-        }
-        if(manufacturers != null && manufacturers.size() > 0){
-            for(String manufacturer : manufacturers){
-                manufacturerDAO.addManufacturer(supplier.getId(), manufacturer);
-            }
-        }
-        SUPPLIER_IDENTITY_MAP.put(String.valueOf(supplier.getId()) , supplier);
-    }
-     */
 
     public void removeSupplier(int id){
         try {
@@ -236,47 +194,11 @@ public class SuppliersDAO extends DataMapper<Supplier> {
     }
 
 
-
-
-
-    /*
-    public void addAgreement(int supplierId, int agreementType, String agreementDays) throws Exception {
-        if(agreementType > NOT_TRANSPORTING || agreementType < ROUTINE)
-            throw new Exception("Invalid agreement type!");
-        Supplier supplier = getSupplier(supplierId);
-        createAgreement(supplier, agreementType, agreementDays);
-    }
-
-
-    private void createAgreement(Supplier supplier, int agreementType, String agreementDays) throws Exception {
-
-        updateAgreementType(supplier.getId(), agreementType);
-
-        switch(agreementType){
-            case ROUTINE :
-                if(!RoutineAgreement.hasDays(agreementDays)){
-                    throw new Exception("You provided no days!");
-                }
-                routineDAO.addDaysOfDelivery(supplier.getId(), agreementDays);
-                break;
-            case BY_ORDER :
-                byOrderDAO.addTime(supplier.getId(), agreementDays);
-                break;
-            case NOT_TRANSPORTING :
-                selfTransportDAO.updateSupplier(supplier.getId());
-                break;
-        }
-    }
-     */
-
-
-
     public boolean isTransporting(int supplierId) {
         try(Connection connection = getConnection()) {
             ResultSet result = select(connection,Arrays.asList(6), Arrays.asList(1), Arrays.asList(supplierId) );
             if(result.next()){
                 int resultInt = result.getInt(1);
-                //return resultInt == BY_ORDER || resultInt == ROUTINE;
                 return true;
             }
         } catch (SQLException throwables) {

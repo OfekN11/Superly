@@ -30,9 +30,7 @@ public abstract class ViewAgreement extends Screen {
 
 
     protected void handleBaseOptions(int option) throws Exception {
-        
-        //showInfo();
-        
+
         switch (option) {
             case 1 :
                 viewAllItems();
