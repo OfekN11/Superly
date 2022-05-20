@@ -14,31 +14,27 @@ public class TransportOrder {
     private int srcID;
     private int dstID;
     private HashMap<String, Integer> productList;
-    private int transportID;
     private OrderStatus status;
 
     public TransportOrder(int src, int dst) {
         ID = incID++;
         this.srcID = src;
         this.dstID = dst;
-        transportID = -1;
         this.productList = new HashMap<>();
         status = OrderStatus.waiting;
     }
 
-    public TransportOrder(int src, int dst, HashMap<String, Integer> productList) {
-        ID = incID++;
+    public TransportOrder(int id,int src, int dst,OrderStatus status) {
+        ID = id;
+        incID++;
         this.srcID = src;
         this.dstID = dst;
-        this.productList = productList;
+        this.productList = new HashMap<>();
+        this.status = status;
     }
 
-    public TransportOrder(int ID, int srcID, int dstID, int transportID) {
-        this.ID = ID;
-        this.srcID = srcID;
-        this.dstID = dstID;
-        this.transportID = transportID;
-    }
+
+
 
     public int getID() {
         return ID;
@@ -75,13 +71,6 @@ public class TransportOrder {
         this.productList = productList;
     }
 
-    public int getTransportID() {
-        return transportID;
-    }
-
-    public void setTransportID(int transportID) {
-        this.transportID = transportID;
-    }
     public OrderStatus getStatus(){return status;}
     public void order(){ status = OrderStatus.ordered;}
 
