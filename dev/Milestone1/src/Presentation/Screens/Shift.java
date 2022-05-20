@@ -1,19 +1,17 @@
 package Presentation.Screens;
 
-import Domain.Service.Objects.Constraint;
 import Domain.Service.Objects.Employee;
-import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
+import Globals.util.Supplier;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static Globals.util.HumanInteraction.*;
 
 public abstract class Shift extends Screen {
 
@@ -22,6 +20,26 @@ public abstract class Shift extends Screen {
             "Update employee count(s)",     //2
             "Assign employees",             //3
     };
+
+    private final Map<JobTitles, Supplier<Set<Employee>>> getAssignedByType = Stream.of(
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Sorter, () -> controller.getAssignedSortersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Storekeeper, () -> controller.getAssignedStorekeepersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Carrier, () -> controller.getAssignedCarriersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Cashier, () -> controller.getAssignedCashiersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.HR_Manager, () -> controller.getAssignedHR_ManagersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Logistics_Manager, () -> controller.getAssignedLogistics_ManagersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Transport_Manager, () -> controller.getAssignedTrasnports_ManagersFor(this))
+    ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+    private final Map<JobTitles, Supplier<Set<Employee>>> getAvailableByType = Stream.of(
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Sorter, () -> controller.getAvailableSortersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Storekeeper, () -> controller.getAvailableStorekeepersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Carrier, () -> controller.getAvailableCarriersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Cashier, () -> controller.getAvailableCashiersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.HR_Manager, () -> controller.getAvailableHR_ManagersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Logistics_Manager, () -> controller.getAvailableLogistics_ManagersFor(this)),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Transport_Manager, () -> controller.getAvailableTrasnports_ManagersFor(this))
+    ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
     protected final LocalDate date;
     protected String shiftManagerId;
@@ -32,13 +50,17 @@ public abstract class Shift extends Screen {
     protected int sorterCount;
     protected int hr_managersCount;
     protected int logistics_managersCount;
+    protected int transport_managersCount;
 
-    protected Set<String> carrierIDs;
-    protected Set<String> cashierIDs;
-    protected Set<String> storekeeperIDs;
-    protected Set<String> sorterIDs;
-    protected Set<String> hr_managerIDs;
-    protected Set<String> logistics_managerIDs;
+    private final Map<JobTitles, Integer> getCountByType = Stream.of(
+            new AbstractMap.SimpleEntry<>(JobTitles.Sorter, sorterCount),
+            new AbstractMap.SimpleEntry<>(JobTitles.Storekeeper, storekeeperCount),
+            new AbstractMap.SimpleEntry<>(JobTitles.Carrier, carrierCount),
+            new AbstractMap.SimpleEntry<>(JobTitles.Cashier, cashierCount),
+            new AbstractMap.SimpleEntry<>(JobTitles.HR_Manager, hr_managersCount),
+            new AbstractMap.SimpleEntry<>(JobTitles.Logistics_Manager, logistics_managersCount),
+            new AbstractMap.SimpleEntry<>(JobTitles.Transport_Manager, transport_managersCount)
+    ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
     public Shift(Screen caller, Domain.Service.Objects.Shift sShift, String[] extraMenuOptions) {
         super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
@@ -51,13 +73,7 @@ public abstract class Shift extends Screen {
         sorterCount = sShift.sorterCount;
         hr_managersCount = sShift.hr_managersCount;
         logistics_managersCount = sShift.logistics_managersCount;
-
-        carrierIDs = new HashSet<>(sShift.carrierIDs);
-        cashierIDs = new HashSet<>(sShift.cashierIDs);
-        storekeeperIDs = new HashSet<>(sShift.storekeeperIDs);
-        sorterIDs = new HashSet<>(sShift.sorterIDs);
-        hr_managerIDs = new HashSet<>(sShift.hr_managerIDs);
-        logistics_managerIDs = new HashSet<>(sShift.logistics_managerIDs);
+        transport_managersCount = sShift.transport_managersCount;
     }
 
     protected void handleBaseOptions(int option) throws Exception {
@@ -76,81 +92,79 @@ public abstract class Shift extends Screen {
 
     private void assignEmployees() throws Exception {
         System.out.println("Which type of employee would you like to assign for this shift?");
-        while (true) {
-            System.out.println("1 -- ShiftManager");
-            for (int i = 0; i < JobTitles.values().length; i++)
-                System.out.println((i + 2) + " -- " + JobTitles.values()[i]);
-            try {
-                int ordinal = Integer.parseInt(scanner.nextLine());
-                if (ordinal == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                } else if (ordinal < 1 || ordinal > (JobTitles.values().length + 1))
-                    System.out.println("Please enter an integer between 1 and " + (JobTitles.values().length + 1));
-                else if (ordinal == 1) {
-                    assignShiftManager();
-                    return;
-                } else {
-                    assignEmployee(JobTitles.values()[ordinal - 2]);
-                    return;
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 1 and " + (JobTitles.values().length + 1));
-            }
+        System.out.println("1 -- ShiftManager");
+        for (int i = 0; i < JobTitles.values().length; i++)
+            System.out.println((i + 2) + " -- " + JobTitles.values()[i]);
+        int ordinal = getNumber(1, JobTitles.values().length + 1);
+        if (ordinal == 1) {
+            assignShiftManager();
+        } else {
+            assignEmployee(JobTitles.values()[ordinal - 2]);
         }
     }
 
     private void assignEmployee(JobTitles type) throws Exception {
-        Set<Employee> curr = controller.getEmployees(getIDsByType(type));
+        Set<Employee> assigned = getAssignedByType.get(type).get();
+        Set<String> assignedIDs = assigned.stream().map(e -> e.id).collect(Collectors.toSet());
         System.out.println("\nCurrent " + type + "s assigned to this shift:");
-        for (Employee employee : curr)
+        for (Employee employee : assigned)
             System.out.println(employee.id + " - " + employee.name + " : " + controller.getEmployeeWorkDetailsForCurrentMonth(employee.id));
-        Set<Employee> available = controller.getEmployees(controller.getConstraint(date, getType()).employeeIDs)
-                .stream().filter((x) -> x.getType() == type).filter((x) -> !x.id.equals(shiftManagerId)).collect(Collectors.toSet());
-        Set<String> newGroup = null;
+        if (assignedIDs.size() == getCountByType.get(type)){
+            System.out.println("Can't assign more " + type +"s. Max number of " + type + "s has been reached.");
+            return;
+        }
+        Set<Employee> available = getAvailableByType.get(type).get();
+        Set<String> availableIDs = available.stream().map(e -> e.id).collect(Collectors.toSet());
+        System.out.println("Please add up to " + (getCountByType.get(type) - assignedIDs.size()) + " " + type + "s out of the following available employees");
+        for (Employee employee : available)
+            System.out.println(employee.id + " - " + employee.name + " : " + controller.getEmployeeWorkDetailsForCurrentMonth(employee.id));
+        System.out.println("Enter ONLY the ID of the wanted employees!");
         boolean success = false;
         while (!success) {
-            System.out.println("Please create a group of " + getCountByType(type) + " out of the following candidates");
-            for (Employee employee : available)
-                System.out.println(employee.id + " - " + employee.name + " : " + controller.getEmployeeWorkDetailsForCurrentMonth(employee.id));
-            System.out.println("Enter ONLY the ID of the wanted employees!");
-            newGroup = new HashSet<>();
-            while (newGroup.size() < Math.min(getCountByType(type), available.size())) {
-                try {
-                    newGroup.add(scanner.nextLine());
-                } catch (Exception e) {
-                    System.out.println("Unexpected error occurred. Please try again");
-                }
+            String id = scanner.nextLine();
+            if (id.equals("-1"))
+                operationCancelled();
+            if (!availableIDs.contains(id))
+                System.out.println(id + " is not an ID out of the available employee list. \nPlease try again");
+            else {
+                System.out.println(id + " successfully added");
+                assignedIDs.add(id);
+                availableIDs.remove(id);
+                if (assignedIDs.size() == getCountByType.get(type))
+                    System.out.println("Max number has been reached");
+                System.out.println("Do you want to save?");
+                success = yesOrNo();
+                if (!success && assignedIDs.size() == getCountByType.get(type))
+                    operationCancelled();
             }
-            System.out.println("Do you want to save the following IDs?");
-            for (String id : newGroup) {
-                System.out.print(id + ", ");
-            }
-            success = yesOrNo();
         }
+
         switch (type) {
             case Sorter:
-                setSorterIDs(newGroup);
+                controller.editShiftSorterIDs(this, assignedIDs);
                 break;
             case Storekeeper:
-                setStorekeeperIDs(newGroup);
+                controller.editShiftStorekeeperIDs(this, assignedIDs);
                 break;
             case Carrier:
-                setCarrierIDs(newGroup);
+                controller.editShiftCarrierIDs(this, assignedIDs);
                 break;
             case Cashier:
-                setCashierIDs(newGroup);
+                controller.editShiftCashierIDs(this, assignedIDs);
                 break;
             case HR_Manager:
-                setHr_managerIDs(newGroup);
+                controller.editShiftHR_ManagerIDs(this, assignedIDs);
                 break;
             case Logistics_Manager:
-                setLogistics_managerIDs(newGroup);
+                controller.editShiftLogistics_ManagerIDs(this, assignedIDs);
+                break;
+            case Transport_Manager:
+                controller.editShiftTransport_ManagerIDs(this, assignedIDs);
                 break;
         }
         System.out.println("Chosen group saved successfully");
-        if (newGroup.size() < getCountByType(type)) {
-            System.out.println("Notice that the number of assigned employees doesn't meet the requirement of " + getCountByType(type) + " " + type + "s");
+        if (assignedIDs.size() < getCountByType.get(type)) {
+            System.out.println("Notice that the number of assigned employees doesn't meet the requirement of " + getCountByType.get(type) + " " + type + "s");
             System.out.println("Please make sure more employees register to the constraint of this shift");
         }
     }
@@ -158,90 +172,36 @@ public abstract class Shift extends Screen {
     private void assignShiftManager() throws Exception {
         Employee currManager = controller.getEmployee(shiftManagerId);
         System.out.println("\nCurrent shift manager: " + currManager.name + ", ID: " + currManager.id);
-        Constraint constraint = controller.getConstraint(date, getType());
-        Set<Domain.Service.Objects.Employee> employees = controller.getEmployees(constraint.employeeIDs);
-        List<Employee> managers = employees.stream().filter((x) -> x.certifications.contains(Certifications.ShiftManagement)).collect(Collectors.toList());
-        if (managers.size() == 0) {
+        List<Employee> availableManagers = new ArrayList<>(controller.getAvailableShiftManagersFor(this));
+        if (availableManagers.size() == 0) {
             System.out.println("No employee who is certified to manage shifts has filled a possibility to work at this shift.");
-            System.out.println("Cannot assign a shift manager. Operation Cancelled");
-            return;
+            System.out.println("Cannot assign a shift manager");
+            operationCancelled();
         }
+        System.out.println("Choose manager for this shift");
+        for (int i = 0; i < availableManagers.size(); i++)
+            System.out.println((i + 1) + " -- " + availableManagers.get(i).name + ": " + controller.getEmployeeWorkDetailsForCurrentMonth(availableManagers.get(i).id));
+
         Employee manager = null;
         boolean success = false;
         while (!success) {
-            System.out.println("Choose manager for this shift");
-            for (int i = 0; i < managers.size(); i++)
-                System.out.println((i + 1) + " -- " + managers.get(i).name + ": " + controller.getEmployeeWorkDetailsForCurrentMonth(managers.get(i).id));
-            try {
-                int ordinal = Integer.parseInt(scanner.nextLine());
-                if (ordinal == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                } else if (ordinal < 1 || ordinal > managers.size())
-                    System.out.println("Please enter an integer between 1 and " + managers.size());
-                else {
-                    manager = managers.get(ordinal);
-                    System.out.println("Entered manager: " + manager.name);
-                    success = areYouSure();
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 1 and " + managers.size());
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
+            manager = availableManagers.get(getNumber(1, availableManagers.size()) - 1);
+            System.out.println("Entered manager: " + manager.name);
+            success = areYouSure();
         }
-        try {
-            setShiftManagerId(manager.id);
-            System.out.println("Successfully assigned " + manager.name + " as manager of this shift");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println("Please try again");
-        }
+        setShiftManagerId(manager.id);
+        System.out.println("Successfully assigned " + manager.name + " as manager of this shift");
     }
 
     private void updateCount() throws Exception {
         System.out.println("\nWhich type of count would you like to update?");
-        JobTitles type = null;
-        while (type == null) {
-            for (int i = 0; i < JobTitles.values().length; i++)
-                System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
-            try {
-                int ordinal = Integer.parseInt(scanner.nextLine());
-                if (ordinal == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                } else if (ordinal < 1 || ordinal > JobTitles.values().length)
-                    System.out.println("Please enter an integer between 1 and " + JobTitles.values().length);
-                else {
-                    type = JobTitles.values()[ordinal - 1];
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 1 and " + JobTitles.values().length);
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
-        }
-        System.out.println("\nCurrent " + type + " count: " + getCountByType(type));
+        for (int i = 0; i < JobTitles.values().length; i++)
+            System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
+        JobTitles type = JobTitles.values()[getNumber(1, JobTitles.values().length) - 1];
+        System.out.println("\nCurrent " + type + " count: " + getCountByType.get(type));
 
         System.out.println("How many " + type + "s do you need for this shift?");
-        int newCount = -2;
-        while (newCount < 0) {
-            try {
-                newCount = Integer.parseInt(scanner.nextLine());
-                if (newCount == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                } else if (newCount < 0)
-                    System.out.println("Please enter a non-negative integer");
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter a non-negative integer");
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
-        }
+        int newCount = getNumber(0);
 
         switch (type) {
             case Carrier:
@@ -262,6 +222,9 @@ public abstract class Shift extends Screen {
             case Logistics_Manager:
                 setLogistics_managersCount(newCount);
                 break;
+            case Transport_Manager:
+                setTransport_managersCount(newCount);
+                break;
         }
         System.out.println(type + " count successfully set to " + newCount);
     }
@@ -271,107 +234,45 @@ public abstract class Shift extends Screen {
         this.shiftManagerId = shiftManagerId;
     }
 
-    protected void setCarrierCount(int carrierCount) throws Exception {
-        controller.editShiftCarrierCount(this, carrierCount);
-        this.carrierCount = carrierCount;
+    protected void setCarrierCount(int newCount) throws Exception {
+        controller.editShiftCarrierCount(this, newCount);
+        this.carrierCount = newCount;
     }
 
-    protected void setCashierCount(int cashierCount) throws Exception {
-        controller.editShiftCashierCount(this, cashierCount);
-        this.cashierCount = cashierCount;
+    protected void setCashierCount(int newCount) throws Exception {
+        controller.editShiftCashierCount(this, newCount);
+        this.cashierCount = newCount;
     }
 
-    protected void setStorekeeperCount(int storekeeperCount) throws Exception {
-        controller.editShiftStorekeeperCount(this, storekeeperCount);
-        this.storekeeperCount = storekeeperCount;
+    protected void setStorekeeperCount(int newCount) throws Exception {
+        controller.editShiftStorekeeperCount(this, newCount);
+        this.storekeeperCount = newCount;
     }
 
-    protected void setSorterCount(int sorterCount) throws Exception {
-        controller.editShiftSorterCount(this, sorterCount);
-        this.sorterCount = sorterCount;
+    protected void setSorterCount(int newCount) throws Exception {
+        controller.editShiftSorterCount(this, newCount);
+        this.sorterCount = newCount;
     }
 
-    protected void setHr_managersCount(int hr_managersCount) throws Exception {
-        controller.editShiftHR_ManagerCount(this, hr_managersCount);
-        this.hr_managersCount = hr_managersCount;
+    protected void setHr_managersCount(int newCount) throws Exception {
+        controller.editShiftHR_ManagerCount(this, newCount);
+        this.hr_managersCount = newCount;
     }
 
-    protected void setLogistics_managersCount(int logistics_managersCount) throws Exception {
-        controller.editShiftLogistics_ManagerCount(this, logistics_managersCount);
-        this.logistics_managersCount = logistics_managersCount;
+    protected void setLogistics_managersCount(int newCount) throws Exception {
+        controller.editShiftLogistics_ManagerCount(this, newCount);
+        this.logistics_managersCount = newCount;
     }
 
-    protected void setCarrierIDs(Set<String> carrierIDs) throws Exception {
-        controller.editShiftCarrierIDs(this, carrierIDs);
-        this.carrierIDs = new HashSet<>(carrierIDs);
+    private void setTransport_managersCount(int newCount) {
+        controller.editShiftTransport_ManagerCount(this, newCount);
+        this.transport_managersCount = newCount;
     }
 
-    protected void setCashierIDs(Set<String> cashierIDs) throws Exception {
-        controller.editShiftCashierIDs(this, cashierIDs);
-        this.cashierIDs = new HashSet<>(cashierIDs);
-    }
-
-    protected void setStorekeeperIDs(Set<String> storekeeperIDs) throws Exception {
-        controller.editShiftStorekeeperIDs(this, storekeeperIDs);
-        this.storekeeperIDs = new HashSet<>(storekeeperIDs);
-    }
-
-    protected void setSorterIDs(Set<String> sorterIDs) throws Exception {
-        controller.editShiftSorterIDs(this, sorterIDs);
-        this.sorterIDs = new HashSet<>(sorterIDs);
-    }
-
-    protected void setHr_managerIDs(Set<String> hr_managerIDs) throws Exception {
-        controller.editShiftHR_ManagerIDs(this, hr_managerIDs);
-        this.hr_managerIDs = new HashSet<>(hr_managerIDs);
-    }
-
-    protected void setLogistics_managerIDs(Set<String> logistics_managerIDs) throws Exception {
-        controller.editShiftLogistics_ManagerIDs(this, logistics_managerIDs);
-        this.logistics_managerIDs = new HashSet<>(logistics_managerIDs);
-    }
-
-    protected int getCountByType(JobTitles type) {
-        switch (type) {
-            case Sorter:
-                return sorterCount;
-            case Storekeeper:
-                return storekeeperCount;
-            case Carrier:
-                return carrierCount;
-            case Cashier:
-                return cashierCount;
-            case HR_Manager:
-                return hr_managersCount;
-            case Logistics_Manager:
-                return logistics_managersCount;
-            default:
-                return 0;
-        }
-    }
-
-    protected Set<String> getIDsByType(JobTitles type) {
-        switch (type) {
-            case Sorter:
-                return sorterIDs;
-            case Storekeeper:
-                return storekeeperIDs;
-            case Carrier:
-                return carrierIDs;
-            case Cashier:
-                return cashierIDs;
-            case HR_Manager:
-                return hr_managerIDs;
-            case Logistics_Manager:
-                return logistics_managerIDs;
-            default:
-                return null;
-        }
-    }
-
-    protected void printEmployeesByType(JobTitles type) throws Exception {
-        System.out.println(type + "s (" + getCountByType(type) + ")");
-        EmployeesMenu.EmployeesViewer.printEmployees(controller.getEmployees(getIDsByType(type)));
+    protected void printEmployeesByType(JobTitles type){
+        Set<Employee> assigned = getAssignedByType.get(type).get();
+        System.out.println(type + "s (" + assigned.size() + " out of " + getCountByType.get(type) + ")");
+        EmployeesMenu.EmployeesViewer.printEmployees(getAssignedByType.get(type).get());
     }
 
     public abstract ShiftTypes getType();

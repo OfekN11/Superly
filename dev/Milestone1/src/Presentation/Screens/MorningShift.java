@@ -1,14 +1,15 @@
 package Presentation.Screens;
 
-import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
+import Globals.util.HumanInteraction;
 
 import java.text.SimpleDateFormat;
 
-public class MorningShift extends Shift{
-    private static final String[] extraMenuOptions  = {
+public class MorningShift extends Shift {
+    private static final String[] extraMenuOptions = {
             "Exit"  //4
     };
+
     public MorningShift(Screen caller, Domain.Service.Objects.MorningShift sShift) {
         super(caller, sShift, extraMenuOptions);
     }
@@ -24,8 +25,8 @@ public class MorningShift extends Shift{
                     handleBaseOptions(option);
                 else if (option == 4)
                     endRun();
-            }
-            catch (Exception e) {
+            } catch (HumanInteraction.OperationCancelledException ignored) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }
