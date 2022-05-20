@@ -7,6 +7,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.annotation.concurrent.NotThreadSafe;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;

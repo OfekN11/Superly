@@ -102,9 +102,8 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
             IDENTITY_MAP.put(key,output);
             return output;
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public Collection<StockReport> getAll() {

@@ -22,9 +22,9 @@ public class Main {
 //        Result addSale = controller.addSale(products, products, 5, LocalDate.of(2022, 05, 15),LocalDate.of(2022, 05, 18));
 //        Result getSale = controller.getSaleHistoryByProduct(1);
         //System.out.println("done");
-        //testSuppliers();
+//        testSuppliers();
         new Thread(new MainMenu(controller)).start();
-        //script();
+//        script();
     }
 
     private static void script(){
