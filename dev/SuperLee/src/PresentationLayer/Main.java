@@ -24,7 +24,60 @@ public class Main {
         //System.out.println("done");
         //testSuppliers();
         new Thread(new MainMenu(controller)).start();
+        script();
     }
+
+    private static void script(){
+        SupplierController supplierController = new SupplierController();
+
+        insertSuppliers(supplierController);
+
+        //supplierController.loadSuppliersData();
+
+        //testOrder(supplierController);
+
+    }
+
+
+
+    private static void insertSuppliers(SupplierController supplierController){
+        supplierController = new SupplierController();
+
+        try{
+            supplierController.insertFirstDataToDB();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private static void testOrder(SupplierController supplierController) {
+        Map<Integer, Map<Integer, Integer>> shortage = new HashMap<>();
+        Map<Integer, Integer> item1 = new HashMap<>();
+        Map<Integer, Integer> item2 = new HashMap<>();
+        Map<Integer, Integer> item3 = new HashMap<>();
+        Map<Integer, Integer> item4 = new HashMap<>();
+
+        shortage.put(1, item1);
+        shortage.put(2, item2);
+        shortage.put(3, item3);
+        shortage.put(4, item4);
+
+        item1.put(1, 100);
+        item2.put(1, 130);
+        item3.put(2, 7500);
+        item4.put(2, 1);
+
+        try{
+            supplierController.createAllOrders(shortage);
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+
 
 
 
@@ -43,22 +96,7 @@ public class Main {
 
     }
 
-    private static void testOrder(SupplierController supplierController) {
-        Map<Integer, Map<Integer, Integer>> shortage = new HashMap<>();
-        Map<Integer, Integer> item1 = new HashMap<>();
-        //Map<Integer, Integer> item2 = new HashMap<>();
 
-        shortage.put(2, item1);
-
-        item1.put(1, 1);
-
-        try{
-            supplierController.createAllOrders(shortage);
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
 }
 
 

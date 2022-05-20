@@ -42,7 +42,6 @@ public class ContactDAO extends DAO {
         }
     }
 
-    // TODO: 13/05/2022  How to check if contact already exists in the list??, in this case we don't need to upload him
     public ArrayList<Contact> getAllSupplierContact(int supID) {
         ArrayList<Contact> output = new ArrayList<>();
         try(Connection connection = getConnection()) {

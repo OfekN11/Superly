@@ -59,16 +59,6 @@ public class SupplierService {
         }
     }
 
-    /*
-    public Result<Boolean> updateSupplierID(int id, int newId){
-        try {
-            controller.updateSupplierID(id, newId);
-            return Result.makeOk(true);
-        } catch (Exception e) {
-            return Result.makeError(e.getMessage());
-        }
-    }*/
-
     public Result<Boolean> updateSupplierName(int id, String newName){
         try {
             controller.updateSupplierName(id, newName);
@@ -126,18 +116,6 @@ public class SupplierService {
             System.out.println(e.getMessage());
 
         }
-    }
-
-    // TODO: 16/04/2022  Need to change the key of  the Map if we want to use this, name is not unique
-    public Map<String, ServiceItemObject> itemsFromAllSuppliers(){
-        /*
-        try {
-            Map<String, List<String>> result = controller.itemsFromAllSuppliers();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-         */
-        return null;
     }
 
     // one component is : < " id , name , manufacturer , pricePerUnit , quantity1 , percent1 , quantity2 , percent2 ...  " >
@@ -261,17 +239,6 @@ public class SupplierService {
             return Result.makeError(e.getMessage());
         }
     }
-
-    /*
-    public void setAgreement(int supplierId, int agreementType, String agreementDays){
-        try {
-            controller.setAgreement(supplierId, agreementType, agreementDays);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-     */
 
     public Result<Boolean> isRoutineAgreement(int supplierId){
         try{
@@ -518,7 +485,6 @@ public class SupplierService {
         }
     }
 
-    // TODO: USE THIS METHOD
     public Result<Boolean> updateItemQuantityInOrder(int supId, int orderId, int itemId, int quantity){
         try{
             controller.updateItemQuantityInOrder(supId, orderId, itemId, quantity);

@@ -107,7 +107,6 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
 
 
     public void removeSupplier(int id) throws SQLException {
-        //@TODO what is happening here
         for( AgreementItem item : AGREEMENT_ITEM_IDENTITY_MAP.values()){
             bulkPricesDAO.remove(item.getProductId());
             remove(item.getProductId());
