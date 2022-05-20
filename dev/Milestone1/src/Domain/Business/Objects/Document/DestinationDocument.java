@@ -2,6 +2,7 @@ package Domain.Business.Objects.Document;
 
 import Domain.Service.ServiceDocumentFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DestinationDocument extends  Document{
@@ -13,6 +14,14 @@ public class DestinationDocument extends  Document{
         ID = id;
         this.destID = destID;
         this.providedProducts = providedProducts;
+    }
+    public DestinationDocument(int id,int destID){
+        ID = id;
+        this.destID = destID;
+        providedProducts = new ArrayList<>();
+    }
+    public int getID(){
+        return ID;
     }
 
     public int getDestID() {
@@ -27,8 +36,8 @@ public class DestinationDocument extends  Document{
         return providedProducts;
     }
 
-    public void setProvidedProducts(List<String> providedProducts) {
-        this.providedProducts = providedProducts;
+    public void addProduct(String product){
+        providedProducts.add(product);
     }
 
     @Override

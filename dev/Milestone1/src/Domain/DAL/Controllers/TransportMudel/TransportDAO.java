@@ -67,6 +67,9 @@ public class TransportDAO extends DAO {
         }
 
     }
+    public Transport get(int id){
+        return TRUCK_IDENTITY_MAP.get(id);
+    }
 
 
 }
