@@ -2,11 +2,15 @@ package Domain.DAL.Controllers.EmployeeMappers;
 import Domain.Business.Objects.Employee.Carrier;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Controllers.EmployeeLinks.CarrierLicensesDAO;
+import Globals.Enums.Certifications;
+import Globals.Enums.LicenseTypes;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class CarrierDAO extends AbstractEmployeeDAO<Carrier> {
 
@@ -36,7 +40,14 @@ public class CarrierDAO extends AbstractEmployeeDAO<Carrier> {
 
     @Override
     protected Carrier buildObject(ResultSet instanceResult) throws Exception {
-        return new Carrier(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getDate(6).toLocalDate(),getEmployeeCertificationController().get(instanceResult.getString(1)),carrierLicensesDAO.get(instanceResult.getNString(1)));
+        String id = instanceResult.getString(1);
+        String name = instanceResult.getString(2);
+        String bankDetails =instanceResult.getString(3);
+        int salary = instanceResult.getInt(4);
+        LocalDate startingDate = instanceResult.getDate(6).toLocalDate();
+        Set<Certifications> certifications =  getEmployeeCertificationController().get(instanceResult.getString(1));
+        Set<LicenseTypes> licenses = carrierLicensesDAO.get(instanceResult.getNString(1));
+        return new Carrier(id , name ,bankDetails, salary, startingDate, certifications, licenses);
     }
 
     @Override
