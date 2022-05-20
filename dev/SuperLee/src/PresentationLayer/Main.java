@@ -25,17 +25,17 @@ public class Main {
         //testSuppliers();
         //new Thread(new MainMenu(controller)).start();
 
-        script();
+        //script();
     }
 
     private static void script(){
         SupplierController supplierController = new SupplierController();
 
-        //insertSuppliers(supplierController);
+        insertSuppliers(supplierController);
 
-        supplierController.loadSuppliersData();
+        //supplierController.loadSuppliersData();
 
-        testOrder(supplierController);
+        //testOrder(supplierController);
 
     }
 
