@@ -34,8 +34,8 @@ public class Main {
 
         try {
             supplierController.insertFirstDataToDB();
-            supplierController.loadSuppliersData();
-            testOrder(supplierController);
+            //supplierController.loadSuppliersData();
+            //testOrder(supplierController);
         } catch (Exception exception) {
             exception.printStackTrace();
         }

@@ -598,18 +598,6 @@ public class Supplier {
         return agreement.getOrderPrice(itemId, quantity);
     }
 
-    /*
-    public Order getOrderForThisAmount(int orderId, int productID, int amount) throws Exception {
-        if(!orderExists(orderId))
-            throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
-        if( ordersToBe.get(orderId).hasEnoughItemQuantity(productID, amount) )    //This should be the "future" orders
-            return ordersToBe.get(orderId);
-        else{
-            ordersToBe.get(orderId).updateItemQuantity(productID, amount, agreement.getItem(productID).getDiscount(amount), agreement.getOrderPrice(productID, amount));
-        }
-        return ordersToBe.get(orderId);
-    }
-     */
 
     public ArrayList<Order> getFutureOrders() {
         ArrayList<Order> result = new ArrayList<>();
@@ -627,12 +615,6 @@ public class Supplier {
             }
         }
         return result;
-    }
-
-    public Order orderForThisAMount(int productId, int quantity){
-        //check if there is an order for this item, if there is add to this order
-        // if not create new order and return it
-        return null;
     }
 
     public int getLastOrderId() {
@@ -675,32 +657,6 @@ public class Supplier {
         return getOrderFromList(orderID, orderDAO);
     }
 
-    //I dont think this function work well!
-    public ArrayList<OrderItem> checkifOrderItemAlreayExists(Order order, OrderItem orderItem, OrderDAO orderDAO) throws Exception {
-        if(!order.itemExists(orderItem.getProductId())){
-            return null;
-        }
-        int addQuantity = 0;
-        ArrayList<OrderItem> result = new ArrayList<>();
-        for(OrderItem item : order.getOrderItems()){
-            if(item.getProductId() != orderItem.getProductId())
-                result.add(item);
-            else{
-                addQuantity = item.getQuantity();
-
-            }
-        }
-        //if I do this line there is no bug!
-        addQuantity += order.getQuantityOfItem(orderItem.getProductId());
-
-        //addQuantity += orderItem.getQuantity();
-        int itemID = orderItem.getProductId();
-        orderItem.setQuantity(addQuantity);
-        orderItem.setDiscount(agreement.getItem(itemID).getDiscount(addQuantity));
-        orderItem.setFinalPrice(agreement.getOrderPrice(itemID, addQuantity));
-        result.add(orderItem);
-        return result;
-    }
 
     public void addOrderNotToDB(Order order) {
         if(orders.containsKey(order.getId())){

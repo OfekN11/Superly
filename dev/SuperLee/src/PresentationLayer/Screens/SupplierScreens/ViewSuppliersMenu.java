@@ -184,7 +184,6 @@ public class ViewSuppliersMenu extends Screen {
             }
             if(controller.isRoutineAgreement(supplierId)){
                 new Thread ( new ViewRoutineAgreement(this, supplierId)).start();
-                                //look at git Employee and cashier!
             }
             else{
                 if(controller.isByOrderAgreement(supplierId)){

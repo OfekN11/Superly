@@ -38,7 +38,6 @@ public class SupplierController {
         Supplier supplier = new Supplier(name, bankNumber, address, payingAgreement, contacts, manufacturers, suppliersDAO);
 
         suppliersDAO.save(String.valueOf(supplier.getId()), supplier);
-        //suppliersDAO.addSupplier(supplier, contacts, manufacturers);
         return supplier.getId();
     }
 
@@ -133,18 +132,6 @@ public class SupplierController {
         suppliersDAO.getAgreementController().updateAgreementDays(supplierId, days, agreementType);
     }
 
-    /*
-    //we don't use this function!!!!
-    public void setAgreement(int supplierId, int agreementType, String agreementDays) throws Exception {
-        if(!supplierExist(supplierId))
-            throw new Exception("There is no supplier with this ID!");
-
-        suppliersDAO.getSupplier(supplierId).addAgreement(agreementType, agreementDays, null);
-        suppliersDAO.updateAgreementType(supplierId, agreementType);
-        List<Integer> days = suppliersDAO.getSupplier(supplierId).getAgreementDays();
-    }
-     */
-
 
     public void addItemsToAgreement(int supplierId, List<String> itemsString) throws Exception {
         if(!supplierExist(supplierId))
@@ -172,15 +159,6 @@ public class SupplierController {
         return true;
     }
 
-
-    /*
-    //we don't use this function
-    public Map<String, List<String>> itemsFromAllSuppliers() throws Exception {
-        HashMap<String, List<String>> items = new HashMap<>();
-        for (Supplier supplier : suppliers.values())
-            items.put(supplier.getName(), supplier.getOrderedItems());
-        return items;
-    }*/
 
     public List<String> itemsFromOneSupplier(int id) throws Exception {
         if(!supplierExist(id))
@@ -534,7 +512,6 @@ public class SupplierController {
         return result;
     }
 
-    ////
     private void insertToSuppliersBusiness(ArrayList<Order> result) {
         for(Order order : result){
             suppliersDAO.getSupplier(order.getSupplierId()).addOrderNotToDB(order);
@@ -571,7 +548,6 @@ public class SupplierController {
                 suppliersDAO.getSupplier(newOrder.getSupplierId()).setLastOrderId(suppliersDAO.getAgreementController(), newOrder.getId());
 
                 // replace the old order with the new One
-                //suppliersDAO.getSupplier(order.getSupplierId()).ReplaceOrderInList();
                 return true;
             }
         }
@@ -621,7 +597,6 @@ public class SupplierController {
             orders.get("not deletable").add(newOrder);
 
             // Add the new Order to some list in Supplier
-            //suppliersDAO.getSupplier(order.getSupplierId()).addOrderToList();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -630,7 +605,8 @@ public class SupplierController {
 
     }
 
-    private OrderItem createNewOrderItem(int supplierId, int productId, int quantity) {
+    //public for testing
+    public OrderItem createNewOrderItem(int supplierId, int productId, int quantity) {
         Supplier supplier = suppliersDAO.getSupplier(supplierId);
         AgreementItem currItem = null;
         try {
@@ -696,7 +672,6 @@ public class SupplierController {
     private Map<String, ArrayList<Order>> getOrdersForTomorrow() throws SQLException {
         Map<String, ArrayList<Order>> result = new HashMap<>();
 
-        //loadSuppliersData();
 
         ArrayList<Integer> supplierIds = getAllRoutineSuppliersDeliveringTomorrow();
         ArrayList<Order> lastOrderForRoutineSupplier = uploadLastOrderForRoutineSupplier(supplierIds);
@@ -747,8 +722,8 @@ public class SupplierController {
         return orders;
     }
 
-
-    private ArrayList<Order> filterOrdersArrivalTomorrow(ArrayList<Order> orders) {
+    //public for testing
+    public ArrayList<Order> filterOrdersArrivalTomorrow(ArrayList<Order> orders) {
         ArrayList<Order> result = new ArrayList<>();
         for(Order order : orders){
             if(order.getDaysUntilOrder(LocalDate.now()) == 1)
@@ -774,7 +749,6 @@ public class SupplierController {
         for(Order order : ordersArrivalTimePassed){
             Order newOrder = new Order(order);
             suppliersDAO.getSupplier(newOrder.getSupplierId()).setLastOrderId(suppliersDAO.getAgreementController(), newOrder.getId());
-            //orderDAO.removeOrder(order.getId());  WHY?
             orderDAO.addOrder(newOrder);
             result.add(newOrder);
         }

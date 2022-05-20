@@ -61,7 +61,9 @@ public class RoutineAgreementTest {
             System.out.println(e.getMessage());
         }
 
-        removeSup();
+        finally {
+            removeSup();
+        }
 
     }
 
@@ -82,7 +84,9 @@ public class RoutineAgreementTest {
             System.out.println(e.getMessage());
         }
 
-        removeSup();
+        finally {
+            removeSup();
+        }
 
     }
 
