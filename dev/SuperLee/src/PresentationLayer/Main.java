@@ -17,13 +17,13 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        BackendController controller = new BackendController();
+        //BackendController controller = new BackendController();
         //ArrayList products = new ArrayList(); products.add(1);
 //        Result addSale = controller.addSale(products, products, 5, LocalDate.of(2022, 05, 15),LocalDate.of(2022, 05, 18));
 //        Result getSale = controller.getSaleHistoryByProduct(1);
         //System.out.println("done");
         //testSuppliers();
-        new Thread(new MainMenu(controller)).start();
+        //new Thread(new MainMenu(controller)).start();
     }
 
 
@@ -34,8 +34,8 @@ public class Main {
 
         try {
             supplierController.insertFirstDataToDB();
-            supplierController.loadSuppliersData();
-            testOrder(supplierController);
+            //supplierController.loadSuppliersData();
+            //testOrder(supplierController);
         } catch (Exception exception) {
             exception.printStackTrace();
         }

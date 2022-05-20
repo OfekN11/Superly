@@ -61,8 +61,9 @@ class SupplierTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        dao.removeSupplier(1);
+        finally {
+            dao.removeSupplier(1);
+        }
 
     }
 

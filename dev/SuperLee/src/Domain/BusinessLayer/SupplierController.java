@@ -630,7 +630,8 @@ public class SupplierController {
 
     }
 
-    private OrderItem createNewOrderItem(int supplierId, int productId, int quantity) {
+    //public for testing
+    public OrderItem createNewOrderItem(int supplierId, int productId, int quantity) {
         Supplier supplier = suppliersDAO.getSupplier(supplierId);
         AgreementItem currItem = null;
         try {
@@ -747,8 +748,8 @@ public class SupplierController {
         return orders;
     }
 
-
-    private ArrayList<Order> filterOrdersArrivalTomorrow(ArrayList<Order> orders) {
+    //public for testing
+    public ArrayList<Order> filterOrdersArrivalTomorrow(ArrayList<Order> orders) {
         ArrayList<Order> result = new ArrayList<>();
         for(Order order : orders){
             if(order.getDaysUntilOrder(LocalDate.now()) == 1)
