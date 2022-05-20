@@ -14,17 +14,23 @@ public class Transport {
     private String driverID;
     private  int truckNumber;
     private  int truckWeight;
-    private TransportStatus status;
-    private Pair<LocalDate, ShiftTypes> shift;
 
-    public Transport(int transportID, LocalDateTime startTime, LocalDateTime endTime, String driverID, int truckNumber, int truckWeight, Pair<LocalDate, ShiftTypes> shift) {
+    public Transport(Domain.Service.Objects.Transport transport) {
+        this.transportID = transport.getTransportID();
+        this.startTime = transport.getStartTime();
+        this.endTime = transport.getEndTime();
+        this.driverID = transport.getDriverID();
+        this.truckNumber = transport.getTruckNumber();
+        this.truckWeight = transport.getTruckWeight();
+    }
+
+    public Transport(int transportID, LocalDateTime startTime, LocalDateTime endTime, String driverID, int truckNumber, int truckWeight) {
         this.transportID = transportID;
         this.startTime = startTime;
         this.endTime = endTime;
         this.driverID = driverID;
         this.truckNumber = truckNumber;
         this.truckWeight = truckWeight;
-        //this.shift = shift;
     }
 
     public void display()

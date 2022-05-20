@@ -1,9 +1,13 @@
 package Domain.Service.Services;
 
 import Domain.Business.Controllers.OrderController;
+import Domain.Service.Objects.TransportOrder;
 import Domain.Service.Objects.Result;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class OrderService {
     private OrderController order;
@@ -19,10 +23,17 @@ public class OrderService {
             return Result.makeError(e.getMessage());
         }
     }
+    private Set<Domain.Service.Objects.TransportOrder> toTOService(List<Domain.Business.Objects.TransportOrder> orders)
+    {
+        Set<Domain.Service.Objects.TransportOrder> orderSet = new HashSet<>();
+        for (Domain.Business.Objects.TransportOrder order: orders) {
+            orderSet.add(new TransportOrder(order));
+        }
+        return orderSet;
+    }
     public Result getPendingOrders() {
         try {
-            //TODO: Create Set of PL TransportOrder
-            return Result.makeOk(order.getPendingOrder());
+            return Result.makeOk(toTOService(order.getPendingOrder()));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

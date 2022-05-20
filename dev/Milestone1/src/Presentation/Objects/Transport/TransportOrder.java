@@ -23,6 +23,13 @@ public class TransportOrder {
         productList = new HashMap<>();
     }
 
+    public TransportOrder(Domain.Service.Objects.TransportOrder order) {
+        this.orderID = order.getOrderID();
+        this.srcID = order.getSrcID();
+        this.dstID = order.getDstID();
+        this.productList = order.getProducts();
+    }
+
     public void canCloseOrder() throws Exception {
         if (productList.size() <= 0)
         {

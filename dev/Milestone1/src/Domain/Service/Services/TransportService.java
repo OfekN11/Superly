@@ -8,9 +8,7 @@ import Globals.Pair;
 import Presentation.Objects.Transport.TransportOrder;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TransportService {
     private TransportController controller;
@@ -20,11 +18,11 @@ public class TransportService {
     }
 
     //TODO fix the function
-    private HashMap<Integer, Transport> toServiceTransports(HashMap<Integer, Domain.Business.Objects.Transport> transports)
+    private Set<Transport> toServiceTransports(HashMap<Integer, Domain.Business.Objects.Transport> transports)
     {
-        HashMap<Integer, Transport> transportList = new HashMap<>();
+        Set<Transport> transportList = new HashSet<>();
         for (Integer transportKey: transports.keySet()) {
-            transportList.put(transportKey, new Transport(transports.get(transportKey)));
+            transportList.add(new Transport(transports.get(transportKey)));
         }
         return transportList;
     }

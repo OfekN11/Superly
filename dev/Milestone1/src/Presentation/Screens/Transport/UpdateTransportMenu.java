@@ -60,7 +60,7 @@ public class UpdateTransportMenu extends Screen {
         }
     }
 
-    private void placeTruck(int transportID) {
+    private void placeTruck(int transportID) throws Exception {
         int truckLN = getTruckNumber();
         controller.placeTruck(transportID, truckLN);
     }

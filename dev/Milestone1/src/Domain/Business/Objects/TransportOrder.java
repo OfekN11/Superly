@@ -63,6 +63,14 @@ public class TransportOrder {
     public HashMap<String, Integer> getProductList() {
         return productList;
     }
+    public HashMap<Integer, Integer> getProductHM() {
+        HashMap<Integer, Integer> productHM = new HashMap<>();
+        for(String sn: productList.keySet())
+        {
+            productHM.put(Integer.parseInt(sn), productList.get(sn));
+        }
+        return productHM;
+    }
     public List<String> getProducts(){
         List<String> pro = new ArrayList<>();
         for (String s:productList.keySet()) {
