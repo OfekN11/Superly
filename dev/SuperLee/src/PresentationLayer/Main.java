@@ -24,7 +24,7 @@ public class Main {
         //System.out.println("done");
         //testSuppliers();
         new Thread(new MainMenu(controller)).start();
-        script();
+        //script();
     }
 
     private static void script(){
