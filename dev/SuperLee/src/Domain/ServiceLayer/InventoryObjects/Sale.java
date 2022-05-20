@@ -1,6 +1,7 @@
 package Domain.ServiceLayer.InventoryObjects;
 
 import Domain.BusinessLayer.Inventory.SaleToCustomer;
+import Globals.Defect;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -21,6 +22,13 @@ public class Sale {
         this.categories = s.getCategories();
         this.products = s.getProducts();
     }
+
+    public int getSaleID() { return id; }
+    public int getPercent() { return percent; }
+    public LocalDate getStartDate() { return startDate; }
+    public LocalDate getEndDate() { return endDate; }
+    public List<Integer> getCategories() { return categories; }
+    public List<Integer> getProducts() { return products; }
 
     @Override
     public String toString() {

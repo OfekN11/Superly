@@ -64,6 +64,10 @@ public class Sales extends Screen {
         }
     }
 
+    private String printSale(Sale s) {
+        return "Sale ID: " + s.getSaleID() + "\nPercent: " + s.getPercent() + "\nStart Date: " + s.getStartDate() + "\nEnd Date: " + s.getEndDate() + "\nCategories: " + s.getCategories() + "\nProducts: " + s.getProducts() + "\n";
+    }
+
     private void addSale() {
         List<Integer> categories;
         List<Integer> products;
@@ -90,7 +94,7 @@ public class Sales extends Screen {
         if (r.isError())
             System.out.println(r.getError());
         else
-            System.out.println(r.getValue());
+            System.out.println(printSale(r.getValue()));
     }
 
     private void removeSale() {
@@ -122,7 +126,7 @@ public class Sales extends Screen {
         else {
             List<Sale> saleReport = r.getValue();
             for (Sale s : saleReport)
-                System.out.println(s);
+                System.out.println(printSale(s));
             if (saleReport.isEmpty())
                 System.out.println("there are no sales for this product in the system");
         }
@@ -138,7 +142,7 @@ public class Sales extends Screen {
         else {
             List<Sale> saleReport = r.getValue();
             for (Sale s : saleReport)
-                System.out.println(s);
+                System.out.println(printSale(s));
             if (saleReport.isEmpty())
                 System.out.println("there are no sales for this category in the system");
         }
