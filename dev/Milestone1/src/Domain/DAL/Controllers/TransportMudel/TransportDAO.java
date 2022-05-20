@@ -2,7 +2,6 @@ package Domain.DAL.Controllers.TransportMudel;
 
 import Domain.Business.Objects.Transport;
 import Domain.DAL.Abstract.DAO;
-import Domain.DAL.Controllers.TransportOrderDAO;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.TransportStatus;
 import Globals.Pair;
@@ -17,7 +16,7 @@ import java.util.Map;
 public class TransportDAO extends DAO {
     private final static Map<Integer, Transport> TRUCK_IDENTITY_MAP = new HashMap<>();
 
-    private TransportSorceDTO transportSorceDTO;
+    private TransportSorceDAO transportSorceDTO;
     private TransportDestinationsDAO transportDestinationsDAO;
     private TransportTransportOrderDAO transportTransportOrderDAO;
     public TransportDAO() {
