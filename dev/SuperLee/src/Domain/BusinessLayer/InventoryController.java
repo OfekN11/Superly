@@ -94,9 +94,8 @@ public class InventoryController {
             return output;
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Product ID Invalid: " + productID);
         }
-        return null;
     }
 
     private Collection<SaleToCustomer> getAllSales() {
