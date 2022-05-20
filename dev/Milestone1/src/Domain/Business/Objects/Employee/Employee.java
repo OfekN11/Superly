@@ -5,7 +5,6 @@ import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -34,19 +33,18 @@ public abstract class Employee {
      * @param name Employee's Name
      * @param bankDetails Employee's bank details
      * @param salary Employee's salary
-     * @param employmentConditions Employee's employment conditions
      * @param startingDate Employee's Starting date
      * @param certifications Employees Certifications
      */
-    public Employee(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
+    public Employee(String id, String name, String bankDetails, int salary, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         validateLegalID(id);
         this.id = id;
         this.name = name;
         this.bankDetails = bankDetails;
         this.salary = salary;
-        this.employmentConditions = employmentConditions;
         this.startingDate = startingDate;
         this.certifications = certifications;
+        updateEmploymentConditions();
     }
 
 

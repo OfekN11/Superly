@@ -1,9 +1,9 @@
 package Presentation.Screens;
 
-import Globals.Enums.JobTitles;
+import Globals.util.HumanInteraction;
 
-public class Logistics_Manager extends Employee{
-    private static final String[] extraMenuOptions  = {
+public class Logistics_Manager extends Employee {
+    private static final String[] extraMenuOptions = {
             "Exit"              //9
     };
 
@@ -21,8 +21,8 @@ public class Logistics_Manager extends Employee{
                     handleBaseOptions(option);
                 else if (option == 9)
                     endRun();
-            }
-            catch (Exception e){
+            } catch (HumanInteraction.OperationCancelledException ignored) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }

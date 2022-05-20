@@ -22,8 +22,8 @@ public class BackendController {
     ///EMPLOYEES
     //CREATE
 
-    public void addEmployee(JobTitles jobTitle, String id, String name, String bankDetails, Integer salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
-        Result<Object> result = employeeService.registerEmployee(jobTitle, id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
+    public void addEmployee(JobTitles jobTitle, String id, String name, String bankDetails, Integer salary, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
+        Result<Object> result = employeeService.registerEmployee(jobTitle, id, name, bankDetails, salary, startingDate, certifications);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }

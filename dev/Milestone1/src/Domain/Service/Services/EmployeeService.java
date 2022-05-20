@@ -49,9 +49,9 @@ public class EmployeeService {
      * @param certifications       All of the employee's certifications
      * @return Result detailing process' success
      */
-    public Result<Object> registerEmployee(JobTitles title, String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) {
+    public Result<Object> registerEmployee(JobTitles title, String id, String name, String bankDetails, int salary, LocalDate startingDate, Set<Certifications> certifications) {
         try {
-            controller.registerEmployee(title, id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
+            controller.registerEmployee(title, id, name, bankDetails, salary, startingDate, certifications);
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }

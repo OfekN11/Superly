@@ -6,7 +6,6 @@ import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.LicenseTypes;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,8 +15,8 @@ import java.util.Set;
  */
 public class Carrier extends Employee {
     private Set<LicenseTypes> licenses;
-    public Carrier(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications, Set<LicenseTypes> licenses) throws Exception {
-        super(id, name, bankDetails, salary, employmentConditions, startingDate,certifications);
+    public Carrier(String id, String name, String bankDetails, int salary, LocalDate startingDate, Set<Certifications> certifications, Set<LicenseTypes> licenses) throws Exception {
+        super(id, name, bankDetails, salary, startingDate,certifications);
         this.licenses = licenses;
     }
 

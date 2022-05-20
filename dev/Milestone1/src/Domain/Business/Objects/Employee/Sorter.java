@@ -1,12 +1,10 @@
 package Domain.Business.Objects.Employee;
 
-import Domain.Business.Objects.Employee.Employee;
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -14,8 +12,8 @@ import java.util.Set;
  * Business model of the Sorter
  */
 public class Sorter extends Employee {
-    public Sorter(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
-        super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
+    public Sorter(String id, String name, String bankDetails, int salary, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
+        super(id, name, bankDetails, salary, startingDate, certifications);
     }
 
 

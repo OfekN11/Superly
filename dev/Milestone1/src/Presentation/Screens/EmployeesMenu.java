@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static Globals.util.HumanInteraction.*;
+
 public class EmployeesMenu extends Screen {
     public static class EmployeesViewer extends Screen {
         private static final String[] menuOptions = {
@@ -72,6 +74,7 @@ public class EmployeesMenu extends Screen {
                             endRun();
                             break;
                     }
+                } catch (OperationCancelledException ignored) {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     System.out.println("Please try again");
@@ -139,8 +142,7 @@ public class EmployeesMenu extends Screen {
         while (id == null) {
             id = scanner.nextLine();
             if (id.equals("-1")) {
-                System.out.println("Operation Canceled");
-                return;
+                operationCancelled();
             }
             new Thread(factory.createScreenEmployee(this, controller.getEmployee(id))).start();
         }
@@ -149,13 +151,11 @@ public class EmployeesMenu extends Screen {
     private void removeEmployee() throws Exception {
         System.out.println("\nYou are choosing to remove an employee from the system. \nBe aware that this process is irreversible");
         boolean success = false;
-        String id = null;
         while (!success) {
             System.out.println("Please enter ID of the employee you wish to remove (enter -1 to cancel this action)");
-            id = scanner.nextLine();
+            String id = scanner.nextLine();
             if (id.equals("-1")) {
-                System.out.println("Operation Canceled");
-                return;
+                operationCancelled();
             }
             Employee toBeRemoved = controller.getEmployee(id);
             System.out.println("Employee " + toBeRemoved.name + ", ID: " + toBeRemoved.id + " is about to be removed");
@@ -175,16 +175,26 @@ public class EmployeesMenu extends Screen {
         boolean success = false;
         while (!success) {
             System.out.println("\nEnter new employee's ID");
-            id = scanner.nextLine();
-            if (id.equals("-1")) {
-                System.out.println("Operation Canceled");
-                return;
+            try {
+                id = scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println("Unexpected error occurred");
+                System.out.println("Please try again");
+                id = null;
             }
-            controller.checkUnusedEmployeeID(id);
-            System.out.println("Entered ID: " + id);
-            success = areYouSure();
+            if (id != null) {
+                if (id.equals("-1")) {
+                    operationCancelled();
+                }
+                try {
+                    controller.checkUnusedEmployeeID(id);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                System.out.println("Chosen ID: " + id);
+                success = areYouSure();
+            }
         }
-        System.out.println("Chosen ID: " + id);
 
         //Name
         String name = null;
@@ -194,10 +204,9 @@ public class EmployeesMenu extends Screen {
             try {
                 name = scanner.nextLine();
                 if (name.equals("-1")) {
-                    System.out.println("Operation Canceled");
-                    return;
+                    operationCancelled();
                 } else {
-                    System.out.println("Entered name: " + name);
+                    System.out.println("Chosen name: " + name);
                     success = areYouSure();
                 }
             } catch (Exception ex) {
@@ -205,7 +214,6 @@ public class EmployeesMenu extends Screen {
                 System.out.println("Please try again");
             }
         }
-        System.out.println("Chosen name: " + name);
 
         //Bank Details
         String bankDetails = null;
@@ -215,10 +223,9 @@ public class EmployeesMenu extends Screen {
             try {
                 bankDetails = scanner.nextLine();
                 if (bankDetails.equals("-1")) {
-                    System.out.println("Operation Canceled");
-                    return;
+                    operationCancelled();
                 } else {
-                    System.out.println("Entered bank details: " + bankDetails);
+                    System.out.println("Chosen bank details: " + bankDetails);
                     success = areYouSure();
                 }
             } catch (Exception ex) {
@@ -226,7 +233,6 @@ public class EmployeesMenu extends Screen {
                 System.out.println("Please try again");
             }
         }
-        System.out.println("Chosen bank details: " + bankDetails);
 
         //Job Title
         JobTitles jobTitle = null;
@@ -235,26 +241,10 @@ public class EmployeesMenu extends Screen {
             System.out.println("\nEnter " + name + "'s job");
             for (int i = 0; i < JobTitles.values().length; i++)
                 System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
-            try {
-                int ordinal = Integer.parseInt(scanner.nextLine());
-                if (ordinal == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                } else if (ordinal < 1 || ordinal > JobTitles.values().length)
-                    System.out.println("Please enter an integer between 1 and " + JobTitles.values().length);
-                else {
-                    jobTitle = JobTitles.values()[ordinal - 1];
-                    System.out.println("Entered job title: " + jobTitle);
-                    success = areYouSure();
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 1 and " + JobTitles.values().length);
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
+            jobTitle = JobTitles.values()[getNumber(1, JobTitles.values().length) - 1];
+            System.out.println("Chosen job title: " + jobTitle);
+            success = areYouSure();
         }
-        System.out.println("Chosen job title: " + jobTitle);
 
         //Starting Date
         LocalDate startingDate = null;
@@ -262,82 +252,39 @@ public class EmployeesMenu extends Screen {
         while (!success) {
             System.out.println("\nEnter " + name + "'s starting date");
             startingDate = buildDate();
-            if (startingDate == null)
-                return;
-            System.out.println("Entered date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate));
+            System.out.println("Chosen starting date: " + dateFormat.format(startingDate));
             success = areYouSure();
         }
-        System.out.println("Chosen starting date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate));
 
         //salary
         Integer salary = null;
         success = false;
         while (!success) {
             System.out.println("\nEnter " + name + "'s salary per shift");
-            try {
-                salary = Integer.parseInt(scanner.nextLine());
-                if (salary == -1) {
-                    System.out.println("Operation Canceled");
-                    return;
-                } else if (salary < 0) {
-                    System.out.println("Enter a valid salary");
-                } else {
-                    System.out.println("Entered salary title: " + salary);
-                    success = areYouSure();
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an non-negative integer");
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
+            salary = getNumber(0);
+            System.out.println("Chosen salary: " + salary);
+            success = areYouSure();
         }
-        System.out.println("Chosen salary: " + salary);
 
         //certifications
         Set<Certifications> certifications = new HashSet<>();
         success = false;
         while (!success) {
             System.out.println("\nEnter " + name + "'s certifications");
+            System.out.println("0 -- stop adding certifications");
+            for (int i = 0; i < Certifications.values().length; i++)
+                System.out.println((i + 1) + " -- " + Certifications.values()[i]);
             int ordinal = -1;
             while (ordinal != 0) {
-                System.out.println("0 -- stop adding certifications");
-                for (int i = 0; i < Certifications.values().length; i++)
-                    System.out.println((i + 1) + " -- " + Certifications.values()[i]);
-                try {
-                    ordinal = Integer.parseInt(scanner.nextLine());
-                    if (ordinal == -1) {
-                        System.out.println("Operation Canceled");
-                        return;
-                    } else if (ordinal < 0 || ordinal > Certifications.values().length) {
-                        System.out.println("Please enter an integer between 0 and " + Certifications.values().length);
-                    } else if (ordinal != 0) {
-                        certifications.add(Certifications.values()[ordinal - 1]);
-                    }
-                } catch (NumberFormatException ex) {
-                    System.out.println("Please enter an integer between 0 and " + Certifications.values().length);
-                } catch (Exception ex) {
-                    System.out.println("Unexpected error occurred");
-                    System.out.println("Please try again");
-                }
+                ordinal = getNumber(0, Certifications.values().length);
+                if (ordinal != 0)
+                    certifications.add(Certifications.values()[ordinal - 1]);
             }
-            System.out.print("Entered certifications: ");
-            for (Certifications c : certifications)
-                System.out.print(c + ", ");
-            System.out.println();
+            System.out.println("Chosen certifications: " + String.join(", ", certifications.stream().map(Enum::name).collect(Collectors.toSet())));
             success = areYouSure();
         }
-        System.out.print("Chosen certifications: ");
-        for (Certifications c : certifications)
-            System.out.print(c + ", ");
 
-        String employmentConditions =
-                "Name: " + name
-                        + "\nID: " + id
-                        + "\nJob title: " + jobTitle
-                        + "\nStarting date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate)
-                        + "\nSalary per shift: " + salary;
-        controller.addEmployee(jobTitle, id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
-        System.out.println(employmentConditions + "\nHas been successfully added");
+        controller.addEmployee(jobTitle, id, name, bankDetails, salary, startingDate, certifications);
+        System.out.println(id + " - "  + name + " has been successfully added as " + jobTitle);
     }
 }

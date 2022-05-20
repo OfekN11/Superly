@@ -13,8 +13,8 @@ import java.util.Set;
  */
 public class Storekeeper extends Employee {
 
-    public Storekeeper(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
-        super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
+    public Storekeeper(String id, String name, String bankDetails, int salary, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
+        super(id, name, bankDetails, salary, startingDate, certifications);
     }
 
     @Override

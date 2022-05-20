@@ -5,7 +5,6 @@ import Domain.Service.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -14,8 +13,8 @@ import java.util.Set;
  */
 public class Cashier extends Employee {
 
-    public Cashier(String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
-        super(id, name, bankDetails, salary, employmentConditions, startingDate, certifications);
+    public Cashier(String id, String name, String bankDetails, int salary, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
+        super(id, name, bankDetails, salary, startingDate, certifications);
     }
 
     @Override
