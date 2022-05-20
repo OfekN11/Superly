@@ -1,7 +1,7 @@
 package Domain.Business.Controllers;
 
 import Domain.Business.Objects.Constraint;
-import Domain.DAL.Controllers.ConstraintDataMapper;
+import Domain.DAL.Controllers.ConstraintDAO;
 import Globals.Enums.ShiftTypes;
 
 import java.time.LocalDate;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class ConstraintController {
 
-    private final ConstraintDataMapper constraintDataMapper = new ConstraintDataMapper();
+    private final ConstraintDAO constraintDataMapper = new ConstraintDAO();
 
     //CREATE
 

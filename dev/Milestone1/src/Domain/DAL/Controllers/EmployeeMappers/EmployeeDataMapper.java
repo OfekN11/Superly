@@ -13,26 +13,26 @@ public class EmployeeDataMapper  {
 
     private static String RUNTIME_ERROR_MSG = "FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!";
     // properties
-    private final CarrierDataMapper carrierDataMapper;
-    private final CashierDataMapper cashierDataMapper;
-    private final HR_ManagerDataMapper hR_managerDataMapper;
-    private final Logistics_ManagerDataMapper logistics_managerDataMapper;
-    private final SorterDataMapper sorterDataMapper;
-    private final StorekeeperDataMapper storekeeperDataMapper;
-    private final TransportManagerDataMapper transportManagerDataMapper;
+    private final CarrierDAO carrierDataMapper;
+    private final CashierDAO cashierDataMapper;
+    private final HR_ManagerDAO hR_managerDataMapper;
+    private final Logistics_ManagerDAO logistics_managerDataMapper;
+    private final SorterDAO sorterDataMapper;
+    private final StorekeeperDAO storekeeperDataMapper;
+    private final TransportManagerDAO transportManagerDataMapper;
     private final EmployeeTypeLink employeeTypeLink;
 
 
     // constructor
     public EmployeeDataMapper() {
-        carrierDataMapper = new CarrierDataMapper();
-        cashierDataMapper = new CashierDataMapper();
-        hR_managerDataMapper = new HR_ManagerDataMapper();
-        logistics_managerDataMapper = new Logistics_ManagerDataMapper();
-        sorterDataMapper = new SorterDataMapper();
-        storekeeperDataMapper = new StorekeeperDataMapper();
+        carrierDataMapper = new CarrierDAO();
+        cashierDataMapper = new CashierDAO();
+        hR_managerDataMapper = new HR_ManagerDAO();
+        logistics_managerDataMapper = new Logistics_ManagerDAO();
+        sorterDataMapper = new SorterDAO();
+        storekeeperDataMapper = new StorekeeperDAO();
         employeeTypeLink = new EmployeeTypeLink();
-        transportManagerDataMapper = new TransportManagerDataMapper();
+        transportManagerDataMapper = new TransportManagerDAO();
     }
 
     public Employee get(String id) throws Exception {

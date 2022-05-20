@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class DataMapper {
+public abstract class DAO {
     private final static String dbName= "RioTheRuler.db"; // need to be change!
     String url = String.format("jdbc:sqlite:%s\\%s",System.getProperty("user.dir"),dbName);
     private final static String SELECT_QUERY = "SELECT %s from %s where %s";
@@ -18,7 +18,7 @@ public abstract class DataMapper {
     private String tableName; // this field will be valid if we will save data in tables
     private List<String> tableColumnNames;
     // constructor
-    public DataMapper(String tableName) {
+    public DAO(String tableName) {
         this.tableName = tableName;
         setTableColumnsNames();
     }

@@ -8,13 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
-import Domain.DAL.Controllers.ConstraintDataMapper;
+import Domain.DAL.Controllers.ConstraintDAO;
 
 import static org.junit.Assert.*;
 
-public class DataMapperTest {
+public class DAOTest {
 
-    ConstraintDataMapper constraintDataMapper = new ConstraintDataMapper();
+    ConstraintDAO constraintDataMapper = new ConstraintDAO();
     @Test
     void testSelect1() {
         try (Connection connection = constraintDataMapper.getConnection()){
