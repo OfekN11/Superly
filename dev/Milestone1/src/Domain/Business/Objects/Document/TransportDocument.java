@@ -41,10 +41,6 @@ public class TransportDocument extends Document{
         return startTime;
     }
 
-    public int getTransportID() {
-        return transportID;
-    }
-
     public List<Integer> getDestinationDocuments() {
         return destinationDocuments;
     }
