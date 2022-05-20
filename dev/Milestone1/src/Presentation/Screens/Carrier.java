@@ -2,12 +2,13 @@ package Presentation.Screens;
 
 import Globals.Enums.JobTitles;
 import Globals.Enums.LicenseTypes;
+import static Globals.util.HumanInteraction.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class Carrier extends Employee{
-    private static String[] extraMenuOptions  = {
+public class Carrier extends Employee {
+    private static final String[] extraMenuOptions = {
             "Update Licenses",  //9
             "Advance Site",     //10
             "Exit"              //11
@@ -35,8 +36,8 @@ public class Carrier extends Employee{
                     advanceSite();
                 else if (option == 11)
                     endRun();
-            }
-            catch (Exception e) {
+            } catch (OperationCancelledException ignored) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }
@@ -55,11 +56,11 @@ public class Carrier extends Employee{
     private void updateLicenses() throws Exception {
         Set<LicenseTypes> curr = new HashSet<>(licenses);
         System.out.println(name + "'s current licenses:");
-        for (LicenseTypes license: curr)
+        for (LicenseTypes license : curr)
             System.out.println(license);
         System.out.println("Would you like to add or remove licenses?");
         int ans = 0;
-        while (ans != 1 && ans != 2){
+        while (ans != 1 && ans != 2) {
             System.out.println("1 -- add\n2 -- remove");
             try {
                 ans = Integer.parseInt(scanner.nextLine());
@@ -67,11 +68,9 @@ public class Carrier extends Employee{
                     System.out.println("Operation Canceled");
                     return;
                 }
-            }
-            catch (NumberFormatException ex){
+            } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer value (1 or 2)");
-            }
-            catch (Exception ex){
+            } catch (Exception ex) {
                 System.out.println("An unexpected error happened. Please try again");
             }
         }
@@ -84,7 +83,7 @@ public class Carrier extends Employee{
                 break;
         }
         System.out.println("New licenses:");
-        for (LicenseTypes license: curr)
+        for (LicenseTypes license : curr)
             System.out.println(license);
         System.out.println("Would you like to save?");
         if (yesOrNo())

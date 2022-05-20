@@ -1,7 +1,9 @@
 package Presentation.Screens;
 
-public class Sorter extends Employee{
-    private static final String[] extraMenuOptions  = {
+import Globals.util.HumanInteraction;
+
+public class Sorter extends Employee {
+    private static final String[] extraMenuOptions = {
             "Exit"              //9
     };
 
@@ -20,8 +22,8 @@ public class Sorter extends Employee{
                     handleBaseOptions(option);
                 else if (option == 9)
                     endRun();
-            }
-            catch (Exception e){
+            } catch (HumanInteraction.OperationCancelledException ignored) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }

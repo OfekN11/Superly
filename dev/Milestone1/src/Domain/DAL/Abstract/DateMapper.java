@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public abstract class ObjectDateMapper<T> extends DataMapper {
-    public ObjectDateMapper(String tableName) {
+public abstract class DateMapper<T> extends DAO {
+    public DateMapper(String tableName) {
         super(tableName);
     }
 

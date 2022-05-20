@@ -15,32 +15,32 @@ public class EmployeeController {
     private final EmployeeDataMapper employeeDataMapper = new EmployeeDataMapper();
 
     //CREATE
-    public void registerEmployee(JobTitles title, String id, String name, String bankDetails, int salary, String employmentConditions, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
+    public void registerEmployee(JobTitles title, String id, String name, String bankDetails, int salary, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         checkUnusedEmployeeID(id);
         Employee employee = employeeDataMapper.get(id);
         if (employee != null)
             throw new Exception(String.format("An employee with ID: %s already exists: %s", id, employee.getName()));
         switch (title) {
             case Carrier:
-                employeeDataMapper.save(new Carrier(id, name, bankDetails, salary, employmentConditions, startingDate, certifications, new HashSet<>()));
+                employeeDataMapper.save(new Carrier(id, name, bankDetails, salary, startingDate, certifications, new HashSet<>()));
                 break;
             case Cashier:
-                employeeDataMapper.save(new Cashier(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                employeeDataMapper.save(new Cashier(id, name, bankDetails, salary, startingDate, certifications));
                 break;
             case HR_Manager:
-                employeeDataMapper.save(new HR_Manager(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                employeeDataMapper.save(new HR_Manager(id, name, bankDetails, salary, startingDate, certifications));
                 break;
             case Storekeeper:
-                employeeDataMapper.save(new Storekeeper(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                employeeDataMapper.save(new Storekeeper(id, name, bankDetails, salary, startingDate, certifications));
                 break;
             case Logistics_Manager:
-                employeeDataMapper.save(new Logistics_Manager(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                employeeDataMapper.save(new Logistics_Manager(id, name, bankDetails, salary, startingDate, certifications));
                 break;
             case Sorter:
-                employeeDataMapper.save(new Sorter(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                employeeDataMapper.save(new Sorter(id, name, bankDetails, salary, startingDate, certifications));
                 break;
             case Transport_Manager:
-                employeeDataMapper.save(new Transport_Manager(id, name, bankDetails, salary, employmentConditions, startingDate, certifications));
+                employeeDataMapper.save(new Transport_Manager(id, name, bankDetails, salary, startingDate, certifications));
                 break;
         }
     }

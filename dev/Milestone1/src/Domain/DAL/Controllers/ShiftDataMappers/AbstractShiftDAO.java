@@ -1,7 +1,7 @@
 package Domain.DAL.Controllers.ShiftDataMappers;
 import Domain.Business.Objects.Shift.Shift;
 import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.ObjectDateMapper;
+import Domain.DAL.Abstract.DateMapper;
 import Domain.DAL.Controllers.ConstraintsEmployeesLink;
 import Domain.DAL.Controllers.ShiftEmployeesLink.*;
 
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractShiftDataMapper<T extends Shift> extends ObjectDateMapper<T> {
+public abstract class AbstractShiftDAO<T extends Shift> extends DateMapper<T> {
 
     protected final ShiftsCarriersLink shiftsCarriersLink;
     protected final ShiftsCashiersLink shiftsCashiersLink;
@@ -21,7 +21,7 @@ public abstract class AbstractShiftDataMapper<T extends Shift> extends ObjectDat
     protected final ShiftsTransportManagers shiftsTransportManagers;
     protected final ConstraintsEmployeesLink constraintsEmployeesLink;
 
-    public AbstractShiftDataMapper(String tableName) {
+    public AbstractShiftDAO(String tableName) {
         super(tableName);
         shiftsCarriersLink = new ShiftsCarriersLink();
         shiftsCashiersLink = new ShiftsCashiersLink();

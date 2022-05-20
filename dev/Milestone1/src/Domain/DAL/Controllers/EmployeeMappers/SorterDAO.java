@@ -6,12 +6,12 @@ import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 import java.sql.ResultSet;
 import java.util.*;
 
-public class SorterDataMapper extends AbstractEmployeeDataMapper<Sorter> {
+public class SorterDAO extends AbstractEmployeeDAO<Sorter> {
     private static Map<String, Sorter> SORTER_IDENTITY_MAP = new HashMap<>();
     EmployeeCertificationDAO employeeCertificationController ;
 
 
-    public SorterDataMapper() {
+    public SorterDAO() {
         super("Sorters");
         employeeCertificationController =new EmployeeCertificationDAO();
     }

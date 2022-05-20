@@ -1,9 +1,12 @@
 package Presentation.Screens;
 
-public class Transport_Manager extends Employee{
-    private static final String[] extraMenuOptions  = {
+import Globals.util.HumanInteraction;
+
+public class Transport_Manager extends Employee {
+    private static final String[] extraMenuOptions = {
             "Exit"              //9
     };
+
     public Transport_Manager(Screen caller, Domain.Service.Objects.Employee sEmployee) {
         super(caller, sEmployee, extraMenuOptions);
     }
@@ -19,8 +22,8 @@ public class Transport_Manager extends Employee{
                     handleBaseOptions(option);
                 else if (option == 9)
                     endRun();
-            }
-            catch (Exception e){
+            } catch (HumanInteraction.OperationCancelledException ignored) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }

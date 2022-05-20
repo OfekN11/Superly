@@ -1,6 +1,7 @@
 package Globals.util;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /**
@@ -9,6 +10,8 @@ import java.util.Scanner;
 public class HumanInteraction {
     public static class OperationCancelledException extends Exception {
     }
+
+    public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -38,74 +41,82 @@ public class HumanInteraction {
     }
 
     public static LocalDate buildDate() throws OperationCancelledException {
-        boolean success = false;
-        int day = 0;
-        int month = 0;
-        int year = 0;
-        while (!success) {
-            System.out.println("Enter day");
-            try {
-                day = Integer.parseInt(scanner.nextLine());
-                if (day == -1) {
-                    operationCancelled();
-                } else if (day < 1 || day > 31) {
-                    System.out.println("Enter valid day");
-                } else {
-                    success = true;
+        LocalDate date = null;
+        while (date == null) {
+            boolean success = false;
+            int day = 0;
+            int month = 0;
+            int year = 0;
+            while (!success) {
+                System.out.println("Enter day");
+                try {
+                    day = Integer.parseInt(scanner.nextLine());
+                    if (day == -1) {
+                        operationCancelled();
+                    } else if (day < 1 || day > 31) {
+                        System.out.println("Enter valid day");
+                    } else {
+                        success = true;
+                    }
+                } catch (NumberFormatException ex) {
+                    System.out.println("Please enter an integer between 1 and 31");
+                } catch (OperationCancelledException e) {
+                    throw e;
+                } catch (Exception ex) {
+                    System.out.println("Unexpected error occurred");
+                    System.out.println("Please try again");
                 }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 1 and 31");
-            } catch (OperationCancelledException e) {
-                throw e;
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
+            }
+            success = false;
+            while (!success) {
+                System.out.println("Enter month");
+                try {
+                    month = Integer.parseInt(scanner.nextLine());
+                    if (month == -1) {
+                        operationCancelled();
+                    } else if (month < 1 || month > 12) {
+                        System.out.println("Enter valid month");
+                    } else {
+                        success = true;
+                    }
+                } catch (NumberFormatException ex) {
+                    System.out.println("Please enter an integer between 1 and 12");
+                } catch (OperationCancelledException e) {
+                    throw e;
+                } catch (Exception ex) {
+                    System.out.println("Unexpected error occurred");
+                    System.out.println("Please try again");
+                }
+            }
+            success = false;
+            while (!success) {
+                System.out.println("Enter year");
+                try {
+                    year = Integer.parseInt(scanner.nextLine());
+                    if (year == -1) {
+                        operationCancelled();
+                    } else if (year < 1900 || year > 2030) {
+                        System.out.println("Enter valid year");
+                    } else {
+                        success = true;
+                    }
+                } catch (NumberFormatException ex) {
+                    System.out.println("Please enter an integer between 1900 and 2030");
+                } catch (OperationCancelledException e) {
+                    throw e;
+                } catch (Exception ex) {
+                    System.out.println("Unexpected error occurred");
+                    System.out.println("Please try again");
+                }
+            }
+            try {
+                date = LocalDate.of(year, month, day);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }
         }
-        success = false;
-        while (!success) {
-            System.out.println("Enter month");
-            try {
-                month = Integer.parseInt(scanner.nextLine());
-                if (month == -1) {
-                    operationCancelled();
-                } else if (month < 1 || month > 12) {
-                    System.out.println("Enter valid month");
-                } else {
-                    success = true;
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 1 and 12");
-            } catch (OperationCancelledException e) {
-                throw e;
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
-        }
-        success = false;
-        while (!success) {
-            System.out.println("Enter year");
-            try {
-                year = Integer.parseInt(scanner.nextLine());
-                if (year == -1) {
-                    operationCancelled();
-                } else if (year < 1900 || year > 2030) {
-                    System.out.println("Enter valid year");
-                } else {
-                    success = true;
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 1900 and 2030");
-            } catch (OperationCancelledException e) {
-                throw e;
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
-        }
-
-        return LocalDate.of(year, month, day);
+        return date;
     }
 
     public static int getNumber() throws OperationCancelledException {
