@@ -5,7 +5,7 @@ import Domain.Business.Controllers.ShiftController;
 import Domain.Business.Controllers.SiteController;
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
-import Domain.DAL.Controllers.TransportDataMapper;
+import Domain.DAL.Controllers.TransportMudel.TransportDAO;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
@@ -14,7 +14,6 @@ import org.junit.*;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 public class IntegrationTest {
     static LocalDate date=LocalDate.parse("2021-06-19");
@@ -26,7 +25,7 @@ public class IntegrationTest {
     static TransportService transportService = new TransportService();
     static SiteController siteController = new SiteController();
     static HashMap<String,Integer> productMap = new HashMap<>();
-    static TransportDataMapper transportDataMapper = new TransportDataMapper();
+    static TransportDAO transportDataMapper = new TransportDAO();
 
     @BeforeClass
     public static void beforeAll() throws Exception {

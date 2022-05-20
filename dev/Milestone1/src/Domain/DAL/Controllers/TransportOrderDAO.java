@@ -1,11 +1,8 @@
 package Domain.DAL.Controllers;
 
 import Domain.Business.Objects.TransportOrder;
-import Domain.Business.Objects.Truck;
-import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.ObjectDateMapper;
-import Globals.Enums.TruckModel;
+import Domain.DAL.Abstract.DateMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,10 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class TransportOrderDataMapper extends ObjectDateMapper<TransportOrder> {
+public class TransportOrderDAO extends DateMapper<TransportOrder> {
     private final static Map<String, TransportOrder> TRUCK_IDENTITY_MAP = new HashMap<>();
 
-    public TransportOrderDataMapper() {
+    public TransportOrderDAO() {
         super("TransportOrders");
     }
 

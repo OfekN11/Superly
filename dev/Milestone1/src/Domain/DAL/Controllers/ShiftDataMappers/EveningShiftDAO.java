@@ -1,19 +1,15 @@
 package Domain.DAL.Controllers.ShiftDataMappers;
 
 import Domain.Business.Objects.Shift.EveningShift;
-import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.ObjectDateMapper;
-import Domain.DAL.Controllers.ShiftEmployeesLink.*;
 import Globals.Enums.ShiftTypes;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
-public class EveningShiftDataMapper extends AbstractShiftDataMapper<EveningShift> {
+public class EveningShiftDAO extends AbstractShiftDAO<EveningShift> {
     private static final Map<String,EveningShift> EVENING_SHIFTS_MAP = new HashMap<>();
 
-    public EveningShiftDataMapper() {
+    public EveningShiftDAO() {
         super("EveningShifts");
     }
 

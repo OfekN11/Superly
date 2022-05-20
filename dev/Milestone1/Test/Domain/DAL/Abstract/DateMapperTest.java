@@ -1,7 +1,7 @@
 package Domain.DAL.Abstract;
 
 import Domain.Business.Objects.Constraint;
-import Domain.DAL.Controllers.ConstraintDataMapper;
+import Domain.DAL.Controllers.ConstraintDAO;
 import Domain.DAL.Controllers.ConstraintsEmployeesLink;
 import Globals.Enums.ShiftTypes;
 import org.junit.Test;
@@ -11,13 +11,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
-public class ObjectDateMapperTest {
+public class DateMapperTest {
 
-    ConstraintDataMapper dataMapper = new ConstraintDataMapper();
+    ConstraintDAO dataMapper = new ConstraintDAO();
     ConstraintsEmployeesLink link = new ConstraintsEmployeesLink();
     LocalDate birthday = LocalDate.parse("1998-07-25");
     ShiftTypes morning = ShiftTypes.Morning;

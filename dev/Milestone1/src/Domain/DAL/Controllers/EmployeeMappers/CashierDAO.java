@@ -5,7 +5,7 @@ import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 import java.sql.ResultSet;
 import java.util.*;
 
-public class CashierDataMapper extends AbstractEmployeeDataMapper<Cashier> {
+public class CashierDAO extends AbstractEmployeeDAO<Cashier> {
     //static fields
     private final static Map<String, Cashier> CASHIER_IDENTITY_MAP = new HashMap<>();
 
@@ -14,7 +14,7 @@ public class CashierDataMapper extends AbstractEmployeeDataMapper<Cashier> {
 
     //constructor
 
-    public CashierDataMapper() {
+    public CashierDAO() {
         super("Cashiers");
         employeeCertificationController = new EmployeeCertificationDAO();
     }

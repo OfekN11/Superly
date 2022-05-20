@@ -14,13 +14,13 @@ import java.util.stream.Stream;
 
 public class ShiftDataMapper {
     // properties
-    private MorningShiftDataMapper morningShiftDataMapper;
-    private EveningShiftDataMapper eveningShiftDataMapper;
+    private MorningShiftDAO morningShiftDataMapper;
+    private EveningShiftDAO eveningShiftDataMapper;
 
     // constructor
     public ShiftDataMapper() {
-        this.morningShiftDataMapper = new MorningShiftDataMapper();
-        this.eveningShiftDataMapper = new EveningShiftDataMapper();
+        this.morningShiftDataMapper = new MorningShiftDAO();
+        this.eveningShiftDataMapper = new EveningShiftDAO();
     }
 
 

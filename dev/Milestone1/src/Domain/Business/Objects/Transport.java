@@ -29,7 +29,7 @@ public class Transport {
     private TransportStatus status;
     //TODO need to change the shift restart. the restart of Transport need to be with shift as argument
 
-    private Pair<LocalDate, ShiftTypes> shift = null;
+    private Pair<LocalDate, ShiftTypes> shift;
 
     public Transport() {
         SN = incSN++;
@@ -40,6 +40,37 @@ public class Transport {
         destinationsID = new ArrayList<>();
         transportOrders = new ArrayList<>();
         status = TransportStatus.padding;
+    }
+
+    public Transport(int SN, LocalDateTime startTime, LocalDateTime endTime, String driverID, int truckNumber, int truckWeight,TransportStatus status,Pair<LocalDate, ShiftTypes> shift, List<Integer> sourcesID, List<Integer> destinationsID,  List<Integer> transportOrders, HashMap<ShippingAreas, Integer> shippingAreas) {
+        this.SN = SN;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.driverID = driverID;
+        this.truckNumber = truckNumber;
+        this.truckWeight = truckWeight;
+        this.sourcesID = sourcesID;
+        this.destinationsID = destinationsID;
+        this.transportOrders = transportOrders;
+        this.shippingAreas = shippingAreas;
+        this.status = status;
+        this.shift = shift;
+    }
+
+    public List<Integer> getSourcesID() {
+        return sourcesID;
+    }
+
+    public List<Integer> getDestinationsID() {
+        return destinationsID;
+    }
+
+    public List<Integer> getTransportOrders() {
+        return transportOrders;
+    }
+
+    public HashMap<ShippingAreas, Integer> getShippingAreas() {
+        return shippingAreas;
     }
 
     public int getSN() {

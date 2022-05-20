@@ -2,7 +2,7 @@ package Domain.DAL.Controllers;
 
 import Domain.Business.Objects.Constraint;
 import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.ObjectDateMapper;
+import Domain.DAL.Abstract.DateMapper;
 import Globals.Enums.ShiftTypes;
 
 import java.sql.ResultSet;
@@ -13,13 +13,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ConstraintDataMapper extends ObjectDateMapper<Constraint> {
+public class ConstraintDAO extends DateMapper<Constraint> {
     private final static Map<String, Constraint> CONSTRAINT_IDENTITY_MAP = new HashMap<>();
     // properties
     ConstraintsEmployeesLink constraintsEmployeesLink;
 
     //constructor
-    public ConstraintDataMapper() {
+    public ConstraintDAO() {
         super("Constraints");
         constraintsEmployeesLink = new ConstraintsEmployeesLink();
     }

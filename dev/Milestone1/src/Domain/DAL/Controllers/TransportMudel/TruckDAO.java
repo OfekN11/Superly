@@ -1,25 +1,18 @@
-package Domain.DAL.Controllers;
+package Domain.DAL.Controllers.TransportMudel;
 
-import Domain.Business.Objects.Constraint;
 import Domain.Business.Objects.Truck;
 import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.ObjectDateMapper;
-import Globals.Enums.ShiftTypes;
+import Domain.DAL.Abstract.DateMapper;
 import Globals.Enums.TruckModel;
 
-import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class TruckDataMapper extends ObjectDateMapper<Truck> {
+public class TruckDAO extends DateMapper<Truck> {
     private final static Map<String, Truck> TRUCK_IDENTITY_MAP = new HashMap<>();
 
-    public TruckDataMapper() {
+    public TruckDAO() {
         super("Trucks");
     }
 
@@ -51,6 +44,7 @@ public class TruckDataMapper extends ObjectDateMapper<Truck> {
         String id = Integer.toString(instance.getLicenseNumber());
         try
         {
+            super.delete(id);
             super.insert(Arrays.asList(id, instance.getModel(), instance.getNetWeight(), instance.getMaxCapacityWeight()));
         }
         catch (SQLException throwables) {
@@ -75,6 +69,7 @@ public class TruckDataMapper extends ObjectDateMapper<Truck> {
     public int delete(int licenseNumber) throws Exception {
         return super.delete(Integer.toString(licenseNumber));
     }
+
 
 
 }
