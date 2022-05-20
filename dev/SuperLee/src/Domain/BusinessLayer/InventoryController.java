@@ -168,6 +168,8 @@ public class InventoryController {
             throw new IllegalArgumentException("Illegal dates. start must be before end");
         if (!(percent>0 && percent<100))
             throw new IllegalArgumentException("Percent sale must be between 1 and 99. Received: " + percent);*/
+        if (start.isBefore(LocalDate.now()))
+            throw new IllegalArgumentException("Can't create new sale that start in the past");
         if (categoriesList.isEmpty()&&productIDs.isEmpty())
             throw new IllegalArgumentException("Must specify categories and/or products for the sale to apply to");
         redundantCategories(categoriesList);
@@ -207,7 +209,7 @@ public class InventoryController {
     public void removeSale(int saleID) {
         SaleToCustomer sale = getSale(saleID);
         if (sale.isActive()) {
-            sale.setEndDate(LocalDate.now().plusDays(1));
+            sale.setEndDate(LocalDate.now());
         }
         else if (sale.isUpcoming()) {
             removeSaleFromProductsAndCategories(sale);

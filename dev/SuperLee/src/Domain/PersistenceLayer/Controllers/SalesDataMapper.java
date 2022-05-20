@@ -151,8 +151,9 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
     }
 
     public void updateEndDate(int saleID, LocalDate date) {
+        String endDate = "" + date.getYear() + "-" + ((date.getMonthValue()<10) ? ("0" + date.getMonthValue()) : (date.getMonthValue())) + "-" + ((date.getDayOfMonth()<10) ? ("0" + date.getDayOfMonth()) : (date.getDayOfMonth()));
         try {
-            updateProperty(Integer.toString(saleID), END_DATE_COLUMN, date);
+            updateProperty(Integer.toString(saleID), END_DATE_COLUMN, endDate);
         }
         catch (Exception e) {
             e.printStackTrace();

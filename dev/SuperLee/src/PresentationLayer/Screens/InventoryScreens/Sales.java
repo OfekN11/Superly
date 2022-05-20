@@ -110,7 +110,7 @@ public class Sales extends Screen {
     private void printRemovableSales() {
         Result<List<Sale>> removableSales = controller.getRemovableSales();
         for (Sale sale: removableSales.getValue())
-            System.out.println(sale);
+            System.out.println(printSale(sale));
     }
 
     private void saleHistoryByProduct() {
