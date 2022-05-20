@@ -28,7 +28,7 @@ public class DestinationsDAO extends DAO {
         }
     }
     public Destination get(int id){
-        DESTINATION_IDENTITY_MAP.get(id);
+        return DESTINATION_IDENTITY_MAP.get(id);
     }
 
 }

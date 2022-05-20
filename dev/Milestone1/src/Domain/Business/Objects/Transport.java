@@ -42,7 +42,7 @@ public class Transport {
         status = TransportStatus.padding;
     }
 
-    public Transport(int SN, LocalDateTime startTime, LocalDateTime endTime, String driverID, int truckNumber, int truckWeight,TransportStatus status,Pair<LocalDate, ShiftTypes> shift, List<Integer> sourcesID, List<Integer> destinationsID,  List<Integer> transportOrders, HashMap<ShippingAreas, Integer> shippingAreas) {
+    public Transport(int SN, String startTime, String endTime, String driverID, int truckNumber, int truckWeight,TransportStatus status,Pair<LocalDate, ShiftTypes> shift, List<Integer> sourcesID, List<Integer> destinationsID,  List<Integer> transportOrders) {
         this.SN = SN;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -52,7 +52,6 @@ public class Transport {
         this.sourcesID = sourcesID;
         this.destinationsID = destinationsID;
         this.transportOrders = transportOrders;
-        this.shippingAreas = shippingAreas;
         this.status = status;
         this.shift = shift;
     }
