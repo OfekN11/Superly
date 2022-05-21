@@ -277,7 +277,7 @@ public class ShiftController {
     }
 
     public Set<Shift> getIncompleteShiftsBetween(LocalDate start, LocalDate end) {
-        return getShiftsBetween(start, end).stream().filter(Shift::isShiftComplete).collect(Collectors.toSet());
+        return getShiftsBetween(start, end).stream().filter(shift -> !shift.isShiftComplete()).collect(Collectors.toSet());
     }
 
     private Pair<LocalDate, LocalDate> getMonthDatesEdges() {
