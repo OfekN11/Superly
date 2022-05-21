@@ -66,7 +66,7 @@ public abstract class Shift {
         this.transport_managersCount =transport_managersCount;
 
         this.carrierIDs =new HashSet<>(carrierIDs);
-        this.carrierIDs = new HashSet<>(cashierIDs);
+        this.cashierIDs = new HashSet<>(cashierIDs);
         this.storekeeperIDs = new HashSet<>(storekeeperIDs);
         this.sorterIDs = new HashSet<>(sorterIDs);
         this.hr_managerIDs = new HashSet<>(hr_managerIDs);
