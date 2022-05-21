@@ -5,23 +5,26 @@ import Domain.Service.ServiceDocumentFactory;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-//TODO the transport document need to hold the destination documents
 public class TransportDocument extends Document{
     private int transportID;
-    private LocalDateTime startTime;
+    private String startTime;
     private int truckNumber;
     private String driverName;
     private List<Integer> destinationDocuments;
     private boolean doRedesign;
     private String redesign;//Write what do?
 
-    public TransportDocument(LocalDateTime startTime, int truckNumber, String driverName) {
+    public TransportDocument(int transportID,String startTime, int truckNumber, String driverName) {
+        transportID = transportID;
         this.startTime = startTime;
         this.truckNumber = truckNumber;
         this.driverName = driverName;
         destinationDocuments = new ArrayList<>();
         this.doRedesign = false;
         this.redesign = "";
+    }
+    public int getTransportID(){
+        return transportID;
     }
 
     public TransportDocument(int transportID,String startTime, int truckNumber, String driverName, boolean doRedesign, String redesign) {
@@ -34,12 +37,8 @@ public class TransportDocument extends Document{
         destinationDocuments = new ArrayList<>();
     }
 
-    public LocalDateTime getStartTime() {
+    public String getStartTime() {
         return startTime;
-    }
-
-    public int getTransportID() {
-        return transportID;
     }
 
     public List<Integer> getDestinationDocuments() {
@@ -47,7 +46,7 @@ public class TransportDocument extends Document{
     }
 
     public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+        this.startTime = startTime.toString();
     }
 
     public int getTruckNumber() {

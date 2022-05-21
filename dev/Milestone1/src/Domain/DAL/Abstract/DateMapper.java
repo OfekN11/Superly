@@ -1,4 +1,6 @@
 package Domain.DAL.Abstract;
+import Domain.DAL.ConnectionHandler;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,8 +17,8 @@ public abstract class DateMapper<T> extends DAO {
         if (output != null)
             return output;
 
-        try(Connection connection = getConnection()){
-            ResultSet instanceResult = select(connection, id);
+        try(ConnectionHandler connection = getConnectionHandler()){
+            ResultSet instanceResult = select(connection.get(), id);
             if (!instanceResult.next())
                 return null;
 
@@ -76,8 +78,8 @@ public abstract class DateMapper<T> extends DAO {
 
     public Set<T>getAll()throws Exception{
         Set<T> output = new HashSet<>();
-        try(Connection connection =getConnection()){
-            ResultSet resultSet = super.select(connection);
+        try(ConnectionHandler connection = getConnectionHandler()){
+            ResultSet resultSet = super.select(connection.get());
             while (resultSet.next())
                 output.add(buildObject(resultSet));
         }

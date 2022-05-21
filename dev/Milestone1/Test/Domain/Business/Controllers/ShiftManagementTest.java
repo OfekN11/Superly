@@ -1,6 +1,4 @@
 package Domain.Business.Controllers;
-
-import Carrier;
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Globals.Enums.Certifications;
@@ -27,28 +25,28 @@ public class ShiftManagementTest {
 
     @BeforeClass
     public static void beforeAll() throws Exception {
-        employeeDataMapper.delete("206618175");
+        employeeDataMapper.delete("101010");
         employeeDataMapper.delete("2061");
         shiftDataMapper.delete(date,ShiftTypes.Morning);
     }
 
     @AfterClass
     public static void afterAll() throws Exception {
-        employeeDataMapper.delete("206618175");
+        employeeDataMapper.delete("101010");
         employeeDataMapper.delete("2061");
         shiftDataMapper.delete(date,ShiftTypes.Morning);
     }
 
     @Before
     public void before() throws Exception {
-        employeeController.registerEmployee(JobTitles.Cashier,"206618175","ofek","d",10,"con",date,certifications);
-        employeeController.registerEmployee(JobTitles.Carrier,"1","ofek","d",10,"con",date,certifications);
-        shiftController.createShift(date,ShiftTypes.Morning,"206618175",2,2,2,2,2,2,2);
+        employeeController.registerEmployee(JobTitles.Cashier,"101010","ofek","d",10,date,certifications);
+        employeeController.registerEmployee(JobTitles.Carrier,"2061","ofek","d",10,date,certifications);
+        shiftController.createShift(date,ShiftTypes.Morning,"101010",2,2,2,2,2,2,2);
     }
 
     @After
     public void after() throws Exception {
-        employeeDataMapper.delete("206618175");
+        employeeDataMapper.delete("101010");
         employeeDataMapper.delete("2061");
         shiftDataMapper.delete(date, ShiftTypes.Morning);
     }
@@ -58,7 +56,7 @@ public class ShiftManagementTest {
         try {
             certifications.add(Certifications.ShiftManagement);
             Set<String> carriersId = new HashSet<>();
-            carriersId.add("1");
+            carriersId.add("10");
             shiftController.editShiftCarrierIDs(date,ShiftTypes.Morning,carriersId);
             assertEquals(shiftController.getShift(date,ShiftTypes.Morning).getCarrierIDs().size(),1);
         } catch (Exception e) {
@@ -80,7 +78,6 @@ public class ShiftManagementTest {
     @org.junit.Test
     public void RemoveWorkDay() {
         ShiftController shiftController = new ShiftController();
-        shiftController.loadData();
         try {
             assertNotNull(shiftController.getShift(date,ShiftTypes.Morning));
             shiftController.removeShift(date,ShiftTypes.Morning);

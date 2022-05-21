@@ -13,7 +13,7 @@ public class TransportDocument extends Document {
     private boolean doRedesign;
     private String redesign;//Write what do?
     public TransportDocument(Domain.Business.Objects.Document.TransportDocument transportDoc) {
-        super(transportDoc.getSN());
+        super(transportDoc.getTransportID());
         transportID = transportDoc.getTransportID();
         startTime = transportDoc.getStartTime();
         truckNumber = transportDoc.getTruckNumber();

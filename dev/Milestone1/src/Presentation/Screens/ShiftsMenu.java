@@ -3,6 +3,8 @@ package Presentation.Screens;
 import Domain.Service.Objects.Shift;
 import Globals.Enums.ShiftTypes;
 import static Globals.util.HumanInteraction.*;
+
+import Globals.util.HumanInteraction;
 import Globals.util.ShiftComparator;
 import Presentation.PresentationShiftBuilder;
 
@@ -56,6 +58,7 @@ public class ShiftsMenu extends Screen {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
+                option = 0;
             }
         }
     }
@@ -97,7 +100,7 @@ public class ShiftsMenu extends Screen {
             while (!success) {
                 System.out.println("\nEnter shift's date");
                 date = buildDate();
-                System.out.println("Chosen starting date: " + new SimpleDateFormat("dd-MM-yyyy").format(date));
+                System.out.println("Chosen date: " + date.format(dateFormat));
                 success = areYouSure();
                 if (!date.isAfter(LocalDate.now())){
                     System.out.println("Can only delete shifts in the future");

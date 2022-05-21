@@ -33,6 +33,7 @@ public class IntegrationTest {
     public static void beforeAll() throws Exception {
         employeeDataMapper.delete("206618175");
         employeeDataMapper.delete("2061");
+        employeeDataMapper.delete("1");
         productMap.put(1,5);
         productMap.put(2,200);
     }
@@ -41,6 +42,7 @@ public class IntegrationTest {
     public static void afterAll() throws Exception {
         employeeDataMapper.delete("206618175");
         employeeDataMapper.delete("2061");
+        employeeDataMapper.delete("1");
         shiftDataMapper.delete(date,ShiftTypes.Morning);
     }
 

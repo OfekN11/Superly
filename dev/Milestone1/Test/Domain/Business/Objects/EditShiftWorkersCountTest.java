@@ -1,6 +1,7 @@
 package Domain.Business.Objects;
 
 import Domain.Business.Controllers.ShiftController;
+import Domain.Business.Objects.Shift.MorningShift;
 import Domain.Business.Objects.Shift.Shift;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,7 +19,7 @@ public class EditShiftWorkersCountTest {
     @org.junit.Test
     public void EditCarriersCount() {
         try {
-            Shift shift = new MorningShift(date,"206618175",2,2,2,2,2,2,2);
+            Shift shift = new MorningShift(date,"101010",2,2,2,2,2,2,2);
             int prev = shift.getCarrierCount();
             shift.setCarrierCount(prev+3);
             assertEquals(prev+3, shift.getCarrierCount());
@@ -29,9 +30,8 @@ public class EditShiftWorkersCountTest {
 
     public void EditCashiersCount() {
         ShiftController shiftController = new ShiftController();
-        shiftController.loadData();
         try {
-            Shift shift = new MorningShift(date,"206618175",2,2,2,2,2,2,2);
+            Shift shift = new MorningShift(date,"101010",2,2,2,2,2,2,2);
             int prev = shift.getCarrierCount();
             shift.setCashierCount(prev+3);
             assertEquals(prev+3, shift.getCashierCount());

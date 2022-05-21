@@ -2,6 +2,7 @@ package Domain.DAL.Controllers.TransportMudel;
 
 import Domain.Business.Objects.Transport;
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.ConnectionHandler;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.TransportStatus;
 import Globals.Pair;
@@ -11,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -25,8 +27,8 @@ public class TransportDAO extends DAO {
         transportSorceDTO =new TransportSources();
         transportDestinationsDAO =new TransportDestinationsDAO();
         transportTransportOrderDAO = new TransportTransportOrderDAO();
-        try(Connection connection = getConnection()){
-            ResultSet resultSet= select(connection);
+        try(ConnectionHandler connection = getConnectionHandler()){
+            ResultSet resultSet= select(connection.get());
             while (resultSet.next()){
                 Integer id =resultSet.getInt(1);
                 Transport transport= new Transport(resultSet.getInt(1),resultSet.getString(2),
@@ -67,6 +69,11 @@ public class TransportDAO extends DAO {
         }
 
     }
+    public Transport get(int id){
+        return TRUCK_IDENTITY_MAP.get(id);
+    }
+
+    public List<Transport> getAll(){ return TRUCK_IDENTITY_MAP.values().stream().collect(Collectors.toList());}
 
 
 }

@@ -1,6 +1,8 @@
 package Domain.DAL.Controllers.TransportMudel;
 import Domain.Business.Objects.Document.TransportDocument;
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.ConnectionHandler;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,9 +15,9 @@ public class TransportDocumentDataMapper extends DAO {
 
     public TransportDocumentDataMapper() {
         super("TransportDocument");
-        try(Connection connection =getConnection()){
+        try(ConnectionHandler connection = getConnectionHandler()){
             TransportDocument document;
-            ResultSet resultSet =select(connection);
+            ResultSet resultSet =select(connection.get());
             while (resultSet.next()){
                 int id = resultSet.getInt(1);
                 if (!TRANSPORT_DOCUMENTS_MAP.containsKey(id)){

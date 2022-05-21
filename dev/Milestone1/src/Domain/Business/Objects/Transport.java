@@ -17,8 +17,8 @@ import java.util.List;
 public class Transport {
     private static int incSN = 0;
     private int SN;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String startTime;
+    private String endTime;
     private String driverID;
     private  int truckNumber;
     private  int truckWeight;
@@ -31,7 +31,7 @@ public class Transport {
 
     private Pair<LocalDate, ShiftTypes> shift;
 
-    public Transport() {
+    public Transport(Pair<LocalDate, ShiftTypes> shift) {
         SN = incSN++;
         driverID = "";
         truckNumber = -1;
@@ -42,6 +42,7 @@ public class Transport {
         destinationsID = new ArrayList<>();
         transportOrders = new ArrayList<>();
         status = TransportStatus.padding;
+        this.shift = shift;
     }
 
     public Transport(int SN, String startTime, String endTime, String driverID, int truckNumber, int truckWeight,TransportStatus status,Pair<LocalDate, ShiftTypes> shift, List<Integer> sourcesID, List<Integer> destinationsID,  List<Integer> transportOrders) {
@@ -81,7 +82,7 @@ public class Transport {
     public void startTransport() throws Exception {
         if (status == TransportStatus.padding)
         {
-            startTime = LocalDateTime.now();
+            startTime = LocalDateTime.now().toString();
             status = TransportStatus.inProgress;
         }
         throw new Exception("transport already started");
@@ -89,7 +90,7 @@ public class Transport {
     public void endTransport() throws Exception {
         if (status == TransportStatus.inProgress)
         {
-            endTime = LocalDateTime.now();
+            endTime = LocalDateTime.now().toString();
             status = TransportStatus.done;
         }
         throw new Exception("transport is not in Progress");
@@ -195,11 +196,11 @@ public class Transport {
         status = stat;
     }
 
-    public LocalDateTime getStartTime() {
+    public String  getStartTime() {
         return startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 

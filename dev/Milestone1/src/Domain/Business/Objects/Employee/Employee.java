@@ -89,12 +89,12 @@ public abstract class Employee {
         return employmentConditions;
     }
 
-    protected void updateEmploymentConditions(JobTitles title){
+    public void updateEmploymentConditions(JobTitles title){
         this.employmentConditions =
                 "Name: " + name
                         + "\nID: " + id
                         + "\nJob title: " + title
-                        + "\nStarting date: " + new SimpleDateFormat("dd-MM-yyyy").format(startingDate)
+                        + "\nStarting date: " + startingDate.toString()
                         + "\nSalary per shift: " + salary;
     }
 

@@ -25,7 +25,7 @@ public class Logistics_ManagerDAO extends AbstractEmployeeDAO<Logistics_Manager>
 
     @Override
     protected Logistics_Manager buildObject(ResultSet instanceResult) throws Exception {
-        return new Logistics_Manager(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getString(5),instanceResult.getDate(6).toLocalDate(),employeeCertificationController.get(instanceResult.getString(1)));
+        return new Logistics_Manager(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getDate(6).toLocalDate(),employeeCertificationController.get(instanceResult.getString(1)));
     }
 
 }

@@ -44,7 +44,7 @@ public class TruckMenu extends Screen{
     {
         System.out.println("Enter truck license number:");
         int licenseNumber = scanner.nextInt();
-        while(licenseNumber > 0){
+        while(licenseNumber <= 0){
             System.out.println("Please insert legal license number:");
             licenseNumber = scanner.nextInt();
         }
@@ -122,7 +122,7 @@ public class TruckMenu extends Screen{
     {
         System.out.println("Enter the weight of the truck:");
         int netWeight = scanner.nextInt();
-        while(netWeight > 0){
+        while(netWeight < 0){
             System.out.println("Please insert legal weight:");
             netWeight = scanner.nextInt();
         }
@@ -131,8 +131,9 @@ public class TruckMenu extends Screen{
     private TruckModel getTruckModel()
     {
         System.out.println("Enter truck model:");
-        for (int i = 0; i < TruckModel.values().length; i++)
-        System.out.println((i + 1) + " -- " + ShiftTypes.values()[i]);
+        for (int i = 0; i < TruckModel.values().length; i++){
+            System.out.println((i + 1) + " -- " + TruckModel.values()[i]);
+        }
         return TruckModel.values()[getChoice(1, 4) - 1];
     }
     private int getChoice(int a, int b)

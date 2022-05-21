@@ -9,14 +9,11 @@ public class CashierDAO extends AbstractEmployeeDAO<Cashier> {
     //static fields
     private final static Map<String, Cashier> CASHIER_IDENTITY_MAP = new HashMap<>();
 
-    // fields
-    private final EmployeeCertificationDAO employeeCertificationController;
 
     //constructor
 
     public CashierDAO() {
         super("Cashiers");
-        employeeCertificationController = new EmployeeCertificationDAO();
     }
 
 
@@ -28,6 +25,6 @@ public class CashierDAO extends AbstractEmployeeDAO<Cashier> {
 
     @Override
     protected Cashier buildObject(ResultSet instanceResult) throws Exception {
-        return new Cashier(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getString(5),instanceResult.getDate(6).toLocalDate(),employeeCertificationController.get(instanceResult.getString(1)));
+        return new Cashier(instanceResult.getString(1),instanceResult.getString(2),instanceResult.getString(3),instanceResult.getInt(4),instanceResult.getDate(6).toLocalDate(),employeeCertificationController.get(instanceResult.getString(1)));
     }
 }

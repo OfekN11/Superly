@@ -8,7 +8,7 @@ public class DestinationDocument extends Document {
     private int destID;
     private List<String> providedProducts;
     public DestinationDocument(Domain.Business.Objects.Document.DestinationDocument destinationDoc) {
-        super(destinationDoc.getSN());
+        super(destinationDoc.getID());
         destID = destinationDoc.getDestID();
         providedProducts = destinationDoc.getProvidedProducts();
     }

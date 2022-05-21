@@ -44,7 +44,6 @@ public class EmployeeService {
      * @param name                 Employee's name
      * @param bankDetails          Employee's bank details
      * @param salary               Employee's salary
-     * @param employmentConditions Employee's employment contract
      * @param startingDate         Employee's starting date
      * @param certifications       All of the employee's certifications
      * @return Result detailing process' success

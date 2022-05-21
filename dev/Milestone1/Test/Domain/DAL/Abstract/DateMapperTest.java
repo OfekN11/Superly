@@ -2,7 +2,7 @@ package Domain.DAL.Abstract;
 
 import Domain.Business.Objects.Constraint;
 import Domain.DAL.Controllers.ConstraintDAO;
-import Domain.DAL.Controllers.ConstraintsEmployeesLink;
+import Domain.DAL.Controllers.ShiftEmployeesLink.ConstraintsEmployeesLink;
 import Globals.Enums.ShiftTypes;
 import org.junit.Test;
 
