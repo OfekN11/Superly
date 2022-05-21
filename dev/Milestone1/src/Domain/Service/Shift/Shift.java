@@ -1,4 +1,4 @@
-package Domain.Business.Objects.Shift;
+package Domain.Service.Shift;
 
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.Service.ServiceShiftFactory;
@@ -80,7 +80,7 @@ public abstract class Shift {
     }
 
     public Shift(LocalDate date, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transportManagersCount) throws Exception {
-        this(date, null,
+        this(date, "-1",
                 carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transportManagersCount,
                 new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
     }

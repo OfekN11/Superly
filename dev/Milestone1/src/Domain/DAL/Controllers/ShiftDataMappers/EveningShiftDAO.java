@@ -1,6 +1,6 @@
 package Domain.DAL.Controllers.ShiftDataMappers;
 
-import Domain.Business.Objects.Shift.EveningShift;
+import Domain.Service.Shift.EveningShift;
 import Globals.Enums.ShiftTypes;
 
 import java.sql.ResultSet;

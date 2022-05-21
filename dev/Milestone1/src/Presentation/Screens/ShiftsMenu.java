@@ -5,6 +5,7 @@ import Globals.Enums.ShiftTypes;
 import static Globals.util.HumanInteraction.*;
 
 import Globals.util.ShiftComparator;
+import Presentation.BackendController;
 import Presentation.PresentationShiftBuilder;
 
 import java.time.LocalDate;
@@ -27,6 +28,10 @@ public class ShiftsMenu extends Screen {
 
     public ShiftsMenu(Screen caller) {
         super(caller, menuOptions);
+    }
+
+    public ShiftsMenu(BackendController controller){
+        super(controller, menuOptions);
     }
 
     @Override
@@ -70,7 +75,7 @@ public class ShiftsMenu extends Screen {
                 .stream().sorted(new ShiftComparator()).collect(Collectors.toList());
         System.out.println("\nThe following shifts are incomplete:");
         for (Shift shift : shifts){
-            if (shift.shiftManagerId == null)
+            if (shift.shiftManagerId.equals("-1"))
                 System.out.println(shift.getType() + ": " + shift.date.format(dateFormat) + " - NO SHIFT MANAGER ASSIGNED YET!");
             else
                 System.out.println(shift.getType() + ": " + shift.date.format(dateFormat));

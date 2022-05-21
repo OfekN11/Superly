@@ -54,7 +54,7 @@ public abstract class Shift {
         this.transport_managersIDs = Collections.unmodifiableSet(transport_managersIDs);
     }
 
-    public Shift(Domain.Business.Objects.Shift.Shift bShift){
+    public Shift(Domain.Service.Shift.Shift bShift){
         this(bShift.getWorkday(), bShift.getShiftManagerId(),
                 bShift.getCarrierCount(), bShift.getCashierCount(), bShift.getStorekeeperCount(), bShift.getSorterCount(), bShift.getHr_managersCount(), bShift.getLogistics_managersCount(), bShift.getTransport_managersCount(),
                 bShift.getCarrierIDs(), bShift.getCashierIDs(), bShift.getStorekeeperIDs(), bShift.getSorterIDs(), bShift.getHr_managerIDs(), bShift.getLogistics_managerIDs(), bShift.getTransport_managerIDs());

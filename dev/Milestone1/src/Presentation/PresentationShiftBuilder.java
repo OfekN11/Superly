@@ -153,8 +153,8 @@ public class PresentationShiftBuilder {
         printExitMassage();
         while (true) {
             System.out.println("\nHow many transport managers do you need for this shift?");
-            carrierCount = getNumber(MIN_LOGISTICS_MANAGERS, String.format(NO_LESS, MIN_LOGISTICS_MANAGERS, "storekeepers"));
-            System.out.println("Chosen cashier count: " + carrierCount);
+            transportManagerCount = getNumber(MIN_TRANSPORT_MANAGERS, String.format(NO_LESS, MIN_TRANSPORT_MANAGERS, "transport managers"));
+            System.out.println("Chosen transport manager count: " + transportManagerCount);
             if (areYouSure())
                 return;
         }

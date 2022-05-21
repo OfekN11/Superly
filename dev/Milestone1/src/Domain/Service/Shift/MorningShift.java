@@ -1,4 +1,4 @@
-package Domain.Business.Objects.Shift;
+package Domain.Service.Shift;
 
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.Service.ServiceShiftFactory;
