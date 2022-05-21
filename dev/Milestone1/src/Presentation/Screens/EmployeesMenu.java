@@ -141,7 +141,7 @@ public class EmployeesMenu extends Screen {
         new Thread(factory.createScreenEmployee(this, controller.getEmployee(id))).start();
     }
 
-    private void removeEmployee() throws OperationCancelledException {
+    private void removeEmployee() throws Exception {
         System.out.println("\nYou are choosing to remove an employee from the system. \nBe aware that this process is irreversible");
         boolean success = false;
         while (!success) {

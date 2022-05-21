@@ -39,6 +39,7 @@ public class ShiftsMenu extends Screen {
                 switch (option) {
                     case 1:
                         incompleteShifts();
+                        break;
                     case 2:
                         viewShifts();
                         break;

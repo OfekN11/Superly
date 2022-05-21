@@ -50,7 +50,7 @@ public class IntegrationTest {
     public void before() throws Exception {
         employeeController.registerEmployee(JobTitles.Cashier,"206618175","ofek","d",10,date,certifications);
         employeeController.registerEmployee(JobTitles.Carrier,"1","ofek","d",10,date,certifications);
-        shiftController.createShift(date,ShiftTypes.Morning,"206618175",2,2,2,2,2,2,2);
+        shiftController.createShift(date,ShiftTypes.Morning,2,2,2,2,2,2,2);
     }
 
     @After

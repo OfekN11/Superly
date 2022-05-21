@@ -41,7 +41,7 @@ public class ShiftManagementTest {
     public void before() throws Exception {
         employeeController.registerEmployee(JobTitles.Cashier,"101010","ofek","d",10,date,certifications);
         employeeController.registerEmployee(JobTitles.Carrier,"2061","ofek","d",10,date,certifications);
-        shiftController.createShift(date,ShiftTypes.Morning,"101010",2,2,2,2,2,2,2);
+        shiftController.createShift(date,ShiftTypes.Morning,2,2,2,2,2,2,2);
     }
 
     @After

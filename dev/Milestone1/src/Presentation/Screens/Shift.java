@@ -264,12 +264,12 @@ public abstract class Shift extends Screen {
         this.logistics_managersCount = newCount;
     }
 
-    private void setTransport_managersCount(int newCount) {
+    private void setTransport_managersCount(int newCount) throws Exception {
         controller.editShiftTransport_ManagerCount(this, newCount);
         this.transport_managersCount = newCount;
     }
 
-    protected void printEmployeesByType(JobTitles type){
+    protected void printEmployeesByType(JobTitles type) throws Exception {
         Set<Employee> assigned = getAssignedByType.get(type).get();
         System.out.println(type + "s (" + assigned.size() + " out of " + getCountByType.get(type) + ")");
         EmployeesMenu.EmployeesViewer.printEmployees(getAssignedByType.get(type).get());
