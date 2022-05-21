@@ -33,7 +33,7 @@ public class EmployeesMenu extends Screen {
         public void run() {
             System.out.println("\nHere you can view all the employees");
             int option = 0;
-            while (option != 8) {
+            while (option != 9) {
                 option = runMenu();
                 try {
                     switch (option) {
