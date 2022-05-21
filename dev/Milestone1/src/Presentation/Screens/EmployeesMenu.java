@@ -136,25 +136,16 @@ public class EmployeesMenu extends Screen {
 
     private void manageEmployee() throws Exception {
         System.out.println("\nEnter ID of the employee you would like to manage:");
-        String id = null;
-        while (id == null) {
-            id = scanner.nextLine();
-            if (id.equals("-1")) {
-                operationCancelled();
-            }
-            new Thread(factory.createScreenEmployee(this, controller.getEmployee(id))).start();
-        }
+        String id = getString();
+        new Thread(factory.createScreenEmployee(this, controller.getEmployee(id))).start();
     }
 
-    private void removeEmployee() throws Exception {
+    private void removeEmployee() throws OperationCancelledException {
         System.out.println("\nYou are choosing to remove an employee from the system. \nBe aware that this process is irreversible");
         boolean success = false;
         while (!success) {
             System.out.println("Please enter ID of the employee you wish to remove (enter -1 to cancel this action)");
-            String id = scanner.nextLine();
-            if (id.equals("-1")) {
-                operationCancelled();
-            }
+            String id = getString();
             Employee toBeRemoved = controller.getEmployee(id);
             System.out.println("Employee " + toBeRemoved.name + ", ID: " + toBeRemoved.id + " is about to be removed");
             if (areYouSure()) {
