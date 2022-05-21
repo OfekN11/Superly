@@ -13,7 +13,7 @@ public abstract class DAO {
     // String url = String.format("jdbc:sqlite:%s/%s",System.getProperty("user.dir"),dbName); the url for the jar
     private final static String SELECT_QUERY = "SELECT %s from %s where %s";
     private final static String INSERT_QUERY = "INSERT INTO %s VALUES (%s)";
-    private final static String DELETE_QUERY = "DELETE FROM %s WHERE %s;";
+    private final static String DELETE_QUERY = "DELETE FROM %s WHERE %s";
     private final static String UPDATE_QUERY = "UPDATE %s SET %s WHERE %s";
 
 
