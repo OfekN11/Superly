@@ -30,7 +30,7 @@ public class HumanInteraction {
         while (ans != 1 && ans != 2) {
             System.out.println("1 -- yes\n2 -- no");
             try {
-                ans = Integer.parseInt(scanner.nextLine());
+                ans = Integer.parseInt(getInput());
             } catch (NumberFormatException ex) {
                 System.out.println("Please enter an integer value (1 or 2)");
             } catch (Exception ex) {
@@ -50,7 +50,7 @@ public class HumanInteraction {
             while (!success) {
                 System.out.println("Enter day");
                 try {
-                    day = Integer.parseInt(scanner.nextLine());
+                    day = Integer.parseInt(getInput());
                     if (day == -1) {
                         operationCancelled();
                     } else if (day < 1 || day > 31) {
@@ -71,7 +71,7 @@ public class HumanInteraction {
             while (!success) {
                 System.out.println("Enter month");
                 try {
-                    month = Integer.parseInt(scanner.nextLine());
+                    month = Integer.parseInt(getInput());
                     if (month == -1) {
                         operationCancelled();
                     } else if (month < 1 || month > 12) {
@@ -92,7 +92,7 @@ public class HumanInteraction {
             while (!success) {
                 System.out.println("Enter year");
                 try {
-                    year = Integer.parseInt(scanner.nextLine());
+                    year = Integer.parseInt(getInput());
                     if (year == -1) {
                         operationCancelled();
                     } else if (year < 1900 || year > 2030) {
@@ -122,7 +122,7 @@ public class HumanInteraction {
     public static int getNumber() throws OperationCancelledException {
         while (true) {
             try {
-                int number = Integer.parseInt(scanner.nextLine());
+                int number = Integer.parseInt(getInput());
                 if (number == -1) {
                     operationCancelled();
                 } else {
@@ -142,7 +142,7 @@ public class HumanInteraction {
     public static int getNumber(int min) throws OperationCancelledException {
         while (true) {
             try {
-                int number = Integer.parseInt(scanner.nextLine());
+                int number = Integer.parseInt(getInput());
                 if (number == -1) {
                     operationCancelled();
                 } else if (number < min) {
@@ -164,7 +164,7 @@ public class HumanInteraction {
     public static int getNumber(int min, int max) throws OperationCancelledException {
         while (true) {
             try {
-                int number = Integer.parseInt(scanner.nextLine());
+                int number = Integer.parseInt(getInput());
                 if (number == -1) {
                     operationCancelled();
                 } else if (number < min || number > max) {
@@ -186,7 +186,7 @@ public class HumanInteraction {
     public static int getNumber(int min, String because) throws OperationCancelledException {
         while (true) {
             try {
-                int number = Integer.parseInt(scanner.nextLine());
+                int number = Integer.parseInt(getInput());
                 if (number == -1) {
                     operationCancelled();
                 } else if (number < min) {
@@ -203,5 +203,28 @@ public class HumanInteraction {
                 System.out.println("Please try again");
             }
         }
+    }
+
+    public static String getString() throws OperationCancelledException {
+        while (true) {
+            try {
+                String string = getInput();
+                if (string.equals("-1"))
+                    operationCancelled();
+                else
+                    return string;
+            }
+            catch (OperationCancelledException e){
+                throw e;
+            }
+            catch (Exception e) {
+                System.out.println("Unexpected error occurred");
+                System.out.println("Please try again");
+            }
+        }
+    }
+
+    private static String getInput() {
+        return scanner.nextLine().trim();
     }
 }

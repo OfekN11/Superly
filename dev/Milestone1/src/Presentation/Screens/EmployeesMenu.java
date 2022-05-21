@@ -90,7 +90,7 @@ public class EmployeesMenu extends Screen {
 
     private static final String[] menuOptions = {
             "View Employees",                                       //1
-            "Add Employee",                                         //2
+            "Register Employee",                                         //2
             "Manage Employee (this includes managing constraints)", //3
             "Remove Employee",                                      //4
             "Exit"                                                  //5
@@ -166,32 +166,21 @@ public class EmployeesMenu extends Screen {
     }
 
     private void addEmployee() throws Exception {
-        System.out.println("\nLets add a new employee! (you can cancel this action at any point by entering -1");
+        System.out.println("\nLets add a new employee! (you can cancel this action at any point by entering -1)");
 
         //ID
         String id = null;
         boolean success = false;
         while (!success) {
             System.out.println("\nEnter new employee's ID");
+            id = getString();
             try {
-                id = scanner.nextLine();
+                controller.checkUnusedEmployeeID(id);
             } catch (Exception e) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-                id = null;
+                System.out.println(e.getMessage());
             }
-            if (id != null) {
-                if (id.equals("-1")) {
-                    operationCancelled();
-                }
-                try {
-                    controller.checkUnusedEmployeeID(id);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                System.out.println("Chosen ID: " + id);
-                success = areYouSure();
-            }
+            System.out.println("Chosen ID: " + id);
+            success = areYouSure();
         }
 
         //Name
@@ -199,18 +188,9 @@ public class EmployeesMenu extends Screen {
         success = false;
         while (!success) {
             System.out.println("\nEnter new employee's name");
-            try {
-                name = scanner.nextLine();
-                if (name.equals("-1")) {
-                    operationCancelled();
-                } else {
+                name = getString();
                     System.out.println("Chosen name: " + name);
                     success = areYouSure();
-                }
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
         }
 
         //Bank Details
@@ -218,18 +198,9 @@ public class EmployeesMenu extends Screen {
         success = false;
         while (!success) {
             System.out.println("\nEnter " + name + "'s bank details");
-            try {
-                bankDetails = scanner.nextLine();
-                if (bankDetails.equals("-1")) {
-                    operationCancelled();
-                } else {
-                    System.out.println("Chosen bank details: " + bankDetails);
-                    success = areYouSure();
-                }
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
+            bankDetails = getString();
+            System.out.println("Chosen bank details: " + bankDetails);
+            success = areYouSure();
         }
 
         //Job Title

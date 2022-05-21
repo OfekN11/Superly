@@ -3,7 +3,8 @@ package Presentation.Screens;
 import Presentation.BackendController;
 
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
+
+import static Globals.util.HumanInteraction.*;
 
 public abstract class Screen implements Runnable{
     protected final static Scanner scanner = new Scanner(System.in);
@@ -31,25 +32,11 @@ public abstract class Screen implements Runnable{
 
     protected int runMenu(){
         System.out.println("\nWhat would you like to do?");
+        printMenu();
         int option = 0;
-        while (option <= 0 || option > menuOptions.length){
-            printMenu();
-            try {
-                option = Integer.parseInt(scanner.nextLine());
-                if (option <= 0 || option >menuOptions.length)
-                    System.out.println("Please enter an integer value between 1 and " + menuOptions.length);
-            }
-            catch (NumberFormatException ex){
-                System.out.println("Please enter an integer value between 1 and " + menuOptions.length);
-            }
-            catch (Exception ex){
-                System.out.println("An unexpected error happened. Please try again");
-            }
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            option = getNumber(1, menuOptions.length);
+        } catch (OperationCancelledException ignored) {
         }
         return option;
     }
