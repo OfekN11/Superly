@@ -20,13 +20,13 @@ public class DocumentController {
 
 
     public void uploadDestinationDocument(DestinationDocument document) throws Exception {
-
+        destinationDocumentsDAO.save(document);
     }
     //TODO check if the function is needed
     public void updateDestinationDocument(DestinationDocument document) throws Exception {
        destinationDocumentsDAO.save(document);
     }
-    //TODO not the right implementation
+
     public DestinationDocument getDestinationDocument(int destinationDocumentSN) throws Exception {
         DestinationDocument document = destinationDocumentsDAO.get(destinationDocumentSN);
         if (document == null)
@@ -34,7 +34,7 @@ public class DocumentController {
 
         return document;
     }
-    //TODO not the right implementation
+
     public void uploadTransportDocument(TransportDocument document) throws Exception {
        transportDocumentsDataMapper.save(document);
     }
@@ -42,8 +42,7 @@ public class DocumentController {
     public void updateTransportDocument(TransportDocument document) throws Exception {
        transportDocumentsDataMapper.save(document);
     }
-    //TODO will return null if the object is not found!!
-    //TODO not the right implementation
+
     public TransportDocument getTransportDocument(int transportDocumentSN) throws Exception {
         TransportDocument document = transportDocumentsDataMapper.get(transportDocumentSN);
         if(document != null)

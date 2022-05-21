@@ -38,6 +38,7 @@ public class TransportController {
         orderController = new OrderController();
         siteController = new SiteController();
         shiftController = new ShiftController();
+        documentController = new DocumentController();
     }
     //TODO need to be implemented in DAL objects
     public void createTransport(Pair<LocalDate,ShiftTypes> shift) throws Exception {
@@ -68,9 +69,12 @@ public class TransportController {
                    if(siteID==order.getDst()){
                        DestinationDocument document = new DestinationDocument(orderID,siteID,order.getProducts());
                        documentController.uploadDestinationDocument(document);
-                       TransportDocument trd = documentController.getTransportDocument(transportSN);
-                       if(trd == null){
-                           trd = new TransportDocument(transport.getSN(),transport.getStartTime().toString(),transport.getTruckNumber(),transport.getDriverID());
+                       TransportDocument trd;
+                       try{
+                           trd = documentController.getTransportDocument(transportSN);
+                       }
+                       catch (Exception e) {
+                           trd = new TransportDocument(transport.getSN(), transport.getStartTime().toString(), transport.getTruckNumber(), transport.getDriverID());
                            documentController.uploadTransportDocument(trd);
                        }
                        trd.addDoc(orderID);

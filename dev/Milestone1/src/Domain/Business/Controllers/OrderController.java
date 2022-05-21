@@ -3,13 +3,17 @@ package Domain.Business.Controllers;
 import Domain.Business.Objects.Product;
 import Domain.Business.Objects.Site.*;
 import Domain.Business.Objects.TransportOrder;
+import Domain.DAL.Controllers.TransportMudel.TransportOrderDAO;
+import Globals.Enums.OrderStatus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 //TODO not finished methods (ADD and GET)
 public class OrderController {
     private HashMap<Integer, Product> products;
+    private final TransportOrderDAO transportOrderDataMapper = new TransportOrderDAO();
 
     public OrderController() {
         products = new HashMap<>();
@@ -23,11 +27,16 @@ public class OrderController {
 
     }
     public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {
-        //TODO not implemented yet
+
+        TransportOrder order = new TransportOrder(srcID,dstID,productList);
+        transportOrderDataMapper.save(order);
     }
     public TransportOrder getTransportOrder(int orderID) throws Exception {
-        //TODO not implemented yet
-        return null;
+        TransportOrder order = transportOrderDataMapper.get(orderID);
+        if (order==null){
+            throw new Exception("the order not found");
+        }
+        return order;
     }
 
     public int getExtraWeight(TransportOrder order) {
@@ -39,7 +48,13 @@ public class OrderController {
     }
 
     public List<TransportOrder> getPendingOrder() {
-        //TODO: Implement
-        return null;
+        List<TransportOrder> padding = new ArrayList<>();
+        List<TransportOrder> orders = transportOrderDataMapper.getAll();
+        for (TransportOrder order:orders){
+            if(order.getStatus()== OrderStatus.waiting){
+                padding.add(order);
+            }
+        }
+        return padding;
     }
 }

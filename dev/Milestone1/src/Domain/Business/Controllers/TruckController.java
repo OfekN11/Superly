@@ -21,6 +21,10 @@ public class TruckController {
     }
 
     public Truck getTruck(int truckNumber) throws Exception {
-        return truckDataMapper.get(truckNumber);
+        Truck t = truckDataMapper.get(truckNumber);
+        if(t==null){
+            throw new Exception("Truck not found");
+        }
+        return t;
     }
 }
