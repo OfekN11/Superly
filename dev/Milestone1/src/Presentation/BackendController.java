@@ -452,9 +452,6 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftTransport_ManagerIDs(Presentation.Screens.Shift shift, Set<String> assignedIDs) {
-    }
-
     public void editShiftCarrierIDs(Presentation.Screens.Shift shift, Set<String> newCarrierIDs) throws Exception {
         validateIDs(newCarrierIDs);
         Result<Object> result = shiftService.editShiftCarrierIDs(shift.getDate(), shift.getType(), newCarrierIDs);
@@ -493,6 +490,13 @@ public class BackendController {
     public void editShiftLogistics_ManagerIDs(Presentation.Screens.Shift shift, Set<String> newLogistics_managerIDs) throws Exception {
         validateIDs(newLogistics_managerIDs);
         Result<Object> result = shiftService.editShiftLogistics_ManagerIDs(shift.getDate(), shift.getType(), newLogistics_managerIDs);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+    }
+
+    public void editShiftTransport_ManagerIDs(Presentation.Screens.Shift shift, Set<String> newTransport_managersIDs) throws Exception {
+        validateIDs(newTransport_managersIDs);
+        Result<Object> result = shiftService.editShiftTransport_ManagerIDs(shift.getDate(), shift.getType(), newTransport_managersIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
