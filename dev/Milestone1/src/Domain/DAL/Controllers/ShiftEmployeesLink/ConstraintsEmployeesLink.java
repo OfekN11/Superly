@@ -1,4 +1,4 @@
-package Domain.DAL.Controllers;
+package Domain.DAL.Controllers.ShiftEmployeesLink;
 
 import Domain.DAL.Abstract.LinkDAO;
 

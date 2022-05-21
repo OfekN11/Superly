@@ -1,4 +1,6 @@
 package Domain.DAL.Abstract;
+import Domain.DAL.ConnectionHandler;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,12 +17,20 @@ public abstract class DateMapper<T> extends DAO {
         if (output != null)
             return output;
 
-        output = buildObject(id);
-        if (output != null)
-            map.put(id, output);
-        return output;
-    }
+        try(ConnectionHandler connection = getConnectionHandler()){
+            ResultSet instanceResult = select(connection.get(), id);
+            if (!instanceResult.next())
+                return null;
 
+
+            output = buildObject(instanceResult);
+            map.put(id, output);
+            return output;
+        }
+        catch (SQLException e){
+            throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+        }
+    }
 
     /**
      *
@@ -67,20 +77,17 @@ public abstract class DateMapper<T> extends DAO {
     }
 
     public Set<T>getAll()throws Exception{
-        Set<String> ids =new HashSet<>();
         Set<T> output = new HashSet<>();
-        try(Connection connection =getConnection()){
-            ResultSet resultSet = super.select(connection);
+        try(ConnectionHandler connection = getConnectionHandler()){
+            ResultSet resultSet = super.select(connection.get());
             while (resultSet.next())
-                ids.add(resultSet.getString(1));
+                output.add(buildObject(resultSet));
         }
-        for(String id: ids)
-            output.add(buildObject(id));
         return output;
     }
     protected abstract Map<String, T> getMap();
     protected abstract  LinkDAO getLinkDTO(String setName);
-    protected abstract T buildObject(String id) throws Exception;
+    protected abstract T buildObject(ResultSet instanceResult) throws Exception;
     public abstract void insert(T instance) throws SQLException;
 
     /**

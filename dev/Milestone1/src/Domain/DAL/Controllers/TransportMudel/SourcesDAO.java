@@ -1,9 +1,9 @@
 package Domain.DAL.Controllers.TransportMudel;
 
 import Domain.Business.Objects.Site.Address;
-import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.ConnectionHandler;
 import Globals.Enums.ShippingAreas;
 
 import java.sql.Connection;
@@ -17,8 +17,8 @@ public class SourcesDAO extends DAO {
 
     public SourcesDAO() {
         super("Sources");
-        try(Connection connection = getConnection()){
-            ResultSet resultSet= select(connection);
+        try(ConnectionHandler connection = getConnectionHandler()){
+            ResultSet resultSet= select(connection.get());
             while (resultSet.next()){
                 Source source = new Source(resultSet.getInt(1),new Address(ShippingAreas.valueOf(resultSet.getString(3)),resultSet.getString(2)),resultSet.getString(4),resultSet.getString(5));
                 SOURCE_IDENTITY_MAP.put(source.getId(),source);

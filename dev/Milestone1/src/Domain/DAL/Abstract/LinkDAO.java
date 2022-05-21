@@ -1,5 +1,7 @@
 package Domain.DAL.Abstract;
 
+import Domain.DAL.ConnectionHandler;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,8 +16,8 @@ public abstract class LinkDAO<T> extends DAO {
 
     public Set<T> get(String id) throws SQLException {
         Set<T> output = new HashSet<>();
-        try(Connection connection = getConnection()){
-            ResultSet resultSet = select(connection,id);
+        try(ConnectionHandler connection = getConnectionHandler()){
+            ResultSet resultSet = select(connection.get(),id);
             while (resultSet.next())
                 output.add(buildObject(resultSet));
         }
