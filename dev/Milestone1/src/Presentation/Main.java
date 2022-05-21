@@ -6,14 +6,14 @@ import Presentation.Screens.MainMenu;
 
 public class Main {
     public static void main(String[] args) {
-        //new Thread(new MainMenu(new BackendController())).start();
+        new Thread(new MainMenu(new BackendController())).start();
 
-        EmployeeDataMapper employeeDataMapper = new EmployeeDataMapper();
+     /*   EmployeeDataMapper employeeDataMapper = new EmployeeDataMapper();
         try {
             for (Carrier carrier : employeeDataMapper.getCarrier())
                 System.out.println(carrier.getId() + " - " + carrier.getName());
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 }
