@@ -10,6 +10,13 @@ import java.util.Set;
 
 public  class EveningShift extends Shift {
 
+    public EveningShift(LocalDate workday, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transport_managersCount) throws Exception {
+        super(workday, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount,transport_managersCount);
+        validateManagerialCount(hr_managerCount);
+        validateManagerialCount(logistics_managerCount);
+        validateManagerialCount(transport_managersCount);
+    }
+
     public EveningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transport_managersCount) throws Exception {
         super(workday, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount,transport_managersCount);
         validateManagerialCount(hr_managerCount);

@@ -4,11 +4,9 @@ import Domain.Service.Objects.Shift;
 import Globals.Enums.ShiftTypes;
 import static Globals.util.HumanInteraction.*;
 
-import Globals.util.HumanInteraction;
 import Globals.util.ShiftComparator;
 import Presentation.PresentationShiftBuilder;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,11 +14,12 @@ import java.util.stream.Collectors;
 
 public class ShiftsMenu extends Screen {
     private static final String[] menuOptions = {
-            "View existing shifts",     //1
-            "Add shifts",               //2
-            "Remove shifts",            //3
-            "Manage existing shifts",   //4
-            "Exit"                      //5
+            "View incomplete shifts for the next seven days",   //1
+            "View existing shifts",                             //2
+            "Add shifts",                                       //3
+            "Remove shifts",                                    //4
+            "Manage existing shifts",                           //5
+            "Exit"                                              //6
     };
 
     private static final ScreenShiftFactory factory = new ScreenShiftFactory();
@@ -34,23 +33,25 @@ public class ShiftsMenu extends Screen {
     public void run() {
         System.out.println("\nWelcome to the Shift Management Menu!");
         int option = 0;
-        while (option != 4 && option != 5) {
+        while (option != 5 && option != 6) {
             option = runMenu();
             try {
                 switch (option) {
                     case 1:
+                        incompleteShifts();
+                    case 2:
                         viewShifts();
                         break;
-                    case 2:
+                    case 3:
                         addShifts();
                         break;
-                    case 3:
+                    case 4:
                         removeShifts();
                         break;
-                    case 4:
+                    case 5:
                         manageShift();
                         break;
-                    case 5:
+                    case 6:
                         endRun();
                         break;
                 }
@@ -60,6 +61,18 @@ public class ShiftsMenu extends Screen {
                 System.out.println("Please try again");
                 option = 0;
             }
+        }
+    }
+
+    private void incompleteShifts() throws Exception {
+        List<Shift> shifts = controller.getIncompleteShiftsBetween(LocalDate.now(), LocalDate.now().plusDays(7))
+                .stream().sorted(new ShiftComparator()).collect(Collectors.toList());
+        System.out.println("\nThe following shifts are incomplete:");
+        for (Shift shift : shifts){
+            if (shift.shiftManagerId == null)
+                System.out.println(shift.getType() + ": " + shift.date.format(dateFormat) + " - NO SHIFT MANAGER ASSIGNED YET!");
+            else
+                System.out.println(shift.getType() + ": " + shift.date.format(dateFormat));
         }
     }
 
@@ -78,7 +91,7 @@ public class ShiftsMenu extends Screen {
         presentationShiftBuilder.reset();
         presentationShiftBuilder.setDate();
         presentationShiftBuilder.setShiftType();
-        presentationShiftBuilder.setShiftManager();
+     //   presentationShiftBuilder.setShiftManager();
         presentationShiftBuilder.setCarrierCount();
         presentationShiftBuilder.setCashierCount();
         presentationShiftBuilder.setStorekeeperCount();

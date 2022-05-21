@@ -17,9 +17,9 @@ public class ShiftService {
 
     //CREATE
 
-    public Result<Object> createShift(LocalDate date, ShiftTypes type, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transport_managerCount) {
+    public Result<Object> createShift(LocalDate date, ShiftTypes type, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transport_managerCount) {
         try {
-            controller.createShift(date, type, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transport_managerCount);
+            controller.createShift(date, type, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transport_managerCount);
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }
@@ -391,6 +391,14 @@ public class ShiftService {
     public Result<Set<Employee>> getAvailableShiftManagersFor(LocalDate date, ShiftTypes type) {
         try {
             return Result.makeOk(controller.getAvailableShiftManagersFor(date, type).stream().map(employeeFactory::createServiceEmployee).collect(Collectors.toSet()));
+        } catch (Exception e) {
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Set<Shift>> getIncompleteShiftsBetween(LocalDate start, LocalDate end) {
+        try {
+            return Result.makeOk(controller.getIncompleteShiftsBetween(start, end).stream().map(shiftFactory::createServiceShift).collect(Collectors.toSet()));
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }

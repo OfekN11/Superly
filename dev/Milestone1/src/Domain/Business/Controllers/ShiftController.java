@@ -27,15 +27,15 @@ public class ShiftController {
 
     //CREATE
 
-    public void createShift(LocalDate date, ShiftTypes type, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transport_managerCount) throws Exception {
+    public void createShift(LocalDate date, ShiftTypes type, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transport_managerCount) throws Exception {
         if (shiftDataMapper.get(date, type) != null)
             throw new Exception(String.format(SHIFT_ALREADY_EXIST, type, date.format(DATE_FORMAT)));
         switch (type) {
             case Evening:
-                shiftDataMapper.save(new EveningShift(date, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transport_managerCount));
+                shiftDataMapper.save(new EveningShift(date, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transport_managerCount));
                 break;
             case Morning:
-                shiftDataMapper.save(new MorningShift(date, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transport_managerCount));
+                shiftDataMapper.save(new MorningShift(date, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transport_managerCount));
         }
     }
 
@@ -274,6 +274,10 @@ public class ShiftController {
     public Set<Shift> getEmployeeConstraintsBetween(String id, LocalDate start, LocalDate end) {
         return getShiftsBetween(start, end).stream().filter(s -> s.isEmployeeAvailable(id)).collect(Collectors.toSet());
 
+    }
+
+    public Set<Shift> getIncompleteShiftsBetween(LocalDate start, LocalDate end) {
+        return getShiftsBetween(start, end).stream().filter(Shift::isShiftComplete).collect(Collectors.toSet());
     }
 
     private Pair<LocalDate, LocalDate> getMonthDatesEdges() {

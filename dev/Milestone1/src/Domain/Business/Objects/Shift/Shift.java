@@ -39,15 +39,13 @@ public abstract class Shift {
     private Set<String> logistics_managerIDs;
     private Set<String> transport_managerIDs;
 
-    private Set<String> availableEmployees;
+    private final Set<String> availableEmployees;
 
     // constructors
     public Shift(LocalDate workday, String shiftManagerId,
                  int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managersCount, int logistics_managersCount,int transport_managersCount,
                  Set<String> carrierIDs, Set<String> cashierIDs, Set<String> storekeeperIDs, Set<String> sorterIDs, Set<String> hr_managerIDs, Set<String> logistics_managerIDs,Set<String>transportManagerIDs, Set<String> availableEmployees) throws Exception {
         this.workday = workday;
-        if (shiftManagerId == null)
-            throw new Exception("A shift has to have a shift manager");
         this.shiftManagerId = shiftManagerId;
 
         checkCountValidity(carrierCount, MIN_CARRIERS, JobTitles.Carrier);
@@ -77,6 +75,12 @@ public abstract class Shift {
 
     public Shift(LocalDate date, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transportManagersCount) throws Exception {
         this(date, managerId,
+                carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transportManagersCount,
+                new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
+    }
+
+    public Shift(LocalDate date, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount, int transportManagersCount) throws Exception {
+        this(date, null,
                 carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount, transportManagersCount,
                 new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
@@ -316,6 +320,17 @@ public abstract class Shift {
 
     public boolean isEmployeeAvailable(String id) {
         return availableEmployees.contains(id);
+    }
+
+    public boolean isShiftComplete(){
+        return shiftManagerId != null
+                && carrierIDs.size() == carrierCount
+                && cashierIDs.size() == cashierCount
+                && sorterIDs.size() == sorterCount
+                && storekeeperIDs.size() == storekeeperCount
+                && hr_managerIDs.size() == hr_managersCount
+                && logistics_managerIDs.size() == logistics_managersCount
+                && transport_managerIDs.size() == transport_managersCount;
     }
 
     public abstract Domain.Service.Objects.Shift accept(ServiceShiftFactory factory);
