@@ -58,6 +58,7 @@ public class ShiftsMenu extends Screen {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
+                option = 0;
             }
         }
     }
