@@ -80,7 +80,10 @@ public class TransportOrder {
     }
 
     public OrderStatus getStatus(){return status;}
-    public void order(){ status = OrderStatus.ordered;}
+    public void order(){
+        status = OrderStatus.ordered;
+
+    }
 
     public HashMap<String,Integer> convert(HashMap<Integer,Integer> toConvert){
         HashMap<String,Integer> converted = new HashMap<>();

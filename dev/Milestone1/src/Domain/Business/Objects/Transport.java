@@ -31,7 +31,7 @@ public class Transport {
 
     private Pair<LocalDate, ShiftTypes> shift;
 
-    public Transport() {
+    public Transport(Pair<LocalDate, ShiftTypes> shift) {
         SN = incSN++;
         driverID = "";
         truckNumber = -1;
@@ -42,6 +42,7 @@ public class Transport {
         destinationsID = new ArrayList<>();
         transportOrders = new ArrayList<>();
         status = TransportStatus.padding;
+        this.shift = shift;
     }
 
     public Transport(int SN, String startTime, String endTime, String driverID, int truckNumber, int truckWeight,TransportStatus status,Pair<LocalDate, ShiftTypes> shift, List<Integer> sourcesID, List<Integer> destinationsID,  List<Integer> transportOrders) {

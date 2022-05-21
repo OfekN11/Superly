@@ -28,6 +28,8 @@ public abstract class Site {
     public Address getAddress() {
         return address;
     }
+    public String getContactId(){return contactId;}
+    public String getPhoneNumber(){return phoneNumber;}
 
     public void setAddress(Address address) {
         this.address = address;

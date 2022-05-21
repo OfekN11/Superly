@@ -57,4 +57,7 @@ public class OrderController {
         }
         return padding;
     }
+    public void updateOrder(TransportOrder order){
+        transportOrderDataMapper.save(order);
+    }
 }

@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -71,6 +72,8 @@ public class TransportDAO extends DAO {
     public Transport get(int id){
         return TRUCK_IDENTITY_MAP.get(id);
     }
+
+    public List<Transport> getAll(){ return TRUCK_IDENTITY_MAP.values().stream().collect(Collectors.toList());}
 
 
 }
