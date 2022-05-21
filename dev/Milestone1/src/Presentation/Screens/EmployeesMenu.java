@@ -31,7 +31,7 @@ public class EmployeesMenu extends Screen {
 
         @Override
         public void run() {
-            System.out.println("\nHere you can view all the employees");
+            System.out.println("\nWelcome to the Employee Viewer Menu!");
             int option = 0;
             while (option != 9) {
                 option = runMenu();
