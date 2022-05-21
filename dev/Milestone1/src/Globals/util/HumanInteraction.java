@@ -41,82 +41,20 @@ public class HumanInteraction {
     }
 
     public static LocalDate buildDate() throws OperationCancelledException {
-        LocalDate date = null;
-        while (date == null) {
-            boolean success = false;
-            int day = 0;
-            int month = 0;
-            int year = 0;
-            while (!success) {
-                System.out.println("Enter day");
-                try {
-                    day = Integer.parseInt(getInput());
-                    if (day == -1) {
-                        operationCancelled();
-                    } else if (day < 1 || day > 31) {
-                        System.out.println("Enter valid day");
-                    } else {
-                        success = true;
-                    }
-                } catch (NumberFormatException ex) {
-                    System.out.println("Please enter an integer between 1 and 31");
-                } catch (OperationCancelledException e) {
-                    throw e;
-                } catch (Exception ex) {
-                    System.out.println("Unexpected error occurred");
-                    System.out.println("Please try again");
-                }
-            }
-            success = false;
-            while (!success) {
-                System.out.println("Enter month");
-                try {
-                    month = Integer.parseInt(getInput());
-                    if (month == -1) {
-                        operationCancelled();
-                    } else if (month < 1 || month > 12) {
-                        System.out.println("Enter valid month");
-                    } else {
-                        success = true;
-                    }
-                } catch (NumberFormatException ex) {
-                    System.out.println("Please enter an integer between 1 and 12");
-                } catch (OperationCancelledException e) {
-                    throw e;
-                } catch (Exception ex) {
-                    System.out.println("Unexpected error occurred");
-                    System.out.println("Please try again");
-                }
-            }
-            success = false;
-            while (!success) {
-                System.out.println("Enter year");
-                try {
-                    year = Integer.parseInt(getInput());
-                    if (year == -1) {
-                        operationCancelled();
-                    } else if (year < 1900 || year > 2030) {
-                        System.out.println("Enter valid year");
-                    } else {
-                        success = true;
-                    }
-                } catch (NumberFormatException ex) {
-                    System.out.println("Please enter an integer between 1900 and 2030");
-                } catch (OperationCancelledException e) {
-                    throw e;
-                } catch (Exception ex) {
-                    System.out.println("Unexpected error occurred");
-                    System.out.println("Please try again");
-                }
-            }
+        while (true) {
+            System.out.println("Enter day");
+            int day = getNumber(1, 31);
+            System.out.println("Enter month");
+            int month = getNumber(1, 12);
+            System.out.println("Enter year");
+            int year = getNumber(2000);
             try {
-                date = LocalDate.of(year, month, day);
+                return LocalDate.of(year, month, day);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }
         }
-        return date;
     }
 
     public static int getNumber() throws OperationCancelledException {
