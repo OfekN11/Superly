@@ -1,6 +1,8 @@
 package Domain.Service.Services;
+import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.Service.Objects.Result;
 import Domain.Service.Objects.Shift;
+import Domain.Service.Shift.MorningShift;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
@@ -72,5 +74,25 @@ public class ShiftServiceTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void getShiftBetween(){
+        ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
+        LocalDate end = LocalDate.now();
+        for(int i=0;i<4;i++,end=end.plusDays(1)){
+            shiftDataMapper.delete(end,ShiftTypes.Morning);
+        }
+        LocalDate now = LocalDate.now();
+
+        for(int i=0;i<4;i++,end=end.plusDays(1)){
+            try {
+                shiftDataMapper.save(new MorningShift(end,10,10,10,10,10,10,10));
+            } catch (Exception e) {
+                fail();
+            }
+        }
+
+        assertEquals(4, shiftDataMapper.getBetween(now, end).size());
     }
 }
