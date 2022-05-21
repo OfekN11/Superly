@@ -5,6 +5,7 @@ import Domain.DAL.Controllers.EmployeeLinks.CarrierLicensesDAO;
 import Globals.Enums.Certifications;
 import Globals.Enums.LicenseTypes;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -39,15 +40,17 @@ public class CarrierDAO extends AbstractEmployeeDAO<Carrier> {
     }
 
     @Override
-    protected Carrier buildObject(ResultSet instanceResult) throws Exception {
-        String id = instanceResult.getString(1);
-        String name = instanceResult.getString(2);
-        String bankDetails =instanceResult.getString(3);
-        int salary = instanceResult.getInt(4);
-        LocalDate startingDate = instanceResult.getDate(6).toLocalDate();
-        Set<Certifications> certifications =  getEmployeeCertificationController().get(instanceResult.getString(1));
-        Set<LicenseTypes> licenses = carrierLicensesDAO.get(instanceResult.getNString(1));
-        return new Carrier(id , name ,bankDetails, salary, startingDate, certifications, licenses);
+    protected Carrier buildObject(String id) throws Exception {
+        Set<LicenseTypes> licenses = carrierLicensesDAO.get(id);
+        Set<Certifications> certifications =  getEmployeeCertificationController().get(id);
+        try(Connection connection = getConnection()) {
+            ResultSet instanceResult = select(connection,id);
+            String name = instanceResult.getString(2);
+            String bankDetails =instanceResult.getString(3);
+            int salary = instanceResult.getInt(4);
+            LocalDate startingDate = instanceResult.getDate(6).toLocalDate();
+            return new Carrier(id , name ,bankDetails, salary, startingDate, certifications, licenses);
+        }
     }
 
     @Override

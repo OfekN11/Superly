@@ -15,20 +15,12 @@ public abstract class DateMapper<T> extends DAO {
         if (output != null)
             return output;
 
-        try(Connection connection = getConnection()){
-            ResultSet instanceResult = select(connection, id);
-            if (!instanceResult.next())
-                return null;
-
-
-            output = buildObject(instanceResult);
+        output = buildObject(id);
+        if (output != null)
             map.put(id, output);
-            return output;
-        }
-        catch (SQLException e){
-            throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
-        }
+        return output;
     }
+
 
     /**
      *
@@ -75,17 +67,20 @@ public abstract class DateMapper<T> extends DAO {
     }
 
     public Set<T>getAll()throws Exception{
+        Set<String> ids =new HashSet<>();
         Set<T> output = new HashSet<>();
         try(Connection connection =getConnection()){
             ResultSet resultSet = super.select(connection);
             while (resultSet.next())
-                output.add(buildObject(resultSet));
+                ids.add(resultSet.getString(1));
         }
+        for(String id: ids)
+            output.add(buildObject(id));
         return output;
     }
     protected abstract Map<String, T> getMap();
     protected abstract  LinkDAO getLinkDTO(String setName);
-    protected abstract T buildObject(ResultSet instanceResult) throws Exception;
+    protected abstract T buildObject(String id) throws Exception;
     public abstract void insert(T instance) throws SQLException;
 
     /**
