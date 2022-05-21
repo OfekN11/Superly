@@ -46,7 +46,7 @@ public class CarrierDAO extends AbstractEmployeeDAO<Carrier> {
         int salary = instanceResult.getInt(4);
         LocalDate startingDate = instanceResult.getDate(6).toLocalDate();
         Set<Certifications> certifications =  getEmployeeCertificationController().get(instanceResult.getString(1));
-        Set<LicenseTypes> licenses = carrierLicensesDAO.get(instanceResult.getNString(1));
+        Set<LicenseTypes> licenses = carrierLicensesDAO.get(instanceResult.getString(1));
         return new Carrier(id , name ,bankDetails, salary, startingDate, certifications, licenses);
     }
 
