@@ -2,8 +2,7 @@ package Domain.DAL.Controllers.TransportMudel;
 
 import Domain.Business.Objects.TransportOrder;
 import Domain.DAL.Abstract.DAO;
-import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.DateMapper;
+import Domain.DAL.ConnectionHandler;
 import Globals.Enums.OrderStatus;
 
 import java.sql.Connection;
@@ -12,16 +11,15 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class TransportOrderDAO extends DAO {
     private final static Map<Integer, TransportOrder> TRANSPORT_ORDER_MAP = new HashMap<>();
 
     public TransportOrderDAO() {
         super("Orders");
-        try(Connection connection =getConnection()){
+        try(ConnectionHandler connection = getConnectionHandler()){
             TransportOrder order;
-            ResultSet resultSet =select(connection);
+            ResultSet resultSet =select(connection.get());
             while (resultSet.next()){
                 int id = resultSet.getInt(1);
                 if (!TRANSPORT_ORDER_MAP.containsKey(id)){

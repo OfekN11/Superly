@@ -1,8 +1,8 @@
 package Domain.DAL.Controllers.TransportMudel;
 
 import Domain.Business.Objects.Document.DestinationDocument;
-import Domain.Business.Objects.Transport;
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,8 +15,8 @@ public class DestinationDocumentDAO extends DAO {
     private Map<Integer, DestinationDocument> DESTINATION_DOCUMENT_IDENTITY_MAP = new HashMap<>();
     public DestinationDocumentDAO() {
         super("DestinationsDocuments");
-        try(Connection connection = getConnection()) {
-            ResultSet resultSet= select(connection);
+        try(ConnectionHandler connection = getConnectionHandler()) {
+            ResultSet resultSet= select(connection.get());
             while (resultSet.next()){
                 DestinationDocument document;
                 if(DESTINATION_DOCUMENT_IDENTITY_MAP.containsKey(resultSet.getInt(1))){

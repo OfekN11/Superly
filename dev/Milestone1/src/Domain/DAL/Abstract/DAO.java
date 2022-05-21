@@ -1,4 +1,6 @@
 package Domain.DAL.Abstract;
+import Domain.DAL.ConnectionHandler;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -31,9 +33,9 @@ public abstract class DAO {
      */
     protected void setTableColumnsNames(){
         tableColumnNames = new LinkedList<>();
-        try (Connection connection = getConnection()){
+        try (ConnectionHandler connection = getConnectionHandler()){
 
-            ResultSetMetaData setMetaData = executeQuery(connection,String.format(SELECT_QUERY,"*",tableName,"true")).getMetaData();
+            ResultSetMetaData setMetaData = executeQuery(connection.get(),String.format(SELECT_QUERY,"*",tableName,"true")).getMetaData();
             for (int i =0; i < setMetaData.getColumnCount();i++)
                 tableColumnNames.add(setMetaData.getColumnLabel(i+1));
         }
@@ -62,8 +64,8 @@ public abstract class DAO {
      * @throws SQLException
      */
     public boolean executeNonQuery(String executeString) throws SQLException {
-        try (Connection connection = getConnection()){
-            Statement statement = connection.createStatement();
+        try (ConnectionHandler connection = getConnectionHandler()){
+            Statement statement = connection.get().createStatement();
             return statement.execute(executeString);
         }
     }
@@ -90,8 +92,8 @@ public abstract class DAO {
      * @throws SQLException
      */
     public int executeNonQuery(String executeStringWithReplaceable, List<Object> values) throws SQLException {
-        try (Connection connection = getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(executeStringWithReplaceable);
+        try (ConnectionHandler connection = getConnectionHandler()){
+            PreparedStatement preparedStatement = connection.get().prepareStatement(executeStringWithReplaceable);
             replaceQuestionMarks(preparedStatement,values);
             return preparedStatement.executeUpdate();
         }
@@ -272,8 +274,8 @@ public abstract class DAO {
      * @return A Connection to the table
      * @throws SQLException
      */
-    protected Connection getConnection() throws SQLException {
-        return  DriverManager.getConnection(url);
+    protected ConnectionHandler getConnectionHandler() throws SQLException {
+        return  new ConnectionHandler();
     }
 
     private void validateColumnsNames(List<Integer> columnsLocations) {

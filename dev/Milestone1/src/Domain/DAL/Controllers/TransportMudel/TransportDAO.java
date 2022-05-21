@@ -2,6 +2,7 @@ package Domain.DAL.Controllers.TransportMudel;
 
 import Domain.Business.Objects.Transport;
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.ConnectionHandler;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.TransportStatus;
 import Globals.Pair;
@@ -25,8 +26,8 @@ public class TransportDAO extends DAO {
         transportSorceDTO =new TransportSources();
         transportDestinationsDAO =new TransportDestinationsDAO();
         transportTransportOrderDAO = new TransportTransportOrderDAO();
-        try(Connection connection = getConnection()){
-            ResultSet resultSet= select(connection);
+        try(ConnectionHandler connection = getConnectionHandler()){
+            ResultSet resultSet= select(connection.get());
             while (resultSet.next()){
                 Integer id =resultSet.getInt(1);
                 Transport transport= new Transport(resultSet.getInt(1),resultSet.getString(2),
