@@ -86,7 +86,10 @@ public class Transport {
             startTime = LocalDateTime.now().toString();
             status = TransportStatus.inProgress;
         }
-        throw new Exception("transport already started");
+        else{
+            throw new Exception("transport already started");
+        }
+
     }
     public void endTransport() throws Exception {
         if (status == TransportStatus.inProgress)
@@ -94,7 +97,10 @@ public class Transport {
             endTime = LocalDateTime.now().toString();
             status = TransportStatus.done;
         }
-        throw new Exception("transport is not in Progress");
+        else {
+            throw new Exception("transport is not in Progress");
+        }
+
     }
     public boolean isDoneTransport(){
         //TODO need to be implemented
