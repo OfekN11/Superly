@@ -47,6 +47,7 @@ public class Transport {
 
     public Transport(int SN, String startTime, String endTime, String driverID, int truckNumber, int truckWeight,TransportStatus status,Pair<LocalDate, ShiftTypes> shift, List<Integer> sourcesID, List<Integer> destinationsID,  List<Integer> transportOrders) {
         this.SN = SN;
+        incSN++;
         this.startTime = startTime;
         this.endTime = endTime;
         this.driverID = driverID;
@@ -136,7 +137,7 @@ public class Transport {
         return truckNumber!=-1;
     }
     public boolean isPlacedCarrier(){
-        return !(driverID=="");
+        return (driverID=="");
     }
     private void removeShippingArea(ShippingAreas sa)
     {
@@ -173,8 +174,6 @@ public class Transport {
     {
         sourcesID.add(order.getSrc());
         destinationsID.add(order.getDst());
-        addShippingArea(src);
-        addShippingArea(dst);
         transportOrders.add(order.getID());
     }
 

@@ -12,18 +12,18 @@ import java.util.List;
 
 //TODO not finished methods (ADD and GET)
 public class OrderController {
-    private HashMap<Integer, Product> products;
+    private HashMap<String, Product> products;
     private final TransportOrderDAO transportOrderDataMapper = new TransportOrderDAO();
 
     public OrderController() {
         products = new HashMap<>();
-        products.put( 1,new Product(1,"Milk",2));
-        products.put( 2,new Product(2,"Bread",1));
-        products.put( 3,new Product(3,"Eggs",4));
-        products.put( 4,new Product(4,"Chocolate",10));
-        products.put( 5,new Product(5,"cheese",5));
-        products.put( 6,new Product(6,"sugar",7));
-        products.put( 6,new Product(7,"salt",9));
+        products.put( "1",new Product(1,"Milk",2));
+        products.put( "2",new Product(2,"Bread",1));
+        products.put("3",new Product(3,"Eggs",4));
+        products.put( "4",new Product(4,"Chocolate",10));
+        products.put( "5",new Product(5,"cheese",5));
+        products.put( "6",new Product(6,"sugar",7));
+        products.put( "7",new Product(7,"salt",9));
 
     }
     public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {
