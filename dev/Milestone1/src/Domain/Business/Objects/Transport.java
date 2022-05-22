@@ -86,7 +86,9 @@ public class Transport {
             startTime = LocalDateTime.now().toString();
             status = TransportStatus.inProgress;
         }
-        throw new Exception("transport already started");
+        else{
+            throw new Exception("transport already started");
+        }
     }
     public void endTransport() throws Exception {
         if (status == TransportStatus.inProgress)
@@ -101,10 +103,11 @@ public class Transport {
         return false;
     }
 
-    public boolean placeTruck(int licenseNumber)
+    public boolean placeTruck(int licenseNumber,int weight)
     {
         if(truckNumber==-1){
             truckNumber = licenseNumber;
+            truckWeight = weight;
             return true;
         }
         return false;
@@ -117,7 +120,7 @@ public class Transport {
 
     public boolean readyToGo()
     {
-        return !sourcesID.isEmpty() && !destinationsID.isEmpty() && isPlacedTruck() && isPlacedCarrier() && !transportOrders.isEmpty();
+        return !sourcesID.isEmpty() && !destinationsID.isEmpty() && isPlacedTruck() && !isPlacedCarrier() && !transportOrders.isEmpty();
     }
     public Pair<LocalDate,ShiftTypes> getShift(){
         return shift;
@@ -137,7 +140,7 @@ public class Transport {
         return truckNumber!=-1;
     }
     public boolean isPlacedCarrier(){
-        return (driverID=="");
+        return (driverID.equals(""));
     }
     private void removeShippingArea(ShippingAreas sa)
     {
