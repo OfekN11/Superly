@@ -2,6 +2,8 @@ package Presentation.Screens;
 
 import Globals.Enums.JobTitles;
 import Globals.Enums.LicenseTypes;
+import Globals.util.HumanInteraction;
+
 import static Globals.util.HumanInteraction.*;
 
 import java.util.HashSet;
@@ -43,17 +45,11 @@ public class Carrier extends Employee {
             }
         }
     }
-    private int getSiteID(String siteType)
-    {
+    private int getSiteID(String siteType) throws OperationCancelledException {
         System.out.println("Enter " + siteType + " ID:");
-        int siteID = scanner.nextInt();
-        while(siteID < 0){
-            System.out.println("Please insert legal ID:");
-            siteID = scanner.nextInt();
-        }
-        return siteID;
+        return HumanInteraction.getNumber(0);
     }
-    private void advanceSite() {
+    private void advanceSite() throws OperationCancelledException {
         int transportSN = getTransportSN();
         int siteID = getSiteID("Site");
         controller.advanceSite(transportSN, siteID);
