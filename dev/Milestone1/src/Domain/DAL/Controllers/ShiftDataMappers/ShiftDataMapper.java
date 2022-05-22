@@ -1,8 +1,8 @@
 package Domain.DAL.Controllers.ShiftDataMappers;
 import java.util.*;
-import Domain.Service.Shift.EveningShift;
-import Domain.Service.Shift.MorningShift;
-import Domain.Service.Shift.Shift;
+import Domain.Business.Objects.Shift.EveningShift;
+import Domain.Business.Objects.Shift.MorningShift;
+import Domain.Business.Objects.Shift.Shift;
 import Globals.Enums.ShiftTypes;
 
 import java.sql.SQLException;
