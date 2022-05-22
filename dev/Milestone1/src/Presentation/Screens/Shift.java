@@ -3,6 +3,7 @@ package Presentation.Screens;
 import Domain.Service.Objects.Employee;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
+import Globals.util.HumanInteraction;
 import Globals.util.Supplier;
 
 import java.time.LocalDate;
@@ -15,9 +16,10 @@ import static Globals.util.HumanInteraction.*;
 public abstract class Shift extends Screen {
 
     private static final String[] menuOptions = {
-            "Print shift details",          //1
-            "Update employee count(s)",     //2
-            "Assign employees",             //3
+            "Print shift details",              //1
+            "Update employee count(s)",         //2
+            "Assign employees",                 //3
+            "Remove employees from assignment"  //4
     };
 
     private final Map<JobTitles, Supplier<Set<Employee>>> getAssignedByType = Stream.of(
@@ -70,6 +72,67 @@ public abstract class Shift extends Screen {
             case 3:
                 assignEmployees();
                 break;
+            case 4:
+                removeFromAssignment();
+                break;
+        }
+    }
+
+    private void removeFromAssignment() throws Exception {
+        System.out.println("Which type of employee would you like remove from assign for this shift?");
+        for (int i = 0; i < JobTitles.values().length; i++)
+            System.out.println((i + 1) + " -- " + JobTitles.values()[i]);
+        JobTitles type = JobTitles.values()[getNumber(1, JobTitles.values().length) - 1];
+        Set<Employee> assigned = getAssignedByType.get(type).get();
+        Set<String> assignedIDs = assigned.stream().map(e -> e.id).collect(Collectors.toSet());
+        System.out.println("\nCurrent " + type + "s assigned to this shift:");
+        for (Employee employee : assigned)
+            System.out.println(employee.id + " - " + employee.name + " : " + controller.getEmployeeWorkDetailsForCurrentMonth(employee.id));
+        System.out.println();
+        if (assignedIDs.size() == 0) {
+            System.out.println("Can't remove more " + type + "s - 0 assigned.");
+            return;
+        }
+        System.out.println("\nEnter ONLY the IDs of the wanted employees to be removed!");
+        boolean success = false;
+        while (!success) {
+            String id = getString();
+            if (!assignedIDs.contains(id))
+                System.out.println(id + " is not an ID out of the assigned employee list. \nPlease try again");
+            else {
+                System.out.println(id + " successfully removed");
+                assignedIDs.remove(id);
+                if (assignedIDs.size() == 0)
+                    System.out.println("Removed all");
+                System.out.println("Do you want to save?");
+                success = yesOrNo();
+                if (!success && assignedIDs.size() == getCountByType.get(type))
+                    operationCancelled();
+            }
+        }
+
+        switch (type) {
+            case Sorter:
+                controller.editShiftSorterIDs(this, assignedIDs);
+                break;
+            case Storekeeper:
+                controller.editShiftStorekeeperIDs(this, assignedIDs);
+                break;
+            case Carrier:
+                controller.editShiftCarrierIDs(this, assignedIDs);
+                break;
+            case Cashier:
+                controller.editShiftCashierIDs(this, assignedIDs);
+                break;
+            case HR_Manager:
+                controller.editShiftHR_ManagerIDs(this, assignedIDs);
+                break;
+            case Logistics_Manager:
+                controller.editShiftLogistics_ManagerIDs(this, assignedIDs);
+                break;
+            case Transport_Manager:
+                controller.editShiftTransport_ManagerIDs(this, assignedIDs);
+                break;
         }
     }
 
@@ -93,7 +156,7 @@ public abstract class Shift extends Screen {
         for (Employee employee : assigned)
             System.out.println(employee.id + " - " + employee.name + " : " + controller.getEmployeeWorkDetailsForCurrentMonth(employee.id));
         if (assignedIDs.size() == getCountByType.get(type)){
-            System.out.println("Can't assign more " + type +"s. Max number of " + type + "s has been reached.");
+            System.out.println("Can't assign more " + type +"s - Max number of " + type + "s has been reached.");
             return;
         }
         Set<Employee> available = getAvailableByType.get(type).get();
@@ -101,10 +164,10 @@ public abstract class Shift extends Screen {
         System.out.println("Please add up to " + (getCountByType.get(type) - assignedIDs.size()) + " " + type + "s out of the following available employees");
         for (Employee employee : available)
             System.out.println(employee.id + " - " + employee.name + " : " + controller.getEmployeeWorkDetailsForCurrentMonth(employee.id));
-        System.out.println("Enter ONLY the ID of the wanted employees!");
+        System.out.println("\nEnter ONLY the ID of the wanted employees!");
         boolean success = false;
         while (!success) {
-            String id = scanner.nextLine();
+            String id = getString();
             if (id.equals("-1"))
                 operationCancelled();
             if (!availableIDs.contains(id))
@@ -153,8 +216,12 @@ public abstract class Shift extends Screen {
     }
 
     private void assignShiftManager() throws Exception {
-        Employee currManager = controller.getEmployee(shiftManagerId);
-        System.out.println("\nCurrent shift manager: " + currManager.name + ", ID: " + currManager.id);
+        if (hasShiftManager()) {
+            Employee currManager = controller.getEmployee(shiftManagerId);
+            System.out.println("\nCurrent shift manager: " + currManager.name + ", ID: " + currManager.id);
+        }
+        else
+            System.out.println("\nCurrent shift manager: NO MANAGER ASSIGNED!");
         List<Employee> availableManagers = new ArrayList<>(controller.getAvailableShiftManagersFor(this));
         if (availableManagers.size() == 0) {
             System.out.println("No employee who is certified to manage shifts has filled a possibility to work at this shift.");
@@ -169,7 +236,7 @@ public abstract class Shift extends Screen {
         boolean success = false;
         while (!success) {
             manager = availableManagers.get(getNumber(1, availableManagers.size()) - 1);
-            System.out.println("Entered manager: " + manager.name);
+            System.out.println("\nEntered manager: " + manager.name);
             success = areYouSure();
         }
         setShiftManagerId(manager.id);
