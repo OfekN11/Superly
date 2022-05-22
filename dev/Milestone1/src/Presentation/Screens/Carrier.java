@@ -43,9 +43,30 @@ public class Carrier extends Employee {
             }
         }
     }
-
+    private int getSiteID(String siteType)
+    {
+        System.out.println("Enter " + siteType + " ID:");
+        int siteID = scanner.nextInt();
+        while(siteID < 0){
+            System.out.println("Please insert legal ID:");
+            siteID = scanner.nextInt();
+        }
+        return siteID;
+    }
     private void advanceSite() {
-        //TODO: Implement
+        int transportSN = getTransportSN();
+        int siteID = getSiteID("Site");
+        controller.advanceSite(transportSN, siteID);
+    }
+
+    private int getTransportSN() {
+        System.out.println("Enter Transport SN:");
+        int transportSN = scanner.nextInt();
+        while(transportSN < 0){
+            System.out.println("Please insert legal ID:");
+            transportSN = scanner.nextInt();
+        }
+        return transportSN;
     }
 
     private void setLicenses(Set<LicenseTypes> curr) throws Exception {

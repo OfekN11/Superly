@@ -96,7 +96,7 @@ public class TransportOrderMenu extends Screen {
     {
         System.out.println("Enter product quantity:");
         int quantity = scanner.nextInt();
-        while(quantity < 0){
+        while(quantity <= 0){
             System.out.println("Please insert legal product quantity:");
             quantity = scanner.nextInt();
         }

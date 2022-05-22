@@ -154,7 +154,7 @@ public class TransportController {
             Truck truck = truckController.getTruck(transport.getTruckNumber());
             if(truck.canDriveOn(carrier.getLicenses()))
             {
-                if(!transport.isPlacedCarrier()) {
+                if(transport.isPlacedCarrier()) {
                     Shift shift = shiftController.getShift(transport.getShift().getLeft(),transport.getShift().getRight());
                     Set<String> carriersInShift = shift.getCarrierIDs();
                     if(carriersInShift.contains(carrier.getId())){

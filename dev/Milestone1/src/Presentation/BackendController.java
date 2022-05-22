@@ -4,6 +4,7 @@ import Domain.Service.Objects.*;
 import Domain.Service.Services.*;
 import Globals.Enums.*;
 import Globals.Pair;
+import Presentation.Factories.PresentationDocumentFactory;
 import Presentation.Objects.Document.*;
 import Presentation.Objects.Transport.Transport;
 import Presentation.Objects.Transport.TransportOrder;
@@ -20,7 +21,7 @@ public class BackendController {
     private final DocumentService documentService = new DocumentService();
     private final TransportService transportService = new TransportService();
     private final OrderService orderService = new OrderService();
-
+    private final PresentationDocumentFactory presentationDocumentFactory = new PresentationDocumentFactory();
     ///EMPLOYEES
     //CREATE
 
@@ -533,15 +534,15 @@ public class BackendController {
 
     //Document:
     public TransportDocument getTransportDocument(int tdSN) throws RuntimeException {
-        Result<TransportDocument> result = documentService.getTransportDocument(tdSN);
+        Result<Domain.Service.Objects.Document.TransportDocument> result = documentService.getTransportDocument(tdSN);
         throwIfError(result);
-        return result.getValue();
+        return presentationDocumentFactory.createPresentationDocument(result.getValue());
     }
 
     public DestinationDocument getDestinationDocument(int ddSN) throws RuntimeException {
-        Result<DestinationDocument> result = documentService.getTransportDocument(ddSN);
+        Result<Domain.Service.Objects.Document.DestinationDocument> result = documentService.getDestinationDocument(ddSN);
         throwIfError(result);
-        return result.getValue();
+        return presentationDocumentFactory.createPresentationDocument(result.getValue());
     }
 
     //Transport Order
@@ -579,7 +580,7 @@ public class BackendController {
         return transportList;
     }
     public Set<Transport> getPendingTransports() throws Exception {
-        Result<Set<Domain.Service.Objects.Transport>> result = transportService.getInProgressTransports();
+        Result<Set<Domain.Service.Objects.Transport>> result = transportService.getPaddingTransport();
         throwIfError(result);
         return toPLTransports(result.getValue());
     }
@@ -626,6 +627,11 @@ public class BackendController {
 
     public void placeTruck(int transportID, int truckLN) throws Exception {
         Result result = transportService.placeTruck(transportID, truckLN);
+        throwIfError(result);
+    }
+
+    public void advanceSite(int transportSN, int siteID) {
+        Result result = transportService.advanceSite(transportSN, siteID);
         throwIfError(result);
     }
 }
