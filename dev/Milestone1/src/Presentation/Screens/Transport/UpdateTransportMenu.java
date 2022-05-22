@@ -82,7 +82,7 @@ public class UpdateTransportMenu extends Screen {
     private int getTruckNumber() {
         System.out.println("Enter truck license number:");
         int licenseNumber = scanner.nextInt();
-        while(licenseNumber > 0){
+        while(licenseNumber < 0){
             System.out.println("Please insert license number:");
             licenseNumber = scanner.nextInt();
         }

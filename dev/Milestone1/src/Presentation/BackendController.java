@@ -579,7 +579,7 @@ public class BackendController {
         return transportList;
     }
     public Set<Transport> getPendingTransports() throws Exception {
-        Result<Set<Domain.Service.Objects.Transport>> result = transportService.getInProgressTransports();
+        Result<Set<Domain.Service.Objects.Transport>> result = transportService.getPaddingTransport();
         throwIfError(result);
         return toPLTransports(result.getValue());
     }
@@ -626,6 +626,11 @@ public class BackendController {
 
     public void placeTruck(int transportID, int truckLN) throws Exception {
         Result result = transportService.placeTruck(transportID, truckLN);
+        throwIfError(result);
+    }
+
+    public void advanceSite(int transportSN, int siteID) {
+        Result result = transportService.advanceSite(transportSN, siteID);
         throwIfError(result);
     }
 }

@@ -1,12 +1,13 @@
 package Presentation.Screens.Transport;
 
-import Domain.Business.Objects.Transport;
+import Presentation.Objects.Transport.Transport;
 import Globals.Enums.ShiftTypes;
 import Globals.Pair;
 import Presentation.Screens.Screen;
 import static Globals.util.HumanInteraction.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public class TransportsMenu extends Screen {
 
@@ -27,7 +28,7 @@ public class TransportsMenu extends Screen {
     public void run() {
         System.out.println("\nWelcome to the Transport Management Menu!");
         int option = 0;
-        while (option != 7 && option != 1) {
+        while (option != 7 && option != 1 && option != 3) {
             option = runMenu();
             try {
                 switch (option) {
@@ -113,23 +114,23 @@ public class TransportsMenu extends Screen {
 
 
     private void getPendingTransports() throws Exception {
-        controller.getPendingTransports();
+        displayTransportList("Pending", controller.getPendingTransports());
+
     }
 
     private void getInProgressTransports() throws Exception {
-        controller.getInProgressTransports();
+        displayTransportList("In Progress", controller.getInProgressTransports());
     }
 
     private void getCompleteTransports() throws Exception {
-        controller.getCompleteTransports();
+        displayTransportList("Complete", controller.getCompleteTransports());
     }
-    private void displayTransportList(String status, List<Transport> transports)
+    private void displayTransportList(String status, Set<Transport> transports)
     {
-        System.out.println(status + "Transports: ");
+        System.out.println(status + " Transports: ");
         for (Transport transport: transports)
         {
-            //transport.display()
-            System.out.println(transport.toString());
+            transport.display();
         }
     }
 }
