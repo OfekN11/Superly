@@ -9,6 +9,7 @@ import Globals.Enums.ShippingAreas;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,5 +32,17 @@ public class SourcesDAO extends DAO {
     }
     public Source get(int id){
         return SOURCE_IDENTITY_MAP.get(id);
+    }
+
+    public void save(Source s){
+        if(!SOURCE_IDENTITY_MAP.containsKey(s.getId())){
+            SOURCE_IDENTITY_MAP.put(s.getId(),s);
+        }
+        try{
+            super.remove(s.getId());
+            super.insert(Arrays.asList(s.getId(),s.getAddress().getExactAddress(),s.getAddress().getShippingAreas(),s.getContactId(),s.getPhoneNumber()));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

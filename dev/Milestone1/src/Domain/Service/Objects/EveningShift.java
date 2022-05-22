@@ -5,7 +5,7 @@ import Globals.util.HumanInteraction;
 import Presentation.Screens.ScreenShiftFactory;
 
 public class EveningShift extends Shift{
-    public EveningShift(Domain.Business.Objects.Shift.EveningShift bShift) {
+    public EveningShift(Domain.Service.Shift.EveningShift bShift) {
         super(bShift);
     }
 

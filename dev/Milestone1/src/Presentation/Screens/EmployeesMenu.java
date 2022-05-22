@@ -39,7 +39,7 @@ public class EmployeesMenu extends Screen {
                     switch (option) {
                         case 1:
                             System.out.println("\nPrinting all employees:");
-                            printEmployees(controller.getAllEmployees());
+                            printEmployeesWithType(controller.getAllEmployees());
                             break;
                         case 2:
                             System.out.println("\nPrinting all cashiers:");
@@ -83,6 +83,13 @@ public class EmployeesMenu extends Screen {
         public static void printEmployees(Set<? extends Employee> employees) {
             for (Employee e : employees.stream().sorted(new EmployeeComparator()).collect(Collectors.toList())) {
                 System.out.println("ID: " + e.id + " , Name :" + e.name);
+            }
+            System.out.println();
+        }
+
+        public static void printEmployeesWithType(Set<? extends Employee> employees) {
+            for (Employee e : employees.stream().sorted(new EmployeeComparator()).collect(Collectors.toList())) {
+                System.out.println("ID: " + e.id + " , Name: " + e.name + ", Job: " + e.getType());
             }
             System.out.println();
         }
@@ -141,7 +148,7 @@ public class EmployeesMenu extends Screen {
         new Thread(factory.createScreenEmployee(this, controller.getEmployee(id))).start();
     }
 
-    private void removeEmployee() throws OperationCancelledException {
+    private void removeEmployee() throws Exception {
         System.out.println("\nYou are choosing to remove an employee from the system. \nBe aware that this process is irreversible");
         boolean success = false;
         while (!success) {

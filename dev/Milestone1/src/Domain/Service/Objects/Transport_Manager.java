@@ -21,6 +21,6 @@ public class Transport_Manager extends Employee{
 
     @Override
     public JobTitles getType() {
-        return null;
+        return JobTitles.Transport_Manager;
     }
 }

@@ -12,6 +12,8 @@ public class DestinationDocument extends Document {
         providedProducts = destinationDocument.getProvidedProducts();
     }
 
+
+
     @Override
     public void display() {
         System.out.println("Destination Document:\n" +

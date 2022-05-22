@@ -1,5 +1,6 @@
 package Presentation.Screens.Transport;
 
+import Globals.util.HumanInteraction;
 import Presentation.Objects.Transport.TransportOrder;
 import Presentation.Screens.Screen;
 
@@ -23,8 +24,14 @@ public class UpdateTransportMenu extends Screen {
     @Override
     public void run() {
         System.out.println("\nWelcome to the Update Transport Menu!");
-        int transportID = getID("Transport");
-        System.out.println("\nWelcome to the Update Transport Menu!");
+        int transportID = -1;
+        try {
+            transportID = getTransportID();
+        }catch (HumanInteraction.OperationCancelledException e)
+        {
+            endRun();
+            return;
+        }
         int option = 0;
         while (option != 7) {
             option = runMenu();
@@ -53,6 +60,7 @@ public class UpdateTransportMenu extends Screen {
                         endRun();
                         break;
                 }
+            }catch (HumanInteraction.OperationCancelledException ignore){
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
@@ -60,6 +68,10 @@ public class UpdateTransportMenu extends Screen {
         }
     }
 
+    private int getTransportID() throws HumanInteraction.OperationCancelledException {
+        int transportID = getID("Transport");
+        return transportID;
+    }
     private void placeTruck(int transportID) throws Exception {
         int truckLN = getTruckNumber();
         controller.placeTruck(transportID, truckLN);
@@ -70,23 +82,14 @@ public class UpdateTransportMenu extends Screen {
         controller.placeCarrier(transportID, carrierID);
     }
 
-    private int getID(String type) {
+    private int getID(String type) throws HumanInteraction.OperationCancelledException {
         System.out.println("Enter " + type + " ID:");
-        int ID = scanner.nextInt();
-        while(ID > 0){
-            System.out.println("Please insert legal ID:");
-            ID = scanner.nextInt();
-        }
+        int ID = HumanInteraction.getNumber(0);
         return ID;
     }
-    private int getTruckNumber() {
+    private int getTruckNumber() throws HumanInteraction.OperationCancelledException {
         System.out.println("Enter truck license number:");
-        int licenseNumber = scanner.nextInt();
-        while(licenseNumber > 0){
-            System.out.println("Please insert license number:");
-            licenseNumber = scanner.nextInt();
-        }
-        return licenseNumber;
+        return HumanInteraction.getNumber(0);
     }
 
     private void startTransport(int transportID) throws Exception {

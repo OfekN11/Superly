@@ -1,12 +1,18 @@
 package Presentation.Screens.Transport;
 
-import Domain.Business.Objects.Transport;
+import Domain.Service.Objects.Shift;
+import Globals.util.HumanInteraction;
+import Globals.util.ShiftComparator;
+import Presentation.Objects.Transport.Transport;
 import Globals.Enums.ShiftTypes;
 import Globals.Pair;
 import Presentation.Screens.Screen;
+
 import static Globals.util.HumanInteraction.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TransportsMenu extends Screen {
 
@@ -27,7 +33,7 @@ public class TransportsMenu extends Screen {
     public void run() {
         System.out.println("\nWelcome to the Transport Management Menu!");
         int option = 0;
-        while (option != 7 && option != 1) {
+        while (option != 7 && option != 1 && option != 3) {
             option = runMenu();
             try {
                 switch (option) {
@@ -53,7 +59,8 @@ public class TransportsMenu extends Screen {
                         endRun();
                         break;
                 }
-            } catch (Exception e) {
+            } catch (OperationCancelledException ignore){
+            }catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }
@@ -61,75 +68,52 @@ public class TransportsMenu extends Screen {
 
     }
 
-    private LocalDate getShiftDate()
-    {
+    private LocalDate getShiftDate() throws OperationCancelledException {
         System.out.println("\nEnter shift's date");
-        LocalDate date = null;
-        boolean Illegal = true;
-        while (Illegal) {
-            try
-            {
-                date = buildDate();
-            }catch (OperationCancelledException e) {
-                Illegal = true;
-            }
-            Illegal = date == null;
-            if (Illegal) {
-                System.out.println("Please enter legal date!");
-            }
-        }
+        LocalDate date = HumanInteraction.buildDate();
         return date;
     }
 
-    private ShiftTypes getShiftType(){
-        ShiftTypes type = null;
-        while (type == null) {
-            System.out.println("\nEnter shift's type");
-            for (int i = 0; i < ShiftTypes.values().length; i++)
-                System.out.println((i + 1) + " -- " + ShiftTypes.values()[i]);
-            try {
-                int ordinal = Integer.parseInt(scanner.nextLine());
-                if (ordinal < 1 || ordinal > ShiftTypes.values().length)
-                    System.out.println("Please enter an integer between 1 and " + ShiftTypes.values().length);
-                else {
-                    type = ShiftTypes.values()[ordinal - 1];
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Please enter an integer between 1 and " + ShiftTypes.values().length);
-            } catch (Exception ex) {
-                System.out.println("Unexpected error occurred");
-                System.out.println("Please try again");
-            }
-        }
+    private ShiftTypes getShiftType() throws OperationCancelledException {
+        System.out.println("\nEnter shift's type");
+        for (int i = 0; i < ShiftTypes.values().length; i++)
+            System.out.println((i + 1) + " -- " + ShiftTypes.values()[i]);
+        ShiftTypes type = ShiftTypes.values()[getNumber(1, ShiftTypes.values().length) - 1];
         return type;
     }
 
     private void createNewTransport() throws Exception {
         System.out.println("Create transport:");
-        LocalDate date = getShiftDate();
-        ShiftTypes shiftType = getShiftType();
-        controller.createNewTransport(new Pair<LocalDate, ShiftTypes>(date, shiftType));
+        LocalDate today = LocalDate.now();
+        LocalDate nextMonth = today.plusMonths(1);
+        List<Shift> availableShifts = controller.getShiftsBetween(today, nextMonth).stream().sorted(new ShiftComparator()).collect(Collectors.toList());
+        System.out.println("\nChoose a shift from the following: ");
+        for (int i = 0; i < availableShifts.size(); i++)
+            System.out.println((i + 1) + " -- " + availableShifts.get(i));
+        System.out.println();
+        Shift shift = availableShifts.get(getNumber(1 , availableShifts.size()) - 1);
+        controller.createNewTransport(new Pair<LocalDate, ShiftTypes>(shift.date, shift.getType()));
     }
 
 
     private void getPendingTransports() throws Exception {
-        controller.getPendingTransports();
+        displayTransportList("Pending", controller.getPendingTransports());
+
     }
 
     private void getInProgressTransports() throws Exception {
-        controller.getInProgressTransports();
+        displayTransportList("In Progress", controller.getInProgressTransports());
     }
 
     private void getCompleteTransports() throws Exception {
-        controller.getCompleteTransports();
+        displayTransportList("Complete", controller.getCompleteTransports());
     }
-    private void displayTransportList(String status, List<Transport> transports)
+    private void displayTransportList(String status, Set<Transport> transports)
     {
-        System.out.println(status + "Transports: ");
+        System.out.println(status + " Transports: ");
         for (Transport transport: transports)
         {
-            //transport.display()
-            System.out.println(transport.toString());
+            transport.display();
         }
     }
 }
