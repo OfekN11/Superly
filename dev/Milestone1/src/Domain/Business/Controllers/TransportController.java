@@ -5,7 +5,7 @@ import Domain.Business.Objects.Document.DestinationDocument;
 import Domain.Business.Objects.Document.TransportDocument;
 import Domain.Business.Objects.Employee.Carrier;
 import Domain.DAL.Controllers.TransportMudel.TransportDAO;
-import Domain.Service.Shift.Shift;
+import Domain.Business.Objects.Shift.Shift;
 import Globals.Enums.OrderStatus;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
