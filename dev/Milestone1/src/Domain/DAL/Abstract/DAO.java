@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class DAO {
-    private final static String dbName= "RioTheRuler.db"; // need to be change!
+    private final static String dbName= "Superly.db"; // need to be change!
     String url = String.format("jdbc:sqlite:%s\\%s",System.getProperty("user.dir"),dbName);
     // String url = String.format("jdbc:sqlite:%s/%s",System.getProperty("user.dir"),dbName); the url for the jar
     private final static String SELECT_QUERY = "SELECT %s from %s where %s";
