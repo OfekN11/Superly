@@ -32,8 +32,6 @@ public class TransportControllerTest extends TestCase {
         }
     }
 
-    public void testPlaceDriver() {
-    }
 
     public void testPlaceCarrier(){
         try {
