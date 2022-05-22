@@ -47,7 +47,6 @@ public class TransportOrderDAO extends DAO {
         if (!TRANSPORT_ORDER_MAP.containsKey(order.getID()))
             TRANSPORT_ORDER_MAP.put(order.getID(),order);
         try {
-            this.remove(order.getID());
             super.remove(order.getID());
             order.getProductList().forEach((k,v)-> {
                 try {

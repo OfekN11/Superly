@@ -43,7 +43,6 @@ public class TransportDocumentDataMapper extends DAO {
         if (!TRANSPORT_DOCUMENTS_MAP.containsKey(document.getTransportID()))
             TRANSPORT_DOCUMENTS_MAP.put(document.getTransportID(),document);
         try {
-            this.remove(document.getTransportID());
             super.remove(document.getTransportID());
             document.getDestinationDocuments().forEach((des)-> {
                 try {

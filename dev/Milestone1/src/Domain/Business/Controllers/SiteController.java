@@ -2,11 +2,13 @@ package Domain.Business.Controllers;
 
 import Domain.Business.Objects.Site.Address;
 import Domain.Business.Objects.Site.Destination;
+import Domain.Business.Objects.Site.Site;
 import Domain.Business.Objects.Site.Source;
 import Domain.DAL.Controllers.TransportMudel.DestinationsDAO;
 import Domain.DAL.Controllers.TransportMudel.SourcesDAO;
 import Globals.Enums.ShippingAreas;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 //TODO not finished methods (GET) for each site
 public class SiteController {
@@ -14,6 +16,14 @@ public class SiteController {
     private final DestinationsDAO destinationsDataMapper = new DestinationsDAO();
     public SiteController() {
         //TODO: In Milestone 3 connect the data to DB
+        try {
+            sourcesDataMapper.deleteAll();
+            destinationsDataMapper.deleteAll();
+            Site.update();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         Source s1 = new Source(new Address(ShippingAreas.North, "Tiberia Shlomo Hamelech 136"), "Shalom", "050");
         Source s2 = new Source(new Address(ShippingAreas.South,"dimona Negev mount 19"),"eldad","05");
         Source s3 = new Source(new Address(ShippingAreas.Northeast,"Beer Sheva rager 20"),"yossi","123");

@@ -96,7 +96,11 @@ public class Transport {
             endTime = LocalDateTime.now().toString();
             status = TransportStatus.done;
         }
-        throw new Exception("transport is not in Progress");
+        else {
+            throw new Exception("transport is not in Progress");
+        }
+
+
     }
     public boolean isDoneTransport(){
         //TODO need to be implemented
@@ -219,15 +223,23 @@ public class Transport {
 
     public boolean visitSite(int siteID) throws Exception {
         if(sourcesID.contains(siteID)){
+            List<Integer> s= new ArrayList<>();
             for (Integer src:sourcesID) {
-                sourcesID.remove(src);
+                if(src != siteID){
+                    s.add(src);
+                }
             }
+            sourcesID = s;
         }
         else{
             if(destVisit(siteID)){
-                for (Integer src:destinationsID) {
-                    destinationsID.remove(src);
+                List<Integer> d= new ArrayList<>();
+                for (Integer dst:destinationsID) {
+                    if(dst!=siteID){
+                        d.add(dst);
+                    }
                 }
+                destinationsID = d;
             }
             else{
                 throw new Exception("this is not valid site. the site ID is not in the order or all the sources not visited yet");

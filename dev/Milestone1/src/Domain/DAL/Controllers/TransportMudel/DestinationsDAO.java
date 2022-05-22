@@ -45,5 +45,13 @@ public class DestinationsDAO extends DAO {
             throwables.printStackTrace();
         }
     }
+    public void deleteAll() throws SQLException {
+        DESTINATION_IDENTITY_MAP.remove(3);
+        DESTINATION_IDENTITY_MAP.remove(4);
+        DESTINATION_IDENTITY_MAP.remove(5);
+        super.remove(3);
+        super.remove(4);
+        super.remove(5);
+    }
 
 }

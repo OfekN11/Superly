@@ -40,7 +40,7 @@ public class TransportController {
             transportDataMapper.save(transport);
         }
         else{
-            throw new Exception("there is no sorter in this shift");
+            throw new Exception("there is no Storekeeper in this shift");
         }
 
     }
@@ -70,9 +70,9 @@ public class TransportController {
                        }
                        catch (Exception e) {
                            trd = new TransportDocument(transport.getSN(), transport.getStartTime().toString(), transport.getTruckNumber(), transport.getDriverID());
-                           documentController.uploadTransportDocument(trd);
                        }
                        trd.addDoc(orderID);
+                       documentController.uploadTransportDocument(trd);
                    }
                 }
             }
@@ -148,6 +148,7 @@ public class TransportController {
     }
 
     public void placeDriver(int transportSN, String empID) throws Exception {
+
         Transport transport = getTransport(transportSN);
         if(transport.isPlacedTruck()){
             Carrier carrier = employeeController.getCarrier(empID);
