@@ -107,10 +107,11 @@ public class Transport {
         return false;
     }
 
-    public boolean placeTruck(int licenseNumber)
+    public boolean placeTruck(int licenseNumber,int weight)
     {
         if(truckNumber==-1){
             truckNumber = licenseNumber;
+            truckWeight = weight;
             return true;
         }
         return false;

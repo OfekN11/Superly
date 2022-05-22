@@ -85,6 +85,7 @@ public class TruckDAO extends DAO {
 
     public int delete(int licenseNumber) throws Exception {
         return super.remove(licenseNumber);
+
     }
 
 
