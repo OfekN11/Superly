@@ -5,7 +5,6 @@ import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
 import Globals.util.Supplier;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -279,7 +278,7 @@ public abstract class Shift extends Screen {
 
     protected void printDetails() throws Exception {
         System.out.println(getType() + " shift");
-        System.out.println("Date: " + new SimpleDateFormat("dd-MM-yyyy").format(date));
+        System.out.println("Date: " + date.format(dateFormat));
         System.out.println("Shift Manager: " + shiftManagerId + " - " + controller.getEmployee(shiftManagerId).name);
         for (JobTitles type : JobTitles.values()) {
             printEmployeesByType(type);

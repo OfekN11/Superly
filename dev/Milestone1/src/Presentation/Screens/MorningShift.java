@@ -3,7 +3,7 @@ package Presentation.Screens;
 import Globals.Enums.ShiftTypes;
 import Globals.util.HumanInteraction;
 
-import java.text.SimpleDateFormat;
+import static Globals.util.HumanInteraction.dateFormat;
 
 public class MorningShift extends Shift {
     private static final String[] extraMenuOptions = {
@@ -16,7 +16,7 @@ public class MorningShift extends Shift {
 
     @Override
     public void run() {
-        System.out.println("\nWelcome to the Management Menu for Morning shift of " + new SimpleDateFormat("dd-MM-yyyy").format(date) + "!");
+        System.out.println("\nWelcome to the Management Menu for Morning shift of " + date.format(dateFormat) + "!");
         int option = 0;
         while (option != 4) {
             option = runMenu();
