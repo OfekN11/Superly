@@ -1,4 +1,4 @@
-package Domain.Business.Objects.Shift;
+package Domain.Service.Shift;
 
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.Service.ServiceShiftFactory;
@@ -9,6 +9,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 public class MorningShift extends Shift {
+
+    public MorningShift(LocalDate workday, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transport_managersCount) throws Exception {
+        super(workday, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount,transport_managersCount);
+    }
 
     public MorningShift(LocalDate workday, String managerId, int carrierCount, int cashierCount, int storekeeperCount, int sorterCount, int hr_managerCount, int logistics_managerCount,int transport_managersCount) throws Exception {
         super(workday, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount,logistics_managerCount,transport_managersCount);

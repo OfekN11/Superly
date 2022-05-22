@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class TransportManagerDAO extends AbstractEmployeeDAO<Transport_Manager> {
     private static Map<String, Transport_Manager> TRANSPORT_MANAGER_IDENTITY_MAP = new HashMap<>();
-    EmployeeCertificationDAO employeeCertificationController ;
 
 
     public TransportManagerDAO() {

@@ -3,11 +3,11 @@ package Presentation.Screens;
 import Globals.Enums.ShiftTypes;
 import Globals.util.HumanInteraction;
 
-import java.text.SimpleDateFormat;
+import static Globals.util.HumanInteraction.dateFormat;
 
 public class MorningShift extends Shift {
     private static final String[] extraMenuOptions = {
-            "Exit"  //4
+            "Exit"  //5
     };
 
     public MorningShift(Screen caller, Domain.Service.Objects.MorningShift sShift) {
@@ -16,14 +16,14 @@ public class MorningShift extends Shift {
 
     @Override
     public void run() {
-        System.out.println("\nWelcome to the Management Menu for Morning shift of " + new SimpleDateFormat("dd-MM-yyyy").format(date) + "!");
+        System.out.println("\nWelcome to the Management Menu for Morning shift of " + date.format(dateFormat) + "!");
         int option = 0;
-        while (option != 4) {
+        while (option != 5) {
             option = runMenu();
             try {
-                if (option < 4)
+                if (option < 5)
                     handleBaseOptions(option);
-                else if (option == 4)
+                else if (option == 5)
                     endRun();
             } catch (HumanInteraction.OperationCancelledException ignored) {
             } catch (Exception e) {

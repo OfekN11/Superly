@@ -1,12 +1,8 @@
 package Domain.Business.Objects;
 
 import Domain.Business.Controllers.ShiftController;
-import Domain.Business.Objects.Shift.MorningShift;
-import Domain.Business.Objects.Shift.Shift;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import Domain.Service.Shift.MorningShift;
+import Domain.Service.Shift.Shift;
 
 import java.time.LocalDate;
 

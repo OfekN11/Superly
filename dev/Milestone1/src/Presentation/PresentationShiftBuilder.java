@@ -153,8 +153,8 @@ public class PresentationShiftBuilder {
         printExitMassage();
         while (true) {
             System.out.println("\nHow many transport managers do you need for this shift?");
-            carrierCount = getNumber(MIN_LOGISTICS_MANAGERS, String.format(NO_LESS, MIN_LOGISTICS_MANAGERS, "storekeepers"));
-            System.out.println("Chosen cashier count: " + carrierCount);
+            transportManagerCount = getNumber(MIN_TRANSPORT_MANAGERS, String.format(NO_LESS, MIN_TRANSPORT_MANAGERS, "transport managers"));
+            System.out.println("Chosen transport manager count: " + transportManagerCount);
             if (areYouSure())
                 return;
         }
@@ -184,10 +184,10 @@ public class PresentationShiftBuilder {
 
     public void buildObject(){
         try {
-            if (type == null || date == null|| managerId == null){
+            if (type == null || date == null){
                 throw new RuntimeException(" you should set the date type and manager before ");
             }
-            controller.createShift(date, type, managerId, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount,transportManagerCount );
+            controller.createShift(date, type, carrierCount, cashierCount, storekeeperCount, sorterCount, hr_managerCount, logistics_managerCount,transportManagerCount );
             System.out.println("Shift added successfully! Remember to assign employees");
         } catch (Exception e) {
             System.out.println(e.getMessage());
