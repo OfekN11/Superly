@@ -53,3 +53,27 @@ TransportDestination- get the InProgress transports and thire Destinations:
 
 TransportSorces- get the InProgress transports and thire Sources:
 1. TransportId 1, DestinationId -1
+
+
+Employees:
+	carriers : id 100 - 109 		   all have licenseTypes of {B,CE}
+	cashiers : id 110 - 119 		   all are shift managers
+	HR_Manager : id 120 - 129 
+	Logistics_Manager : id 130 - 139
+	Sorter : id 140 - 149 all 		   all are shift managers
+	Storekeeper : id 150 - 159 		   all are shift managers
+	Transport_Manager : id 160 - 169   all are shift managers
+
+note : if employee is assigne to a shift he is availiable to it as well
+
+Shifts:
+	- all shifts between 1.6.22-30.6.22 has been created (both morning and evening)
+	- all shifts after 11.6.22 (includes) has no available and no assigned employees. 
+	
+	- shifts between dates 1.6.22-10.6.22 has the folowing
+		both morning shifts and evening shifts has all the carriers assigned
+		both morning shifts and evening shifts has thire manager as cashier (managerId = 110+shift.date.day-1)
+		morning shifts has all the hrManagers,logisticManagers,transportManagers assigned in them
+		evening shift has all the sorters and storekeeppers
+
+
