@@ -1,0 +1,11 @@
+HR Module:
+- Deleted Constraint object and Controller, responsibilities merged into Shift
+- Cleaned redundant methods from controllers and services and lowered logic from presentation layer into business layer (ShiftController now holds EmployeeController
+- Added Transport Manager into the system
+- Presentation Layer: Changed addShift in ShiftMenu to use Builder Design Pattern instead
+- DAL now uses lazy-load with DAO connected to DB
+
+Globals:
+- Added HumanInteraction class
+- Added Supplier Design pattern
+
