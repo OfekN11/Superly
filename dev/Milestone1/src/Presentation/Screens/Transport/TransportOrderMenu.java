@@ -38,6 +38,7 @@ public class TransportOrderMenu extends Screen {
                         break;
                     case 4:
                         closeOrder(to);
+                        endRun();
                         break;
                     case 5:
                         endRun();
