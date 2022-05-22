@@ -13,7 +13,7 @@ public class Storekeeper extends Employee {
 
     @Override
     public void run() {
-        System.out.println("\nWelcome to the Management Menu of " + name + "!");
+        System.out.println("\nWelcome to the Management Menu of " + name + " the Storekeeper!");
         int option = 0;
         while (option != 9) {
             try {

@@ -39,7 +39,7 @@ public class EmployeesMenu extends Screen {
                     switch (option) {
                         case 1:
                             System.out.println("\nPrinting all employees:");
-                            printEmployees(controller.getAllEmployees());
+                            printEmployeesWithType(controller.getAllEmployees());
                             break;
                         case 2:
                             System.out.println("\nPrinting all cashiers:");
@@ -83,6 +83,13 @@ public class EmployeesMenu extends Screen {
         public static void printEmployees(Set<? extends Employee> employees) {
             for (Employee e : employees.stream().sorted(new EmployeeComparator()).collect(Collectors.toList())) {
                 System.out.println("ID: " + e.id + " , Name :" + e.name);
+            }
+            System.out.println();
+        }
+
+        public static void printEmployeesWithType(Set<? extends Employee> employees) {
+            for (Employee e : employees.stream().sorted(new EmployeeComparator()).collect(Collectors.toList())) {
+                System.out.println("ID: " + e.id + " , Name: " + e.name + ", Job: " + e.getType());
             }
             System.out.println();
         }
