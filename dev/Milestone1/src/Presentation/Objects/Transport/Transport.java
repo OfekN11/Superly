@@ -70,14 +70,14 @@ public class Transport {
 
     private void printDates()
     {
-        if(startTime == null)
+        if(!startTime.equals(""))
         {
             System.out.println("Start Time: " + startTime);
         }
         else {
         System.out.println("Start Time: The transport has not left yet!");
     }
-        if(endTime == null)
+        if(!endTime.equals(""))
         {
             System.out.println("End Time: " + endTime);
         }

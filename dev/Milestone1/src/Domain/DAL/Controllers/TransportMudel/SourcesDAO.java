@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class SourcesDAO extends DAO {
     private static Map<Integer, Source> SOURCE_IDENTITY_MAP = new HashMap<>();
@@ -44,5 +45,13 @@ public class SourcesDAO extends DAO {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+    public void deleteAll() throws SQLException {
+        SOURCE_IDENTITY_MAP.remove(0);
+        SOURCE_IDENTITY_MAP.remove(1);
+        SOURCE_IDENTITY_MAP.remove(2);
+        super.remove(0);
+        super.remove(1);
+        super.remove(2);
     }
 }

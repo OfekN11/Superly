@@ -6,6 +6,7 @@ public abstract class Site {
     private Address address;
     private String contactId;
     private String phoneNumber;
+    public static void update(){incID=0;}
 
     public Site(Address address, String contactId, String phoneNumber) {
         id = incID++;
