@@ -239,8 +239,8 @@ public abstract class Employee extends Screen {
             System.out.println((i + 1) + " -- " + registeredShifts.get(i));
         for (int ans = getNumber(0, registeredShifts.size()); ans != 0; ans = getNumber(0, registeredShifts.size())) {
             try {
-                controller.unregisterFromConstraint(this, registeredShifts.get(ans));
-                System.out.println("Successfully removed constraint for " + registeredShifts.get(ans));
+                controller.unregisterFromConstraint(this, registeredShifts.get(ans - 1));
+                System.out.println("Successfully removed constraint for " + registeredShifts.get(ans - 1));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -257,8 +257,8 @@ public abstract class Employee extends Screen {
         for (int i = 0; i < availableShifts.size(); i++)
             System.out.println((i + 1) + " -- " + availableShifts.get(i));
         for (int ans = getNumber(0, availableShifts.size()); ans != 0; ans = getNumber(0, availableShifts.size())) {
-            controller.registerToConstraint(this, availableShifts.get(ans));
-            System.out.println("Successfully added constraint for " + availableShifts.get(ans));
+            controller.registerToConstraint(this, availableShifts.get(ans - 1));
+            System.out.println("Successfully added constraint for " + availableShifts.get(ans - 1));
         }
         System.out.println("Finished adding constraints");
     }

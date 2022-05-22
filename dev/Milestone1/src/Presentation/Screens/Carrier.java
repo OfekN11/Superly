@@ -23,7 +23,7 @@ public class Carrier extends Employee {
 
     @Override
     public void run() {
-        System.out.println("\nWelcome to the Management Menu of " + name + "!");
+        System.out.println("\nWelcome to the Management Menu of " + name + " the Carrier!");
         int option = 0;
         while (option != 11) {
             option = runMenu();
