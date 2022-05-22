@@ -47,6 +47,7 @@ public class Transport {
 
     public Transport(int SN, String startTime, String endTime, String driverID, int truckNumber, int truckWeight,TransportStatus status,Pair<LocalDate, ShiftTypes> shift, List<Integer> sourcesID, List<Integer> destinationsID,  List<Integer> transportOrders) {
         this.SN = SN;
+        incSN++;
         this.startTime = startTime;
         this.endTime = endTime;
         this.driverID = driverID;
