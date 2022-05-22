@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionHandler implements Closeable {
-    private final static String dbName= "RioTheRuler.db"; // need to be change!
+    private final static String dbName= "Superly.db"; // need to be change!
     String url = String.format("jdbc:sqlite:%s\\%s",System.getProperty("user.dir"),dbName);
     private static Connection connection;
     private static int counter =0;
