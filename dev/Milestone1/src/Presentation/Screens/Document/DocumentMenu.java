@@ -1,5 +1,6 @@
 package Presentation.Screens.Document;
 
+import Globals.util.HumanInteraction;
 import Presentation.Objects.Document.*;
 import Presentation.Screens.Screen;
 
@@ -45,7 +46,8 @@ public class DocumentMenu extends Screen {
             DestinationDocument dd = controller.getDestinationDocument(ddSN);
             dd.display();
 
-        } catch (Exception e) {
+        } catch (HumanInteraction.OperationCancelledException ignore){
+        }catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -56,30 +58,19 @@ public class DocumentMenu extends Screen {
             tdSN = getSNOfTranDocument();
             TransportDocument td = controller.getTransportDocument(tdSN);
             td.display();
-
-        } catch (Exception e) {
+        }catch (HumanInteraction.OperationCancelledException ignore){
+        }
+        catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private int getSNOfDestDocument()
-    {
+    private int getSNOfDestDocument() throws HumanInteraction.OperationCancelledException {
         System.out.println("Enter order ID:");
-        int serialNumber = scanner.nextInt();
-        while(serialNumber < 0){
-            System.out.println("Please insert legal ID:");
-            serialNumber = scanner.nextInt();
-        }
-        return serialNumber;
+        return HumanInteraction.getNumber(0);
     }
-    private int getSNOfTranDocument()
-    {
+    private int getSNOfTranDocument() throws HumanInteraction.OperationCancelledException {
         System.out.println("Enter transport SN:");
-        int serialNumber = scanner.nextInt();
-        while(serialNumber < 0){
-            System.out.println("Please insert legal SN:");
-            serialNumber = scanner.nextInt();
-        }
-        return serialNumber;
+        return HumanInteraction.getNumber(0);
     }
 }
