@@ -15,9 +15,9 @@ import static org.junit.Assert.*;
 
 public class ShiftServiceTest {
 
+    ShiftService shiftService = new ShiftService();
     @Test
     public void shiftManagerTest() {
-        ShiftService shiftService = new ShiftService();
         try {
             shiftService.createShift(LocalDate.parse("1998-07-25"), ShiftTypes.Morning,6,6,6,4,4,4,6);
             Result<Shift> result = shiftService.getShift(LocalDate.parse("1998-07-25"), ShiftTypes.Morning);
@@ -78,21 +78,9 @@ public class ShiftServiceTest {
 
     @Test
     public void getShiftBetween(){
-        ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
-        LocalDate end = LocalDate.now();
-        for(int i=0;i<4;i++,end=end.plusDays(1)){
-            shiftDataMapper.delete(end,ShiftTypes.Morning);
-        }
-        LocalDate now = LocalDate.now();
-
-        for(int i=0;i<4;i++,end=end.plusDays(1)){
-            try {
-                shiftDataMapper.save(new MorningShift(end,10,10,10,10,10,10,10));
-            } catch (Exception e) {
-                fail();
-            }
-        }
-
-        assertEquals(4, shiftDataMapper.getBetween(now, end).size());
+        // works only if all the shift of june is in the db
+        LocalDate first = LocalDate.parse("2022-06-01");
+        LocalDate forth = LocalDate.parse("2022-06-04");
+        assertEquals(shiftService.getShiftsBetween(first,forth).getValue().size(),8);
     }
 }
