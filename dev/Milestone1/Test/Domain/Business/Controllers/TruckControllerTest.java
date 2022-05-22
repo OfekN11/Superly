@@ -15,12 +15,12 @@ public class TruckControllerTest {
     private final String NOT_FOUND_MSG = "The truck doesn't exist!";
     @Before
     public void setUp() throws Exception {
-        truckDAO.delete("12345678");
+        truckDAO.delete(12345678);
     }
 
     @After
     public void tearDown() throws Exception {
-        truckDAO.delete("12345678");
+        truckDAO.delete(12345678);
     }
 
     @Test
