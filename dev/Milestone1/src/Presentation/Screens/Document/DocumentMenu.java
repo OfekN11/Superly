@@ -41,7 +41,7 @@ public class DocumentMenu extends Screen {
     private void getDestinationDocument() {
         int ddSN = 0;
         try {
-            ddSN = getSNOfDocument("Destination");
+            ddSN = getSNOfDestDocument();
             DestinationDocument dd = controller.getDestinationDocument(ddSN);
             dd.display();
 
@@ -53,7 +53,7 @@ public class DocumentMenu extends Screen {
     private void getTransportDocument() {
         int tdSN = 0;
         try {
-            tdSN = getSNOfDocument("Transport");
+            tdSN = getSNOfTranDocument();
             TransportDocument td = controller.getTransportDocument(tdSN);
             td.display();
 
@@ -62,12 +62,22 @@ public class DocumentMenu extends Screen {
         }
     }
 
-    private int getSNOfDocument(String docType)
+    private int getSNOfDestDocument()
     {
-        System.out.println("Enter " + docType + " document serial number:");
+        System.out.println("Enter order ID:");
         int serialNumber = scanner.nextInt();
-        while(serialNumber > 0){
-            System.out.println("Please insert legal serial number:");
+        while(serialNumber < 0){
+            System.out.println("Please insert legal ID:");
+            serialNumber = scanner.nextInt();
+        }
+        return serialNumber;
+    }
+    private int getSNOfTranDocument()
+    {
+        System.out.println("Enter transport SN:");
+        int serialNumber = scanner.nextInt();
+        while(serialNumber < 0){
+            System.out.println("Please insert legal SN:");
             serialNumber = scanner.nextInt();
         }
         return serialNumber;
