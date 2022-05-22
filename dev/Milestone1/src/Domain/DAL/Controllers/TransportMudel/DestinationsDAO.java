@@ -2,6 +2,7 @@ package Domain.DAL.Controllers.TransportMudel;
 
 import Domain.Business.Objects.Site.Address;
 import Domain.Business.Objects.Site.Destination;
+import Domain.Business.Objects.Site.Source;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.ConnectionHandler;
 import Globals.Enums.ShippingAreas;
@@ -9,6 +10,7 @@ import Globals.Enums.ShippingAreas;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +32,18 @@ public class DestinationsDAO extends DAO {
     }
     public Destination get(int id){
         return DESTINATION_IDENTITY_MAP.get(id);
+    }
+
+    public void save(Destination destination){
+        if(!DESTINATION_IDENTITY_MAP.containsKey(destination.getId())){
+            DESTINATION_IDENTITY_MAP.put(destination.getId(),destination);
+        }
+        try{
+            super.remove(destination.getId());
+            super.insert(Arrays.asList(destination.getId(),destination.getContactId(),destination.getPhoneNumber(),destination.getAddress().getExactAddress(),destination.getAddress().getShippingAreas()));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 }

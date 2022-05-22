@@ -1,5 +1,6 @@
 package Presentation.Screens.Transport;
 
+import Globals.util.HumanInteraction;
 import Presentation.Objects.Transport.TransportOrder;
 import Presentation.Screens.Screen;
 
@@ -19,8 +20,15 @@ public class TransportOrderMenu extends Screen {
     @Override
     public void run() {
         System.out.println("\nCreate Transport Order:");
-        int srcID = getSiteID("source");
-        int dstID = getSiteID("destination");
+        int srcID = 0;
+        int dstID = 0;
+        try {
+            srcID = getSiteID("source");
+            dstID = getSiteID("destination");
+        }catch (HumanInteraction.OperationCancelledException e) {
+            endRun();
+            return;
+        }
         TransportOrder to = new TransportOrder(srcID, dstID);
         int option = 0;
         while (option != 4 && option != 5) {
@@ -38,12 +46,14 @@ public class TransportOrderMenu extends Screen {
                         break;
                     case 4:
                         closeOrder(to);
+                        endRun();
                         break;
                     case 5:
                         endRun();
                         break;
                 }
-            } catch (Exception e) {
+            } catch (HumanInteraction.OperationCancelledException ignore){
+            }catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }
@@ -58,7 +68,7 @@ public class TransportOrderMenu extends Screen {
     private void updateProduct(TransportOrder to) throws Exception {
         int productSN = getSerialNumber();
         int productQuantity = getProductQuantity();
-        to.addProduct(productSN, productQuantity);
+        to.updateProduct(productSN, productQuantity);
     }
 
     private void removeProduct(TransportOrder to) throws Exception {
@@ -69,38 +79,20 @@ public class TransportOrderMenu extends Screen {
     private void addProduct(TransportOrder to) throws Exception {
         int productSN = getSerialNumber();
         int productQuantity = getProductQuantity();
-        to.updateProduct(productSN, productQuantity);
+        to.addProduct(productSN, productQuantity);
     }
 
-    private int getSiteID(String siteType)
-    {
+    private int getSiteID(String siteType) throws HumanInteraction.OperationCancelledException {
         System.out.println("Enter " + siteType + " ID:");
-        int siteID = scanner.nextInt();
-        while(siteID > 0){
-            System.out.println("Please insert legal ID:");
-            siteID = scanner.nextInt();
-        }
-        return siteID;
+        return HumanInteraction.getNumber(0);
     }
-    private int getSerialNumber()
-    {
+    private int getSerialNumber() throws HumanInteraction.OperationCancelledException {
         System.out.println("Enter product serial number:");
-        int serialNumber = scanner.nextInt();
-        while(serialNumber > 0){
-            System.out.println("Please insert legal product serial number:");
-            serialNumber = scanner.nextInt();
-        }
-        return serialNumber;
+        return HumanInteraction.getNumber(0);
     }
-    private int getProductQuantity()
-    {
+    private int getProductQuantity() throws HumanInteraction.OperationCancelledException {
         System.out.println("Enter product quantity:");
-        int quantity = scanner.nextInt();
-        while(quantity > 0){
-            System.out.println("Please insert legal product quantity:");
-            quantity = scanner.nextInt();
-        }
-        return quantity;
+        return HumanInteraction.getNumber(0);
     }
     
 }

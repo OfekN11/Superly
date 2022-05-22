@@ -2,6 +2,7 @@ package Presentation.Screens;
 
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.TruckModel;
+import Globals.util.HumanInteraction;
 
 public class TruckMenu extends Screen{
     private static final String[] menuOptions = {
@@ -32,25 +33,19 @@ public class TruckMenu extends Screen{
                         endRun();
                         break;
                 }
-            }
-            catch (Exception e) {
+            }catch (HumanInteraction.OperationCancelledException ignore){
+            }catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }
         }
     }
 
-    private int getLicenseNumber()
-    {
+    private int getLicenseNumber() throws HumanInteraction.OperationCancelledException {
         System.out.println("Enter truck license number:");
-        int licenseNumber = scanner.nextInt();
-        while(licenseNumber > 0){
-            System.out.println("Please insert legal license number:");
-            licenseNumber = scanner.nextInt();
-        }
-        return licenseNumber;
+        return HumanInteraction.getNumber(0);
     }
-    private void deleteTruck() {
+    private void deleteTruck() throws HumanInteraction.OperationCancelledException {
         //License number:
         int licenseNumber = getLicenseNumber();
         try {
@@ -61,7 +56,7 @@ public class TruckMenu extends Screen{
         }
     }
 
-    private void addTruck() {
+    private void addTruck() throws HumanInteraction.OperationCancelledException {
         //License number:
         int licenseNumber = getLicenseNumber();
         //Truck model:
@@ -73,19 +68,29 @@ public class TruckMenu extends Screen{
         try {
             controller.addTruck(licenseNumber, truckModel, netWeight, maxCapacityWeight);
             System.out.println("The truck was successfully added!");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    private int getMaxCapacityWeight(TruckModel tm)
-    {
+    private int getMaxCapacityWeight(TruckModel tm) throws HumanInteraction.OperationCancelledException {
         System.out.println("Enter the weight of the truck:");
         printLegalWeight();
-        int maxWeight = scanner.nextInt();
-        while(!checkModelWeight(tm, maxWeight)){
-            System.out.println("Please insert legal weight:");
-            printLegalWeight();
-            maxWeight = scanner.nextInt();
+        int maxWeight = 0;
+        switch (tm)
+        {
+            case Van:
+                maxWeight = HumanInteraction.getNumber(0, 1000);
+                break;
+            case SemiTrailer:
+                maxWeight = HumanInteraction.getNumber(1001, 5000);
+                break;
+            case DoubleTrailer:
+                maxWeight = HumanInteraction.getNumber(5001, 10000);
+                break;
+            case FullTrailer:
+                maxWeight = HumanInteraction.getNumber(10001, 20000);
+                break;
         }
         return maxWeight;
     }
@@ -96,53 +101,16 @@ public class TruckMenu extends Screen{
                             "DoubleTrailer - 5000 < weight <= 10000\n" +
                             "FullTrailer - 10000 < weight <= 20000\n");
     }
-    private boolean checkModelWeight(TruckModel tm, int weight)
-    {
-        boolean ans = weight > 0;
-        switch (tm)
-        {
-            case Van:
-                ans &= weight <= 1000;
-                break;
-            case SemiTrailer:
-                ans &= weight > 1000 & weight <= 5000;
-                break;
-            case DoubleTrailer:
-                ans &= weight > 5000 & weight <= 10000;
-                break;
-            case FullTrailer:
-                ans &= weight > 10000 & weight <= 20000;
-                break;
-            default:
-                ans = false;
-        }
-        return  ans;
-    }
-    private int getTruckWeight()
-    {
+    private int getTruckWeight() throws HumanInteraction.OperationCancelledException {
         System.out.println("Enter the weight of the truck:");
-        int netWeight = scanner.nextInt();
-        while(netWeight > 0){
-            System.out.println("Please insert legal weight:");
-            netWeight = scanner.nextInt();
-        }
-        return netWeight;
+        return HumanInteraction.getNumber(1);
     }
-    private TruckModel getTruckModel()
-    {
+    private TruckModel getTruckModel() throws HumanInteraction.OperationCancelledException {
         System.out.println("Enter truck model:");
-        for (int i = 0; i < TruckModel.values().length; i++)
-        System.out.println((i + 1) + " -- " + ShiftTypes.values()[i]);
-        return TruckModel.values()[getChoice(1, 4) - 1];
-    }
-    private int getChoice(int a, int b)
-    {
-        int choice = 0;
-        do {
-            System.out.println("Enter a value in the range between " + a + " and " + b);
-            choice = scanner.nextInt();
-        }while(choice > b | choice < a);
-        return choice;
+        for (int i = 0; i < TruckModel.values().length; i++){
+            System.out.println((i + 1) + " -- " + TruckModel.values()[i]);
+        }
+        return TruckModel.values()[HumanInteraction.getNumber(1, 4) - 1];
     }
 
 }

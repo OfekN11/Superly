@@ -16,11 +16,11 @@ public class TransportOrder {
     private HashMap<String, Integer> productList;
     private OrderStatus status;
 
-    public TransportOrder(int src, int dst) {
+    public TransportOrder(int src, int dst,HashMap<Integer, Integer> productList) {
         ID = incID++;
         this.srcID = src;
         this.dstID = dst;
-        this.productList = new HashMap<>();
+        this.productList = convert(productList);
         status = OrderStatus.waiting;
     }
 
@@ -80,7 +80,17 @@ public class TransportOrder {
     }
 
     public OrderStatus getStatus(){return status;}
-    public void order(){ status = OrderStatus.ordered;}
+    public void order(){
+        status = OrderStatus.ordered;
 
+    }
+
+    public HashMap<String,Integer> convert(HashMap<Integer,Integer> toConvert){
+        HashMap<String,Integer> converted = new HashMap<>();
+        for (Integer id:toConvert.keySet()) {
+            converted.put(id.toString(),toConvert.get(id));
+        }
+        return converted;
+    }
 
 }

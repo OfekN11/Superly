@@ -8,9 +8,8 @@ import Globals.Enums.OrderStatus;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TransportOrderDAO extends DAO {
     private final static Map<Integer, TransportOrder> TRANSPORT_ORDER_MAP = new HashMap<>();
@@ -39,6 +38,9 @@ public class TransportOrderDAO extends DAO {
     //Methods:
     public TransportOrder get(int licenseNumber) throws Exception {
         return TRANSPORT_ORDER_MAP.get(licenseNumber);
+    }
+    public List<TransportOrder> getAll(){
+        return new ArrayList<>(TRANSPORT_ORDER_MAP.values());
     }
 
     public void save(TransportOrder order){
