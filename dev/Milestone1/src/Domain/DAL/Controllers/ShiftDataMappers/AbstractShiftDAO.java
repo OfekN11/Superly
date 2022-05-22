@@ -1,5 +1,5 @@
 package Domain.DAL.Controllers.ShiftDataMappers;
-import Domain.Service.Shift.Shift;
+import Domain.Business.Objects.Shift.Shift;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Abstract.DateMapper;
 import Domain.DAL.Controllers.ShiftEmployeesLink.ConstraintsEmployeesLink;

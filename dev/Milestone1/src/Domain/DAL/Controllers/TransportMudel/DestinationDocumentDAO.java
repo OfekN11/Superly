@@ -19,7 +19,7 @@ public class DestinationDocumentDAO extends DAO {
             ResultSet resultSet= select(connection.get());
             while (resultSet.next()){
                 DestinationDocument document;
-                if(DESTINATION_DOCUMENT_IDENTITY_MAP.containsKey(resultSet.getInt(1))){
+                if(!DESTINATION_DOCUMENT_IDENTITY_MAP.containsKey(resultSet.getInt(1))){
                      document = new DestinationDocument(resultSet.getInt(1),resultSet.getInt(2));
                     DESTINATION_DOCUMENT_IDENTITY_MAP.put(document.getID(),document);
                 }

@@ -31,21 +31,23 @@ public class Transport {
 
     private Pair<LocalDate, ShiftTypes> shift;
 
-    public Transport() {
+    public Transport(Pair<LocalDate, ShiftTypes> shift) {
         SN = incSN++;
         driverID = "";
         truckNumber = -1;
         truckWeight = -1;
-        this.startTime = null;
-        this.endTime = null;
+        this.startTime = "";
+        this.endTime = "";
         sourcesID = new ArrayList<>();
         destinationsID = new ArrayList<>();
         transportOrders = new ArrayList<>();
         status = TransportStatus.padding;
+        this.shift = shift;
     }
 
     public Transport(int SN, String startTime, String endTime, String driverID, int truckNumber, int truckWeight,TransportStatus status,Pair<LocalDate, ShiftTypes> shift, List<Integer> sourcesID, List<Integer> destinationsID,  List<Integer> transportOrders) {
         this.SN = SN;
+        incSN++;
         this.startTime = startTime;
         this.endTime = endTime;
         this.driverID = driverID;
@@ -135,7 +137,7 @@ public class Transport {
         return truckNumber!=-1;
     }
     public boolean isPlacedCarrier(){
-        return !(driverID=="");
+        return (driverID=="");
     }
     private void removeShippingArea(ShippingAreas sa)
     {
@@ -172,8 +174,6 @@ public class Transport {
     {
         sourcesID.add(order.getSrc());
         destinationsID.add(order.getDst());
-        addShippingArea(src);
-        addShippingArea(dst);
         transportOrders.add(order.getID());
     }
 

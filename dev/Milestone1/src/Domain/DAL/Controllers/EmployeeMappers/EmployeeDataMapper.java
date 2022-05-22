@@ -80,7 +80,8 @@ public class EmployeeDataMapper  {
 
     public void save(Carrier toSave) throws Exception {
         try {
-            employeeTypeLink.add(toSave.getId(),JobTitles.Carrier);
+            if (employeeTypeLink.get(toSave.getId()).size()==0)
+                employeeTypeLink.add(toSave.getId(),JobTitles.Carrier);
             carrierDataMapper.save(toSave.getId(),toSave);
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
@@ -90,7 +91,8 @@ public class EmployeeDataMapper  {
 
     public void save(Cashier toSave) throws Exception {
         try {
-            employeeTypeLink.add(toSave.getId(),JobTitles.Cashier);
+            if (employeeTypeLink.get(toSave.getId()).size()==0)
+                employeeTypeLink.add(toSave.getId(),JobTitles.Cashier);
             cashierDataMapper.save(toSave.getId(),toSave);
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
@@ -100,7 +102,8 @@ public class EmployeeDataMapper  {
 
     public void save(HR_Manager toSave) throws Exception {
         try {
-            employeeTypeLink.add(toSave.getId(),JobTitles.HR_Manager);
+            if (employeeTypeLink.get(toSave.getId()).size()==0)
+                employeeTypeLink.add(toSave.getId(),JobTitles.HR_Manager);
             hR_managerDataMapper.save(toSave.getId(),toSave);
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
@@ -110,7 +113,8 @@ public class EmployeeDataMapper  {
 
     public void save(Logistics_Manager toSave) throws Exception {
         try {
-            employeeTypeLink.add(toSave.getId(),JobTitles.Logistics_Manager);
+            if (employeeTypeLink.get(toSave.getId()).size()==0)
+                employeeTypeLink.add(toSave.getId(),JobTitles.Logistics_Manager);
             logistics_managerDataMapper.save(toSave.getId(),toSave);
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
@@ -119,7 +123,8 @@ public class EmployeeDataMapper  {
 
     public void save(Sorter toSave) throws Exception {
         try {
-            employeeTypeLink.add(toSave.getId(),JobTitles.Sorter);
+            if (employeeTypeLink.get(toSave.getId()).size()==0)
+                employeeTypeLink.add(toSave.getId(),JobTitles.Sorter);
             sorterDataMapper.save(toSave.getId(),toSave);
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
@@ -128,7 +133,8 @@ public class EmployeeDataMapper  {
 
     public void save(Storekeeper toSave) throws Exception {
         try {
-            employeeTypeLink.add(toSave.getId(),JobTitles.Storekeeper);
+            if (employeeTypeLink.get(toSave.getId()).size()==0)
+                employeeTypeLink.add(toSave.getId(),JobTitles.Storekeeper);
             storekeeperDataMapper.save(toSave.getId(),toSave);
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
@@ -137,7 +143,8 @@ public class EmployeeDataMapper  {
 
     public void save(Transport_Manager toSave) throws Exception {
         try {
-            employeeTypeLink.add(toSave.getId(),JobTitles.Transport_Manager);
+            if (employeeTypeLink.get(toSave.getId()).size()==0)
+                employeeTypeLink.add(toSave.getId(),JobTitles.Transport_Manager);
             transportManagerDataMapper.save(toSave.getId(),toSave);
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);

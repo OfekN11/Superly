@@ -3,24 +3,14 @@ package Domain.Service.Services;
 import Domain.Business.Controllers.EmployeeController;
 import Domain.Business.Controllers.ShiftController;
 import Domain.Business.Controllers.SiteController;
-import Domain.Business.Objects.Employee.*;
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.DAL.Controllers.TransportMudel.TransportDAO;
-import Domain.Service.Shift.EveningShift;
-import Domain.Service.Shift.MorningShift;
-import Domain.Service.Shift.Shift;
 import Globals.Enums.Certifications;
-import Globals.Enums.JobTitles;
-import Globals.Enums.LicenseTypes;
-import Globals.Enums.ShiftTypes;
 import org.junit.*;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class IntegrationTest {
     static LocalDate date=LocalDate.parse("2021-09-19");

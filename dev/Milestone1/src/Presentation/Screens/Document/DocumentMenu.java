@@ -1,5 +1,6 @@
 package Presentation.Screens.Document;
 
+import Globals.util.HumanInteraction;
 import Presentation.Objects.Document.*;
 import Presentation.Screens.Screen;
 
@@ -41,11 +42,12 @@ public class DocumentMenu extends Screen {
     private void getDestinationDocument() {
         int ddSN = 0;
         try {
-            ddSN = getSNOfDocument("Destination");
+            ddSN = getSNOfDestDocument();
             DestinationDocument dd = controller.getDestinationDocument(ddSN);
             dd.display();
 
-        } catch (Exception e) {
+        } catch (HumanInteraction.OperationCancelledException ignore){
+        }catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -53,23 +55,22 @@ public class DocumentMenu extends Screen {
     private void getTransportDocument() {
         int tdSN = 0;
         try {
-            tdSN = getSNOfDocument("Transport");
+            tdSN = getSNOfTranDocument();
             TransportDocument td = controller.getTransportDocument(tdSN);
             td.display();
-
-        } catch (Exception e) {
+        }catch (HumanInteraction.OperationCancelledException ignore){
+        }
+        catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private int getSNOfDocument(String docType)
-    {
-        System.out.println("Enter " + docType + " document serial number:");
-        int serialNumber = scanner.nextInt();
-        while(serialNumber > 0){
-            System.out.println("Please insert legal serial number:");
-            serialNumber = scanner.nextInt();
-        }
-        return serialNumber;
+    private int getSNOfDestDocument() throws HumanInteraction.OperationCancelledException {
+        System.out.println("Enter order ID:");
+        return HumanInteraction.getNumber(0);
+    }
+    private int getSNOfTranDocument() throws HumanInteraction.OperationCancelledException {
+        System.out.println("Enter transport SN:");
+        return HumanInteraction.getNumber(0);
     }
 }
