@@ -49,7 +49,7 @@ public class Carrier extends Employee {
         System.out.println("Enter " + siteType + " ID:");
         return HumanInteraction.getNumber(0);
     }
-    private void advanceSite() throws OperationCancelledException {
+    private void advanceSite() throws Exception {
         int transportSN = getTransportSN();
         int siteID = getSiteID("Site");
         controller.advanceSite(transportSN, siteID);

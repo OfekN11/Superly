@@ -1,14 +1,18 @@
 package Presentation.Screens.Transport;
 
+import Domain.Service.Objects.Shift;
 import Globals.util.HumanInteraction;
+import Globals.util.ShiftComparator;
 import Presentation.Objects.Transport.Transport;
 import Globals.Enums.ShiftTypes;
 import Globals.Pair;
 import Presentation.Screens.Screen;
+
 import static Globals.util.HumanInteraction.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TransportsMenu extends Screen {
 
@@ -80,9 +84,15 @@ public class TransportsMenu extends Screen {
 
     private void createNewTransport() throws Exception {
         System.out.println("Create transport:");
-        LocalDate date = getShiftDate();
-        ShiftTypes shiftType = getShiftType();
-        controller.createNewTransport(new Pair<LocalDate, ShiftTypes>(date, shiftType));
+        LocalDate today = LocalDate.now();
+        LocalDate nextMonth = today.plusMonths(1);
+        List<Shift> availableShifts = controller.getShiftsBetween(today, nextMonth).stream().sorted(new ShiftComparator()).collect(Collectors.toList());
+        System.out.println("\nChoose a shift from the following: ");
+        for (int i = 0; i < availableShifts.size(); i++)
+            System.out.println((i + 1) + " -- " + availableShifts.get(i));
+        System.out.println();
+        Shift shift = availableShifts.get(getNumber(1 , availableShifts.size()) - 1);
+        controller.createNewTransport(new Pair<LocalDate, ShiftTypes>(shift.date, shift.getType()));
     }
 
 

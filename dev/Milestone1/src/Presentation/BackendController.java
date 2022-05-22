@@ -538,13 +538,13 @@ public class BackendController {
 
     //Document:
     public TransportDocument getTransportDocument(int tdSN) throws Exception {
-        Result<TransportDocument> result = documentService.getTransportDocument(tdSN);
+        Result<Domain.Service.Objects.Document.TransportDocument> result = documentService.getTransportDocument(tdSN);
         throwIfError(result);
         return presentationDocumentFactory.createPresentationDocument(result.getValue());
     }
 
     public DestinationDocument getDestinationDocument(int ddSN) throws Exception {
-        Result<DestinationDocument> result = documentService.getTransportDocument(ddSN);
+        Result<Domain.Service.Objects.Document.DestinationDocument> result = documentService.getTransportDocument(ddSN);
         throwIfError(result);
         return presentationDocumentFactory.createPresentationDocument(result.getValue());
     }
@@ -640,7 +640,7 @@ public class BackendController {
         return result.getValue();
     }
 
-    public void advanceSite(int transportSN, int siteID) {
+    public void advanceSite(int transportSN, int siteID) throws Exception {
         Result result = transportService.advanceSite(transportSN, siteID);
         throwIfError(result);
     }
