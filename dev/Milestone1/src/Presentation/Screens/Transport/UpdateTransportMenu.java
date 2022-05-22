@@ -73,7 +73,7 @@ public class UpdateTransportMenu extends Screen {
     private int getID(String type) {
         System.out.println("Enter " + type + " ID:");
         int ID = scanner.nextInt();
-        while(ID > 0){
+        while(ID < 0){
             System.out.println("Please insert legal ID:");
             ID = scanner.nextInt();
         }

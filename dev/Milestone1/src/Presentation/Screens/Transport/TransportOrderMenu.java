@@ -58,7 +58,7 @@ public class TransportOrderMenu extends Screen {
     private void updateProduct(TransportOrder to) throws Exception {
         int productSN = getSerialNumber();
         int productQuantity = getProductQuantity();
-        to.addProduct(productSN, productQuantity);
+        to.updateProduct(productSN, productQuantity);
     }
 
     private void removeProduct(TransportOrder to) throws Exception {
@@ -69,14 +69,14 @@ public class TransportOrderMenu extends Screen {
     private void addProduct(TransportOrder to) throws Exception {
         int productSN = getSerialNumber();
         int productQuantity = getProductQuantity();
-        to.updateProduct(productSN, productQuantity);
+        to.addProduct(productSN, productQuantity);
     }
 
     private int getSiteID(String siteType)
     {
         System.out.println("Enter " + siteType + " ID:");
         int siteID = scanner.nextInt();
-        while(siteID > 0){
+        while(siteID < 0){
             System.out.println("Please insert legal ID:");
             siteID = scanner.nextInt();
         }
@@ -86,7 +86,7 @@ public class TransportOrderMenu extends Screen {
     {
         System.out.println("Enter product serial number:");
         int serialNumber = scanner.nextInt();
-        while(serialNumber > 0){
+        while(serialNumber < 0){
             System.out.println("Please insert legal product serial number:");
             serialNumber = scanner.nextInt();
         }
@@ -96,7 +96,7 @@ public class TransportOrderMenu extends Screen {
     {
         System.out.println("Enter product quantity:");
         int quantity = scanner.nextInt();
-        while(quantity > 0){
+        while(quantity < 0){
             System.out.println("Please insert legal product quantity:");
             quantity = scanner.nextInt();
         }
