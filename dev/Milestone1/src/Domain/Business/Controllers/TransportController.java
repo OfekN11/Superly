@@ -134,7 +134,7 @@ public class TransportController {
         if(transport.getStatus()==TransportStatus.padding){
             Truck truck = truckController.getTruck(licenseNumber);
             List<Transport> allTransports = getAllTransports();
-            if(!(isAvailable(allTransports,truck) && transport.placeTruck(licenseNumber)))
+            if(!(isAvailable(allTransports,truck) && transport.placeTruck(licenseNumber,truck.getNetWeight())))
             {
                 throw new Exception("truck cant be placed");
             }
@@ -194,7 +194,7 @@ public class TransportController {
                 transportDataMapper.save(transport);
             }
             else{
-                throw new Exception("this is not a padding transport");
+                throw new Exception("transport not ready to go");
             }
         }
         else{
