@@ -43,36 +43,20 @@ public abstract class Shift extends Screen {
     protected final LocalDate date;
     protected String shiftManagerId;
 
-    protected int carrierCount;
-    protected int cashierCount;
-    protected int storekeeperCount;
-    protected int sorterCount;
-    protected int hr_managersCount;
-    protected int logistics_managersCount;
-    protected int transport_managersCount;
-
-    private final Map<JobTitles, Integer> getCountByType = Stream.of(
-            new AbstractMap.SimpleEntry<>(JobTitles.Sorter, sorterCount),
-            new AbstractMap.SimpleEntry<>(JobTitles.Storekeeper, storekeeperCount),
-            new AbstractMap.SimpleEntry<>(JobTitles.Carrier, carrierCount),
-            new AbstractMap.SimpleEntry<>(JobTitles.Cashier, cashierCount),
-            new AbstractMap.SimpleEntry<>(JobTitles.HR_Manager, hr_managersCount),
-            new AbstractMap.SimpleEntry<>(JobTitles.Logistics_Manager, logistics_managersCount),
-            new AbstractMap.SimpleEntry<>(JobTitles.Transport_Manager, transport_managersCount)
-    ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+    private final Map<JobTitles, Integer> getCountByType = new HashMap<>();
 
     public Shift(Screen caller, Domain.Service.Objects.Shift sShift, String[] extraMenuOptions) {
         super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
         date = sShift.date;
 
         shiftManagerId = sShift.shiftManagerId;
-        carrierCount = sShift.carrierCount;
-        cashierCount = sShift.cashierCount;
-        storekeeperCount = sShift.storekeeperCount;
-        sorterCount = sShift.sorterCount;
-        hr_managersCount = sShift.hr_managersCount;
-        logistics_managersCount = sShift.logistics_managersCount;
-        transport_managersCount = sShift.transport_managersCount;
+        getCountByType.put(JobTitles.Carrier, sShift.carrierCount);
+        getCountByType.put(JobTitles.Cashier ,sShift.cashierCount);
+        getCountByType.put(JobTitles.Storekeeper ,sShift.storekeeperCount);
+        getCountByType.put(JobTitles.Sorter ,sShift.sorterCount);
+        getCountByType.put(JobTitles.HR_Manager ,sShift.hr_managersCount);
+        getCountByType.put(JobTitles.Logistics_Manager ,sShift.logistics_managersCount);
+        getCountByType.put(JobTitles.Transport_Manager ,sShift.transport_managersCount);
     }
 
     protected void handleBaseOptions(int option) throws Exception {
@@ -235,37 +219,37 @@ public abstract class Shift extends Screen {
 
     protected void setCarrierCount(int newCount) throws Exception {
         controller.editShiftCarrierCount(this, newCount);
-        this.carrierCount = newCount;
+        getCountByType.put(JobTitles.Carrier ,newCount);
     }
 
     protected void setCashierCount(int newCount) throws Exception {
         controller.editShiftCashierCount(this, newCount);
-        this.cashierCount = newCount;
+        getCountByType.put(JobTitles.Cashier ,newCount);
     }
 
     protected void setStorekeeperCount(int newCount) throws Exception {
         controller.editShiftStorekeeperCount(this, newCount);
-        this.storekeeperCount = newCount;
+        getCountByType.put(JobTitles.Storekeeper ,newCount);
     }
 
     protected void setSorterCount(int newCount) throws Exception {
         controller.editShiftSorterCount(this, newCount);
-        this.sorterCount = newCount;
+        getCountByType.put(JobTitles.Sorter ,newCount);
     }
 
     protected void setHr_managersCount(int newCount) throws Exception {
         controller.editShiftHR_ManagerCount(this, newCount);
-        this.hr_managersCount = newCount;
+        getCountByType.put(JobTitles.HR_Manager ,newCount);
     }
 
     protected void setLogistics_managersCount(int newCount) throws Exception {
         controller.editShiftLogistics_ManagerCount(this, newCount);
-        this.logistics_managersCount = newCount;
+        getCountByType.put(JobTitles.Logistics_Manager ,newCount);
     }
 
     private void setTransport_managersCount(int newCount) throws Exception {
         controller.editShiftTransport_ManagerCount(this, newCount);
-        this.transport_managersCount = newCount;
+        getCountByType.put(JobTitles.Transport_Manager,newCount);
     }
 
     protected void printEmployeesByType(JobTitles type) throws Exception {
@@ -277,9 +261,12 @@ public abstract class Shift extends Screen {
     public abstract ShiftTypes getType();
 
     protected void printDetails() throws Exception {
-        System.out.println(getType() + " shift");
+        System.out.println("\n" + getType() + " shift");
         System.out.println("Date: " + date.format(dateFormat));
-        System.out.println("Shift Manager: " + shiftManagerId + " - " + controller.getEmployee(shiftManagerId).name);
+        if (hasShiftManager())
+            System.out.println("Shift Manager: " + shiftManagerId + " - " + controller.getEmployee(shiftManagerId).name);
+        else
+            System.out.println("Shift Manager: " + "NO MANAGER ASSIGNED!");
         for (JobTitles type : JobTitles.values()) {
             printEmployeesByType(type);
             System.out.println();
@@ -288,5 +275,16 @@ public abstract class Shift extends Screen {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    @Override
+    protected int runMenu() {
+        if (!hasShiftManager())
+            System.out.println("CRITICAL - This shift doesn't have a ShiftManager, please assign one ASAP!");
+        return super.runMenu();
+    }
+
+    protected boolean hasShiftManager() {
+        return !shiftManagerId.equals("-1");
     }
 }
