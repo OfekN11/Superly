@@ -69,10 +69,10 @@ public class TransportController {
                            trd = documentController.getTransportDocument(transportSN);
                        }
                        catch (Exception e) {
-                           trd = new TransportDocument(transport.getSN(), transport.getStartTime().toString(), transport.getTruckNumber(), transport.getDriverID());
-                           documentController.uploadTransportDocument(trd);
+                           trd = new TransportDocument(transport.getSN(), transport.getStartTime(), transport.getTruckNumber(), transport.getDriverID());
                        }
                        trd.addDoc(orderID);
+                       documentController.uploadTransportDocument(trd);
                    }
                 }
             }

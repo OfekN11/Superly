@@ -221,16 +221,23 @@ public class Transport {
     }
 
     public boolean visitSite(int siteID) throws Exception {
+        List<Integer> tempList = new ArrayList<>();
         if(sourcesID.contains(siteID)){
             for (Integer src:sourcesID) {
-                sourcesID.remove(src);
+                if(src!=siteID){
+                    tempList.add(src);
+                }
             }
+            sourcesID = tempList;
         }
         else{
             if(destVisit(siteID)){
-                for (Integer src:destinationsID) {
-                    destinationsID.remove(src);
+                for (Integer dst:destinationsID) {
+                    if(dst != siteID){
+                        tempList.add(dst);
+                    }
                 }
+                destinationsID = tempList;
             }
             else{
                 throw new Exception("this is not valid site. the site ID is not in the order or all the sources not visited yet");
