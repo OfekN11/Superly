@@ -135,7 +135,7 @@ public class TransportController {
             Truck truck = truckController.getTruck(licenseNumber);
             List<Transport> allTransports = getAllTransports();
             List<Transport> shiftTransports = getTransportsInShift(allTransports,transport.getShift());
-            if(!(isAvailable(shiftTransports,truck) && transport.placeTruck(licenseNumber)))
+            if(!(isAvailable(shiftTransports,truck) && transport.placeTruck(licenseNumber,truck.getNetWeight())))
             {
                 throw new Exception("truck cant be placed");
             }
@@ -207,8 +207,13 @@ public class TransportController {
     public void endTransport(int transportSN) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()==TransportStatus.inProgress){
-            transport.endTransport();
-            transportDataMapper.save(transport);
+            if(transport.isDoneTransport()){
+                transport.endTransport();
+                transportDataMapper.save(transport);
+            }
+            else {
+                throw new Exception("transport is not finished yet");
+            }
         }
         else{
             throw new Exception("this is not a inProgress transport");

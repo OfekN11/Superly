@@ -104,13 +104,14 @@ public class Transport {
     }
     public boolean isDoneTransport(){
         //TODO need to be implemented
-        return false;
+        return sourcesID.isEmpty() && destinationsID.isEmpty();
     }
 
-    public boolean placeTruck(int licenseNumber)
+    public boolean placeTruck(int licenseNumber,int weight)
     {
         if(truckNumber==-1){
             truckNumber = licenseNumber;
+            truckWeight = weight;
             return true;
         }
         return false;
@@ -188,7 +189,7 @@ public class Transport {
             return false;
         }
         else{
-            truckWeight = truckWeight+newWeight;
+            truckWeight = truckWeight + newWeight;
             return true;
         }
     }
