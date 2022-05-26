@@ -4,6 +4,8 @@ import Domain.Business.Objects.*;
 import Domain.Business.Objects.Document.DestinationDocument;
 import Domain.Business.Objects.Document.TransportDocument;
 import Domain.Business.Objects.Employee.Carrier;
+import Domain.Business.Objects.Shift.EveningShift;
+import Domain.Business.Objects.Shift.MorningShift;
 import Domain.DAL.Controllers.TransportMudel.TransportDAO;
 import Domain.Business.Objects.Shift.Shift;
 import Globals.Enums.OrderStatus;
@@ -132,7 +134,8 @@ public class TransportController {
         if(transport.getStatus()==TransportStatus.padding){
             Truck truck = truckController.getTruck(licenseNumber);
             List<Transport> allTransports = getAllTransports();
-            if(!(isAvailable(allTransports,truck) && transport.placeTruck(licenseNumber)))
+            List<Transport> shiftTransports = getTransportsInShift(allTransports,transport.getShift());
+            if(!(isAvailable(shiftTransports,truck) && transport.placeTruck(licenseNumber)))
             {
                 throw new Exception("truck cant be placed");
             }
@@ -157,7 +160,8 @@ public class TransportController {
                     Set<String> carriersInShift = shift.getCarrierIDs();
                     if(carriersInShift.contains(carrier.getId())){
                         List<Transport> allTransports = getAllTransports();
-                        if(!isAvailable(allTransports,carrier)){
+                        List<Transport> shiftTransports= getTransportsInShift(allTransports, transport.getShift());
+                        if(!isAvailable(shiftTransports,carrier)){
                             throw new Exception("The carrier is already in a transport in this shift");
                         }
                         else{
@@ -259,6 +263,15 @@ public class TransportController {
             }
         }
         return complete;
+    }
+    public List<Transport> getTransportsInShift(List<Transport >all,Pair<LocalDate,ShiftTypes> s){
+        List<Transport> shiftTransports = new ArrayList<>();
+        for(Transport t : all){
+            if(t.getShift().getLeft()==s.getLeft() && t.getShift().getRight()==s.getRight()){
+                shiftTransports.add(t);
+            }
+        }
+        return shiftTransports;
     }
 
     //TODO will be added in the next assignment
