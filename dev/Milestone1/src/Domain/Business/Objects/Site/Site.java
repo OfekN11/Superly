@@ -7,6 +7,7 @@ public abstract class Site {
     private String contactId;
     private String phoneNumber;
 
+    public static void rest(){incID = 0;}
     public Site(Address address, String contactId, String phoneNumber) {
         id = incID++;
         this.address = address;

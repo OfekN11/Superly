@@ -45,5 +45,11 @@ public class DestinationsDAO extends DAO {
             throwables.printStackTrace();
         }
     }
+    public void delete(int id) throws SQLException {
+        if(DESTINATION_IDENTITY_MAP.containsKey(id)){
+            DESTINATION_IDENTITY_MAP.remove(id);
+        }
+        super.remove(id);
+    }
 
 }

@@ -18,7 +18,7 @@ public class DocumentMenu extends Screen {
     public void run() {
         System.out.println("\nWelcome to the Document Management Menu!");
         int option = 0;
-        while (option != 4 && option != 5) {
+        while (option != 3) {
             option = runMenu();
             try {
                 switch (option) {

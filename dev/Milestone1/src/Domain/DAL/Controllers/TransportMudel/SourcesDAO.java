@@ -45,4 +45,10 @@ public class SourcesDAO extends DAO {
             throwables.printStackTrace();
         }
     }
+    public void delete(int id) throws SQLException {
+        if(SOURCE_IDENTITY_MAP.containsKey(id)){
+            SOURCE_IDENTITY_MAP.remove(id);
+        }
+        super.remove(id);
+    }
 }
