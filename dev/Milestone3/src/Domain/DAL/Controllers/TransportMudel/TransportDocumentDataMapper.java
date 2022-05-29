@@ -43,15 +43,10 @@ public class TransportDocumentDataMapper extends DAO {
         if (!TRANSPORT_DOCUMENTS_MAP.containsKey(document.getTransportID()))
             TRANSPORT_DOCUMENTS_MAP.put(document.getTransportID(),document);
         try {
-            this.remove(document.getTransportID());
             super.remove(document.getTransportID());
-            document.getDestinationDocuments().forEach((des)-> {
-                try {
-                    super.insert(Arrays.asList(document.getTransportID(),document.getStartTime(),document.getTruckNumber(),document.getDriverName(),document.isDoRedesign(),document.getRedesign(),des));
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            });
+            for(Integer doc :document.getDestinationDocuments() ){
+                super.insert(Arrays.asList(document.getTransportID(),document.getStartTime(),document.getTruckNumber(),document.getDriverName(),document.isDoRedesign(),document.getRedesign(),doc));
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");

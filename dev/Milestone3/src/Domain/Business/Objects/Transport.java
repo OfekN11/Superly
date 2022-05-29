@@ -86,7 +86,10 @@ public class Transport {
             startTime = LocalDateTime.now().toString();
             status = TransportStatus.inProgress;
         }
-        throw new Exception("transport already started");
+        else {
+            throw new Exception("transport already started");
+        }
+
     }
     public void endTransport() throws Exception {
         if (status == TransportStatus.inProgress)
@@ -94,17 +97,21 @@ public class Transport {
             endTime = LocalDateTime.now().toString();
             status = TransportStatus.done;
         }
-        throw new Exception("transport is not in Progress");
+        else{
+            throw new Exception("transport is not in Progress");
+        }
+
     }
     public boolean isDoneTransport(){
         //TODO need to be implemented
-        return false;
+        return sourcesID.isEmpty() && destinationsID.isEmpty();
     }
 
-    public boolean placeTruck(int licenseNumber)
+    public boolean placeTruck(int licenseNumber,int weight)
     {
         if(truckNumber==-1){
             truckNumber = licenseNumber;
+            truckWeight = weight;
             return true;
         }
         return false;
@@ -117,7 +124,7 @@ public class Transport {
 
     public boolean readyToGo()
     {
-        return !sourcesID.isEmpty() && !destinationsID.isEmpty() && isPlacedTruck() && isPlacedCarrier() && !transportOrders.isEmpty();
+        return !sourcesID.isEmpty() && !destinationsID.isEmpty() && isPlacedTruck() && !isPlacedCarrier() && !transportOrders.isEmpty();
     }
     public Pair<LocalDate,ShiftTypes> getShift(){
         return shift;
@@ -137,7 +144,7 @@ public class Transport {
         return truckNumber!=-1;
     }
     public boolean isPlacedCarrier(){
-        return (driverID=="");
+        return driverID.equals("");
     }
     private void removeShippingArea(ShippingAreas sa)
     {
@@ -179,11 +186,10 @@ public class Transport {
 
     public boolean updateWeight(int newWeight, int maxCapacityWeight) throws Exception {
         if(truckWeight+newWeight > maxCapacityWeight){
-            status = TransportStatus.redesign;
             return false;
         }
         else{
-            truckWeight = truckWeight+newWeight;
+            truckWeight = truckWeight + newWeight;
             return true;
         }
     }
@@ -215,16 +221,23 @@ public class Transport {
     }
 
     public boolean visitSite(int siteID) throws Exception {
+        List<Integer> tempList = new ArrayList<>();
         if(sourcesID.contains(siteID)){
             for (Integer src:sourcesID) {
-                sourcesID.remove(src);
+                if(src!=siteID){
+                    tempList.add(src);
+                }
             }
+            sourcesID = tempList;
         }
         else{
             if(destVisit(siteID)){
-                for (Integer src:destinationsID) {
-                    destinationsID.remove(src);
+                for (Integer dst:destinationsID) {
+                    if(dst != siteID){
+                        tempList.add(dst);
+                    }
                 }
+                destinationsID = tempList;
             }
             else{
                 throw new Exception("this is not valid site. the site ID is not in the order or all the sources not visited yet");

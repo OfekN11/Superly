@@ -14,8 +14,8 @@ public class TransportDocument extends Document{
     private boolean doRedesign;
     private String redesign;//Write what do?
 
-    public TransportDocument(int transportID,String startTime, int truckNumber, String driverName) {
-        transportID = transportID;
+    public TransportDocument(int id,String startTime, int truckNumber, String driverName) {
+        this.transportID = id;
         this.startTime = startTime;
         this.truckNumber = truckNumber;
         this.driverName = driverName;

@@ -45,8 +45,14 @@ public class TransportOrderMenu extends Screen {
                         updateProduct(to);
                         break;
                     case 4:
-                        closeOrder(to);
-                        endRun();
+                        try{
+                            closeOrder(to);
+                            endRun();
+                        }
+                        catch (Exception e){
+                            option = 0;
+                            throw e;
+                        }
                         break;
                     case 5:
                         endRun();

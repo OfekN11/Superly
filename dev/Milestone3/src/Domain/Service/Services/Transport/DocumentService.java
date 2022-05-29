@@ -1,8 +1,8 @@
 package Domain.Service.Services.Transport;
+import Domain.Service.Objects.*;
 import Domain.Business.Controllers.Transport.DocumentController;
-import Domain.Service.util.Result;
 import Domain.Service.util.ServiceDocumentFactory;
-
+import Domain.Service.util.Result;
 public class DocumentService {
     private DocumentController controller;
     private final ServiceDocumentFactory serviceDocumentFactory = new ServiceDocumentFactory();

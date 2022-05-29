@@ -1,11 +1,11 @@
 package Domain.Business.Controllers.Transport;
 
-import Domain.Business.Controllers.HR.EmployeeController;
-import Domain.Business.Controllers.HR.ShiftController;
 import Domain.Business.Objects.*;
 import Domain.Business.Objects.Document.DestinationDocument;
 import Domain.Business.Objects.Document.TransportDocument;
 import Domain.Business.Objects.Employee.Carrier;
+import Domain.Business.Objects.Shift.EveningShift;
+import Domain.Business.Objects.Shift.MorningShift;
 import Domain.DAL.Controllers.TransportMudel.TransportDAO;
 import Domain.Business.Objects.Shift.Shift;
 import Globals.Enums.OrderStatus;
@@ -13,6 +13,7 @@ import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
 import Globals.Enums.TransportStatus;
 import Globals.Pair;
+import Domain.Business.Controllers.HR.*;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -69,10 +70,10 @@ public class TransportController {
                            trd = documentController.getTransportDocument(transportSN);
                        }
                        catch (Exception e) {
-                           trd = new TransportDocument(transport.getSN(), transport.getStartTime().toString(), transport.getTruckNumber(), transport.getDriverID());
-                           documentController.uploadTransportDocument(trd);
+                           trd = new TransportDocument(transport.getSN(), transport.getStartTime(), transport.getTruckNumber(), transport.getDriverID());
                        }
                        trd.addDoc(orderID);
+                       documentController.uploadTransportDocument(trd);
                    }
                 }
             }
@@ -134,7 +135,8 @@ public class TransportController {
         if(transport.getStatus()==TransportStatus.padding){
             Truck truck = truckController.getTruck(licenseNumber);
             List<Transport> allTransports = getAllTransports();
-            if(!(isAvailable(allTransports,truck) && transport.placeTruck(licenseNumber)))
+            List<Transport> shiftTransports = getTransportsInShift(allTransports,transport.getShift());
+            if(!(isAvailable(shiftTransports,truck) && transport.placeTruck(licenseNumber,truck.getNetWeight())))
             {
                 throw new Exception("truck cant be placed");
             }
@@ -159,7 +161,8 @@ public class TransportController {
                     Set<String> carriersInShift = shift.getCarrierIDs();
                     if(carriersInShift.contains(carrier.getId())){
                         List<Transport> allTransports = getAllTransports();
-                        if(!isAvailable(allTransports,carrier)){
+                        List<Transport> shiftTransports= getTransportsInShift(allTransports, transport.getShift());
+                        if(!isAvailable(shiftTransports,carrier)){
                             throw new Exception("The carrier is already in a transport in this shift");
                         }
                         else{
@@ -205,8 +208,13 @@ public class TransportController {
     public void endTransport(int transportSN) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()==TransportStatus.inProgress){
-            transport.endTransport();
-            transportDataMapper.save(transport);
+            if(transport.isDoneTransport()){
+                transport.endTransport();
+                transportDataMapper.save(transport);
+            }
+            else {
+                throw new Exception("transport is not finished yet");
+            }
         }
         else{
             throw new Exception("this is not a inProgress transport");
@@ -261,6 +269,15 @@ public class TransportController {
             }
         }
         return complete;
+    }
+    public List<Transport> getTransportsInShift(List<Transport >all,Pair<LocalDate,ShiftTypes> s){
+        List<Transport> shiftTransports = new ArrayList<>();
+        for(Transport t : all){
+            if(t.getShift().getLeft()==s.getLeft() && t.getShift().getRight()==s.getRight()){
+                shiftTransports.add(t);
+            }
+        }
+        return shiftTransports;
     }
 
     //TODO will be added in the next assignment

@@ -23,10 +23,6 @@ public class TruckDAO extends DAO {
         try(ConnectionHandler connection = getConnectionHandler()){
             ResultSet resultSet= select(connection.get());
             while (resultSet.next()){
-                resultSet.getInt(1);
-                TruckModel.valueOf(resultSet.getString(2));
-                resultSet.getInt(3);
-                resultSet.getString(4);
                 Truck truck = new Truck(resultSet.getInt(1),TruckModel.valueOf(resultSet.getString(2)),resultSet.getInt(3),resultSet.getInt(4));
                 TRUCK_IDENTITY_MAP.put(truck.getLicenseNumber(),truck);
             }

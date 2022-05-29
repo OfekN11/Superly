@@ -2,17 +2,35 @@ package Domain.Business.Controllers.Transport;
 
 import Domain.Business.Objects.Site.Address;
 import Domain.Business.Objects.Site.Destination;
+import Domain.Business.Objects.Site.Site;
 import Domain.Business.Objects.Site.Source;
 import Domain.DAL.Controllers.TransportMudel.DestinationsDAO;
 import Domain.DAL.Controllers.TransportMudel.SourcesDAO;
 import Globals.Enums.ShippingAreas;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 //TODO not finished methods (GET) for each site
 public class SiteController {
     private final SourcesDAO sourcesDataMapper = new SourcesDAO();
     private final DestinationsDAO destinationsDataMapper = new DestinationsDAO();
     public SiteController() {
+        Site.rest();
+        try {
+            sourcesDataMapper.delete(0);
+            sourcesDataMapper.delete(1);
+            sourcesDataMapper.delete(2);
+            destinationsDataMapper.delete(3);
+            destinationsDataMapper.delete(4);
+            destinationsDataMapper.delete(5);
+            destinationsDataMapper.delete(9);
+            destinationsDataMapper.delete(10);
+            destinationsDataMapper.delete(11);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         //TODO: In Milestone 3 connect the data to DB
         Source s1 = new Source(new Address(ShippingAreas.North, "Tiberia Shlomo Hamelech 136"), "Shalom", "050");
         Source s2 = new Source(new Address(ShippingAreas.South,"dimona Negev mount 19"),"eldad","05");
