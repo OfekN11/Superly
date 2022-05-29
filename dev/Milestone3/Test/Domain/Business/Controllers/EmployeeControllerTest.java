@@ -1,5 +1,6 @@
 package Domain.Business.Controllers;
 
+import Domain.Business.Controllers.HR.EmployeeController;
 import junit.framework.TestCase;
 import org.junit.Test;
 

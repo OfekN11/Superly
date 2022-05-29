@@ -1,5 +1,6 @@
 package Domain.Business.Controllers;
 
+import Domain.Business.Controllers.Transport.TruckController;
 import Domain.DAL.Controllers.TransportMudel.TruckDAO;
 import Globals.Enums.TruckModel;
 import org.junit.After;

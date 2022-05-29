@@ -1,13 +1,12 @@
 package Domain.Business.Objects.Shift;
 
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
-import Domain.Service.ServiceShiftFactory;
+import Domain.Service.util.ServiceShiftFactory;
 import Globals.Enums.JobTitles;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -333,7 +332,7 @@ public abstract class Shift {
                 && transport_managerIDs.size() == transport_managersCount;
     }
 
-    public abstract Domain.Service.Objects.Shift accept(ServiceShiftFactory factory);
+    public abstract Domain.Service.Objects.Shift.Shift accept(ServiceShiftFactory factory);
 
     private void checkCountValidity(int count, int minimum, JobTitles type) throws Exception {
         if (count < minimum)

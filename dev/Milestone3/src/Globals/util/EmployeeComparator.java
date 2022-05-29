@@ -1,6 +1,6 @@
 package Globals.util;
 
-import Domain.Service.Objects.Employee;
+import Domain.Service.Objects.Employee.Employee;
 
 import java.util.Comparator;
 

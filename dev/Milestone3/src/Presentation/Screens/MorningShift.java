@@ -10,7 +10,7 @@ public class MorningShift extends Shift {
             "Exit"  //5
     };
 
-    public MorningShift(Screen caller, Domain.Service.Objects.MorningShift sShift) {
+    public MorningShift(Screen caller, Domain.Service.Objects.Shift.MorningShift sShift) {
         super(caller, sShift, extraMenuOptions);
     }
 

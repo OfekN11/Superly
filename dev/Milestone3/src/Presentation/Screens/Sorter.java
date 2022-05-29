@@ -7,7 +7,7 @@ public class Sorter extends Employee {
             "Exit"              //9
     };
 
-    public Sorter(Screen caller, Domain.Service.Objects.Sorter sEmployee) {
+    public Sorter(Screen caller, Domain.Service.Objects.Employee.Sorter sEmployee) {
         super(caller, sEmployee, extraMenuOptions);
     }
 

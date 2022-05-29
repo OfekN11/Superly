@@ -1,6 +1,8 @@
 package Domain.Service.Services;
-import Domain.Service.Objects.Result;
-import Domain.Service.Objects.Shift;
+import Domain.Service.util.Result;
+import Domain.Service.Objects.Shift.Shift;
+import Domain.Service.Services.HR.EmployeeService;
+import Domain.Service.Services.HR.ShiftService;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;

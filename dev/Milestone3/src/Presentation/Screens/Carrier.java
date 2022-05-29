@@ -18,7 +18,7 @@ public class Carrier extends Employee {
 
     private Set<LicenseTypes> licenses;
 
-    public Carrier(Screen caller, Domain.Service.Objects.Carrier sCarrier) {
+    public Carrier(Screen caller, Domain.Service.Objects.Employee.Carrier sCarrier) {
         super(caller, sCarrier, extraMenuOptions);
         licenses = new HashSet<>(sCarrier.licenses);
     }

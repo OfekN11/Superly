@@ -1,7 +1,7 @@
 package Domain.Business.Objects.Employee;
 
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
-import Domain.Service.ServiceEmployeeFactory;
+import Domain.Service.util.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
@@ -22,7 +22,7 @@ public class HR_Manager extends Employee {
     }
 
     @Override
-    public Domain.Service.Objects.Employee accept(ServiceEmployeeFactory factory) {
+    public Domain.Service.Objects.Employee.Employee accept(ServiceEmployeeFactory factory) {
         return factory.createServiceEmployee(this);
     }
 

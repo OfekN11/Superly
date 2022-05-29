@@ -1,7 +1,7 @@
 package Domain.Business.Objects.Employee;
 
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
-import Domain.Service.ServiceEmployeeFactory;
+import Domain.Service.util.ServiceEmployeeFactory;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 
@@ -111,7 +111,7 @@ public abstract class Employee {
         this.certifications = new HashSet<>(certifications);
     }
 
-    public abstract Domain.Service.Objects.Employee accept(ServiceEmployeeFactory factory);
+    public abstract Domain.Service.Objects.Employee.Employee accept(ServiceEmployeeFactory factory);
 
     public static void validateLegalID(String id) throws Exception {
         if (!id.matches(ID_VALIDATING_REGEX))

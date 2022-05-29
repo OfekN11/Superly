@@ -1,6 +1,6 @@
 package Presentation.Screens;
 
-import Domain.Service.Objects.Employee;
+import Domain.Service.Objects.Employee.Employee;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.util.EmployeeComparator;

@@ -1,7 +1,7 @@
 package Domain.Business.Objects.Shift;
 
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
-import Domain.Service.ServiceShiftFactory;
+import Domain.Service.util.ServiceShiftFactory;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -34,7 +34,7 @@ public class MorningShift extends Shift {
     }
 
     @Override
-    public Domain.Service.Objects.Shift accept(ServiceShiftFactory factory) {
+    public Domain.Service.Objects.Shift.Shift accept(ServiceShiftFactory factory) {
         return factory.createServiceShift(this);
     }
 

@@ -7,7 +7,7 @@ public class HR_Manager extends Employee {
             "Exit"              //9
     };
 
-    public HR_Manager(Screen caller, Domain.Service.Objects.HR_Manager sEmployee) {
+    public HR_Manager(Screen caller, Domain.Service.Objects.Employee.HR_Manager sEmployee) {
         super(caller, sEmployee, extraMenuOptions);
     }
 

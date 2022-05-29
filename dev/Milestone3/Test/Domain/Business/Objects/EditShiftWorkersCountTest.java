@@ -1,6 +1,6 @@
 package Domain.Business.Objects;
 
-import Domain.Business.Controllers.ShiftController;
+import Domain.Business.Controllers.HR.ShiftController;
 import Domain.Business.Objects.Shift.MorningShift;
 import Domain.Business.Objects.Shift.Shift;
 

@@ -8,7 +8,7 @@ public class Cashier extends Employee {
             "Exit"              //9
     };
 
-    public Cashier(Screen caller, Domain.Service.Objects.Cashier sEmployee) {
+    public Cashier(Screen caller, Domain.Service.Objects.Employee.Cashier sEmployee) {
         super(caller, sEmployee, extraMenuOptions);
     }
 

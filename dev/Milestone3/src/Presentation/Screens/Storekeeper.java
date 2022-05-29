@@ -7,7 +7,7 @@ public class Storekeeper extends Employee {
             "Exit"              //9
     };
 
-    public Storekeeper(Screen caller, Domain.Service.Objects.Storekeeper sEmployee) {
+    public Storekeeper(Screen caller, Domain.Service.Objects.Employee.Storekeeper sEmployee) {
         super(caller, sEmployee, extraMenuOptions);
     }
 

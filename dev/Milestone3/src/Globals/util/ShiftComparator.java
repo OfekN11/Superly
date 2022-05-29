@@ -1,6 +1,6 @@
 package Globals.util;
 
-import Domain.Service.Objects.Shift;
+import Domain.Service.Objects.Shift.Shift;
 
 import java.util.Comparator;
 

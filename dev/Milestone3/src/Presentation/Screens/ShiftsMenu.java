@@ -1,6 +1,6 @@
 package Presentation.Screens;
 
-import Domain.Service.Objects.Shift;
+import Domain.Service.Objects.Shift.Shift;
 import Globals.Enums.ShiftTypes;
 import static Globals.util.HumanInteraction.*;
 

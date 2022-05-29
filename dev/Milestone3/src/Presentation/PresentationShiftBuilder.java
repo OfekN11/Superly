@@ -1,6 +1,6 @@
 package Presentation;
 
-import Domain.Service.Objects.Employee;
+import Domain.Service.Objects.Employee.Employee;
 import Globals.Enums.Certifications;
 import Globals.Enums.ShiftTypes;
 

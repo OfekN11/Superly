@@ -10,7 +10,7 @@ public class EveningShift extends Shift {
             "Exit"  //5
     };
 
-    public EveningShift(Screen caller, Domain.Service.Objects.EveningShift sShift) {
+    public EveningShift(Screen caller, Domain.Service.Objects.Shift.EveningShift sShift) {
         super(caller, sShift, extraMenuOptions);
     }
 

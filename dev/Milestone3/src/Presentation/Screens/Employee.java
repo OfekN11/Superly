@@ -1,7 +1,6 @@
 package Presentation.Screens;
 
-import Domain.Business.Objects.Constraint;
-import Domain.Service.Objects.Shift;
+import Domain.Service.Objects.Shift.Shift;
 import Globals.Enums.Certifications;
 import Globals.util.ShiftComparator;
 
@@ -33,7 +32,7 @@ public abstract class Employee extends Screen {
      protected final LocalDate startingDate;
      protected Set<Certifications> certifications;
 
-    public Employee(Screen caller, Domain.Service.Objects.Employee sEmployee, String[] extraMenuOptions) {
+    public Employee(Screen caller, Domain.Service.Objects.Employee.Employee sEmployee, String[] extraMenuOptions) {
         super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
         id = sEmployee.id;
         name = sEmployee.name;

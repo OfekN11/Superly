@@ -1,22 +1,16 @@
 package Domain.Business.Controllers;
-import Domain.Business.Objects.Employee.*;
-import Domain.Business.Objects.Shift.EveningShift;
-import Domain.Business.Objects.Shift.MorningShift;
-import Domain.Business.Objects.Shift.Shift;
+import Domain.Business.Controllers.HR.EmployeeController;
+import Domain.Business.Controllers.HR.ShiftController;
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
-import Globals.Enums.LicenseTypes;
 import Globals.Enums.ShiftTypes;
 import org.junit.*;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 

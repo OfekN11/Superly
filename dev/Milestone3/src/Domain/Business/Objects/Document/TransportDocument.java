@@ -1,6 +1,6 @@
 package Domain.Business.Objects.Document;
 
-import Domain.Service.ServiceDocumentFactory;
+import Domain.Service.util.ServiceDocumentFactory;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

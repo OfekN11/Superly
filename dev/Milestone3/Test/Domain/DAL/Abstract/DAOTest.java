@@ -1,16 +1,13 @@
 package Domain.DAL.Abstract;
 
 import Domain.DAL.ConnectionHandler;
-import Domain.Service.Objects.Shift;
 import Globals.Enums.ShiftTypes;
 import org.junit.Test;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
-import Domain.DAL.Controllers.ConstraintDAO;
 
 import static org.junit.Assert.*;
 

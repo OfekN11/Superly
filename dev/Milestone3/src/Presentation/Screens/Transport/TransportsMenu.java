@@ -1,6 +1,6 @@
 package Presentation.Screens.Transport;
 
-import Domain.Service.Objects.Shift;
+import Domain.Service.Objects.Shift.Shift;
 import Globals.util.HumanInteraction;
 import Globals.util.ShiftComparator;
 import Presentation.Objects.Transport.Transport;

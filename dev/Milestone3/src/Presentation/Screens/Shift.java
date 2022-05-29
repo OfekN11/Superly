@@ -1,9 +1,8 @@
 package Presentation.Screens;
 
-import Domain.Service.Objects.Employee;
+import Domain.Service.Objects.Employee.Employee;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
-import Globals.util.HumanInteraction;
 import Globals.util.Supplier;
 
 import java.time.LocalDate;
@@ -47,7 +46,7 @@ public abstract class Shift extends Screen {
 
     private final Map<JobTitles, Integer> getCountByType = new HashMap<>();
 
-    public Shift(Screen caller, Domain.Service.Objects.Shift sShift, String[] extraMenuOptions) {
+    public Shift(Screen caller, Domain.Service.Objects.Shift.Shift sShift, String[] extraMenuOptions) {
         super(caller, Stream.concat(Arrays.stream(menuOptions), Arrays.stream(extraMenuOptions)).toArray(String[]::new));
         date = sShift.date;
 

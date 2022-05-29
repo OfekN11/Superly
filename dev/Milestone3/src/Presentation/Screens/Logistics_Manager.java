@@ -7,7 +7,7 @@ public class Logistics_Manager extends Employee {
             "Exit"              //9
     };
 
-    public Logistics_Manager(Screen caller, Domain.Service.Objects.Logistics_Manager sEmployee) {
+    public Logistics_Manager(Screen caller, Domain.Service.Objects.Employee.Logistics_Manager sEmployee) {
         super(caller, sEmployee, extraMenuOptions);
     }
 

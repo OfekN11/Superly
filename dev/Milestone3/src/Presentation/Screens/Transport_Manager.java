@@ -7,7 +7,7 @@ public class Transport_Manager extends Employee {
             "Exit"              //9
     };
 
-    public Transport_Manager(Screen caller, Domain.Service.Objects.Employee sEmployee) {
+    public Transport_Manager(Screen caller, Domain.Service.Objects.Employee.Employee sEmployee) {
         super(caller, sEmployee, extraMenuOptions);
     }
 
