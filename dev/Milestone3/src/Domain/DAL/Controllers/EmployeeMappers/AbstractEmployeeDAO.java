@@ -1,5 +1,7 @@
 package Domain.DAL.Controllers.EmployeeMappers;
 import Domain.Business.Objects.Employee.Employee;
+import Domain.DAL.Abstract.DataMapper;
+import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.SQLException;
@@ -7,7 +9,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractEmployeeDAO<T extends Employee> extends DateMapper<T> {
+public abstract class AbstractEmployeeDAO<T extends Employee> extends DataMapper<T> {
 
     // fields
     protected final EmployeeCertificationDAO employeeCertificationController;

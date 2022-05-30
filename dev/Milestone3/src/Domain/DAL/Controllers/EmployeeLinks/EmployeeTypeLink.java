@@ -1,5 +1,6 @@
 package Domain.DAL.Controllers.EmployeeLinks;
 
+import Domain.DAL.Abstract.LinkDAO;
 import Globals.Enums.JobTitles;
 
 import java.sql.ResultSet;

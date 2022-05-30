@@ -1,4 +1,6 @@
 package Domain.DAL.Controllers.TransportMudel;
+import Domain.DAL.Abstract.LinkDAO;
+
 import java.util.*;
 
 import java.sql.ResultSet;

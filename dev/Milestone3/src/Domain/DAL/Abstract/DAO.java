@@ -1,5 +1,6 @@
 package Domain.DAL.Abstract;
 
+import Domain.DAL.ConnectionHandler;
 import org.sqlite.util.StringUtils;
 
 import java.sql.*;
@@ -304,6 +305,15 @@ public abstract class DAO {
      */
     protected Connection getConnection() throws SQLException {
         return  DriverManager.getConnection(url);
+    }
+
+    /**
+     * please remember to close the connection in the end of the use
+     * @return A Connection to the table
+     * @throws SQLException
+     */
+    protected ConnectionHandler getConnectionHandler() throws SQLException {
+        return  new ConnectionHandler();
     }
 
     private void validateColumnsNames(List<Integer> columnsLocations) {

@@ -1,5 +1,6 @@
 package Domain.DAL.Controllers.TransportMudel;
 import Domain.Business.Objects.Document.TransportDocument;
+import Domain.DAL.Abstract.DAO;
 import Domain.DAL.ConnectionHandler;
 
 import java.sql.ResultSet;

@@ -1,6 +1,7 @@
 package Domain.DAL.Controllers.TransportMudel;
 
 import Domain.Business.Objects.TransportOrder;
+import Domain.DAL.Abstract.DAO;
 import Domain.DAL.ConnectionHandler;
 import Globals.Enums.OrderStatus;
 

@@ -1,6 +1,8 @@
 package Domain.DAL.Controllers.TransportMudel;
 
 import Domain.Business.Objects.Truck;
+import Domain.DAL.Abstract.DAO;
+import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.ConnectionHandler;
 import Globals.Enums.TruckModel;
 import java.sql.ResultSet;
