@@ -1,7 +1,7 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
-import Domain.Business.Supplier.Order;
-import Domain.Business.Supplier.OrderItem;
+import Domain.Business.Objects.Supplier.Order;
+import Domain.Business.Objects.Supplier.OrderItem;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 

@@ -1,4 +1,4 @@
-package Domain.Business.Supplier;
+package Domain.Business.Objects.Supplier;
 
 import Globals.NotNull;
 

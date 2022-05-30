@@ -1,6 +1,6 @@
 package Domain.Business.Controllers;
 
-import Domain.Business.Supplier.*;
+import Domain.Business.Objects.Supplier.*;
 import Domain.DAL.Controllers.InventoryAndSuppliers.OrderDAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.SuppliersDAO;
 import Globals.Pair;

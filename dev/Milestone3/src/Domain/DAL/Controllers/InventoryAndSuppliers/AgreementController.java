@@ -1,12 +1,9 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
-import Domain.Business.Supplier.AgreementItem;
-import Domain.Business.Supplier.Agreement.Agreement;
+import Domain.Business.Objects.Supplier.AgreementItem;
+import Domain.Business.Objects.Supplier.Agreement.Agreement;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

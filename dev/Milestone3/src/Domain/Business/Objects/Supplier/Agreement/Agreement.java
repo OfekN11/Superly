@@ -1,6 +1,6 @@
-package Domain.Business.Supplier.Agreement;
+package Domain.Business.Objects.Supplier.Agreement;
 
-import Domain.Business.Supplier.AgreementItem;
+import Domain.Business.Objects.Supplier.AgreementItem;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
 import Globals.NotNull;
 

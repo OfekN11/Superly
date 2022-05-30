@@ -1,12 +1,12 @@
 package Domain.Business.Controllers;
 
-import Domain.Business.Inventory.Category;
-import Domain.Business.Inventory.DefectiveItems;
-import Domain.Business.Inventory.SaleToCustomer;
-import Domain.Business.Inventory.Product;
-import Domain.Business.Inventory.StockReport;
-import Domain.Business.Supplier.Order;
-import Domain.Business.Supplier.OrderItem;
+import Domain.Business.Objects.Inventory.Category;
+import Domain.Business.Objects.Inventory.DefectiveItems;
+import Domain.Business.Objects.Inventory.SaleToCustomer;
+import Domain.Business.Objects.Inventory.Product;
+import Domain.Business.Objects.Inventory.StockReport;
+import Domain.Business.Objects.Supplier.Order;
+import Domain.Business.Objects.Supplier.OrderItem;
 import Domain.DAL.Controllers.InventoryAndSuppliers.CategoryDataMapper;
 import Domain.DAL.Controllers.InventoryAndSuppliers.ProductDataMapper;
 import Domain.DAL.Controllers.InventoryAndSuppliers.SalesDataMapper;

@@ -1,6 +1,6 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
-import Domain.Business.Inventory.SaleToCustomer;
+import Domain.Business.Objects.Inventory.SaleToCustomer;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 

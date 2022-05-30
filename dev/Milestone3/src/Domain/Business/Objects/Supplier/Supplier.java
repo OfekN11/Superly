@@ -1,16 +1,15 @@
-package Domain.Business.Supplier;
+package Domain.Business.Objects.Supplier;
 
-import Domain.Business.Supplier.Agreement.Agreement;
-import Domain.Business.Supplier.Agreement.ByOrderAgreement;
-import Domain.Business.Supplier.Agreement.NotTransportingAgreement;
-import Domain.Business.Supplier.Agreement.RoutineAgreement;
+import Domain.Business.Objects.Supplier.Agreement.Agreement;
+import Domain.Business.Objects.Supplier.Agreement.ByOrderAgreement;
+import Domain.Business.Objects.Supplier.Agreement.NotTransportingAgreement;
+import Domain.Business.Objects.Supplier.Agreement.RoutineAgreement;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementItemDAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.OrderDAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.SuppliersDAO;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;

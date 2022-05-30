@@ -1,7 +1,7 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
-import Domain.Business.Supplier.Agreement.Agreement;
-import Domain.Business.Supplier.Agreement.NotTransportingAgreement;
+import Domain.Business.Objects.Supplier.Agreement.Agreement;
+import Domain.Business.Objects.Supplier.Agreement.NotTransportingAgreement;
 import Domain.DAL.Abstract.DAO;
 
 import java.sql.SQLException;

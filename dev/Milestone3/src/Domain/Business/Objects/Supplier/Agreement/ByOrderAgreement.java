@@ -1,4 +1,4 @@
-package Domain.Business.Supplier.Agreement;
+package Domain.Business.Objects.Supplier.Agreement;
 
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
 

@@ -8,7 +8,7 @@ public class Product {
     private final double currentPrice;
     private double weight;
     private String manufacturer;
-    public Product(Domain.Business.Inventory.Product p) {
+    public Product(Domain.Business.Objects.Inventory.Product p) {
         this.id = p.getId();
         this.name = p.getName();
         this.categoryID = p.getCategoryID();

@@ -1,7 +1,5 @@
 package Domain.Service.Objects.InventoryObjects;
 
-import java.util.Map;
-
 public class StockReport {
 
     private final int storeID;
@@ -14,7 +12,7 @@ public class StockReport {
     private final int targetAmountInStore;
 
 
-    public StockReport(Domain.Business.Inventory.StockReport stockReport) {
+    public StockReport(Domain.Business.Objects.Inventory.StockReport stockReport) {
         this.storeID = stockReport.getStoreID();
         this.productID = stockReport.getProductID();
 //        this.productName = stockReport.getProductName();

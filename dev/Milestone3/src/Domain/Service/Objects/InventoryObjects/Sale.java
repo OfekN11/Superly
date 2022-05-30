@@ -1,9 +1,8 @@
 package Domain.Service.Objects.InventoryObjects;
 
-import Domain.Business.Inventory.SaleToCustomer;
+import Domain.Business.Objects.Inventory.SaleToCustomer;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class Sale {

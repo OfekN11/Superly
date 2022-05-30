@@ -1,6 +1,6 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
-import Domain.Business.Supplier.Contact;
+import Domain.Business.Objects.Supplier.Contact;
 import Domain.DAL.Abstract.DAO;
 
 import java.sql.Connection;

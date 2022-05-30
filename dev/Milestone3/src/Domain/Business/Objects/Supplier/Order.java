@@ -1,14 +1,10 @@
-package Domain.Business.Supplier;
+package Domain.Business.Objects.Supplier;
 
 import Domain.DAL.Controllers.InventoryAndSuppliers.OrderDAO;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 public class Order {
 

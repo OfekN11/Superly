@@ -1,4 +1,4 @@
-package Domain.Business.Supplier.Agreement;
+package Domain.Business.Objects.Supplier.Agreement;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
-import Domain.Business.Inventory.DefectiveItems;
+import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 import Globals.Defect;

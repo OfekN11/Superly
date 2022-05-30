@@ -3,7 +3,6 @@ package Domain.Service.Objects.InventoryObjects;
 import Globals.Defect;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class DefectiveItemReport {
     private final int productID;
@@ -15,7 +14,7 @@ public class DefectiveItemReport {
     private final LocalDate date;
     private final Defect defect;
 
-    public DefectiveItemReport(Domain.Business.Inventory.DefectiveItems report) {
+    public DefectiveItemReport(Domain.Business.Objects.Inventory.DefectiveItems report) {
         this.productID=report.getProductID();
         this.storeID=report.getStoreID();
         this.amount=report.getAmount();

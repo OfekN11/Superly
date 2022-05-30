@@ -1,4 +1,4 @@
-package Domain.Business.Inventory;
+package Domain.Business.Objects.Inventory;
 
 import Domain.DAL.Controllers.InventoryAndSuppliers.SalesDataMapper;
 
