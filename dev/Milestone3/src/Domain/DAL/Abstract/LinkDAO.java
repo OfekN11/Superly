@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class LinkDAO<T> extends DataMapper {
+public abstract class LinkDAO<T> extends DAO {
     public LinkDAO(String tableName) {
         super(tableName);
     }
