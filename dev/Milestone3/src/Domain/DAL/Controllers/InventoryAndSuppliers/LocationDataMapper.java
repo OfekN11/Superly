@@ -99,16 +99,20 @@ public class LocationDataMapper extends DataMapper<Location> {
 //        }
     }
 
-    public Collection<Location> getAll() {
+    public Set<Location> getAll() {
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection);
+            Set<Location> result = new HashSet();
             while (instanceResult.next()) {
-                IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
+                Location location = buildObject(instanceResult);
+                IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), location);
+                result.add(location);
             }
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return IDENTITY_MAP.values();
     }
 
     public Collection<Location> getLocationByProduct(int product) {

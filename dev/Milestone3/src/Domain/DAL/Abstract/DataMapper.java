@@ -1,5 +1,7 @@
 package Domain.DAL.Abstract;
 
+import Domain.DAL.ConnectionHandler;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -66,9 +68,37 @@ public abstract class DataMapper<T> extends DAO {
         getMap().put(id,instance);
     }
 
+    protected void removeFromIdentityMap(String id){
+        getMap().remove(id);
+    }
+
+    public int delete(String id) throws SQLException {
+        Set<LinkDAO> links = getAllLinkDTOs();
+        for (LinkDAO link : links)
+            link.remove(id);
+        removeFromIdentityMap(id);
+        return remove(id);
+    }
+
+    public Set<T>getAll()throws Exception{
+        Set<T> output = new HashSet<>();
+        try(ConnectionHandler connection = getConnectionHandler()){
+            ResultSet resultSet = super.select(connection.get());
+            while (resultSet.next())
+                output.add(buildObject(resultSet));
+        }
+        return output;
+    }
+
     protected abstract Map<String, T> getMap();
     protected abstract  LinkDAO getLinkDTO(String setName);
     protected abstract T buildObject(ResultSet instanceResult) throws Exception;
     public abstract void insert(T instance) throws SQLException;
+    /**
+     *
+     * @return a set of all the linkDAOs that the objects holds
+     */
+    protected Set<LinkDAO> getAllLinkDTOs() {return null;}
+
 }
 

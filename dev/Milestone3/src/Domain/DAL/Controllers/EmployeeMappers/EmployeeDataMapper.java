@@ -327,11 +327,7 @@ public class EmployeeDataMapper  {
     }
 
     public boolean validateId(String id) throws Exception{
-        try {
-            return !employeeTypeLink.get(id).isEmpty();
-        }catch (SQLException e){
-            throw new RuntimeException(RUNTIME_ERROR_MSG);
-        }
+        return !employeeTypeLink.get(id).isEmpty();
     }
     public void delete(String id) throws Exception{
         try {
