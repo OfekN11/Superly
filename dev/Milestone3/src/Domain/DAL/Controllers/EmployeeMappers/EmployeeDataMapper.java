@@ -276,49 +276,49 @@ public class EmployeeDataMapper  {
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
-    public Set<Carrier> getCarrier() throws Exception {
+    public Collection<Carrier> getCarrier() throws Exception {
         try {
             return carrierDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
-    public Set<Cashier> getCashier() throws Exception {
+    public Collection<Cashier> getCashier() throws Exception {
         try {
             return cashierDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
-    public Set<Sorter> getSorter() throws Exception {
+    public Collection<Sorter> getSorter() throws Exception {
         try {
             return sorterDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
-    public Set<Storekeeper> getStorekeeper() throws Exception {
+    public Collection<Storekeeper> getStorekeeper() throws Exception {
         try {
             return storekeeperDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
-    public Set<HR_Manager> getHR_Manager() throws Exception {
+    public Collection<HR_Manager> getHR_Manager() throws Exception {
         try {
             return hR_managerDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
-    public Set<Logistics_Manager> getLogistics_Manager() throws Exception {
+    public Collection<Logistics_Manager> getLogistics_Manager() throws Exception {
         try {
             return logistics_managerDataMapper.getAll();
         }catch (SQLException e){
             throw new RuntimeException(RUNTIME_ERROR_MSG);
         }
     }
-    public Set<Transport_Manager> getTransport_Manager() throws Exception {
+    public Collection<Transport_Manager> getTransport_Manager() throws Exception {
         try {
             return transportManagerDataMapper.getAll();
         }catch (SQLException e){

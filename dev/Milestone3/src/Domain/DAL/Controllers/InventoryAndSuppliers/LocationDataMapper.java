@@ -99,7 +99,7 @@ public class LocationDataMapper extends DataMapper<Location> {
 //        }
     }
 
-    public Set<Location> getAll() {
+    public Collection<Location> getAll() {
         try(Connection connection = getConnection()) {
             ResultSet instanceResult = select(connection);
             Set<Location> result = new HashSet();

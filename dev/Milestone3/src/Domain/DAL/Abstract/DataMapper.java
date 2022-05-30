@@ -80,7 +80,7 @@ public abstract class DataMapper<T> extends DAO {
         return remove(id);
     }
 
-    public Set<T>getAll()throws Exception{
+    public Collection<T> getAll()throws Exception{
         Set<T> output = new HashSet<>();
         try(ConnectionHandler connection = getConnectionHandler()){
             ResultSet resultSet = super.select(connection.get());

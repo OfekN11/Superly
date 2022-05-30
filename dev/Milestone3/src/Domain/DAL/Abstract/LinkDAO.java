@@ -41,4 +41,8 @@ public abstract class LinkDAO<T> extends DAO {
 
 
     protected abstract T buildObject(ResultSet resultSet) throws SQLException;
+
+    public void add(int id, T instance) throws SQLException {
+        insert(Arrays.asList(id,instance));
+    }
 }
