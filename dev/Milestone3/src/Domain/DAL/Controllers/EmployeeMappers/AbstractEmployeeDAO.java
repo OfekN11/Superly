@@ -1,7 +1,5 @@
 package Domain.DAL.Controllers.EmployeeMappers;
 import Domain.Business.Objects.Employee.Employee;
-import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.DateMapper;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.SQLException;

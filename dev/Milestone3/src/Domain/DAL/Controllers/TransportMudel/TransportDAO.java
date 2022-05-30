@@ -1,13 +1,11 @@
 package Domain.DAL.Controllers.TransportMudel;
 
 import Domain.Business.Objects.Transport;
-import Domain.DAL.Abstract.DAO;
 import Domain.DAL.ConnectionHandler;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.TransportStatus;
 import Globals.Pair;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;

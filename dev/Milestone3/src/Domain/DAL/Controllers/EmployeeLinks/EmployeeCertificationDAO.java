@@ -1,5 +1,4 @@
 package Domain.DAL.Controllers.EmployeeLinks;
-import Domain.DAL.Abstract.LinkDAO;
 import Globals.Enums.Certifications;
 
 import java.sql.ResultSet;

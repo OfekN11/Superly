@@ -1,6 +1,5 @@
 package Domain.DAL.Abstract;
 
-import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,17 +8,19 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class LinkDAO<T> extends DAO {
+public abstract class LinkDAO<T> extends DataMapper {
     public LinkDAO(String tableName) {
         super(tableName);
     }
 
-    public Set<T> get(String id) throws SQLException {
+    public Set<T> get(String id){
         Set<T> output = new HashSet<>();
-        try(ConnectionHandler connection = getConnectionHandler()){
-            ResultSet resultSet = select(connection.get(),id);
+        try(Connection connection = getConnection()){
+            ResultSet resultSet = select(connection,id);
             while (resultSet.next())
                 output.add(buildObject(resultSet));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return output;
     }
@@ -40,8 +41,4 @@ public abstract class LinkDAO<T> extends DAO {
 
 
     protected abstract T buildObject(ResultSet resultSet) throws SQLException;
-
-    public void add(int id, T instance) throws SQLException {
-        insert(Arrays.asList(id,instance));
-    }
 }

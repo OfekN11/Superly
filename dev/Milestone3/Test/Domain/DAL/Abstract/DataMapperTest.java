@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-public class DateMapperTest {
+public class DataMapperTest {
 
     ConstraintDAO dataMapper = new ConstraintDAO();
     ConstraintsEmployeesLink link = new ConstraintsEmployeesLink();
