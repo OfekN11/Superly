@@ -1,12 +1,16 @@
 package Domain.DAL.Abstract;
 
+import Domain.Business.Objects.Shift.MorningShift;
+import Domain.DAL.Controllers.ShiftDataMappers.MorningShiftDAO;
 import Domain.DAL.Controllers.ShiftEmployeesLink.ConstraintsEmployeesLink;
+import Domain.DAL.Controllers.ShiftEmployeesLink.ShiftsStorekeepersLink;
 import Globals.Enums.ShiftTypes;
-import org.junit.Test;
+import org.junit.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,53 +18,51 @@ import static org.junit.Assert.*;
 
 public class DateMapperTest {
 
-    ConstraintDAO dataMapper = new ConstraintDAO();
-    ConstraintsEmployeesLink link = new ConstraintsEmployeesLink();
-    LocalDate birthday = LocalDate.parse("1998-07-25");
-    ShiftTypes morning = ShiftTypes.Morning;
-    ShiftTypes evening = ShiftTypes.Evening;
-    String morningId = birthday.toString()+morning.toString();
-    String eveningId = birthday.toString()+evening.toString();
-    Constraint morningConstraint = new Constraint(birthday,morning,new HashSet<>());
-    Constraint eveningConstraint = new Constraint(birthday,ShiftTypes.Evening,new HashSet<>());
+    static MorningShiftDAO dataMapper = new MorningShiftDAO();
+    static LocalDate birthday = LocalDate.parse("1998-07-25");
+    static ShiftTypes morning = ShiftTypes.Morning;
+    static ShiftTypes evening = ShiftTypes.Evening;
+    static String morningId = birthday.toString()+morning.toString();
+    static String eveningId = birthday.toString()+evening.toString();
+    static String id  = birthday.toString() + morningId;
+
+    @BeforeClass
+    public static void beforeAll() throws Exception {
+        dataMapper.delete(id);
+    }
+
+    @AfterClass
+    public static void afterAll() throws Exception {
+        dataMapper.delete(id);
+    }
+
+    @Before
+    public void before() throws Exception {
+        dataMapper.insert(Arrays.asList(id,birthday,-1,10,10,10,10,10,10,10));
+    }
+
+    @After
+    public void after() throws Exception {
+        dataMapper.delete(id);
+    }
+
 
     @Test
     public void get() throws Exception {
         try {
-            removeConstraint(morningConstraint);
-            assertNull(dataMapper.get(morningId));
-            dataMapper.save(morningId,morningConstraint);
-            assertNotNull(dataMapper.get(morningId));
-            assertNotNull(dataMapper.get(morningId));
+            assertNotNull(dataMapper.get(id));
+            dataMapper.delete(eveningId);
+            assertNull(dataMapper.get(eveningId));
         } catch (SQLException throwables) {
             fail();
         }
     }
 
-    public void removeConstraint(Constraint constraint) throws SQLException {
-        String id =constraint.getDate()+constraint.getType().toString();
-        link.replaceSet(id,new HashSet<>());
-        dataMapper.remove(id);
-        dataMapper.removeFromIdentityMap(id);
-    }
-
-    public void saveConstraint(Constraint constraint) throws SQLException{
-        constraint.getEmployees().add("12");
-        String id =constraint.getDate()+constraint.getType().toString();
-        dataMapper.save(id,constraint);
-    }
-
     @Test
     public void updateProperty() throws Exception {
         try {
-            saveConstraint(morningConstraint);
-            if (dataMapper.get(eveningId)!=null)
-                removeConstraint(eveningConstraint);
-            dataMapper.updateProperty(morningId,3,evening);
-            dataMapper.updateProperty(morningId,1,eveningId);
-            assertNotNull(dataMapper.get(eveningId));
-            assertEquals(dataMapper.get(eveningId).getType(),ShiftTypes.Evening);
-            removeConstraint(dataMapper.get(eveningId));
+            dataMapper.updateProperty(id,3,"189");
+            assertEquals(dataMapper.get(id).getShiftManagerId(),"189");
         } catch (SQLException throwables) {
             fail();
         }
@@ -69,11 +71,12 @@ public class DateMapperTest {
     @Test
     public void addToSet() {
         try {
-            saveConstraint(morningConstraint);
-            assertEquals(link.get(morningId).size(),1);
-            dataMapper.addToSet(morningId,"employees","14");
-            assertEquals(link.get(morningId).size(),2);
+            dataMapper.removeFromSet(id,"storekeepers","198");
+            dataMapper.addToSet(id,"storekeepers","198");
+            assertTrue(dataMapper.get(id).getStorekeeperIDs().contains("198"));
         } catch (SQLException throwables) {
+            fail();
+        } catch (Exception e) {
             fail();
         }
     }
@@ -81,11 +84,13 @@ public class DateMapperTest {
     @Test
     public void removeFromSet() {
         try {
-            saveConstraint(morningConstraint);
-            assertEquals(link.get(morningId).size(),1);
-            dataMapper.removeFromSet(morningId,"employees","12");
-            assertEquals(link.get(morningId).size(),0);
+            if (!dataMapper.get(id).getStorekeeperIDs().contains("198"))
+                dataMapper.addToSet(id,"storekeepers","198");
+            dataMapper.removeFromSet(id,"storekeepers","198");
+            assertFalse(dataMapper.get(id).getStorekeeperIDs().contains("198"));
         } catch (SQLException throwables) {
+            fail();
+        } catch (Exception e) {
             fail();
         }
     }
@@ -93,26 +98,32 @@ public class DateMapperTest {
     @Test
     public void replaceSet() {
         try {
-            saveConstraint(morningConstraint);
-            assertEquals(link.get(morningId).size(),1);
+            ShiftsStorekeepersLink shiftsStorekeepersLink = new ShiftsStorekeepersLink();
             Set<String> newSet = new HashSet<>();
-            newSet.add("14");
-            dataMapper.replaceSet(morningId,"employees",newSet);
-            assertEquals(link.get(morningId).size(),1);
-            assertEquals(new ArrayList<>(link.get(morningId)).get(0),"14");
+            newSet.add("205");
+            dataMapper.removeFromSet(id,"storekeepers","198");
+            dataMapper.removeFromSet(id,"storekeepers","200");
+            dataMapper.addToSet(id,"storekeepers","198");
+            dataMapper.addToSet(id,"storekeepers","200");
+            assertTrue(dataMapper.get(id).getStorekeeperIDs().size()>1);
+            dataMapper.replaceSet(id,"storekeepers",newSet);
+            assertEquals(shiftsStorekeepersLink.get(id).size(),1);
+            assertTrue(shiftsStorekeepersLink.get(id).contains("205"));
         } catch (SQLException throwables) {
             fail();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Test
     public void save() throws Exception {
         try {
-            removeConstraint(morningConstraint);
-            morningConstraint.getEmployees().add("12");
-            dataMapper.save(morningId,morningConstraint);
-            assertNotNull(dataMapper.get(morningId));
-            assertTrue(link.get(morningId).size()>0);
+            String newID = birthday.plusDays(1).toString()+morning.toString();;
+            dataMapper.delete(newID);
+            MorningShift shift = new MorningShift(birthday.plusDays(1),"1235",12,12,12,12,12,12,12);
+            dataMapper.save(newID,shift);
+            assertNotNull(dataMapper.get(newID));
         } catch (SQLException throwables) {
             fail();
         }
