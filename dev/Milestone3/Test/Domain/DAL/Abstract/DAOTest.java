@@ -1,8 +1,9 @@
 package Domain.DAL.Abstract;
 
 import Domain.DAL.ConnectionHandler;
+import Domain.DAL.Controllers.ShiftDataMappers.EveningShiftDAO;
 import Globals.Enums.ShiftTypes;
-import org.junit.Test;
+import org.junit.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,18 +14,39 @@ import static org.junit.Assert.*;
 
 public class DAOTest {
 
-    ConstraintDAO constraintDataMapper = new ConstraintDAO();
+    static EveningShiftDAO eveningShiftDataMapper = new EveningShiftDAO();
+    static LocalDate localDate = LocalDate.parse("1998-07-25");
+    static ShiftTypes morning =ShiftTypes.Morning;
+    static String id = localDate.toString()+morning.toString();
+    @BeforeClass
+    public static void beforeAll() throws Exception {
+        eveningShiftDataMapper.delete(id);
+    }
+
+    @AfterClass
+    public static void afterAll() throws Exception {
+        eveningShiftDataMapper.delete(id);
+    }
+
+    @Before
+    public void before() throws Exception {
+        eveningShiftDataMapper.insert(Arrays.asList(id,localDate,-1,10,10,10,10,10,10,10));
+    }
+
+    @After
+    public void after() throws Exception {
+        eveningShiftDataMapper.delete(id);
+    }
+
+
     @Test
     public void testSelect1() {
-        try (ConnectionHandler connection = constraintDataMapper.getConnectionHandler()){
+        try (ConnectionHandler connection = eveningShiftDataMapper.getConnectionHandler()){
             insert();
-            ResultSet resultSet = constraintDataMapper.select(connection.get(), Arrays.asList(1,2),Arrays.asList(LocalDate.parse("1998-07-25"),ShiftTypes.Morning));
+            ResultSet resultSet = eveningShiftDataMapper.select(connection.get(), Arrays.asList(1),Arrays.asList(id));
             while (resultSet.next()) {
-                assertEquals(LocalDate.parse("1998-07-25"), resultSet.getDate(2).toLocalDate());
-                if (!resultSet.getDate(1).toLocalDate().equals(LocalDate.parse("1998-07-25")) || !resultSet.getString(2).equals(ShiftTypes.Morning.toString()) || !resultSet.getString(3).equals("12"))
-                    fail();
+                assertEquals(localDate, resultSet.getDate(2).toLocalDate());
             }
-            resultSet = constraintDataMapper.select(connection.get(),Arrays.asList(1,2),Arrays.asList(LocalDate.parse("1998-07-25"),ShiftTypes.Morning));
         } catch (SQLException throwables) {
             fail();
         }
@@ -32,10 +54,10 @@ public class DAOTest {
 
     @Test
     public void testSelect2() {
-        try (ConnectionHandler connection = constraintDataMapper.getConnectionHandler()){
-            ResultSet resultSet = constraintDataMapper.select(connection.get(),Arrays.asList(1,2),Arrays.asList(1,2),Arrays.asList(LocalDate.parse("1998-07-25"),ShiftTypes.Morning));
+        try (ConnectionHandler connection = eveningShiftDataMapper.getConnectionHandler()){
+            ResultSet resultSet = eveningShiftDataMapper.select(connection.get(),Arrays.asList(2,3),Arrays.asList(1),Arrays.asList(id));
             while (resultSet.next()){
-                assertEquals(LocalDate.parse("1998-07-25"),resultSet.getDate(1).toLocalDate());
+                assertEquals(localDate,resultSet.getDate(1).toLocalDate());
                 assertEquals(ShiftTypes.Morning.toString(),resultSet.getString(2));
                 assertThrows(SQLException.class,()->resultSet.getString(3));
             }
@@ -47,8 +69,8 @@ public class DAOTest {
     @Test
     public void insert() {
         try {
-            constraintDataMapper.remove(LocalDate.parse("1998-07-25").toString() + ShiftTypes.Morning.toString());
-            assertEquals(1,constraintDataMapper.insert(Arrays.asList(LocalDate.parse("1998-07-25").toString()+ShiftTypes.Morning,LocalDate.parse("1998-07-25"),ShiftTypes.Morning)));
+            eveningShiftDataMapper.remove(id);
+            assertEquals(1, eveningShiftDataMapper.insert(Arrays.asList(id,localDate,-1,10,10,10,10,10,10,10)));
         } catch (SQLException throwables) {
             fail();
         }
@@ -57,23 +79,18 @@ public class DAOTest {
     @Test
     public void testRemove() throws SQLException {
         try{
-            constraintDataMapper.insert(Arrays.asList(LocalDate.parse("1998-07-25"),ShiftTypes.Morning,"12"));
+            eveningShiftDataMapper.insert(Arrays.asList(id,localDate,-1,10,10,10,10,10,10,10));
         } catch (SQLException throwables) {
 
         }finally {
-            assertEquals(1,constraintDataMapper.remove(Arrays.asList(1,2,3),Arrays.asList(LocalDate.parse("1998-07-25"),ShiftTypes.Morning,"12")));
+            assertEquals(1, eveningShiftDataMapper.remove(id));
         }
     }
 
     @Test
     public void update() {
-        insert();
-        try (ConnectionHandler connection = constraintDataMapper.getConnectionHandler()){
-            insert();
-            constraintDataMapper.update(Arrays.asList(3),Arrays.asList(ShiftTypes.Evening),Arrays.asList(2),Arrays.asList(LocalDate.parse("1998-07-25")));
-            ResultSet resultSet = constraintDataMapper.select(connection.get(),LocalDate.parse("1998-07-25").toString()+ShiftTypes.Morning);
-            resultSet.next();
-            assertEquals(ShiftTypes.Evening.toString(),resultSet.getString(3));
+        try (ConnectionHandler connection = eveningShiftDataMapper.getConnectionHandler()){
+            assertEquals(1,eveningShiftDataMapper.update(Arrays.asList(4),Arrays.asList(9),Arrays.asList(1),Arrays.asList(id)));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             fail();
