@@ -186,31 +186,31 @@ public class EmployeeController {
         return employeeDataMapper.get();
     }
 
-    public Set<Carrier> getCarrier() throws Exception {
+    public Collection<Carrier> getCarrier() throws Exception {
         return employeeDataMapper.getCarrier();
     }
 
-    public Set<Cashier> getCashier() throws Exception {
+    public Collection<Cashier> getCashier() throws Exception {
         return employeeDataMapper.getCashier();
     }
 
-    public Set<Sorter> getSorter() throws Exception {
+    public Collection<Sorter> getSorter() throws Exception {
         return employeeDataMapper.getSorter();
     }
 
-    public Set<Storekeeper> getStorekeeper() throws Exception {
+    public Collection<Storekeeper> getStorekeeper() throws Exception {
         return employeeDataMapper.getStorekeeper();
     }
 
-    public Set<HR_Manager> getHR_Manager() throws Exception {
+    public Collection<HR_Manager> getHR_Manager() throws Exception {
         return employeeDataMapper.getHR_Manager();
     }
 
-    public Set<Logistics_Manager> getLogistics_Manager() throws Exception {
+    public Collection<Logistics_Manager> getLogistics_Manager() throws Exception {
         return employeeDataMapper.getLogistics_Manager();
     }
 
-    public Set<Transport_Manager> getTransport_Manager() throws Exception {
+    public Collection<Transport_Manager> getTransport_Manager() throws Exception {
         return employeeDataMapper.getTransport_Manager();
     }
 

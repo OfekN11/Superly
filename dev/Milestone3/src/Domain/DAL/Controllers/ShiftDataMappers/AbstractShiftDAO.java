@@ -1,7 +1,7 @@
 package Domain.DAL.Controllers.ShiftDataMappers;
 import Domain.Business.Objects.Shift.Shift;
+import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
-import Domain.DAL.Abstract.DateMapper;
 import Domain.DAL.Controllers.ShiftEmployeesLink.ConstraintsEmployeesLink;
 import Domain.DAL.Controllers.ShiftEmployeesLink.*;
 
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractShiftDAO<T extends Shift> extends DateMapper<T> {
+public abstract class AbstractShiftDAO<T extends Shift> extends DataMapper<T> {
 
     protected final ShiftsCarriersLink shiftsCarriersLink;
     protected final ShiftsCashiersLink shiftsCashiersLink;

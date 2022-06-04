@@ -5,11 +5,9 @@ import Domain.DAL.Abstract.DAO;
 import Domain.DAL.ConnectionHandler;
 import Globals.Enums.OrderStatus;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class TransportOrderDAO extends DAO {
     private final static Map<Integer, TransportOrder> TRANSPORT_ORDER_MAP = new HashMap<>();

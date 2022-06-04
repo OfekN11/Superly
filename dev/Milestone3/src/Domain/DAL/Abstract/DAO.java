@@ -1,5 +1,7 @@
 package Domain.DAL.Abstract;
+
 import Domain.DAL.ConnectionHandler;
+import org.sqlite.util.StringUtils;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -8,17 +10,16 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class DAO {
-    private final static String dbName= "Superly.db"; // need to be change!
-    String url = String.format("jdbc:sqlite:%s\\%s",System.getProperty("user.dir"),dbName);
-    // String url = String.format("jdbc:sqlite:%s/%s",System.getProperty("user.dir"),dbName); the url for the jar
+    private final static String dbName= "suppliers_inventory_DB.db"; // need to be change!
+    String url = String.format("jdbc:sqlite:%s/%s",System.getProperty("user.dir"),dbName);
     private final static String SELECT_QUERY = "SELECT %s from %s where %s";
     private final static String INSERT_QUERY = "INSERT INTO %s VALUES (%s)";
-    private final static String DELETE_QUERY = "DELETE FROM %s WHERE %s";
+    private final static String DELETE_QUERY = "DELETE FROM %s WHERE %s;";
     private final static String UPDATE_QUERY = "UPDATE %s SET %s WHERE %s";
 
 
     // properties
-    private String tableName; // this field will be valid if we will save data in tables
+    protected String tableName; // this field will be valid if we will save data in tables
     private List<String> tableColumnNames;
     // constructor
     public DAO(String tableName) {
@@ -33,9 +34,9 @@ public abstract class DAO {
      */
     protected void setTableColumnsNames(){
         tableColumnNames = new LinkedList<>();
-        try (ConnectionHandler connection = getConnectionHandler()){
+        try (Connection connection = getConnection()){
 
-            ResultSetMetaData setMetaData = executeQuery(connection.get(),String.format(SELECT_QUERY,"*",tableName,"true")).getMetaData();
+            ResultSetMetaData setMetaData = executeQuery(connection,String.format(SELECT_QUERY,"*",tableName,"true")).getMetaData();
             for (int i =0; i < setMetaData.getColumnCount();i++)
                 tableColumnNames.add(setMetaData.getColumnLabel(i+1));
         }
@@ -53,8 +54,8 @@ public abstract class DAO {
      * @throws SQLException
      */
     public ResultSet executeQuery(Connection connection,String executeString) throws SQLException {
-            Statement statement = connection.createStatement();
-            return statement.executeQuery(executeString);
+        Statement statement = connection.createStatement();
+        return statement.executeQuery(executeString);
     }
 
     /**
@@ -64,8 +65,8 @@ public abstract class DAO {
      * @throws SQLException
      */
     public boolean executeNonQuery(String executeString) throws SQLException {
-        try (ConnectionHandler connection = getConnectionHandler()){
-            Statement statement = connection.get().createStatement();
+        try (Connection connection = getConnection()){
+            Statement statement = connection.createStatement();
             return statement.execute(executeString);
         }
     }
@@ -79,9 +80,9 @@ public abstract class DAO {
      * @throws SQLException
      */
     public ResultSet executeQuery(Connection connection, String executeStringWithReplaceable, List<Object> values) throws SQLException {
-            PreparedStatement preparedStatement = connection.prepareStatement(executeStringWithReplaceable);
-            replaceQuestionMarks(preparedStatement,values);
-            return preparedStatement.executeQuery();
+        PreparedStatement preparedStatement = connection.prepareStatement(executeStringWithReplaceable);
+        replaceQuestionMarks(preparedStatement,values);
+        return preparedStatement.executeQuery();
     }
 
     /**
@@ -92,12 +93,11 @@ public abstract class DAO {
      * @throws SQLException
      */
     public int executeNonQuery(String executeStringWithReplaceable, List<Object> values) throws SQLException {
-        try (ConnectionHandler connection = getConnectionHandler()){
-            PreparedStatement preparedStatement = connection.get().prepareStatement(executeStringWithReplaceable);
+        try (Connection connection = getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(executeStringWithReplaceable);
             replaceQuestionMarks(preparedStatement,values);
             return preparedStatement.executeUpdate();
         }
-
     }
 
     /**
@@ -135,6 +135,23 @@ public abstract class DAO {
     }
 
     /**
+     * gets all the rows which withstands the constraints from {@param column } in {@param value}
+     * @param connection a connection to the DB, should be close from the calling function when finish to read the result!
+     * @param columnLocation the column location in the db, starting with 1 which are going to be the conditions in the "where" statement.
+     * @param values the conditions value to the column you want to get from the DB
+     * @return ResultSet witch contains the row where column=value
+     * @throws SQLException
+     */
+    public ResultSet select(Connection connection, Integer columnLocation, List<?> values) throws SQLException {
+        validateColumnsNames(Arrays.asList(columnLocation));
+        String selectColumnsString = Arrays.asList(columnLocation).stream().map(this::getColumnName).collect(Collectors.joining(", "));
+        String test = values.stream().
+                map(i -> String.valueOf(i)).
+                collect(Collectors.joining(",", "(", ")"));
+        return executeQuery(connection,String.format("SELECT * from %s where %s in %s", tableName, selectColumnsString, test));
+    }
+
+    /**
      * gets all the rows which withstands the constraints from {@param column } = {@param value}
      * @param connection a connection to the DB, should be close from the calling function when finish to read the result!
      * @param selectColumnsLocation the columns location in the table, starting with 1, which you want to have in your result
@@ -151,13 +168,26 @@ public abstract class DAO {
     }
 
     /**
+     * gets all the rows which withstands the constraints from {@param column } in {@param value}
+     * @param connection a connection to the DB, should be close from the calling function when finish to read the result!
+     * @param columnLocation the column location in the db, starting with 1 which are going to be the conditions in the "where" statement.
+     * @return ResultSet witch contains the row where column=value
+     * @throws SQLException
+     */
+    public ResultSet getMax(Connection connection, Integer columnLocation) throws SQLException {
+        validateColumnsNames(Arrays.asList(columnLocation));
+        String selectColumnsString = Arrays.asList(columnLocation).stream().map(this::getColumnName).collect(Collectors.joining(", "));
+        return executeQuery(connection,String.format("SELECT max(%s) from %s",selectColumnsString, tableName));
+    }
+
+    /**
      *
      * @param values the values the rows u want to add, should be in the db order
      * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
      * @throws SQLException
      */
     public int insert(List<Object> values) throws SQLException {
-            return executeNonQuery(String.format(INSERT_QUERY,tableName, createQuestionMarkString(values.size())),values);
+        return executeNonQuery(String.format(INSERT_QUERY,tableName, createQuestionMarkString(values.size())),values);
     }
 
 
@@ -241,7 +271,9 @@ public abstract class DAO {
      */
     private static void replaceQuestionMarks(PreparedStatement preparedStatement, List<Object> values) throws SQLException {
         for(int i =0; i< values.size();i++){
-            if (Integer.class.equals(values.get(i).getClass())) {
+            if (values.get(i)==null) {
+                preparedStatement.setNull(i+1, Types.NULL);
+            } else if (Integer.class.equals(values.get(i).getClass())) {
                 preparedStatement.setInt(i + 1, (Integer) values.get(i));
             } else if (String.class.equals(values.get(i).getClass())) {
                 preparedStatement.setString(i + 1, (String) values.get(i));
@@ -261,12 +293,18 @@ public abstract class DAO {
             else if (values.get(i).getClass().isEnum()){
                 preparedStatement.setString(i + 1, values.get(i).toString());
             }
-            else if(Boolean.class.equals(values.get(i).getClass())){
-                preparedStatement.setBoolean(i + 1, (Boolean) values.get(i));
-            }
             else
                 throw new RuntimeException("Did not specified this kind of data");
         }
+    }
+
+    /**
+     * please remember to close the connection in the end of the use
+     * @return A Connection to the table
+     * @throws SQLException
+     */
+    protected Connection getConnection() throws SQLException {
+        return  DriverManager.getConnection(url);
     }
 
     /**
@@ -293,4 +331,6 @@ public abstract class DAO {
     protected String getColumnName(int index){
         return tableColumnNames.get(index-1);
     }
+
 }
+
