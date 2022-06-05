@@ -1,0 +1,64 @@
+title Login
+
+actor Employee
+participant Facade
+participant eService - EmployeeService
+participant result - Result
+participant factory - ServiceEmployeeFactory
+participant sEmployee - SEmployee
+participant eController - EmployeeController
+participant bEmployee - BusinessEmployee
+
+Employee->Facade: 1 login(eID)
+activate Facade
+Facade->eService - EmployeeService:1.1 getEmployee(eID)
+activate eService - EmployeeService
+eService - EmployeeService->eController - EmployeeController:1.1.1 getEmployee(eID)
+activate eController - EmployeeController
+ref over eController - EmployeeController, bEmployee - BusinessEmployee : Get Employee
+
+alt eID exists in the system
+eController - EmployeeController -->eService - EmployeeService:1.1.1.1A bEmployee
+eService - EmployeeService->factory - ServiceEmployeeFactory:1.1.2A createServiceEmployee(bEmployee)
+activate factory - ServiceEmployeeFactory
+factory - ServiceEmployeeFactory->factory - ServiceEmployeeFactory:1.1.2A.1 visitorPattern()
+activate factory - ServiceEmployeeFactory
+factory - ServiceEmployeeFactory->*sEmployee - SEmployee: 1.1.2A.1.1 <<create(bEmployee)>>
+deactivate factory - ServiceEmployeeFactory
+factory - ServiceEmployeeFactory-->eService - EmployeeService:1.1.2A.2 sEmploye
+deactivate factory - ServiceEmployeeFactory
+eService - EmployeeService->*result - Result: 1.1.3A <<createOk(sEmployee)>>
+
+else else
+eController - EmployeeController -->eService - EmployeeService:1.1.1.1B Error
+deactivate eController - EmployeeController
+eService - EmployeeService->*result - Result: 1.1.2B <<createFailure(Error.msg)>>
+end 
+
+eService - EmployeeService-->Facade:1.1.4 result
+deactivate eService - EmployeeService
+
+alt result is Ok
+alt Employee is Sorter
+Facade->Facade:1.2AA openSorterMenu(result.val)
+else Employee is Storekeeper
+Facade->Facade:1.2AB openStorekeeperMenu(result.val)
+else Employee is Carrier
+Facade->Facade:1.2AC openCarrierMenu(result.val)
+else Employee is Cashier
+Facade->Facade:1.2AD openCashierMenu(result.val)
+else Employee is HR manager
+Facade->Facade:1.2AE openHRManagerMenu(result.val)
+else Employee is Logistics manager
+Facade->Facade:1.2AF openLogisticsManagerMenu(result.val)
+else Employee is Transport manager
+Facade->Facade:1.2AG openTransportManagerMenu(result.val)
+end
+destroy sEmployee - SEmployee
+destroy result - Result
+
+else else
+Facade-->Employee:1.2B result.error
+destroy result - Result
+deactivate Facade
+end
