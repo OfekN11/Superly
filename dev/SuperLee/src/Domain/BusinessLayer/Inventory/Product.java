@@ -301,6 +301,7 @@ public class Product {
         StockReport stockReport = stockReports.get(store);
         if (stockReport==null) {
             stockReport = STOCK_REPORT_DATA_MAPPER.get(store, id);
+            //stockReports.put(store, stockReport);
         }
         return stockReport;
     }

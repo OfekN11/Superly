@@ -84,13 +84,13 @@ class StockReportTest {
         assertTrue(stockReport.isLow());
         assertEquals(100, stockReport.getMinAmountInStore());
         assertDoesNotThrow(()->product.changeProductMin(store,150));
-        assertEquals(150, stockReport.getMinAmountInStore());
-        assertTrue(stockReport.isLow());
-        stockReport.returnItems(100);
-        assertTrue(stockReport.isLow());
-        stockReport.changeMin(50);
-        assertFalse(stockReport.isLow());
-        stockReport.changeMin(100);
-        assertFalse(stockReport.isLow());
+        assertEquals(150, product.getStockReport(store).getMinAmountInStore());
+        assertTrue(product.getStockReport(store).isLow());
+        product.getStockReport(store).returnItems(100);
+        assertTrue(product.getStockReport(store).isLow());
+        product.getStockReport(store).changeMin(50);
+        assertFalse(product.getStockReport(store).isLow());
+        product.getStockReport(store).changeMin(100);
+        assertFalse(product.getStockReport(store).isLow());
     }
 }
