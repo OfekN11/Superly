@@ -4,9 +4,10 @@ import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HR_ManagerDAO extends AbstractEmployeeDAO<HR_Manager> {
-    private static Map<String, HR_Manager> HR_MANAGERS_MAP = new HashMap<>();
+    private static Map<String, HR_Manager> HR_MANAGERS_MAP = new ConcurrentHashMap<>();
 
 
     public HR_ManagerDAO() {

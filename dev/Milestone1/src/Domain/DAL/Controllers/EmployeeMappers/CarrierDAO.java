@@ -11,10 +11,11 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CarrierDAO extends AbstractEmployeeDAO<Carrier> {
 
-    private final static Map<String, Carrier> CARRIER_IDENTITY_MAP = new HashMap<>();
+    private final static Map<String, Carrier> CARRIER_IDENTITY_MAP = new ConcurrentHashMap<>();
     private final CarrierLicensesDAO carrierLicensesDAO;
 
     public CarrierDAO() {

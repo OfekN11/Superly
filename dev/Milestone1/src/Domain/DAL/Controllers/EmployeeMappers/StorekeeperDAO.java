@@ -4,9 +4,10 @@ import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class StorekeeperDAO extends AbstractEmployeeDAO<Storekeeper> {
-    private static Map<String, Storekeeper> STOREKEEPER_IDENTITY_MAP = new HashMap<>();
+    private static Map<String, Storekeeper> STOREKEEPER_IDENTITY_MAP = new ConcurrentHashMap<>();
     EmployeeCertificationDAO employeeCertificationController ;
 
 

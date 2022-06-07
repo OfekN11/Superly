@@ -6,9 +6,10 @@ import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TransportManagerDAO extends AbstractEmployeeDAO<Transport_Manager> {
-    private static Map<String, Transport_Manager> TRANSPORT_MANAGER_IDENTITY_MAP = new HashMap<>();
+    private static Map<String, Transport_Manager> TRANSPORT_MANAGER_IDENTITY_MAP = new ConcurrentHashMap<>();
 
 
     public TransportManagerDAO() {

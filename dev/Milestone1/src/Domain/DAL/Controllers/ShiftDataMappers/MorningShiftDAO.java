@@ -5,9 +5,10 @@ import Domain.Business.Objects.Shift.MorningShift;
 import Globals.Enums.ShiftTypes;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MorningShiftDAO extends AbstractShiftDAO<MorningShift> {
-    private static Map<String, MorningShift> MORNING_SHIFTS_IDENTITY_MAP = new HashMap<>();
+    private static Map<String, MorningShift> MORNING_SHIFTS_IDENTITY_MAP = new ConcurrentHashMap<>();
 
     public MorningShiftDAO() {
         super("MorningShifts");

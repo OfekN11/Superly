@@ -11,7 +11,7 @@ public abstract class DateMapper<T> extends DAO {
         super(tableName);
     }
 
-    public T get(String id) throws Exception {
+    public synchronized T get(String id) throws Exception {
         Map<String,T> map = getMap();
         T output = map.get(id);
         if (output != null)
@@ -41,7 +41,7 @@ public abstract class DateMapper<T> extends DAO {
      * @throws RuntimeException
      * @throws SQLException
      */
-    public  <K> void updateProperty (String id, int propertyColumnNumber,K toUpdate) throws RuntimeException, SQLException {
+    public synchronized  <K> void updateProperty (String id, int propertyColumnNumber,K toUpdate) throws RuntimeException, SQLException {
        /* T instance = get(id); // throw exception if not found
         getUpdateFunction(propertyColumnNumber).update(instance,toUpdate); */
         super.update(Arrays.asList(propertyColumnNumber),Arrays.asList(toUpdate),Arrays.asList(1),Arrays.asList(id));
@@ -60,7 +60,7 @@ public abstract class DateMapper<T> extends DAO {
         getLinkDTO(listName).replaceSet(id,toReplace);
     }
 
-    public void save(String id, T instance) throws SQLException{
+    public synchronized void save(String id, T instance) throws SQLException{
         insert(instance);
         getMap().put(id,instance);
     }
@@ -68,6 +68,7 @@ public abstract class DateMapper<T> extends DAO {
     protected void removeFromIdentityMap(String id){
         getMap().remove(id);
     }
+
     public int delete(String id) throws SQLException {
         Set<LinkDAO> links = getAllLinkDTOs();
         for (LinkDAO link : links)

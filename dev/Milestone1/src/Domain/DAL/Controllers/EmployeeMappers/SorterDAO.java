@@ -5,9 +5,10 @@ import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SorterDAO extends AbstractEmployeeDAO<Sorter> {
-    private static Map<String, Sorter> SORTER_IDENTITY_MAP = new HashMap<>();
+    private static Map<String, Sorter> SORTER_IDENTITY_MAP = new ConcurrentHashMap<>();
     EmployeeCertificationDAO employeeCertificationController ;
 
 
