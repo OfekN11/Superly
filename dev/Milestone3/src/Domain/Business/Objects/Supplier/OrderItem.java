@@ -12,9 +12,13 @@ public class OrderItem {
     private float ppu;
     private int discount;
     private Double finalPrice;
+    private int missingItems = 0;
+    private int defectiveItems = 0;
+    private String description = "";
+    private double weight;
 
 
-    public OrderItem(int id,int idBySupplier, String name, int quantity, float ppu, int discount, Double finalPrice) {
+    public OrderItem(int id,int idBySupplier, String name, int quantity, float ppu, int discount, Double finalPrice, double weight) {
         this.productId = id;
         this.idBySupplier = idBySupplier;
         this.name = name;
@@ -22,6 +26,35 @@ public class OrderItem {
         this.ppu = ppu;
         this.discount = discount;
         this.finalPrice = finalPrice;
+        this.weight = weight;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public int getDefectiveItems() {
+        return defectiveItems;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getMissingItems() {
+        return missingItems;
+    }
+
+    public void setDefectiveItems(int defectiveItems) {
+        this.defectiveItems = defectiveItems;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setMissingItems(int missingItems) {
+        this.missingItems = missingItems;
     }
 
     public String getName() {
@@ -60,6 +93,10 @@ public class OrderItem {
         result.add(String.valueOf(ppu));
         result.add(String.valueOf(discount));
         result.add(String.valueOf(finalPrice));
+        result.add(String.valueOf(missingItems));
+        result.add(String.valueOf(defectiveItems));
+        result.add(description);
+        result.add(String.valueOf(weight));
         return result;
     }
 

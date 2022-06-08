@@ -4,10 +4,11 @@ import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CashierDAO extends AbstractEmployeeDAO<Cashier> {
     //static fields
-    private final static Map<String, Cashier> CASHIER_IDENTITY_MAP = new HashMap<>();
+    private final static Map<String, Cashier> CASHIER_IDENTITY_MAP = new ConcurrentHashMap<>();
 
 
     //constructor

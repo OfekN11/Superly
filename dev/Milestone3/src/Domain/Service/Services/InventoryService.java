@@ -790,9 +790,9 @@ public class InventoryService {
             for (Order o : orders) {
                 List<ServiceOrderItemObject> oItems = new ArrayList<>();
                 for (OrderItem oItem : o.getOrderItems()) {
-                    oItems.add(new ServiceOrderItemObject(oItem.getProductId(), oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice()));
+                    oItems.add(new ServiceOrderItemObject(oItem.getProductId(), oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice(), oItem.getMissingItems(), oItem.getDefectiveItems(), oItem.getDescription(), oItem.getWeight()));
                 }
-                serviceOrders.add(new ServiceOrderObject(o.getId(), o.getDate(), oItems));
+                serviceOrders.add(new ServiceOrderObject(o.getId(), o.getSupplierId(), o.getCreationTime(), o.getArrivaltime(), o.getStoreID(), o.getStatusString(), oItems));
             }
             return Result.makeOk(serviceOrders);
         }

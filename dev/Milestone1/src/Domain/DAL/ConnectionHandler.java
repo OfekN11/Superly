@@ -14,25 +14,29 @@ public class ConnectionHandler implements Closeable {
     private static int counter =0;
 
     public ConnectionHandler(){
-        counter++;
-        if (connection == null) {
-            try {
-                connection = DriverManager.getConnection(url);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+        synchronized (ConnectionHandler.class) {
+            counter++;
+            if (connection == null) {
+                try {
+                    connection = DriverManager.getConnection(url);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         }
 
     }
     @Override
     public void close() {
-        counter=counter-1;
-        if (counter==0 ) {
-            try {
-                connection.close();
-                connection = null;
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+        synchronized (ConnectionHandler.class) {
+            counter = counter - 1;
+            if (counter == 0) {
+                try {
+                    connection.close();
+                    connection = null;
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         }
     }

@@ -506,25 +506,38 @@ public class SupplierService {
         }
     }
 
-    //Format : " orderId , orderDate , item1string, item2String ... "
+    //Format = { orderId, supplierId, creationDate, ArrivalDate, storeId, status , items...}
     private ServiceOrderObject createServiceOrderObject(List<String> result) throws ParseException {
 
         int orderId = Integer.parseInt(result.get(0));
-        String[] sDate1= result.get(1).split("-") ;
+        int supplierId = Integer.parseInt(result.get(1));
+        String[] sDate1= result.get(2).split("-") ;
         //"YYYY-MM-dd"   0 is year , 1 is month and 2 is days
-        LocalDate orderDate = LocalDate.of(Integer.parseInt(sDate1[0]), Integer.parseInt(sDate1[1]), Integer.parseInt(sDate1[2]));
-        List<ServiceOrderItemObject> items = new ArrayList<>();
+        LocalDate creationDate = LocalDate.of(Integer.parseInt(sDate1[0]), Integer.parseInt(sDate1[1]), Integer.parseInt(sDate1[2]));
 
-        for(int i = 2; i < result.size(); i+=6){
+        String[] sDate2= result.get(3).split("-") ;
+        LocalDate arrivalDate = LocalDate.of(Integer.parseInt(sDate2[0]), Integer.parseInt(sDate2[1]), Integer.parseInt(sDate2[2]));
+        int storeId = Integer.parseInt(result.get(4));
+        String status = result.get(5);
+
+        List<ServiceOrderItemObject> items = createServiceOrderItemObject(result, 6);
+
+        /*
+        for(int i = 6; i < result.size(); i+=10){
             int id = Integer.parseInt(result.get(i));
             String name = result.get(i+1);
             int quantity = Integer.parseInt(result.get(i+2));
             float ppu = Float.parseFloat(result.get(i+3));
             int discount = Integer.parseInt(result.get(i+4));
             Double finalPrice = Double.parseDouble(result.get(i+5));
-            items.add(new ServiceOrderItemObject(id, name, quantity, ppu, discount, finalPrice));
+            int missing = Integer.parseInt(result.get(i+6));
+            int defective = Integer.parseInt(result.get(i+7));
+            String description = result.get(i+8);
+            double weight = Double.parseDouble(result.get(i+9));
+            items.add(new ServiceOrderItemObject(id, name, quantity, ppu, discount, finalPrice, missing, defective, description, weight));
         }
-        return new ServiceOrderObject(orderId, orderDate, items);
+         */
+        return new ServiceOrderObject(orderId, supplierId, creationDate, arrivalDate, storeId, status, items);
     }
 
     public Result<Boolean> supplierExists(int id) {
@@ -574,23 +587,28 @@ public class SupplierService {
     public Result<ArrayList<ServiceOrderItemObject>> getAllOrdersItemsInDiscounts(int supplierId) {
         try{
             List<String> result = controller.getAllOrdersItemsInDiscount(supplierId);
-            return Result.makeOk(createServiceOrderItemObject(result));
+            return Result.makeOk(createServiceOrderItemObject(result, 0));
         }
         catch(Exception e){
             return Result.makeError(e.getMessage());
         }
     }
 
-    private ArrayList<ServiceOrderItemObject> createServiceOrderItemObject(List<String> result) {
+
+    private ArrayList<ServiceOrderItemObject> createServiceOrderItemObject(List<String> result, int startIndex) {
         ArrayList<ServiceOrderItemObject> items = new ArrayList<>();
-        for(int i = 0; i < result.size(); i+=6 ){
+        for(int i = startIndex; i < result.size(); i+=10 ){
             int itemId = Integer.parseInt(result.get(i));
             String name = result.get(i+1);
             int quantity =  Integer.parseInt(result.get(i+2));
             float ppu = Float.parseFloat(result.get(i+3));
             int discount = Integer.parseInt(result.get(i+4));
             double finalPrice = Double.parseDouble(result.get(i+5));
-            items.add(new ServiceOrderItemObject(itemId, name, quantity, ppu, discount, finalPrice));
+            int missing = Integer.parseInt(result.get(i+6));
+            int defective = Integer.parseInt(result.get(i+7));
+            String description = result.get(i+8);
+            double weight = Double.parseDouble(result.get(i+9));
+            items.add(new ServiceOrderItemObject(itemId, name, quantity, ppu, discount, finalPrice, missing, defective, description, weight));
         }
         return items;
     }

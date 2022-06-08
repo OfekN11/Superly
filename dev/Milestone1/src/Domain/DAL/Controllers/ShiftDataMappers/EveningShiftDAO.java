@@ -5,9 +5,10 @@ import Globals.Enums.ShiftTypes;
 
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EveningShiftDAO extends AbstractShiftDAO<EveningShift> {
-    private static final Map<String,EveningShift> EVENING_SHIFTS_MAP = new HashMap<>();
+    private static final Map<String,EveningShift> EVENING_SHIFTS_MAP = new ConcurrentHashMap<>();
 
     public EveningShiftDAO() {
         super("EveningShifts");
