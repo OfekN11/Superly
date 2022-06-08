@@ -21,6 +21,10 @@ public class OrderItemDAO extends DAO {
     private final static int PPU_COLUMN = 5;
     private final static int DISCOUNT_COLUMN = 6;
     private final static int FINAL_PRICE_COLUMN = 7;
+    private final static int MISSING_ITEMS_PRICE_COLUMN = 8;
+    private final static int DEFECTIVE_ITEMS_PRICE_COLUMN = 9;
+    private final static int DESCRIPTION_COLUMN = 10;
+    private final static int WEIGHT_COLUMN = 10;
 
 
 
@@ -33,7 +37,9 @@ public class OrderItemDAO extends DAO {
 
         insert(Arrays.asList(String.valueOf(orderItem.getProductId()), String.valueOf(orderId),
                 String.valueOf(orderItem.getIdBySupplier()), String.valueOf(orderItem.getQuantity()), String.valueOf(orderItem.getPricePerUnit())
-                , String.valueOf(orderItem.getDiscount()), String.valueOf(orderItem.getFinalPrice())));
+                , String.valueOf(orderItem.getDiscount()), String.valueOf(orderItem.getFinalPrice()),
+                String.valueOf(orderItem.getMissingItems()), String.valueOf(orderItem.getDefectiveItems()),
+                String.valueOf(orderItem.getDescription()), String.valueOf(orderItem.getWeight())));
 
         ORDER_ITEM_IDENTITY_MAP.put(String.valueOf(orderItem.getProductId()), orderItem);
     }
@@ -46,9 +52,15 @@ public class OrderItemDAO extends DAO {
             while (instanceResult.next()) {
                 String itemName = agreementItemDAO.getNameOfItem(instanceResult.getInt(PRODUCT_ID_COLUMN));
 
-                OrderItem currItem = new OrderItem(instanceResult.getInt(1), instanceResult.getInt(3),
-                        itemName, instanceResult.getInt(4), instanceResult.getFloat(5),
-                        instanceResult.getInt(6), instanceResult.getDouble(7));
+                OrderItem currItem = new OrderItem(instanceResult.getInt(PRODUCT_ID_COLUMN), instanceResult.getInt(ID_BY_SUPPLIER_COLUMN),
+                        itemName, instanceResult.getInt(QUANTITY_COLUMN), instanceResult.getFloat(PPU_COLUMN),
+                        instanceResult.getInt(DISCOUNT_COLUMN), instanceResult.getDouble(FINAL_PRICE_COLUMN),
+                        instanceResult.getDouble(WEIGHT_COLUMN));
+
+                currItem.setMissingItems(instanceResult.getInt(MISSING_ITEMS_PRICE_COLUMN));
+                currItem.setDefectiveItems(instanceResult.getInt(DEFECTIVE_ITEMS_PRICE_COLUMN));
+                currItem.setDescription(instanceResult.getString(DESCRIPTION_COLUMN));
+
                 ORDER_ITEM_IDENTITY_MAP.put(String.valueOf(currItem.getProductId()), currItem);
                 output.add(currItem);
             }

@@ -176,4 +176,7 @@ public class AgreementItem {
     }
 
 
+    public double getWeight() {
+        return 1;
+    }
 }

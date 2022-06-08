@@ -1,6 +1,7 @@
 package Domain.Business.Objects.Supplier;
 
 import Domain.DAL.Controllers.InventoryAndSuppliers.OrderDAO;
+import Globals.Enums.OrderStatus;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -17,6 +18,7 @@ public class Order {
     private ArrayList<OrderItem> orderItems;
     private int storeID;
     private static int globalID = 1;
+    private OrderStatus status;
 
 
     private LocalDate calculateArrivalTime(LocalDate creationDate, int daysToArrival) {
@@ -42,6 +44,7 @@ public class Order {
         //arrivalTime = cal.getTime();
 
         arrivalTime = calculateArrivalTime(creationDate, daysToArrival);
+        status = OrderStatus.waiting;
     }
 
 
@@ -60,11 +63,12 @@ public class Order {
         arrivalTime = calculateArrivalTime(creationDate, daysToArrival);
 
         orderItems.add(item);
+        status = OrderStatus.waiting;
     }
 
 
     //For uploading from dal
-    public Order(int id, int supplierId, LocalDate creationDate, LocalDate arrivalTime, int storeID){
+    public Order(int id, int supplierId, LocalDate creationDate, LocalDate arrivalTime, int storeID, OrderStatus status){
         this.id = id;
         this.supplierID = supplierId;
         this.creationDate = creationDate;
@@ -72,6 +76,7 @@ public class Order {
         //globalID++;
         this.storeID = storeID;
         this.orderItems = new ArrayList<>();
+        this.status = status;
     }
 
 
@@ -88,6 +93,7 @@ public class Order {
 
         globalID++;
         this.storeID = orderArriavalTimePassed.getStoreID();
+        this.status = OrderStatus.waiting;
     }
 
     public Order (Order order, OrderItem orderItem, int storeID){
@@ -98,8 +104,11 @@ public class Order {
         orderItems.add(orderItem);
         arrivalTime = calculateArrivalTime(creationDate, 1);
         this.storeID = storeID;
+        this.status = OrderStatus.waiting;
+
     }
 
+    /*
     public Order(Order order, OrderItem orderItem) {
         this.id = globalID;
         globalID++;
@@ -109,7 +118,10 @@ public class Order {
         orderItems.add(orderItem);
         arrivalTime = calculateArrivalTime(creationDate, 1);
         this.storeID = order.getStoreID();
+        this.status = OrderStatus.waiting;
+
     }
+     */
 
     public Order(Order order, ArrayList<OrderItem> orderItems) {
         this.id = order.getId();
@@ -118,6 +130,8 @@ public class Order {
         this.orderItems = orderItems;
         arrivalTime = calculateArrivalTime(creationDate, 1);
         this.storeID = order.getStoreID();
+        this.status = OrderStatus.waiting;
+
     }
 
     public static void setGlobalId(int i) {
@@ -125,11 +139,11 @@ public class Order {
     }
 
 
-    public void addItem(int productId, int idBySupplier, String name, int quantity, float ppu, int discount, Double finalPrice, OrderDAO orderDAO) throws Exception {
+    public void addItem(int productId, int idBySupplier, String name, int quantity, float ppu, int discount, Double finalPrice, double weight, OrderDAO orderDAO) throws Exception {
         if(!changeable()){
             throw new Exception("This order can't be changed!");
         }
-        OrderItem orderItem = new OrderItem(productId, idBySupplier,  name, quantity, ppu, discount, finalPrice);
+        OrderItem orderItem = new OrderItem(productId, idBySupplier,  name, quantity, ppu, discount, finalPrice, weight);
         orderDAO.addItem(id, orderItem);
         orderItems.add(orderItem);
     }
@@ -183,9 +197,16 @@ public class Order {
         }
     }
 
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+
     public LocalDate getDate() {
         return creationDate;
     }
+
+
     public int getStoreID() { return storeID; } //WROTE BY AMIR
     public int getId() {
         return id;
@@ -255,5 +276,12 @@ public class Order {
 
     public void uploadItemsFromDB(ArrayList<OrderItem> items) {
         this.orderItems = items;
+    }
+
+    public String getStatusString() {
+        if(status == OrderStatus.waiting)
+            return "waiting";
+        else
+            return "ordered";
     }
 }
