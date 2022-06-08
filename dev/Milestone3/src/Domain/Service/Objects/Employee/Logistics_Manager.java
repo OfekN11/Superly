@@ -2,6 +2,7 @@ package Domain.Service.Objects.Employee;
 
 import Globals.Enums.JobTitles;
 import Presentation.Screens.ScreenEmployeeFactory;
+import WebPresentation.Screens.Models.HR.EmployeeFactory;
 
 /**
  * Service model of the logistics manager
@@ -19,5 +20,10 @@ public class Logistics_Manager extends Employee{
     @Override
     public JobTitles getType() {
         return JobTitles.Logistics_Manager;
+    }
+
+    @Override
+    public WebPresentation.Screens.Models.HR.Employee accept(EmployeeFactory employeeFactory) {
+        return employeeFactory.createEmployee(this);
     }
 }

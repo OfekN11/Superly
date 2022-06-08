@@ -3,6 +3,7 @@ package Domain.Service.Objects.Employee;
 import Globals.Enums.JobTitles;
 import Globals.Enums.LicenseTypes;
 import Presentation.Screens.ScreenEmployeeFactory;
+import WebPresentation.Screens.Models.HR.EmployeeFactory;
 
 import java.util.Collections;
 import java.util.Set;
@@ -26,5 +27,10 @@ public class Carrier extends Employee {
     @Override
     public JobTitles getType() {
         return JobTitles.Carrier;
+    }
+
+    @Override
+    public WebPresentation.Screens.Models.HR.Employee accept(EmployeeFactory employeeFactory) {
+        return employeeFactory.createEmployee(this);
     }
 }
