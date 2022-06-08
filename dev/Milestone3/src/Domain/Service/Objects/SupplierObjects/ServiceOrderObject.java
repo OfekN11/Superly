@@ -69,9 +69,9 @@ public class ServiceOrderObject {
     public String toString(){
         //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
         //String strDate = formatter.format(date);
-        return "Order's ID: " + orderId +  "\nSupplier's ID: " + supplierId + "\nCreation Time:" + creationDate.toString()
-                + "\nArrival Time:" + arrivalDate.toString() +  "\nStoreId:"
-                + storeId + "\nStatus:" + status +"\nOrderItems:\n" + printItems();
+        return "Order's ID: " + orderId +  "\nSupplier's ID: " + supplierId + "\nCreation Time: " + creationDate.toString()
+                + "\nArrival Time: " + arrivalDate.toString() +  "\nStoreId: "
+                + storeId + "\nStatus: " + status +"\nOrderItems:\n" + printItems();
     }
 
     private String printItems(){

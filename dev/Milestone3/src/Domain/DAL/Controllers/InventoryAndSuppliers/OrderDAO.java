@@ -66,9 +66,9 @@ public class OrderDAO extends DataMapper<Order> {
         String status = instanceResult.getString(STATUS_COLOUMN);
         //status : waiting, ordered
         if(status.equals("waiting"))
-            return OrderStatus.ordered;
+            return OrderStatus.waiting;
         else
-            return  OrderStatus.waiting;
+            return  OrderStatus.ordered;
     }
 
     @Override

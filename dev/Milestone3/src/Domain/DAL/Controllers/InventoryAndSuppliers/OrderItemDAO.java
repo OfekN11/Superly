@@ -24,7 +24,7 @@ public class OrderItemDAO extends DAO {
     private final static int MISSING_ITEMS_PRICE_COLUMN = 8;
     private final static int DEFECTIVE_ITEMS_PRICE_COLUMN = 9;
     private final static int DESCRIPTION_COLUMN = 10;
-    private final static int WEIGHT_COLUMN = 10;
+    private final static int WEIGHT_COLUMN = 11;
 
 
 
