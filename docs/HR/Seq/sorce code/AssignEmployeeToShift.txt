@@ -1,0 +1,126 @@
+title Assign employee to shift
+
+actor HR_Manager
+activate HR_Manager
+
+participant Facade
+participant sService - ShiftServiceService
+participant sController - shiftController
+participant bShift- BusinessShift
+participant result - Result
+participant factory - ServiceShiftFactory
+participant sShift - SShift
+participant bEmployee - BusinessEmployee
+participant eController - EmployeeController
+participant eService - EmployeeService
+participant factory - ServiceEmployeeFactory
+participant sEmployee - SEmployee
+
+HR_Manager ->Facade:1 Login(id)
+activate Facade
+ref over Facade:Login
+deactivate Facade
+HR_Manager->Facade:2 getShift(date,type)
+activate Facade
+Facade->sService - ShiftServiceService:2.1 getShift(date,type)
+activate sService - ShiftServiceService
+sService - ShiftServiceService->sController - shiftController:2.1.1 getShift(date,type)
+activate sController - shiftController
+ref over sController - shiftController, bShift- BusinessShift : getShift
+alt shift exist
+
+sController - shiftController-->sService - ShiftServiceService:2.1.1.1A bShift
+deactivate sController - shiftController
+sService - ShiftServiceService -> factory - ServiceShiftFactory:2.1.2A createServiceShift(bShift)
+activate factory - ServiceShiftFactory
+factory - ServiceShiftFactory->factory - ServiceShiftFactory:2.1.2A.1 visitorPattern()
+activate factory - ServiceShiftFactory
+factory - ServiceShiftFactory->*sShift - SShift: 2.1.2A.1.1 <<create(bShift)>>
+deactivate factory - ServiceShiftFactory
+factory - ServiceShiftFactory--> sService - ShiftServiceService :2.1.2A.2 sShift
+deactivate factory - ServiceShiftFactory
+sService - ShiftServiceService->*result - Result: 2.1.3A <<createOk(sShift)>>
+sService - ShiftServiceService -->Facade:2.1.4A result
+deactivate sService - ShiftServiceService
+Facade--> HR_Manager:2.2A result.val
+deactivate Facade
+HR_Manager ->Facade:3 assigneEmployee()
+activate Facade 
+Facade--> HR_Manager:3.1 msg :which type
+HR_Manager -->Facade: 3.1.1 type
+Facade ->sService - ShiftServiceService: 3.1.1.1 getAssignedType(type)
+activate sService - ShiftServiceService
+sService - ShiftServiceService -> sController - shiftController:3.1.1.1.1 getAssignedType(type)
+activate sController - shiftController
+sController - shiftController->bShift- BusinessShift:3.1.1.1.1.1 getAvailbleEmployees()
+activate bShift- BusinessShift
+bShift- BusinessShift -->sController - shiftController:3.1.1.1.1.1.1 	ids
+deactivate bShift- BusinessShift
+sController - shiftController ->eController - EmployeeController:3.1.1.1.1.2 getType(ids)
+activate eController - EmployeeController
+eController - EmployeeController -->sController - shiftController:3.1.1.1.1.2.1 employees
+deactivate eController - EmployeeController
+sController - shiftController-->sService - ShiftServiceService :3.1.1.1.1.3 employees
+loop bEmployee in employees
+sService - ShiftServiceService->factory - ServiceEmployeeFactory:3.1.1.1.1.4 createServiceEmployee(bEmployee)
+activate factory - ServiceEmployeeFactory
+factory - ServiceEmployeeFactory->factory - ServiceEmployeeFactory:3.1.1.1.1.4.1 visitorPattern()
+activate factory - ServiceEmployeeFactory
+factory - ServiceEmployeeFactory->*sEmployee - SEmployee: 3.1.1.1.1.4.2 <<create(bEmployee)>>
+deactivate factory - ServiceEmployeeFactory
+factory - ServiceEmployeeFactory-->sService - ShiftServiceService:3.1.1.1.1.4.3 sEmploye
+end 
+
+
+
+deactivate sController - shiftController
+sService - ShiftServiceService->*result - Result:  2.1.1.1.1.5 <<createOk(sEmployees)>>
+sService - ShiftServiceService-->Facade:2.1.1.1.1.6 result
+deactivate sService - ShiftServiceService
+Facade-->HR_Manager:2.1.1.2 result.val + pls enter ids of employees
+deactivate Facade
+HR_Manager -->Facade:2.1.1.2.1 ids
+activate Facade
+Facade ->sService - ShiftServiceService:2.1.1.2.1.1 assignEmployeesType(ids)
+activate sService - ShiftServiceService
+sService - ShiftServiceService ->sController - shiftController:2.1.1.2.1.1.1 assignEmployeesType(ids)
+activate sController - shiftController
+sController - shiftController->sShift - SShift:2.1.1.2.1.1.1.1assignEmployeeType(ids) 
+activate sShift - SShift
+space -0.5
+deactivate sShift - SShift
+ref over sController - shiftController: saveShift(sShift)
+deactivate sController - shiftController
+sService - ShiftServiceService->*result - Result: 2.1.1.2.1.1.2  <<createOk(null)>>
+sService - ShiftServiceService-->Facade:2.1.1.2.1.1.3 result
+deactivate sService - ShiftServiceService
+Facade-->HR_Manager:2.1.1.2.1.2 result.val
+deactivate Facade
+deactivate HR_Manager
+
+
+space -0.5
+
+
+
+
+
+
+else 
+activate HR_Manager
+activate Facade
+activate sService - ShiftServiceService
+activate sController - shiftController
+sController - shiftController -->sService - ShiftServiceService: 1.1.1.1B exception
+deactivate sController - shiftController
+sService - ShiftServiceService->*result - Result: 1.1.2B <<createFailer(date,type)>>
+sService - ShiftServiceService-->Facade:1.1.3B result
+deactivate sService - ShiftServiceService
+Facade-->HR_Manager:1.2B result.val
+deactivate Facade
+deactivate HR_Manager
+end 
+
+
+
+

@@ -1,0 +1,35 @@
+title Remove Constraint
+
+actor HR Manager
+participant Facade
+participant cService - ShiftService
+participant result - Ok
+participant cController - ShiftController
+participant bShift - BusinessShift
+participant mapper - ShiftDataMapper
+
+activate HR Manager
+
+HR Manager ->Facade:1 Login(id)
+activate Facade
+ref over Facade:Login
+deactivate Facade
+
+HR Manager->Facade:2 unregisterAsAvailable(eId,date, shiftType)
+activate Facade
+
+Facade->cService - ShiftService:2.1 unregisterAsAvailable(eId,date, shiftType)
+activate cService - ShiftService
+cService - ShiftService->cController - ShiftController: 2.1.1 unregisterAsAvailable(eId,date, shiftType)
+activate cController - ShiftController
+ref over cController - ShiftController, mapper - ShiftDataMapper:Get Shift
+ref over cController - ShiftController, mapper - ShiftDataMapper:Update Shift
+space -0.5
+deactivate cController - ShiftController
+
+cService - ShiftService->*result - Ok:2.1.2 <<create>>
+cService - ShiftService-->Facade:2.1.3 result
+deactivate cService - ShiftService
+Facade-->HR Manager:2.2 successMsg
+deactivate Facade
+

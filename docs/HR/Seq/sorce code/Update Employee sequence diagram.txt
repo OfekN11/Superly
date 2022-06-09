@@ -1,0 +1,27 @@
+title Update Employee Constraint
+
+actor HR Manager
+participant Facade
+
+HR Manager ->Facade:login(id)
+
+ref over HR Manager,Facade:Login 
+ref over HR Manager, Facade:Opening Employee \nmanagement menu
+activate Facade
+HR Manager->Facade:1 manageConstraints()
+activate Facade
+
+alt adding constraint
+
+ref over HR Manager, Facade: Adding Constraint
+
+else removing constraint
+
+ref over HR Manager, Facade : Removing Constraint
+
+end
+
+space -0.5
+deactivate Facade
+space -0.5
+deactivate Facade

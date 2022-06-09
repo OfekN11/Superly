@@ -1,0 +1,19 @@
+title Update Shift
+
+activate cc-ShiftController
+cc-ShiftController ->c1-Shift:1.1 updateValue(newValue)
+activate c1-Shift
+space -0.5
+deactivate c1-Shift
+
+
+cc-ShiftController -> edm1-ShiftDataMapper:1.2: update(propertyName,c1-Shift)
+activate edm1-ShiftDataMapper
+alt no errors
+space -0.5
+deactivate edm1-ShiftDataMapper
+else
+activate edm1-ShiftDataMapper
+edm1-ShiftDataMapper -->cc-ShiftController:1.2.1B: error msg
+deactivate edm1-ShiftDataMapper
+end 

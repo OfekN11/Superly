@@ -1,0 +1,23 @@
+title Save shift In DB
+activate sc1-ShiftController
+sc1-ShiftController -> sdm1-ShiftDataMapper:1: save(s1-Shift)
+activate sdm1-ShiftDataMapper
+sdm1-ShiftDataMapper -> s1-Shift:1.1 save(this)
+activate s1-Shift
+note over sdm1-ShiftDataMapper,s1-Shift:visitor pattern
+s1-Shift ->sdm1-ShiftDataMapper:1.1.1: save(this)
+activate sdm1-ShiftDataMapper
+sdm1-ShiftDataMapper->stdm1-ShiftTypeDataMapper:1.1.1.1: save(s1-Shift)
+activate stdm1-ShiftTypeDataMapper
+alt 
+stdm1-ShiftTypeDataMapper -->sdm1-ShiftDataMapper:save success
+deactivate sdm1-ShiftDataMapper
+deactivate s1-Shift
+deactivate sdm1-ShiftDataMapper
+deactivate stdm1-ShiftTypeDataMapper
+else  error occurde
+activate sdm1-ShiftDataMapper
+sdm1-ShiftDataMapper -->sc1-ShiftController:1.2 B: error msg
+deactivate sdm1-ShiftDataMapper
+end
+

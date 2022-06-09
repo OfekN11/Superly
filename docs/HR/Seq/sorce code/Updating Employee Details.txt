@@ -1,0 +1,52 @@
+title Updating Employee Details
+
+actor HR Manager
+participant Facade
+participant eService - EmployeeService
+participant result - Result
+participant eController - EmployeeController
+participant bEmployee - BusinessEmployee
+participant mapper - EmployeeDataMapper
+activate HR Manager
+HR Manager ->Facade:1 Login(id)
+activate Facade
+ref over Facade:Login
+deactivate Facade
+
+ref over HR Manager, Facade:Opening Employee \nmanagement menu
+
+HR Manager ->Facade:2 updateProperty(newValue)
+activate Facade
+opt Employee is Carrier
+HR Manager->Facade:2B updateLicenses(newValue)
+end 
+
+Facade->eService - EmployeeService:2.1 updateProperty(eID, newValue)
+activate eService - EmployeeService
+eService - EmployeeService->eController - EmployeeController:2.1.1 updateProperty(eID, newValue)
+activate eController - EmployeeController
+ref over eController - EmployeeController, mapper - EmployeeDataMapper:Get Employee
+ref over eController - EmployeeController, mapper - EmployeeDataMapper : Update Employee
+
+alt newValue is illegal
+eController - EmployeeController -->eService - EmployeeService: 2.1.1.1A Error
+eService - EmployeeService->*result - Result:2.1.2A <<createFailute(Error)>>
+
+else else
+deactivate eController - EmployeeController
+eService - EmployeeService->*result - Result: 2.1.2B <<createOk(sEmployee)>>
+
+end
+
+eService - EmployeeService-->Facade:2.1.3 result
+deactivate eService - EmployeeService
+
+alt result is Ok
+Facade-->HR Manager:2.2A successMsg
+destroy result - Result
+
+else else
+Facade-->HR Manager:2.2B result.error
+destroy result - Result
+deactivate Facade
+end
