@@ -1,30 +1,27 @@
-title Update Employee
+title Update Employee Constraint
 
-activate ec-EmployeeController
-ec-EmployeeController -> e1-Employee:1: updateValue(newValue)
-activate e1-Employee
-space -0.5
-deactivate e1-Employee
+actor HR Manager
+participant Facade
 
+HR Manager ->Facade:login(id)
 
-ec-EmployeeController -> edm1-EmployeeDataMapper:1.1: update(propertyName,e1-Employee)
-activate edm1-EmployeeDataMapper
-edm1-EmployeeDataMapper -> e1-Employee:1.1.1 update(propertyName,this)
-activate e1-Employee
-note over edm1-EmployeeDataMapper,e1-Employee:visitor pattern
-e1-Employee -> edm1-EmployeeDataMapper:1.1.1.1: update(propertyName,this)
-activate edm1-EmployeeDataMapper
-alt 
-edm1-EmployeeDataMapper->etdm1-EmployeeTypeDataMapper:1.1.1.1.1A: update(PropertyName, e1-Employee)
-activate etdm1-EmployeeTypeDataMapper
-space -0.5
-deactivate edm1-EmployeeDataMapper
-deactivate e1-Employee
-deactivate edm1-EmployeeDataMapper
-deactivate etdm1-EmployeeTypeDataMapper
-else  error occurde
-activate edm1-EmployeeDataMapper
-edm1-EmployeeDataMapper -->ec-EmployeeController:1.2 B: error msg
-deactivate edm1-EmployeeDataMapper
+ref over HR Manager,Facade:Login 
+ref over HR Manager, Facade:Opening Employee \nmanagement menu
+activate Facade
+HR Manager->Facade:1 manageConstraints()
+activate Facade
+
+alt adding constraint
+
+ref over HR Manager, Facade: Adding Constraint
+
+else removing constraint
+
+ref over HR Manager, Facade : Removing Constraint
+
 end
 
+space -0.5
+deactivate Facade
+space -0.5
+deactivate Facade

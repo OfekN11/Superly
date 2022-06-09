@@ -1,6 +1,6 @@
 title Adding Constraint
 
-actor HR Manager/Employee
+actor HR Manager
 participant Facade
 participant cService - ConstraintService
 participant result - Ok
@@ -8,24 +8,28 @@ participant cController - ConstraintController
 participant bConstraint - BusinessConstraint
 participant mapper - ConstraintDataMapper
 
+activate HR Manager
 
+HR Manager ->Facade:1 Login(id)
 activate Facade
+ref over Facade:Login
+deactivate Facade
+
+HR Manager->Facade:2 addConstraint(date, shiftType)
 activate Facade
 
-HR Manager/Employee->Facade:1 addConstraint(date, shiftType)
-
-Facade->cService - ConstraintService:1.1 registerToConstraint(eID, date, shiftType)
+Facade->cService - ConstraintService:2.1 registerToConstraint(eID, date, shiftType)
 activate cService - ConstraintService
-cService - ConstraintService->cController - ConstraintController: 1.1.1 registerToConstraint(eID, date, shiftType)
+cService - ConstraintService->cController - ConstraintController: 2.1.1 registerToConstraint(eID, date, shiftType)
 activate cController - ConstraintController
 ref over cController - ConstraintController, mapper - ConstraintDataMapper:Get Constraint
 ref over cController - ConstraintController, mapper - ConstraintDataMapper:Update Constraint
 space -0.5
 deactivate cController - ConstraintController
 
-cService - ConstraintService->*result - Ok:1.1.2 <<create>>
-cService - ConstraintService-->Facade:1.1.3 result
+cService - ConstraintService->*result - Ok:2.1.2 <<create>>
+cService - ConstraintService-->Facade:2.1.3 result
 deactivate cService - ConstraintService
-Facade-->HR Manager/Employee:1.2 successMsg
+Facade-->HR Manager:2.2 successMsg
 deactivate Facade
 
