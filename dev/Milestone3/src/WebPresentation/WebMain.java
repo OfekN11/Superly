@@ -1,7 +1,7 @@
 package WebPresentation;
 
-import WebPresentation.Screens.ViewModels.EmployeeServlet;
-import WebPresentation.Screens.ViewModels.Login;
+import WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
+import WebPresentation.Screens.ViewModels.HR.Login;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 

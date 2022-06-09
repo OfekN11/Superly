@@ -1,4 +1,4 @@
-package WebPresentation.Screens.ViewModels;
+package WebPresentation.Screens.ViewModels.HR;
 
 import WebPresentation.Screens.Models.HR.Employee;
 import WebPresentation.Screens.Models.HR.EmployeeFactory;
@@ -27,13 +27,13 @@ public class Login extends Screen {
             return;
         }
         greet(resp);
-        printForm(resp, new String[]{"ID"}, new String[]{"Employee ID"}, new String[]{"Sign_in!"});
+        printForm(resp, new String[]{"ID"}, new String[]{"Employee ID"}, new String[]{"Sign in!"});
         handleError(resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (isButtonPressed(req, "Sign_in!")){
+        if (isButtonPressed(req, "Sign in!")){
             String id = req.getParameter("ID");
             try {
                 loggedUser = factory.createEmployee(controller.getEmployee(id));

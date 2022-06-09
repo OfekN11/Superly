@@ -1,6 +1,6 @@
 package WebPresentation.Screens;
 
-import Globals.Enums.ShiftTypes;
+import WebPresentation.BackendController;
 import WebPresentation.WebMain;
 
 import javax.servlet.Servlet;

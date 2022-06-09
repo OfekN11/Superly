@@ -1,6 +1,6 @@
 package WebPresentation.Screens.Models.HR;
 
-import WebPresentation.Screens.ViewModels.Login;
+import WebPresentation.Screens.ViewModels.HR.Login;
 import WebPresentation.WebMain;
 
 import javax.servlet.ServletException;
