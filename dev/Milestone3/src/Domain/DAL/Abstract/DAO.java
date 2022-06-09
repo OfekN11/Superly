@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class DAO {
-    private final static String dbName= "suppliers_inventory_DB.db"; // need to be change!
+    private final static String dbName= "Superly.db"; // need to be change!
     String url = String.format("jdbc:sqlite:%s/%s",System.getProperty("user.dir"),dbName);
     private final static String SELECT_QUERY = "SELECT %s from %s where %s";
     private final static String INSERT_QUERY = "INSERT INTO %s VALUES (%s)";
