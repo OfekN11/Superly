@@ -1,35 +1,41 @@
 title Adding Constraint
 
-actor HR Manager
+actor Employee
 participant Facade
 participant cService - ShiftService
-participant result - Ok
+participant result - Result
 participant cController - ShiftController
 participant bShift - BusinessShift
 participant mapper - ShiftDataMapper
 
-activate HR Manager
+ref over Employee, Facade:Login
 
-HR Manager ->Facade:1 Login(id)
-activate Facade
-ref over Facade:Login
-deactivate Facade
-
-HR Manager->Facade:2 registerAsAvailable(eId,date, shiftType)
+Employee->Facade:2 registerAsAvailable(eID, date, shiftType)
 activate Facade
 
-Facade->cService - ShiftService:2.1 registerAsAvailable(eId,date, shiftType)
+Facade->cService - ShiftService:2.1 registerAsAvailable(eID, date, shiftType)
 activate cService - ShiftService
-cService - ShiftService->cController - ShiftController: 2.1.1 registerAsAvailable(eId,date, shiftType)
+cService - ShiftService->cController - ShiftController: 2.1.1 registerAsAvailable(eID, date, shiftType)
 activate cController - ShiftController
 ref over cController - ShiftController, mapper - ShiftDataMapper:Get Shift
+
+alt Shift exists
 ref over cController - ShiftController, mapper - ShiftDataMapper:Update Shift
 space -0.5
+cService - ShiftService->*result - Result:2.1.2A <<createOK>>
+else Shift doesn't exists
+cController - ShiftController -->cService - ShiftService:2.1.1.1B errMsg
+cService - ShiftService->*result - Result:2.1.2B <<createFailure(errMsg)>>
 deactivate cController - ShiftController
-
-cService - ShiftService->*result - Ok:2.1.2 <<create>>
+end 
 cService - ShiftService-->Facade:2.1.3 result
 deactivate cService - ShiftService
-Facade-->HR Manager:2.2 successMsg
+alt result is Ok
+Facade-->Employee:2.2 successMsg
+destroy result - Result
+else else
+Facade-->Employee:2.2 result.error
+destroy result - Result
+end
+space -0.5
 deactivate Facade
-
