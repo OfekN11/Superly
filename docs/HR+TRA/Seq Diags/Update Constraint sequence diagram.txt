@@ -1,19 +1,19 @@
-title Update Constraint
+title Update Shift
 
-activate cc-ConstrintController
-cc-ConstrintController ->c1-Constrint:1.1 updateValue(newValue)
-activate c1-Constrint
+activate cc-ShiftController
+cc-ShiftController ->c1-Shift:1.1 updateValue(newValue)
+activate c1-Shift
 space -0.5
-deactivate c1-Constrint
+deactivate c1-Shift
 
 
-cc-ConstrintController -> edm1-ConstrintDataMapper:1.2: update(propertyName,c1-Constrinte)
-activate edm1-ConstrintDataMapper
+cc-ShiftController -> edm1-ShiftDataMapper:1.2: update(propertyName,c1-Shift)
+activate edm1-ShiftDataMapper
 alt no errors
 space -0.5
-deactivate edm1-ConstrintDataMapper
+deactivate edm1-ShiftDataMapper
 else
-activate edm1-ConstrintDataMapper
-edm1-ConstrintDataMapper -->cc-ConstrintController:1.2.1B: error msg
-deactivate edm1-ConstrintDataMapper
+activate edm1-ShiftDataMapper
+edm1-ShiftDataMapper -->cc-ShiftController:1.2.1B: error msg
+deactivate edm1-ShiftDataMapper
 end 
