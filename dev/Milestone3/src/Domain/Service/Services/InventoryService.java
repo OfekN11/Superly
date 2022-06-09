@@ -186,9 +186,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the info on the purchase
      */
-    public Result<Object> orderArrived(int orderID, int supplierID){
+    public Result<Object> orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder){
         try {
-            controller.orderArrived(orderID, supplierID);
+            controller.orderArrived(orderID, reportOfOrder);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -790,9 +790,9 @@ public class InventoryService {
             for (Order o : orders) {
                 List<ServiceOrderItemObject> oItems = new ArrayList<>();
                 for (OrderItem oItem : o.getOrderItems()) {
-                    oItems.add(new ServiceOrderItemObject(oItem.getProductId(), oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice()));
+                    oItems.add(new ServiceOrderItemObject(oItem.getProductId(), oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice(), oItem.getMissingItems(), oItem.getDefectiveItems(), oItem.getDescription(), oItem.getWeight()));
                 }
-                serviceOrders.add(new ServiceOrderObject(o.getId(), o.getDate(), oItems));
+                serviceOrders.add(new ServiceOrderObject(o.getId(), o.getSupplierId(), o.getCreationTime(), o.getArrivaltime(), o.getStoreID(), o.getStatusString(), oItems));
             }
             return Result.makeOk(serviceOrders);
         }

@@ -3,6 +3,7 @@ package Domain.Business.Controllers;
 import Domain.Business.Objects.Supplier.*;
 import Domain.DAL.Controllers.InventoryAndSuppliers.OrderDAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.SuppliersDAO;
+import Globals.Enums.OrderStatus;
 import Globals.Pair;
 
 import java.sql.SQLException;
@@ -480,8 +481,8 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supID).orderExists(orderID, orderDAO);
     }
 
-    public Order orderHasArrived(int orderID, int supplierID) throws Exception {
-        Order order = getOrderObject(supplierID, orderID);
+    public Order orderHasArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
+        Order order = getOrderObject(1, orderID);
         order.uploadItemsFromDB(uploadOrderItems(order.getId()));
         return order;
     }
@@ -614,7 +615,7 @@ public class SupplierController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return new OrderItem( productId, currItem.getIdBySupplier() , currItem.getName() , quantity, currItem.getPricePerUnit(), currItem.getDiscount(quantity), currItem.calculateTotalPrice(quantity));
+        return new OrderItem( productId, currItem.getIdBySupplier() , currItem.getName() , quantity, currItem.getPricePerUnit(), currItem.getDiscount(quantity), currItem.calculateTotalPrice(quantity), currItem.getWeight());
     }
 
     //public for testing
@@ -811,7 +812,7 @@ public class SupplierController {
 
         addItemsToAgreement(supplierId1, items);
 
-        Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 11),  LocalDate.of(2022, 5, 16), storeId );
+        Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 11),  LocalDate.of(2022, 5, 16), storeId , OrderStatus.ordered);
         int order1Id = order1.getId();
         insertToOrderDAO(order1);
         suppliersDAO.getAgreementController().setLastOrderId(supplierId1, order1Id);
@@ -820,17 +821,20 @@ public class SupplierController {
         int id = 1;
         AgreementItem curr = suppliersDAO.getSupplier(supplierId1).getItem(id);
         int quantity = 80;
-        orderDAO.addItem(order1Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
+        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
+        //orderDAO.addItem(order1Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
 
         id = 2;
         curr = suppliersDAO.getSupplier(supplierId1).getItem(id);
         quantity = 100;
-        orderDAO.addItem(order1Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
+        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
+        //orderDAO.addItem(order1Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
 
         id = 3;
         curr = suppliersDAO.getSupplier(supplierId1).getItem(id);
         quantity = 100;
-        orderDAO.addItem(order1Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
+        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
+        //orderDAO.addItem(order1Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
 
 
     }
@@ -857,41 +861,51 @@ public class SupplierController {
         addItemsToAgreement(supplierId2, items);
 
 
-        Order order1 = new Order(3, supplierId2, LocalDate.of(2022, 5, 9),  LocalDate.of(2022, 5, 12), storeId );
+        Order order1 = new Order(3, supplierId2, LocalDate.of(2022, 5, 9),  LocalDate.of(2022, 5, 12), storeId , OrderStatus.ordered);
         int order1Id = order1.getId();
         insertToOrderDAO(order1);
 
         int id = 1;
         AgreementItem curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
         int quantity = 20;
-        orderDAO.addItem(order1Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
+        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
+
 
         id = 2;
         curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
         quantity = 20;
-        orderDAO.addItem(order1Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
+        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
+
+        //orderDAO.addItem(order1Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
 
         id = 3;
         curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
         quantity = 20;
-        orderDAO.addItem(order1Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
+        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
+        //orderDAO.addItem(order1Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
 
 
-        Order order2 = new Order(4, supplierId2, LocalDate.of(2022, 5, 12),  LocalDate.of(2022, 5, 15), storeId);
+        Order order2 = new Order(4, supplierId2, LocalDate.of(2022, 5, 12),  LocalDate.of(2022, 5, 15), storeId, OrderStatus.ordered);
         int order2Id = order2.getId();
         insertToOrderDAO(order2);
 
         id = 4;
         curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
         quantity = 20;
-        orderDAO.addItem(order2Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
+        addItemToOrderDAO(order2Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
+        //orderDAO.addItem(order2Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
 
         id = 5;
         curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
         quantity = 20;
-        orderDAO.addItem(order2Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
+        addItemToOrderDAO(order2Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
+        //orderDAO.addItem(order2Id, new OrderItem(id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity)));
 
 
+    }
+
+    private void addItemToOrderDAO(int orderId, int id, String name, int quantity, float pricePerUnit, int discount, double calculateTotalPrice, double weight) throws SQLException {
+        orderDAO.addItem(orderId, new OrderItem(id, id, name, quantity, pricePerUnit, discount, calculateTotalPrice,  weight));
     }
 
 

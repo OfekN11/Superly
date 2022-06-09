@@ -508,7 +508,10 @@ public class Supplier {
         int discount = agreement.getItem(itemId).getDiscount(itemQuantity);
         Double finalPrice = agreement.getItem(itemId).calculateTotalPrice(itemQuantity);
 
-        orders.get(orderId).addItem(itemId, agreement.getItem(itemId).getIdBySupplier() , agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice, orderDAO);
+        //currItem.getWeight()
+        double weight = agreement.getItem(itemId).getWeight();
+        // TODO: 08/06/2022  currItem.getWeight()
+        orders.get(orderId).addItem(itemId, agreement.getItem(itemId).getIdBySupplier() , agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice, weight, orderDAO);
 
     }
 
@@ -554,16 +557,21 @@ public class Supplier {
     }
 
 
+    //result = { orderId, supplierId, creationDate, ArrivalDate, storeId, status , items...}
     public List<String> getOrder(int orderId, OrderDAO orderDAO) throws Exception {
         Order currOrder = getOrderFromList(orderId, orderDAO);
         List<String> result = new ArrayList<>();
         result.add(String.valueOf(currOrder.getId()));
-
+        result.add(String.valueOf(id));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
-        String strDate = formatter.format(currOrder.getDate());
+        String creationDate = formatter.format(currOrder.getCreationTime());
+        String arrivalDate = formatter.format(currOrder.getArrivaltime());
 
-        result.add(strDate);
+        result.add(creationDate);
+        result.add(arrivalDate);
+        result.add(String.valueOf(currOrder.getStoreID()));
+        result.add(currOrder.getStatusString());
 
         List<OrderItem> items = currOrder.getOrderItems();
         for(OrderItem item : items){

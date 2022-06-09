@@ -4,6 +4,7 @@ import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
+import Globals.Enums.OrderStatus;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -23,6 +24,7 @@ public class OrderDAO extends DataMapper<Order> {
     private final static int STORE_ID_COLUMN = 3;
     private final static int CREATION_TIME_COLUMN = 4;
     private final static int ARRIVAL_TIME_COLUMN = 5;
+    private final static int STATUS_COLOUMN = 6;
 
 
     public OrderDAO(){
@@ -56,13 +58,23 @@ public class OrderDAO extends DataMapper<Order> {
                 instanceResult.getInt(SUPPLIER_ID_COLUMN),
                 LocalDate.parse(instanceResult.getString(CREATION_TIME_COLUMN)),
                 LocalDate.parse(instanceResult.getString(ARRIVAL_TIME_COLUMN)),
-                instanceResult.getInt(STORE_ID_COLUMN));
+                instanceResult.getInt(STORE_ID_COLUMN),
+                getStatus(instanceResult));
+    }
+
+    private OrderStatus getStatus(ResultSet instanceResult) throws SQLException {
+        String status = instanceResult.getString(STATUS_COLOUMN);
+        //status : waiting, ordered
+        if(status.equals("waiting"))
+            return OrderStatus.ordered;
+        else
+            return  OrderStatus.waiting;
     }
 
     @Override
     public void insert(Order order) throws SQLException {
         insert(Arrays.asList(String.valueOf(order.getId()), String.valueOf(order.getSupplierId()),
-                String.valueOf(order.getStoreID()), String.valueOf(order.getCreationTime()), String.valueOf(order.getArrivaltime())));
+                String.valueOf(order.getStoreID()), String.valueOf(order.getCreationTime()), String.valueOf(order.getArrivaltime()), String.valueOf(order.getStatus())));
 
         ArrayList<OrderItem> items = order.getOrderItems();
         if(items != null && items.size() > 0){

@@ -4,6 +4,7 @@ import Domain.Business.Controllers.InventoryController;
 import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Inventory.Product;
 import Domain.DAL.Controllers.InventoryAndSuppliers.*;
+import Globals.Pair;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -73,7 +74,8 @@ class InventoryControllerTest {
         is.addProductToStore(store,Arrays.asList(1),Arrays.asList(1),prod2.getId(),100,200);
         int order = sc.addNewOrder(supplier, store);
         //check for error
-        assertThrows(Exception.class, ()->is.orderArrived(0,0));
+        Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder = new HashMap<>();
+        assertThrows(Exception.class, ()->is.orderArrived(0,reportOfOrder));
         //check preconditions
         assertEquals(0,prod1.getTotalInStore(store));
         assertEquals(0,prod2.getTotalInStore(store));
@@ -82,8 +84,9 @@ class InventoryControllerTest {
         sc.addItemToOrder(supplier,order, prod2.getId(), 200);
         prod2.getStockReport(store).setInDelivery(200);
         //check post conditions
-        assertDoesNotThrow(()->is.orderArrived(order, supplier));
-        assertEquals(200,prod1.getTotalInStore(store));
+        reportOfOrder.put(prod1.getId(), new Pair<>(new Pair<>(0,2),"2 items were defective"));
+        assertDoesNotThrow(()->is.orderArrived(order, reportOfOrder));
+        assertEquals(198,prod1.getTotalInStore(store));
         assertEquals(200,prod2.getTotalInStore(store));
 
     }

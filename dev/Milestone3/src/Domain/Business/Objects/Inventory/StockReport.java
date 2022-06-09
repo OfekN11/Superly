@@ -59,8 +59,8 @@ public class StockReport {
         dataMapper.updateInStore(productID, storeID, amountInStore);
     }
 
-    public void addItems(int amount) {
-        amountInWarehouse+=amount;
+    public void addItems(int amount, int missingAndDefectiveItems, String description) {
+        amountInWarehouse+=amount-missingAndDefectiveItems;
         dataMapper.updateInWarehouse(productID, storeID, amountInWarehouse);
         amountInDeliveries-=amount;
         dataMapper.updateInDelivery(productID, storeID, amountInDeliveries);

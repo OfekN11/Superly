@@ -76,12 +76,9 @@ public class ViewSuppliersMenu extends Screen {
             }
 
             try{
-                if(controller.doesSupplierExists(supplierId)){
-                    correctInput = true;
-                }
-                else{
+                if(!controller.doesSupplierExists(supplierId))
                     System.out.println("No such supplier, please try again.\n");
-                }
+                correctInput = true;
             }
             catch (Exception e){
                 System.out.println(e.getMessage());
