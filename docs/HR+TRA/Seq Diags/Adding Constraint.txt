@@ -15,12 +15,12 @@ activate Facade
 ref over Facade:Login
 deactivate Facade
 
-HR Manager->Facade:2 addShift(date, shiftType)
+HR Manager->Facade:2 registerAsAvailable(eId,date, shiftType)
 activate Facade
 
-Facade->cService - ShiftService:2.1 registerToConstraint(eID, date, shiftType)
+Facade->cService - ShiftService:2.1 registerAsAvailable(eId,date, shiftType)
 activate cService - ShiftService
-cService - ShiftService->cController - ShiftController: 2.1.1 registerToConstraint(eID, date, shiftType)
+cService - ShiftService->cController - ShiftController: 2.1.1 registerAsAvailable(eId,date, shiftType)
 activate cController - ShiftController
 ref over cController - ShiftController, mapper - ShiftDataMapper:Get Shift
 ref over cController - ShiftController, mapper - ShiftDataMapper:Update Shift
