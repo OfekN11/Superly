@@ -1,6 +1,8 @@
 package WebPresentation.Screens;
 
 import WebPresentation.BackendController;
+import WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
+import WebPresentation.Screens.ViewModels.HR.Login;
 import WebPresentation.WebMain;
 
 import javax.servlet.Servlet;
@@ -34,6 +36,42 @@ public abstract class Screen extends HttpServlet {
     protected void greet(HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
         out.println(String.format("<h1>%s</h1>", greeting));
+    }
+
+    /***
+     * basic header for all pages
+     * @param resp the response to write to
+     * @throws IOException
+     */
+    protected void header(HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
+        out.println("<header>");
+        out.println("<form method=\"post\">");
+        out.println("<input type=\"submit\" name=\"home\" value=\"home\">");
+        out.println("<input type=\"submit\" name=\"logout\" value=\"logout\">");
+        out.println("</form>");
+        out.println("</header>");
+    }
+
+    /***
+     * handles post possible from the header
+     * @param req the request sent
+     * @param resp the response to write to
+     * @return true if a post occurred and handle from the header
+     * @throws IOException
+     */
+    protected boolean handleHeader(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        if (isButtonPressed(req, "home")) {
+            redirect(resp, EmployeeServlet.class);
+            return true;
+        }
+        if (isButtonPressed(req, "logout")){
+            if (Login.isLoggedIn(req))
+                Login.logout(req, resp);
+            redirect(resp, Login.class);
+            return true;
+        }
+        return false;
     }
 
     protected void setError(String error) {
@@ -74,7 +112,7 @@ public abstract class Screen extends HttpServlet {
      */
     public static void printMenu(HttpServletResponse resp, String[] menuOptions) throws IOException {
         PrintWriter out = resp.getWriter();
-        out.println("<form method=\"post\">\n");
+        out.println("<form method=\"post\">");
         for (int i = 0; i < menuOptions.length; i++)
             out.println(String.format("<input type=\"submit\" name=\"%s\" value=\"%s\"><br><br>", i, menuOptions[i]));
         out.println("</form>");
