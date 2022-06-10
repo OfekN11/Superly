@@ -2,7 +2,6 @@ package WebPresentation.Screens.ViewModels.HR;
 
 import WebPresentation.Screens.Models.HR.*;
 import WebPresentation.Screens.Screen;
-import WebPresentation.WebMain;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,6 @@ public class EmployeeServlet extends Screen {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (!Login.isLoggedIn(req)){
             redirect(resp, Login.class);
-            return;
         }
         header(resp);
         Employee employee = Login.getLoggedUser(req);
@@ -29,9 +27,13 @@ public class EmployeeServlet extends Screen {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (handleHeader(req, resp))
-            return;
+        handleHeader(req, resp);
         Employee emp = Login.getLoggedUser(req);
-        emp.doPost(req, resp);
+        try {
+            emp.doPost(req, resp);
+        } catch (Exception e) {
+            setError(e.getMessage());
+            refresh(req, resp);
+        }
     }
 }

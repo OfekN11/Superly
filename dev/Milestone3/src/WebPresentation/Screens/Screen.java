@@ -60,18 +60,15 @@ public abstract class Screen extends HttpServlet {
      * @return true if a post occurred and handle from the header
      * @throws IOException
      */
-    protected boolean handleHeader(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void handleHeader(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         if (isButtonPressed(req, "home")) {
             redirect(resp, EmployeeServlet.class);
-            return true;
         }
         if (isButtonPressed(req, "logout")){
             if (Login.isLoggedIn(req))
                 Login.logout(req, resp);
             redirect(resp, Login.class);
-            return true;
         }
-        return false;
     }
 
     protected void setError(String error) {
@@ -146,10 +143,10 @@ public abstract class Screen extends HttpServlet {
      * @throws IOException
      */
     protected static int getIndexOfButtonPressed(HttpServletRequest req) throws ServletException, IOException {
-        int i = 0;
-        while (i++ >= 0)
+        for (int i = 0; i < 20 ; i++) {
             if (req.getParameter(String.valueOf(i)) != null)
                 return i;
+        }
         return -1;
     }
 

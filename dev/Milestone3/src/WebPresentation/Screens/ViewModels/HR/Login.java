@@ -14,6 +14,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Login extends Screen {
 
@@ -30,7 +31,6 @@ public class Login extends Screen {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (isLoggedIn(req)) {
             redirect(resp, EmployeeServlet.class);
-            return;
         }
         header(resp);
         greet(resp);
@@ -40,8 +40,7 @@ public class Login extends Screen {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (handleHeader(req, resp))
-            return;
+        handleHeader(req, resp);
         if (isButtonPressed(req, "Sign in!")){
             String id = req.getParameter("ID");
             try {
@@ -49,6 +48,7 @@ public class Login extends Screen {
                 String hash = hash(id);
                 loggedUser.put(hash, emp);
                 Cookie c = new Cookie("superly_user", hash);
+                c.setMaxAge((int)TimeUnit.MINUTES.toSeconds(2));
                 resp.addCookie(c);
                 redirect(resp, EmployeeServlet.class);
             } catch (Exception e) {
