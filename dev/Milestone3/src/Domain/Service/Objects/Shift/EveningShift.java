@@ -2,7 +2,7 @@ package Domain.Service.Objects.Shift;
 
 import Globals.Enums.ShiftTypes;
 import Globals.util.HumanInteraction;
-import Presentation.Screens.ScreenShiftFactory;
+import Presentation.CLIPresentation.Screens.ScreenShiftFactory;
 
 public class EveningShift extends Shift{
     public EveningShift(Domain.Business.Objects.Shift.EveningShift bShift) {
@@ -15,7 +15,7 @@ public class EveningShift extends Shift{
     }
 
     @Override
-    public Presentation.Screens.Shift accept(ScreenShiftFactory screenShiftFactory) {
+    public Presentation.CLIPresentation.Screens.Shift accept(ScreenShiftFactory screenShiftFactory) {
         return screenShiftFactory.createScreenShift(this);
     }
 

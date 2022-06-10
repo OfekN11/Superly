@@ -1,7 +1,7 @@
 package Domain.Service.Objects.Shift;
 
 import Globals.Enums.ShiftTypes;
-import Presentation.Screens.ScreenShiftFactory;
+import Presentation.CLIPresentation.Screens.ScreenShiftFactory;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -60,7 +60,7 @@ public abstract class Shift {
                 bShift.getCarrierIDs(), bShift.getCashierIDs(), bShift.getStorekeeperIDs(), bShift.getSorterIDs(), bShift.getHr_managerIDs(), bShift.getLogistics_managerIDs(), bShift.getTransport_managerIDs());
     }
 
-    public abstract Presentation.Screens.Shift accept(ScreenShiftFactory screenShiftFactory);
+    public abstract Presentation.CLIPresentation.Screens.Shift accept(ScreenShiftFactory screenShiftFactory);
 
     public abstract ShiftTypes getType();
 }
