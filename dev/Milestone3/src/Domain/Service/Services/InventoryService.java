@@ -186,9 +186,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the info on the purchase
      */
-    public Result<Object> orderArrived(int orderID, int supplierID){
+    public Result<Object> orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder){
         try {
-            controller.orderArrived(orderID, supplierID);
+            controller.orderArrived(orderID, reportOfOrder);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

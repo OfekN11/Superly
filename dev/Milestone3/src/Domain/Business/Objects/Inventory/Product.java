@@ -117,10 +117,12 @@ public class Product {
         stockReports.get(storeID).removeItemsFromStore(amount, inWarehouse);
     }
 
-    public void addItems(int storeID, int amount) {
+    public void addItems(int storeID, int amount, int missingAndDefectiveItems, String description) {
         if (!stockReports.containsKey(storeID))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
-        stockReports.get(storeID).addItems(amount);
+        if (amount < missingAndDefectiveItems)
+            throw new IllegalArgumentException("You have entered more missing and defective items of product: " + id + ": " + name + " then arrived in the order");
+        stockReports.get(storeID).addItems(amount, missingAndDefectiveItems, description);
     }
 
     public void moveItems(int storeID, int amount) { //from warehouse to store

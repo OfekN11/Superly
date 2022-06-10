@@ -218,11 +218,11 @@ public class InventoryController {
         }
     }
 
-    public void orderArrived(int orderID, int supplierID) throws Exception {
-        Order arrivedOrder = supplierController.orderHasArrived(orderID, supplierID);
+    public void orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
+        Order arrivedOrder = supplierController.orderHasArrived(orderID, reportOfOrder);
         int orderStoreID = arrivedOrder.getStoreID();
         for (OrderItem orderItem : arrivedOrder.getOrderItems()) {
-            getProduct(orderItem.getProductId()).addItems(orderStoreID, orderItem.getQuantity());
+            getProduct(orderItem.getProductId()).addItems(orderStoreID, orderItem.getQuantity(), orderItem.getMissingItems()+orderItem.getDefectiveItems(), orderItem.getDescription());
         }
     }
 

@@ -481,8 +481,8 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supID).orderExists(orderID, orderDAO);
     }
 
-    public Order orderHasArrived(int orderID, int supplierID) throws Exception {
-        Order order = getOrderObject(supplierID, orderID);
+    public Order orderHasArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
+        Order order = getOrderObject(1, orderID);
         order.uploadItemsFromDB(uploadOrderItems(order.getId()));
         return order;
     }
