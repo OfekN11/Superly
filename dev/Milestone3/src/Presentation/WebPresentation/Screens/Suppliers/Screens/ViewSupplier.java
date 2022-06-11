@@ -6,13 +6,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 
 public class ViewSupplier extends Screen {
 
     private static final String greet = "View Supplier for Storekeeper and Store Manager";
     private final int supplierId;
-    private static final String addAgreement = "submit Agreement";
+    private static final String addAgreement = "Add New Agreement";
 
 
     public ViewSupplier() {
@@ -26,9 +27,9 @@ public class ViewSupplier extends Screen {
         greet(resp);
 
         printMenu(resp, new String[]{"Show Supplier Info", "Show Contacts","Show Manufacturers", "Show Agreement", "Show all Orders", "Show all discount items", "Edit Card"});
-        printForm(resp, new String[] {"agreementType", "agreementDays" }, new String[]{"Agreement Type", "Agreement Days"}, new String[]{addAgreement});
 
-        //printInfo(); explain what is the BulkMap
+
+        printForm(resp, new String[] {"agreementType", "agreementDays" }, new String[]{"Agreement Type", "Agreement Days"}, new String[]{addAgreement});
 
         handleError(resp);
     }
@@ -36,6 +37,7 @@ public class ViewSupplier extends Screen {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
+
         if (isButtonPressed(req, addAgreement)){
             /*
            //if agreement days and type work well => redirect(AddItemToAgreement.class);
