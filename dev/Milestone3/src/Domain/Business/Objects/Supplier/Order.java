@@ -281,7 +281,63 @@ public class Order {
     public String getStatusString() {
         if(status == OrderStatus.waiting)
             return "waiting";
-        else
-            return "ordered";
+        else if(status == OrderStatus.complete)
+            return "complete";
+        return "ordered";
+    }
+
+
+    public void order(){
+        this.status = OrderStatus.ordered;
+    }
+
+    public void start(){
+        this.status = OrderStatus.complete;
+    }
+
+    public double getOrderWeight(){
+        double total = 0;
+        for(OrderItem orderItem : orderItems){
+            total += orderItem.getWeight()* orderItem.getQuantity();
+        }
+        return total;
+    }
+
+    public void setArrivalTime(LocalDate date) {
+        arrivalTime = date;
+    }
+
+    public double getWeightOfItem(int itemID) {
+        return orderItems.get(itemID).getWeight();
+    }
+
+    public boolean containsItem(int itemId) {
+        for(OrderItem orderItem : orderItems){
+            if(orderItem.getProductId() == itemId)
+                return true;
+        }
+        return false;
+    }
+
+    public void setMissingAmountOfItem(int itemId, int missingAmount, OrderDAO orderDAO) throws Exception {
+        OrderItem item = getOrderItem(itemId);
+        if(item != null && item.getQuantity() < missingAmount)
+            throw new Exception("Missing amount is bigger than the quantity of this Item!");
+        item.setMissingItems(missingAmount);
+        orderDAO.setOrderItemMissingAmount(itemId,missingAmount);
+    }
+
+    public void setDefectiveAmountOfItem(int itemId, int defectiveAmount, OrderDAO orderDAO) throws Exception {
+        OrderItem item = getOrderItem(itemId);
+        if(item != null && item.getQuantity() < defectiveAmount)
+            throw new Exception("Defective amount is bigger than the quantity of this Item!");
+        item.setDefectiveItems(defectiveAmount);
+        orderDAO.setOrderItemDefectiveAmount(itemId, defectiveAmount);
+    }
+
+    public void setDescriptionOfItem(int itemId, String description, OrderDAO orderDAO) throws Exception {
+        OrderItem item = getOrderItem(itemId);
+        item.setDescription(description);
+        orderDAO.setOrderItemDescription(itemId, description);
     }
 }

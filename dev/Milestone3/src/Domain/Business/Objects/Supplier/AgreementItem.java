@@ -177,6 +177,7 @@ public class AgreementItem {
 
 
     public double getWeight() {
+        // TODO: 10/06/2022 Add this to the data base and fields!!
         return 1;
     }
 }

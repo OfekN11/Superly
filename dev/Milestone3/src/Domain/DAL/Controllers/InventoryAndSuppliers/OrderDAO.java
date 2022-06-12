@@ -66,9 +66,9 @@ public class OrderDAO extends DataMapper<Order> {
         String status = instanceResult.getString(STATUS_COLOUMN);
         //status : waiting, ordered
         if(status.equals("waiting"))
-            return OrderStatus.ordered;
+            return OrderStatus.waiting;
         else
-            return  OrderStatus.waiting;
+            return  OrderStatus.ordered;
     }
 
     @Override
@@ -217,6 +217,23 @@ public class OrderDAO extends DataMapper<Order> {
             }
         }
         return items;
+    }
+
+    public void setOrderArrivalTime(int orderId ,LocalDate date) throws SQLException {
+        updateProperty(String.valueOf(orderId), ARRIVAL_TIME_COLUMN, date);
+    }
+
+
+    public void setOrderItemMissingAmount(int itemId, int missingAmount) throws SQLException {
+        orderItemDAO.updateMissingAmount(itemId, missingAmount);
+    }
+
+    public void setOrderItemDefectiveAmount(int itemId, int defectiveAmount) throws SQLException {
+        orderItemDAO.updateDefectiveAmount(itemId, defectiveAmount);
+    }
+
+    public void setOrderItemDescription(int itemId, String desc) throws SQLException {
+        orderItemDAO.updateDescription(itemId, desc);
     }
 }
 

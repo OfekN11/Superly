@@ -21,10 +21,10 @@ public class OrderItemDAO extends DAO {
     private final static int PPU_COLUMN = 5;
     private final static int DISCOUNT_COLUMN = 6;
     private final static int FINAL_PRICE_COLUMN = 7;
-    private final static int MISSING_ITEMS_PRICE_COLUMN = 8;
-    private final static int DEFECTIVE_ITEMS_PRICE_COLUMN = 9;
+    private final static int MISSING_ITEMS_COLUMN = 8;
+    private final static int DEFECTIVE_ITEMS_COLUMN = 9;
     private final static int DESCRIPTION_COLUMN = 10;
-    private final static int WEIGHT_COLUMN = 10;
+    private final static int WEIGHT_COLUMN = 11;
 
 
 
@@ -57,8 +57,8 @@ public class OrderItemDAO extends DAO {
                         instanceResult.getInt(DISCOUNT_COLUMN), instanceResult.getDouble(FINAL_PRICE_COLUMN),
                         instanceResult.getDouble(WEIGHT_COLUMN));
 
-                currItem.setMissingItems(instanceResult.getInt(MISSING_ITEMS_PRICE_COLUMN));
-                currItem.setDefectiveItems(instanceResult.getInt(DEFECTIVE_ITEMS_PRICE_COLUMN));
+                currItem.setMissingItems(instanceResult.getInt(MISSING_ITEMS_COLUMN));
+                currItem.setDefectiveItems(instanceResult.getInt(DEFECTIVE_ITEMS_COLUMN));
                 currItem.setDescription(instanceResult.getString(DESCRIPTION_COLUMN));
 
                 ORDER_ITEM_IDENTITY_MAP.put(String.valueOf(currItem.getProductId()), currItem);
@@ -101,4 +101,15 @@ public class OrderItemDAO extends DAO {
         }
     }
 
+    public void updateMissingAmount(int itemId, int missingAmount) throws SQLException {
+        update(Arrays.asList(MISSING_ITEMS_COLUMN),Arrays.asList(missingAmount), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(itemId));
+    }
+
+    public void updateDefectiveAmount(int itemId, int defectiveAmount) throws SQLException {
+        update(Arrays.asList(DEFECTIVE_ITEMS_COLUMN),Arrays.asList(defectiveAmount), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(itemId));
+    }
+
+    public void updateDescription(int itemId, String description) throws SQLException {
+        update(Arrays.asList(DESCRIPTION_COLUMN),Arrays.asList(description), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(itemId));
+    }
 }

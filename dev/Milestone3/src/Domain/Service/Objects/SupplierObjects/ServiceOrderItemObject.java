@@ -70,7 +70,7 @@ public class ServiceOrderItemObject {
 
     public String toString(){
         return "ID: " + id + ", Name:" + name + ", Quantity: " + quantity + ", Price Per Unit: " + ppu + ", Discount: " + discount
-                + ", Final Price: " + finalPrice + "\nWeight: " + weight  + ", Missing items: " + missing + ", Defective items: " + defective + ", Description: " + description;
+                + ", Final Price: " + finalPrice + "\nWeight: " + weight  + ", Missing items: " + missing + ", Defective items: " + defective + ", Description: " + description + "\n";
     }
 
     public String toStringDiscount(float originalPrice) {
