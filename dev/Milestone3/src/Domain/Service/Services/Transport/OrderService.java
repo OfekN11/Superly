@@ -39,5 +39,8 @@ public class OrderService {
             return Result.makeError(e.getMessage());
         }
     }
+    public String[] getImportantMessages(){
+        return order.alertsToHR();
+    }
 
 }

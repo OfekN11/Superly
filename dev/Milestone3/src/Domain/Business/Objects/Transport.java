@@ -107,12 +107,17 @@ public class Transport {
         return sourcesID.isEmpty() && destinationsID.isEmpty();
     }
 
-    public boolean placeTruck(int licenseNumber,int weight)
+    public boolean placeTruck(int licenseNumber,int weight,int max)
     {
         if(truckNumber==-1){
-            truckNumber = licenseNumber;
-            truckWeight = weight;
-            return true;
+            if(truckWeight + weight > max){
+                return false;
+            }
+            else{
+                truckNumber = licenseNumber;
+                truckWeight = weight;
+                return true;
+            }
         }
         return false;
     }
@@ -244,5 +249,20 @@ public class Transport {
             }
         }
         return sourcesID.size()==0 && destinationsID.size()==0;
+    }
+    public boolean canChangeWeight(int newWeight, int maxCapacityWeight) throws Exception {
+        if(truckWeight+newWeight > maxCapacityWeight){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    public void updateWeight(int amount){
+        truckWeight = truckWeight + amount;
+    }
+
+    public void initWeight(int weight){
+        truckWeight = weight;
     }
 }

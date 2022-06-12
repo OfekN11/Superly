@@ -17,7 +17,6 @@ import Domain.Business.Controllers.HR.*;
 
 import java.time.LocalDate;
 import java.util.*;
-//TODO not finished methods(ADD,GET,getAllTransports,getPendingTransports,getInProgressTransports,getCompletedTransports)
 public class TransportController {
     private final TransportDAO transportDataMapper = new TransportDAO();
     private TruckController truckController;
@@ -35,10 +34,11 @@ public class TransportController {
         shiftController = new ShiftController();
         documentController = new DocumentController();
     }
-    public void createTransport(Pair<LocalDate,ShiftTypes> shift) throws Exception {
+    public Transport createTransport(Pair<LocalDate,ShiftTypes> shift) throws Exception {
         if(shiftController.getShift(shift.getLeft(),shift.getRight()).getStorekeeperCount()>0){
             Transport transport = new Transport(shift);
             transportDataMapper.save(transport);
+            return transport;
         }
         else{
             throw new Exception("there is no sorter in this shift");
@@ -94,13 +94,70 @@ public class TransportController {
         }
         return transport;
     }
+    public void SchedulingOrderToTransport(TransportOrder order,List<LocalDate> available) throws Exception {
+        int weight = 0;//TODO after swiching to Order use orderController.getOrder(order).getWeight();
+        boolean isAdd = false;
+        for(LocalDate d: available){
+            List<Transport> tInDate = getTransportInDate(d);
+            for(Transport t: tInDate){
+                if(t.getStatus()==TransportStatus.padding){
+                    if (canAddWeightToTransport(t,weight)){
+                        addOrderToTransport(t.getSN(),order.getID());
+                        isAdd = true;
+                        break;
+                    }
+                }
+            }
+            if(isAdd){
+                break;
+            }
+            else{
+                Pair<Boolean,ShiftTypes> canCreate = canCreateTransport(d);
+                if(canCreate.getLeft()){
+                    Transport created = createTransport(new Pair<>(d,canCreate.getRight()));
+                    addOrderToTransport(created.getSN(),order.getID());
+                    isAdd = true;
+                    break;
+                }
+
+            }
+
+        }
+        if(!isAdd){
+            orderController.addAlertOrder(order.getID());
+        }
+
+    }
+    public List<Transport> getTransportInDate(LocalDate d){
+        List<Transport> all = getAllTransports();
+        List<Transport> inDate = new ArrayList<>();
+        for(Transport t : all){
+            if(t.getShift().getLeft().toString().equals(d.toString())){
+                inDate.add(t);
+            }
+        }
+        return inDate;
+    }
+    //TODO need to think about the algorithm
+    public Pair<Boolean,ShiftTypes> canCreateTransport(LocalDate d){
+        try {
+            Shift s = shiftController.getShift(d,ShiftTypes.Morning);
+            if(s.getStorekeeperCount()>0){
+                return new Pair<>(true,ShiftTypes.Morning);
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
+
+    }
 
     public void addOrderToTransport(int transportSN, int orderID) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()== TransportStatus.padding)
         {
+            TransportOrder order = orderController.getTransportOrder(orderID);
             if(transport.isPlacedTruck()){
-                TransportOrder order = orderController.getTransportOrder(orderID);
                 if(order.getStatus()== OrderStatus.waiting){
                     int extraWeight  = orderController.getExtraWeight(order);
                     updateWeight(transport,extraWeight);
@@ -116,7 +173,15 @@ public class TransportController {
                 }
             }
             else{
-                throw new Exception("the truck is not placed yet");
+                int weight = 0;//TODO after swiching to Order use orderController.getOrder(order).getWeight();
+                transport.initWeight(weight);
+                ShippingAreas sourceShip = siteController.getSource(order.getSrc()).getAddress().getShippingAreas();
+                ShippingAreas destShip = siteController.getDestination(order.getDst()).getAddress().getShippingAreas();
+                transport.addOrder(order,sourceShip,destShip);
+                transportDataMapper.save(transport);
+                order.order();
+                orderController.updateOrder(order);
+
             }
         }
         else {
@@ -136,7 +201,7 @@ public class TransportController {
             Truck truck = truckController.getTruck(licenseNumber);
             List<Transport> allTransports = getAllTransports();
             List<Transport> shiftTransports = getTransportsInShift(allTransports,transport.getShift());
-            if(!(isAvailable(shiftTransports,truck) && transport.placeTruck(licenseNumber,truck.getNetWeight())))
+            if(!(isAvailable(shiftTransports,truck) && transport.placeTruck(licenseNumber,truck.getNetWeight(),truck.getMaxCapacityWeight())))
             {
                 throw new Exception("truck cant be placed");
             }
@@ -197,7 +262,7 @@ public class TransportController {
                 transportDataMapper.save(transport);
             }
             else{
-                throw new Exception("this is not a padding transport");
+                throw new Exception("transport not ready to go");
             }
         }
         else{
@@ -205,12 +270,22 @@ public class TransportController {
         }
     }
 
-    public void endTransport(int transportSN) throws Exception {
+    public List<Integer> endTransport(int transportSN) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()==TransportStatus.inProgress){
             if(transport.isDoneTransport()){
+                TransportDocument transportDocument = new TransportDocument(transport.getSN(),transport.getStartTime(),transport.getTruckNumber(),transport.getDriverID());
+                for (Integer order:transport.getTransportOrders()) {
+                    TransportOrder o = orderController.getTransportOrder(order);
+                    //TODO after change the order class to add o.start();
+                    DestinationDocument document = new DestinationDocument(order,o.getDst(),o.getProducts());
+                    documentController.uploadDestinationDocument(document);
+                    transportDocument.addDoc(document.getID());
+                }
+                documentController.uploadTransportDocument(transportDocument);
                 transport.endTransport();
                 transportDataMapper.save(transport);
+                return transport.getTransportOrders();
             }
             else {
                 throw new Exception("transport is not finished yet");
@@ -237,7 +312,6 @@ public class TransportController {
         return true;
     }
     //GETTERS
-    //TODO fix the getters after DAL fix
     public HashMap<Integer, Transport> getPendingTransports() {
         List<Transport> allTransports = getAllTransports();
         HashMap<Integer,Transport> padding = new HashMap<>();
@@ -279,6 +353,32 @@ public class TransportController {
         }
         return shiftTransports;
     }
+    public boolean canChangeOrder(int orderID, int amount) throws Exception {
+        Transport t = getTransportFromOrder(orderID);
+        return canAddWeightToTransport(t,amount);
+    }
+    public boolean canAddWeightToTransport(Transport t, int amount) throws Exception {
+
+        if(t.isPlacedTruck()){
+            Truck truck = truckController.getTruck(t.getTruckNumber());
+            return t.canChangeWeight(amount,truck.getMaxCapacityWeight());
+        }
+        else{return true;}
+    }
+    public void changeWeight(int orderID, int amount) throws Exception {
+        Transport t = getTransportFromOrder(orderID);
+        t.updateWeight(amount);
+    }
+    public Transport getTransportFromOrder(int orderID) throws Exception {
+        List<Transport> all = getAllTransports();
+        for(Transport t :all) {
+            if (t.getTransportOrders().contains(orderID)) {
+                return t;
+            }
+        }
+        throw new Exception("order is not in any transport ");
+    }
+}
 
     //TODO will be added in the next assignment
     /*
@@ -306,4 +406,4 @@ public class TransportController {
             throw new Exception("The transport is not on the list of pending transport!");
         }
     }*/
-}
+

@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-//TODO not finished methods (ADD and GET)
 public class OrderController {
     private HashMap<String, Product> products;
+    private static List<Integer> alertOrders;
     private final TransportOrderDAO transportOrderDataMapper = new TransportOrderDAO();
 
     public OrderController() {
+        alertOrders = new ArrayList<>();
         products = new HashMap<>();
         products.put( "1",new Product(1,"Milk",2));
         products.put( "2",new Product(2,"Bread",1));
@@ -59,5 +60,18 @@ public class OrderController {
     }
     public void updateOrder(TransportOrder order){
         transportOrderDataMapper.save(order);
+    }
+    public void addAlertOrder(int orderID){
+        if(alertOrders.contains(orderID)){
+            alertOrders.add(orderID);
+        }
+    }
+    public String[] alertsToHR(){
+        String[] message = new String[alertOrders.size()];
+        int place = 0 ;
+        for (Integer order:alertOrders) {
+            message[place] = "Order "+order+" cannot be in transport in a week from now";
+        }
+        return message;
     }
 }
