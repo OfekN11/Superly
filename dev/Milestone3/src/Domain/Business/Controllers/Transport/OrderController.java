@@ -24,8 +24,8 @@ public class OrderController {
         products.put( "5",new Product(5,"cheese",5));
         products.put( "6",new Product(6,"sugar",7));
         products.put( "7",new Product(7,"salt",9));
-
     }
+
     public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {
 
         TransportOrder order = new TransportOrder(srcID,dstID,productList);

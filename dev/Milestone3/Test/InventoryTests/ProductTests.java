@@ -4,6 +4,7 @@ import Domain.Business.Controllers.InventoryController;
 import Domain.Business.Objects.Inventory.Category;
 import Domain.Business.Objects.Inventory.Product;
 import Domain.Business.Objects.Inventory.SaleToCustomer;
+import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.CategoryDataMapper;
 import Domain.DAL.Controllers.InventoryAndSuppliers.ProductDataMapper;
 import Domain.DAL.Controllers.InventoryAndSuppliers.StoreDAO;
@@ -28,6 +29,7 @@ public class ProductTests {
 
     @BeforeAll
     public synchronized static void getMaxStoreCount() {
+        DAO.setDBPathForTests();
         stores=new ArrayList<>();
         maxStoreCount = max(is.getStoreIDs());
         stores.add(is.addStore());

@@ -1,5 +1,6 @@
 package Domain.Business.Controllers;
 
+import Domain.Business.Controllers.Transport.TransportController;
 import Domain.Business.Objects.Inventory.Category;
 import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.Business.Objects.Inventory.SaleToCustomer;
@@ -27,6 +28,7 @@ public class InventoryController {
     private int productID;
     private int storeID;
     private SupplierController supplierController;
+    private TransportController transportController;
     private final static StoreDAO STORE_DAO = new StoreDAO();
     private final static ProductDataMapper PRODUCT_DATA_MAPPER = Product.PRODUCT_DATA_MAPPER;
     private final static CategoryDataMapper CATEGORY_DATA_MAPPER = Category.CATEGORY_DATA_MAPPER;
@@ -40,9 +42,13 @@ public class InventoryController {
         saleID=SALE_DATA_MAPPER.getIDCount() + 1;
         catID=CATEGORY_DATA_MAPPER.getIDCount() + 1;
         productID=PRODUCT_DATA_MAPPER.getIDCount() + 1;
-        supplierController = new SupplierController();
+
+//        supplierController = new SupplierController(transportController);
     }
 
+    public void setTransportController(TransportController controller) {
+        this.transportController = controller;
+    }
     //for tests
     private static InventoryController instance;
     public static synchronized InventoryController getInventoryController() {
@@ -217,6 +223,17 @@ public class InventoryController {
             SALE_DATA_MAPPER.remove(sale.getId());
         }
     }
+
+//    public void orderArrived(int transportID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
+//        transportController.endTransport(transportID)
+//        orders = transportController.getOrdersIDs()
+//
+//        Order arrivedOrder = supplierController.orderHasArrived(orderID, reportOfOrder);
+//        int orderStoreID = arrivedOrder.getStoreID();
+//        for (OrderItem orderItem : arrivedOrder.getOrderItems()) {
+//            getProduct(orderItem.getProductId()).addItems(orderStoreID, orderItem.getQuantity(), orderItem.getMissingItems()+orderItem.getDefectiveItems(), orderItem.getDescription());
+//        }
+//    }
 
     public void orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
         Order arrivedOrder = supplierController.orderHasArrived(orderID, reportOfOrder);

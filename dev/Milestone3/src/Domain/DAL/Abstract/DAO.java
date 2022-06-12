@@ -10,14 +10,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class DAO {
-    private final static String dbName= "Superly.db"; // need to be change!
-    String url = String.format("jdbc:sqlite:%s/%s",System.getProperty("user.dir"),dbName);
+    private static String dbName= "Superly.db";
+    private static String url = String.format("jdbc:sqlite:%s/%s",System.getProperty("user.dir"),dbName);
     private final static String SELECT_QUERY = "SELECT %s from %s where %s";
     private final static String INSERT_QUERY = "INSERT INTO %s VALUES (%s)";
     private final static String DELETE_QUERY = "DELETE FROM %s WHERE %s;";
     private final static String UPDATE_QUERY = "UPDATE %s SET %s WHERE %s";
 
-
+    public static void setDBPathForTests() {
+        //create and delete db?
+        url="jdbc:sqlite:Test/SuperlyTests.db";
+    }
     // properties
     protected String tableName; // this field will be valid if we will save data in tables
     private List<String> tableColumnNames;
