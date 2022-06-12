@@ -29,7 +29,6 @@ public class ProductTests {
 
     @BeforeAll
     public synchronized static void getMaxStoreCount() {
-        DAO.setDBPathForTests();
         stores=new ArrayList<>();
         maxStoreCount = max(is.getStoreIDs());
         stores.add(is.addStore());
