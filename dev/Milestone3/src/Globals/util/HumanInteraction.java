@@ -13,7 +13,7 @@ public class HumanInteraction {
 
     public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    private static final Scanner scanner = new Scanner(System.in);
+    public static final Scanner scanner = new Scanner(System.in);
 
     public static void operationCancelled() throws OperationCancelledException {
         System.out.println("Operation Canceled");

@@ -1,5 +1,5 @@
 package Globals.Enums;
 
 public enum OrderStatus {
-    waiting, ordered
+    waiting, ordered, complete
 }

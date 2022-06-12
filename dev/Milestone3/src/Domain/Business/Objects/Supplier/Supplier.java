@@ -509,8 +509,7 @@ public class Supplier {
         Double finalPrice = agreement.getItem(itemId).calculateTotalPrice(itemQuantity);
 
         //currItem.getWeight()
-        double weight = agreement.getItem(itemId).getWeight();
-        // TODO: 08/06/2022  currItem.getWeight()
+        double weight = currItem.getWeight();
         orders.get(orderId).addItem(itemId, agreement.getItem(itemId).getIdBySupplier() , agreement.getItem(itemId).getName(), itemQuantity, ppu, discount, finalPrice, weight, orderDAO);
 
     }

@@ -1,27 +1,23 @@
 package Presentation;
 
+import Domain.Service.util.Result;
+import Globals.Enums.*;
+import Globals.*;
 import Domain.Service.Objects.Employee.*;
 import Domain.Service.Objects.InventoryObjects.*;
 import Domain.Service.Objects.Shift.Shift;
-import Domain.Service.Objects.SupplierObjects.ServiceItemObject;
-import Domain.Service.Objects.SupplierObjects.ServiceOrderItemObject;
-import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
-import Domain.Service.Objects.SupplierObjects.ServiceSupplierObject;
-import Domain.Service.Services.HR.EmployeeService;
-import Domain.Service.Services.HR.ShiftService;
-import Domain.Service.Services.InventoryService;
-import Domain.Service.Services.SupplierService;
-import Domain.Service.Services.Transport.DocumentService;
-import Domain.Service.Services.Transport.OrderService;
-import Domain.Service.Services.Transport.TransportService;
-import Domain.Service.Services.Transport.TruckService;
-import Domain.Service.util.Result;
-import Globals.Enums.*;
-import Globals.Pair;
-import Presentation.Factories.PresentationDocumentFactory;
-import Presentation.Objects.Document.*;
-import Presentation.Objects.Transport.Transport;
-import Presentation.Objects.Transport.TransportOrder;
+import Domain.Service.Objects.SupplierObjects.*;
+import Domain.Service.Services.HR.*;
+import Domain.Service.Services.*;
+import Domain.Service.Services.Transport.*;
+import Presentation.CLIPresentation.Factories.*;
+import Presentation.CLIPresentation.Objects.Document.*;
+import Presentation.CLIPresentation.Objects.Transport.*;
+import Presentation.CLIPresentation.Factories.PresentationDocumentFactory;
+import Presentation.CLIPresentation.Objects.Document.DestinationDocument;
+import Presentation.CLIPresentation.Objects.Document.TransportDocument;
+import Presentation.CLIPresentation.Objects.Transport.Transport;
+import Presentation.CLIPresentation.Objects.Transport.TransportOrder;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -207,31 +203,31 @@ public class BackendController {
 
     //UPDATE
 
-    public void editEmployeeName(Presentation.Screens.Employee employee, String newName) throws Exception {
+    public void editEmployeeName(Presentation.CLIPresentation.Screens.Employee employee, String newName) throws Exception {
         Result<Object> result = employeeService.editEmployeeName(employee.getID(), newName);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editEmployeeBankDetails(Presentation.Screens.Employee employee, String newNankDetails) throws Exception {
+    public void editEmployeeBankDetails(Presentation.CLIPresentation.Screens.Employee employee, String newNankDetails) throws Exception {
         Result<Object> result = employeeService.editEmployeeBankDetails(employee.getID(), newNankDetails);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editEmployeeSalary(Presentation.Screens.Employee employee, int newSalary) throws Exception {
+    public void editEmployeeSalary(Presentation.CLIPresentation.Screens.Employee employee, int newSalary) throws Exception {
         Result<Object> result = employeeService.editEmployeeSalary(employee.getID(), newSalary);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editEmployeeCertifications(Presentation.Screens.Employee employee, Set<Certifications> newCertifications) throws Exception {
+    public void editEmployeeCertifications(Presentation.CLIPresentation.Screens.Employee employee, Set<Certifications> newCertifications) throws Exception {
         Result<Object> result = employeeService.editEmployeeCertifications(employee.getID(), newCertifications);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editCarrierLicenses(Presentation.Screens.Carrier carrier, Set<LicenseTypes> newLicenses) throws Exception {
+    public void editCarrierLicenses(Presentation.CLIPresentation.Screens.Carrier carrier, Set<LicenseTypes> newLicenses) throws Exception {
         Result<Object> result = employeeService.editCarrierLicenses(carrier.getID(), newLicenses);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
@@ -297,118 +293,118 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Set<Shift> getEmployeeShiftsBetween(Presentation.Screens.Employee employee, LocalDate start, LocalDate end) throws Exception {
+    public Set<Shift> getEmployeeShiftsBetween(Presentation.CLIPresentation.Screens.Employee employee, LocalDate start, LocalDate end) throws Exception {
         Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(employee.getID(), start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableShiftManagersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAvailableShiftManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAvailableShiftManagersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public void editShiftTransport_ManagerCount(Presentation.Screens.Shift shift, int transport_managersCount) throws Exception {
+    public void editShiftTransport_ManagerCount(Presentation.CLIPresentation.Screens.Shift shift, int transport_managersCount) throws Exception {
         Result<Object> result = shiftService.editShiftTransport_ManagerCount(shift.getDate(), shift.getType(), transport_managersCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public Set<Employee> getAssignedSortersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAssignedSortersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAssignedSortersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedStorekeepersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAssignedStorekeepersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAssignedStorekeepersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedCarriersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAssignedCarriersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAssignedCarriersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedCashiersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAssignedCashiersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAssignedCashiersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedHR_ManagersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAssignedHR_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAssignedHR_ManagersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedLogistics_ManagersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAssignedLogistics_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAssignedLogistics_ManagersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedTransports_ManagersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAssignedTransports_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAssignedTransport_ManagersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableSortersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAvailableSortersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAvailableSortersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableStorekeepersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAvailableStorekeepersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAvailableStorekeepersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableCarriersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAvailableCarriersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAvailableCarriersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableCashiersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAvailableCashiersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAvailableCashiersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableHR_ManagersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAvailableHR_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAvailableHR_ManagersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableLogistics_ManagersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAvailableLogistics_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAssignedLogistics_ManagersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableTransports_ManagersFor(Presentation.Screens.Shift shift) throws Exception {
+    public Set<Employee> getAvailableTransports_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
         Result<Set<Employee>> result = shiftService.getAssignedTransport_ManagersFor(shift.getDate(), shift.getType());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
@@ -417,104 +413,104 @@ public class BackendController {
 
     //UPDATE
 
-    public void registerToConstraint(Presentation.Screens.Employee employee, Shift shift) throws Exception {
+    public void registerToConstraint(Presentation.CLIPresentation.Screens.Employee employee, Shift shift) throws Exception {
         Result<Object> result = shiftService.registerAsAvailable(shift.date, shift.getType(), employee.getID());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void unregisterFromConstraint(Presentation.Screens.Employee employee, Shift shift) throws Exception{
+    public void unregisterFromConstraint(Presentation.CLIPresentation.Screens.Employee employee, Shift shift) throws Exception{
         Result<Object> result = shiftService.unregisterFromAvailable(shift.date, shift.getType(), employee.getID());
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftManagerID(Presentation.Screens.Shift shift, String shiftManagerId) throws Exception {
+    public void editShiftManagerID(Presentation.CLIPresentation.Screens.Shift shift, String shiftManagerId) throws Exception {
         validateID(shiftManagerId);
         Result<Object> result = shiftService.editShiftManagerID(shift.getDate(), shift.getType(), shiftManagerId);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftCarrierCount(Presentation.Screens.Shift shift, int newCarrierCount) throws Exception {
+    public void editShiftCarrierCount(Presentation.CLIPresentation.Screens.Shift shift, int newCarrierCount) throws Exception {
         Result<Object> result = shiftService.editShiftCarrierCount(shift.getDate(), shift.getType(), newCarrierCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftCashierCount(Presentation.Screens.Shift shift, int newCashierCount) throws Exception {
+    public void editShiftCashierCount(Presentation.CLIPresentation.Screens.Shift shift, int newCashierCount) throws Exception {
         Result<Object> result = shiftService.editShiftCashierCount(shift.getDate(), shift.getType(), newCashierCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftSorterCount(Presentation.Screens.Shift shift, int newSorterCount) throws Exception {
+    public void editShiftSorterCount(Presentation.CLIPresentation.Screens.Shift shift, int newSorterCount) throws Exception {
         Result<Object> result = shiftService.editShiftSorterCount(shift.getDate(), shift.getType(), newSorterCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftStorekeeperCount(Presentation.Screens.Shift shift, int newStorekeeperCount) throws Exception {
+    public void editShiftStorekeeperCount(Presentation.CLIPresentation.Screens.Shift shift, int newStorekeeperCount) throws Exception {
         Result<Object> result = shiftService.editShiftStorekeeperCount(shift.getDate(), shift.getType(), newStorekeeperCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftHR_ManagerCount(Presentation.Screens.Shift shift, int newHr_managersCount) throws Exception {
+    public void editShiftHR_ManagerCount(Presentation.CLIPresentation.Screens.Shift shift, int newHr_managersCount) throws Exception {
         Result<Object> result = shiftService.editShiftHR_ManagerCount(shift.getDate(), shift.getType(), newHr_managersCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftLogistics_ManagerCount(Presentation.Screens.Shift shift, int newLogistics_managersCount) throws Exception {
+    public void editShiftLogistics_ManagerCount(Presentation.CLIPresentation.Screens.Shift shift, int newLogistics_managersCount) throws Exception {
         Result<Object> result = shiftService.editShiftLogistics_ManagerCount(shift.getDate(), shift.getType(), newLogistics_managersCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftCarrierIDs(Presentation.Screens.Shift shift, Set<String> newCarrierIDs) throws Exception {
+    public void editShiftCarrierIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newCarrierIDs) throws Exception {
         validateIDs(newCarrierIDs);
         Result<Object> result = shiftService.editShiftCarrierIDs(shift.getDate(), shift.getType(), newCarrierIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftCashierIDs(Presentation.Screens.Shift shift, Set<String> newCashierIDs) throws Exception {
+    public void editShiftCashierIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newCashierIDs) throws Exception {
         validateIDs(newCashierIDs);
         Result<Object> result = shiftService.editShiftCashierIDs(shift.getDate(), shift.getType(), newCashierIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftStorekeeperIDs(Presentation.Screens.Shift shift, Set<String> newStorekeeperIDs) throws Exception {
+    public void editShiftStorekeeperIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newStorekeeperIDs) throws Exception {
         validateIDs(newStorekeeperIDs);
         Result<Object> result = shiftService.editShiftStorekeeperIDs(shift.getDate(), shift.getType(), newStorekeeperIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftSorterIDs(Presentation.Screens.Shift shift, Set<String> newSorterIDs) throws Exception {
+    public void editShiftSorterIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newSorterIDs) throws Exception {
         validateIDs(newSorterIDs);
         Result<Object> result = shiftService.editShiftSorterIDs(shift.getDate(), shift.getType(), newSorterIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftHR_ManagerIDs(Presentation.Screens.Shift shift, Set<String> newHr_managerIDs) throws Exception {
+    public void editShiftHR_ManagerIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newHr_managerIDs) throws Exception {
         validateIDs(newHr_managerIDs);
         Result<Object> result = shiftService.editShiftHR_ManagerIDs(shift.getDate(), shift.getType(), newHr_managerIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftLogistics_ManagerIDs(Presentation.Screens.Shift shift, Set<String> newLogistics_managerIDs) throws Exception {
+    public void editShiftLogistics_ManagerIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newLogistics_managerIDs) throws Exception {
         validateIDs(newLogistics_managerIDs);
         Result<Object> result = shiftService.editShiftLogistics_ManagerIDs(shift.getDate(), shift.getType(), newLogistics_managerIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftTransport_ManagerIDs(Presentation.Screens.Shift shift, Set<String> newTransport_managersIDs) throws Exception {
+    public void editShiftTransport_ManagerIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newTransport_managersIDs) throws Exception {
         validateIDs(newTransport_managersIDs);
         Result<Object> result = shiftService.editShiftTransport_ManagerIDs(shift.getDate(), shift.getType(), newTransport_managersIDs);
         if (result.isError())
@@ -575,11 +571,11 @@ public class BackendController {
     }
 
     //Transport
-    private Set<Presentation.Objects.Transport.Transport> toPLTransports(Set<Domain.Service.Objects.Transport> transports)
+    private Set<Transport> toPLTransports(Set<Domain.Service.Objects.Transport> transports)
     {
-        Set<Presentation.Objects.Transport.Transport> transportList = new HashSet<>();
+        Set<Transport> transportList = new HashSet<>();
         for (Domain.Service.Objects.Transport transport: transports) {
-            transportList.add(new Presentation.Objects.Transport.Transport(transport));
+            transportList.add(new Transport(transport));
         }
         return transportList;
     }
@@ -594,11 +590,11 @@ public class BackendController {
         throwIfError(result);
         return toPLTransports(result.getValue());
     }
-    private Set<Presentation.Objects.Transport.TransportOrder> toPLTransportOrder(Set<Domain.Service.Objects.TransportOrder> orders)
+    private Set<TransportOrder> toPLTransportOrder(Set<Domain.Service.Objects.TransportOrder> orders)
     {
-        Set<Presentation.Objects.Transport.TransportOrder> transportList = new HashSet<>();
+        Set<TransportOrder> transportList = new HashSet<>();
         for (Domain.Service.Objects.TransportOrder order: orders) {
-            transportList.add(new Presentation.Objects.Transport.TransportOrder(order));
+            transportList.add(new TransportOrder(order));
         }
         return transportList;
     }
@@ -625,7 +621,7 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Set<Shift> getEmployeeConstraintsBetween(Presentation.Screens.Employee employee, LocalDate start, LocalDate end) throws Exception {
+    public Set<Shift> getEmployeeConstraintsBetween(Presentation.CLIPresentation.Screens.Employee employee, LocalDate start, LocalDate end) throws Exception {
         Result<Set<Shift>> result = shiftService.getEmployeeConstraintsBetween(employee.getID(), start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());

@@ -2,7 +2,8 @@ package Domain.Service.Objects.Employee;
 
 import Globals.Enums.JobTitles;
 import Globals.Enums.LicenseTypes;
-import Presentation.Screens.ScreenEmployeeFactory;
+import Presentation.CLIPresentation.Screens.ScreenEmployeeFactory;
+import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
 
 import java.util.Collections;
 import java.util.Set;
@@ -19,12 +20,17 @@ public class Carrier extends Employee {
     }
 
     @Override
-    public Presentation.Screens.Employee accept(ScreenEmployeeFactory screenEmployeeFactory) {
+    public Presentation.CLIPresentation.Screens.Employee accept(ScreenEmployeeFactory screenEmployeeFactory) {
         return screenEmployeeFactory.createScreenEmployee(this);
     }
 
     @Override
     public JobTitles getType() {
         return JobTitles.Carrier;
+    }
+
+    @Override
+    public Presentation.WebPresentation.Screens.Models.HR.Employee accept(EmployeeFactory employeeFactory) {
+        return employeeFactory.createEmployee(this);
     }
 }

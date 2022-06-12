@@ -2,7 +2,8 @@ package Domain.Service.Objects.Employee;
 
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
-import Presentation.Screens.ScreenEmployeeFactory;
+import Presentation.CLIPresentation.Screens.ScreenEmployeeFactory;
+import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -50,7 +51,9 @@ public abstract class Employee {
         this(bEmployee.getId(), bEmployee.getName(), bEmployee.getBankDetails(), bEmployee.getSalary(), bEmployee.getEmploymentConditions(), bEmployee.getStartingDate(), bEmployee.getCertifications());
     }
 
-    public abstract Presentation.Screens.Employee accept(ScreenEmployeeFactory screenEmployeeFactory);
+    public abstract Presentation.CLIPresentation.Screens.Employee accept(ScreenEmployeeFactory screenEmployeeFactory);
 
     public abstract JobTitles getType();
+
+    public abstract Presentation.WebPresentation.Screens.Models.HR.Employee accept(EmployeeFactory employeeFactory);
 }

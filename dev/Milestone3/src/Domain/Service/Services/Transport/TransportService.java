@@ -2,10 +2,8 @@ package Domain.Service.Services.Transport;
 
 import Domain.Business.Controllers.Transport.TransportController;
 import Globals.Enums.ShiftTypes;
-import Globals.Enums.ShippingAreas;
 import Domain.Service.Objects.*;
 import Globals.Pair;
-import Presentation.Objects.Transport.TransportOrder;
 import Domain.Service.util.Result;
 import java.time.LocalDate;
 import java.util.*;
