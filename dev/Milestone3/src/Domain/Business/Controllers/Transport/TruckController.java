@@ -27,4 +27,7 @@ public class TruckController {
         }
         return t;
     }
+    public int getTruckNumber(){
+        return truckDataMapper.size();
+    }
 }

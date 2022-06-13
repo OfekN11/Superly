@@ -19,8 +19,9 @@ public class TransportOrderMenu extends Screen {
 
     @Override
     public void run() {
-        System.out.println("\nCreate Transport Order:");
-        int srcID = 0;
+        //TODO remove after update
+        System.out.println("\nCreate Transport Order: not access in this point");
+        /*int srcID = 0;
         int dstID = 0;
         try {
             srcID = getSiteID("source");
@@ -63,7 +64,7 @@ public class TransportOrderMenu extends Screen {
                 System.out.println(e.getMessage());
                 System.out.println("Please try again");
             }
-        }
+        }*/
     }
 
     private void closeOrder(TransportOrder to) throws Exception {
