@@ -17,9 +17,8 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
     private final static int SUPPLIER_ID_COLUMN = 1;
     private final static int PRODUCT_ID_COLUMN = 2;
     private final static int MANUFACTURER_COLUMN = 3;
-    private final static int NAME_COLUMN = 4;
-    private final static int PPU_COLUMN = 5;
-    private final static int ID_BY_SUPPLIER = 6;
+    private final static int PPU_COLUMN = 4;
+    private final static int ID_BY_SUPPLIER = 5;
 
     private final BulkPricesDAO bulkPricesDAO;
 
@@ -43,7 +42,6 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
     protected AgreementItem buildObject(ResultSet instanceResult) throws Exception {
         return new AgreementItem(instanceResult.getInt(PRODUCT_ID_COLUMN),
                 instanceResult.getInt(ID_BY_SUPPLIER),
-                instanceResult.getString(NAME_COLUMN),
                 instanceResult.getString(MANUFACTURER_COLUMN),
                 instanceResult.getFloat(PPU_COLUMN),
                 getBulkMap(instanceResult.getInt(SUPPLIER_ID_COLUMN), instanceResult.getInt(PRODUCT_ID_COLUMN)));
@@ -85,7 +83,7 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
 
     public void insertOneItem(int supplierId, AgreementItem item) throws SQLException {
         insert(Arrays.asList(String.valueOf(supplierId), String.valueOf(item.getProductId()),
-                item.getManufacturer(), item.getName(),String.valueOf(item.getPricePerUnit()), String.valueOf(item.getIdBySupplier())));
+                item.getManufacturer(),String.valueOf(item.getPricePerUnit()), String.valueOf(item.getIdBySupplier())));
 
         bulkPricesDAO.addBulkPrices( supplierId, item.getProductId(), item.getBulkPrices());
 
@@ -93,11 +91,11 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
     }
 
 
-    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, double weight, Map<Integer, Integer> bulkPrices) throws Exception {
 
         if(AGREEMENT_ITEM_IDENTITY_MAP.containsKey(String.valueOf(itemId)))
             throw new Exception("item with this ID already exists!");
-        AgreementItem item = new AgreementItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices);
+        AgreementItem item = new AgreementItem(itemId, idBySupplier, itemManu, itemPrice, bulkPrices);
         insertOneItem(supplierId, item);
 
     }
@@ -123,19 +121,31 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
         update(Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(newItemId), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(oldItemId) );
     }
 
+    /*
     public void updateItemName(int itemId, String newName) throws SQLException {
         update(Arrays.asList(NAME_COLUMN), Arrays.asList(newName), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(itemId) );
     }
+
+     */
 
     public void updateManufacturer(int itemId, String manufacturer) throws SQLException {
         update(Arrays.asList(MANUFACTURER_COLUMN), Arrays.asList(manufacturer), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(itemId) );
     }
 
+    /*
+    public void updateWeight(int itemId, double weight) throws SQLException {
+        update(Arrays.asList(WEIGHT), Arrays.asList(weight), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(itemId) );
+    }
+     */
+
     public void removeItem(int id, int itemId) throws SQLException {
         remove(Arrays.asList(1,2), Arrays.asList(id, itemId));
     }
 
+
     public String getNameOfItem(int itemId) {
         return AGREEMENT_ITEM_IDENTITY_MAP.get(String.valueOf(itemId)).getName();
     }
+
+
 }

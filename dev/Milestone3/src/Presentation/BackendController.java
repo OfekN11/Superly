@@ -10,9 +10,6 @@ import Domain.Service.Objects.SupplierObjects.*;
 import Domain.Service.Services.HR.*;
 import Domain.Service.Services.*;
 import Domain.Service.Services.Transport.*;
-import Presentation.CLIPresentation.Factories.*;
-import Presentation.CLIPresentation.Objects.Document.*;
-import Presentation.CLIPresentation.Objects.Transport.*;
 import Presentation.CLIPresentation.Factories.PresentationDocumentFactory;
 import Presentation.CLIPresentation.Objects.Document.DestinationDocument;
 import Presentation.CLIPresentation.Objects.Document.TransportDocument;
@@ -816,8 +813,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public boolean addItemToAgreement(int supplierID, int id, int idBySupplier, String name, String manufacturer, float pricePerUnit, Map<Integer, Integer> bulkMap) throws Exception {
-        Result<Boolean> result = supplierService.addItemToAgreement(supplierID, id, idBySupplier, name, manufacturer, pricePerUnit, bulkMap);
+    public boolean addItemToAgreement(int supplierID, int id, int idBySupplier, String manufacturer, float pricePerUnit, Map<Integer, Integer> bulkMap) throws Exception {
+        Result<Boolean> result = supplierService.addItemToAgreement(supplierID, id, idBySupplier, manufacturer, pricePerUnit, bulkMap);
         return getValueFromBooleanResult(result);
     }
 
@@ -866,10 +863,13 @@ public class BackendController {
 
     }
 
+    /*
     public boolean updateItemName(int supplierID, int itemID, String input) throws Exception {
         Result<Boolean> result = supplierService.updateItemName(supplierID, itemID, input);
         return getValueFromBooleanResult(result);
     }
+
+     */
 
     public boolean updateItemManufacturer(int supplierID, int itemID, String input) throws Exception {
         Result<Boolean> result = supplierService.updateItemManufacturer(supplierID, itemID, input);
@@ -1169,6 +1169,20 @@ public class BackendController {
 
     public List<Integer> geOrdersID(int supplierId) throws Exception {
         Result<List<Integer>> result = supplierService.getOrdersIds(supplierId);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
+    public boolean removeOrder(int orderId) throws Exception {
+        Result<Boolean> result = supplierService.removeOrder(orderId);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
+    public ServiceOrderObject getOrder(int orderId) throws Exception {
+        Result<ServiceOrderObject> result = supplierService.getOrder(orderId);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();

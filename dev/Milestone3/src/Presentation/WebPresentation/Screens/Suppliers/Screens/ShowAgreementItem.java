@@ -34,7 +34,6 @@ public class ShowAgreementItem extends Screen {
         printMenu(resp, new String[]{"View Item"});
 
         printForm(resp, new String[] {"itemId"}, new String[]{"Item ID"}, new String[]{"Change Id"});
-        printForm(resp, new String[] {"itemName"}, new String[]{"Item Name"}, new String[]{"Change Name"});
         printForm(resp, new String[] {"manufacturer"}, new String[]{"Item Manufacturer"}, new String[]{"Change manufacturer"});
         printForm(resp, new String[] {"ppu"}, new String[]{"Item price per unit"}, new String[]{"Change price per unit"});
         printForm(resp, new String[] {"quantity1", "discount1"}, new String[]{"Quantity", "Discount"}, new String[]{"Add Bulk"});
@@ -54,9 +53,9 @@ public class ShowAgreementItem extends Screen {
         if (isButtonPressed(req, "Change Id")) {
             changeId(req, resp);
         }
-        else if (isButtonPressed(req, "Change Name")) {
-            changeName(req, resp);
-        }
+        //else if (isButtonPressed(req, "Change Name")) {
+        //    changeName(req, resp);
+        //}
         else if (isButtonPressed(req, "Change manufacturer")) {
             changeManufacturer(req, resp);
         }
@@ -233,6 +232,7 @@ public class ShowAgreementItem extends Screen {
         }
     }
 
+    /*
     private void changeName(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             String name = req.getParameter("itemName");
@@ -250,6 +250,8 @@ public class ShowAgreementItem extends Screen {
             refresh(req, resp);
         }
     }
+
+     */
 
     private void changeId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
