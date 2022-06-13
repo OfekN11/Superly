@@ -187,11 +187,11 @@ public class Supplier {
     }
 
 
-    public void addItem(int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices, SuppliersDAO suppliersDAO) throws Exception {
+    public void addItem(int itemId, int idBySupplier, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices, SuppliersDAO suppliersDAO) throws Exception {
         agreementExists();
         if(agreement.itemExists(itemId))
             throw new Exception("item with this ID already exists!");
-        AgreementItem item = new AgreementItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices);
+        AgreementItem item = new AgreementItem(itemId, idBySupplier,  itemManu, itemPrice, bulkPrices);
         ArrayList<AgreementItem> _items = new ArrayList<>();
         _items.add(item);
         AgreementController agreementController = suppliersDAO.getAgreementController();
@@ -232,11 +232,14 @@ public class Supplier {
     }
 
 
+    /*
     public void updateItemName(int itemId, String newName, AgreementItemDAO agreementItemDAO) throws Exception {
         agreementExists();
         agreementItemDAO.updateItemName(itemId, newName);
         agreement.getItem(itemId).setName(newName);
     }
+
+     */
 
     public void updateItemManufacturer(int itemId, String manufacturer, SuppliersDAO suppliersDAO) throws Exception {
         AgreementItemDAO agreementItemDAO = suppliersDAO.getAgreementItemDAO();
@@ -514,7 +517,7 @@ public class Supplier {
 
     }
 
-    public void removeOrder(int orderId, OrderDAO orderDAO) throws Exception {
+    public boolean removeOrder(int orderId, OrderDAO orderDAO) throws Exception {
         if(!orderExists(orderId, orderDAO))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
 
@@ -524,6 +527,7 @@ public class Supplier {
 
         orderDAO.removeOrder(orderId);
         orders.remove(orderId);
+        return true;
     }
 
     public void updateOrder(int orderID, int itemID, int quantity, OrderDAO orderDAO) throws Exception {

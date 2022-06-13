@@ -66,8 +66,9 @@ class InventoryControllerTest {
         Product prod2 = is.newProduct("TestProduct", cat,2,2,"testManu");
         int supplier = sc.addSupplier("Test-OrderArrived", 2, "address", "Agreement", new ArrayList<>(), new ArrayList<>());
         sc.addAgreement(supplier,1, "1 2 3 4 5 6 7");
-        sc.addItemToAgreement(supplier, prod1.getId(), 1, "", "", 3, new HashMap<>());
-        sc.addItemToAgreement(supplier, prod2.getId(), 1, "", "", 3, new HashMap<>());
+        //    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+        sc.addItemToAgreement(supplier, prod1.getId(), 1, "",  3, new HashMap<>());
+        sc.addItemToAgreement(supplier, prod2.getId(), 1, "",  3,  new HashMap<>());
         int store = is.addStore();
         stores.add(store);
         is.addProductToStore(store,Arrays.asList(1),Arrays.asList(1),prod1.getId(),100,200);

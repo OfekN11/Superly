@@ -1,11 +1,13 @@
 package Presentation.WebPresentation.Screens.Suppliers.Screens;
 
+import Domain.Service.Objects.SupplierObjects.ServiceItemObject;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public abstract class ShowAgreement extends Screen {
 
@@ -61,7 +63,7 @@ public abstract class ShowAgreement extends Screen {
 
         switch (getIndexOfButtonPressed(req)){
             case 0:
-                showAllItems();
+                showAllItems(req, resp);
                 break;
             case 1:
                 // TODO: Suppliers pass supplierId
@@ -71,7 +73,32 @@ public abstract class ShowAgreement extends Screen {
         }
     }
 
-    private void showAllItems() {
-        //print all items
+    private void showAllItems(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        /*
+         List<ServiceItemObject> list = new ArrayList<>();
+        try {
+            list = controller.itemsFromOneSupplier(supplierID);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+
+         */
+        try {
+            List<ServiceItemObject> list = controller.itemsFromOneSupplier(supplierId);
+            if(list.isEmpty()){
+                setError("[NO ITEMS ARE IN THE AGREEMENT]");
+                refresh(req, resp);
+            }
+
+            for(ServiceItemObject item : list){
+                setError(item.toString());
+                refresh(req, resp);
+            }
+        }
+        catch (Exception e) {
+            setError(e.getMessage());
+            refresh(req, resp);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package Presentation.WebPresentation.Screens.Suppliers.Screens;
 
+import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Screen;
 
 
@@ -43,7 +44,28 @@ public class AddOrderItem extends Screen {
         handleHeader(req, resp);
 
         if (isButtonPressed(req, "Add Item")) {
+            try {
+                int itemId = Integer.parseInt(req.getParameter("orderItemId"));
+                int quantity = Integer.parseInt(req.getParameter("quantity"));
 
+                if(controller.addItemToOrder(supplierId, orderId, itemId, quantity)){
+
+                    // TODO: Supplier change this to normal print!
+                    setError(String.format("Item %d added to Order %d!", itemId, orderId));
+                    refresh(req, resp);
+                }
+                else{
+                    setError("Item wasn't added!");
+                    refresh(req, resp);
+                }
+            } catch (NumberFormatException e1){
+                setError("Please enter a number!");
+                refresh(req, resp);
+            }
+            catch (Exception e) {
+                setError(e.getMessage());
+                refresh(req, resp);
+            }
         }
 
     }
