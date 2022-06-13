@@ -6,6 +6,7 @@ import Domain.Business.Objects.Document.TransportDocument;
 import Domain.Business.Objects.Employee.Carrier;
 import Domain.Business.Objects.Shift.EveningShift;
 import Domain.Business.Objects.Shift.MorningShift;
+import Domain.Business.Objects.Supplier.Order;
 import Domain.DAL.Controllers.TransportMudel.TransportDAO;
 import Domain.Business.Objects.Shift.Shift;
 import Globals.Enums.OrderStatus;
@@ -53,7 +54,7 @@ public class TransportController {
 
 
     public void advanceSite(int transportSN,int siteID) throws Exception {
-        Transport transport = getTransport(transportSN);
+        /*Transport transport = getTransport(transportSN);
         if(transport.getStatus()==TransportStatus.inProgress){
             boolean isDestVisit = transport.destVisit(siteID);
             boolean lastSite = transport.visitSite(siteID);
@@ -83,7 +84,7 @@ public class TransportController {
         }
         else{
             throw new Exception("This transport is not in progress");
-        }
+        }*/
 
     }
 
@@ -94,38 +95,31 @@ public class TransportController {
         }
         return transport;
     }
-    public void SchedulingOrderToTransport(TransportOrder order,List<LocalDate> available) throws Exception {
-        int weight = 0;//TODO after swiching to Order use orderController.getOrder(order).getWeight();
-        boolean isAdd = false;
+    public LocalDate SchedulingOrderToTransport(Order order, List<LocalDate> available) throws Exception {
+        LocalDate dateOfTransport = null;
+        int weight = (int)(order.getOrderWeight());
         for(LocalDate d: available){
             List<Transport> tInDate = getTransportInDate(d);
             for(Transport t: tInDate){
                 if(t.getStatus()==TransportStatus.padding){
                     if (canAddWeightToTransport(t,weight)){
-                        addOrderToTransport(t.getSN(),order.getID());
-                        isAdd = true;
-                        break;
+                        addOrderToTransport(t.getSN(),order.getId());
+                        dateOfTransport = d;
+                        return dateOfTransport;
                     }
                 }
             }
-            if(isAdd){
-                break;
-            }
-            else{
-                Pair<Boolean,ShiftTypes> canCreate = canCreateTransport(d);
-                if(canCreate.getLeft()){
-                    Transport created = createTransport(new Pair<>(d,canCreate.getRight()));
-                    addOrderToTransport(created.getSN(),order.getID());
-                    isAdd = true;
-                    break;
-                }
-
+            Pair<Boolean,ShiftTypes> canCreate = canCreateTransport(d);
+            if(canCreate.getLeft()){
+                Transport created = createTransport(new Pair<>(d,canCreate.getRight()));
+                addOrderToTransport(created.getSN(),order.getId());
+                dateOfTransport = d;
+                return dateOfTransport;
             }
 
         }
-        if(!isAdd){
-            orderController.addAlertOrder(order.getID());
-        }
+        orderController.addAlertOrder(order.getId());
+        return dateOfTransport;
 
     }
     public List<Transport> getTransportInDate(LocalDate d){
@@ -138,32 +132,37 @@ public class TransportController {
         }
         return inDate;
     }
-    //TODO need to think about the algorithm
     public Pair<Boolean,ShiftTypes> canCreateTransport(LocalDate d){
         try {
             Shift s = shiftController.getShift(d,ShiftTypes.Morning);
-            if(s.getStorekeeperCount()>0){
+            if(s.getStorekeeperCount()>0 && getTransportsInShift(getAllTransports(),new Pair<>(d,ShiftTypes.Morning)).size()<truckController.getTruckNumber()){
                 return new Pair<>(true,ShiftTypes.Morning);
             }
         } catch (Exception e) {
 
         }
+        try {
+            Shift s = shiftController.getShift(d,ShiftTypes.Evening);
+            if(s.getStorekeeperCount()>0 && getTransportsInShift(getAllTransports(),new Pair<>(d,ShiftTypes.Evening)).size()<truckController.getTruckNumber()){
+                return new Pair<>(true,ShiftTypes.Evening);
+            }
+        } catch (Exception e) {
+            return new Pair<>(false,ShiftTypes.Morning);
+        }
         return null;
 
     }
 
-    public void addOrderToTransport(int transportSN, int orderID) throws Exception {
+    public void addOrderToTransport(int transportSN, int  orderID) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()== TransportStatus.padding)
         {
-            TransportOrder order = orderController.getTransportOrder(orderID);
+            Order order = orderController.getTransportOrder(convert(orderID));
             if(transport.isPlacedTruck()){
                 if(order.getStatus()== OrderStatus.waiting){
-                    int extraWeight  = orderController.getExtraWeight(order);
+                    int extraWeight  = (int)(orderController.getTransportOrder(convert(orderID)).getOrderWeight());
                     updateWeight(transport,extraWeight);
-                    ShippingAreas sourceShip = siteController.getSource(order.getSrc()).getAddress().getShippingAreas();
-                    ShippingAreas destShip = siteController.getDestination(order.getDst()).getAddress().getShippingAreas();
-                    transport.addOrder(order,sourceShip,destShip);
+                    transport.addOrder(order);
                     transportDataMapper.save(transport);
                     order.order();
                     orderController.updateOrder(order);
@@ -173,11 +172,9 @@ public class TransportController {
                 }
             }
             else{
-                int weight = 0;//TODO after swiching to Order use orderController.getOrder(order).getWeight();
+                int weight = (int)(order.getOrderWeight());//TODO after swiching to Order use orderController.getOrder(order).getWeight();
                 transport.initWeight(weight);
-                ShippingAreas sourceShip = siteController.getSource(order.getSrc()).getAddress().getShippingAreas();
-                ShippingAreas destShip = siteController.getDestination(order.getDst()).getAddress().getShippingAreas();
-                transport.addOrder(order,sourceShip,destShip);
+                transport.addOrder(order);
                 transportDataMapper.save(transport);
                 order.order();
                 orderController.updateOrder(order);
@@ -276,9 +273,9 @@ public class TransportController {
             if(transport.isDoneTransport()){
                 TransportDocument transportDocument = new TransportDocument(transport.getSN(),transport.getStartTime(),transport.getTruckNumber(),transport.getDriverID());
                 for (Integer order:transport.getTransportOrders()) {
-                    TransportOrder o = orderController.getTransportOrder(order);
+                    Order o = orderController.getTransportOrder(convert(order));
                     //TODO after change the order class to add o.start();
-                    DestinationDocument document = new DestinationDocument(order,o.getDst(),o.getProducts());
+                    DestinationDocument document = new DestinationDocument(order,o.getStoreID(),o.getProductList());
                     documentController.uploadDestinationDocument(document);
                     transportDocument.addDoc(document.getID());
                 }
@@ -378,6 +375,9 @@ public class TransportController {
         }
         throw new Exception("order is not in any transport ");
     }
+    public String convert(int i){
+        return ""+i;
+    }
 }
 
     //TODO will be added in the next assignment
@@ -406,4 +406,5 @@ public class TransportController {
             throw new Exception("The transport is not on the list of pending transport!");
         }
     }*/
+
 

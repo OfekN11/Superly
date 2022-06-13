@@ -6,6 +6,7 @@ import Globals.Enums.OrderStatus;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
 
@@ -339,5 +340,12 @@ public class Order {
         OrderItem item = getOrderItem(itemId);
         item.setDescription(description);
         orderDAO.setOrderItemDescription(itemId, description);
+    }
+    public List<String> getProductList(){
+        List<String> products = new ArrayList<>();
+        for(OrderItem o : this.orderItems){
+            products.add(o.getName());
+        }
+        return products;
     }
 }

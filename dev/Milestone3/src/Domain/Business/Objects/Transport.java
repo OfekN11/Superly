@@ -3,6 +3,7 @@ package Domain.Business.Objects;
 import Domain.Business.Objects.Document.TransportDocument;
 import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
+import Domain.Business.Objects.Supplier.Order;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
 import Globals.Enums.TransportStatus;
@@ -182,11 +183,11 @@ public class Transport {
         return new TransportDocument(startTime, truckNumber, driverName, getSrcIDs(), getDstIDs());
     }*/
 
-    public void addOrder(TransportOrder order,ShippingAreas src,ShippingAreas dst)
+    public void addOrder(Order order)
     {
-        sourcesID.add(order.getSrc());
-        destinationsID.add(order.getDst());
-        transportOrders.add(order.getID());
+        sourcesID.add(order.getSupplierId());
+        destinationsID.add(order.getStoreID());
+        transportOrders.add(order.getId());
     }
 
     public boolean updateWeight(int newWeight, int maxCapacityWeight) throws Exception {
