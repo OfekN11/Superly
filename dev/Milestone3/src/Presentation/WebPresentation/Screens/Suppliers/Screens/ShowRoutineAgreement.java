@@ -8,7 +8,7 @@ public class ShowRoutineAgreement extends ShowAgreement {
 
     public ShowRoutineAgreement() {
         // TODO: Supplier pass supplierId
-        super(greet,1);
+        super(1);
 
     }
 }

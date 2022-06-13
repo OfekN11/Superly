@@ -428,9 +428,12 @@ public class SupplierController {
         }
         Order order = suppliersDAO.getSupplier(supId).addNewOrder(storeId, orderDAO, suppliersDAO.getAgreementController());
 
+        // TODO: Supplier : we need to call transport to schedule the order?
+
         return order.getId();
     }
 
+    /*
     public void addItemsToOrder(int supId, int orderId, List<String> itemsString) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
@@ -442,11 +445,17 @@ public class SupplierController {
         }
         //suppliers.get(supId).addItemsToOrder(orderId, itemsString);
     }
+     */
 
     public void addItemToOrder(int supId, int orderId, int itemId, int itemQuantity) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
+        // TODO: Supplier check if we need to call transport make sure the weight is fine
+        //  Need to pay attention not calling the transport before we give them the corrsponding order
+        //  BUG! , we can call them to check the weight AFTER we gave them the order!, s
+        //  if we got here from just creating an order, do they have it?
+
         suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity, orderDAO);
     }
 
@@ -475,12 +484,12 @@ public class SupplierController {
         int oldQuantity = currOrder.getQuantityOfItem(itemID);
         double weightOfItem = currOrder.getWeightOfItem(itemID);
         if(oldQuantity < quantity){
-            if(checkWeightLegal(supID, orderID, itemID, quantity, oldQuantity, weightOfItem )){
+            if(checkWeightLegal(supID, orderID, itemID, quantity - oldQuantity, weightOfItem )){
                 double addedWeight = quantity * weightOfItem - oldQuantity * weightOfItem;
                 suppliersDAO.getSupplier(supID).updateOrder(orderID, itemID, quantity , orderDAO);
 
                 // TODO: 10/06/2022 Transport : update the weight of this orderId, need to change the arguments!
-                //transportController.updateWeight(orderID, addedWeight);
+                //transportController.changeWeight(orderID, addedWeight);
 
             }
             else{
@@ -861,9 +870,9 @@ public class SupplierController {
         List<LocalDate> availableDays = getPossibleDates(order.getSupplierId());
 
         LocalDate date = null;
-        // TODO: 10/06/2022 Transport , if this dates are good add the order (maybe just orderId?) to a transport, if not alert the HR manager..
+        // TODO:  Transport , if this dates are good add the order (maybe just orderId?) to a transport, if not alert the HR manager..
         //  if you cant put this order in a transport return null.
-        //date = transportController.addOrderToTransport(availableDays, order.getId());
+        //date = transportController.SchedulingOrderToTransport(order, availableDays);
 
         if(date == null){
             date = LocalDate.of(2100, 1, 1);
@@ -922,13 +931,13 @@ public class SupplierController {
 
     // TODO:  call this functions from updateItemQuantityInOrder, return to it the total new weight if ok, if not return 0 or -1...
     //      Where should we call this function from the automatic Orders?.
-    public boolean checkWeightLegal(int supplierId, int orderID, int orderItemId, int quantity, int oldQuantity, double weightOfItem) throws Exception {
+    public boolean checkWeightLegal(int supplierId, int orderID, int orderItemId, int differenceQuantity, double weightOfItem) throws Exception {
 
-        double newItemWeight = weightOfItem * quantity - weightOfItem * oldQuantity;  //just the added weight
+        double newItemWeight = weightOfItem * differenceQuantity;  //just the added weight
 
         boolean ans = false;
-        // TODO: 10/06/2022 Transport : check here if we can add this weight to the order with this orderId, return true/false
-        //ans = transportController.canWeAddThisWeight(orderID, newItemsWeight);
+        // TODO: Transport : check here if we can add this weight to the order with this orderId, return true/false
+        //ans = transportController.canChangeOrder(orderID, newItemWeight);
         return ans;
 
     }
@@ -1028,7 +1037,7 @@ public class SupplierController {
     }
 
 
-    private int getSupplierWithOrder(int orderId) throws Exception {
+    public int getSupplierWithOrder(int orderId) throws Exception {
         for(Integer supplierId : getSuppliersIds()){
             if(orderExists(supplierId, orderId))
                 return supplierId;
@@ -1043,5 +1052,9 @@ public class SupplierController {
             throw new Exception("No Supplier has this order!");
         }
         return suppliersDAO.getSupplier(supId).getOrder(orderId, orderDAO);
+    }
+
+    public int getMatchingProductIdForIdBySupplier(int idBySupplier) throws Exception {
+        return suppliersDAO.getAgreementItemDAO().getMatchingProductIdForIdBySupplier(idBySupplier);
     }
 }

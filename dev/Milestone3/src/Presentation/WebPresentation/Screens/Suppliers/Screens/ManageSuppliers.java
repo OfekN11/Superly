@@ -49,7 +49,7 @@ public class ManageSuppliers extends Screen {
                     // TODO: Supplier It opens a new window!, if I put it in goGet it works
                     PrintWriter out = resp.getWriter();
                     out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Removed supplier %d", supplierId)));
-
+                    // TODO: Supplier change this to normal print!
                     //setError(String.format("Removed supplier %d", supplierId));
                     //refresh(req, resp);
                 }
@@ -78,6 +78,7 @@ public class ManageSuppliers extends Screen {
             PrintWriter out = resp.getWriter();
             out.println("Enter Contacts like this : Name1, phone-number1, Name2, phone-number2  ");
             // TODO: Supplier Fix the \n
+            // TODO: Supplier change this to normal print!
             out.println(" For example:Israel, 0591234567");
             out.println(" Enter manufacturers divided by , like this : Osem, Elit");
 
@@ -109,6 +110,7 @@ public class ManageSuppliers extends Screen {
                 out.print("Supplier ");
                 out.print(supplierId);
                 out.print(" was added successfully to the data base");
+                // TODO: Supplier change this to normal print!
             }
             else{
                 setError("Supplier wasn't added!");

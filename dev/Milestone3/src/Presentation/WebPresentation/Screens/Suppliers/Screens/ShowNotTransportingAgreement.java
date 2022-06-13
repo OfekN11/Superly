@@ -7,7 +7,7 @@ public class ShowNotTransportingAgreement extends ShowAgreement {
 
     public ShowNotTransportingAgreement() {
         // TODO: Supplier pass supplierId
-        super(greet,1);
+        super(1);
 
     }
 }

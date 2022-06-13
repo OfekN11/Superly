@@ -24,6 +24,7 @@ public class ViewSupplier extends Screen {
 
 
     public ViewSupplier() {
+        // TODO: Supplier pass supplierId
         super(greet);
         supplierId = 1;
     }
@@ -86,6 +87,9 @@ public class ViewSupplier extends Screen {
                 setError("No agreement with this supplier.");
                 refresh(req, resp);
             }
+            // TODO: Suppliers pass supplierId
+            redirect(resp, ShowAgreement.class);
+            /*
             if(controller.isRoutineAgreement(supplierId)){
                 // TODO: Suppliers pass supplierId
                 redirect(resp, ShowRoutineAgreement.class);
@@ -100,6 +104,8 @@ public class ViewSupplier extends Screen {
                     redirect(resp, ShowNotTransportingAgreement.class);
                 }
             }
+
+             */
         } catch (Exception e) {
             setError(e.getMessage());
             refresh(req, resp);

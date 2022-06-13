@@ -62,8 +62,10 @@ public class EditOrder extends Screen {
 
     private void updateQuantity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            int itemId = Integer.parseInt(req.getParameter("orderItemId"));
+            int idBySupplier = Integer.parseInt(req.getParameter("orderItemId"));
             int quantity = Integer.parseInt(req.getParameter("quantity"));
+
+            int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
 
             Result<Boolean> r = controller.updateItemQuantityInOrder(supplierId, orderId, itemId, quantity);
             if(r.isOk()){
@@ -88,12 +90,14 @@ public class EditOrder extends Screen {
     private void removeOrderItem(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         try {
-            int num = Integer.parseInt(req.getParameter("orderItemId1"));
+            int idBySupplier = Integer.parseInt(req.getParameter("orderItemId1"));
 
-            Result<Boolean> r = controller.removeItemFromOrder(supplierId, orderId, num);
+            int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
+
+            Result<Boolean> r = controller.removeItemFromOrder(supplierId, orderId, itemId);
             if(r.isOk()){
                 // TODO: Supplier change this to normal print!
-                setError(String.format("Item %d removed from order %d!", num, orderId));
+                setError(String.format("Item %d removed from order %d!", itemId, orderId));
                 refresh(req, resp);
             }
             else{

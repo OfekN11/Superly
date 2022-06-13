@@ -16,6 +16,7 @@ public class ManageManufacturers extends Screen {
     private final int supplierId;
 
     public ManageManufacturers() {
+        // TODO: Supplier pass SupplierId
         super(greet);
         supplierId = 1;
     }
@@ -54,14 +55,16 @@ public class ManageManufacturers extends Screen {
     private void showManufacturers(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             List<String> list = controller.getManufacturers(supplierId);
-            // TODO: Supplier change this to normal print!
             if(list.isEmpty()){
-                //System.out.println("[THERE ARE NO REPRESENTED MANUFACTURERS BY THIS SUPPLIER]");
+                // TODO: Supplier change this to normal print!
+                setError("[THERE ARE NO REPRESENTED MANUFACTURERS BY THIS SUPPLIER]");
+                refresh(req, resp);
             }
             else{
-                //System.out.println("\nManufacturers:");
                 for(String s : list){
-                    //System.out.println(s);
+                    // TODO: Supplier change this to normal print!
+                    setError(s);
+                    refresh(req, resp);
                 }
             }
         } catch (Exception e) {

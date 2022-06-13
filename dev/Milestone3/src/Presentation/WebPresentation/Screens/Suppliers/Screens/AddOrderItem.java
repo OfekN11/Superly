@@ -32,7 +32,7 @@ public class AddOrderItem extends Screen {
         greet(resp);
 
 
-        printForm(resp, new String[] {"orderItemId", "quantity"}, new String[]{"Item ID", "Quantity"}, new String[]{"Add Item"});
+        printForm(resp, new String[] {"idBySupplier", "quantity"}, new String[]{"ID By Supplier", "Quantity"}, new String[]{"Add Item"});
 
 
         handleError(resp);
@@ -45,8 +45,10 @@ public class AddOrderItem extends Screen {
 
         if (isButtonPressed(req, "Add Item")) {
             try {
-                int itemId = Integer.parseInt(req.getParameter("orderItemId"));
+                int idBySupplier = Integer.parseInt(req.getParameter("idBySupplier"));
                 int quantity = Integer.parseInt(req.getParameter("quantity"));
+
+                int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
 
                 if(controller.addItemToOrder(supplierId, orderId, itemId, quantity)){
 

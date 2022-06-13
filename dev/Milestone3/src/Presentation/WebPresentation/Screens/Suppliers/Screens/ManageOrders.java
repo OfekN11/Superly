@@ -44,6 +44,7 @@ public class ManageOrders extends Screen {
             ArrayList<Integer> supplierIds = controller.getSuppliersID();
             for(Integer id : supplierIds){
                 List<Integer> orderIds = controller.geOrdersID(id);
+                // TODO: Supplier change this to normal print!
                 out.print(String.format("Order from Supplier %s  : ", id));
                 out.println(orderIds);
             }
@@ -98,9 +99,15 @@ public class ManageOrders extends Screen {
     }
 
     private void editOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        // TODO: Supplier pass orderId, supplierId
-        int orderId = Integer.parseInt(req.getParameter("orderId2"));
-        redirect(resp, EditOrder.class);
+        try {
+            int orderId = Integer.parseInt(req.getParameter("orderId2"));
+            int supplierId = controller.getSupplierWIthOrderID(orderId);
+            // TODO: Supplier pass orderId, supplierId
+            redirect(resp, EditOrder.class);
+        } catch (Exception e) {
+            setError(e.getMessage());
+            refresh(req, resp);
+        }
     }
 
     private void printOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
