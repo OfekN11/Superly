@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class Login extends Screen {
 
     private static final String greet = "Login";
-    private static Map<String, Employee> loggedUser = new HashMap<>();
+    private static final Map<String, Employee> loggedUser = new HashMap<>();
 
     private final EmployeeFactory factory = new EmployeeFactory();
 
@@ -99,9 +99,9 @@ public class Login extends Screen {
         byte[] hash = digest.digest(
                 toHash.getBytes(StandardCharsets.UTF_8));
         StringBuilder hexString = new StringBuilder(2 * hash.length);
-        for (int i = 0; i < hash.length; i++) {
-            String hex = Integer.toHexString(0xff & hash[i]);
-            if(hex.length() == 1) {
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
                 hexString.append('0');
             }
             hexString.append(hex);
