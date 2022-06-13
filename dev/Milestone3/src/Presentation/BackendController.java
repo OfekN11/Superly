@@ -560,6 +560,9 @@ public class BackendController {
         throwIfError(result);
         return presentationDocumentFactory.createPresentationDocument(result.getValue());
     }
+    public String[] getImportantMessagesTransport(){
+        return orderService.getImportantMessages();
+    }
 
     //Transport Order
     public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {

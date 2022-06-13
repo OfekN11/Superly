@@ -80,6 +80,9 @@ public class TruckDAO extends DAO {
     public int delete(int licenseNumber) throws Exception {
         return super.remove(licenseNumber);
     }
+    public int size(){
+        return TRUCK_IDENTITY_MAP.size();
+    }
 
 
 
