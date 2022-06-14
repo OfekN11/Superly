@@ -47,4 +47,6 @@ public class BulkPricesDAO extends DAO {
 
         return output;
     }
+
+
 }

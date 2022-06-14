@@ -7,13 +7,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class ShowAgreement extends Screen {
 
     private final int supplierId;
     private int agreementType;
-    private static final String greet = "Supplier";
+    private static final String greet = "Agreement Info";
     private static final String greetRoutine = "Routine Supplier";
     private static final String greetByOrder = "By Order Supplier";
     private static final String greetNotTransporting = "Not Transporting Supplier";
@@ -26,6 +27,14 @@ public class ShowAgreement extends Screen {
 
         agreementType = getAgreementType();
 
+    }
+
+    //if not using inheritance, we use this constructor!!!!
+    public ShowAgreement(){
+        super(greet);
+        this.supplierId = 1;
+
+        agreementType = getAgreementType();
     }
 
     private int getAgreementType() {
@@ -53,19 +62,44 @@ public class ShowAgreement extends Screen {
 
         // TODO: 11/06/2022 Should we do it? maybe it can cause problems...
         printForm(resp, new String[] {"agreementType", "agreementDays" }, new String[]{"Agreement Type", "Agreement Days"}, new String[]{"Change Agreement Type"});
+        printInstructions(resp);
 
         if(agreementType == 1){  //routine
-            // TODO: 14/06/2022 Routine has options for adding and removing, should we add it here?
             printForm(resp, new String[] {"agreementDays2" }, new String[]{"Delivery Days"}, new String[]{"Change Delivery Days"});
-            //print how to enter this days
+            printInstructionsDeliveryDays(req, resp);
 
         }
         else if(agreementType == 2){  //byOrder
             printForm(resp, new String[] {"day" }, new String[]{"Days Until Delivery"}, new String[]{"Change Days Until Delivery"});
-            //print how to enter this days
+            printInstructionsDaysUntilDelivery(resp);
         }
 
         handleError(resp);
+    }
+
+    private void printInstructions(HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
+        out.println("<h4>");
+        out.println("Type should be 1, 2 or 3 as follows:");
+        out.println("1) Routine agreement");
+        out.println("2) By order agreement");
+        out.println("3) Self-Transport agreement");
+        out.println("Enter Agreement Days with ',' between, like this: 1,3,5,6 ");
+        out.println("</h4>");
+    }
+
+    private void printInstructionsDaysUntilDelivery(HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
+        out.println("<h4>");
+        out.println("Enter a number which will be the days until delivery.");
+        out.println("</h4>");
+    }
+
+    private void printInstructionsDeliveryDays(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
+        out.println("<h4>");
+        out.println("Enter delivery days with ',' between, like this: 1,3,5,6 ");
+        out.println("</h4>");
     }
 
     @Override
@@ -106,10 +140,10 @@ public class ShowAgreement extends Screen {
         try {
             int num = Integer.parseInt(req.getParameter("idBySupplier2"));
             int itemId = controller.getMatchingProductIdForIdBySupplier(num);
-            // TODO: Suppliers pass itemId, supplierId
+            // TODO: Suppliers pass itemId, supplierId   ItemId = ProductId
             redirect(resp, ShowAgreementItem.class);
         } catch (Exception e) {
-            setError("Item wasn't deleted!");
+            setError("Item is not in the system!, Please enter Id By supplier!");
             refresh(req, resp);
         }
     }

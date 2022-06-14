@@ -42,7 +42,8 @@ public class AgreementItem {
 
 
     public String getName(){
-        return productDataMapper.getIntegerMap().get(productId).getName();
+        return "name1";
+        //return productDataMapper.getIntegerMap().get(productId).getName();
     }
 
 
@@ -192,7 +193,8 @@ public class AgreementItem {
 
 
     public double getWeight() {
-        return productDataMapper.getIntegerMap().get(productId).getWeight();
+        return 1;
+        //return productDataMapper.getIntegerMap().get(productId).getWeight();
     }
 
 

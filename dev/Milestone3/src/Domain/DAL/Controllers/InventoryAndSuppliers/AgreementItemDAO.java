@@ -139,6 +139,7 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
      */
 
     public void removeItem(int id, int itemId) throws SQLException {
+        bulkPricesDAO.remove(itemId);
         remove(Arrays.asList(SUPPLIER_ID_COLUMN,PRODUCT_ID_COLUMN), Arrays.asList(id, itemId));
     }
 
@@ -154,5 +155,21 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
                 return agreementItem.getProductId();
         }
         throw new Exception("There is no product with this ID!");
+    }
+
+    public void addBulkPrice(int supplierID, int itemId, int quantity, int discount) throws SQLException {
+        Map<Integer, Integer> bulkPrices = new HashMap<>();
+        bulkPrices.put(quantity, discount);
+        bulkPricesDAO.addBulkPrices(supplierID, itemId, bulkPrices);
+    }
+
+    public void updateBulkPrice(int supplierID, int itemId, int quantity, int discount) throws SQLException {
+        bulkPricesDAO.remove(Arrays.asList(1, 2, 3), Arrays.asList(itemId, supplierID, quantity));
+        addBulkPrice(supplierID, itemId, quantity, discount);
+    }
+
+    public void removeBulkPrice(int supplierID, int itemId, int quantity) throws SQLException {
+        bulkPricesDAO.remove(Arrays.asList(1, 2, 3), Arrays.asList(itemId, supplierID, quantity));
+
     }
 }

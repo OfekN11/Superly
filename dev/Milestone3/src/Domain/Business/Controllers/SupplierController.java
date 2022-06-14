@@ -318,6 +318,7 @@ public class SupplierController {
             throw new Exception("The supplier does not exists!");
         }
 
+        suppliersDAO.getAgreementItemDAO().updateBulkPrice(supplierID, itemId, quantity, discount);
         suppliersDAO.getSupplier(supplierID).getItem(itemId).editBulkPrice(quantity, discount);
     }
 
@@ -325,15 +326,16 @@ public class SupplierController {
         if(!supplierExist(supplierID)){
             throw new Exception("The supplier does not exists!");
         }
-
+        suppliersDAO.getAgreementItemDAO().addBulkPrice(supplierID, itemId, quantity, discount);
         suppliersDAO.getSupplier(supplierID).getItem(itemId).addBulkPrice(quantity, discount);
+
     }
 
     public void removeBulkPrice(int supplierID, int itemId, int quantity)throws Exception{
         if(!supplierExist(supplierID)){
             throw new Exception("The supplier does not exists!");
         }
-
+        suppliersDAO.getAgreementItemDAO().removeBulkPrice(supplierID, itemId, quantity);
         suppliersDAO.getSupplier(supplierID).getItem(itemId).removeBulkPrice(quantity);
     }
 

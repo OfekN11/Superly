@@ -20,7 +20,7 @@ public class ShowAgreementItem extends Screen {
     public ShowAgreementItem() {
         super(greet);
         // TODO: Supplier pass itemId and SupplierId
-        itemId = 1;
+        itemId = 1;   // TODO: should be productId and not IDBYSupplier
         supplierId = 1;
     }
 

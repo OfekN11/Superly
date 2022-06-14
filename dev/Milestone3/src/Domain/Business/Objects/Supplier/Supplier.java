@@ -189,8 +189,9 @@ public class Supplier {
 
     public void addItem(int itemId, int idBySupplier, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices, SuppliersDAO suppliersDAO) throws Exception {
         agreementExists();
-        if(agreement.itemExists(itemId))
+        if(agreement.itemExists(itemId) || agreement.IdBySupplierExists(idBySupplier))
             throw new Exception("item with this ID already exists!");
+
         AgreementItem item = new AgreementItem(itemId, idBySupplier,  itemManu, itemPrice, bulkPrices);
         ArrayList<AgreementItem> _items = new ArrayList<>();
         _items.add(item);

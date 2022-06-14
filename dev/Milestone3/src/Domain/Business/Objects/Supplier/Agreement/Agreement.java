@@ -160,4 +160,12 @@ public abstract class Agreement {
     public void addAgreementItems(Map<Integer, AgreementItem> items) {
         this.items = items;
     }
+
+    public boolean IdBySupplierExists(int idBySupplier) {
+        for(AgreementItem item : items.values()){
+            if(item.getIdBySupplier() == idBySupplier)
+                return true;
+        }
+        return false;
+    }
 }

@@ -75,6 +75,7 @@ public class ManageOrders extends Screen {
 
     }
 
+
     private void removeOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             int orderId = Integer.parseInt(req.getParameter("orderId1"));
