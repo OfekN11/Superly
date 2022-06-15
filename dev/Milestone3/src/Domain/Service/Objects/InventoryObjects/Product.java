@@ -6,8 +6,8 @@ public class Product {
     private final int categoryID;
     private final double originalPrice;
     private final double currentPrice;
-    private double weight;
-    private String manufacturer;
+    private final double weight;
+    private final String manufacturer;
     public Product(Domain.Business.Objects.Inventory.Product p) {
         this.id = p.getId();
         this.name = p.getName();

@@ -1,5 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.HR;
 
+import Presentation.WebPresentation.Screens.InventoryScreens.InventoryMainMenu;
+import Presentation.WebPresentation.Screens.InventoryScreens.Product;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
 import Presentation.WebPresentation.Screens.Screen;
@@ -36,8 +38,8 @@ public class Login extends Screen {
         header(resp);
         greet(resp);
         printForm(resp, new String[]{"ID"}, new String[]{"Employee ID"}, new String[]{"Sign in!"});
+        printMenu(resp, new String[]{"Suppliers Main Menu", "Inventory Main Menu"});
 
-        printMenu(resp, new String[]{"suppliers Main Menu"});
         handleError(resp);
     }
 
@@ -60,11 +62,10 @@ public class Login extends Screen {
                 refresh(req, resp);
             }
         }
-
-        else if(getIndexOfButtonPressed(req) == 0){
+        else if(getIndexOfButtonPressed(req) == 0)
             redirect(resp, SupplierMainMenuStorekeeper.class);
-        }
-
+        else if(getIndexOfButtonPressed(req) == 1)
+            redirect(resp, InventoryMainMenu.class);
     }
 
     public static boolean isLoggedIn(HttpServletRequest req) {

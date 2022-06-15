@@ -3,6 +3,7 @@ package Domain.Service.Objects.SupplierObjects;
 public class ServiceOrderItemObject {
 
     private int id;
+    private int supplierProductID;
     private String name;
     private int quantity;
     private float ppu;
@@ -16,6 +17,7 @@ public class ServiceOrderItemObject {
 
     public ServiceOrderItemObject(int id, String name, int quantity, float ppu, int discount, Double finalPrice, int missing, int defective, String description, double weight) {
         this.id = id;
+//        this.supplierProductID = supplierProductID;
         this.name = name;
         this.quantity = quantity;
         this.ppu = ppu;
@@ -34,6 +36,10 @@ public class ServiceOrderItemObject {
 
     public int getId() {
         return id;
+    }
+
+    public int supplierProductID() {
+        return supplierProductID;
     }
 
     public Double getFinalPrice() {
@@ -69,7 +75,7 @@ public class ServiceOrderItemObject {
     }
 
     public String toString(){
-        return "ID: " + id + ", Name:" + name + ", Quantity: " + quantity + ", Price Per Unit: " + ppu + ", Discount: " + discount
+        return "ID: " + id + ", Name:" + name + ", Id by Supplier:" + supplierProductID + ", Quantity: " + quantity + ", Price Per Unit: " + ppu + ", Discount: " + discount
                 + ", Final Price: " + finalPrice + "\nWeight: " + weight  + ", Missing items: " + missing + ", Defective items: " + defective + ", Description: " + description + "\n";
     }
 
