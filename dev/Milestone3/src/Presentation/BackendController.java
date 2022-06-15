@@ -944,9 +944,7 @@ public class BackendController {
 //        return getAllEmployees().stream().filter((x) -> x.getType() == JobTitles.Cashier).collect(Collectors.toSet());
 //    }
 
-    public Result<Object> loadTestData(){
-        return inventoryService.loadTestData();
-    }
+
 
     public Result<Collection<Integer>> getStoreIDs(){
         return inventoryService.getStoreIDs();
