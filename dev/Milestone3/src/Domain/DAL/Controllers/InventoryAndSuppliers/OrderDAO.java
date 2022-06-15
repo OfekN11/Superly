@@ -85,6 +85,11 @@ public class OrderDAO extends DataMapper<Order> {
     }
 
     @Override
+    public String instanceToId(Order instance) {
+        return String.valueOf(instance.getId());
+    }
+
+    @Override
     protected Set<LinkDAO> getAllLinkDTOs() {
         return new HashSet<>();
     }

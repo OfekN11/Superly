@@ -58,6 +58,11 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
     }
 
     @Override
+    public String instanceToId(AgreementItem instance) {
+        return String.valueOf(instance.getProductId());
+    }
+
+    @Override
     protected Set<LinkDAO> getAllLinkDTOs() {
         return new HashSet<>();
     }

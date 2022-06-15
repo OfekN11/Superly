@@ -76,6 +76,11 @@ public class SuppliersDAO extends DataMapper<Supplier> {
     }
 
     @Override
+    public String instanceToId(Supplier instance) {
+        return String.valueOf(instance.getId());
+    }
+
+    @Override
     protected Set<LinkDAO> getAllLinkDTOs() {
         return new HashSet<>();
     }
