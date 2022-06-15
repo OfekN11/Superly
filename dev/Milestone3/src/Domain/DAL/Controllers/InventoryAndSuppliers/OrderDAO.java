@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class OrderDAO extends DataMapper<Order> {
 
@@ -234,6 +235,9 @@ public class OrderDAO extends DataMapper<Order> {
 
     public void setOrderItemDescription(int itemId, String desc) throws SQLException {
         orderItemDAO.updateDescription(itemId, desc);
+    }
+    public List<Order> getAll(){
+        return ORDER_IDENTITY_MAP.values().stream().collect(Collectors.toList());
     }
 }
 

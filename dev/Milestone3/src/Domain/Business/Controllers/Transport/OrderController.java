@@ -10,11 +10,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class OrderController {
-    private static List<Integer> alertOrders;
     private final OrderDAO transportOrderDataMapper = new OrderDAO();
 
     public OrderController() {
-        alertOrders = new ArrayList<>();
     }
     /*public void addTransportOrder(int daysToArrival, int supplierID, int storeID) throws Exception {
 
@@ -53,16 +51,18 @@ public class OrderController {
         transportOrderDataMapper.updateOrder(order);
     }
 
-    public void addAlertOrder(Integer orderID){
-        if(alertOrders.contains(orderID)){
-            alertOrders.add(orderID);
-        }
-    }
     public String[] alertsToHR(){
+        List<Order> allOrders = transportOrderDataMapper.getAll();
+        List<Order> alertOrders = new ArrayList<>();
+        for(Order o :allOrders){
+            if(o.getStatus() == OrderStatus.waiting){
+                alertOrders.add(o);
+            }
+        }
         String[] message = new String[alertOrders.size()];
         int place = 0 ;
-        for (Integer order:alertOrders) {
-            message[place] = "Order "+order+" cannot be in transport in a week from now";
+        for (Order order:alertOrders) {
+            message[place] = "Order "+order.getId()+" cannot be in transport in a week from now";
         }
         return message;
     }
