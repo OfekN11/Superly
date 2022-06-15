@@ -54,7 +54,6 @@ public class EditOrder extends Screen {
             // TODO: Supplier pass orderId, supplierId
             redirect(resp, AddOrderItem.class);
 
-
         }
     }
 

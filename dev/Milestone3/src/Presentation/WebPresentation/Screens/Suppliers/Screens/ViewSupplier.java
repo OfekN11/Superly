@@ -9,11 +9,13 @@ import Presentation.CLIPresentation.Screens.SupplierScreens.ViewRoutineAgreement
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 
 public class ViewSupplier extends Screen {
@@ -22,7 +24,7 @@ public class ViewSupplier extends Screen {
     private final int supplierId;
     private static final String addAgreement = "Add New Agreement";
 
-
+    private static boolean showItems = false;
     public ViewSupplier() {
         // TODO: Supplier pass supplierId
         super(greet);
@@ -34,24 +36,36 @@ public class ViewSupplier extends Screen {
         header(resp);
         greet(resp);
 
+        for (Cookie c : req.getCookies()) {
+            if (c.getName().equals("sup_id")) {
+                resp.getWriter().println("<h2>handling supplier id " + c.getValue() + "</h2><br>");
+            }
+            //time of life of the cookie, if bot listed its infinite
+            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(2));
+            resp.addCookie(c);
+        }
         printMenu(resp, new String[]{"Show Supplier Info", "Show Contacts","Show Manufacturers", "Show Agreement", "Show all Orders", "Show all discount items", "Edit Card"});
 
 
         printForm(resp, new String[] {"agreementType", "agreementDays" }, new String[]{"Agreement Type", "Agreement Days"}, new String[]{addAgreement});
         printInstructions(resp);
 
+        if (req.getParameter("showItems") != null && req.getParameter("showItems").equals("true")){
+            showSupplierInfo(req, resp);
+            showItems = false;
+        }
         handleError(resp);
     }
 
     private void printInstructions(HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
-        out.println("<h4>");
-        out.println("Type should be 1, 2 or 3 as follows:");
-        out.println("1) Routine agreement");
-        out.println("2) By order agreement");
-        out.println("3) Self-Transport agreement");
-        out.println("Enter Agreement Days with ',' between, like this: 1,3,5,6 ");
-        out.println("</h4>");
+        //out.println("<h4>");
+        out.println("<h4>Type should be 1, 2 or 3 as follows:</h4><br><br>");
+        out.println("<h5>1) Routine agreement</h5><br><br>");
+        out.println("<h5>2) By order agreement</h5><br><br>");
+        out.println("<h5>3) Self-Transport agreement</h5><br><br>");
+        out.println("<h5>Enter Agreement Days with ',' between, like this: 1,3,5,6</h5><br><br>");
+    //    out.println("</h4>");
     }
 
 
@@ -65,7 +79,8 @@ public class ViewSupplier extends Screen {
 
         switch (getIndexOfButtonPressed(req)){
             case 0:
-                showSupplierInfo(req, resp);
+                resp.sendRedirect("/ViewSupplier?showItems=true");
+                //showSupplierInfo(req, resp);
                 break;
             case 1:
                 // TODO: Suppliers pass supplierId
@@ -225,9 +240,18 @@ public class ViewSupplier extends Screen {
             ServiceSupplierObject result = controller.getSupplierInfo(supplierId);
             if(result != null){
 
+                /*
+
                 // TODO: Supplier change this to normal print!
                 setError(result.toString());
                 refresh(req, resp);
+                 */
+                PrintWriter out = resp.getWriter();
+                out.println("<h4>");
+                out.println(result.toString());
+                out.println("addition");
+                out.println("</h4>");
+
             }
             else{
                 setError("Something went wrong!");
