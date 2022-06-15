@@ -23,15 +23,16 @@ public class AgreementItem {
           instanceResult.getInt(PRODUCT_ID_COLUMN)));
      */
 
-    public AgreementItem(int _productId, int _idBySupplier, String _manu, float _price, Map<Integer, Integer> _bulkPrices){
+    public AgreementItem(int _productId, int _idBySupplier, String _manu, float _price, Map<Integer, Integer> _bulkPrices) throws Exception {
+        name = getName();
+        weight = getWeight();
         productId = _productId;
         idBySupplier = _idBySupplier;
         manufacturer = _manu;
         pricePerUnit = _price;
         bulkPrices = _bulkPrices;
         productDataMapper = new ProductDataMapper();
-        name = getName();
-        weight = getWeight();
+
     }
 
     public int getProductId(){
@@ -39,11 +40,6 @@ public class AgreementItem {
     }
 
     public int getIdBySupplier(){ return idBySupplier;}
-
-
-    public String getName(){
-        return productDataMapper.getIntegerMap().get(productId).getName();
-    }
 
 
 
@@ -132,7 +128,7 @@ public class AgreementItem {
 
     //Format : " productId ,idBySupplier,  name , manufacturer , pricePerUnit , weight , quantity ,  percent , quantity , percent ..."
     //old format " id , name , manufacturer , pricePerUnit , quantity1 , percent1 , quantity2 , percent2 ...  "
-    public String getInfoInStringFormat() {
+    public String getInfoInStringFormat() throws Exception {
         String result = "";
         result += String.valueOf(productId) + ",";
         result += String.valueOf(idBySupplier) + ",";
@@ -152,12 +148,16 @@ public class AgreementItem {
     //Format : " productId ,idBySupplier,  name , manufacturer , pricePerUnit , quantity , weight,  percent , quantity , percent ..."
     //Old Format : " id , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
     public String toString(){
-        if(bulkPrices==null || bulkPrices.isEmpty()){
-            return "" + productId + ", " + getName() + ", " + manufacturer + ", " + pricePerUnit + ", " + getWeight() + " [NO BULK PRICES]";
+        try {
+            if (bulkPrices == null || bulkPrices.isEmpty()) {
+                return "" + productId + ", " + getName() + ", " + manufacturer + ", " + pricePerUnit + ", " + getWeight() + " [NO BULK PRICES]";
+            } else {
+                return "" + productId + ", " + getName() + ", " + manufacturer + ", " + pricePerUnit + ", " + getWeight() + "," + printBulkMap();
+            }
+        }catch (Exception e){
+
         }
-        else{
-            return "" + productId + ", " + getName() + ", " + manufacturer + ", " + pricePerUnit + ", " + getWeight() + "," + printBulkMap();
-        }
+        return "";
     }
 
 
@@ -190,9 +190,17 @@ public class AgreementItem {
     }
 
 
+    public String getName() throws Exception {
+        return "name1InComment";
+        //return  productDataMapper.get(String.valueOf(productId)).getName();
+    }
 
-    public double getWeight() {
-        return productDataMapper.getIntegerMap().get(productId).getWeight();
+
+
+    public double getWeight() throws Exception {
+        return 1;
+        //return productDataMapper.get(String.valueOf(productId)).getWeight();
+
     }
 
 

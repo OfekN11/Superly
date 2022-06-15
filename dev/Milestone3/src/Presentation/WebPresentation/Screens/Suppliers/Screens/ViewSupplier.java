@@ -24,6 +24,7 @@ public class ViewSupplier extends Screen {
 
 
     public ViewSupplier() {
+        // TODO: Supplier pass supplierId
         super(greet);
         supplierId = 1;
     }
@@ -37,9 +38,22 @@ public class ViewSupplier extends Screen {
 
 
         printForm(resp, new String[] {"agreementType", "agreementDays" }, new String[]{"Agreement Type", "Agreement Days"}, new String[]{addAgreement});
+        printInstructions(resp);
 
         handleError(resp);
     }
+
+    private void printInstructions(HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
+        out.println("<h4>");
+        out.println("Type should be 1, 2 or 3 as follows:");
+        out.println("1) Routine agreement");
+        out.println("2) By order agreement");
+        out.println("3) Self-Transport agreement");
+        out.println("Enter Agreement Days with ',' between, like this: 1,3,5,6 ");
+        out.println("</h4>");
+    }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -86,6 +100,11 @@ public class ViewSupplier extends Screen {
                 setError("No agreement with this supplier.");
                 refresh(req, resp);
             }
+            else{
+                // TODO: Suppliers pass supplierId
+                redirect(resp, ShowAgreement.class);
+            }
+            /* TODO: Don't think we need 3 windows
             if(controller.isRoutineAgreement(supplierId)){
                 // TODO: Suppliers pass supplierId
                 redirect(resp, ShowRoutineAgreement.class);
@@ -100,6 +119,8 @@ public class ViewSupplier extends Screen {
                     redirect(resp, ShowNotTransportingAgreement.class);
                 }
             }
+
+             */
         } catch (Exception e) {
             setError(e.getMessage());
             refresh(req, resp);
@@ -157,8 +178,6 @@ public class ViewSupplier extends Screen {
     }
 
     private void addAgreement(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        //check what type of agreement is in the system and open a new Window accordingly!
-        // TODO: 12/06/2022 Print all the Options for numbers! and for the days!
         try {
             int agreementType = Integer.parseInt(req.getParameter("agreementType"));
             String agreementDays = req.getParameter("agreementDays");
@@ -212,6 +231,8 @@ public class ViewSupplier extends Screen {
             setError(e.getMessage());
             refresh(req, resp);
         }
+
+
     }
 
 

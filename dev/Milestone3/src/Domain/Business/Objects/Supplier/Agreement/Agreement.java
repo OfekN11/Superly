@@ -122,7 +122,7 @@ public abstract class Agreement {
     }
 
 
-    public List<String> getItemsInMapFormat() {
+    public List<String> getItemsInMapFormat() throws Exception {
         ArrayList<String> result = new ArrayList<>();
         for( Map.Entry<Integer, AgreementItem> currItem : items.entrySet()){
             String currItemInfo = currItem.getValue().getInfoInStringFormat();
@@ -159,5 +159,13 @@ public abstract class Agreement {
 
     public void addAgreementItems(Map<Integer, AgreementItem> items) {
         this.items = items;
+    }
+
+    public boolean IdBySupplierExists(int idBySupplier) {
+        for(AgreementItem item : items.values()){
+            if(item.getIdBySupplier() == idBySupplier)
+                return true;
+        }
+        return false;
     }
 }

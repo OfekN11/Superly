@@ -459,6 +459,7 @@ public class SupplierService {
     }
 
 
+    /*
     // Format :  <productId1, quantity1> , <productId2, quantity2> , ...
     public Result<Boolean> addItemsToOrder(int supId, int orderId, List<String> itemsString){
         try{
@@ -469,6 +470,8 @@ public class SupplierService {
             return Result.makeError(e.getMessage());
         }
     }
+
+     */
 
     public Result<Boolean> addItemToOrder(int supId, int orderId, int itemId, int itemQuantity){
         try{
@@ -640,6 +643,22 @@ public class SupplierService {
         try {
             List<String> result = controller.getOrder(orderId);
             return Result.makeOk(createServiceOrderObject(result));
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Integer> getSupplierWIthOrderID(int orderId) {
+        try {
+            return Result.makeOk(controller.getSupplierWithOrder(orderId));
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Integer> getMatchingProductIdForIdBySupplier(int idBySupplier) {
+        try {
+            return Result.makeOk(controller.getMatchingProductIdForIdBySupplier(idBySupplier));
         } catch (Exception e) {
             return  Result.makeError(e.getMessage());
         }

@@ -14,6 +14,7 @@ public class ManageContacts extends Screen {
     private final int supplierId;
 
     public ManageContacts() {
+        // TODO: Supplier pass SupplierId
         super(greet);
         supplierId = 1;
     }
@@ -94,14 +95,16 @@ public class ManageContacts extends Screen {
 
             // TODO: Supplier change this to normal print!
             if(contacts.size() > 0){
-                //System.out.println("");
                 for(String s : contacts){
-                    // System.out.println(s);
+                    // TODO: Supplier change this to normal print!
+                    setError(s);
+                    refresh(req, resp);
                 }
             }
             else{
-                //System.out.println("[NO CONTACTS]\n");
-            }
+                // TODO: Supplier change this to normal print!
+                setError("[NO CONTACTS!]");
+                refresh(req, resp);            }
         } catch (Exception e) {
             setError(e.getMessage());
             refresh(req, resp);

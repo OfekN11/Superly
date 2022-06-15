@@ -30,7 +30,7 @@ public class AddItemToAgreement extends Screen {
         greet(resp);
 
         printForm(resp, new String[] {"productId", "idBySupplier", "manufacturer", "pricePerUnit", "bulkPrices"}
-        , new String[]{"Agreement Days", "Product ID", "ID by Supplier", "Manufacturer", "Price Per Unit", "Bulk Prices"}, new String[]{"Add Item To Agreement"});
+        , new String[]{"Product ID", "ID by Supplier", "Manufacturer", "Price Per Unit", "Bulk Prices"}, new String[]{"Add Item To Agreement"});
 
 
         handleError(resp);

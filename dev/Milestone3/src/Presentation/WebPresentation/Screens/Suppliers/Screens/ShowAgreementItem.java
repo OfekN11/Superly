@@ -20,7 +20,7 @@ public class ShowAgreementItem extends Screen {
     public ShowAgreementItem() {
         super(greet);
         // TODO: Supplier pass itemId and SupplierId
-        itemId = 1;
+        itemId = 1;   // TODO: should be productId and not IDBYSupplier
         supplierId = 1;
     }
 
@@ -66,7 +66,7 @@ public class ShowAgreementItem extends Screen {
             addBulkPrice(req, resp);
         }
         else if (isButtonPressed(req, "Remove Bulk")) {
-            removeuBulkPrice(req, resp);
+            removeBulkPrice(req, resp);
         }
         else if (isButtonPressed(req, "Change Discount for Quantity")) {
             changeBulkPrice(req, resp);
@@ -142,7 +142,7 @@ public class ShowAgreementItem extends Screen {
         }
     }
 
-    private void removeuBulkPrice(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void removeBulkPrice(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             int quantity = Integer.parseInt(req.getParameter("quantity2"));
 

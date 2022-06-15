@@ -1,6 +1,5 @@
 package Presentation.WebPresentation;
 
-import Presentation.CLIPresentation.Screens.SupplierScreens.ManageSupplier;
 import Presentation.WebPresentation.Screens.Suppliers.Screens.*;
 import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
@@ -28,15 +27,17 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(EditCard.class, "/EditCard"),
             new AbstractMap.SimpleEntry<>(EditOrder.class, "/EditOrder"),
             new AbstractMap.SimpleEntry<>(ManageContacts.class, "/ManageContacts"),
-            new AbstractMap.SimpleEntry<>(ManageManufacturers.class, "/suppliersMainMenu/ManageManufacturers"),
+            new AbstractMap.SimpleEntry<>(ManageManufacturers.class, "/ManageManufacturers"),
             new AbstractMap.SimpleEntry<>(ManageOrders.class, "/ManageOrders"),
             new AbstractMap.SimpleEntry<>(ManageSuppliers.class, "/ManageSuppliers"),
+            new AbstractMap.SimpleEntry<>(OrderHRLogistics.class, "/RemoveOrder"),
+            new AbstractMap.SimpleEntry<>(OrderStoreManager.class, "/OrderStoreManager"),
+            new AbstractMap.SimpleEntry<>(RemoveViewOrder.class, "/RemoveViewOrder"),
             new AbstractMap.SimpleEntry<>(ShowAgreement.class, "/ShowAgreement"),
             new AbstractMap.SimpleEntry<>(ShowAgreementItem.class, "/ShowAgreementItem"),
-            new AbstractMap.SimpleEntry<>(ShowBuOrderAgreement.class, "/ShowBuOrderAgreement"),
-            new AbstractMap.SimpleEntry<>(ShowNotTransportingAgreement.class, "/ShowNotTransportingAgreement"),
-            new AbstractMap.SimpleEntry<>(ShowRoutineAgreement.class, "/ShowRoutineAgreement"),
+            new AbstractMap.SimpleEntry<>(SupplierMainMenu.class, "/SupplierMainMenu"),
             new AbstractMap.SimpleEntry<>(SupplierMainMenuStorekeeper.class, "/SupplierMainMenuStorekeeper"),
+            new AbstractMap.SimpleEntry<>(SupplierMainMenuStoreManager.class, "/SupplierMainMenuStoreManager"),
             new AbstractMap.SimpleEntry<>(ViewSupplier.class, "/ViewSupplier")
 
     ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));

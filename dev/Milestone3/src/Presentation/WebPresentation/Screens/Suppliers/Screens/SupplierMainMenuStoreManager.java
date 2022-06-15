@@ -5,20 +5,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class SupplierMainMenuStorekeeper extends SupplierMainMenu {
+public class SupplierMainMenuStoreManager extends SupplierMainMenu {
 
-    private static final String greet = "Supplier's Main Menu for StoreKeeper!";
+    private static final String greet = "Supplier's Main Menu for Store Manager!";
     private static final String button = "View Supplier";
 
-    public SupplierMainMenuStorekeeper() {
+    public SupplierMainMenuStoreManager() {
         super(greet);
     }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         header(resp);
         greet(resp);
-        printMenu(resp, new String[]{"Manage Suppliers", "Manage Orders"});
+        printMenu(resp, new String[]{"Manage Suppliers", "View/Remove Orders"});
 
         printSupplierIds(resp, req);
         printForm(resp, new String[] {"ID"}, new String[]{"Supplier ID"}, new String[]{button});
@@ -40,9 +41,9 @@ public class SupplierMainMenuStorekeeper extends SupplierMainMenu {
                 redirect(resp, ManageSuppliers.class);
                 break;
             case 1:
-                redirect(resp, ManageOrders.class);
+                // TODO: Supplier : can he remove orders? I think he needs only to view
+                redirect(resp, OrderHRLogistics.class);
                 break;
-
         }
     }
 

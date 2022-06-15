@@ -118,7 +118,7 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
     }
 
     public void updateItemId(int oldItemId, int newItemId) throws SQLException {
-        update(Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(newItemId), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(oldItemId) );
+        update(Arrays.asList(ID_BY_SUPPLIER), Arrays.asList(newItemId), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(oldItemId) );
     }
 
     /*
@@ -139,13 +139,37 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
      */
 
     public void removeItem(int id, int itemId) throws SQLException {
-        remove(Arrays.asList(1,2), Arrays.asList(id, itemId));
+        bulkPricesDAO.remove(itemId);
+        remove(Arrays.asList(SUPPLIER_ID_COLUMN,PRODUCT_ID_COLUMN), Arrays.asList(id, itemId));
     }
 
 
-    public String getNameOfItem(int itemId) {
+    public String getNameOfItem(int itemId) throws Exception {
         return AGREEMENT_ITEM_IDENTITY_MAP.get(String.valueOf(itemId)).getName();
     }
 
 
+    public int getMatchingProductIdForIdBySupplier(int idBySupplier) throws Exception {
+        for(AgreementItem agreementItem : AGREEMENT_ITEM_IDENTITY_MAP.values()){
+            if(agreementItem.getIdBySupplier() == idBySupplier)
+                return agreementItem.getProductId();
+        }
+        throw new Exception("There is no product with this ID!");
+    }
+
+    public void addBulkPrice(int supplierID, int itemId, int quantity, int discount) throws SQLException {
+        Map<Integer, Integer> bulkPrices = new HashMap<>();
+        bulkPrices.put(quantity, discount);
+        bulkPricesDAO.addBulkPrices(supplierID, itemId, bulkPrices);
+    }
+
+    public void updateBulkPrice(int supplierID, int itemId, int quantity, int discount) throws SQLException {
+        bulkPricesDAO.remove(Arrays.asList(1, 2, 3), Arrays.asList(itemId, supplierID, quantity));
+        addBulkPrice(supplierID, itemId, quantity, discount);
+    }
+
+    public void removeBulkPrice(int supplierID, int itemId, int quantity) throws SQLException {
+        bulkPricesDAO.remove(Arrays.asList(1, 2, 3), Arrays.asList(itemId, supplierID, quantity));
+
+    }
 }
