@@ -15,9 +15,9 @@ public class ServiceOrderItemObject {
     private double weight;
 
 
-    public ServiceOrderItemObject(int id, String name, int quantity, float ppu, int discount, Double finalPrice, int missing, int defective, String description, double weight) {
+    public ServiceOrderItemObject(int id, int supplierProductID, String name, int quantity, float ppu, int discount, Double finalPrice, int missing, int defective, String description, double weight) {
         this.id = id;
-//        this.supplierProductID = supplierProductID;
+        this.supplierProductID = supplierProductID;
         this.name = name;
         this.quantity = quantity;
         this.ppu = ppu;
@@ -75,7 +75,7 @@ public class ServiceOrderItemObject {
     }
 
     public String toString(){
-        return "ID: " + id + ", Name:" + name + ", Id by Supplier:" + supplierProductID + ", Quantity: " + quantity + ", Price Per Unit: " + ppu + ", Discount: " + discount
+        return "ID: " + id + ", Name:" + name + ", Supplier Id For Product:" + supplierProductID + ", Id by Supplier:" + supplierProductID + ", Quantity: " + quantity + ", Price Per Unit: " + ppu + ", Discount: " + discount
                 + ", Final Price: " + finalPrice + "\nWeight: " + weight  + ", Missing items: " + missing + ", Defective items: " + defective + ", Description: " + description + "\n";
     }
 
