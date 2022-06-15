@@ -53,6 +53,12 @@ public class RoutineDAO extends DAO {
         lastOrderIfd = orderId;
     }
 
+    public void setLastOrderIdAfterChangeType(int supplierId) throws SQLException {
+        if(lastOrderIfd != -1)
+            update(Arrays.asList(LAST_ORDER_ID_COLUMN), Arrays.asList(lastOrderIfd), Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
+
+    }
+
     public void removeDayOfDelivery(int supplierID, int day) throws SQLException {
         remove(Arrays.asList(SUPPLIER_ID_COLUMN, DAY_COLUMN), Arrays.asList(supplierID, day));
     }

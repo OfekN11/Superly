@@ -134,7 +134,7 @@ public class SupplierController {
         suppliersDAO.getSupplier(supplierId).updateAgreementType(agreementType, agreementDays);
         suppliersDAO.updateAgreementType(supplierId, agreementType);
         List<Integer> days = suppliersDAO.getSupplier(supplierId).getAgreementDays();
-        suppliersDAO.getAgreementController().removeSupplier(supplierId);
+        suppliersDAO.getAgreementController().removeSupplierForChangingAgreement(supplierId);
         suppliersDAO.getAgreementController().updateAgreementDays(supplierId, days, agreementType);
     }
 
@@ -1058,5 +1058,10 @@ public class SupplierController {
 
     public int getMatchingProductIdForIdBySupplier(int idBySupplier) throws Exception {
         return suppliersDAO.getAgreementItemDAO().getMatchingProductIdForIdBySupplier(idBySupplier);
+    }
+
+    public Boolean orderItemExistsInOrder(int supplierId, int orderId, int itemId) throws Exception {
+        Order order  = suppliersDAO.getSupplier(supplierId).getOrderObject(orderId, orderDAO);
+        return order.containsItem(itemId);
     }
 }

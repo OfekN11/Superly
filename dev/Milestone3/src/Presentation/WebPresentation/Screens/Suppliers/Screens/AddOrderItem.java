@@ -49,16 +49,21 @@ public class AddOrderItem extends Screen {
                 int quantity = Integer.parseInt(req.getParameter("quantity"));
 
                 int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
-
-                if(controller.addItemToOrder(supplierId, orderId, itemId, quantity)){
-
+                if(controller.orderItemExistsInOrder(supplierId, orderId, itemId)){
                     // TODO: Supplier change this to normal print!
-                    setError(String.format("Item %d added to Order %d!", itemId, orderId));
+                    setError(String.format("Item %d already exists in Order %d!. If you want to add, use Update quantity", itemId, orderId));
                     refresh(req, resp);
                 }
-                else{
-                    setError("Item wasn't added!");
-                    refresh(req, resp);
+                else {
+                    if (controller.addItemToOrder(supplierId, orderId, itemId, quantity)) {
+
+                        // TODO: Supplier change this to normal print!
+                        setError(String.format("Item %d added to Order %d!", itemId, orderId));
+                        refresh(req, resp);
+                    } else {
+                        setError("Item wasn't added!");
+                        refresh(req, resp);
+                    }
                 }
             } catch (NumberFormatException e1){
                 setError("Please enter a number!");

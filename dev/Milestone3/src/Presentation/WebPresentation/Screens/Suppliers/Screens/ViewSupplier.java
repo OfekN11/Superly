@@ -131,7 +131,7 @@ public class ViewSupplier extends Screen {
     private void showAllDiscountItems(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try{
             ArrayList<ServiceOrderItemObject> r = controller.getAllOrdersItemsInDiscounts(supplierId);
-            if(r != null){
+            if(r != null && r.size() > 0){
                 for(ServiceOrderItemObject orderItemObject : r){
                     float originalPrice = orderItemObject.getQuantity() * orderItemObject.getPricePerUnit();
 
@@ -141,7 +141,9 @@ public class ViewSupplier extends Screen {
                 }
             }
             else{
-                System.out.println("No Order Items available");
+                // TODO: Supplier change this to normal print!
+                setError("No order Items available!");
+                refresh(req, resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
@@ -156,7 +158,7 @@ public class ViewSupplier extends Screen {
     private void showAllOrders(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             ArrayList<ServiceOrderObject> r = controller.getAllOrdersForSupplier(supplierId);
-            if(r != null){
+            if(r != null && r.size() > 0){
                 for(ServiceOrderObject orderObject : r){
 
                     // TODO: Supplier change this to normal print!
@@ -165,7 +167,9 @@ public class ViewSupplier extends Screen {
                 }
             }
             else{
-                System.out.println("No Orders available");
+                // TODO: Supplier change this to normal print!
+                setError("No orders available!");
+                refresh(req, resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
@@ -181,21 +185,27 @@ public class ViewSupplier extends Screen {
         try {
             int agreementType = Integer.parseInt(req.getParameter("agreementType"));
             String agreementDays = req.getParameter("agreementDays");
-            if(agreementType == 1 || agreementType == 2 || agreementType == 3){
-                if(controller.addAgreement(supplierId, agreementType, agreementDays)){
+            if (!controller.hasAgreement(supplierId)) {
+                if(agreementType == 1 || agreementType == 2 || agreementType == 3) {
+                    if (controller.addAgreement(supplierId, agreementType, agreementDays)) {
 
-                    // TODO: Supplier change this to normal print!
-                    setError("Now, let's add the items included in the agreement.");
-                    refresh(req, resp);
-                    redirect(resp, AddItemToAgreement.class);
-                }
-                else{
-                    setError("A problem has occurred, please try again later");
+                        // TODO: Supplier change this to normal print
+                        //  If it stays error, it causes an error!, I think it's the refresh... just don't do this step...
+                        //setError("Now, let's add the items included in the agreement.");
+                        //refresh(req, resp);
+                        redirect(resp, AddItemToAgreement.class);
+                    } else {
+                        setError("A problem has occurred, please try again later");
+                        refresh(req, resp);
+                    }
+                } else {
+                    setError("Wrong number!, enter 1, 2 or 3");
                     refresh(req, resp);
                 }
             }
-            else {
-                setError("Wrong number!, enter 1, 2 or 3");
+            else{
+                // TODO: Supplier change this to normal print
+                setError("Agreement Already Exists!, if you want to change it, go to Show Agreement Window");
                 refresh(req, resp);
             }
 
