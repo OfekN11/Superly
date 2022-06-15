@@ -1,15 +1,11 @@
 package Presentation.WebPresentation.Screens.InventoryScreens;
 
 import Presentation.WebPresentation.Screens.Screen;
-import Presentation.WebPresentation.Screens.Suppliers.Screens.ManageOrders;
-import Presentation.WebPresentation.Screens.Suppliers.Screens.ManageSuppliers;
-import Presentation.WebPresentation.Screens.Suppliers.Screens.ViewSupplier;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 
 public class InventoryMainMenu extends Screen {
 

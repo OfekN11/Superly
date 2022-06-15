@@ -1,11 +1,10 @@
 package Presentation.WebPresentation.Screens.ViewModels.HR;
 
 import Presentation.WebPresentation.Screens.InventoryScreens.InventoryMainMenu;
-import Presentation.WebPresentation.Screens.InventoryScreens.Product;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
 import Presentation.WebPresentation.Screens.Screen;
-import Presentation.WebPresentation.Screens.Suppliers.Screens.SupplierMainMenuStorekeeper;
+import Presentation.WebPresentation.Screens.ViewModels.Suppliers.SupplierMainMenuStorekeeper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;

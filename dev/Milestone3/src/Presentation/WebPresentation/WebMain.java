@@ -1,11 +1,10 @@
 package Presentation.WebPresentation;
 
 
-import Presentation.CLIPresentation.Screens.SupplierScreens.ManageSupplier;
 import Presentation.WebPresentation.Screens.InventoryScreens.*;
-import Presentation.WebPresentation.Screens.Suppliers.Screens.*;
 import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
+import Presentation.WebPresentation.Screens.ViewModels.Suppliers.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 

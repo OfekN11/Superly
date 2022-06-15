@@ -1,4 +1,4 @@
-package Presentation.WebPresentation.Screens.Suppliers.Screens;
+package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
 import Presentation.WebPresentation.Screens.Screen;

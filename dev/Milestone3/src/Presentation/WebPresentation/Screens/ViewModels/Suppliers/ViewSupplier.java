@@ -1,11 +1,8 @@
-package Presentation.WebPresentation.Screens.Suppliers.Screens;
+package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Domain.Service.Objects.SupplierObjects.ServiceOrderItemObject;
 import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
 import Domain.Service.Objects.SupplierObjects.ServiceSupplierObject;
-import Presentation.CLIPresentation.Screens.SupplierScreens.ViewByOrderAgreement;
-import Presentation.CLIPresentation.Screens.SupplierScreens.ViewNotTransportingAgreement;
-import Presentation.CLIPresentation.Screens.SupplierScreens.ViewRoutineAgreement;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
