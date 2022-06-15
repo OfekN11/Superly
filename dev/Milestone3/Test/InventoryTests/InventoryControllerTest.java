@@ -3,6 +3,7 @@ package InventoryTests;
 import Domain.Business.Controllers.InventoryController;
 import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Inventory.Product;
+import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.*;
 import Globals.Pair;
 import net.jcip.annotations.NotThreadSafe;
@@ -24,6 +25,7 @@ class InventoryControllerTest {
 
     @BeforeAll
     public synchronized static void getMaxStoreCount() {
+        DAO.setDBForTests(InventoryControllerTest.class);
         stores = new ArrayList<>();
         sc = new SupplierController();
         sc.loadSuppliersData();
@@ -32,29 +34,7 @@ class InventoryControllerTest {
 
     @AfterAll
     public static void removeData() {
-        StockReportDataMapper srdm = new StockReportDataMapper();
-        ProductDataMapper pdm = new ProductDataMapper();
-        pdm.removeTestProducts();
-        CategoryDataMapper cdm = new CategoryDataMapper();
-        cdm.removeTestCategories();
-        SuppliersDAO suppliersDAO = new SuppliersDAO();
-        suppliersDAO.removeTestSuppliers();
-        StoreDAO storeDAO = new StoreDAO();
-        OrderDAO orderDAO = new OrderDAO();
-        LocationDataMapper locationDataMapper = new LocationDataMapper();
-        for (int store : stores) {
-            if (store>maxStoreCount) {
-                try {
-                    locationDataMapper.removeByStore(store);
-                    orderDAO.removeByStore(store);
-                    srdm.remove(store);
-                    storeDAO.remove(store);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        DAO.deleteTestDB(InventoryControllerTest.class);
     }
 
     //integration test

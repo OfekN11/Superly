@@ -31,7 +31,7 @@ public class ProductTests {
     private static int maxStoreCount;
 
     @BeforeAll
-    public synchronized static void getMaxStoreCount() throws SQLException, IOException {
+    public synchronized static void getMaxStoreCount() {
         DAO.setDBForTests(ProductTests.class);
         stores=new ArrayList<>();
         maxStoreCount = max(is.getStoreIDs());
@@ -66,11 +66,6 @@ public class ProductTests {
         product1.addLocation(maxStoreCount+1, shelves5, shelves6, 40, 150);
     }
 
-    @BeforeAll
-    public static void createTables() {
-        DAO.setDBForTests(ProductTests.class);
-    }
-
     @AfterAll
     public static void removeData() {
         DAO.deleteTestDB(ProductTests.class);
@@ -102,7 +97,7 @@ public class ProductTests {
         product0.addItems(maxStoreCount+2, 30,0,"");
         product1.addItems(maxStoreCount+1, 99,0,"");
         Assertions.assertEquals(0, product0.getInStore(maxStoreCount+1));
-        Assertions.assertEquals(140, product0.getInWarehouse(maxStoreCount+1));
+        Assertions.assertEquals(120, product0.getInWarehouse(maxStoreCount+1));
         Assertions.assertEquals(0, product0.getInStore(maxStoreCount+2));
         Assertions.assertEquals(30, product0.getInWarehouse(maxStoreCount+2));
         Assertions.assertEquals(0, product1.getInStore(maxStoreCount+1));

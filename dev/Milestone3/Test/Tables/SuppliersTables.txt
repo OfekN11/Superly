@@ -3,7 +3,6 @@ CREATE TABLE "AgreementItem" (
 	"SupplierID"	INTEGER,
 	"ProductID"	INTEGER,
 	"Manufacturer"	TEXT NOT NULL,
-	"Name"	TEXT NOT NULL,
 	"PricePerUnit"	REAL NOT NULL,
 	"IdBySupplier"	INTEGER NOT NULL,
 	PRIMARY KEY("SupplierID","ProductID"),

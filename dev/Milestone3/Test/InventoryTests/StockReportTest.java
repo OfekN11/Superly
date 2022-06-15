@@ -3,6 +3,7 @@ package InventoryTests;
 import Domain.Business.Controllers.InventoryController;
 import Domain.Business.Objects.Inventory.StockReport;
 import Domain.Business.Objects.Inventory.Product;
+import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.*;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.*;
@@ -25,8 +26,9 @@ class StockReportTest {
 
     @BeforeAll
     public synchronized static void setup() {
+        DAO.setDBForTests(StockReportTest.class);
         stores=new ArrayList<>();
-        maxStoreCount = max(is.getStoreIDs());
+        maxStoreCount = 0; //max(is.getStoreIDs());
         cat = is.addCategory("TestCategory", 0).getID();
     }
 
@@ -36,34 +38,16 @@ class StockReportTest {
         stores.add(store);
         product = is.newProduct("TestProduct", cat,2,2,"testManu");
         product.addLocation(store, Arrays.asList(1), Arrays.asList(2), 100, 200);
-        stockReport = product.getStockReport(store);
     }
 
     @AfterAll
     public static void removeData() {
-        StockReportDataMapper srdm = new StockReportDataMapper();
-        ProductDataMapper pdm = new ProductDataMapper();
-        pdm.removeTestProducts();
-        CategoryDataMapper cdm = new CategoryDataMapper();
-        cdm.removeTestCategories();
-        StoreDAO storeDAO = new StoreDAO();
-        LocationDataMapper locationDataMapper = new LocationDataMapper();
-        for (int store : stores) {
-            if (store>maxStoreCount) {
-                try {
-                    locationDataMapper.removeByStore(store);
-                    srdm.remove(store);
-                    storeDAO.remove(store);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        DAO.deleteTestDB(StockReportTest.class);
     }
 
     @Test
     void addDelivery() {
+        stockReport = product.getStockReport(store);
         assertThrows(Exception.class, ()->product.addDelivery(store+1,200));
         assertDoesNotThrow(()->product.addDelivery(store,200));
         assertEquals(200, stockReport.getAmountInDeliveries());
@@ -78,9 +62,11 @@ class StockReportTest {
     @Test
     void changeMinAndIsLow() {
         assertThrows(Exception.class, ()->product.changeProductMin(store+1,200));
+        stockReport = product.getStockReport(store);
         assertTrue(stockReport.isLow());
         assertEquals(100, stockReport.getMinAmountInStore());
         assertDoesNotThrow(()->product.changeProductMin(store,150));
+        stockReport = product.getStockReport(store);
         assertEquals(150, stockReport.getMinAmountInStore());
         assertTrue(stockReport.isLow());
         stockReport.returnItems(100);
