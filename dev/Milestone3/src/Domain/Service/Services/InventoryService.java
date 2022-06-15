@@ -28,20 +28,6 @@ public class InventoryService {
         controller = new InventoryController();
     }
 
-    /**
-     * Loads test data
-     *
-     * @return Result detailing success of operation
-     */
-    public Result<Object> loadTestData(){
-        try {
-            controller.loadTestData();
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
 
     /**
      * gets store ids of existing stores
@@ -186,7 +172,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the info on the purchase
      */
-    public Result<Object> orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder){
+    public Result<Object> orderArrived(int orderID, Map<Integer, Map<Integer, Pair<Pair<Integer, Integer>, String>>> reportOfOrder){
         try {
             controller.orderArrived(orderID, reportOfOrder);
         }

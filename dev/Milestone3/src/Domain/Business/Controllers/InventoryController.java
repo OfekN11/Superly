@@ -43,12 +43,13 @@ public class InventoryController {
         catID=CATEGORY_DATA_MAPPER.getIDCount() + 1;
         productID=PRODUCT_DATA_MAPPER.getIDCount() + 1;
 
-//        supplierController = new SupplierController(transportController);
+        supplierController = new SupplierController();
+        transportController = new TransportController();
     }
 
-    public void setTransportController(TransportController controller) {
-        this.transportController = controller;
-    }
+//    public void setTransportController(TransportController controller) {
+//        this.transportController = controller;
+//    }
     //for tests
     private static InventoryController instance;
     public static synchronized InventoryController getInventoryController() {
@@ -56,17 +57,6 @@ public class InventoryController {
             instance = new InventoryController();
         }
         return instance;
-    }
-
-    public void loadTestData() {
-        //initialize stuff for tests
-        //add stores
-//        for (int i = 1; i <= 10; i++)
-//            addStore();
-//        addCategoriesForTests();
-//        addProductsForTests();
-//        addSalesForTests();
-//        addReportsForTests();
     }
 
     public Category getCategory(int categoryID) {
@@ -223,25 +213,30 @@ public class InventoryController {
             SALE_DATA_MAPPER.remove(sale.getId());
         }
     }
+    //Map<OrderId<ProductId , ( (missingAmount,defectiveAmount), description)>>
+    public void orderArrived(int transportID, Map<Integer,Map<Integer, Pair<Pair<Integer, Integer>, String>>> reports) throws Exception {
+        transportController.endTransport(transportID);
+        List<Integer> orderIDs = transportController.getTransport(transportID).gerOrders();
+        Order arrivedOrder;
+        for (int orderID : orderIDs) {
+            Map<Integer, Pair<Pair<Integer, Integer>, String>> rep = reports.get(orderID);
+            if (rep==null)
+                rep = new HashMap<>();
+            arrivedOrder = supplierController.orderHasArrived(orderID, rep);
+            int orderStoreID = arrivedOrder.getStoreID();
+            for (OrderItem orderItem : arrivedOrder.getOrderItems()) {
+                getProduct(orderItem.getProductId()).addItems(orderStoreID, orderItem.getQuantity(), orderItem.getMissingItems() + orderItem.getDefectiveItems(), orderItem.getDescription());
+            }
+        }
+    }
 
-//    public void orderArrived(int transportID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
-//        transportController.endTransport(transportID)
-//        orders = transportController.getOrdersIDs()
-//
+//    public void orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
 //        Order arrivedOrder = supplierController.orderHasArrived(orderID, reportOfOrder);
 //        int orderStoreID = arrivedOrder.getStoreID();
 //        for (OrderItem orderItem : arrivedOrder.getOrderItems()) {
 //            getProduct(orderItem.getProductId()).addItems(orderStoreID, orderItem.getQuantity(), orderItem.getMissingItems()+orderItem.getDefectiveItems(), orderItem.getDescription());
 //        }
 //    }
-
-    public void orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
-        Order arrivedOrder = supplierController.orderHasArrived(orderID, reportOfOrder);
-        int orderStoreID = arrivedOrder.getStoreID();
-        for (OrderItem orderItem : arrivedOrder.getOrderItems()) {
-            getProduct(orderItem.getProductId()).addItems(orderStoreID, orderItem.getQuantity(), orderItem.getMissingItems()+orderItem.getDefectiveItems(), orderItem.getDescription());
-        }
-    }
 
     public Set<SaleToCustomer> getSaleHistoryByProduct(int productID) {
         return getProduct(productID).getSaleHistory();
@@ -548,8 +543,6 @@ public class InventoryController {
         }
         return stock;
     }
-
-
 
     public void deleteCategory(int catID) {
         getCategories();

@@ -1141,7 +1141,7 @@ public class BackendController {
         return inventoryService.getProduct(product);
     }
 
-    public Result<Object> orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) {
+    public Result<Object> orderArrived(int orderID, Map<Integer, Map<Integer, Pair<Pair<Integer, Integer>, String>>> reportOfOrder) {
         return inventoryService.orderArrived(orderID, reportOfOrder);
     }
 
