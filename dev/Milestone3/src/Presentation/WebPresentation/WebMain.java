@@ -39,8 +39,14 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(ShowRoutineAgreement.class, "/ShowRoutineAgreement"),
             new AbstractMap.SimpleEntry<>(SupplierMainMenuStorekeeper.class, "/SupplierMainMenuStorekeeper"),
             new AbstractMap.SimpleEntry<>(ViewSupplier.class, "/ViewSupplier"),
+
             new AbstractMap.SimpleEntry<>(Product.class, "/Product"),
-            new AbstractMap.SimpleEntry<>(InventoryMainMenu.class, "/InventoryMainMenu")
+            new AbstractMap.SimpleEntry<>(InventoryMainMenu.class, "/InventoryMainMenu"),
+            new AbstractMap.SimpleEntry<>(Catalog.class, "/Catalog"),
+            new AbstractMap.SimpleEntry<>(Categories.class, "/Categories"),
+            new AbstractMap.SimpleEntry<>(Category.class, "/Category"),
+            new AbstractMap.SimpleEntry<>(Sales.class, "/Sales"),
+            new AbstractMap.SimpleEntry<>(Sale.class, "/Sale")
 
 
             ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));

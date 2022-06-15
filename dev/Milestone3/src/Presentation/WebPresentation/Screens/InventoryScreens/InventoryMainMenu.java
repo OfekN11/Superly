@@ -15,7 +15,7 @@ public class InventoryMainMenu extends Screen {
 
     private static final String greet = "Inventory's Main Menu";
 
-    protected InventoryMainMenu() {
+    public InventoryMainMenu() {
         super(greet);
     }
 
