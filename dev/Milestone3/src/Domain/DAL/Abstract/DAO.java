@@ -1,14 +1,9 @@
 package Domain.DAL.Abstract;
 
 import Domain.DAL.ConnectionHandler;
-import org.sqlite.util.StringUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.time.LocalDate;
@@ -18,7 +13,7 @@ import java.util.stream.Stream;
 
 public abstract class DAO {
     private static String dbName= "Superly.db";
-    String url = String.format("jdbc:sqlite:%s/%s",System.getProperty("user.dir"),dbName);
+    private static String url = String.format("jdbc:sqlite:%s/%s",System.getProperty("user.dir"),dbName);
     private final static String SELECT_QUERY = "SELECT %s from %s where %s";
     private final static String INSERT_QUERY = "INSERT INTO %s VALUES (%s)";
     private final static String DELETE_QUERY = "DELETE FROM %s WHERE %s;";
