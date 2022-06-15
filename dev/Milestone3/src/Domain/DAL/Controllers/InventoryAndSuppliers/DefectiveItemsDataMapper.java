@@ -1,5 +1,6 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
+import Domain.Business.Objects.Inventory.Category;
 import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
@@ -9,6 +10,8 @@ import Globals.Defect;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
     private final static int ID_COLUMN = 1;
@@ -21,12 +24,17 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
     private final static int DEFECT_COLUMN = 8;
     private final static int IN_WAREHOUSE_COLUMN = 9;
 
-    private final static Map<String, DefectiveItems> IDENTITY_MAP = new HashMap<>();
+    private final static ConcurrentMap<String, DefectiveItems> IDENTITY_MAP = new ConcurrentHashMap<>();
 
     public DefectiveItemsDataMapper() {
         super("DefectiveItems");
     }
 
+
+    @Override
+    public String instanceToId(DefectiveItems instance) {
+        return String.valueOf(instance.getId());
+    }
 
     @Override
     protected Map<String, DefectiveItems> getMap() {

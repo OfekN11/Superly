@@ -1,5 +1,6 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
+import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.Business.Objects.Inventory.Location;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
@@ -7,9 +8,11 @@ import Domain.DAL.Abstract.LinkDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class LocationDataMapper extends DataMapper<Location> {
-    private final static Map<String, Location> IDENTITY_MAP = new HashMap<>();
+    private final static ConcurrentMap<String, Location> IDENTITY_MAP = new ConcurrentHashMap<>();
 
     private final static LocationToShelfDAO locationToShelfDAO = new LocationToShelfDAO();
 
@@ -20,6 +23,11 @@ public class LocationDataMapper extends DataMapper<Location> {
 
     public LocationDataMapper(){
         super("Location");
+    }
+
+    @Override
+    public String instanceToId(Location instance) {
+        return String.valueOf(instance.getLocationID());
     }
 
     @Override

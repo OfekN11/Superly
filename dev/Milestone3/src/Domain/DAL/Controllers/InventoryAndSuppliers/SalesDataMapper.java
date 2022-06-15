@@ -9,10 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class SalesDataMapper extends DataMapper<SaleToCustomer> {
 
-    private final static Map<String, SaleToCustomer> SALE_IDENTITY_MAP = new HashMap<>();
+    private final static ConcurrentMap<String, SaleToCustomer> SALE_IDENTITY_MAP = new ConcurrentHashMap<>();
     private final static SalesToProductDAO salesToProductDAO = new SalesToProductDAO();
     private final static SalesToCategoryDAO salesToCategoryDAO = new SalesToCategoryDAO();
 
@@ -31,6 +33,11 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
             output.put(Integer.parseInt(entry.getKey()), entry.getValue());
         }
         return output;
+    }
+
+    @Override
+    public String instanceToId(SaleToCustomer instance) {
+        return String.valueOf(instance.getId());
     }
 
     @Override

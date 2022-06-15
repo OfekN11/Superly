@@ -7,10 +7,12 @@ import Domain.DAL.Abstract.LinkDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class CategoryDataMapper extends DataMapper<Category> {
 
-    private final static Map<String, Category> CATEGORY_IDENTITY_MAP = new HashMap<>();
+    private final static ConcurrentMap<String, Category> CATEGORY_IDENTITY_MAP = new ConcurrentHashMap<>();
 
     private final static int ID_COLUMN = 1;
     private final static int NAME_COLUMN = 2;
@@ -69,6 +71,11 @@ public class CategoryDataMapper extends DataMapper<Category> {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String instanceToId(Category instance) {
+        return String.valueOf(instance.getID());
     }
 
     @Override

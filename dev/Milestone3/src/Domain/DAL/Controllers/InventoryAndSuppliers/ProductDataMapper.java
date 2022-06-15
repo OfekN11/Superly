@@ -8,11 +8,13 @@ import Domain.DAL.Abstract.LinkDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class ProductDataMapper extends DataMapper<Product> {
 
 
-    private final static Map<String, Product> PRODUCT_IDENTITY_MAP = new HashMap<>();
+    private final static ConcurrentMap<String, Product> PRODUCT_IDENTITY_MAP = new ConcurrentHashMap<>();
     private final static CategoryDataMapper CATEGORY_DATA_MAPPER = Category.CATEGORY_DATA_MAPPER;
 
     private final static int ID_COLUMN = 1;
@@ -32,6 +34,11 @@ public class ProductDataMapper extends DataMapper<Product> {
             output.put(Integer.parseInt(entry.getKey()), entry.getValue());
         }
         return output;
+    }
+
+    @Override
+    public String instanceToId(Product instance) {
+        return String.valueOf(instance.getId());
     }
 
     @Override
