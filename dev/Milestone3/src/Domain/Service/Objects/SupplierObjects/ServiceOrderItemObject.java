@@ -15,9 +15,9 @@ public class ServiceOrderItemObject {
     private double weight;
 
 
-    public ServiceOrderItemObject(int id, int supplierProductID, String name, int quantity, float ppu, int discount, Double finalPrice, int missing, int defective, String description, double weight) {
+    public ServiceOrderItemObject(int id, String name, int quantity, float ppu, int discount, Double finalPrice, int missing, int defective, String description, double weight) {
         this.id = id;
-        this.supplierProductID = supplierProductID;
+//        this.supplierProductID = supplierProductID;
         this.name = name;
         this.quantity = quantity;
         this.ppu = ppu;
