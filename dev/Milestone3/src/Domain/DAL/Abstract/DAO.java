@@ -325,6 +325,9 @@ public abstract class DAO {
             else if (values.get(i).getClass().isEnum()){
                 preparedStatement.setString(i + 1, values.get(i).toString());
             }
+            else if(Boolean.class.equals(values.get(i).getClass())){
+                preparedStatement.setBoolean(i + 1, (Boolean) values.get(i));
+            }
             else
                 throw new RuntimeException("Did not specified this kind of data");
         }
