@@ -144,7 +144,7 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
     }
 
 
-    public String getNameOfItem(int itemId) {
+    public String getNameOfItem(int itemId) throws Exception {
         return AGREEMENT_ITEM_IDENTITY_MAP.get(String.valueOf(itemId)).getName();
     }
 

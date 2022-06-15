@@ -650,7 +650,7 @@ public class SupplierController {
     }
 
 
-    private void createNewOrderForThisProduct(int supplierId, int productId, int storeId, int quantity, Map<String, ArrayList<Order>> orders) {
+    private void createNewOrderForThisProduct(int supplierId, int productId, int storeId, int quantity, Map<String, ArrayList<Order>> orders) throws Exception {
         Supplier supplier = suppliersDAO.getSupplier(supplierId);
         OrderItem orderItem  = createNewOrderItem(supplierId, productId, quantity);
         try {
@@ -669,7 +669,7 @@ public class SupplierController {
     }
 
     //public for testing
-    public OrderItem createNewOrderItem(int supplierId, int productId, int quantity) {
+    public OrderItem createNewOrderItem(int supplierId, int productId, int quantity) throws Exception {
         Supplier supplier = suppliersDAO.getSupplier(supplierId);
         AgreementItem currItem = null;
         try {

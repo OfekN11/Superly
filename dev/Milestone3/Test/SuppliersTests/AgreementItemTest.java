@@ -17,7 +17,11 @@ public class AgreementItemTest {
     public void setUp(){
         HashMap<Integer, Integer> map = new HashMap<>();
         map.put(20, 15); map.put(50, 20); map.put(100, 30);
-        item = new AgreementItem(1, 1, "Osem", 8.99f,  map);
+        try {
+            item = new AgreementItem(1, 1, "Osem", 8.99f,  map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

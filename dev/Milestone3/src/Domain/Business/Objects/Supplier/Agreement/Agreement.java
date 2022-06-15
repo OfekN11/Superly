@@ -122,7 +122,7 @@ public abstract class Agreement {
     }
 
 
-    public List<String> getItemsInMapFormat() {
+    public List<String> getItemsInMapFormat() throws Exception {
         ArrayList<String> result = new ArrayList<>();
         for( Map.Entry<Integer, AgreementItem> currItem : items.entrySet()){
             String currItemInfo = currItem.getValue().getInfoInStringFormat();

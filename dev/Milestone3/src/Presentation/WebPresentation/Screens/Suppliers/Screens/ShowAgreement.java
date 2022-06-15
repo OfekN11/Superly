@@ -20,15 +20,6 @@ public class ShowAgreement extends Screen {
     private static final String greetNotTransporting = "Not Transporting Supplier";
 
 
-    // TODO: Supplier : tried without extends to other classes, see if it works!
-    public ShowAgreement(int supplierId) {
-        super(greet);
-        this.supplierId = supplierId;
-
-        agreementType = getAgreementType();
-
-    }
-
     //if not using inheritance, we use this constructor!!!!
     public ShowAgreement(){
         super(greet);
@@ -191,7 +182,6 @@ public class ShowAgreement extends Screen {
 
     private void changeAgreementType(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            // TODO: Supplier explain what is 1 2 3
             int type = Integer.parseInt(req.getParameter("agreementType"));
             String days = req.getParameter("agreementDays");
             // TODO: Supplier check what it does when not inserting anything for not transporting! should be ""
@@ -219,7 +209,6 @@ public class ShowAgreement extends Screen {
 
 
     private void removeItemFromAgreement(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        //!controller.deleteItemFromAgreement(supplierID, input)
         try {
             // TODO: Supplier change this to normal print!
             setError("This action is dangerous! be aware!");
@@ -269,44 +258,4 @@ public class ShowAgreement extends Screen {
         }
     }
 
-
-    /*
-        private void changeDaysOfDelivery() {
-        String input;
-        boolean correctInput = false;
-
-        System.out.println("Insert the new days of delivery");
-
-        System.out.println("If you want to go back, please insert \"-1\".\n");
-
-        while(!correctInput){
-            input = Screen.scanner.nextLine();
-
-            if(input.equals("-1")){
-                System.out.println("Returning..\n");
-                return;
-            }
-
-            if(input.length() > 0){
-
-                try {
-                    if(controller.setDaysOfDelivery(supplierID, input)){
-                        correctInput = true;
-                    }
-                    else{
-                        System.out.println("Something went wrong, please try again.");
-                    }
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());;
-                }
-            }
-            else{
-                System.out.println("Wrong input, please try again.\n");
-            }
-        }
-
-        System.out.println("Changes saved, returning\n\n");
-    }
-
-     */
 }
