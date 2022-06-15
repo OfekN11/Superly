@@ -3,6 +3,7 @@ package Domain.Business.Objects;
 import Domain.Business.Objects.Document.TransportDocument;
 import Domain.Business.Objects.Site.Destination;
 import Domain.Business.Objects.Site.Source;
+import Domain.Business.Objects.Supplier.Order;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
 import Globals.Enums.TransportStatus;
@@ -107,12 +108,17 @@ public class Transport {
         return sourcesID.isEmpty() && destinationsID.isEmpty();
     }
 
-    public boolean placeTruck(int licenseNumber,int weight)
+    public boolean placeTruck(int licenseNumber,int weight,int max)
     {
         if(truckNumber==-1){
-            truckNumber = licenseNumber;
-            truckWeight = weight;
-            return true;
+            if(truckWeight + weight > max){
+                return false;
+            }
+            else{
+                truckNumber = licenseNumber;
+                truckWeight = weight;
+                return true;
+            }
         }
         return false;
     }
@@ -177,11 +183,11 @@ public class Transport {
         return new TransportDocument(startTime, truckNumber, driverName, getSrcIDs(), getDstIDs());
     }*/
 
-    public void addOrder(TransportOrder order,ShippingAreas src,ShippingAreas dst)
+    public void addOrder(Order order)
     {
-        sourcesID.add(order.getSrc());
-        destinationsID.add(order.getDst());
-        transportOrders.add(order.getID());
+        sourcesID.add(order.getSupplierId());
+        destinationsID.add(order.getStoreID());
+        transportOrders.add(order.getId());
     }
 
     public boolean updateWeight(int newWeight, int maxCapacityWeight) throws Exception {
@@ -244,5 +250,20 @@ public class Transport {
             }
         }
         return sourcesID.size()==0 && destinationsID.size()==0;
+    }
+    public boolean canChangeWeight(int newWeight, int maxCapacityWeight) throws Exception {
+        if(truckWeight+newWeight > maxCapacityWeight){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    public void updateWeight(int amount){
+        truckWeight = truckWeight + amount;
+    }
+
+    public void initWeight(int weight){
+        truckWeight = weight;
     }
 }

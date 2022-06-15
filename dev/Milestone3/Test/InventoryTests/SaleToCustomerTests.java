@@ -1,10 +1,10 @@
 package InventoryTests;
 
 import Domain.Business.Objects.Inventory.SaleToCustomer;
+import Domain.DAL.Abstract.DAO;
 import net.jcip.annotations.NotThreadSafe;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.*;
+
 import java.time.LocalDate;
 import java.util.LinkedList;
 
@@ -19,6 +19,17 @@ public class SaleToCustomerTests {
     SaleToCustomer sale6;
     SaleToCustomer sale7;
     SaleToCustomer sale8;
+
+    @BeforeAll
+    public synchronized static void setData() {
+        DAO.setDBForTests(SaleToCustomerTests.class);
+    }
+
+    @AfterAll
+    public static void removeData() {
+        DAO.deleteTestDB(SaleToCustomerTests.class);
+    }
+
     @BeforeEach
     void createDatesAndSales() {
         LocalDate today = LocalDate.now();

@@ -105,10 +105,10 @@ public class UpdateTransportMenu extends Screen {
         }
     }
 
-
+    //TODO change this function after change
     private void addOrder(int transportID) throws Exception {
-        int orderID = getID("Order");
-        controller.addOrderToTransport(transportID, orderID);
+        /*int orderID = getID("Order");
+        controller.addOrderToTransport(transportID, orderID);*/
     }
 
 

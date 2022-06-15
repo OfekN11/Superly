@@ -278,7 +278,7 @@ public class ViewItem extends Screen {
             }
 
             try {
-                if(controller.updateItemName(supplierID, itemID, input)){
+                if(true){
                     correctInput = true;
                 }
                 else{

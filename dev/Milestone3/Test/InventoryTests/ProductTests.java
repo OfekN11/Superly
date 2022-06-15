@@ -10,6 +10,9 @@ import Domain.DAL.Controllers.InventoryAndSuppliers.ProductDataMapper;
 import Domain.DAL.Controllers.InventoryAndSuppliers.StoreDAO;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.*;
+
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -29,6 +32,7 @@ public class ProductTests {
 
     @BeforeAll
     public synchronized static void getMaxStoreCount() {
+        DAO.setDBForTests(ProductTests.class);
         stores=new ArrayList<>();
         maxStoreCount = max(is.getStoreIDs());
         stores.add(is.addStore());
@@ -64,20 +68,7 @@ public class ProductTests {
 
     @AfterAll
     public static void removeData() {
-        ProductDataMapper pdm = new ProductDataMapper();
-        pdm.removeTestProducts();
-        CategoryDataMapper cdm = new CategoryDataMapper();
-        cdm.removeTestCategories();
-        StoreDAO storeDAO = new StoreDAO();
-        for (int store : stores) {
-            if (store > maxStoreCount) {
-                try {
-                    storeDAO.remove(store);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        DAO.deleteTestDB(ProductTests.class);
     }
 
     @Test
@@ -106,7 +97,7 @@ public class ProductTests {
         product0.addItems(maxStoreCount+2, 30,0,"");
         product1.addItems(maxStoreCount+1, 99,0,"");
         Assertions.assertEquals(0, product0.getInStore(maxStoreCount+1));
-        Assertions.assertEquals(140, product0.getInWarehouse(maxStoreCount+1));
+        Assertions.assertEquals(120, product0.getInWarehouse(maxStoreCount+1));
         Assertions.assertEquals(0, product0.getInStore(maxStoreCount+2));
         Assertions.assertEquals(30, product0.getInWarehouse(maxStoreCount+2));
         Assertions.assertEquals(0, product1.getInStore(maxStoreCount+1));

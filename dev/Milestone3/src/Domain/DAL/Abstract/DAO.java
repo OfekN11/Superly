@@ -3,6 +3,13 @@ package Domain.DAL.Abstract;
 import Domain.DAL.ConnectionHandler;
 import org.sqlite.util.StringUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -16,6 +23,37 @@ public abstract class DAO {
     private final static String INSERT_QUERY = "INSERT INTO %s VALUES (%s)";
     private final static String DELETE_QUERY = "DELETE FROM %s WHERE %s;";
     private final static String UPDATE_QUERY = "UPDATE %s SET %s WHERE %s";
+
+    public static void setDBForTests(Class testClass) {
+        //create and delete db?
+        url = String.format("jdbc:sqlite:out/test/Milestone3/SuperlyTests%s.db", testClass.getName().replace('.','_'));
+        try (Connection connection = DriverManager.getConnection(url)) {
+            Statement statement = connection.createStatement();
+            String exec;
+            String[] tables = {"InventoryTables", "SuppliersTables", "EmployeeTables", "TransportTables"};
+            for (int i = 0; i < tables.length; i++) {
+                File f = new File(String.format("Test/Tables/%s.txt", tables[i]));
+                byte[] bf = new byte[(int) f.length()];
+                new FileInputStream(f).read(bf);
+                exec = new String(bf, "UTF-8");
+                String[] myTables = exec.split(";");
+                for (String t : myTables) {
+                    statement.execute(t);
+                }
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static void deleteTestDB(Class testClass) {
+        try {
+            Files.deleteIfExists(Paths.get(String.format("out/test/Milestone3/SuperlyTests%s.db", testClass.getName().replace('.','_'))));
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 
     // properties
     protected String tableName; // this field will be valid if we will save data in tables

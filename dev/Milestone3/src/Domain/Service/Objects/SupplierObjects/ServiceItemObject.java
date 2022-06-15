@@ -6,39 +6,45 @@ import java.util.Map;
 public class ServiceItemObject {
 
     //fields
-    private int id;
+    private int productId;
+    private int idBySupplier;
     private String name;
     private String manufacturer;
     private float pricePerUnit;
+    private double weight;
     private Map<Integer, Integer> bulkPrices; // <quantity, percent>
 
 
-    public ServiceItemObject(int _id, String _name, String _manu, float _price, Map<Integer, Integer> _bulkPrices){
-        id = _id;
+    public ServiceItemObject(int _productId, int _idBySupplier, String _name, String _manu, float _price,double _weight, Map<Integer, Integer> _bulkPrices){
+        productId = _productId;
+        idBySupplier = _idBySupplier;
         name = _name;
         manufacturer = _manu;
         pricePerUnit = _price;
+        weight = _weight;
         bulkPrices = _bulkPrices;
     }
 
-    //Format : " id , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
+    //Format : " productId ,idBySupplier,  name , manufacturer , pricePerUnit , weight, quantity,  percent , quantity , percent ..."
     public ServiceItemObject(String s){
         String[] fields = s.replaceAll("\\s+","").split(",");
 
-        id = Integer.parseInt(fields[0]);
-        name = fields[1];
-        manufacturer = fields[2];
-        pricePerUnit = Float.parseFloat(fields[3]);
+        productId = Integer.parseInt(fields[0]);
+        idBySupplier = Integer.parseInt(fields[1]);
+        name = fields[2];
+        manufacturer = fields[3];
+        pricePerUnit = Float.parseFloat(fields[4]);
+        weight = Double.parseDouble(fields[5]);
         bulkPrices = new HashMap<>();
 
-        for(int i=4; i<fields.length; i++){
+        for(int i=6; i<fields.length; i++){
             bulkPrices.put(Integer.parseInt(fields[i]), Integer.parseInt(fields[i+1]));
             i++;
         }
     }
 
     public int getId(){
-        return id;
+        return idBySupplier;
     }
 
     public String getName(){
@@ -57,12 +63,13 @@ public class ServiceItemObject {
         return bulkPrices;
     }
 
+    // New Format : " productId ,idBySupplier,  name , manufacturer , pricePerUnit , quantity , weight,  percent , quantity , percent ..."
     public String toString(){
         if(bulkPrices.isEmpty()){
-            return "\n" + id + ", " + name + ", " + manufacturer + ", " + pricePerUnit + ", [NO BULK PRICES]";
+            return "\n" + "Product ID: " + productId + " , ID by Supplier: " + idBySupplier  +" ,Name: " + name + " ,Manufacturer: " + manufacturer + " ,PricePerUnit: " + pricePerUnit + " ,Weight:" + weight + ", [NO BULK PRICES]";
         }
         else{
-            return "\n" + id + ", " + name + ", " + manufacturer + ", " + pricePerUnit + ", " + printBulkMap();
+            return "\n" + "Product ID: " + productId + " , ID by Supplier: " + idBySupplier  +" ,Name: " + name + " ,Manufacturer: " + manufacturer + " ,PricePerUnit: " + pricePerUnit + " ,Weight:" + weight+ ", " + printBulkMap();
         }
     }
 
@@ -79,6 +86,6 @@ public class ServiceItemObject {
     }
 
     public void setId(int newID){
-        id = newID;
+        idBySupplier = newID;
     }
 }

@@ -18,10 +18,10 @@ public class SupplierController {
 
     private TransportController transportController;
 
-    // TODO: 10/06/2022 SHould get the transportController in the constructor
     public SupplierController(){
         suppliersDAO = new SuppliersDAO();
         orderDAO = new OrderDAO();
+        // TODO: 10/06/2022 SHould get the transportController in the constructor
         transportController = new TransportController();
 
     }
@@ -190,11 +190,15 @@ public class SupplierController {
         suppliersDAO.getSupplier(supplierId).updateItemId(olditemId, newItemId, suppliersDAO.getAgreementItemDAO());
     }
 
+    /*
     public void updateItemName(int supplierId, int itemId, String newName) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
         suppliersDAO.getSupplier(supplierId).updateItemName(itemId, newName, suppliersDAO.getAgreementItemDAO());
     }
+     */
+
+
 
     public void updateItemManufacturer(int supplierId, int itemId, String manufacturer) throws Exception {
         if(!supplierExist(supplierId))
@@ -203,11 +207,11 @@ public class SupplierController {
     }
 
 
-    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
 
-        suppliersDAO.getSupplier(supplierId).addItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices, suppliersDAO);
+        suppliersDAO.getSupplier(supplierId).addItem(itemId, idBySupplier, itemManu, itemPrice, bulkPrices, suppliersDAO);
     }
 
     public void deleteItemFromAgreement(int supplierId, int itemId) throws Exception {
@@ -299,6 +303,7 @@ public class SupplierController {
             suppliersDAO.getAgreementController().removeDayOfDelivery(supplierID,day);
         }
     }
+
 
     public String getItem(int supplierID, int itemId) throws Exception {
         if(!supplierExist(supplierID)){
@@ -446,12 +451,14 @@ public class SupplierController {
     }
 
 
-    public void removeOrder(int supId, int orderId) throws Exception {
-        if(!supplierExist(supId)){
-            throw new Exception("The supplier does not exists!");
+    public boolean removeOrder(int orderId) throws Exception {
+        int supId = getSupplierWithOrder(orderId);
+        if(supId == -1){
+            throw new Exception("No Supplier with this order!");
         }
-        suppliersDAO.getSupplier(supId).removeOrder(orderId, orderDAO);
+        return suppliersDAO.getSupplier(supId).removeOrder(orderId, orderDAO);
     }
+
 
     public void removeItemFromOrder(int supId, int orderId, int itemId) throws Exception {
         if(!supplierExist(supId)){
@@ -949,34 +956,33 @@ public class SupplierController {
         addAgreement(supplierId1, 1, "1 2 3 4 5 6 7");
 
         ArrayList<String> items = new ArrayList<>();
-        items.add("1 , 1,  Bamba small ,Osem , 3.5 , 100 , 20 ");
-        items.add("2 , 2, Milk 1L Tnuva ,Tnuva, 4.0 , 100 , 20 , 200 , 50 , 500 , 70");
-        items.add("3 , 3, melon ,Milk 1L Tara, 4.0 , 100 , 20 , 200 , 40 , 500 , 50");
-        items.add("4 , 4, Yoplait Pineapple ,Yoplait, 5.9 , 10 , 20 , 20 , 80 ");
-        items.add("5 , 5, Halva ,Elit, 7.0 , 10 , 20 , 20 , 50 , 30 , 80 ");
+        items.add("1 , 1,  Osem , 3.5 , 100 , 20 ");
+        items.add("2 , 2, Tnuva, 4.0 , 100 , 20 , 200 , 50 , 500 , 70");
+        items.add("3 , 3,  Tara, 4.0 , 100 , 20 , 200 , 40 , 500 , 50");
+        items.add("4 , 4, Yoplait, 5.9 ,  10 , 20 , 20 , 80 ");
+        items.add("5 , 5, Elit, 7.0 ,  10 , 20 , 20 , 50 , 30 , 80 ");
 
 
         addItemsToAgreement(supplierId1, items);
 
-        Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 11),  LocalDate.of(2022, 5, 16), storeId , OrderStatus.ordered);
+        Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 25),  LocalDate.of(2022, 6, 1), storeId , OrderStatus.complete);
         int order1Id = order1.getId();
         insertToOrderDAO(order1);
         suppliersDAO.getAgreementController().setLastOrderId(supplierId1, order1Id);
 
+        //Bamba  80 * 0.2 = 16kg
         int id = 1;
         AgreementItem curr = suppliersDAO.getSupplier(supplierId1).getItem(id);
         int quantity = 80;
         addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
 
+        // Milk 100 * 1 = 100kg
         id = 2;
         curr = suppliersDAO.getSupplier(supplierId1).getItem(id);
         quantity = 100;
         addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
 
-        id = 3;
-        curr = suppliersDAO.getSupplier(supplierId1).getItem(id);
-        quantity = 100;
-        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
+        //Order weight = 116 kg
     }
 
 
@@ -992,51 +998,50 @@ public class SupplierController {
         addAgreement(supplierId2, 2, "3");
 
         ArrayList<String> items = new ArrayList<>();
-        items.add("1 , 1,  Bamba small ,Osem , 3.5 , 100 , 30 ");
-        items.add("2 , 2, Milk 1L Tnuva ,Tnuva, 4.0 , 100 , 30 , 200 , 60 , 500 , 80");
-        items.add("3 , 3, melon ,Milk 1L Tara, 4.0 , 100 , 30 , 200 , 50 , 500 , 60");
-        items.add("4 , 4, Yoplait Pineapple ,Yoplait, 5.9 , 10 , 30 , 20 , 90 ");
-        items.add("5 , 5, Halva ,Elit, 7.0 , 10 , 30 , 20 , 60 , 30 , 90 ");
+        items.add("1 , 1, Osem , 3.5 , 100 , 30 ");
+        items.add("2 , 2, Tnuva, 4.0, 100 , 30 , 200 , 60 , 500 , 80");
+        items.add("3 , 3, Tara, 4.0 ,  100 , 30 , 200 , 50 , 500 , 60");
+        items.add("4 , 4, Yoplait, 5.9 , 10 , 30 , 20 , 90 ");
+        items.add("5 , 5, Elit, 7.0 ,  10 , 30 , 20 , 60 , 30 , 90 ");
 
         addItemsToAgreement(supplierId2, items);
 
 
-        Order order1 = new Order(3, supplierId2, LocalDate.of(2022, 5, 9),  LocalDate.of(2022, 5, 12), storeId , OrderStatus.ordered);
-        int order1Id = order1.getId();
-        insertToOrderDAO(order1);
-
-        int id = 1;
-        AgreementItem curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
-        int quantity = 20;
-        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
-
-
-        id = 2;
-        curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
-        quantity = 20;
-        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
-
-        id = 3;
-        curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
-        quantity = 20;
-        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
-
-        Order order2 = new Order(4, supplierId2, LocalDate.of(2022, 5, 12),  LocalDate.of(2022, 5, 15), storeId, OrderStatus.ordered);
+        Order order2 = new Order(2, supplierId2, LocalDate.of(2022, 5, 29),  LocalDate.of(2022, 6, 1), storeId, OrderStatus.complete);
         int order2Id = order2.getId();
         insertToOrderDAO(order2);
 
-        id = 4;
-        curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
-        quantity = 20;
+        //Yoplait 20 * 0.15 = 3kg
+        int id = 4;
+        AgreementItem curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
+        int quantity = 20;
         addItemToOrderDAO(order2Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
 
+        //Halva 20 * 0.3 = 6kg
         id = 5;
         curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
         quantity = 20;
         addItemToOrderDAO(order2Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
 
+        //Order 2 weight = 9 kg
 
     }
 
 
+    private int getSupplierWithOrder(int orderId) throws Exception {
+        for(Integer supplierId : getSuppliersIds()){
+            if(orderExists(supplierId, orderId))
+                return supplierId;
+        }
+        return -1;
+    }
+
+
+    public List<String> getOrder(int orderId) throws Exception {
+        int supId = getSupplierWithOrder(orderId);
+        if(supId == -1){
+            throw new Exception("No Supplier has this order!");
+        }
+        return suppliersDAO.getSupplier(supId).getOrder(orderId, orderDAO);
+    }
 }
