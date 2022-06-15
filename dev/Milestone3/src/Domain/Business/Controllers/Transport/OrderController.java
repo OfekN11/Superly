@@ -1,17 +1,12 @@
 package Domain.Business.Controllers.Transport;
 
-import Domain.Business.Objects.Product;
-import Domain.Business.Objects.Site.*;
 import Domain.Business.Objects.Supplier.Order;
-import Domain.Business.Objects.TransportOrder;
 import Domain.DAL.Controllers.InventoryAndSuppliers.OrderDAO;
-import Domain.DAL.Controllers.TransportMudel.TransportOrderDAO;
 import Globals.Enums.OrderStatus;
-
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 public class OrderController {

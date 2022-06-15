@@ -527,7 +527,7 @@ public class SupplierController {
     //Map<ProductId , ( (missingAmount,defectiveAmount), description)>
     public Order orderHasArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
         int supplierId = orderDAO.getOrder(orderID, suppliersDAO).getSupplierId();
-        //I know I return here an Order Object and than search for it again...
+        //I know I return here an Order Object and then search for it again...
         //I do this so the order is saved in orders list in Supplier.
         Order order = getOrderObject(supplierId, orderID);
         order.uploadItemsFromDB(uploadOrderItems(order.getId()));
