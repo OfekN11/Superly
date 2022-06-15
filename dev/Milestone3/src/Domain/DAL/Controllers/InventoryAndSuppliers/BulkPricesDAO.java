@@ -49,4 +49,8 @@ public class BulkPricesDAO extends DAO {
     }
 
 
+    public void removeSupplierBulk(int supplierId, int productId) throws SQLException {
+        remove(Arrays.asList(1, 2), Arrays.asList(productId, supplierId));
+
+    }
 }

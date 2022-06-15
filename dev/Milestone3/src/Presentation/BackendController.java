@@ -1202,4 +1202,11 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
+
+    public boolean orderItemExistsInOrder(int supplierId, int orderId, int itemId) throws Exception {
+        Result<Boolean> result = supplierService.orderItemExistsInOrder(supplierId, orderId, itemId);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
 }

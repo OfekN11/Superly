@@ -20,7 +20,6 @@ public class ShowAgreement extends Screen {
     private static final String greetNotTransporting = "Not Transporting Supplier";
 
 
-    //if not using inheritance, we use this constructor!!!!
     public ShowAgreement(){
         super(greet);
         this.supplierId = 1;

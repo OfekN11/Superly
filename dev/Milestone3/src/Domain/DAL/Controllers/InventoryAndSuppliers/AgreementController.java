@@ -32,10 +32,11 @@ public class AgreementController {
 
 
 
-    public void updateAgreementDays(int supplierid, List<Integer> days, int agreementType) {
+    public void updateAgreementDays(int supplierid, List<Integer> days, int agreementType) throws SQLException {
         switch(agreementType){
             case ROUTINE :
                 routineDAO.addDaysOfDelivery(supplierid, days);
+                routineDAO.setLastOrderIdAfterChangeType(supplierid);
                 break;
             case BY_ORDER :
                 byOrderDAO.addTime(supplierid, days);
@@ -95,7 +96,8 @@ public class AgreementController {
                 agreement = selfTransportDAO.loadAgreement(supplierId);
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + agreementType);
+                //selfTransportDAO.updateSupplier(supplierId);
+                agreement = selfTransportDAO.loadAgreement(supplierId);;
         }
 
         Map<Integer, AgreementItem> items = agreementItemDAO.getAllAgreementItemFromSupplier(supplierId);
@@ -114,5 +116,11 @@ public class AgreementController {
 
     public void changeDaysOfDelivery(int supplierId, List<Integer> daysOfDelivery, AgreementController agreementController) throws SQLException {
         routineDAO.changeDaysOfDelivery(supplierId, daysOfDelivery);
+    }
+
+    public void removeSupplierForChangingAgreement(int id) throws SQLException {
+        routineDAO.remove(id);
+        byOrderDAO.remove(id);
+        selfTransportDAO.remove(id);
     }
 }

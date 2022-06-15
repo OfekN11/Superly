@@ -103,8 +103,9 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
 
     public void removeSupplier(int id) throws SQLException {
         for( AgreementItem item : AGREEMENT_ITEM_IDENTITY_MAP.values()){
-            bulkPricesDAO.remove(item.getProductId());
-            remove(item.getProductId());
+
+            bulkPricesDAO.removeSupplierBulk(id, item.getProductId());
+            remove(Arrays.asList(SUPPLIER_ID_COLUMN, PRODUCT_ID_COLUMN), Arrays.asList(id, item.getProductId()));
         }
         remove(id);
     }
@@ -117,7 +118,7 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
         update(Arrays.asList(PPU_COLUMN), Arrays.asList(newPrice), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(itemID) );
     }
 
-    public void updateItemId(int oldItemId, int newItemId) throws SQLException {
+    public void updateItemIdBySupplier(int oldItemId, int newItemId) throws SQLException {
         update(Arrays.asList(ID_BY_SUPPLIER), Arrays.asList(newItemId), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(oldItemId) );
     }
 

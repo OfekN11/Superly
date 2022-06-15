@@ -663,4 +663,13 @@ public class SupplierService {
             return  Result.makeError(e.getMessage());
         }
     }
+
+    public Result<Boolean> orderItemExistsInOrder(int supplierId, int orderId, int itemId) {
+        try {
+            Boolean result = controller.orderItemExistsInOrder(supplierId, orderId, itemId);
+            return Result.makeOk(result);
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
 }
