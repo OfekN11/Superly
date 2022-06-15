@@ -66,9 +66,9 @@ public abstract class DAO {
      */
     protected void setTableColumnsNames(){
         tableColumnNames = new LinkedList<>();
-        try (Connection connection = getConnection()){
+        try (ConnectionHandler handler = getConnectionHandler()){
 
-            ResultSetMetaData setMetaData = executeQuery(connection,String.format(SELECT_QUERY,"*",tableName,"true")).getMetaData();
+            ResultSetMetaData setMetaData = executeQuery(handler.get(),String.format(SELECT_QUERY,"*",tableName,"true")).getMetaData();
             for (int i =0; i < setMetaData.getColumnCount();i++)
                 tableColumnNames.add(setMetaData.getColumnLabel(i+1));
         }
@@ -97,8 +97,8 @@ public abstract class DAO {
      * @throws SQLException
      */
     public boolean executeNonQuery(String executeString) throws SQLException {
-        try (Connection connection = getConnection()){
-            Statement statement = connection.createStatement();
+        try (ConnectionHandler handler = getConnectionHandler()){
+            Statement statement = handler.get().createStatement();
             return statement.execute(executeString);
         }
     }
@@ -125,8 +125,8 @@ public abstract class DAO {
      * @throws SQLException
      */
     public int executeNonQuery(String executeStringWithReplaceable, List<Object> values) throws SQLException {
-        try (Connection connection = getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(executeStringWithReplaceable);
+        try (ConnectionHandler handler = getConnectionHandler()){
+            PreparedStatement preparedStatement = handler.get().prepareStatement(executeStringWithReplaceable);
             replaceQuestionMarks(preparedStatement,values);
             return preparedStatement.executeUpdate();
         }
@@ -330,14 +330,6 @@ public abstract class DAO {
         }
     }
 
-    /**
-     * please remember to close the connection in the end of the use
-     * @return A Connection to the table
-     * @throws SQLException
-     */
-    protected Connection getConnection() throws SQLException {
-        return  DriverManager.getConnection(url);
-    }
 
     /**
      * please remember to close the connection in the end of the use

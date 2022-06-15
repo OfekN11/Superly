@@ -3,14 +3,17 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 import Domain.Business.Objects.Inventory.Category;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class CategoryDataMapper extends DataMapper<Category> {
 
-    private final static Map<String, Category> CATEGORY_IDENTITY_MAP = new HashMap<>();
+    private final static ConcurrentMap<String, Category> CATEGORY_IDENTITY_MAP = new ConcurrentHashMap<>();
 
     private final static int ID_COLUMN = 1;
     private final static int NAME_COLUMN = 2;
@@ -71,6 +74,16 @@ public class CategoryDataMapper extends DataMapper<Category> {
         }
     }
 
+    @Override
+    public String instanceToId(Category instance) {
+        return String.valueOf(instance.getID());
+    }
+
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
+    }
+
     public void updateParentCategory(int category, Integer newParent) {
         try {
             updateProperty(Integer.toString(category), PARENT_COLUMN,newParent);
@@ -89,22 +102,10 @@ public class CategoryDataMapper extends DataMapper<Category> {
         }
     }
 
-    public Collection<Category> getAll() {
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection);
-            while (instanceResult.next()) {
-                CATEGORY_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Collection<Category> categories= CATEGORY_IDENTITY_MAP.values();
-        return categories;
-    }
 
     public Integer getIDCount() {
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = getMax(connection, ID_COLUMN);
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = getMax(handler.get(), ID_COLUMN);
             while (instanceResult.next()) {
                 return instanceResult.getInt(1);
             }
