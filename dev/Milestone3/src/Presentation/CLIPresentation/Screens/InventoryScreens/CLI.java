@@ -1064,7 +1064,7 @@ public class CLI {
                 i++;
             }
 
-            Result<Boolean> r = service.addItemToAgreement(supplierID, id, 1, name, manufacturer, pricePerUnit, bulkMap);
+            Result<Boolean> r = service.addItemToAgreement(supplierID, id, 1,  manufacturer, pricePerUnit, bulkMap);
 
             if(r.isOk()){
                 System.out.println("The new Item was added successfully.");
@@ -1309,7 +1309,7 @@ public class CLI {
                 return;
             }
 
-            Result<Boolean> r = service.updateItemName(supID, itemID, input);
+            Result<Boolean> r = null;
 
             if(r.isOk()){
                 correctInput = true;

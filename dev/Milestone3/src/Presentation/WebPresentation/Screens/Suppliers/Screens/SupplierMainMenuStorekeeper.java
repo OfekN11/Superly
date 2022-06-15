@@ -41,7 +41,6 @@ public class SupplierMainMenuStorekeeper extends Screen {
                 if(/*controller.doesSupplierExists(supplierId)*/supplierId == -1) {
                     // TODO: Supplier Pass supplierID to the the supplier
                     redirect(resp, ViewSupplier.class);
-
                 }
                 else{
                     setError("No such supplier, please try again.");

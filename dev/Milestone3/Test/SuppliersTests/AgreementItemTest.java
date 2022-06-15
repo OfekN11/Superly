@@ -17,14 +17,14 @@ public class AgreementItemTest {
     public void setUp(){
         HashMap<Integer, Integer> map = new HashMap<>();
         map.put(20, 15); map.put(50, 20); map.put(100, 30);
-        item = new AgreementItem(1, 1,"Bamaba", "Osem", 8.99f, map);
+        item = new AgreementItem(1, 1, "Osem", 8.99f,  map);
     }
 
     @Test
     public void test_setters(){
         try{
             item.setProductId(444);
-            item.setName("Bissli");
+            //item.setName("Bissli");
             item.setManufacturer("Tnuva");
             item.setPrice(51.367f);
             HashMap<Integer, Integer> map = new HashMap<>();
@@ -32,7 +32,7 @@ public class AgreementItemTest {
             item.setBulkPrices(map);
 
             assertEquals(444, item.getProductId());
-            assertEquals("Bissli", item.getName());
+            //assertEquals("Bissli", item.getName());
             assertEquals("Tnuva", item.getManufacturer());
             assertEquals(51.367f, item.getPricePerUnit());
             assertEquals(map, item.getBulkPrices());

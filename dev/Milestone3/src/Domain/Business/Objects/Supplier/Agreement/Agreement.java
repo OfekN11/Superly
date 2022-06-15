@@ -52,8 +52,7 @@ public abstract class Agreement {
         listToMap(_items);
     }
 
-
-    //Format : " productId, idBySupplier , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
+    //Format : " productId, idBySupplier , manufacturer , pricePerUnit ,  quantity , percent , quantity , percent ..."
     private List<AgreementItem> transformStringToItems(List<String> itemsString) throws Exception {
         List<AgreementItem> items = new ArrayList<>();
         for(String curr : itemsString){
@@ -64,14 +63,14 @@ public abstract class Agreement {
             }
             int productId = Integer.parseInt(arr[0]);
             int idBuSupplier = Integer.parseInt(arr[1]);
-            String name = arr[2];  String manufacturer = arr[3];
-            float pricePerUnit = Float.parseFloat(arr[4]);
+            String manufacturer = arr[2];
+            float pricePerUnit = Float.parseFloat(arr[3]);
             HashMap<Integer, Integer> bulk = new HashMap<>();
-            for(int i = 5; i < arr.length; i++ ){
+            for(int i = 4; i < arr.length; i++ ){
                 bulk.put(Integer.parseInt(arr[i]) , Integer.parseInt(arr[i+1]));
                 i++;
             }
-            items.add(new AgreementItem(productId, idBuSupplier, name , manufacturer, pricePerUnit, bulk));
+            items.add(new AgreementItem(productId, idBuSupplier, manufacturer, pricePerUnit, bulk));
         }
         return items;
     }

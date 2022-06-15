@@ -1,9 +1,13 @@
 package Domain.Service.Services.Transport;
 
 import Domain.Business.Controllers.Transport.OrderController;
+import Domain.Business.Objects.Supplier.Order;
+import Domain.Service.Objects.SupplierObjects.ServiceOrderItemObject;
+import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
 import Domain.Service.Objects.TransportOrder;
 import Domain.Service.util.Result;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,29 +19,35 @@ public class OrderService {
         order = new OrderController();
     }
     public Result addOrder(int src,int dst,HashMap<Integer,Integer> product) {
-        try {
+        /*try {
             order.addTransportOrder(src,dst,product);
             return Result.makeOk(null);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
-        }
+        }*/
+        return null;
     }
-    private Set<Domain.Service.Objects.TransportOrder> toTOService(List<Domain.Business.Objects.TransportOrder> orders)
+    //TODO convert to Order object
+    private Set<Domain.Service.Objects.SupplierObjects.ServiceOrderObject> toTOService(List<Domain.Business.Objects.Supplier.Order> orders)
     {
-        Set<Domain.Service.Objects.TransportOrder> orderSet = new HashSet<>();
-        for (Domain.Business.Objects.TransportOrder order: orders) {
-            orderSet.add(new TransportOrder(order));
-        }
+        Set<Domain.Service.Objects.SupplierObjects.ServiceOrderObject> orderSet = new HashSet<>();
+        /*for (Domain.Business.Objects.Supplier.Order order: orders) {
+            orderSet.add(new ServiceOrderObject(order.getId(), order.getSupplierId() , order.getCreationTime(),
+                    order.getArrivaltime(), order.getStoreID(), order.getStatusString(), order.getOrderItems()));
+        }*/
         return orderSet;
     }
     public Result getPendingOrders() {
         try {
-            return Result.makeOk(toTOService(order.getPendingOrder()));
+            return Result.makeOk(toTOService((List<Order>) (order.getPendingOrder())));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
+    }
+    public String[] getImportantMessages(){
+        return order.alertsToHR();
     }
 
 }
