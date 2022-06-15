@@ -3,6 +3,7 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 import Domain.Business.Objects.Supplier.AgreementItem;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -69,8 +70,8 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
 
     public Map<Integer, AgreementItem> getAllAgreementItemFromSupplier(int supplierId){
         Map<Integer, AgreementItem> output = new HashMap<>();
-        try(Connection connection = getConnectionHandler().get()) {
-            ResultSet instanceResult = select(connection, supplierId);
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(),supplierId);
             while (instanceResult.next()) {
                 AgreementItem currItem = buildObject(instanceResult);
                 output.put(currItem.getProductId(), currItem);

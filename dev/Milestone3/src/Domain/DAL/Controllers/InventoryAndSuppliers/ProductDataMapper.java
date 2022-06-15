@@ -4,6 +4,7 @@ import Domain.Business.Objects.Inventory.Category;
 import Domain.Business.Objects.Inventory.Product;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -138,9 +139,9 @@ public class ProductDataMapper extends DataMapper<Product> {
 
 
     public List<Product> getProductsFromCategory(int id) {
-        try(Connection connection = getConnectionHandler().get()) {
+        try(ConnectionHandler handler = getConnectionHandler()) {
             List<Integer> productIDs = new ArrayList<>();
-            ResultSet resultSet = executeQuery(connection, String.format("Select %s from %s where %s=" + id,
+            ResultSet resultSet = executeQuery(handler.get(), String.format("Select %s from %s where %s=" + id,
                     getColumnName(ID_COLUMN),
                     tableName,
                     getColumnName(CATEGORY_COLUMN)));
@@ -159,8 +160,8 @@ public class ProductDataMapper extends DataMapper<Product> {
     }
 
     public Integer getIDCount() {
-        try(Connection connection = getConnectionHandler().get()) {
-            ResultSet instanceResult = getMax(connection, ID_COLUMN);
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = getMax(handler.get(), ID_COLUMN);
             while (instanceResult.next()) {
                 return instanceResult.getInt(1);
             }
@@ -171,8 +172,8 @@ public class ProductDataMapper extends DataMapper<Product> {
     }
 
     public void removeTestProducts() {
-        try(Connection connection = getConnectionHandler().get()){
-            ResultSet resultSet = executeQuery(connection,String.format("Select * FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
+        try(ConnectionHandler handler = getConnectionHandler()){
+            ResultSet resultSet = executeQuery(handler.get(),String.format("Select * FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
             List<Integer> products = new ArrayList<>();
             while (resultSet.next()) {
                 products.add(resultSet.getInt(ID_COLUMN));

@@ -1,6 +1,7 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,8 +17,8 @@ public class StoreDAO extends DAO {
 
     public Collection<Integer> getAll() {
         Collection<Integer> stores = new ArrayList<>();
-        try(Connection connection = getConnectionHandler().get()) {
-            ResultSet instanceResult = select(connection);
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get());
             while (instanceResult.next()) {
                 stores.add(instanceResult.getInt(1));
             }
@@ -44,8 +45,8 @@ public class StoreDAO extends DAO {
     }
 
     public Integer getIDCount() {
-        try(Connection connection = getConnectionHandler().get()) {
-            ResultSet instanceResult = getMax(connection, 1);
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = getMax(handler.get(), 1);
             while (instanceResult.next()) {
                 return instanceResult.getInt(1);
             }

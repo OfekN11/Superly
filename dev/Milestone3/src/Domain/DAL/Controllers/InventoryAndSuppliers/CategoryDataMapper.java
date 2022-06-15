@@ -3,6 +3,7 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 import Domain.Business.Objects.Inventory.Category;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -103,8 +104,8 @@ public class CategoryDataMapper extends DataMapper<Category> {
 
 
     public Integer getIDCount() {
-        try(Connection connection = getConnectionHandler().get()) {
-            ResultSet instanceResult = getMax(connection, ID_COLUMN);
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = getMax(handler.get(), ID_COLUMN);
             while (instanceResult.next()) {
                 return instanceResult.getInt(1);
             }

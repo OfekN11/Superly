@@ -3,6 +3,7 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 import Domain.Business.Objects.Supplier.Agreement.Agreement;
 import Domain.Business.Objects.Supplier.Agreement.ByOrderAgreement;
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -30,8 +31,8 @@ public class ByOrderDAO extends DAO {
     public Agreement loadAgreement(int supplierId) {
         ResultSet resultSet = null;
         int result = 2;
-        try (Connection connection = getConnectionHandler().get()){
-            resultSet = select(connection, supplierId);
+        try (ConnectionHandler handler = getConnectionHandler()){
+            resultSet = select(handler.get(),supplierId);
             while(resultSet.next()){
                 result = resultSet.getInt(2);
             }

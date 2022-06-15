@@ -95,7 +95,13 @@ public class InventoryController {
     }
 
     private Collection<SaleToCustomer> getAllSales() {
-        return SALE_DATA_MAPPER.getAll();
+        try {
+            return SALE_DATA_MAPPER.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
     }
 
     private SaleToCustomer getSale(int saleID) {
@@ -270,11 +276,21 @@ public class InventoryController {
     }
 
     public Collection<Product> getProducts() {
-        return PRODUCT_DATA_MAPPER.getAll();
+        try {
+            return PRODUCT_DATA_MAPPER.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Collection<Category> getCategories() {
-        Collection<Category> categoryCollection = CATEGORY_DATA_MAPPER.getAll();
+        Collection<Category> categoryCollection = null;
+        try {
+            categoryCollection = CATEGORY_DATA_MAPPER.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         for (Category category: categoryCollection) {
             categories.put(category.getID(), category);
         }

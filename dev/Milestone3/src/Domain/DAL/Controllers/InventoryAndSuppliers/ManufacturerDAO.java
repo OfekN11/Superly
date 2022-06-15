@@ -1,6 +1,7 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -52,8 +53,8 @@ public class ManufacturerDAO extends DAO {
 
     public ArrayList<String> getAllSupplierManufacturer(int supID) {
         ArrayList<String> output = new ArrayList<>();
-        try(Connection connection = getConnectionHandler().get()) {
-            ResultSet instanceResult = select(connection, String.valueOf(supID));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), String.valueOf(supID));
             while (instanceResult.next()) {
                 String manufacturer = instanceResult.getString(2);
                 output.add(manufacturer);

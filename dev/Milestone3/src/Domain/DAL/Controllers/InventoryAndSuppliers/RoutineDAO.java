@@ -3,6 +3,7 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 import Domain.Business.Objects.Supplier.Agreement.Agreement;
 import Domain.Business.Objects.Supplier.Agreement.RoutineAgreement;
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -35,8 +36,8 @@ public class RoutineDAO extends DAO {
         List<Integer> days = new ArrayList<>();
         ResultSet resultSet = null;
         int lastOrderId = -1;
-        try(Connection connection = getConnectionHandler().get()) {
-            resultSet = select(connection, supplierId);
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            resultSet = select(handler.get(), supplierId);
             while(resultSet.next()){
                 days.add(resultSet.getInt(DAY_COLUMN));
                 lastOrderId = resultSet.getInt(LAST_ORDER_ID_COLUMN);
