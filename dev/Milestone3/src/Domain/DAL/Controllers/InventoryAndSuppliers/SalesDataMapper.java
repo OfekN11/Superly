@@ -94,22 +94,16 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
         }
     }
 
-    public Collection<SaleToCustomer> getAll() {
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection);
-            while (instanceResult.next()) {
-                SALE_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return SALE_IDENTITY_MAP.values();
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
     }
+
 
     public Collection<SaleToCustomer> getSalesByCategory(int category) {
         List<SaleToCustomer> output = new ArrayList<>();
         List<Integer> saleIDs = salesToCategoryDAO.getSales(category);
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, ID_COLUMN, saleIDs);
             while (instanceResult.next()) {
                 SaleToCustomer curr = buildObject(instanceResult);
@@ -125,7 +119,7 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
     public Collection<SaleToCustomer> getSalesByProduct(int product) {
         List<SaleToCustomer> output = new ArrayList<>();
         List<Integer> saleIDs = salesToProductDAO.getSales(product);
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, ID_COLUMN, saleIDs);
             while (instanceResult.next()) {
                 SaleToCustomer curr = buildObject(instanceResult);
@@ -139,7 +133,7 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
     }
 
     public Integer getIDCount() {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = getMax(connection, ID_COLUMN);
             while (instanceResult.next()) {
                 return instanceResult.getInt(1);

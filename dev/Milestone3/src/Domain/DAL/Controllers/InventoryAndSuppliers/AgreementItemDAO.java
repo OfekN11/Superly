@@ -57,9 +57,14 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
             //we don't use this, WE CAN'T USE SAVE!
     }
 
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
+    }
+
     public Map<Integer, AgreementItem> getAllAgreementItemFromSupplier(int supplierId){
         Map<Integer, AgreementItem> output = new HashMap<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, supplierId);
             while (instanceResult.next()) {
                 AgreementItem currItem = buildObject(instanceResult);

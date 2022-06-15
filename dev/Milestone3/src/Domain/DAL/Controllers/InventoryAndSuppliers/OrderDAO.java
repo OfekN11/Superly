@@ -84,6 +84,11 @@ public class OrderDAO extends DataMapper<Order> {
         }
     }
 
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
+    }
+
     public void addOrder(Order order) throws SQLException {
         insert(order);
         ORDER_IDENTITY_MAP.put(String.valueOf(order.getId()), order);
@@ -137,7 +142,7 @@ public class OrderDAO extends DataMapper<Order> {
     public ArrayList<Order> getLastOrdersFromALlSuppliers(ArrayList<Integer> orderIds) {
         ArrayList<Order> result = new ArrayList<>();
         for(Integer orderId : orderIds){
-            try(Connection connection = getConnection()) {
+            try(Connection connection = getConnectionHandler().get()) {
                 ResultSet instanceResult = select(connection, orderId);
                 while (instanceResult.next()) {
                     Order order = buildObject(instanceResult);
@@ -153,7 +158,7 @@ public class OrderDAO extends DataMapper<Order> {
 
     public int getGlobalId() {
         ArrayList<Integer> ids = new ArrayList<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection);
             while (instanceResult.next()) {
                 ids.add(instanceResult.getInt(1));
@@ -175,7 +180,7 @@ public class OrderDAO extends DataMapper<Order> {
 
     public ArrayList<Integer> getSupplierOrdersIds(int supplierId) {
         ArrayList<Integer> ids = new ArrayList<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, Arrays.asList(ORDER_ID_COLUMN),  Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
             while (instanceResult.next()) {
                 ids.add(instanceResult.getInt(1));
@@ -192,7 +197,7 @@ public class OrderDAO extends DataMapper<Order> {
 
     //for tests
     public void removeByStore(int store) {
-        try (Connection connection = getConnection()){
+        try (Connection connection = getConnectionHandler().get()){
             ResultSet resultSet = select(connection, Arrays.asList(STORE_ID_COLUMN), Arrays.asList(store));
             List<Integer> ordersIds = new ArrayList<>();
             while (resultSet.next()) {

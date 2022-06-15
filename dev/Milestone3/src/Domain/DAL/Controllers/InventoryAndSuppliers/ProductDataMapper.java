@@ -96,6 +96,11 @@ public class ProductDataMapper extends DataMapper<Product> {
         }
     }
 
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
+    }
+
     public void updateCategory(int productID, int category) {
         try {
             updateProperty(Integer.toString(productID), CATEGORY_COLUMN, category);
@@ -123,21 +128,10 @@ public class ProductDataMapper extends DataMapper<Product> {
         }
     }
 
-    public Collection<Product> getAll() {
-        CATEGORY_DATA_MAPPER.getAll();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection);
-            while (instanceResult.next()) {
-                PRODUCT_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return PRODUCT_IDENTITY_MAP.values();
-    }
+
 
     public List<Product> getProductsFromCategory(int id) {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             List<Integer> productIDs = new ArrayList<>();
             ResultSet resultSet = executeQuery(connection, String.format("Select %s from %s where %s=" + id,
                     getColumnName(ID_COLUMN),
@@ -158,7 +152,7 @@ public class ProductDataMapper extends DataMapper<Product> {
     }
 
     public Integer getIDCount() {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = getMax(connection, ID_COLUMN);
             while (instanceResult.next()) {
                 return instanceResult.getInt(1);
@@ -170,7 +164,7 @@ public class ProductDataMapper extends DataMapper<Product> {
     }
 
     public void removeTestProducts() {
-        try(Connection connection = getConnection()){
+        try(Connection connection = getConnectionHandler().get()){
             ResultSet resultSet = executeQuery(connection,String.format("Select * FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
             List<Integer> products = new ArrayList<>();
             while (resultSet.next()) {

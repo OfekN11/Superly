@@ -71,6 +71,11 @@ public class CategoryDataMapper extends DataMapper<Category> {
         }
     }
 
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
+    }
+
     public void updateParentCategory(int category, Integer newParent) {
         try {
             updateProperty(Integer.toString(category), PARENT_COLUMN,newParent);
@@ -89,21 +94,9 @@ public class CategoryDataMapper extends DataMapper<Category> {
         }
     }
 
-    public Collection<Category> getAll() {
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection);
-            while (instanceResult.next()) {
-                CATEGORY_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Collection<Category> categories= CATEGORY_IDENTITY_MAP.values();
-        return categories;
-    }
 
     public Integer getIDCount() {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = getMax(connection, ID_COLUMN);
             while (instanceResult.next()) {
                 return instanceResult.getInt(1);

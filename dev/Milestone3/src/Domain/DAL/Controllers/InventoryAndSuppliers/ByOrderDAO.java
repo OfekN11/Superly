@@ -30,7 +30,7 @@ public class ByOrderDAO extends DAO {
     public Agreement loadAgreement(int supplierId) {
         ResultSet resultSet = null;
         int result = 2;
-        try (Connection connection = getConnection()){
+        try (Connection connection = getConnectionHandler().get()){
             resultSet = select(connection, supplierId);
             while(resultSet.next()){
                 result = resultSet.getInt(2);

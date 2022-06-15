@@ -42,7 +42,7 @@ public class ContactDAO extends DAO {
 
     public ArrayList<Contact> getAllSupplierContact(int supID) {
         ArrayList<Contact> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, String.valueOf(supID));
             while (instanceResult.next()) {
                 Contact contact = new Contact(instanceResult.getString(2), instanceResult.getString(3));

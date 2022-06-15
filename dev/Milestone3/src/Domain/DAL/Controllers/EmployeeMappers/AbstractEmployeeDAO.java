@@ -1,6 +1,5 @@
 package Domain.DAL.Controllers.EmployeeMappers;
 import Domain.Business.Objects.Employee.Employee;
-import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
@@ -45,5 +44,10 @@ public abstract class AbstractEmployeeDAO<T extends Employee> extends DataMapper
     }
     public EmployeeCertificationDAO getEmployeeCertificationController(){
         return employeeCertificationController;
+    }
+
+    @Override
+    public String instanceToId(T instance) {
+        return instance.getId();
     }
 }

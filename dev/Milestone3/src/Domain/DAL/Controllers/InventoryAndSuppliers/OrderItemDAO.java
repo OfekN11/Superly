@@ -46,7 +46,7 @@ public class OrderItemDAO extends DAO {
 
     public ArrayList<OrderItem> uploadAllItemsFromOrder(int orderId, AgreementItemDAO agreementItemDAO){
         ArrayList<OrderItem> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, Arrays.asList(ORDER_ID_COLUMN), Arrays.asList(orderId));
 
             while (instanceResult.next()) {

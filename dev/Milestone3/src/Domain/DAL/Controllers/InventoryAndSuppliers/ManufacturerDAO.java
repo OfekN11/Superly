@@ -52,7 +52,7 @@ public class ManufacturerDAO extends DAO {
 
     public ArrayList<String> getAllSupplierManufacturer(int supID) {
         ArrayList<String> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, String.valueOf(supID));
             while (instanceResult.next()) {
                 String manufacturer = instanceResult.getString(2);

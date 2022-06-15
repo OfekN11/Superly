@@ -8,6 +8,7 @@ import Globals.Pair;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class StockReportDataMapper extends DataMapper<StockReport> {
 
@@ -93,7 +94,7 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
         if (output != null)
             return output;
 
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection,Arrays.asList(STORE_COLUMN, PRODUCT_COLUMN), Arrays.asList(storeId, productID));
             if (!instanceResult.next())
                 return null;
@@ -105,8 +106,8 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
         }
     }
 
-    public Collection<StockReport> getAll() {
-        try(Connection connection = getConnection()) {
+    public Set<StockReport> getAll() {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection);
             while (instanceResult.next()) {
                 IDENTITY_MAP.put(new Pair<>(instanceResult.getInt(STORE_COLUMN), instanceResult.getInt(PRODUCT_COLUMN)), buildObject(instanceResult));
@@ -114,12 +115,12 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return IDENTITY_MAP.values();
+        return new HashSet<>(IDENTITY_MAP.values());
     }
 
     public Collection<StockReport> getByProduct(int productID) {
         List<StockReport> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, Arrays.asList(PRODUCT_COLUMN), Arrays.asList(productID));
             while (instanceResult.next()) {
                 StockReport curr = buildObject(instanceResult);
@@ -134,7 +135,7 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
 
     public Collection<StockReport> getByStore(int storeID) {
         List<StockReport> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, Arrays.asList(STORE_COLUMN), Arrays.asList(storeID));
             while (instanceResult.next()) {
                 StockReport curr = buildObject(instanceResult);
@@ -208,7 +209,7 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
     }
 
     public Collection<Integer> getProductsUnderMin() {
-        try (Connection connection = getConnection()){
+        try (Connection connection = getConnectionHandler().get()){
             Set<Integer> products = new HashSet<>();
             ResultSet resultSet = executeQuery(connection, String.format("Select %s from %s where %s+%s+%s<%s",
                     getColumnName(PRODUCT_COLUMN),

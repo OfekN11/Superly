@@ -16,7 +16,7 @@ public class StoreDAO extends DAO {
 
     public Collection<Integer> getAll() {
         Collection<Integer> stores = new ArrayList<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection);
             while (instanceResult.next()) {
                 stores.add(instanceResult.getInt(1));
@@ -44,7 +44,7 @@ public class StoreDAO extends DAO {
     }
 
     public Integer getIDCount() {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = getMax(connection, 1);
             while (instanceResult.next()) {
                 return instanceResult.getInt(1);

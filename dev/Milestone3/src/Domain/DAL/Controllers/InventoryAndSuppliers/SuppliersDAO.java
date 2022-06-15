@@ -75,6 +75,10 @@ public class SuppliersDAO extends DataMapper<Supplier> {
 
     }
 
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
+    }
 
 
     public Supplier getSupplier(int id){
@@ -195,7 +199,7 @@ public class SuppliersDAO extends DataMapper<Supplier> {
 
 
     public boolean isTransporting(int supplierId) {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet result = select(connection,Arrays.asList(6), Arrays.asList(1), Arrays.asList(supplierId) );
             if(result.next()){
                 int resultInt = result.getInt(1);
@@ -208,7 +212,7 @@ public class SuppliersDAO extends DataMapper<Supplier> {
     }
 
     public boolean hasAgreement(int supID) {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet result = select(connection,Arrays.asList(6), Arrays.asList(1), Arrays.asList(supID) );
             if(result.next()){
                 int resultInt = result.getInt(1);
@@ -237,7 +241,7 @@ public class SuppliersDAO extends DataMapper<Supplier> {
     }
 
     private void loadAllAgreementsAndAgreementItems()  {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             for(String id : SUPPLIER_IDENTITY_MAP.keySet()){
                 ResultSet resultSet = select(connection, Arrays.asList(AGREEMENTTYPE_COLUMN), Arrays.asList(ID_COLUMN), Arrays.asList(Integer.parseInt(id)));
                 if(resultSet.next()){
@@ -254,7 +258,7 @@ public class SuppliersDAO extends DataMapper<Supplier> {
 
     private int loadAllSuppliers() {
         ArrayList<Integer> supplierIds = new ArrayList<>();  // get the largest one and set global id to be biggest+1
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection);
             while (instanceResult.next()) {
                 //Load without contacts and manufacturers
@@ -286,7 +290,7 @@ public class SuppliersDAO extends DataMapper<Supplier> {
     public int findSupplierGlobalID(){
         int finalID = 0;  // get the largest one and set global id to be biggest+1
         int tempID;
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection);
             while (instanceResult.next()) {
                 tempID = instanceResult.getInt(1);
@@ -308,7 +312,7 @@ public class SuppliersDAO extends DataMapper<Supplier> {
         String _id = ""+id;
 
         if (!SUPPLIER_IDENTITY_MAP.containsKey(_id)){
-            try(Connection connection = getConnection()) {
+            try(Connection connection = getConnectionHandler().get()) {
                 ResultSet instanceResult = select(connection, id);
                 Supplier currSupplier = new Supplier(id, instanceResult.getInt(2),
                         instanceResult.getString(3), instanceResult.getString(4), instanceResult.getString(5)
@@ -330,7 +334,7 @@ public class SuppliersDAO extends DataMapper<Supplier> {
     }
 
     public void removeTestSuppliers() {
-        try (Connection connection = getConnection()){
+        try (Connection connection = getConnectionHandler().get()){
             ResultSet resultSet = executeQuery(connection,String.format("Select * FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
             List<Integer> suppliers = new ArrayList<>();
             while (resultSet.next()) {

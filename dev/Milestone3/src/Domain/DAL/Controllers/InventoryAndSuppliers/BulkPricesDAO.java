@@ -34,7 +34,7 @@ public class BulkPricesDAO extends DAO {
 
     public Map<Integer, Integer> getAllBulkPrices(int supID, int itemId) {
         Map<Integer, Integer> output = new HashMap<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, itemId);
             while (instanceResult.next()) {
                 if(supID == instanceResult.getInt(2)){

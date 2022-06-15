@@ -35,7 +35,7 @@ public class RoutineDAO extends DAO {
         List<Integer> days = new ArrayList<>();
         ResultSet resultSet = null;
         int lastOrderId = -1;
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             resultSet = select(connection, supplierId);
             while(resultSet.next()){
                 days.add(resultSet.getInt(DAY_COLUMN));

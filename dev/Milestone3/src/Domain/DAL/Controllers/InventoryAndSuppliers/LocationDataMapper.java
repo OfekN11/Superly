@@ -99,25 +99,14 @@ public class LocationDataMapper extends DataMapper<Location> {
 //        }
     }
 
-    public Collection<Location> getAll() {
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection);
-            Set<Location> result = new HashSet();
-            while (instanceResult.next()) {
-                Location location = buildObject(instanceResult);
-                IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), location);
-                result.add(location);
-            }
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
     }
 
     public Collection<Location> getLocationByProduct(int product) {
         List<Location> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, PRODUCT_COLUMN, Collections.singletonList(product));
             while (instanceResult.next()) {
                 Location curr = buildObject(instanceResult);
@@ -132,7 +121,7 @@ public class LocationDataMapper extends DataMapper<Location> {
 
     public Collection<Location> getLocationByStore(int store) {
         List<Location> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet instanceResult = select(connection, STORE_COLUMN, Collections.singletonList(store));
             while (instanceResult.next()) {
                 Location curr = buildObject(instanceResult);
@@ -146,7 +135,7 @@ public class LocationDataMapper extends DataMapper<Location> {
     }
 
     public void removeByStore(int storeID) {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet locationsToRemove = select(connection, Arrays.asList(STORE_COLUMN), Arrays.asList(storeID));
             List<Integer> locationsIDs = new ArrayList<>();
             while (locationsToRemove.next()) {
@@ -163,7 +152,7 @@ public class LocationDataMapper extends DataMapper<Location> {
     }
 
     public Integer getMax() {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet max = getMax(connection, ID_COLUMN);
             return max.getInt(1);
         }
@@ -174,7 +163,7 @@ public class LocationDataMapper extends DataMapper<Location> {
     }
 
     public void removeByProduct(Integer product) {
-        try(Connection connection = getConnection()) {
+        try(Connection connection = getConnectionHandler().get()) {
             ResultSet locationsToRemove = select(connection, Arrays.asList(PRODUCT_COLUMN), Arrays.asList(product));
             List<Integer> locationsIDs = new ArrayList<>();
             while (locationsToRemove.next()) {
