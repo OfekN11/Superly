@@ -32,6 +32,7 @@ public class ManageOrders extends Screen {
         printForm(resp, new String[] {"orderId1"}, new String[]{"Order ID"}, new String[]{"Remove Order"});
         printForm(resp, new String[] {"orderId2"}, new String[]{"Order ID"}, new String[]{"Edit Order"});
         printForm(resp, new String[] {"orderId3"}, new String[]{"Order ID"}, new String[]{"View Order"});
+        printForm(resp, new String[] {"supplierId"}, new String[]{"Supplier ID"}, new String[]{"View Orders From Supplier"});
 
 
         handleError(resp);
@@ -67,14 +68,44 @@ public class ManageOrders extends Screen {
         else if(isButtonPressed(req, "Edit Order")){
             //get the order id...
             editOrder(req, resp);
-
         }
         else if(isButtonPressed(req, "View Order")){
             printOrder(req, resp);
         }
+        else if(isButtonPressed(req,"View Orders From Supplier")){
+            showAllOrders(req, resp);
+        }
 
     }
 
+
+
+    private void showAllOrders(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            int supplierId = Integer.parseInt(req.getParameter("supplierId"));
+            ArrayList<ServiceOrderObject> r = controller.getAllOrdersForSupplier(supplierId);
+            if(r != null && r.size() > 0){
+                for(ServiceOrderObject orderObject : r){
+
+                    // TODO: Supplier change this to normal print!
+                    setError(orderObject.toString());
+                    refresh(req, resp);
+                }
+            }
+            else{
+                // TODO: Supplier change this to normal print!
+                setError("No orders available!");
+                refresh(req, resp);
+            }
+        } catch (NumberFormatException e1){
+            setError("Please enter a number!");
+            refresh(req, resp);
+        }
+        catch (Exception e) {
+            setError(e.getMessage());
+            refresh(req, resp);
+        }
+    }
 
     private void removeOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {

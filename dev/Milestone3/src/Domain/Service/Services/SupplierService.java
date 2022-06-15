@@ -605,7 +605,7 @@ public class SupplierService {
 
     private ArrayList<ServiceOrderItemObject> createServiceOrderItemObject(List<String> result, int startIndex) {
         ArrayList<ServiceOrderItemObject> items = new ArrayList<>();
-        for(int i = startIndex; i < result.size(); i+=10 ){
+        for(int i = startIndex; i < result.size(); i+=11 ){
             int itemId = Integer.parseInt(result.get(i));
             String name = result.get(i+1);
             int quantity =  Integer.parseInt(result.get(i+2));
@@ -616,7 +616,8 @@ public class SupplierService {
             int defective = Integer.parseInt(result.get(i+7));
             String description = result.get(i+8);
             double weight = Double.parseDouble(result.get(i+9));
-            items.add(new ServiceOrderItemObject(itemId, name, quantity, ppu, discount, finalPrice, missing, defective, description, weight));
+            int idBySupplier = Integer.parseInt(result.get(i+10));
+            items.add(new ServiceOrderItemObject(itemId,idBySupplier, name, quantity, ppu, discount, finalPrice, missing, defective, description, weight));
         }
         return items;
     }
@@ -659,6 +660,15 @@ public class SupplierService {
     public Result<Integer> getMatchingProductIdForIdBySupplier(int idBySupplier) {
         try {
             return Result.makeOk(controller.getMatchingProductIdForIdBySupplier(idBySupplier));
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> orderItemExistsInOrder(int supplierId, int orderId, int itemId) {
+        try {
+            Boolean result = controller.orderItemExistsInOrder(supplierId, orderId, itemId);
+            return Result.makeOk(result);
         } catch (Exception e) {
             return  Result.makeError(e.getMessage());
         }
