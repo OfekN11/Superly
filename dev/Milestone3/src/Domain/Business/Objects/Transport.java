@@ -105,7 +105,7 @@ public class Transport {
     }
     public boolean isDoneTransport(){
         //TODO need to be implemented
-        return sourcesID.isEmpty() && destinationsID.isEmpty();
+        return status== TransportStatus.inProgress;
     }
 
     public boolean placeTruck(int licenseNumber,int weight,int max)

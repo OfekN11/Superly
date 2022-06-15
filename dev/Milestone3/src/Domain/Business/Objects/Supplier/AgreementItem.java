@@ -24,15 +24,14 @@ public class AgreementItem {
      */
 
     public AgreementItem(int _productId, int _idBySupplier, String _manu, float _price, Map<Integer, Integer> _bulkPrices) throws Exception {
-        name = getName();
-        weight = getWeight();
+        productDataMapper = new ProductDataMapper();
         productId = _productId;
         idBySupplier = _idBySupplier;
         manufacturer = _manu;
         pricePerUnit = _price;
         bulkPrices = _bulkPrices;
-        productDataMapper = new ProductDataMapper();
-
+        name = getName();
+        weight = getWeight();
     }
 
     public int getProductId(){
@@ -191,15 +190,15 @@ public class AgreementItem {
 
 
     public String getName() throws Exception {
-        return "name1InComment";
-        //return  productDataMapper.get(String.valueOf(productId)).getName();
+        //return "name1InComment";
+        return  productDataMapper.get(String.valueOf(productId)).getName();
     }
 
 
 
     public double getWeight() throws Exception {
-        return 1;
-        //return productDataMapper.get(String.valueOf(productId)).getWeight();
+        //return 1;
+        return productDataMapper.get(String.valueOf(productId)).getWeight();
 
     }
 
