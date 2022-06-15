@@ -1186,18 +1186,4 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
-
-    public int getSupplierWIthOrderID(int orderId) throws Exception {
-        Result<Integer> result = supplierService.getSupplierWIthOrderID(orderId);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-        return result.getValue();
-    }
-
-    public int getMatchingProductIdForIdBySupplier(int idBySupplier) throws Exception {
-        Result<Integer> result = supplierService.getMatchingProductIdForIdBySupplier(idBySupplier);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-        return result.getValue();
-    }
 }
