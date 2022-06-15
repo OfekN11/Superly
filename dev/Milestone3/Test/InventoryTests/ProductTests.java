@@ -4,11 +4,15 @@ import Domain.Business.Controllers.InventoryController;
 import Domain.Business.Objects.Inventory.Category;
 import Domain.Business.Objects.Inventory.Product;
 import Domain.Business.Objects.Inventory.SaleToCustomer;
+import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.CategoryDataMapper;
 import Domain.DAL.Controllers.InventoryAndSuppliers.ProductDataMapper;
 import Domain.DAL.Controllers.InventoryAndSuppliers.StoreDAO;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.*;
+
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -27,7 +31,8 @@ public class ProductTests {
     private static int maxStoreCount;
 
     @BeforeAll
-    public synchronized static void getMaxStoreCount() {
+    public synchronized static void getMaxStoreCount() throws SQLException, IOException {
+        DAO.setDBForTests(ProductTests.class);
         stores=new ArrayList<>();
         maxStoreCount = max(is.getStoreIDs());
         stores.add(is.addStore());
@@ -61,22 +66,14 @@ public class ProductTests {
         product1.addLocation(maxStoreCount+1, shelves5, shelves6, 40, 150);
     }
 
+    @BeforeAll
+    public static void createTables() {
+        DAO.setDBForTests(ProductTests.class);
+    }
+
     @AfterAll
     public static void removeData() {
-        ProductDataMapper pdm = new ProductDataMapper();
-        pdm.removeTestProducts();
-        CategoryDataMapper cdm = new CategoryDataMapper();
-        cdm.removeTestCategories();
-        StoreDAO storeDAO = new StoreDAO();
-        for (int store : stores) {
-            if (store > maxStoreCount) {
-                try {
-                    storeDAO.remove(store);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        DAO.deleteTestDB(ProductTests.class);
     }
 
     @Test
