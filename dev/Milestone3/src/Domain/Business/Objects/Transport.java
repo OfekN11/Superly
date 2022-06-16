@@ -271,6 +271,12 @@ public class Transport {
     }
 
     public void initWeight(int weight){
-        truckWeight = weight;
+        if(truckWeight == -1){
+            truckWeight = weight;
+        }
+        else {
+            truckWeight = truckWeight + weight;
+        }
+
     }
 }

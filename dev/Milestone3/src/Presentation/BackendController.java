@@ -563,7 +563,7 @@ public class BackendController {
         throwIfError(result);
         return presentationDocumentFactory.createPresentationDocument(result.getValue());
     }
-    public String[] getImportantMessagesTransport(){
+    public String[] getImportantMessagesTransport() throws Exception {
         return orderService.getImportantMessages();
     }
 

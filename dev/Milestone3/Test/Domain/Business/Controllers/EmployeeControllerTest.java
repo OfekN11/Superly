@@ -37,8 +37,8 @@ public class EmployeeControllerTest extends TestCase {
             //loadHR();
             // addInventoryTestData();
 
-           // insertFirstDataToDB(); // the db in the desktop is updated until (not including) this line. aka employees and Inventory
-            //transportData();
+            insertFirstDataToDB(); // the db in the desktop is updated until (not including) this line. aka employees and Inventory
+            transportData();
             employeeController.editEmployeeName("160","updated");
             assertEquals(employeeController.getEmployee("160").getName(),"updated");
         } catch (Exception e) {
@@ -261,7 +261,10 @@ public class EmployeeControllerTest extends TestCase {
 
         Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 25),  LocalDate.of(2022, 6, 1), storeId , OrderStatus.waiting);
         int order1Id = order1.getId();
-        supplierController.insertToOrderDAO(order1);
+        OrderDAO orderDAO = new OrderDAO();
+        orderDAO.insert(order1);
+        //supplierController.suppliersDAO.add(order1);
+        //supplierController.insertToOrderDAO(order1);
         supplierController.suppliersDAO.getAgreementController().setLastOrderId(supplierId1, order1Id);
 
         //Bamba  80 * 0.2 = 16kg
@@ -303,7 +306,8 @@ public class EmployeeControllerTest extends TestCase {
 
         Order order2 = new Order(2, supplierId2, LocalDate.of(2022, 5, 29),  LocalDate.of(2022, 6, 1), storeId, OrderStatus.waiting);
         int order2Id = order2.getId();
-        supplierController.insertToOrderDAO(order2);
+        new OrderDAO().insert(order2);
+        //supplierController.insertToOrderDAO(order2);
 
         //Yoplait 20 * 0.15 = 3kg
         int id = 4;
@@ -323,7 +327,6 @@ public class EmployeeControllerTest extends TestCase {
 
     private void transportData(){
         try{
-
             TransportController tCon = new TransportController();
             TruckController truckController = new TruckController();
             truckController.addTruck(123, TruckModel.FullTrailer,1000,1500);
