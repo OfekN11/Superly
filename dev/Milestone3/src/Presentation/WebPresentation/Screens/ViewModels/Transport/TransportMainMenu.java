@@ -1,9 +1,5 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport;
 
-import Presentation.WebPresentation.Screens.InventoryScreens.Catalog;
-import Presentation.WebPresentation.Screens.InventoryScreens.Categories;
-import Presentation.WebPresentation.Screens.InventoryScreens.InventoryMainMenu;
-import Presentation.WebPresentation.Screens.InventoryScreens.Sales;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.TruckManagementMenu;
 

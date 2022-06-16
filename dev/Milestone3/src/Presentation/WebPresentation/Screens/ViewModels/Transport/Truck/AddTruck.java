@@ -46,7 +46,7 @@ public class AddTruck extends Screen {
         if (isButtonPressed(req, "OK")){
             try {
                 int ln = getLicenseNumber(req);
-                TruckModel tm = TruckModel.valueOf(req.getParameter("model"));
+                TruckModel tm = getTransportModel(req);
                 int netWeight = getNetWeight(req);
                 int maxCapacityWeight = getMaxCapacityWeight(req, tm);
                 controller.addTruck(ln, tm, netWeight, maxCapacityWeight);

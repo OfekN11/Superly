@@ -1,6 +1,5 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Truck;
 
-import Presentation.WebPresentation.Screens.InventoryScreens.InventoryMainMenu;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;

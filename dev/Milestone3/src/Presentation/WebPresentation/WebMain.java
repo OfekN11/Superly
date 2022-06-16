@@ -1,9 +1,9 @@
 package Presentation.WebPresentation;
 
 
-import Presentation.WebPresentation.Screens.InventoryScreens.*;
 import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
+import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.*;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.*;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.AddTruck;
@@ -47,13 +47,15 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(ViewSupplier.class, "/ViewSupplier"),
             new AbstractMap.SimpleEntry<>(Product.class, "/Product"),
             new AbstractMap.SimpleEntry<>(InventoryMainMenu.class, "/InventoryMainMenu"),
-            new AbstractMap.SimpleEntry<>(Catalog.class, "/Catalog"),
+            //new AbstractMap.SimpleEntry<>(Catalog.class, "/Catalog"),
             new AbstractMap.SimpleEntry<>(Categories.class, "/Categories"),
             new AbstractMap.SimpleEntry<>(Category.class, "/Category"),
             new AbstractMap.SimpleEntry<>(Sales.class, "/Sales"),
             new AbstractMap.SimpleEntry<>(Sale.class, "/Sale"),
             new AbstractMap.SimpleEntry<>(TransportMainMenu.class, "/TransportMainMenu"),
-            new AbstractMap.SimpleEntry<>(TruckManagementMenu.class, "/TruckManagementMenu")
+            new AbstractMap.SimpleEntry<>(TruckManagementMenu.class, "/TruckManagementMenu"),
+            new AbstractMap.SimpleEntry<>(AddTruck.class, "/AddTruck"),
+            new AbstractMap.SimpleEntry<>(DeleteTruck.class, "/DeleteTruck")
 
 
             ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
