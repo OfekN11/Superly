@@ -1,9 +1,5 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport;
 
-import Presentation.WebPresentation.Screens.InventoryScreens.Catalog;
-import Presentation.WebPresentation.Screens.InventoryScreens.Categories;
-import Presentation.WebPresentation.Screens.InventoryScreens.InventoryMainMenu;
-import Presentation.WebPresentation.Screens.InventoryScreens.Sales;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
@@ -11,10 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class TransportMainMenu extends Screen {
-    private static final String greet = "Transport's Main Menu";
+public class TruckManagementMenu extends Screen {
+    private static final String greet = "Truck Management Menu";
 
-    public TransportMainMenu() {
+    public TruckManagementMenu() {
         super(greet);
     }
 
@@ -22,7 +18,7 @@ public class TransportMainMenu extends Screen {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         header(resp);
         greet(resp);
-        printMenu(resp, new String[]{"Transport Manage", "Truck Management", "Document Management"});
+        printMenu(resp, new String[]{"Add truck", "Delete truck", "Exit"});
         handleError(resp);
     }
 
@@ -31,16 +27,16 @@ public class TransportMainMenu extends Screen {
         handleHeader(req, resp);
         switch (getIndexOfButtonPressed(req)) {
             case 0:
-                redirect(resp, TransportManagementMenu.class);
+                //TODO: redirect(resp, TransportManage.class);
                 break;
             case 1:
-                redirect(resp, TruckManagementMenu.class);
+                //TODO: redirect(resp, TruckManage.class);
                 break;
             case 2:
-                redirect(resp, DocumentManagementMenu.class);
+                redirect(resp, TransportMainMenu.class);
                 break;
             default:
-                redirect(resp, TransportMainMenu.class);
+                redirect(resp, TruckManagementMenu.class);
         }
     }
 }
