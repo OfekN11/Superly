@@ -101,8 +101,11 @@ public class Products extends Screen{
             }
         }
         else if(isButtonPressed(req, viewButton)){
-            //if (isAllowed(req, ))
-            //if (Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.ALLOWED!=null && (Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.ALLOWED.length==0 || !Arrays.asList(Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.ALLOWED).contains(Login.getLoggedUser(req).getClass())))
+            if (!isAllowed(req, resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.ALLOWED)) {
+                setError("You have no permission to view product");
+                refresh(req, resp);
+                return;
+            }
             try {
                 String productIDstr = req.getParameter("ID");
                 int productID = Integer.parseInt(productIDstr);

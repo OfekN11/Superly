@@ -34,10 +34,6 @@ public abstract class Screen extends HttpServlet {
 
     public static BackendController controller = new BackendController();
 
-    public Screen(String greeting) {
-        this.greeting = greeting;
-        this.allowed = null;
-    }
     public Screen(String greeting, Class<? extends Employee>[] allowed) {
         this.greeting = greeting;
         this.allowed = allowed;
