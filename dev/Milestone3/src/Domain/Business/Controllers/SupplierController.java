@@ -607,7 +607,6 @@ public class SupplierController {
     }
 
     // TODO: SR71
-    // TODO: Sagi make hovala
     //returns all orders that cannot be changed anymore (routine) + everything needed because of MinAmounts
     public List<Order> createAllOrders(Map<Integer, Map<Integer, Integer>> orderItemMinAmounts) throws Exception { //map<productID, Map<store, amount>>
 
@@ -654,17 +653,6 @@ public class SupplierController {
 
                 OrderItem orderItem = createNewOrderItem(supplierId, productId, quantity);
 
-                /*
-                    checkWeightLegal(orderId, added weight)
-                    yes : {
-                        Order newOrder = new Order(order, orderItem, storeId);
-                        deletableOrders.remove(order);
-                        deleteOrderFromDAO(order.getId());
-                    }
-                    no:{
-                        create new Order with this item and call AddOrderToTransport
-                    }
-                 */
                 Order newOrder = new Order(order, orderItem, storeId);
 
                 deletableOrders.remove(order);    //remove this from here, its should be above!
@@ -687,30 +675,42 @@ public class SupplierController {
 
                 for(OrderItem item : items){
                     if (item.getProductId() == orderItem.getProductId()){
-                        item.setQuantity(item.getQuantity() + orderItem.getQuantity());
-                        cantains = true;
-                        break;
+
+                        if(order.getStatus() != OrderStatus.waiting && checkWeightLegal(supplierId, order.getId(), orderItem.getProductId(), orderItem.getQuantity(), orderItem.getWeight())){
+                            item.setQuantity(item.getQuantity() + orderItem.getQuantity());
+                            cantains = true;
+                            transportController.changeWeight(order.getId(), (int)(orderItem.getQuantity() * orderItem.getWeight()));
+                            break;
+                        }
+                        else{
+                            if(order.getStatus() == OrderStatus.waiting){
+                                item.setQuantity(item.getQuantity() + orderItem.getQuantity());
+                                cantains = true;
+                                break;
+                            }
+                            else{
+                                return false;
+                            }
+                        }
                     }
                 }
 
                 if(!cantains){
-                    items.add(orderItem);
+                    if(order.getStatus() != OrderStatus.waiting && checkWeightLegal(supplierId, order.getId(), orderItem.getProductId(), orderItem.getQuantity(), orderItem.getWeight())){
+                        items.add(orderItem);
+                        transportController.changeWeight(order.getId(), (int)(orderItem.getQuantity() * orderItem.getWeight()));
+                    }
+                    else{
+                        if(order.getStatus() == OrderStatus.waiting){
+                            items.add(orderItem);
+                        }
+                        else{
+                            return false;
+                        }
+                    }
+
+
                 }
-
-
-                /*
-                    checkWeightLegal(orderId, added weight)
-                    yes : {
-                        Order newOrder = new Order(order, items);
-                        notDeletableOrders.remove(order);
-                        updateOrderDAO(newOrder);
-                    }
-                    no:{
-                        create new Order (order2) with items
-                        call AddOrderToTransport
-                        updateOrderDAO(order2);
-                    }
-                 */
 
                 Order newOrder = new Order(order, items);   //why this function add +1 to global Id , its creating new Id for this order but it shouldn't
 
@@ -730,9 +730,6 @@ public class SupplierController {
         OrderItem orderItem  = createNewOrderItem(supplierId, productId, quantity);
         try {
             Order newOrder =  new Order(supplier.daysToDelivery() , supplierId, storeId, orderItem);
-            /*
-                addOrderToTransport
-             */
 
             insertToOrderDAO(newOrder);
             suppliersDAO.getSupplier(newOrder.getSupplierId()).setLastOrderId(suppliersDAO.getAgreementController(), newOrder.getId());
