@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Product extends Screen {
     private static final String greet = "Product";
@@ -34,7 +37,7 @@ public class Product extends Screen {
     private static final String setTargetButton = "Set target";
     private static final String setNameButton = "Set name";
 
-    public static final Class<? extends Employee>[] ALLOWED = new Class[]{};
+    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
 
     private int productID;
 
@@ -68,7 +71,7 @@ public class Product extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
         if (isButtonPressed(req, setPriceButton)){
-            if (!isAllowed(req, resp, new Class[]{Logistics_Manager.class, Transport_Manager.class, HR_Manager.class})) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Transport_Manager.class, HR_Manager.class)))) {
                 setError("You have no permission to view product");
                 refresh(req, resp);
                 return;

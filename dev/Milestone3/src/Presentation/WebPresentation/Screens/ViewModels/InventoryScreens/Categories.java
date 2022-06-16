@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Categories extends Screen{
 
@@ -17,7 +19,7 @@ public class Categories extends Screen{
     private static final String addButton = "Add category";
     private static final String removeButton = "Remove category";
 
-    private static final Class<? extends Employee>[] ALLOWED = null;
+    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
 
     public Categories() {
         super(greet, ALLOWED);

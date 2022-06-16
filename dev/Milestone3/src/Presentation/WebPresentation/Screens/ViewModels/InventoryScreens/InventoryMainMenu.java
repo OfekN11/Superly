@@ -8,11 +8,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class InventoryMainMenu extends Screen {
 
     private static final String greet = "Inventory's Main Menu";
-    private static final Class<? extends Employee>[] ALLOWED = new Class[0];
+    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
 
     public InventoryMainMenu() {
         super(greet, ALLOWED);

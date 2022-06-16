@@ -6,11 +6,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Category extends Screen{
 
     private static final String greet = "Category";
-    private static final Class<? extends Employee>[] ALLOWED = null;
+    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
 
     public Category() {
         super(greet, ALLOWED);

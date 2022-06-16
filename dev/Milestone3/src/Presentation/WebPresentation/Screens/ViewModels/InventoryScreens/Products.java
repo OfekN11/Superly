@@ -22,7 +22,7 @@ public class Products extends Screen{
     private static final String addButton = "Add product";
     private static final String deleteButton = "Delete product";
 
-    private static final Class<? extends Employee>[] ALLOWED = new Class[0];
+    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
 
     public Products() {
         super(greet, ALLOWED);
@@ -47,7 +47,7 @@ public class Products extends Screen{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
         if (isButtonPressed(req, deleteButton)){
-            if (!isAllowed(req, resp, new Class[]{Logistics_Manager.class})) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
                 setError("You have no permission to delete product");
                 refresh(req, resp);
                 return;
@@ -73,7 +73,7 @@ public class Products extends Screen{
             }
         }
         else if(isButtonPressed(req, addButton)){
-            if (!isAllowed(req, resp, new Class[]{Logistics_Manager.class})) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
                 setError("You have no permission to add product");
                 refresh(req, resp);
                 return;
