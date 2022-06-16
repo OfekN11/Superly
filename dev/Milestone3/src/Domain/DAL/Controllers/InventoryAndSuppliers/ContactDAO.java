@@ -2,6 +2,7 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 
 import Domain.Business.Objects.Supplier.Contact;
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -42,8 +43,8 @@ public class ContactDAO extends DAO {
 
     public ArrayList<Contact> getAllSupplierContact(int supID) {
         ArrayList<Contact> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, String.valueOf(supID));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), String.valueOf(supID));
             while (instanceResult.next()) {
                 Contact contact = new Contact(instanceResult.getString(2), instanceResult.getString(3));
                 output.add(contact);

@@ -308,8 +308,12 @@ public class Order {
         arrivalTime = date;
     }
 
-    public double getWeightOfItem(int itemID) {
-        return orderItems.get(itemID).getWeight();
+    public double getWeightOfItem(int itemID) throws Exception {
+        for(OrderItem item : orderItems){
+            if(item.getProductId() == itemID)
+                return item.getWeight();
+        }
+        throw new Exception(String.format("No Item with Id %d in Order %d", itemID, id));
     }
 
     public boolean containsItem(int itemId) {

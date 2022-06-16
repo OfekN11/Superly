@@ -1,4 +1,4 @@
-package Presentation.WebPresentation.Screens.Suppliers.Screens;
+package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Screen;
@@ -53,7 +53,6 @@ public class EditOrder extends Screen {
 
             // TODO: Supplier pass orderId, supplierId
             redirect(resp, AddOrderItem.class);
-
 
         }
     }

@@ -1,15 +1,9 @@
-package Presentation.WebPresentation.Screens.Suppliers.Screens;
-
-import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
-import Presentation.WebPresentation.Screens.Screen;
+package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class OrderHRLogistics extends RemoveViewOrder {
 

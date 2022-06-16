@@ -43,8 +43,12 @@ public class InventoryController {
         catID=CATEGORY_DATA_MAPPER.getIDCount() + 1;
         productID=PRODUCT_DATA_MAPPER.getIDCount() + 1;
 
-        supplierController = new SupplierController();
+        //supplierController = new SupplierController();
         transportController = new TransportController();
+    }
+
+    public void setSupplierController(SupplierController supCont){
+        supplierController = supCont;
     }
 
 //    public void setTransportController(TransportController controller) {
@@ -95,7 +99,13 @@ public class InventoryController {
     }
 
     private Collection<SaleToCustomer> getAllSales() {
-        return SALE_DATA_MAPPER.getAll();
+        try {
+            return SALE_DATA_MAPPER.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
     }
 
     private SaleToCustomer getSale(int saleID) {
@@ -270,11 +280,21 @@ public class InventoryController {
     }
 
     public Collection<Product> getProducts() {
-        return PRODUCT_DATA_MAPPER.getAll();
+        try {
+            return PRODUCT_DATA_MAPPER.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Collection<Category> getCategories() {
-        Collection<Category> categoryCollection = CATEGORY_DATA_MAPPER.getAll();
+        Collection<Category> categoryCollection = null;
+        try {
+            categoryCollection = CATEGORY_DATA_MAPPER.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         for (Category category: categoryCollection) {
             categories.put(category.getID(), category);
         }
@@ -346,9 +366,12 @@ public class InventoryController {
         return product;
     }
 
-    public void deleteProduct(int id){
-        products.remove(id);
+    public boolean deleteProduct(int id){
         PRODUCT_DATA_MAPPER.remove(Integer.toString(id));
+        if(products.remove(id)!=null)
+            return true;
+        else
+            return false;
     }
 
     public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
@@ -544,7 +567,7 @@ public class InventoryController {
         return stock;
     }
 
-    public void deleteCategory(int catID) {
+    public boolean deleteCategory(int catID) {
         getCategories();
         Category categoryToRemove = getCategory(catID);
         if (categoryToRemove==null)
@@ -554,8 +577,11 @@ public class InventoryController {
         if (!categoryToRemove.getAllProductsInCategory().isEmpty())
             throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
         categoryToRemove.changeParentCategory(null);
-        categories.remove(catID);
         CATEGORY_DATA_MAPPER.remove(Integer.toString(catID));
+        if(categories.remove(catID)!=null)
+            return true;
+        else
+            return false;
     }
 
     public Product changeProductMin(int store, int product, int min) {
@@ -603,6 +629,16 @@ public class InventoryController {
             }
         }
         return orders;
+    }
+
+
+    /**
+     *
+     * @param productId
+     * @param storeId
+     * @param amount - can be negative (if negative than we subtract from the product), just use add "+". we will take care of the rest.
+     */
+    public void updateOnTheWayProducts(int productId, int storeId, int amount) {
     }
 
 //    private void addCategoriesForTests () {

@@ -1,14 +1,18 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
+import Domain.Business.Objects.Inventory.Category;
 import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.ConnectionHandler;
 import Globals.Defect;
 //import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
     private final static int ID_COLUMN = 1;
@@ -21,12 +25,17 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
     private final static int DEFECT_COLUMN = 8;
     private final static int IN_WAREHOUSE_COLUMN = 9;
 
-    private final static Map<String, DefectiveItems> IDENTITY_MAP = new HashMap<>();
+    private final static ConcurrentMap<String, DefectiveItems> IDENTITY_MAP = new ConcurrentHashMap<>();
 
     public DefectiveItemsDataMapper() {
         super("DefectiveItems");
     }
 
+
+    @Override
+    public String instanceToId(DefectiveItems instance) {
+        return String.valueOf(instance.getId());
+    }
 
     @Override
     protected Map<String, DefectiveItems> getMap() {
@@ -90,22 +99,16 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
         }
     }
 
-    public Collection<DefectiveItems> getAll() {
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection);
-            while (instanceResult.next()) {
-                IDENTITY_MAP.put(Integer.toString(instanceResult.getInt(ID_COLUMN)), buildObject(instanceResult));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return IDENTITY_MAP.values();
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
     }
+
 
     public Collection<DefectiveItems> getByProduct(int productID) {
         List<DefectiveItems> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(PRODUCT_COLUMN), Arrays.asList(productID));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), Arrays.asList(PRODUCT_COLUMN), Arrays.asList(productID));
             while (instanceResult.next()) {
                 DefectiveItems curr = buildObject(instanceResult);
                 output.add(curr);
@@ -119,8 +122,8 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
 
     public Collection<DefectiveItems> getByStore(int storeID) {
         List<DefectiveItems> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(STORE_COLUMN), Arrays.asList(storeID));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), Arrays.asList(STORE_COLUMN), Arrays.asList(storeID));
             while (instanceResult.next()) {
                 DefectiveItems curr = buildObject(instanceResult);
                 output.add(curr);
@@ -134,8 +137,8 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
 
     public Collection<DefectiveItems> getByEmployee(int employeeID) {
         List<DefectiveItems> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(EMPLOYEE_ID_COLUMN), Arrays.asList(employeeID));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), Arrays.asList(EMPLOYEE_ID_COLUMN), Arrays.asList(employeeID));
             while (instanceResult.next()) {
                 DefectiveItems curr = buildObject(instanceResult);
                 output.add(curr);
@@ -149,8 +152,8 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
 
     public Collection<DefectiveItems> getByDate(Date date) {
         List<DefectiveItems> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(DATE_COLUMN), Arrays.asList(date));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), Arrays.asList(DATE_COLUMN), Arrays.asList(date));
             while (instanceResult.next()) {
                 DefectiveItems curr = buildObject(instanceResult);
                 output.add(curr);
@@ -164,8 +167,8 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
 
     public Collection<DefectiveItems> getByDefect(Defect defect, int id) {
         List<DefectiveItems> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN, PRODUCT_COLUMN), Arrays.asList((defect==Defect.Damaged) ? ("Damaged") : ("Expired"), id));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), Arrays.asList(DEFECT_COLUMN, PRODUCT_COLUMN), Arrays.asList((defect==Defect.Damaged) ? ("Damaged") : ("Expired"), id));
             while (instanceResult.next()) {
                 DefectiveItems curr = buildObject(instanceResult);
                 output.add(curr);
@@ -179,8 +182,8 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
 
     public Collection<DefectiveItems> getDamagedByStore(int store, int product) {
         List<DefectiveItems> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN, STORE_COLUMN, PRODUCT_COLUMN), Arrays.asList("Damaged", store, product));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), Arrays.asList(DEFECT_COLUMN, STORE_COLUMN, PRODUCT_COLUMN), Arrays.asList("Damaged", store, product));
             while (instanceResult.next()) {
                 DefectiveItems curr = buildObject(instanceResult);
                 output.add(curr);
@@ -194,8 +197,8 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
 
     public Collection<DefectiveItems> getExpiredByStore(int store, int product) {
         List<DefectiveItems> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(DEFECT_COLUMN, STORE_COLUMN, PRODUCT_COLUMN), Arrays.asList("Expired", store, product));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), Arrays.asList(DEFECT_COLUMN, STORE_COLUMN, PRODUCT_COLUMN), Arrays.asList("Expired", store, product));
             while (instanceResult.next()) {
                 DefectiveItems curr = buildObject(instanceResult);
                 output.add(curr);
@@ -207,8 +210,8 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
         return output;
     }
     public Integer getMax() {
-        try (Connection connection = getConnection()) {
-            ResultSet max = getMax(connection, ID_COLUMN);
+        try (ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet max = getMax(handler.get(), ID_COLUMN);
             return max.getInt(1);
         } catch (Exception e) {
             e.printStackTrace();

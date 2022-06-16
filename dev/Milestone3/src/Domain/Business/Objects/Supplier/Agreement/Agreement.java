@@ -132,15 +132,25 @@ public abstract class Agreement {
     }
 
 
-    public void setItemId(int oldItemId, int newItemId) throws Exception {
-        if(!itemExists(oldItemId))
-            throw new Exception("Item with this ID does not exist");
-        if(itemExists(newItemId))
-            throw new Exception("The new ID you gave has already been used!");
-        AgreementItem item = items.remove(oldItemId);
-        item.setProductId(newItemId);
-        items.put(newItemId, item);
+    public void setItemId(int productId, int newIdBySupplier) throws Exception {
+        if(!itemExists(productId))
+            throw new Exception("Item with this ID By Supplier does not exist");
+        if(IdBySupplierExists(newIdBySupplier))
+            throw new Exception("The new ID By Supplier you gave has already been used!");
 
+        items.get(productId).setIdBySupplier(newIdBySupplier);
+        //AgreementItem item = items.remove(productId);
+        //item.setIdBySupplier(newIdBySupplier);
+        //items.put(productId, item);
+
+    }
+
+    private int getMatchingProductIdToIdBySupplier(int oldIdBySupplier) throws Exception {
+        for(AgreementItem item : items.values()){
+            if(item.getIdBySupplier() == oldIdBySupplier)
+                return item.getProductId();
+        }
+        throw new Exception("There is no product with this ID!");
     }
 
 

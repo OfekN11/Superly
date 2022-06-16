@@ -226,10 +226,10 @@ public class Supplier {
 
 
 
-    public void updateItemId(int oldItemId, int newItemId, AgreementItemDAO agreementItemDAO) throws Exception {
+    public void updateItemId(int prodcutId, int newIdBySupplier, AgreementItemDAO agreementItemDAO) throws Exception {
         agreementExists();
-        agreementItemDAO.updateItemId(oldItemId, newItemId);
-        agreement.setItemId(oldItemId, newItemId);
+        agreementItemDAO.updateItemIdBySupplier(prodcutId, newIdBySupplier);
+        agreement.setItemId(prodcutId, newIdBySupplier);
     }
 
 
@@ -250,10 +250,11 @@ public class Supplier {
         agreementItemDAO.updateManufacturer(itemId, manufacturer);
         agreement.getItem(itemId).setManufacturer(manufacturer);
 
+
         if(!agreement.isManufacturerRepresented(manu)){
-            suppliersDAO.removeSupplierManufacturer(id, manu);
+            //suppliersDAO.removeSupplierManufacturer(id, manu);
             suppliersDAO.addSupplierManufacturer(id, manufacturer);
-            manufacturers.remove(manu);
+            //manufacturers.remove(manu);
             manufacturers.add(manufacturer);
         }
     }

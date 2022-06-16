@@ -1,5 +1,6 @@
 package Domain.Service.Services;
 
+import Domain.Business.Controllers.InventoryController;
 import Domain.Service.Objects.SupplierObjects.*;
 import Domain.Business.Controllers.SupplierController;
 import Domain.Service.util.Result;
@@ -19,6 +20,13 @@ public class SupplierService {
         controller.loadSuppliersData();
     }
 
+    public void setInventoryController(InventoryController invCont){
+        controller.setInventoryController(invCont);
+    }
+
+    public SupplierController getSupplierController(){
+        return controller;
+    }
 
 
     //Pair.first = name , Pair.second = phoneNumber
@@ -616,8 +624,8 @@ public class SupplierService {
             int defective = Integer.parseInt(result.get(i+7));
             String description = result.get(i+8);
             double weight = Double.parseDouble(result.get(i+9));
-            int itemIdBySupplier = Integer.parseInt(result.get(i+10));
-            items.add(new ServiceOrderItemObject(itemId, itemIdBySupplier, name, quantity, ppu, discount, finalPrice, missing, defective, description, weight));
+            int idBySupplier = Integer.parseInt(result.get(i+10));
+            items.add(new ServiceOrderItemObject(itemId,idBySupplier, name, quantity, ppu, discount, finalPrice, missing, defective, description, weight));
         }
         return items;
     }
@@ -660,6 +668,15 @@ public class SupplierService {
     public Result<Integer> getMatchingProductIdForIdBySupplier(int idBySupplier) {
         try {
             return Result.makeOk(controller.getMatchingProductIdForIdBySupplier(idBySupplier));
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> orderItemExistsInOrder(int supplierId, int orderId, int itemId) {
+        try {
+            Boolean result = controller.orderItemExistsInOrder(supplierId, orderId, itemId);
+            return Result.makeOk(result);
         } catch (Exception e) {
             return  Result.makeError(e.getMessage());
         }

@@ -1,5 +1,6 @@
 package Presentation;
 
+import Domain.Business.Controllers.InventoryController;
 import Domain.Service.util.Result;
 import Globals.Enums.*;
 import Globals.*;
@@ -34,6 +35,8 @@ public class BackendController {
     //CREATE
 
     public BackendController(){
+        supplierService.setInventoryController(InventoryController.getInventoryController());
+        inventoryService.setSupplierController(supplierService.getSupplierController());
         getAvailableOrders();
     }
 
@@ -944,6 +947,11 @@ public class BackendController {
 //        return getAllEmployees().stream().filter((x) -> x.getType() == JobTitles.Cashier).collect(Collectors.toSet());
 //    }
 
+
+    //public Result<Object> loadTestData(){
+    //    return inventoryService.loadTestData();
+    //}
+
     public Result<Collection<Integer>> getStoreIDs(){
         return inventoryService.getStoreIDs();
     }
@@ -960,7 +968,7 @@ public class BackendController {
         return inventoryService.newProduct(name, categoryID, weight, price, manufacturer);
     }
 
-    public Result<Object> deleteProduct(int id){
+    public Result<Boolean> deleteProduct(int id){
         return inventoryService.deleteProduct(id);
     }
 
@@ -1112,7 +1120,7 @@ public class BackendController {
 //        return inventoryService.removeSupplierFromProduct(productID, supplierID);
 //    }
 
-    public Result<Object> deleteCategory(int catID) {
+    public Result<Boolean> deleteCategory(int catID) {
         return inventoryService.deleteCategory(catID);
     }
 
@@ -1182,6 +1190,28 @@ public class BackendController {
 
     public ServiceOrderObject getOrder(int orderId) throws Exception {
         Result<ServiceOrderObject> result = supplierService.getOrder(orderId);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
+
+    public int getSupplierWIthOrderID(int orderId) throws Exception {
+        Result<Integer> result = supplierService.getSupplierWIthOrderID(orderId);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
+    public int getMatchingProductIdForIdBySupplier(int idBySupplier) throws Exception {
+        Result<Integer> result = supplierService.getMatchingProductIdForIdBySupplier(idBySupplier);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
+
+    public boolean orderItemExistsInOrder(int supplierId, int orderId, int itemId) throws Exception {
+        Result<Boolean> result = supplierService.orderItemExistsInOrder(supplierId, orderId, itemId);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();

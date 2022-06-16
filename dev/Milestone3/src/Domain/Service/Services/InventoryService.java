@@ -1,6 +1,7 @@
 package Domain.Service.Services;
 
 
+import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.Business.Objects.Inventory.SaleToCustomer;
 import Domain.Business.Controllers.InventoryController;
@@ -97,9 +98,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> deleteProduct(int id){
+    public Result<Boolean> deleteProduct(int id){
         try {
-            controller.deleteProduct(id);
+            Result.makeOk(controller.deleteProduct(id));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -708,9 +709,9 @@ public class InventoryService {
      * @param catID = ID of category to remove
      * @return Result detailing success of operation
      */
-    public Result<Object> deleteCategory(int catID) {
+    public Result<Boolean> deleteCategory(int catID) {
         try {
-            controller.deleteCategory(catID);
+            Result.makeOk(controller.deleteCategory(catID));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -776,7 +777,7 @@ public class InventoryService {
             for (Order o : orders) {
                 List<ServiceOrderItemObject> oItems = new ArrayList<>();
                 for (OrderItem oItem : o.getOrderItems()) {
-                    oItems.add(new ServiceOrderItemObject(oItem.getProductId(), oItem.getIdBySupplier(), oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice(), oItem.getMissingItems(), oItem.getDefectiveItems(), oItem.getDescription(), oItem.getWeight()));
+                    oItems.add(new ServiceOrderItemObject(oItem.getProductId(),oItem.getIdBySupplier(), oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice(), oItem.getMissingItems(), oItem.getDefectiveItems(), oItem.getDescription(), oItem.getWeight()));
                 }
                 serviceOrders.add(new ServiceOrderObject(o.getId(), o.getSupplierId(), o.getCreationTime(), o.getArrivaltime(), o.getStoreID(), o.getStatusString(), oItems));
             }
