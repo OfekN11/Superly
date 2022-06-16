@@ -965,7 +965,7 @@ public class BackendController {
         return inventoryService.newProduct(name, categoryID, weight, price, manufacturer);
     }
 
-    public Result<Object> deleteProduct(int id){
+    public Result<Boolean> deleteProduct(int id){
         return inventoryService.deleteProduct(id);
     }
 
@@ -1117,7 +1117,7 @@ public class BackendController {
 //        return inventoryService.removeSupplierFromProduct(productID, supplierID);
 //    }
 
-    public Result<Object> deleteCategory(int catID) {
+    public Result<Boolean> deleteCategory(int catID) {
         return inventoryService.deleteCategory(catID);
     }
 

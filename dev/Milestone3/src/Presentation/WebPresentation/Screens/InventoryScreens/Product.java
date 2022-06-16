@@ -8,26 +8,29 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class Product extends Screen {
+    private static final String greet = "Product";
 
-    private final String[] menuOption;
-
+    /*private final String[] menuOption;
     public final int id;
     public final String name;
     public final int categoryID;
     public final double originalPrice;
     public final double currentPrice;
     public final String weight;
-    public final String manufacturer;
+    public final String manufacturer;*/
 
-    protected Product(Domain.Service.Objects.InventoryObjects.Product sProduct, String[] menuOptions) {
-        super("Product: " + sProduct.getName());
-        this.menuOption = menuOptions;
-        id = sProduct.getId();
-        name = sProduct.getName();
-        categoryID = sProduct.getCategoryID();
-        originalPrice = sProduct.getOriginalPrice();
-        currentPrice = sProduct.getCurrentPrice();
-        weight = sProduct.getWeight();
-        manufacturer = sProduct.getManufacturer();
+
+    public Product() { super(greet); }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        header(resp);
+        greet(resp);
+        handleError(resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        handleHeader(req, resp);
     }
 }

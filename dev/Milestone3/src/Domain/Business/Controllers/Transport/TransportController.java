@@ -270,23 +270,19 @@ public class TransportController {
     public List<Integer> endTransport(int transportSN) throws Exception {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()==TransportStatus.inProgress){
-            if(transport.isDoneTransport()){
-                TransportDocument transportDocument = new TransportDocument(transport.getSN(),transport.getStartTime(),transport.getTruckNumber(),transport.getDriverID());
-                for (Integer order:transport.getTransportOrders()) {
-                    Order o = orderController.getTransportOrder(convert(order));
-                    //TODO after change the order class to add o.start();
-                    DestinationDocument document = new DestinationDocument(order,o.getStoreID(),o.getProductList());
-                    documentController.uploadDestinationDocument(document);
-                    transportDocument.addDoc(document.getID());
-                }
-                documentController.uploadTransportDocument(transportDocument);
-                transport.endTransport();
-                transportDataMapper.save(transport);
-                return transport.getTransportOrders();
+
+            TransportDocument transportDocument = new TransportDocument(transport.getSN(),transport.getStartTime(),transport.getTruckNumber(),transport.getDriverID());
+            for (Integer order:transport.getTransportOrders()) {
+                Order o = orderController.getTransportOrder(convert(order));
+                //TODO after change the order class to add o.start();
+                DestinationDocument document = new DestinationDocument(order,o.getStoreID(),o.getProductList());
+                documentController.uploadDestinationDocument(document);
+                transportDocument.addDoc(document.getID());
             }
-            else {
-                throw new Exception("transport is not finished yet");
-            }
+            documentController.uploadTransportDocument(transportDocument);
+            transport.endTransport();
+            transportDataMapper.save(transport);
+            return transport.getTransportOrders();
         }
         else{
             throw new Exception("this is not a inProgress transport");
