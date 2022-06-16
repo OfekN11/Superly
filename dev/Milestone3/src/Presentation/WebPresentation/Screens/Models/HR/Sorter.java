@@ -14,4 +14,16 @@ public class Sorter extends Employee{
     protected Sorter(Domain.Service.Objects.Employee.Sorter sSorter) {
         super(sSorter, GREETING, EXTRA_OPTIONS);
     }
+
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int index = getIndexOfButtonPressed(req);
+        if (index < BASE_OPTIONS_COUNT) {
+            super.doPost(req, resp);
+            return;
+        }
+        index -= BASE_OPTIONS_COUNT;
+        switch (index) {
+        }
+    }
 }

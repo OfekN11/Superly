@@ -14,4 +14,16 @@ public class Cashier extends Employee{
     protected Cashier(Domain.Service.Objects.Employee.Cashier sCashier) {
         super(sCashier, GREETING, EXTRA_OPTIONS);
     }
+
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int index = getIndexOfButtonPressed(req);
+        if (index < BASE_OPTIONS_COUNT) {
+            super.doPost(req, resp);
+            return;
+        }
+        index -= BASE_OPTIONS_COUNT;
+        switch (index) {
+        }
+    }
 }

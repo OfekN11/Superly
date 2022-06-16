@@ -14,4 +14,16 @@ public class Carrier extends Employee{
     protected Carrier(Domain.Service.Objects.Employee.Carrier sCarrier) {
         super(sCarrier, GREETING, EXTRA_OPTIONS);
     }
+
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int index = getIndexOfButtonPressed(req);
+        if (index < BASE_OPTIONS_COUNT) {
+            super.doPost(req, resp);
+            return;
+        }
+        index -= BASE_OPTIONS_COUNT;
+        switch (index) {
+        }
+    }
 }

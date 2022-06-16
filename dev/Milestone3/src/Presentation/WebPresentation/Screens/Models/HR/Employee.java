@@ -11,12 +11,14 @@ import java.util.stream.Stream;
 
 public abstract class Employee extends Screen {
 
-    protected static final String[] BASE_OPTIONS = {
+    private static final String[] BASE_OPTIONS = {
             "View Upcoming shifts",         //0
             "Manage Constraints",           //1
             "Calculate Salary",             //2
             "Print Employment Conditions"   //3
     };
+
+    protected static final int BASE_OPTIONS_COUNT = BASE_OPTIONS.length;
 
     private final String[] menuOption;
 

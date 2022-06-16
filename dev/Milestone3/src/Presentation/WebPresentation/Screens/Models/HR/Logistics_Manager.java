@@ -14,4 +14,16 @@ public class Logistics_Manager extends Employee{
     protected Logistics_Manager(Domain.Service.Objects.Employee.Logistics_Manager sLogMan) {
         super(sLogMan, GREETING, EXTRA_OPTIONS);
     }
+
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int index = getIndexOfButtonPressed(req);
+        if (index < BASE_OPTIONS_COUNT) {
+            super.doPost(req, resp);
+            return;
+        }
+        index -= BASE_OPTIONS_COUNT;
+        switch (index) {
+        }
+    }
 }
