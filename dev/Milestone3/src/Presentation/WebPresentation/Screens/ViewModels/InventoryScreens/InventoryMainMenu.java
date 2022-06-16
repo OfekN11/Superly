@@ -13,8 +13,8 @@ import java.util.Set;
 
 public class InventoryMainMenu extends Screen {
 
-    private static final String greet = "Inventory's Main Menu";
-    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
+    private static final String greet = "Inventory's Main Menu - TO REMEMBER: FIX CREATE ORDERS\n";
+    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>();
 
     public InventoryMainMenu() {
         super(greet, ALLOWED);

@@ -22,7 +22,7 @@ public class Products extends Screen{
     private static final String addButton = "Add product";
     private static final String deleteButton = "Delete product";
 
-    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
+    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>();
 
     public Products() {
         super(greet, ALLOWED);
