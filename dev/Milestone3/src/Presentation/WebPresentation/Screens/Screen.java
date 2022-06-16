@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Set;
 
 public abstract class Screen extends HttpServlet {
 
@@ -28,13 +29,13 @@ public abstract class Screen extends HttpServlet {
      * allowed.length == 0 -> any logged in user may visit
      * else -> only the types in the array may visit
      */
-    private final Class<? extends Employee>[] allowed;
+    private final Set<Class<? extends Employee>> allowed;
 
     private String error = null;
 
     public static BackendController controller = new BackendController();
 
-    public Screen(String greeting, Class<? extends Employee>[] allowed) {
+    public Screen(String greeting, Set<Class<? extends Employee>> allowed) {
         this.greeting = greeting;
         this.allowed = allowed;
     }
@@ -127,13 +128,13 @@ public abstract class Screen extends HttpServlet {
     protected boolean isAllowed(HttpServletRequest req, HttpServletResponse resp) {
         return allowed == null ||
                 (Login.isLoggedIn(req, resp) &&
-                        (allowed.length == 0 || Arrays.asList(allowed).contains(Login.getLoggedUser(req).getClass())));
+                        (allowed.isEmpty() || allowed.contains(Login.getLoggedUser(req).getClass())));
     }
 
-    protected static boolean isAllowed(HttpServletRequest req, HttpServletResponse resp, Class<? extends Employee>[] allowed) {
+    protected static boolean isAllowed(HttpServletRequest req, HttpServletResponse resp, Set<Class<? extends Employee>> allowed) {
         return allowed == null ||
                 (Login.isLoggedIn(req, resp) &&
-                        (allowed.length == 0 || Arrays.asList(allowed).contains(Login.getLoggedUser(req).getClass())));
+                        (allowed.isEmpty() || Arrays.asList(allowed).contains(Login.getLoggedUser(req).getClass())));
     }
 
     /***
