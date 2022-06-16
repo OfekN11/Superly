@@ -52,7 +52,7 @@ public class OrderController {
     }
 
     public String[] alertsToHR(){
-        List<Order> allOrders = transportOrderDataMapper.getAll();
+        List<Order> allOrders = transportOrderDataMapper.getAllOrders();
         List<Order> alertOrders = new ArrayList<>();
         for(Order o :allOrders){
             if(o.getStatus() == OrderStatus.waiting){

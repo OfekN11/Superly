@@ -43,8 +43,12 @@ public class InventoryController {
         catID=CATEGORY_DATA_MAPPER.getIDCount() + 1;
         productID=PRODUCT_DATA_MAPPER.getIDCount() + 1;
 
-        supplierController = new SupplierController();
+        //supplierController = new SupplierController();
         transportController = new TransportController();
+    }
+
+    public void setSupplierController(SupplierController supCont){
+        supplierController = supCont;
     }
 
 //    public void setTransportController(TransportController controller) {
