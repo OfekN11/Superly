@@ -28,6 +28,10 @@ public class SupplierController {
 
     }
 
+    public void setInventoryController(InventoryController invCont){
+        inventoryController = invCont;
+    }
+
 
     public void loadSuppliersData(){
         try {
