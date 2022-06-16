@@ -272,6 +272,7 @@ public class TransportController {
             for (Integer order:transport.getTransportOrders()) {
                 Order o = orderController.getTransportOrder(convert(order));
                 o.start();
+                orderController.updateOrder(o);
                 DestinationDocument document = new DestinationDocument(order,o.getStoreID(),o.getProductList());
                 documentController.uploadDestinationDocument(document);
                 transportDocument.addDoc(document.getID());
