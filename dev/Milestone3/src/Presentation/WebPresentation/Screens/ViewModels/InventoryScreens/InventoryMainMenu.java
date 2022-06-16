@@ -2,6 +2,7 @@ package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +12,7 @@ import java.io.IOException;
 public class InventoryMainMenu extends Screen {
 
     private static final String greet = "Inventory's Main Menu";
-    private static final Class<? extends Employee>[] ALLOWED = null;
+    private static final Class<? extends Employee>[] ALLOWED = new Class[0];
 
     public InventoryMainMenu() {
         super(greet, ALLOWED);
@@ -19,6 +20,9 @@ public class InventoryMainMenu extends Screen {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(!isAllowed(req, resp)) {
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
         printMenu(resp, new String[]{"View Products", "View Categories", "View sales"});

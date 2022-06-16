@@ -3,6 +3,7 @@ package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 import Domain.Service.Objects.InventoryObjects.Product;
 import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
@@ -12,13 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-import javax.servlet.http.Cookie;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class Products extends Screen{
 
@@ -26,9 +20,9 @@ public class Products extends Screen{
 
     private static final String viewButton = "View product";
     private static final String addButton = "Add product";
-    private static final String removeButton = "Remove product";
+    private static final String deleteButton = "Delete product";
 
-    private static final Class<? extends Employee>[] ALLOWED = null;
+    private static final Class<? extends Employee>[] ALLOWED = new Class[0];
 
     public Products() {
         super(greet, ALLOWED);
@@ -36,10 +30,13 @@ public class Products extends Screen{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(!isAllowed(req, resp)) {
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
         printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{viewButton});
-        printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{removeButton});
+        printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{deleteButton});
         printForm(resp, new String[] {"product name", "category ID", "weight", "price", "manufacturer"},
                 new String[]{"Product name", "Category ID", "Weight", "Price", "Manufacturer"}, new String[]{addButton});
         printProducts(resp);
@@ -49,14 +46,17 @@ public class Products extends Screen{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
-        if (isButtonPressed(req, removeButton)){
+        if (isButtonPressed(req, deleteButton)){
+            if (!isAllowed(req, resp, new Class[]{Logistics_Manager.class})) {
+                setError("You have no permission to delete product");
+                refresh(req, resp);
+                return;
+            }
             try {
                 int productID = Integer.parseInt(req.getParameter("ID"));
                 if(controller.deleteProduct(productID).getValue()) {
                     PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Removed product %d", productID)));
-
-                    //setError(String.format("Removed supplier %d", supplierId));
+                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Deleted product %d", productID)));
                     refresh(req, resp);
                 }
                 else{
@@ -73,6 +73,11 @@ public class Products extends Screen{
             }
         }
         else if(isButtonPressed(req, addButton)){
+            if (!isAllowed(req, resp, new Class[]{Logistics_Manager.class})) {
+                setError("You have no permission to add product");
+                refresh(req, resp);
+                return;
+            }
             try {
                 String productName = req.getParameter("product name");
                 int categoryID = Integer.parseInt(req.getParameter("category ID"));
@@ -83,8 +88,6 @@ public class Products extends Screen{
                 if(controller.newProduct(productName, categoryID, weight, price, manufacturer).isOk()) {
                     PrintWriter out = resp.getWriter();
                     out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Added new product %d", productName)));
-
-                    //setError(String.format("Removed supplier %d", supplierId));
                     refresh(req, resp);
                 }
                 else{

@@ -4,6 +4,9 @@ import Domain.Service.Objects.Employee.Sorter;
 import Domain.Service.Objects.Employee.Storekeeper;
 import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
+import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
+import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
@@ -44,7 +47,6 @@ public class Product extends Screen {
         if(!isAllowed(req, resp)) {
             redirect(resp, Login.class);
         }
-
         header(resp);
         greet(resp);
         String s = getParamVal(req, "ProductID");
@@ -66,6 +68,11 @@ public class Product extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
         if (isButtonPressed(req, setPriceButton)){
+            if (!isAllowed(req, resp, new Class[]{Logistics_Manager.class, Transport_Manager.class, HR_Manager.class})) {
+                setError("You have no permission to view product");
+                refresh(req, resp);
+                return;
+            }
             try {
                 double newPrice = Double.parseDouble(req.getParameter("new price"));
                 if(controller.editProductPrice(productID, newPrice).isOk()) {
