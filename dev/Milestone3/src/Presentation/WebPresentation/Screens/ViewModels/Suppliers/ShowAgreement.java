@@ -162,7 +162,8 @@ public class ShowAgreement extends Screen {
     private void viewItem(HttpServletRequest req, HttpServletResponse resp, int supId2) throws IOException {
         try {
             int idBySupplier = Integer.parseInt(req.getParameter("idBySupplier2"));
-            // TODO: Supplier : check if the supplier supplies this Item!!
+            // TODO: Supplier : check if the supplier supplies this Item!
+            //  use getItem in controller?!
             int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
             int supId = getSupplierId(req,resp);
 
