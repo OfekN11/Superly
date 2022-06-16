@@ -3,6 +3,7 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 import Domain.Business.Objects.Supplier.AgreementItem;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -57,10 +58,20 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
             //we don't use this, WE CAN'T USE SAVE!
     }
 
+    @Override
+    public String instanceToId(AgreementItem instance) {
+        return String.valueOf(instance.getProductId());
+    }
+
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
+    }
+
     public Map<Integer, AgreementItem> getAllAgreementItemFromSupplier(int supplierId){
         Map<Integer, AgreementItem> output = new HashMap<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, supplierId);
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(),supplierId);
             while (instanceResult.next()) {
                 AgreementItem currItem = buildObject(instanceResult);
                 output.put(currItem.getProductId(), currItem);
@@ -103,8 +114,9 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
 
     public void removeSupplier(int id) throws SQLException {
         for( AgreementItem item : AGREEMENT_ITEM_IDENTITY_MAP.values()){
-            bulkPricesDAO.remove(item.getProductId());
-            remove(item.getProductId());
+
+            bulkPricesDAO.removeSupplierBulk(id, item.getProductId());
+            remove(Arrays.asList(SUPPLIER_ID_COLUMN, PRODUCT_ID_COLUMN), Arrays.asList(id, item.getProductId()));
         }
         remove(id);
     }
@@ -117,7 +129,7 @@ public class AgreementItemDAO extends DataMapper<AgreementItem> {
         update(Arrays.asList(PPU_COLUMN), Arrays.asList(newPrice), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(itemID) );
     }
 
-    public void updateItemId(int oldItemId, int newItemId) throws SQLException {
+    public void updateItemIdBySupplier(int oldItemId, int newItemId) throws SQLException {
         update(Arrays.asList(ID_BY_SUPPLIER), Arrays.asList(newItemId), Arrays.asList(PRODUCT_ID_COLUMN), Arrays.asList(oldItemId) );
     }
 

@@ -16,7 +16,7 @@ public class LocationToShelfDAO extends DAO {
 
     public List<Integer> getShelves(int id) {
         try {
-            ResultSet rs = select(getConnection(), Arrays.asList(ID_COLUMN), Arrays.asList(id));
+            ResultSet rs = select(getConnectionHandler().get(), Arrays.asList(ID_COLUMN), Arrays.asList(id));
             List<Integer> shelves = new ArrayList<>();
             while (rs.next()) {
                 shelves.add(rs.getInt(SHELF_COLUMN));

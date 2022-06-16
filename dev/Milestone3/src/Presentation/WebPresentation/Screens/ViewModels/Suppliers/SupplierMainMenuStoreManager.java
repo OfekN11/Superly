@@ -1,4 +1,4 @@
-package Presentation.WebPresentation.Screens.Suppliers.Screens;
+package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class SupplierMainMenuStoreManager extends SupplierMainMenu {
         greet(resp);
         printMenu(resp, new String[]{"Manage Suppliers", "View/Remove Orders"});
 
-        printSupplierIds(resp, req);
+         printSupplierIds(resp, req);
         printForm(resp, new String[] {"ID"}, new String[]{"Supplier ID"}, new String[]{button});
 
         handleError(resp);
@@ -42,7 +42,7 @@ public class SupplierMainMenuStoreManager extends SupplierMainMenu {
                 break;
             case 1:
                 // TODO: Supplier : can he remove orders? I think he needs only to view
-                redirect(resp, OrderHRLogistics.class);
+                redirect(resp, OrderStoreManager.class);
                 break;
         }
     }

@@ -13,12 +13,14 @@ import java.util.*;
 
 public class SupplierController {
 
-    private SuppliersDAO suppliersDAO;
+    public SuppliersDAO suppliersDAO;
     private OrderDAO orderDAO;
-
+    private InventoryController inventoryController;
     private TransportController transportController;
 
+
     public SupplierController(){
+        this.inventoryController = null;
         suppliersDAO = new SuppliersDAO();
         orderDAO = new OrderDAO();
         // TODO: 10/06/2022 SHould get the transportController in the constructor
@@ -134,7 +136,7 @@ public class SupplierController {
         suppliersDAO.getSupplier(supplierId).updateAgreementType(agreementType, agreementDays);
         suppliersDAO.updateAgreementType(supplierId, agreementType);
         List<Integer> days = suppliersDAO.getSupplier(supplierId).getAgreementDays();
-        suppliersDAO.getAgreementController().removeSupplier(supplierId);
+        suppliersDAO.getAgreementController().removeSupplierForChangingAgreement(supplierId);
         suppliersDAO.getAgreementController().updateAgreementDays(supplierId, days, agreementType);
     }
 
@@ -205,6 +207,7 @@ public class SupplierController {
             throw new Exception("There is no supplier with this ID!");
         suppliersDAO.getSupplier(supplierId).updateItemManufacturer(itemId, manufacturer, suppliersDAO);
     }
+
 
 
     public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
@@ -422,19 +425,6 @@ public class SupplierController {
 
 
 
-
-
-    public int addNewOrder(int supId, int storeId) throws Exception {
-        if(!supplierExist(supId)){
-            throw new Exception("The supplier does not exists!");
-        }
-        Order order = suppliersDAO.getSupplier(supId).addNewOrder(storeId, orderDAO, suppliersDAO.getAgreementController());
-
-        // TODO: Supplier : we need to call transport to schedule the order?
-
-        return order.getId();
-    }
-
     /*
     public void addItemsToOrder(int supId, int orderId, List<String> itemsString) throws Exception {
         if(!supplierExist(supId)){
@@ -449,39 +439,69 @@ public class SupplierController {
     }
      */
 
+
+    public int addNewOrder(int supId, int storeId) throws Exception {
+        if(!supplierExist(supId)){
+            throw new Exception("The supplier does not exists!");
+        }
+        Order order = suppliersDAO.getSupplier(supId).addNewOrder(storeId, orderDAO, suppliersDAO.getAgreementController());
+        return order.getId();
+    }
+
+    // TODO: Sagi
     public void addItemToOrder(int supId, int orderId, int itemId, int itemQuantity) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        // TODO: Supplier check if we need to call transport make sure the weight is fine
-        //  Need to pay attention not calling the transport before we give them the corrsponding order
-        //  BUG! , we can call them to check the weight AFTER we gave them the order!, s
-        //  if we got here from just creating an order, do they have it?
 
         suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity, orderDAO);
+
+        /*
+            check if the order has transport:
+            yes : use the function checkWeightLegal() ...
+                    yes: addItemToOrder and update the weight at transport
+                    no:  error the user..  (don't add the orderItem to the order)
+            no :  add the orderItem to the order and send to addOrderToTransport(order)
+         */
     }
 
-
+    // TODO: Sagi
     public boolean removeOrder(int orderId) throws Exception {
         int supId = getSupplierWithOrder(orderId);
         if(supId == -1){
             throw new Exception("No Supplier with this order!");
         }
+        /*
+            update transport to remove this order, and inventory to update shortages
+         */
         return suppliersDAO.getSupplier(supId).removeOrder(orderId, orderDAO);
     }
 
-
+    // TODO: Sagi
     public void removeItemFromOrder(int supId, int orderId, int itemId) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
+
+        /*
+            update transport to remove weight from this order, and inventory to update shortages
+         */
+
         suppliersDAO.getSupplier(supId).removeItemFromOrder(orderId, itemId, orderDAO);
     }
 
+    // TODO: Sagi
     public void updateItemQuantityInOrder(int supID, int orderID, int itemID, int quantity) throws Exception {
         if(!supplierExist(supID)){
             throw new Exception("The supplier does not exists!");
         }
+
+        /*
+        use the function checkWeightLegal() ...
+             yes: updateItemQuantity and update the weight at transport
+             no:  error the user..  (don't add the orderItem to the order)
+         */
+
         Order currOrder = suppliersDAO.getSupplier(supID).getOrderObject(orderID, orderDAO);
         int oldQuantity = currOrder.getQuantityOfItem(itemID);
         double weightOfItem = currOrder.getWeightOfItem(itemID);
@@ -524,6 +544,7 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supID).orderExists(orderID, orderDAO);
     }
 
+    // TODO: check  Supplier
     //Map<ProductId , ( (missingAmount,defectiveAmount), description)>
     public Order orderHasArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
         int supplierId = orderDAO.getOrder(orderID, suppliersDAO).getSupplierId();
@@ -557,6 +578,7 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supplierID).getOrderObject(orderID, orderDAO);
     }
 
+    // TODO: Sagi make hovala
     //returns all orders that cannot be changed anymore (routine) + everything needed because of MinAmounts
     public List<Order> createAllOrders(Map<Integer, Map<Integer, Integer>> orderItemMinAmounts) throws Exception { //map<productID, Map<store, amount>>
 
@@ -602,15 +624,26 @@ public class SupplierController {
             if(order.getSupplierId() == supplierId){
 
                 OrderItem orderItem = createNewOrderItem(supplierId, productId, quantity);
+
+                /*
+                    checkWeightLegal(orderId, added weight)
+                    yes : {
+                        Order newOrder = new Order(order, orderItem, storeId);
+                        deletableOrders.remove(order);
+                        deleteOrderFromDAO(order.getId());
+                    }
+                    no:{
+                        create new Order with this item and call AddOrderToTransport
+                    }
+                 */
                 Order newOrder = new Order(order, orderItem, storeId);
 
-                deletableOrders.remove(order);
+                deletableOrders.remove(order);    //remove this from here, its should be above!
                 notDeletableOrders.add(newOrder);
-                deleteOrderFromDAO(order.getId());
+                deleteOrderFromDAO(order.getId());  //remove this from here, its should be above!
                 insertToOrderDAO(newOrder);
                 suppliersDAO.getSupplier(newOrder.getSupplierId()).setLastOrderId(suppliersDAO.getAgreementController(), newOrder.getId());
 
-                // replace the old order with the new One
                 return true;
             }
         }
@@ -635,10 +668,23 @@ public class SupplierController {
                     items.add(orderItem);
                 }
 
+
+                /*
+                    checkWeightLegal(orderId, added weight)
+                    yes : {
+                        Order newOrder = new Order(order, items);
+                        notDeletableOrders.remove(order);
+                        updateOrderDAO(newOrder);
+                    }
+                    no:{
+                        create new Order (order2) with items
+                        call AddOrderToTransport
+                        updateOrderDAO(order2);
+                    }
+                 */
+
                 Order newOrder = new Order(order, items);   //why this function add +1 to global Id , its creating new Id for this order but it shouldn't
 
-                // replace the old order with the new One
-                //suppliersDAO.getSupplier(order.getSupplierId()).ReplaceOrderInList();
 
                 notDeletableOrders.remove(order);
                 notDeletableOrders.add(newOrder);
@@ -655,11 +701,13 @@ public class SupplierController {
         OrderItem orderItem  = createNewOrderItem(supplierId, productId, quantity);
         try {
             Order newOrder =  new Order(supplier.daysToDelivery() , supplierId, storeId, orderItem);
+            /*
+                addOrderToTransport
+             */
+
             insertToOrderDAO(newOrder);
             suppliersDAO.getSupplier(newOrder.getSupplierId()).setLastOrderId(suppliersDAO.getAgreementController(), newOrder.getId());
             orders.get("not deletable").add(newOrder);
-
-            // Add the new Order to some list in Supplier
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -825,7 +873,7 @@ public class SupplierController {
 
 
 
-    private void insertToOrderDAO(Order order) throws SQLException {
+    public void insertToOrderDAO(Order order) throws SQLException {
         orderDAO.addOrder(order);
     }
 
@@ -843,7 +891,7 @@ public class SupplierController {
     }
 
 
-    private void addItemToOrderDAO(int orderId, int id, String name, int quantity, float pricePerUnit, int discount, double calculateTotalPrice, double weight) throws SQLException {
+    public void addItemToOrderDAO(int orderId, int id, String name, int quantity, float pricePerUnit, int discount, double calculateTotalPrice, double weight) throws SQLException {
         orderDAO.addItem(orderId, new OrderItem(id, id, name, quantity, pricePerUnit, discount, calculateTotalPrice,  weight));
     }
 
@@ -867,19 +915,15 @@ public class SupplierController {
     }
 
 
-    // TODO: call this function when we want to add the order to a Transport
     public void addOrderToTransport(Order order) throws Exception {
         List<LocalDate> availableDays = getPossibleDates(order.getSupplierId());
 
-        LocalDate date = null;
-        // TODO:  Transport , if this dates are good add the order (maybe just orderId?) to a transport, if not alert the HR manager..
-        //  if you cant put this order in a transport return null.
-        //date = transportController.SchedulingOrderToTransport(order, availableDays);
-
-        if(date == null){
+        LocalDate date = transportController.SchedulingOrderToTransport(order, availableDays);
+        if(date == null)
             date = LocalDate.of(2100, 1, 1);
-        }
-        order.setArrivalTime(date);
+        else
+            order.setArrivalTime(date);
+
         orderDAO.setOrderArrivalTime(order.getId(), date);
     }
 
@@ -937,10 +981,7 @@ public class SupplierController {
 
         double newItemWeight = weightOfItem * differenceQuantity;  //just the added weight
 
-        boolean ans = false;
-        // TODO: Transport : check here if we can add this weight to the order with this orderId, return true/false
-        //ans = transportController.canChangeOrder(orderID, newItemWeight);
-        return ans;
+        return transportController.canChangeOrder(orderID, (int) newItemWeight);
 
     }
 
@@ -1059,4 +1100,18 @@ public class SupplierController {
     public int getMatchingProductIdForIdBySupplier(int idBySupplier) throws Exception {
         return suppliersDAO.getAgreementItemDAO().getMatchingProductIdForIdBySupplier(idBySupplier);
     }
+
+    public Boolean orderItemExistsInOrder(int supplierId, int orderId, int itemId) throws Exception {
+        Order order  = suppliersDAO.getSupplier(supplierId).getOrderObject(orderId, orderDAO);
+        return order.containsItem(itemId);
+    }
+
+
+    public void callInventoryToUpdateOnTheWay(int productId, int storeId,int amount){
+        inventoryController.updateOnTheWayProducts(productId, storeId, amount);
+    }
+
+
+
+
 }

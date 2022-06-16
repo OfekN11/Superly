@@ -97,6 +97,7 @@ public class OrderItem {
         result.add(String.valueOf(defectiveItems));
         result.add(description);
         result.add(String.valueOf(weight));
+        result.add(String.valueOf(idBySupplier));
         return result;
     }
 

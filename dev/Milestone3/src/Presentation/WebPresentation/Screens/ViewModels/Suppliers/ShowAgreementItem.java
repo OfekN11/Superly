@@ -1,4 +1,4 @@
-package Presentation.WebPresentation.Screens.Suppliers.Screens;
+package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Domain.Service.Objects.SupplierObjects.ServiceItemObject;
 import Presentation.WebPresentation.Screens.Screen;
@@ -33,7 +33,9 @@ public class ShowAgreementItem extends Screen {
 
         printMenu(resp, new String[]{"View Item"});
 
-        printForm(resp, new String[] {"itemId"}, new String[]{"Item ID"}, new String[]{"Change Id"});
+        // TODO: Supplier - This function can cause problems when we change the IdbySupplier but an order already has it
+        //  and than maybe when we pull it from DB it can cause an error
+        //printForm(resp, new String[] {"itemId"}, new String[]{"Item ID"}, new String[]{"Change Id"});
         printForm(resp, new String[] {"manufacturer"}, new String[]{"Item Manufacturer"}, new String[]{"Change manufacturer"});
         printForm(resp, new String[] {"ppu"}, new String[]{"Item price per unit"}, new String[]{"Change price per unit"});
         printForm(resp, new String[] {"quantity1", "discount1"}, new String[]{"Quantity", "Discount"}, new String[]{"Add Bulk"});
@@ -50,15 +52,15 @@ public class ShowAgreementItem extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
 
-        if (isButtonPressed(req, "Change Id")) {
-            changeId(req, resp);
-        }
-        //else if (isButtonPressed(req, "Change Name")) {
-        //    changeName(req, resp);
-        //}
-        else if (isButtonPressed(req, "Change manufacturer")) {
+
+        if (isButtonPressed(req, "Change manufacturer")) {
             changeManufacturer(req, resp);
         }
+        /*
+        else if (isButtonPressed(req, "Change Id")) {
+            changeId(req, resp);
+        }
+         */
         else if (isButtonPressed(req, "Change price per unit")) {
             changePPU(req, resp);
         }
@@ -257,7 +259,6 @@ public class ShowAgreementItem extends Screen {
         try {
             int num = Integer.parseInt(req.getParameter("itemId"));
             if(controller.updateItemId(supplierId, itemId,num) ){
-                itemId = num;
                 // TODO: Supplier change this to normal print!
                 setError(String.format("ID updated to %d", num));
                 refresh(req, resp);

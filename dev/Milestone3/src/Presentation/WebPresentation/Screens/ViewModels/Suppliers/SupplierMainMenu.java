@@ -1,8 +1,9 @@
-package Presentation.WebPresentation.Screens.Suppliers.Screens;
+package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -63,8 +64,11 @@ public abstract class SupplierMainMenu extends Screen {
     protected void viewSupplier(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             int supplierId = Integer.parseInt(req.getParameter("ID"));
-            if(controller.doesSupplierExists(supplierId) /*supplierId == -1*/) {
+            if(controller.doesSupplierExists(supplierId)) {
                 // TODO: Supplier Pass supplierID to the the supplier
+                //enter the list a cookie named sup_id with value supplierId
+                Cookie c = new Cookie("sup_id", String.valueOf(supplierId));
+                resp.addCookie(c);
                 redirect(resp, ViewSupplier.class);
             }
             else{
