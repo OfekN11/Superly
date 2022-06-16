@@ -97,9 +97,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> deleteProduct(int id){
+    public Result<Boolean> deleteProduct(int id){
         try {
-            controller.deleteProduct(id);
+            Result.makeOk(controller.deleteProduct(id));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -708,9 +708,9 @@ public class InventoryService {
      * @param catID = ID of category to remove
      * @return Result detailing success of operation
      */
-    public Result<Object> deleteCategory(int catID) {
+    public Result<Boolean> deleteCategory(int catID) {
         try {
-            controller.deleteCategory(catID);
+            Result.makeOk(controller.deleteCategory(catID));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

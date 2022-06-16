@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Category extends Screen{
 
-    private static final String greet = "Welcome to the products' catalog of Superly";
+    private static final String greet = "Category";
 
     public Category() {
         super(greet);
