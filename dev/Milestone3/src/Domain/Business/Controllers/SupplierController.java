@@ -13,7 +13,7 @@ import java.util.*;
 
 public class SupplierController {
 
-    private SuppliersDAO suppliersDAO;
+    public SuppliersDAO suppliersDAO;
     private OrderDAO orderDAO;
     private InventoryController inventoryController;
     private TransportController transportController;
@@ -26,6 +26,10 @@ public class SupplierController {
         // TODO: 10/06/2022 SHould get the transportController in the constructor
         transportController = new TransportController();
 
+    }
+
+    public void setInventoryController(InventoryController invCont){
+        inventoryController = invCont;
     }
 
 
@@ -873,7 +877,7 @@ public class SupplierController {
 
 
 
-    private void insertToOrderDAO(Order order) throws SQLException {
+    public void insertToOrderDAO(Order order) throws SQLException {
         orderDAO.addOrder(order);
     }
 
@@ -891,7 +895,7 @@ public class SupplierController {
     }
 
 
-    private void addItemToOrderDAO(int orderId, int id, String name, int quantity, float pricePerUnit, int discount, double calculateTotalPrice, double weight) throws SQLException {
+    public void addItemToOrderDAO(int orderId, int id, String name, int quantity, float pricePerUnit, int discount, double calculateTotalPrice, double weight) throws SQLException {
         orderDAO.addItem(orderId, new OrderItem(id, id, name, quantity, pricePerUnit, discount, calculateTotalPrice,  weight));
     }
 

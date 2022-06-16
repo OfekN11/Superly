@@ -19,7 +19,7 @@ public class InventoryMainMenu extends Screen {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         header(resp);
         greet(resp);
-        printMenu(resp, new String[]{"View Catalog", "View Categories", "View sales"});
+        printMenu(resp, new String[]{"View Products", "View Categories", "View sales"});
         handleError(resp);
     }
 
@@ -28,7 +28,7 @@ public class InventoryMainMenu extends Screen {
         handleHeader(req, resp);
         switch (getIndexOfButtonPressed(req)){
             case 0:
-                redirect(resp, Catalog.class);
+                redirect(resp, Products.class);
                 break;
             case 1:
                 redirect(resp, Categories.class);
