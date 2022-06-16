@@ -1,7 +1,5 @@
-package Presentation.WebPresentation.Screens.InventoryScreens;
+package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
-import Domain.Service.Objects.InventoryObjects.Product;
-import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
 import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Screen;
 import javax.servlet.ServletException;
@@ -9,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Categories extends Screen{
@@ -88,7 +85,7 @@ public class Categories extends Screen{
         }
         else if(isButtonPressed(req, viewButton)){
             try {
-                redirect(resp, Presentation.WebPresentation.Screens.InventoryScreens.Category.class);
+                redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Category.class);
             }catch (NumberFormatException e1){
                 setError("Please enter a number!");
                 refresh(req, resp);

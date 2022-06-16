@@ -1,6 +1,6 @@
 package Presentation.WebPresentation.Screens.ViewModels.HR;
 
-import Presentation.WebPresentation.Screens.InventoryScreens.InventoryMainMenu;
+import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.InventoryMainMenu;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
 import Presentation.WebPresentation.Screens.Screen;

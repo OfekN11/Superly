@@ -1,4 +1,4 @@
-package Presentation.WebPresentation.Screens.InventoryScreens;
+package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
 import Presentation.WebPresentation.Screens.Screen;
 

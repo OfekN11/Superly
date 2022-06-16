@@ -1,20 +1,16 @@
-package Presentation.WebPresentation.Screens.InventoryScreens;
+package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
-import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
 import Presentation.WebPresentation.Screens.Screen;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Sale extends Screen{
+public class Category extends Screen{
 
-    private static final String greet = "Sale";
+    private static final String greet = "Category";
 
-    public Sale() {
+    public Category() {
         super(greet);
     }
 

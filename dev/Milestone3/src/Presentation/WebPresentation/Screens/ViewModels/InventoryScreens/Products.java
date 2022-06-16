@@ -1,8 +1,7 @@
-package Presentation.WebPresentation.Screens.InventoryScreens;
+package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
 import Domain.Service.Objects.InventoryObjects.Product;
 import Domain.Service.util.Result;
-import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
@@ -11,11 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -114,7 +109,7 @@ public class Products extends Screen{
                     Cookie c = new Cookie("viewed-product", hash);
                     c.setMaxAge((int)TimeUnit.MINUTES.toSeconds(2));
                     resp.addCookie(c);
-                    redirect(resp, Presentation.WebPresentation.Screens.InventoryScreens.Product.class);
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.class);
                 }
                 else
                 {
