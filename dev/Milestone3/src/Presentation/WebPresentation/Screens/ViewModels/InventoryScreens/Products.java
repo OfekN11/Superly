@@ -26,7 +26,6 @@ public class Products extends Screen{
     private static final String addButton = "Add product";
     private static final String removeButton = "Remove product";
 
-    private static final Map<String, Integer> viewedProductID = new HashMap<>();
     public Products() {
         super(greet);
     }
@@ -103,14 +102,7 @@ public class Products extends Screen{
                 int productID = Integer.parseInt(productIDstr);
                 Result<Product> product = controller.getProduct(productID);
                 if(product.isOk() && product.getValue().getId()==productID)
-                {
-                    String hash = hash(productIDstr);
-                    viewedProductID.put(hash, productID);
-                    Cookie c = new Cookie("viewed-product", hash);
-                    c.setMaxAge((int)TimeUnit.MINUTES.toSeconds(2));
-                    resp.addCookie(c);
-                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.class);
-                }
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.class, new String[]{"ProductID"}, new String[]{productIDstr});
                 else
                 {
                     setError("Product ID " + productID + " doesn't exist");
@@ -125,14 +117,6 @@ public class Products extends Screen{
                 refresh(req, resp);
             }
         }
-    }
-
-    public static int getViewedProductID(HttpServletRequest req){
-        Cookie[] cookies = req.getCookies();
-        for (Cookie c : cookies)
-            if (c.getName().equals("viewed-product"))
-                return viewedProductID.get(c.getValue());
-        return -1;
     }
 
     private void printProducts(HttpServletResponse resp) {
@@ -168,19 +152,5 @@ public class Products extends Screen{
                 return p;
         }
         return null;
-    }
-    private static String hash(String toHash) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(
-                toHash.getBytes(StandardCharsets.UTF_8));
-        StringBuilder hexString = new StringBuilder(2 * hash.length);
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-        return hexString.toString();
     }
 }

@@ -1,5 +1,9 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
+import Domain.Service.Objects.Employee.Employee;
+import Domain.Service.Objects.Employee.Sorter;
+import Domain.Service.Objects.Employee.Storekeeper;
+import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
@@ -7,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class Product extends Screen {
     private static final String greet = "Product";
@@ -25,21 +30,30 @@ public class Product extends Screen {
     private static final String setTargetButton = "Set target";
     private static final String setNameButton = "Set name";
 
+    private static final Class<? extends Employee>[] ALLOWED = new Class[]{};
+
     private int productID;
 
-    public Product() { super(greet); }
+    public Product() {
+        super(greet);
+
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         header(resp);
         greet(resp);
-        productID = Products.getViewedProductID(req);
-        if (productID!=-1)
-        {
-            printForm(resp, new String[] {"new price"}, new String[]{"New price"}, new String[]{setPriceButton});
-            printForm(resp, new String[] {"storeID", "new min"}, new String[]{"StoreID", "New min"}, new String[]{setMinButton});
-            printForm(resp, new String[] {"storeID", "new target"}, new String[]{"StoreID", "New target"}, new String[]{setTargetButton});
-            printForm(resp, new String[] {"new name"}, new String[]{"New name"}, new String[]{setNameButton});
+        String s = getParamVal(req, "ProductID");
+        if (s!=null) {
+            productID = Integer.parseInt(s);
+            Result<Domain.Service.Objects.InventoryObjects.Product> product = controller.getProduct(productID);
+            if (product.isOk() && product.getValue() != null) {
+                printForm(resp, new String[]{"new price"}, new String[]{"New price"}, new String[]{setPriceButton});
+                printForm(resp, new String[]{"storeID", "new min"}, new String[]{"StoreID", "New min"}, new String[]{setMinButton});
+                printForm(resp, new String[]{"storeID", "new target"}, new String[]{"StoreID", "New target"}, new String[]{setTargetButton});
+                printForm(resp, new String[]{"new name"}, new String[]{"New name"}, new String[]{setNameButton});
+                printProduct(resp, product.getValue());
+            }
         }
         handleError(resp);
     }
@@ -132,6 +146,21 @@ public class Product extends Screen {
                 setError(e.getMessage());
                 refresh(req, resp);
             }
+        }
+    }
+    private void printProduct(HttpServletResponse resp, Domain.Service.Objects.InventoryObjects.Product p) {
+        try {
+            Result<Domain.Service.Objects.InventoryObjects.Product> product = controller.getProduct(productID);
+            PrintWriter out = resp.getWriter();
+            out.println("Product ID: " + p.getId() + "<br>");
+            out.println("Product name: " + p.getName() + "<br>");
+            out.println("Category: " + controller.getCategory(p.getCategoryID()).getValue().getName() + "<br>");
+            out.println("Original price: " + p.getOriginalPrice() + "<br>");
+            out.println("Current price: " + p.getCurrentPrice() + "<br>");
+            out.println("Weight: " + p.getWeight() + "<br>");
+            out.println("Manufacturer: " + p.getManufacturer() + "<br>");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
