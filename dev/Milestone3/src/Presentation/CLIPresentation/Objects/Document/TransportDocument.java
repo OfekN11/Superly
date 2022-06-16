@@ -36,18 +36,18 @@ public class TransportDocument extends Document {
         }
     }
     public String webDisplay(){
-        String format = "Transport Document:\n" +
-                "Document SN: " + getDocumentSN() + "\n" +
-                "Transport ID: " + transportID + "\n" +
-                "Date: " + date + "\n" +
-                "Truck Number: " + truckNumber + "\n" +
-                "Driver Name: " + driverName + "\n";
-        format = format+"Destination Documents SN:"+"\n";
+        String format = "Transport Document:/" +
+                "Document SN: " + getDocumentSN() + "/" +
+                "Transport ID: " + transportID + "/" +
+                "Date: " + date + "/" +
+                "Truck Number: " + truckNumber + "/" +
+                "Driver Name: " + driverName + "/";
+        format = format+"Destination Documents SN:"+"/";
         for(int i = 0; i < destinationDocs.size(); i++)
         {
-            format = format + "\t" + (i + 1) + " - " + destinationDocs.get(i)+"\n";
+            format = format + "\t" + (i + 1) + " - " + destinationDocs.get(i)+"/";
         }
-        return format;
+        return format+" ";
     }
     private void printDestDocsList()
     {
