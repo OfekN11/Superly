@@ -25,11 +25,8 @@ public class EmployeeServlet extends Screen {
         if (!isAllowed(req, resp)){
             redirect(resp, Login.class);
         }
-        header(resp);
         Employee employee = Login.getLoggedUser(req);
-        employee.greet(resp);
-        employee.printMenu(resp);
-        handleError(resp);
+        employee.doGet(req, resp);
     }
 
     @Override
