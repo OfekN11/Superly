@@ -2,7 +2,7 @@ package SuppliersTests;
 
 import Domain.Business.Objects.Supplier.Agreement.RoutineAgreement;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@NotThreadSafe
+//@NotThreadSafe
 public class RoutineAgreementTest {
 
     private RoutineAgreement agreement;

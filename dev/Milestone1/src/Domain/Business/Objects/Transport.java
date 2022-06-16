@@ -137,7 +137,7 @@ public class Transport {
         return truckNumber!=-1;
     }
     public boolean isPlacedCarrier(){
-        return (driverID=="");
+        return (driverID.equals(""));
     }
     private void removeShippingArea(ShippingAreas sa)
     {

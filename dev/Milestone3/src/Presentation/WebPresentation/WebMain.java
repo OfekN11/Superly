@@ -53,9 +53,7 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(Sales.class, "/Sales"),
             new AbstractMap.SimpleEntry<>(Sale.class, "/Sale"),
             new AbstractMap.SimpleEntry<>(TransportMainMenu.class, "/TransportMainMenu"),
-            new AbstractMap.SimpleEntry<>(TruckManagementMenu.class, "/TruckManagementMenu"),
-            new AbstractMap.SimpleEntry<>(AddTruck.class, "/TruckManagementMenu/AddTruck"),
-            new AbstractMap.SimpleEntry<>(DeleteTruck.class, "/TruckManagementMenu/DeleteTruck")
+            new AbstractMap.SimpleEntry<>(TruckManagementMenu.class, "/TruckManagementMenu")
 
 
             ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));

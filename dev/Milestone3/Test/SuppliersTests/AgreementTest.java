@@ -4,7 +4,7 @@ import Domain.Business.Objects.Supplier.Agreement.Agreement;
 import Domain.Business.Objects.Supplier.Agreement.NotTransportingAgreement;
 import Domain.Business.Objects.Supplier.AgreementItem;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NotThreadSafe
+//@NotThreadSafe
 public class AgreementTest {
 
     private Agreement agreement;

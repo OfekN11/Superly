@@ -1,5 +1,6 @@
 package Presentation;
 
+import Domain.Business.Controllers.InventoryController;
 import Domain.Service.util.Result;
 import Globals.Enums.*;
 import Globals.*;
@@ -34,6 +35,8 @@ public class BackendController {
     //CREATE
 
     public BackendController(){
+        supplierService.setInventoryController(InventoryController.getInventoryController());
+        inventoryService.setSupplierController(supplierService.getSupplierController());
         getAvailableOrders();
     }
 
@@ -556,7 +559,7 @@ public class BackendController {
     }
 
     public DestinationDocument getDestinationDocument(int ddSN) throws Exception {
-        Result<Domain.Service.Objects.Document.DestinationDocument> result = documentService.getTransportDocument(ddSN);
+        Result<Domain.Service.Objects.Document.DestinationDocument> result = documentService.getDestinationDocument(ddSN);
         throwIfError(result);
         return presentationDocumentFactory.createPresentationDocument(result.getValue());
     }
@@ -965,7 +968,7 @@ public class BackendController {
         return inventoryService.newProduct(name, categoryID, weight, price, manufacturer);
     }
 
-    public Result<Object> deleteProduct(int id){
+    public Result<Boolean> deleteProduct(int id){
         return inventoryService.deleteProduct(id);
     }
 
@@ -1117,7 +1120,7 @@ public class BackendController {
 //        return inventoryService.removeSupplierFromProduct(productID, supplierID);
 //    }
 
-    public Result<Object> deleteCategory(int catID) {
+    public Result<Boolean> deleteCategory(int catID) {
         return inventoryService.deleteCategory(catID);
     }
 

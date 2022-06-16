@@ -35,6 +35,20 @@ public class TransportDocument extends Document {
             System.out.println("Redesign:\n" + redesign);
         }
     }
+    public String webDisplay(){
+        String format = "Transport Document:/" +
+                "Document SN: " + getDocumentSN() + "/" +
+                "Transport ID: " + transportID + "/" +
+                "Date: " + date + "/" +
+                "Truck Number: " + truckNumber + "/" +
+                "Driver Name: " + driverName + "/";
+        format = format+"Destination Documents SN:"+"/";
+        for(int i = 0; i < destinationDocs.size(); i++)
+        {
+            format = format + "\t" + (i + 1) + " - " + destinationDocs.get(i)+"/";
+        }
+        return format+" ";
+    }
     private void printDestDocsList()
     {
         System.out.println("Destination Documents SN:");
