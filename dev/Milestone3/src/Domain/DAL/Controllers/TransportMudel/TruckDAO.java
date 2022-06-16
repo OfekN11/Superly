@@ -82,7 +82,10 @@ public class TruckDAO extends DAO {
     }
 
     public int delete(int licenseNumber) throws Exception {
-        return super.remove(licenseNumber);
+        if(TRUCK_IDENTITY_MAP.containsKey(licenseNumber)){
+            return super.remove(licenseNumber);
+        }
+        throw new RuntimeException("A truck with this license number doesn't exists!");
     }
     public int size(){
         return TRUCK_IDENTITY_MAP.size();

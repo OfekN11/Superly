@@ -38,7 +38,14 @@ public class DeleteTruck extends Screen {
             try {
                 int ln = Integer.parseInt(req.getParameter("LN"));
                 controller.removeTruck(ln);
-            } catch (Exception e) {
+                //TODO: Print Successful msg
+                setError("e.getMessage()");
+                refresh(req, resp);
+            }catch (NumberFormatException exception){
+                setError("Enter a valid license number!");
+                refresh(req, resp);
+            }
+            catch (Exception e) {
                 setError(e.getMessage());
                 refresh(req, resp);
             }
