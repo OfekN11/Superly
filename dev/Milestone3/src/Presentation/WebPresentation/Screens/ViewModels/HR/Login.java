@@ -27,7 +27,7 @@ public class Login extends Screen {
     private final EmployeeFactory factory = new EmployeeFactory();
 
     public Login() {
-        super(greet, null);
+        super(greet);
     }
 
     @Override
