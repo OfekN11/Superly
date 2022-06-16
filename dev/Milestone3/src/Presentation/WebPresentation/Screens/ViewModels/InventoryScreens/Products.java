@@ -2,7 +2,9 @@ package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
 import Domain.Service.Objects.InventoryObjects.Product;
 import Domain.Service.util.Result;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +28,10 @@ public class Products extends Screen{
     private static final String addButton = "Add product";
     private static final String removeButton = "Remove product";
 
+    private static final Class<? extends Employee>[] ALLOWED = null;
+
     public Products() {
-        super(greet);
+        super(greet, ALLOWED);
     }
 
     @Override
@@ -97,6 +101,8 @@ public class Products extends Screen{
             }
         }
         else if(isButtonPressed(req, viewButton)){
+            //if (isAllowed(req, ))
+            //if (Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.ALLOWED!=null && (Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.ALLOWED.length==0 || !Arrays.asList(Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.ALLOWED).contains(Login.getLoggedUser(req).getClass())))
             try {
                 String productIDstr = req.getParameter("ID");
                 int productID = Integer.parseInt(productIDstr);

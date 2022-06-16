@@ -1,5 +1,6 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
@@ -10,9 +11,10 @@ import java.io.IOException;
 public class InventoryMainMenu extends Screen {
 
     private static final String greet = "Inventory's Main Menu";
+    private static final Class<? extends Employee>[] ALLOWED = null;
 
     public InventoryMainMenu() {
-        super(greet);
+        super(greet, ALLOWED);
     }
 
     @Override

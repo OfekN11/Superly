@@ -1,5 +1,6 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +10,10 @@ import java.io.IOException;
 public class Category extends Screen{
 
     private static final String greet = "Category";
+    private static final Class<? extends Employee>[] ALLOWED = null;
 
     public Category() {
-        super(greet);
+        super(greet, ALLOWED);
     }
 
     @Override

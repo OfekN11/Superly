@@ -1,10 +1,11 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
-import Domain.Service.Objects.Employee.Employee;
 import Domain.Service.Objects.Employee.Sorter;
 import Domain.Service.Objects.Employee.Storekeeper;
 import Domain.Service.util.Result;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,17 +31,20 @@ public class Product extends Screen {
     private static final String setTargetButton = "Set target";
     private static final String setNameButton = "Set name";
 
-    private static final Class<? extends Employee>[] ALLOWED = new Class[]{};
+    public static final Class<? extends Employee>[] ALLOWED = new Class[]{};
 
     private int productID;
 
     public Product() {
-        super(greet);
-
+        super(greet, ALLOWED);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(!isAllowed(req, resp)) {
+            redirect(resp, Login.class);
+        }
+
         header(resp);
         greet(resp);
         String s = getParamVal(req, "ProductID");

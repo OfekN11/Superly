@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
 import Domain.Service.util.Result;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +17,10 @@ public class Categories extends Screen{
     private static final String addButton = "Add category";
     private static final String removeButton = "Remove category";
 
+    private static final Class<? extends Employee>[] ALLOWED = null;
 
     public Categories() {
-        super(greet);
+        super(greet, ALLOWED);
     }
 
     @Override
