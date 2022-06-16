@@ -5,6 +5,7 @@ import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.ConnectionHandler;
 import Globals.Enums.TruckModel;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -14,10 +15,10 @@ public class TruckDAO extends DAO {
 
     public TruckDAO() {
         super("Trucks");
-        try(ConnectionHandler connection = getConnectionHandler()){
-            ResultSet resultSet= select(connection.get());
+        try(ConnectionHandler handler = getConnectionHandler()){
+            ResultSet resultSet= select(handler.get());
             while (resultSet.next()){
-                Truck truck = new Truck(resultSet.getInt(1),TruckModel.valueOf(resultSet.getString(2)),resultSet.getInt(3),resultSet.getInt(4));
+                Truck truck = new Truck(resultSet.getInt(1), TruckModel.valueOf(resultSet.getString(2)),resultSet.getInt(3),resultSet.getInt(4));
                 TRUCK_IDENTITY_MAP.put(truck.getLicenseNumber(),truck);
             }
 
@@ -56,7 +57,6 @@ public class TruckDAO extends DAO {
         }
         try
         {
-            super.remove(id);
             super.insert(Arrays.asList(id, instance.getModel(), instance.getNetWeight(), instance.getMaxCapacityWeight()));
         }
         catch (SQLException throwables) {
@@ -74,11 +74,14 @@ public class TruckDAO extends DAO {
     }
 
     public void save(Truck truck) throws Exception {
-       insert(truck);
+        insert(truck);
     }
 
     public int delete(int licenseNumber) throws Exception {
         return super.remove(licenseNumber);
+    }
+    public int size(){
+        return TRUCK_IDENTITY_MAP.size();
     }
 
 

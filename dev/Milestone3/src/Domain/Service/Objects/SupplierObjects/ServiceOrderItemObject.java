@@ -2,7 +2,8 @@ package Domain.Service.Objects.SupplierObjects;
 
 public class ServiceOrderItemObject {
 
-    private int id;
+    private int productId;
+    private int idBySupplier;
     private String name;
     private int quantity;
     private float ppu;
@@ -14,8 +15,9 @@ public class ServiceOrderItemObject {
     private double weight;
 
 
-    public ServiceOrderItemObject(int id, String name, int quantity, float ppu, int discount, Double finalPrice, int missing, int defective, String description, double weight) {
-        this.id = id;
+    public ServiceOrderItemObject(int productId, int idBySupplier,  String name, int quantity, float ppu, int discount, Double finalPrice, int missing, int defective, String description, double weight) {
+        this.productId = productId;
+        this.idBySupplier = idBySupplier;
         this.name = name;
         this.quantity = quantity;
         this.ppu = ppu;
@@ -33,7 +35,11 @@ public class ServiceOrderItemObject {
     }
 
     public int getId() {
-        return id;
+        return productId;
+    }
+
+    public int supplierProductID() {
+        return idBySupplier;
     }
 
     public Double getFinalPrice() {
@@ -69,12 +75,12 @@ public class ServiceOrderItemObject {
     }
 
     public String toString(){
-        return "ID: " + id + ", Name:" + name + ", Quantity: " + quantity + ", Price Per Unit: " + ppu + ", Discount: " + discount
-                + ", Final Price: " + finalPrice + "\nWeight: " + weight  + ", Missing items: " + missing + ", Defective items: " + defective + ", Description: " + description;
+        return "ID at Inventory: " + productId + ", Name:" + name + ", Id by Supplier:" + idBySupplier + ", Quantity: " + quantity + ", Price Per Unit: " + ppu + ", Discount: " + discount
+                + ", Final Price: " + finalPrice + "\nWeight: " + weight  + ", Missing items: " + missing + ", Defective items: " + defective + ", Description: " + description + "\n";
     }
 
     public String toStringDiscount(float originalPrice) {
-        return "ID: " + id + ", Name: " + name + "\nQuantity: " + quantity + ", Price Per Unit: " + ppu + "\nDiscount: " + discount
+        return "ID at Inventory: " + productId + ", Name:" + name + ", Id by Supplier:" + idBySupplier +  "\nQuantity: " + quantity + ", Price Per Unit: " + ppu + "\nDiscount: " + discount
                 + "\nFinal Price: " + finalPrice + ", Original Price: " + originalPrice;
     }
 }

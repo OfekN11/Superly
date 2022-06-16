@@ -1,8 +1,10 @@
 package Presentation.WebPresentation.Screens.ViewModels.HR;
 
+import Presentation.WebPresentation.Screens.InventoryScreens.InventoryMainMenu;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.Suppliers.SupplierMainMenuStorekeeper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -19,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class Login extends Screen {
 
     private static final String greet = "Login";
-    private static Map<String, Employee> loggedUser = new HashMap<>();
+    private static final Map<String, Employee> loggedUser = new HashMap<>();
 
     private final EmployeeFactory factory = new EmployeeFactory();
 
@@ -35,12 +37,15 @@ public class Login extends Screen {
         header(resp);
         greet(resp);
         printForm(resp, new String[]{"ID"}, new String[]{"Employee ID"}, new String[]{"Sign in!"});
+        printMenu(resp, new String[]{"Suppliers Main Menu", "Inventory Main Menu"});
+
         handleError(resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
+
         if (isButtonPressed(req, "Sign in!")){
             String id = req.getParameter("ID");
             try {
@@ -56,6 +61,10 @@ public class Login extends Screen {
                 refresh(req, resp);
             }
         }
+        else if(getIndexOfButtonPressed(req) == 0)
+            redirect(resp, SupplierMainMenuStorekeeper.class);
+        else if(getIndexOfButtonPressed(req) == 1)
+            redirect(resp, InventoryMainMenu.class);
     }
 
     public static boolean isLoggedIn(HttpServletRequest req) {
@@ -90,9 +99,9 @@ public class Login extends Screen {
         byte[] hash = digest.digest(
                 toHash.getBytes(StandardCharsets.UTF_8));
         StringBuilder hexString = new StringBuilder(2 * hash.length);
-        for (int i = 0; i < hash.length; i++) {
-            String hex = Integer.toHexString(0xff & hash[i]);
-            if(hex.length() == 1) {
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
                 hexString.append('0');
             }
             hexString.append(hex);

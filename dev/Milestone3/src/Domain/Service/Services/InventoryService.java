@@ -28,20 +28,6 @@ public class InventoryService {
         controller = new InventoryController();
     }
 
-    /**
-     * Loads test data
-     *
-     * @return Result detailing success of operation
-     */
-    public Result<Object> loadTestData(){
-        try {
-            controller.loadTestData();
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
 
     /**
      * gets store ids of existing stores
@@ -111,9 +97,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> deleteProduct(int id){
+    public Result<Boolean> deleteProduct(int id){
         try {
-            controller.deleteProduct(id);
+            Result.makeOk(controller.deleteProduct(id));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -186,7 +172,7 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the info on the purchase
      */
-    public Result<Object> orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder){
+    public Result<Object> orderArrived(int orderID, Map<Integer, Map<Integer, Pair<Pair<Integer, Integer>, String>>> reportOfOrder){
         try {
             controller.orderArrived(orderID, reportOfOrder);
         }
@@ -722,9 +708,9 @@ public class InventoryService {
      * @param catID = ID of category to remove
      * @return Result detailing success of operation
      */
-    public Result<Object> deleteCategory(int catID) {
+    public Result<Boolean> deleteCategory(int catID) {
         try {
-            controller.deleteCategory(catID);
+            Result.makeOk(controller.deleteCategory(catID));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -790,7 +776,7 @@ public class InventoryService {
             for (Order o : orders) {
                 List<ServiceOrderItemObject> oItems = new ArrayList<>();
                 for (OrderItem oItem : o.getOrderItems()) {
-                    oItems.add(new ServiceOrderItemObject(oItem.getProductId(), oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice(), oItem.getMissingItems(), oItem.getDefectiveItems(), oItem.getDescription(), oItem.getWeight()));
+                    oItems.add(new ServiceOrderItemObject(oItem.getProductId(),oItem.getIdBySupplier(), oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice(), oItem.getMissingItems(), oItem.getDefectiveItems(), oItem.getDescription(), oItem.getWeight()));
                 }
                 serviceOrders.add(new ServiceOrderObject(o.getId(), o.getSupplierId(), o.getCreationTime(), o.getArrivaltime(), o.getStoreID(), o.getStatusString(), oItems));
             }

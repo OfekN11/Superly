@@ -1,8 +1,10 @@
 package Domain.DAL.Abstract;
 
 import Domain.DAL.ConnectionHandler;
-import org.sqlite.util.StringUtils;
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -10,13 +12,43 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class DAO {
-    private final static String dbName= "Superly.db"; // need to be change!
-    String url = String.format("jdbc:sqlite:%s/%s",System.getProperty("user.dir"),dbName);
+    private static String dbName= "Superly.db";
+    private static String url = String.format("jdbc:sqlite:%s/%s",System.getProperty("user.dir"),dbName);
     private final static String SELECT_QUERY = "SELECT %s from %s where %s";
     private final static String INSERT_QUERY = "INSERT INTO %s VALUES (%s)";
     private final static String DELETE_QUERY = "DELETE FROM %s WHERE %s;";
     private final static String UPDATE_QUERY = "UPDATE %s SET %s WHERE %s";
 
+    public static void setDBForTests(Class testClass) {
+        //create and delete db?
+        url = String.format("jdbc:sqlite:out/test/Milestone3/SuperlyTests%s.db", testClass.getName().replace('.','_'));
+        try (Connection connection = DriverManager.getConnection(url)) {
+            Statement statement = connection.createStatement();
+            String exec;
+            String[] tables = {"InventoryTables", "SuppliersTables", "EmployeeTables", "TransportTables"};
+            for (int i = 0; i < tables.length; i++) {
+                File f = new File(String.format("Test/Tables/%s.txt", tables[i]));
+                byte[] bf = new byte[(int) f.length()];
+                new FileInputStream(f).read(bf);
+                exec = new String(bf, "UTF-8");
+                String[] myTables = exec.split(";");
+                for (String t : myTables) {
+                    statement.execute(t);
+                }
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static void deleteTestDB(Class testClass) {
+        try {
+            Files.deleteIfExists(Paths.get(String.format("out/test/Milestone3/SuperlyTests%s.db", testClass.getName().replace('.','_'))));
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 
     // properties
     protected String tableName; // this field will be valid if we will save data in tables
@@ -34,9 +66,9 @@ public abstract class DAO {
      */
     protected void setTableColumnsNames(){
         tableColumnNames = new LinkedList<>();
-        try (Connection connection = getConnection()){
+        try (ConnectionHandler handler = getConnectionHandler()){
 
-            ResultSetMetaData setMetaData = executeQuery(connection,String.format(SELECT_QUERY,"*",tableName,"true")).getMetaData();
+            ResultSetMetaData setMetaData = executeQuery(handler.get(),String.format(SELECT_QUERY,"*",tableName,"true")).getMetaData();
             for (int i =0; i < setMetaData.getColumnCount();i++)
                 tableColumnNames.add(setMetaData.getColumnLabel(i+1));
         }
@@ -65,8 +97,8 @@ public abstract class DAO {
      * @throws SQLException
      */
     public boolean executeNonQuery(String executeString) throws SQLException {
-        try (Connection connection = getConnection()){
-            Statement statement = connection.createStatement();
+        try (ConnectionHandler handler = getConnectionHandler()){
+            Statement statement = handler.get().createStatement();
             return statement.execute(executeString);
         }
     }
@@ -93,8 +125,8 @@ public abstract class DAO {
      * @throws SQLException
      */
     public int executeNonQuery(String executeStringWithReplaceable, List<Object> values) throws SQLException {
-        try (Connection connection = getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(executeStringWithReplaceable);
+        try (ConnectionHandler handler = getConnectionHandler()){
+            PreparedStatement preparedStatement = handler.get().prepareStatement(executeStringWithReplaceable);
             replaceQuestionMarks(preparedStatement,values);
             return preparedStatement.executeUpdate();
         }
@@ -293,19 +325,14 @@ public abstract class DAO {
             else if (values.get(i).getClass().isEnum()){
                 preparedStatement.setString(i + 1, values.get(i).toString());
             }
+            else if(Boolean.class.equals(values.get(i).getClass())){
+                preparedStatement.setBoolean(i + 1, (Boolean) values.get(i));
+            }
             else
                 throw new RuntimeException("Did not specified this kind of data");
         }
     }
 
-    /**
-     * please remember to close the connection in the end of the use
-     * @return A Connection to the table
-     * @throws SQLException
-     */
-    protected Connection getConnection() throws SQLException {
-        return  DriverManager.getConnection(url);
-    }
 
     /**
      * please remember to close the connection in the end of the use

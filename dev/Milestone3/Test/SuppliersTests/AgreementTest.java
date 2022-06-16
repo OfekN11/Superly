@@ -33,12 +33,17 @@ public class AgreementTest {
         List<AgreementItem> list = new ArrayList<>();
         bulkPrices = new HashMap<>();
         bulkPrices.put(5, 20);
-        list.add(new AgreementItem(101,101, "item1", "m1", 5.11f, bulkPrices));
-        list.add(new AgreementItem(102,102, "item2", "m2", 7.11f, bulkPrices));
-        list.add(new AgreementItem(103, 103,"item3", "m3", 12.876f, bulkPrices));
-        list.add(new AgreementItem(104, 104,"item4", "m4", 184.2f, bulkPrices));
-        list.add(new AgreementItem(105, 105,"item5", "m5", 1123f, bulkPrices));
-        list.add(new AgreementItem(106, 106,"item6", "m6", 687248.45621f, bulkPrices));
+        try {
+            list.add(new AgreementItem(101,101,  "m1", 5.11f,  bulkPrices));
+            list.add(new AgreementItem(102,102,  "m2", 7.11f, bulkPrices));
+            list.add(new AgreementItem(103, 103, "m3", 12.876f,  bulkPrices));
+            list.add(new AgreementItem(104, 104, "m4", 184.2f,  bulkPrices));
+            list.add(new AgreementItem(105, 105, "m5", 1123f, bulkPrices));
+            list.add(new AgreementItem(106, 106, "m6", 687248.45621f, bulkPrices));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return list;
     }
@@ -76,13 +81,14 @@ public class AgreementTest {
 
     @Test
     public void test_addItem(){
-        AgreementItem item1 = new AgreementItem(117, 117,"name1", "man1", 1565165f, bulkPrices);
-        AgreementItem item2 = new AgreementItem(118, 118,"name2", "man2", 1565165f, bulkPrices);
-        AgreementItem item3 = new AgreementItem(119, 119,"name3", "man3", 1565165f, bulkPrices);
-
-        List<AgreementItem> aiList = makeItemList();
 
         try{
+            AgreementItem item1 = new AgreementItem(117, 117, "man1", 1565165f,  bulkPrices);
+            AgreementItem item2 = new AgreementItem(118, 118,"man2", 1565165f,  bulkPrices);
+            AgreementItem item3 = new AgreementItem(119, 119,"man3", 1565165f,  bulkPrices);
+
+            List<AgreementItem> aiList = makeItemList();
+
             agreement.setItems(aiList);
 
             agreement.addItem(item1);
@@ -189,13 +195,14 @@ public class AgreementTest {
 
     @Test
     public void test_addAndRemove(){
-        AgreementItem item1 = new AgreementItem(117, 117, "name1", "man1", 1565165, bulkPrices);
-        AgreementItem item2 = new AgreementItem(118, 118, "name2", "man2", 1565165, bulkPrices);
-        AgreementItem item3 = new AgreementItem(119, 119,"name3", "man3", 1565165, bulkPrices);
-
-        List<AgreementItem> aiList = makeItemList();
 
         try{
+            AgreementItem item1 = new AgreementItem(117, 117,  "man1", 1565165,  bulkPrices);
+            AgreementItem item2 = new AgreementItem(118, 118,  "man2", 1565165,  bulkPrices);
+            AgreementItem item3 = new AgreementItem(119, 119,"man3", 1565165,  bulkPrices);
+
+            List<AgreementItem> aiList = makeItemList();
+
             agreement.setItems(aiList);
 
             aiList = makeItemList();

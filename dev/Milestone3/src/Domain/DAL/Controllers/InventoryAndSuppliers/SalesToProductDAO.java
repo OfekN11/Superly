@@ -15,7 +15,7 @@ public class SalesToProductDAO extends DAO {
     }
     public List<Integer> getProductsOfSale(int sale) {
         try {
-            ResultSet rs = select(getConnection(), Arrays.asList(SALE_COLUMN), Arrays.asList(sale));
+            ResultSet rs = select(getConnectionHandler().get(), Arrays.asList(SALE_COLUMN), Arrays.asList(sale));
             List<Integer> products = new ArrayList<>();
             while (rs.next()) {
                 products.add(rs.getInt(PRODUCT_COLUMN));
@@ -30,7 +30,7 @@ public class SalesToProductDAO extends DAO {
 
     public List<Integer> getSales(int product) {
         try {
-            ResultSet rs = select(getConnection(), Arrays.asList(PRODUCT_COLUMN), Arrays.asList(product));
+            ResultSet rs = select(getConnectionHandler().get(), Arrays.asList(PRODUCT_COLUMN), Arrays.asList(product));
             List<Integer> sales = new ArrayList<>();
             while (rs.next()) {
                 sales.add(rs.getInt(SALE_COLUMN));

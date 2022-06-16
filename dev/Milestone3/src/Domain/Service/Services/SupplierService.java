@@ -117,7 +117,7 @@ public class SupplierService {
         }
     }
 
-    // one component is : < " id , name , manufacturer , pricePerUnit , quantity1 , percent1 , quantity2 , percent2 ...  " >
+    // OLD FORMAT : one component is : < " id , name , manufacturer , pricePerUnit , quantity1 , percent1 , quantity2 , percent2 ...  " >
     public Result<List<ServiceItemObject>> itemsFromOneSupplier(int supplierId){
         try {
             List<String> result = controller.itemsFromOneSupplier(supplierId);
@@ -127,6 +127,7 @@ public class SupplierService {
         }
     }
 
+    //Format : " productId ,idBySupplier,  name , manufacturer , pricePerUnit , weight, quantity ,  percent , quantity , percent ..."
     private List<ServiceItemObject> createServiceItemObject(List<String> result) {
         ArrayList<ServiceItemObject> items = new ArrayList<>();
         for(String currItem : result) {
@@ -136,16 +137,17 @@ public class SupplierService {
                 info.add(curr.trim());
             }
 
-
-            int id = Integer.parseInt(info.get(0));
-            String name = info.get(1);
-            String manufacturer = info.get(2);
-            float pricePerUnit = Float.parseFloat(info.get(3));
+            int productId = Integer.parseInt(info.get(0));
+            int idBySupplier = Integer.parseInt(info.get(1));
+            String name = info.get(2);
+            String manufacturer = info.get(3);
+            float pricePerUnit = Float.parseFloat(info.get(4));
+            double weight = Double.parseDouble(info.get(5));
             Map<Integer, Integer> bulkPrices = new HashMap<>();  //create the bulkPriceMap
-            for(int i = 4; i < info.size(); i+=2){
+            for(int i = 6; i < info.size(); i+=2){
                 bulkPrices.put( Integer.parseInt(info.get(i)) , Integer.parseInt(info.get(i + 1)));
             }
-            items.add( new ServiceItemObject(id, name , manufacturer , pricePerUnit , bulkPrices));
+            items.add( new ServiceItemObject(productId, idBySupplier, name , manufacturer , pricePerUnit ,weight,  bulkPrices));
         }
         return items;
     }
@@ -186,6 +188,8 @@ public class SupplierService {
         }
     }
 
+
+    /*
     public Result<Boolean> updateItemName(int supplierId, int itemId, String newName){
         try {
             controller.updateItemName( supplierId, itemId, newName);
@@ -194,6 +198,7 @@ public class SupplierService {
             return Result.makeError(e.getMessage());
         }
     }
+     */
 
     public Result<Boolean> updateItemManufacturer(int supplierId, int itemId, String manufacturer){
         try {
@@ -204,9 +209,9 @@ public class SupplierService {
         }
     }
 
-    public Result<Boolean> addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices){
+    public Result<Boolean> addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices){
         try {
-            controller.addItemToAgreement( supplierId, itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices);
+            controller.addItemToAgreement( supplierId, itemId, idBySupplier, itemManu, itemPrice, bulkPrices);
             return Result.makeOk(true);
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
@@ -454,6 +459,7 @@ public class SupplierService {
     }
 
 
+    /*
     // Format :  <productId1, quantity1> , <productId2, quantity2> , ...
     public Result<Boolean> addItemsToOrder(int supId, int orderId, List<String> itemsString){
         try{
@@ -464,6 +470,8 @@ public class SupplierService {
             return Result.makeError(e.getMessage());
         }
     }
+
+     */
 
     public Result<Boolean> addItemToOrder(int supId, int orderId, int itemId, int itemQuantity){
         try{
@@ -597,7 +605,7 @@ public class SupplierService {
 
     private ArrayList<ServiceOrderItemObject> createServiceOrderItemObject(List<String> result, int startIndex) {
         ArrayList<ServiceOrderItemObject> items = new ArrayList<>();
-        for(int i = startIndex; i < result.size(); i+=10 ){
+        for(int i = startIndex; i < result.size(); i+=11 ){
             int itemId = Integer.parseInt(result.get(i));
             String name = result.get(i+1);
             int quantity =  Integer.parseInt(result.get(i+2));
@@ -608,7 +616,8 @@ public class SupplierService {
             int defective = Integer.parseInt(result.get(i+7));
             String description = result.get(i+8);
             double weight = Double.parseDouble(result.get(i+9));
-            items.add(new ServiceOrderItemObject(itemId, name, quantity, ppu, discount, finalPrice, missing, defective, description, weight));
+            int idBySupplier = Integer.parseInt(result.get(i+10));
+            items.add(new ServiceOrderItemObject(itemId,idBySupplier, name, quantity, ppu, discount, finalPrice, missing, defective, description, weight));
         }
         return items;
     }
@@ -616,6 +625,49 @@ public class SupplierService {
     public Result<List<Integer>> getOrdersIds(int supplierId) {
         try {
             List<Integer> result = controller.getAllOrderIdsForSupplier(supplierId);
+            return Result.makeOk(result);
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> removeOrder(int orderId) {
+        try {
+            Boolean result = controller.removeOrder(orderId);
+            return Result.makeOk(result);
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<ServiceOrderObject> getOrder(int orderId) {
+        try {
+            List<String> result = controller.getOrder(orderId);
+            return Result.makeOk(createServiceOrderObject(result));
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Integer> getSupplierWIthOrderID(int orderId) {
+        try {
+            return Result.makeOk(controller.getSupplierWithOrder(orderId));
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Integer> getMatchingProductIdForIdBySupplier(int idBySupplier) {
+        try {
+            return Result.makeOk(controller.getMatchingProductIdForIdBySupplier(idBySupplier));
+        } catch (Exception e) {
+            return  Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<Boolean> orderItemExistsInOrder(int supplierId, int orderId, int itemId) {
+        try {
+            Boolean result = controller.orderItemExistsInOrder(supplierId, orderId, itemId);
             return Result.makeOk(result);
         } catch (Exception e) {
             return  Result.makeError(e.getMessage());

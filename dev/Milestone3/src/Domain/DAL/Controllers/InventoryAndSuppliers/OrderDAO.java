@@ -4,6 +4,7 @@ import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.ConnectionHandler;
 import Globals.Enums.OrderStatus;
 
 import java.sql.Connection;
@@ -66,9 +67,9 @@ public class OrderDAO extends DataMapper<Order> {
         String status = instanceResult.getString(STATUS_COLOUMN);
         //status : waiting, ordered
         if(status.equals("waiting"))
-            return OrderStatus.ordered;
+            return OrderStatus.waiting;
         else
-            return  OrderStatus.waiting;
+            return  OrderStatus.ordered;
     }
 
     @Override
@@ -82,6 +83,16 @@ public class OrderDAO extends DataMapper<Order> {
                 orderItemDAO.addItem(order.getId(), orderItem);
             }
         }
+    }
+
+    @Override
+    public String instanceToId(Order instance) {
+        return String.valueOf(instance.getId());
+    }
+
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
     }
 
     public void addOrder(Order order) throws SQLException {
@@ -137,8 +148,8 @@ public class OrderDAO extends DataMapper<Order> {
     public ArrayList<Order> getLastOrdersFromALlSuppliers(ArrayList<Integer> orderIds) {
         ArrayList<Order> result = new ArrayList<>();
         for(Integer orderId : orderIds){
-            try(Connection connection = getConnection()) {
-                ResultSet instanceResult = select(connection, orderId);
+            try(ConnectionHandler handler = getConnectionHandler()) {
+                ResultSet instanceResult = select(handler.get(), orderId);
                 while (instanceResult.next()) {
                     Order order = buildObject(instanceResult);
                     result.add(order);
@@ -153,8 +164,8 @@ public class OrderDAO extends DataMapper<Order> {
 
     public int getGlobalId() {
         ArrayList<Integer> ids = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection);
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get());
             while (instanceResult.next()) {
                 ids.add(instanceResult.getInt(1));
             }
@@ -175,8 +186,8 @@ public class OrderDAO extends DataMapper<Order> {
 
     public ArrayList<Integer> getSupplierOrdersIds(int supplierId) {
         ArrayList<Integer> ids = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(ORDER_ID_COLUMN),  Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), Arrays.asList(ORDER_ID_COLUMN),  Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
             while (instanceResult.next()) {
                 ids.add(instanceResult.getInt(1));
             }
@@ -192,8 +203,8 @@ public class OrderDAO extends DataMapper<Order> {
 
     //for tests
     public void removeByStore(int store) {
-        try (Connection connection = getConnection()){
-            ResultSet resultSet = select(connection, Arrays.asList(STORE_ID_COLUMN), Arrays.asList(store));
+        try (ConnectionHandler handler = getConnectionHandler()){
+            ResultSet resultSet = select(handler.get(), Arrays.asList(STORE_ID_COLUMN), Arrays.asList(store));
             List<Integer> ordersIds = new ArrayList<>();
             while (resultSet.next()) {
                 ordersIds.add(resultSet.getInt(ORDER_ID_COLUMN));
@@ -217,6 +228,23 @@ public class OrderDAO extends DataMapper<Order> {
             }
         }
         return items;
+    }
+
+    public void setOrderArrivalTime(int orderId ,LocalDate date) throws SQLException {
+        updateProperty(String.valueOf(orderId), ARRIVAL_TIME_COLUMN, date);
+    }
+
+
+    public void setOrderItemMissingAmount(int itemId, int missingAmount) throws SQLException {
+        orderItemDAO.updateMissingAmount(itemId, missingAmount);
+    }
+
+    public void setOrderItemDefectiveAmount(int itemId, int defectiveAmount) throws SQLException {
+        orderItemDAO.updateDefectiveAmount(itemId, defectiveAmount);
+    }
+
+    public void setOrderItemDescription(int itemId, String desc) throws SQLException {
+        orderItemDAO.updateDescription(itemId, desc);
     }
 }
 
