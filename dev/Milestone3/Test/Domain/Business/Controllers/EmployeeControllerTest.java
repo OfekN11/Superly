@@ -37,8 +37,8 @@ public class EmployeeControllerTest extends TestCase {
             //loadHR();
             // addInventoryTestData();
 
-            insertFirstDataToDB(); // the db in the desktop is updated until (not including) this line. aka employees and Inventory
-            transportData();
+           // insertFirstDataToDB(); // the db in the desktop is updated until (not including) this line. aka employees and Inventory
+            //transportData();
             employeeController.editEmployeeName("160","updated");
             assertEquals(employeeController.getEmployee("160").getName(),"updated");
         } catch (Exception e) {
@@ -259,7 +259,7 @@ public class EmployeeControllerTest extends TestCase {
 
         supplierController.addItemsToAgreement(supplierId1, items);
 
-        Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 25),  LocalDate.of(2022, 6, 1), storeId , OrderStatus.complete);
+        Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 25),  LocalDate.of(2022, 6, 1), storeId , OrderStatus.waiting);
         int order1Id = order1.getId();
         supplierController.insertToOrderDAO(order1);
         supplierController.suppliersDAO.getAgreementController().setLastOrderId(supplierId1, order1Id);
@@ -301,7 +301,7 @@ public class EmployeeControllerTest extends TestCase {
         supplierController.addItemsToAgreement(supplierId2, items);
 
 
-        Order order2 = new Order(2, supplierId2, LocalDate.of(2022, 5, 29),  LocalDate.of(2022, 6, 1), storeId, OrderStatus.complete);
+        Order order2 = new Order(2, supplierId2, LocalDate.of(2022, 5, 29),  LocalDate.of(2022, 6, 1), storeId, OrderStatus.waiting);
         int order2Id = order2.getId();
         supplierController.insertToOrderDAO(order2);
 
