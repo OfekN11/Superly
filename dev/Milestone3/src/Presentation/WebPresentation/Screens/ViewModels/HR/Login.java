@@ -22,6 +22,7 @@ public class Login extends Screen {
 
     private static final String greet = "Login";
     private static final Map<String, Employee> loggedUser = new HashMap<>();
+    private static final int LOGIN_COOKIE_MAX_AGE = (int)TimeUnit.MINUTES.toSeconds(5);
 
     private final EmployeeFactory factory = new EmployeeFactory();
 
@@ -31,7 +32,7 @@ public class Login extends Screen {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (isLoggedIn(req)) {
+        if (isLoggedIn(req, resp)) {
             redirect(resp, EmployeeServlet.class);
         }
         header(resp);
@@ -53,7 +54,7 @@ public class Login extends Screen {
                 String hash = hash(id);
                 loggedUser.put(hash, emp);
                 Cookie c = new Cookie("superly_user", hash);
-                c.setMaxAge((int)TimeUnit.MINUTES.toSeconds(2));
+                c.setMaxAge(LOGIN_COOKIE_MAX_AGE);
                 resp.addCookie(c);
                 redirect(resp, EmployeeServlet.class);
             } catch (Exception e) {
@@ -67,12 +68,22 @@ public class Login extends Screen {
             redirect(resp, InventoryMainMenu.class);
     }
 
-    public static boolean isLoggedIn(HttpServletRequest req) {
+    public static boolean isLoggedIn(HttpServletRequest req, HttpServletResponse resp) {
         Cookie[] cookies = req.getCookies();
         if (cookies != null)
             for (Cookie c : cookies)
-                if (c.getName().equals("superly_user") && loggedUser.containsKey(c.getValue()))
-                    return true;
+                if (c.getName().equals("superly_user")) {
+                    if (loggedUser.containsKey(c.getValue())) {
+                        c.setMaxAge(LOGIN_COOKIE_MAX_AGE);
+                        resp.addCookie(c);
+                        return true;
+                    }
+                    else {
+                        c.setMaxAge(0);
+                        resp.addCookie(c);
+                        return false;
+                    }
+                }
         return false;
     }
 
