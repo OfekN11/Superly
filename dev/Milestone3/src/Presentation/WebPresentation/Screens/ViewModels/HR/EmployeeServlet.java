@@ -16,7 +16,7 @@ public class EmployeeServlet extends Screen {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!Login.isLoggedIn(req)){
+        if (!Login.isLoggedIn(req, resp)){
             redirect(resp, Login.class);
         }
         header(resp);
