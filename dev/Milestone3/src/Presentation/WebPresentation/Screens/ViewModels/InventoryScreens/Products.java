@@ -133,10 +133,10 @@ public class Products extends Screen{
 
     private void printProducts(HttpServletResponse resp) {
         try {
-            Result<List<Product>> products = controller.getProducts();
+           List<Product> products = controller.getProducts().getValue();
             PrintWriter out = resp.getWriter();
-            List<Product> sortedProducts = sort(products.getValue());
-            for (Product p: sortedProducts) {
+            products.sort(Comparator.comparingInt(Product::getId));
+            for (Product p: products) {
                 out.println(p.getName() + ": " + p.getId() + "<br>");
             }
         } catch (Exception e) {
@@ -144,20 +144,6 @@ public class Products extends Screen{
         }
     }
 
-    private List<Product> sort(List<Product> products) {
-        List<Integer> ids = new ArrayList<>();
-        for (Product p: products) {
-            ids.add(p.getId());
-        }
-        Collections.sort(ids);
-        List<Product> sortedList = new ArrayList<>();
-        for (Integer id : ids) {
-            Product p = findProduct(products, id);
-            if (p!=null)
-                sortedList.add(p);
-        }
-        return sortedList;
-    }
     private Product findProduct(List<Product> products, int id) {
         for (Product p : products) {
             if (p.getId()==id)
