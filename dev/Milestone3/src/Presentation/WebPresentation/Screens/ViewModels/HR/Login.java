@@ -40,10 +40,6 @@ public class Login extends Screen {
         printForm(resp, new String[]{"ID"}, new String[]{"Employee ID"}, new String[]{"Sign in!"});
         printMenu(resp, new String[]{"Suppliers Main Menu", "Inventory Main Menu"});
 
-        String val;
-        if ((val = getParamVal(req, "asdf")) != null){
-            //dosomething
-        }
         handleError(resp);
     }
 
