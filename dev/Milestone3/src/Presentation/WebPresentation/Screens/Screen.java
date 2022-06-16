@@ -1,9 +1,11 @@
 package Presentation.WebPresentation.Screens;
 
 import Presentation.BackendController;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 import Presentation.WebPresentation.WebMain;
+import jdk.jpackage.internal.Log;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 public abstract class Screen extends HttpServlet {
 
@@ -20,12 +23,21 @@ public abstract class Screen extends HttpServlet {
      */
     private final String greeting;
 
+    /***
+     * see the isAllowed method
+     * allowed == null -> anyone may visit
+     * allowed.length == 0 -> any logged in user may visit
+     * else -> only the types in the array may visit
+     */
+    private final Class<? extends Employee>[] allowed;
+
     private String error = null;
 
     public static BackendController controller = new BackendController();
 
-    public Screen(String greeting) {
+    public Screen(String greeting, Class<? extends Employee>[] allowed) {
         this.greeting = greeting;
+        this.allowed = allowed;
     }
 
     /***
@@ -98,6 +110,21 @@ public abstract class Screen extends HttpServlet {
         PrintWriter out = resp.getWriter();
         out.println(String.format("<p style=\"color:red\">%s</p><br><br>", getError()));
         cleanError();
+    }
+
+    /***
+     * checks if the visitor has permission to visit this page
+     * allowed == null -> anyone may visit
+     * allowed.length == 0 -> any logged in user may visit
+     * else -> only the types in the array may visit
+     * @param req the request sent
+     * @param resp the response to send
+     * @return true if visiting this screen is allowed
+     */
+    protected boolean isAllowed(HttpServletRequest req, HttpServletResponse resp) {
+        return allowed == null ||
+                (Login.isLoggedIn(req, resp) &&
+                        (allowed.length == 0 || Arrays.asList(allowed).contains(Login.getLoggedUser(req).getClass())));
     }
 
     /***
