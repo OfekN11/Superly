@@ -21,22 +21,12 @@ import java.util.List;
 import java.util.Set;
 
 public class Product extends Screen {
+
     private static final String greet = "Product";
-
-    /*private final String[] menuOption;
-    public final int id;
-    public final String name;
-    public final int categoryID;
-    public final double originalPrice;
-    public final double currentPrice;
-    public final String weight;
-    public final String manufacturer;*/
-
     private static final String setPriceButton = "Set price";
     private static final String setMinButton = "Set min";
     private static final String setTargetButton = "Set target";
     private static final String setNameButton = "Set name";
-
     public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
 
     private int productID;
@@ -72,7 +62,7 @@ public class Product extends Screen {
         handleHeader(req, resp);
         if (isButtonPressed(req, setPriceButton)){
             if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Transport_Manager.class, HR_Manager.class)))) {
-                setError("You have no permission to view product");
+                setError("You have no permission to set product price");
                 refresh(req, resp);
                 return;
             }
@@ -97,6 +87,11 @@ public class Product extends Screen {
             }
         }
         else if (isButtonPressed(req, setMinButton)){
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+                setError("You have no permission to set product minimum amount");
+                refresh(req, resp);
+                return;
+            }
             try {
                 int storeID = Integer.parseInt(req.getParameter("storeID"));
                 int newMin = Integer.parseInt(req.getParameter("new min"));
@@ -119,6 +114,11 @@ public class Product extends Screen {
             }
         }
         else if (isButtonPressed(req, setTargetButton)){
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+                setError("You have no permission to set product target amount");
+                refresh(req, resp);
+                return;
+            }
             try {
                 int storeID = Integer.parseInt(req.getParameter("storeID"));
                 int newTarget = Integer.parseInt(req.getParameter("new target"));
@@ -141,6 +141,11 @@ public class Product extends Screen {
             }
         }
         else if (isButtonPressed(req, setNameButton)){
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+                setError("You have no permission to set product name");
+                refresh(req, resp);
+                return;
+            }
             try {
                 String newName = req.getParameter("new name");
                 if(controller.editProductName(productID, newName).isOk()) {
@@ -149,7 +154,7 @@ public class Product extends Screen {
                     refresh(req, resp);
                 }
                 else{
-                    setError("Target amount hasn't been changed");
+                    setError("Product name hasn't been changed");
                     refresh(req, resp);
                 }
             }catch (NumberFormatException e1){
@@ -164,7 +169,6 @@ public class Product extends Screen {
     }
     private void printProduct(HttpServletResponse resp, Domain.Service.Objects.InventoryObjects.Product p) {
         try {
-            Result<Domain.Service.Objects.InventoryObjects.Product> product = controller.getProduct(productID);
             PrintWriter out = resp.getWriter();
             out.println("Product ID: " + p.getId() + "<br>");
             out.println("Product name: " + p.getName() + "<br>");
