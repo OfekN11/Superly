@@ -1,6 +1,7 @@
-package Presentation.WebPresentation.Screens.ViewModels.Transport;
+package Presentation.WebPresentation.Screens.ViewModels.Transport.Truck;
 
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,10 +28,10 @@ public class TruckManagementMenu extends Screen {
         handleHeader(req, resp);
         switch (getIndexOfButtonPressed(req)) {
             case 0:
-                //TODO: redirect(resp, TransportManage.class);
+                redirect(resp, AddTruck.class);
                 break;
             case 1:
-                //TODO: redirect(resp, TruckManage.class);
+                redirect(resp, DeleteTruck.class);
                 break;
             case 2:
                 redirect(resp, TransportMainMenu.class);

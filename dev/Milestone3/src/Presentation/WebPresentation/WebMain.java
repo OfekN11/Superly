@@ -6,8 +6,9 @@ import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.*;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportManagement;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.TruckManagementMenu;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.AddTruck;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.DeleteTruck;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.TruckManagementMenu;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
@@ -52,7 +53,9 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(Sales.class, "/Sales"),
             new AbstractMap.SimpleEntry<>(Sale.class, "/Sale"),
             new AbstractMap.SimpleEntry<>(TransportMainMenu.class, "/TransportMainMenu"),
-            new AbstractMap.SimpleEntry<>(TruckManagementMenu.class, "/TruckManagementMenu")
+            new AbstractMap.SimpleEntry<>(TruckManagementMenu.class, "/TruckManagementMenu"),
+            new AbstractMap.SimpleEntry<>(AddTruck.class, "/TruckManagementMenu/AddTruck"),
+            new AbstractMap.SimpleEntry<>(DeleteTruck.class, "/TruckManagementMenu/DeleteTruck")
 
 
             ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
