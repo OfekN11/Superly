@@ -3,9 +3,11 @@ package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 
 public class EditCard extends Screen {
@@ -25,6 +27,8 @@ public class EditCard extends Screen {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         header(resp);
         greet(resp);
+
+        int supId = getSupplierId("supplierId", req, resp);
 
         printForm(resp, new String[] {"bankNumber"}, new String[]{"Bank Number"}, new String[]{"Update Bank Number"});
         printForm(resp, new String[] {"address" }, new String[]{"Address"}, new String[]{"Update Address"});
@@ -133,5 +137,26 @@ public class EditCard extends Screen {
             refresh(req, resp);
         }
     }
+
+
+
+    private int getSupplierId(String supplierId, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int supId = -1;
+        supId = Integer.parseInt(getCookie(supplierId, req, resp, 5));
+        return supId;
+    }
+
+    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
+        String cookie = "";
+        for (Cookie c : req.getCookies()) {
+            if (c.getName().equals(name)) {
+                cookie = c.getValue();
+            }
+            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
+            resp.addCookie(c);
+        }
+        return cookie;
+    }
+
 
 }

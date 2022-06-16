@@ -3,24 +3,23 @@ package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 public class AddItemToAgreement extends Screen {
 
 
     private static final String greet = "Add Item";
-    private final int supplierId;
 
 
     public AddItemToAgreement() {
-        // TODO: Supplier pass ID
         super(greet);
-        supplierId = 1;
     }
 
 
@@ -28,6 +27,8 @@ public class AddItemToAgreement extends Screen {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         header(resp);
         greet(resp);
+
+        //int supId = getSupplierId( req, resp);
 
         printForm(resp, new String[] {"productId", "idBySupplier", "manufacturer", "pricePerUnit", "bulkPrices"}
         , new String[]{"Product ID", "ID by Supplier", "Manufacturer", "Price Per Unit", "Bulk Prices"}, new String[]{"Add Item To Agreement"});
@@ -43,6 +44,7 @@ public class AddItemToAgreement extends Screen {
         handleHeader(req, resp);
         if (isButtonPressed(req, "Add Item To Agreement")) {
             try {
+                int supId = getSupplierId( req, resp);
                 int productId = Integer.parseInt(req.getParameter("productId"));
                 int idBySupplier = Integer.parseInt(req.getParameter("idBySupplier"));
                 String manufacturer = req.getParameter("manufacturer");
@@ -58,9 +60,8 @@ public class AddItemToAgreement extends Screen {
                     bulkMap.put(Integer.parseInt(bulkArr[i]), Integer.parseInt(bulkArr[i+1]));
                     i++;
                 }
-                if(controller.addItemToAgreement(supplierId, productId, idBySupplier, manufacturer, ppu, bulkMap)) {
+                if(controller.addItemToAgreement(supId, productId, idBySupplier, manufacturer, ppu, bulkMap)) {
 
-                    // TODO: Supplier change this to normal print!
                     setError(String.format("Added New Item."));
                     refresh(req, resp);
                 }
@@ -79,4 +80,29 @@ public class AddItemToAgreement extends Screen {
 
         }
     }
+
+
+
+    private int getSupplierId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int supId = -1;
+        supId = Integer.parseInt(getCookie("supplierId", req, resp, 5));
+        return supId;
+    }
+
+    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
+        String cookie = "";
+        for (Cookie c : req.getCookies()) {
+            if (c.getName().equals(name)) {
+                cookie = c.getValue();
+            }
+            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
+            resp.addCookie(c);
+        }
+        return cookie;
+    }
+
+
+
+
+
 }

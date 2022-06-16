@@ -18,14 +18,11 @@ import java.util.concurrent.TimeUnit;
 public class ViewSupplier extends Screen {
 
     private static final String greet = "View Supplier for Storekeeper and Store Manager";
-    private final int supplierId;
     private static final String addAgreement = "Add New Agreement";
+    //private static boolean showItems = false;
 
-    private static boolean showItems = false;
     public ViewSupplier() {
-        // TODO: Supplier pass supplierId
         super(greet);
-        supplierId = 1;
     }
 
     @Override
@@ -33,36 +30,37 @@ public class ViewSupplier extends Screen {
         header(resp);
         greet(resp);
 
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals("sup_id")) {
-                resp.getWriter().println("<h2>handling supplier id " + c.getValue() + "</h2><br>");
-            }
-            //time of life of the cookie, if bot listed its infinite
-            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(2));
-            resp.addCookie(c);
-        }
+        int supId = getSupplierId(req, resp);
+        resp.getWriter().println("<h2>Watching Supplier " + supId + ".</h2><br>");
+
         printMenu(resp, new String[]{"Show Supplier Info", "Show Contacts","Show Manufacturers", "Show Agreement", "Show all Orders", "Show all discount items", "Edit Card"});
 
 
         printForm(resp, new String[] {"agreementType", "agreementDays" }, new String[]{"Agreement Type", "Agreement Days"}, new String[]{addAgreement});
         printInstructions(resp);
 
+
         if (req.getParameter("showItems") != null && req.getParameter("showItems").equals("true")){
-            showSupplierInfo(req, resp);
-            showItems = false;
+            showSupplierInfo(req, resp, supId);
+        }
+        else if (req.getParameter("showAllOrders") != null && req.getParameter("showAllOrders").equals("true")){
+            showAllOrders(req, resp, supId);
+        }
+        else if (req.getParameter("showAllDiscountItems") != null && req.getParameter("showAllDiscountItems").equals("true")){
+            showAllDiscountItems(req, resp, supId);
         }
         handleError(resp);
     }
 
+
+
     private void printInstructions(HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
-        //out.println("<h4>");
-        out.println("<h4>Type should be 1, 2 or 3 as follows:</h4><br><br>");
-        out.println("<h5>1) Routine agreement</h5><br><br>");
-        out.println("<h5>2) By order agreement</h5><br><br>");
-        out.println("<h5>3) Self-Transport agreement</h5><br><br>");
-        out.println("<h5>Enter Agreement Days with ',' between, like this: 1,3,5,6</h5><br><br>");
-    //    out.println("</h4>");
+        out.println("<h4>Agreement Type should be 1, 2 or 3 as follows:</h4>");
+        out.println("<h5>1) Routine agreement<br>");
+        out.println("2) By order agreement<br>");
+        out.println("3) Self-Transport agreement</h5>");
+        out.println("<h4>Enter Agreement Days with ',' between, like this: 1,3,5,6</h4>");
     }
 
 
@@ -77,62 +75,57 @@ public class ViewSupplier extends Screen {
         switch (getIndexOfButtonPressed(req)){
             case 0:
                 resp.sendRedirect("/ViewSupplier?showItems=true");
-                //showSupplierInfo(req, resp);
                 break;
             case 1:
-                // TODO: Suppliers pass supplierId
-                redirect(resp, ManageContacts.class);
+                manageContacts(req, resp);
                 break;
             case 2:
-                // TODO: Suppliers pass supplierId
-                redirect(resp, ManageManufacturers.class);
+                manageManufacturers(req,resp);
                 break;
             case 3:
-                // TODO: Suppliers pass supplierId
                 showAgreement(req, resp);
                 break;
             case 4:
-                showAllOrders(req, resp);
+                resp.sendRedirect("/ViewSupplier?showAllOrders=true");
                 break;
             case 5:
-                showAllDiscountItems(req, resp);
+                resp.sendRedirect("/ViewSupplier?showAllDiscountItems=true");
                 break;
             case 6:
-                // TODO: Suppliers pass supplierId
                 redirect(resp, EditCard.class);
                 break;
         }
     }
 
+
+    private void manageContacts(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            redirect(resp, ManageContacts.class);
+        } catch (Exception e) {
+            setError(e.getMessage());
+            refresh(req, resp);
+        }
+    }
+
+    private void manageManufacturers(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            redirect(resp, ManageManufacturers.class);
+        } catch (Exception e) {
+            setError(e.getMessage());
+            refresh(req, resp);
+        }
+    }
+
     private void showAgreement(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            if(!controller.hasAgreement(supplierId)){
-
-                // TODO: Supplier change this to normal print!
-                setError("No agreement with this supplier.");
+            int supId = getSupplierId(req, resp);
+            if(!controller.hasAgreement(supId)){
+                setError("No agreement with this supplier");
                 refresh(req, resp);
             }
             else{
-                // TODO: Suppliers pass supplierId
                 redirect(resp, ShowAgreement.class);
             }
-            /* TODO: Don't think we need 3 windows
-            if(controller.isRoutineAgreement(supplierId)){
-                // TODO: Suppliers pass supplierId
-                redirect(resp, ShowRoutineAgreement.class);
-            }
-            else{
-                if(controller.isByOrderAgreement(supplierId)){
-                    // TODO: Suppliers pass supplierId
-                    redirect(resp, ShowBuOrderAgreement.class);
-                }
-                else{
-                    // TODO: Suppliers pass supplierId
-                    redirect(resp, ShowNotTransportingAgreement.class);
-                }
-            }
-
-             */
         } catch (Exception e) {
             setError(e.getMessage());
             refresh(req, resp);
@@ -140,71 +133,67 @@ public class ViewSupplier extends Screen {
     }
 
 
-    private void showAllDiscountItems(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void showAllDiscountItems(HttpServletRequest req, HttpServletResponse resp, int supId) throws IOException {
         try{
-            ArrayList<ServiceOrderItemObject> r = controller.getAllOrdersItemsInDiscounts(supplierId);
+            PrintWriter out = resp.getWriter();
+            ArrayList<ServiceOrderItemObject> r = controller.getAllOrdersItemsInDiscounts(supId);
             if(r != null && r.size() > 0){
+                out.println("<h4>");
                 for(ServiceOrderItemObject orderItemObject : r){
                     float originalPrice = orderItemObject.getQuantity() * orderItemObject.getPricePerUnit();
-
-                    // TODO: Supplier change this to normal print!
-                    setError(orderItemObject.toStringDiscount(originalPrice) + "\n");
-                    refresh(req, resp);
+                    out.println(orderItemObject.toStringDiscount(originalPrice) + "<br>");
                 }
+                out.println("</h4>");
             }
             else{
-                // TODO: Supplier change this to normal print!
                 setError("No order Items available!");
-                refresh(req, resp);
+                //refresh(req, resp);
             }
+
+
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            //refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            //refresh(req, resp);
         }
     }
 
-    private void showAllOrders(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void showAllOrders(HttpServletRequest req, HttpServletResponse resp, int supId) throws IOException {
         try {
-            ArrayList<ServiceOrderObject> r = controller.getAllOrdersForSupplier(supplierId);
+            ArrayList<ServiceOrderObject> r = controller.getAllOrdersForSupplier(supId);
             if(r != null && r.size() > 0){
                 for(ServiceOrderObject orderObject : r){
-
-                    // TODO: Supplier change this to normal print!
-                    setError(orderObject.toString());
-                    refresh(req, resp);
+                    PrintWriter out = resp.getWriter();
+                    out.println(orderObject.toString() + "<br><br>");
                 }
             }
             else{
-                // TODO: Supplier change this to normal print!
                 setError("No orders available!");
-                refresh(req, resp);
+                //refresh(req, resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            //refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            //refresh(req, resp);
         }
     }
 
     private void addAgreement(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
+            int supId = getSupplierId(req, resp);
             int agreementType = Integer.parseInt(req.getParameter("agreementType"));
             String agreementDays = req.getParameter("agreementDays");
-            if (!controller.hasAgreement(supplierId)) {
-                if(agreementType == 1 || agreementType == 2 || agreementType == 3) {
-                    if (controller.addAgreement(supplierId, agreementType, agreementDays)) {
 
-                        // TODO: Supplier change this to normal print
-                        //  If it stays error, it causes an error!, I think it's the refresh... just don't do this step...
-                        //setError("Now, let's add the items included in the agreement.");
-                        //refresh(req, resp);
+            if (!controller.hasAgreement(supId)) {
+                if(agreementType == 1 || agreementType == 2 || agreementType == 3) {
+                    if (controller.addAgreement(supId, agreementType, agreementDays)) {
+
                         redirect(resp, AddItemToAgreement.class);
                     } else {
                         setError("A problem has occurred, please try again later");
@@ -216,7 +205,6 @@ public class ViewSupplier extends Screen {
                 }
             }
             else{
-                // TODO: Supplier change this to normal print
                 setError("Agreement Already Exists!, if you want to change it, go to Show Agreement Window");
                 refresh(req, resp);
             }
@@ -232,38 +220,54 @@ public class ViewSupplier extends Screen {
     }
 
 
-    private void showSupplierInfo(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void showSupplierInfo(HttpServletRequest req, HttpServletResponse resp, int supId) throws IOException {
         try {
-            ServiceSupplierObject result = controller.getSupplierInfo(supplierId);
+            ServiceSupplierObject result = controller.getSupplierInfo(supId);
             if(result != null){
-
-                /*
-
-                // TODO: Supplier change this to normal print!
-                setError(result.toString());
-                refresh(req, resp);
-                 */
                 PrintWriter out = resp.getWriter();
                 out.println("<h4>");
-                out.println(result.toString());
-                out.println("addition");
+                out.println(result.toString("<br>"));
                 out.println("</h4>");
-
             }
             else{
                 setError("Something went wrong!");
-                refresh(req, resp);
+                //refresh(req, resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            //refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            //refresh(req, resp);
         }
+    }
 
 
+    private int getSupplierId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int supId = -1;
+        supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
+        return supId;
+    }
+
+    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
+        String cookie = "";
+        for (Cookie c : req.getCookies()) {
+            if (c.getName().equals(name)) {
+                cookie = c.getValue();
+            }
+            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
+            resp.addCookie(c);
+        }
+        return cookie;
+    }
+
+
+
+    private void addCookie(String value, String nameOfCookie, HttpServletResponse resp, int time) {
+        Cookie c = new Cookie(nameOfCookie, value);
+        c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time));
+        resp.addCookie(c);
     }
 
 

@@ -29,7 +29,6 @@ public class ManageSuppliers extends Screen {
         greet(resp);
 
         printForm(resp, new String[] {"ID"}, new String[]{"Supplier ID"}, new String[]{removeButton});
-
         printForm(resp, new String[] {"name", "bankNumber", "address", "payingAgreement", "contacts", "manufacturers"},
                         new String[]{"Name", "Bank Number", "Address", "Paying agreement", "Contacts", "Manufacturers" }, new String[]{addButton});
         printInstructions(req, resp);
@@ -45,13 +44,8 @@ public class ManageSuppliers extends Screen {
             try {
                 int supplierId = Integer.parseInt(req.getParameter("ID"));
                 if(controller.removeSupplier(supplierId) ){
-
-                    // TODO: Supplier It opens a new window!, if I put it in goGet it works
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Removed supplier %d", supplierId)));
-                    // TODO: Supplier change this to normal print!
-                    //setError(String.format("Removed supplier %d", supplierId));
-                    //refresh(req, resp);
+                    setError(String.format("Supplier %d removed successfully!", supplierId));
+                    refresh(req, resp);
                 }
                 else{
                     setError("Supplier wasn't removed!");
@@ -76,11 +70,9 @@ public class ManageSuppliers extends Screen {
     private void printInstructions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             PrintWriter out = resp.getWriter();
-            out.println("Enter Contacts like this : Name1, phone-number1, Name2, phone-number2  ");
-            // TODO: Supplier Fix the \n
-            // TODO: Supplier change this to normal print!
-            out.println(" For example:Israel, 0591234567");
-            out.println(" Enter manufacturers divided by , like this : Osem, Elit");
+            out.println("<h4>Enter Contacts like this : Name1, phone-number1, Name2, phone-number2<br>");
+            out.println("For example:Israel, 0591234567<br>");
+            out.println("Enter manufacturers divided by , like this : Osem, Elit</h4>");
 
         } catch (Exception e) {
             setError(e.getMessage());
@@ -106,11 +98,8 @@ public class ManageSuppliers extends Screen {
             }
             int supplierId = controller.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
             if(supplierId != -1){
-                PrintWriter out = resp.getWriter();
-                out.print("Supplier ");
-                out.print(supplierId);
-                out.print(" was added successfully to the data base");
-                // TODO: Supplier change this to normal print!
+                setError(String.format("Supplier %d added successfully!", supplierId));
+                refresh(req, resp);
             }
             else{
                 setError("Supplier wasn't added!");

@@ -4,9 +4,11 @@ import Domain.Service.Objects.SupplierObjects.ServiceItemObject;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class ShowAgreementItem extends Screen {
 
@@ -19,8 +21,7 @@ public class ShowAgreementItem extends Screen {
 
     public ShowAgreementItem() {
         super(greet);
-        // TODO: Supplier pass itemId and SupplierId
-        itemId = 1;   // TODO: should be productId and not IDBYSupplier
+        itemId = 1;
         supplierId = 1;
     }
 
@@ -33,9 +34,11 @@ public class ShowAgreementItem extends Screen {
 
         printMenu(resp, new String[]{"View Item"});
 
-        // TODO: Supplier - This function can cause problems when we change the IdbySupplier but an order already has it
-        //  and than maybe when we pull it from DB it can cause an error
-        //printForm(resp, new String[] {"itemId"}, new String[]{"Item ID"}, new String[]{"Change Id"});
+        int itemId = getId("ItemIdShowAgreementItem", req, resp);
+        int supId = getId("supIdShowAgreementItem", req, resp);
+
+
+
         printForm(resp, new String[] {"manufacturer"}, new String[]{"Item Manufacturer"}, new String[]{"Change manufacturer"});
         printForm(resp, new String[] {"ppu"}, new String[]{"Item price per unit"}, new String[]{"Change price per unit"});
         printForm(resp, new String[] {"quantity1", "discount1"}, new String[]{"Quantity", "Discount"}, new String[]{"Add Bulk"});
@@ -276,6 +279,25 @@ public class ShowAgreementItem extends Screen {
             refresh(req, resp);
         }
     }
+
+    private int getId(String name, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int supId = -1;
+        supId = Integer.parseInt(getCookie(name, req, resp, 10));
+        return supId;
+    }
+
+    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
+        String cookie = "";
+        for (Cookie c : req.getCookies()) {
+            if (c.getName().equals(name)) {
+                cookie = c.getValue();
+            }
+            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
+            resp.addCookie(c);
+        }
+        return cookie;
+    }
+
 
 
 }

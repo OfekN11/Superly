@@ -9,11 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public abstract class SupplierMainMenu extends Screen {
-
-    //private static final String greet = "Supplier's Main Menu ";
-    private static final String button = "View Supplier";
 
 
     public SupplierMainMenu(String greet) {
@@ -28,47 +26,11 @@ public abstract class SupplierMainMenu extends Screen {
     protected abstract void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 
 
-
-    /*
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        header(resp);
-        greet(resp);
-        printMenu(resp, new String[]{"Manage Suppliers", "View/Remove Orders"});
-
-        printSupplierIds(resp);
-        printForm(resp, new String[] {"ID"}, new String[]{"Supplier ID"}, new String[]{button});
-
-        handleError(resp);
-    }
-
-     */
-
-    /*
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
-        if (isButtonPressed(req, button)){
-            viewSupplier(req, resp);
-        }
-
-        if (getIndexOfButtonPressed(req) == 0) {
-            redirect(resp, ManageSuppliers.class);
-        }
-
-        //Manage Orders should be in extended classes!
-    }
-
-     */
-
     protected void viewSupplier(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             int supplierId = Integer.parseInt(req.getParameter("ID"));
             if(controller.doesSupplierExists(supplierId)) {
-                // TODO: Supplier Pass supplierID to the the supplier
-                //enter the list a cookie named sup_id with value supplierId
-                Cookie c = new Cookie("sup_id", String.valueOf(supplierId));
-                resp.addCookie(c);
+                addCookie(String.valueOf(supplierId), "supplierId",resp,30);
                 redirect(resp, ViewSupplier.class);
             }
             else{
@@ -99,4 +61,12 @@ public abstract class SupplierMainMenu extends Screen {
         }
 
     }
+
+
+    private void addCookie(String value, String nameOfCookie, HttpServletResponse resp, int time) {
+        Cookie c = new Cookie(nameOfCookie, value);
+        c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time));
+        resp.addCookie(c);
+    }
+
 }

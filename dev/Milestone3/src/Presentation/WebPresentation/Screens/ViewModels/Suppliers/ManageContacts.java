@@ -3,20 +3,21 @@ package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ManageContacts extends Screen {
 
     private static final String greet = "Contacts Management";
-    private final int supplierId;
 
     public ManageContacts() {
         // TODO: Supplier pass SupplierId
         super(greet);
-        supplierId = 1;
     }
 
 
@@ -25,10 +26,15 @@ public class ManageContacts extends Screen {
         header(resp);
         greet(resp);
 
+        int supId = getSupplierId(req, resp);
+
         printMenu(resp, new String[]{"Show Contacts"});
         printForm(resp, new String[] {"nameAdd", "phone" }, new String[]{"Name", "Phone number"}, new String[]{"Add Contact"});
         printForm(resp, new String[] {"nameRemove" }, new String[]{"Name"}, new String[]{"Remove Contact"});
 
+        if (req.getParameter("showContacts") != null && req.getParameter("showContacts").equals("true")){
+            showContacts(req, resp, supId);
+        }
 
         handleError(resp);
     }
@@ -45,7 +51,8 @@ public class ManageContacts extends Screen {
             removeContact(req, resp);
         }
         if(getIndexOfButtonPressed(req) == 0){
-            showContacts(req, resp);
+            resp.sendRedirect("/ManageContacts?showContacts=true");
+            //showContacts(req, resp);
         }
 
     }
@@ -54,9 +61,11 @@ public class ManageContacts extends Screen {
         try {
             String name = req.getParameter("nameAdd");
             String phone = req.getParameter("phone");
-            if(controller.addSupplierContact(supplierId, name, phone) ){
 
-                // TODO: Supplier change this to normal print!
+            int supId = getSupplierId(req, resp);
+
+            if(controller.addSupplierContact(supId, name, phone) ){
+
                 setError(String.format("Added Contact %s", name));
                 refresh(req, resp);
             }
@@ -73,9 +82,10 @@ public class ManageContacts extends Screen {
     private void removeContact(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             String name = req.getParameter("nameRemove");
-            if(controller.removeContact(supplierId, name)){
 
-                // TODO: Supplier change this to normal print!
+            int supId = getSupplierId(req, resp);
+            if(controller.removeContact(supId, name)){
+
                 setError(String.format("Removed Contact %s", name));
                 refresh(req, resp);
             }
@@ -89,27 +99,49 @@ public class ManageContacts extends Screen {
         }
     }
 
-    private void showContacts(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void showContacts(HttpServletRequest req, HttpServletResponse resp, int supId) throws IOException {
         try {
-            List<String> contacts = controller.getAllContacts(supplierId);
 
-            // TODO: Supplier change this to normal print!
+            List<String> contacts = controller.getAllContacts(supId);
             if(contacts.size() > 0){
+                PrintWriter out = resp.getWriter();
+                out.println("<h4>");
                 for(String s : contacts){
-                    // TODO: Supplier change this to normal print!
-                    setError(s);
-                    refresh(req, resp);
+                    out.println(s + "<br>");
                 }
+                out.println("</h4>");
             }
             else{
-                // TODO: Supplier change this to normal print!
                 setError("[NO CONTACTS!]");
-                refresh(req, resp);            }
+                //refresh(req, resp);
+            }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            //refresh(req, resp);
         }
 
     }
+
+
+
+    private int getSupplierId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int supId = -1;
+        supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
+        return supId;
+    }
+
+    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
+        String cookie = "";
+        for (Cookie c : req.getCookies()) {
+            if (c.getName().equals(name)) {
+                cookie = c.getValue();
+            }
+            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
+            resp.addCookie(c);
+        }
+        return cookie;
+    }
+
+
 
 }
