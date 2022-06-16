@@ -60,7 +60,7 @@ public class AddTruck extends Screen {
             try {
                 int ln = Integer.parseInt(req.getParameter("LN"));
                 String tm = req.getParameter("model");
-                int netWeight = Integer.parseInt(req.getParameter("LN"));
+                int netWeight = Integer.parseInt(req.getParameter("NetWeight"));
                 int maxCapacityWeight = Integer.parseInt(req.getParameter("MaxCapacityWeight"));
                 controller.addTruck(ln, TruckModel.valueOf(tm), netWeight, maxCapacityWeight);
                 System.out.println("The truck was successfully added!");

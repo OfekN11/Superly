@@ -54,14 +54,18 @@ public class TruckDAO extends DAO {
         int id = instance.getLicenseNumber();
         if(!TRUCK_IDENTITY_MAP.containsKey(id)){
             TRUCK_IDENTITY_MAP.put(id,instance);
+            try
+            {
+                super.insert(Arrays.asList(id, instance.getModel(), instance.getNetWeight(), instance.getMaxCapacityWeight()));
+            }
+            catch (SQLException throwables) {
+                throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
+            }
         }
-        try
-        {
-            super.insert(Arrays.asList(id, instance.getModel(), instance.getNetWeight(), instance.getMaxCapacityWeight()));
+        else{
+            throw new RuntimeException("A truck with this license number already exists!");
         }
-        catch (SQLException throwables) {
-            throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
-        }
+
     }
 
 

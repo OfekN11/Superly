@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class DeleteTruck extends Screen {
-    private static final String greet = "Add Truck:";
+    private static final String greet = "Delete Truck:";
 
     public DeleteTruck() {
         super(greet);
@@ -35,8 +35,8 @@ public class DeleteTruck extends Screen {
         handleHeader(req, resp);
 
         if (isButtonPressed(req, "Delete")){
-            int ln = Integer.parseInt(req.getParameter("LN"));
             try {
+                int ln = Integer.parseInt(req.getParameter("LN"));
                 controller.removeTruck(ln);
             } catch (Exception e) {
                 setError(e.getMessage());
@@ -44,7 +44,7 @@ public class DeleteTruck extends Screen {
             }
         }
         else if(isButtonPressed(req, "Cancel"))
-            redirect(resp, TransportMainMenu.class);
+            redirect(resp, TruckManagementMenu.class);
     }
 
 }
