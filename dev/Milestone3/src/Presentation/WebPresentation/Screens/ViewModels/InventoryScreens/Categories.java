@@ -135,10 +135,10 @@ public class Categories extends Screen{
     }*/
     private void printCategories(HttpServletResponse resp) {
         try {
-            Result<List<Domain.Service.Objects.InventoryObjects.Category>> categories = controller.getCategories();
+            List<Domain.Service.Objects.InventoryObjects.Category> categories = controller.getCategories().getValue();
             PrintWriter out = resp.getWriter();
-            List<Domain.Service.Objects.InventoryObjects.Category> sortedProducts = sort(categories.getValue());
-            for (Domain.Service.Objects.InventoryObjects.Category c: sortedProducts) {
+            categories.sort(Comparator.comparingInt(Domain.Service.Objects.InventoryObjects.Category::getID));
+            for (Domain.Service.Objects.InventoryObjects.Category c: categories) {
                 out.println(c.getName() + ": " + c.getID() + "<br>");
             }
         } catch (Exception e) {
@@ -146,20 +146,6 @@ public class Categories extends Screen{
         }
     }
 
-    private List<Domain.Service.Objects.InventoryObjects.Category> sort(List<Domain.Service.Objects.InventoryObjects.Category> categories) {
-        List<Integer> ids = new ArrayList<>();
-        for (Domain.Service.Objects.InventoryObjects.Category c: categories) {
-            ids.add(c.getID());
-        }
-        Collections.sort(ids);
-        List<Domain.Service.Objects.InventoryObjects.Category> sortedList = new ArrayList<>();
-        for (Integer id : ids) {
-            Domain.Service.Objects.InventoryObjects.Category c = findProduct(categories, id);
-            if (c!=null)
-                sortedList.add(c);
-        }
-        return sortedList;
-    }
     private Domain.Service.Objects.InventoryObjects.Category findProduct(List<Domain.Service.Objects.InventoryObjects.Category> categories, int id) {
         for (Domain.Service.Objects.InventoryObjects.Category c : categories) {
             if (c.getID()==id)
