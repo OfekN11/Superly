@@ -24,6 +24,10 @@ public class SupplierService {
         controller.setInventoryController(invCont);
     }
 
+    public SupplierController getSupplierController(){
+        return controller;
+    }
+
 
     //Pair.first = name , Pair.second = phoneNumber
     public Result<Integer> addSupplier(String name, int bankNumber, String address, String payingAgreement , ArrayList<Pair<String,String>> contacts, ArrayList<String> manufacturers){

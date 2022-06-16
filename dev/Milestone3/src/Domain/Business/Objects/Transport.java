@@ -111,13 +111,20 @@ public class Transport {
     public boolean placeTruck(int licenseNumber,int weight,int max)
     {
         if(truckNumber==-1){
-            if(truckWeight + weight > max){
-                return false;
-            }
-            else{
+            if (truckWeight==-1){
                 truckNumber = licenseNumber;
                 truckWeight = weight;
                 return true;
+            }
+            else{
+                if(truckWeight + weight > max){
+                    return false;
+                }
+                else{
+                    truckWeight=truckWeight+weight;
+                    truckNumber = licenseNumber;
+                    return true;
+                }
             }
         }
         return false;
@@ -265,5 +272,10 @@ public class Transport {
 
     public void initWeight(int weight){
         truckWeight = weight;
+    }
+
+    public void removeOrder(int id,int weight) {
+        transportOrders.remove(id);
+        truckWeight = truckWeight - weight;
     }
 }
