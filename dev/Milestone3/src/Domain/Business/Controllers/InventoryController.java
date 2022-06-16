@@ -346,9 +346,12 @@ public class InventoryController {
         return product;
     }
 
-    public void deleteProduct(int id){
-        products.remove(id);
+    public boolean deleteProduct(int id){
         PRODUCT_DATA_MAPPER.remove(Integer.toString(id));
+        if(products.remove(id)!=null)
+            return true;
+        else
+            return false;
     }
 
     public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
@@ -544,7 +547,7 @@ public class InventoryController {
         return stock;
     }
 
-    public void deleteCategory(int catID) {
+    public boolean deleteCategory(int catID) {
         getCategories();
         Category categoryToRemove = getCategory(catID);
         if (categoryToRemove==null)
@@ -554,8 +557,11 @@ public class InventoryController {
         if (!categoryToRemove.getAllProductsInCategory().isEmpty())
             throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
         categoryToRemove.changeParentCategory(null);
-        categories.remove(catID);
         CATEGORY_DATA_MAPPER.remove(Integer.toString(catID));
+        if(categories.remove(catID)!=null)
+            return true;
+        else
+            return false;
     }
 
     public Product changeProductMin(int store, int product, int min) {
