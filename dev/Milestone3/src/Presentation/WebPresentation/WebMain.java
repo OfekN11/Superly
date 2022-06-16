@@ -5,6 +5,8 @@ import Presentation.WebPresentation.Screens.InventoryScreens.*;
 import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.*;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportManagement;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
@@ -47,7 +49,8 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(Categories.class, "/Categories"),
             new AbstractMap.SimpleEntry<>(Category.class, "/Category"),
             new AbstractMap.SimpleEntry<>(Sales.class, "/Sales"),
-            new AbstractMap.SimpleEntry<>(Sale.class, "/Sale")
+            new AbstractMap.SimpleEntry<>(Sale.class, "/Sale"),
+            new AbstractMap.SimpleEntry<>(TransportMainMenu.class, "/TransportMainMenu")
 
 
             ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
