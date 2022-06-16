@@ -1,36 +1,32 @@
-package Presentation.WebPresentation.Screens.InventoryScreens;
+package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
-import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Sales extends Screen{
 
-    private static final String greet = "Welcome to the sales' page of Superly";
+    private static final String greet = "Sales";
+    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
 
     public Sales() {
-        super(greet);
+        super(greet,ALLOWED);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(!isAllowed(req, resp)) {
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
-
-
-        /*printOrderIds(resp);
-        printForm(resp, new String[] {"supplierId","storeId"}, new String[]{"Supplier ID", "Store ID"}, new String[]{"Add Order"});
-        printForm(resp, new String[] {"orderId1"}, new String[]{"Order ID"}, new String[]{"Remove Order"});
-        printForm(resp, new String[] {"orderId2"}, new String[]{"Order ID"}, new String[]{"Edit Order"});
-        printForm(resp, new String[] {"orderId3"}, new String[]{"Order ID"}, new String[]{"View Order"});*/
-
-
         handleError(resp);
     }
 

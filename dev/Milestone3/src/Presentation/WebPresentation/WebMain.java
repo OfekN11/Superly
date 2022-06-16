@@ -1,7 +1,6 @@
 package Presentation.WebPresentation;
 
-
-import Presentation.WebPresentation.Screens.InventoryScreens.*;
+import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.*;
 import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.*;
@@ -47,7 +46,7 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(ViewSupplier.class, "/ViewSupplier"),
             new AbstractMap.SimpleEntry<>(Product.class, "/Product"),
             new AbstractMap.SimpleEntry<>(InventoryMainMenu.class, "/InventoryMainMenu"),
-            new AbstractMap.SimpleEntry<>(Catalog.class, "/Catalog"),
+            new AbstractMap.SimpleEntry<>(Products.class, "/Products"),
             new AbstractMap.SimpleEntry<>(Categories.class, "/Categories"),
             new AbstractMap.SimpleEntry<>(Category.class, "/Category"),
             new AbstractMap.SimpleEntry<>(Sales.class, "/Sales"),

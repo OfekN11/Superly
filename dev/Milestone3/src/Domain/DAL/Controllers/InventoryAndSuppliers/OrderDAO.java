@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class OrderDAO extends DataMapper<Order> {
 
@@ -145,6 +146,10 @@ public class OrderDAO extends DataMapper<Order> {
 
     }
 
+    public void updateStatus(Order order) throws SQLException {
+        update(Arrays.asList(STATUS_COLOUMN),Arrays.asList(order.getStatus()),Arrays.asList(ORDER_ID_COLUMN),Arrays.asList(order.getId()));
+    }
+
     public ArrayList<Order> getLastOrdersFromALlSuppliers(ArrayList<Integer> orderIds) {
         ArrayList<Order> result = new ArrayList<>();
         for(Integer orderId : orderIds){
@@ -245,6 +250,9 @@ public class OrderDAO extends DataMapper<Order> {
 
     public void setOrderItemDescription(int itemId, String desc) throws SQLException {
         orderItemDAO.updateDescription(itemId, desc);
+    }
+    public List<Order> getAllOrders(){
+        return ORDER_IDENTITY_MAP.values().stream().collect(Collectors.toList());
     }
 }
 
