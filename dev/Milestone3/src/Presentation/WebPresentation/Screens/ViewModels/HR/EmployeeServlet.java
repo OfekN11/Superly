@@ -10,13 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class EmployeeServlet extends Screen {
+
+    private static final Class<? extends Employee>[] ALLOWED = new Class[0];
+
     public EmployeeServlet() {
-        super(null);
+        super(null, ALLOWED);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!Login.isLoggedIn(req, resp)){
+        if (!isAllowed(req, resp)){
             redirect(resp, Login.class);
         }
         header(resp);
