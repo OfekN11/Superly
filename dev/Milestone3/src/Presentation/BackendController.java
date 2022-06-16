@@ -1,5 +1,6 @@
 package Presentation;
 
+import Domain.Business.Controllers.InventoryController;
 import Domain.Service.util.Result;
 import Globals.Enums.*;
 import Globals.*;
@@ -34,6 +35,8 @@ public class BackendController {
     //CREATE
 
     public BackendController(){
+        supplierService.setInventoryController(InventoryController.getInventoryController());
+        inventoryService.setSupplierController(supplierService.getSupplierController());
         getAvailableOrders();
     }
 
