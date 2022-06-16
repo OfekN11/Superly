@@ -4,9 +4,9 @@ import Domain.Service.Objects.InventoryObjects.Product;
 import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
 import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Screen;
-import Presentation.WebPresentation.Screens.Suppliers.Screens.ManageOrders;
-import Presentation.WebPresentation.Screens.Suppliers.Screens.ManageSuppliers;
-import Presentation.WebPresentation.Screens.Suppliers.Screens.ViewSupplier;
+import Presentation.WebPresentation.Screens.ViewModels.Suppliers.ManageOrders;
+import Presentation.WebPresentation.Screens.ViewModels.Suppliers.ManageSuppliers;
+import Presentation.WebPresentation.Screens.ViewModels.Suppliers.ViewSupplier;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
