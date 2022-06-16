@@ -118,7 +118,6 @@ public class TransportController {
             }
 
         }
-        orderController.addAlertOrder(order.getId());
         return dateOfTransport;
 
     }
@@ -272,7 +271,7 @@ public class TransportController {
             TransportDocument transportDocument = new TransportDocument(transport.getSN(),transport.getStartTime(),transport.getTruckNumber(),transport.getDriverID());
             for (Integer order:transport.getTransportOrders()) {
                 Order o = orderController.getTransportOrder(convert(order));
-                //TODO after change the order class to add o.start();
+                o.start();
                 DestinationDocument document = new DestinationDocument(order,o.getStoreID(),o.getProductList());
                 documentController.uploadDestinationDocument(document);
                 transportDocument.addDoc(document.getID());
