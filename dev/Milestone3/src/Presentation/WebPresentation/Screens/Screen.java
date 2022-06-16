@@ -43,6 +43,10 @@ public abstract class Screen extends HttpServlet {
         this.allowed = allowed;
     }
 
+    public Screen(String greeting) {
+        this(greeting, null);
+    }
+
     /***
      * Prints greeting as a heading
      * @param resp the response to print to
@@ -125,6 +129,12 @@ public abstract class Screen extends HttpServlet {
      * @return true if visiting this screen is allowed
      */
     protected boolean isAllowed(HttpServletRequest req, HttpServletResponse resp) {
+        return allowed == null ||
+                (Login.isLoggedIn(req, resp) &&
+                        (allowed.length == 0 || Arrays.asList(allowed).contains(Login.getLoggedUser(req).getClass())));
+    }
+
+    protected static boolean isAllowed(HttpServletRequest req, HttpServletResponse resp, Class<? extends Employee>[] allowed) {
         return allowed == null ||
                 (Login.isLoggedIn(req, resp) &&
                         (allowed.length == 0 || Arrays.asList(allowed).contains(Login.getLoggedUser(req).getClass())));
