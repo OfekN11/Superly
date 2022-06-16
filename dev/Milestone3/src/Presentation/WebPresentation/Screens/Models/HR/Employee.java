@@ -17,7 +17,7 @@ public abstract class Employee extends Screen {
     public final int salary;
 
     protected Employee(Domain.Service.Objects.Employee.Employee sEmployee, String greeting, String[] menuOptions) {
-        super(greeting + sEmployee.name); //greeting is of structure "Welcome <type> "
+        super(greeting + sEmployee.name, null); //greeting is of structure "Welcome <type> "
         this.menuOption = menuOptions;
         id = sEmployee.id;
         name = sEmployee.name;

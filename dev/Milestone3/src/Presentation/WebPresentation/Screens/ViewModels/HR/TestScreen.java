@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 
 public class TestScreen extends Screen {
     public TestScreen() {
-        super("This is a test page");
+        super("This is a test page", null);
     }
 
     @Override

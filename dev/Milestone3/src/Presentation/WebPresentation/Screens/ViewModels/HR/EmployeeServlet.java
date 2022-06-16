@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class EmployeeServlet extends Screen {
 
-    private static final Class<? extends Employee>[] ALLOWED = new Class<>[0];
+    private static final Class<? extends Employee>[] ALLOWED = new Class[0];
 
     public EmployeeServlet() {
         super(null, ALLOWED);
