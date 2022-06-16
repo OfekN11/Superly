@@ -29,4 +29,15 @@ public class DestinationDocument extends Document {
             System.out.println("\t" + (i + 1) + " - " + providedProducts.get(i));
         }
     }
+
+    public String webDisplay() {
+        String format = "Destination Document:\n" +
+                "Document SN: " + getDocumentSN() + "\n" +
+                "Destination site ID: " + destID+"\n";
+        for(int i = 0; i < providedProducts.size(); i++)
+        {
+            format = format + "\t" + (i + 1) + " - " + providedProducts.get(i)+"\n";
+        }
+        return format;
+    }
 }

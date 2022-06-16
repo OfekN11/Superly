@@ -8,7 +8,7 @@ import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.CategoryDataMapper;
 import Domain.DAL.Controllers.InventoryAndSuppliers.ProductDataMapper;
 import Domain.DAL.Controllers.InventoryAndSuppliers.StoreDAO;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ import static java.util.Collections.max;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@NotThreadSafe
+//@NotThreadSafe
 public class ProductTests {
     static Category category0;
     static Product product;

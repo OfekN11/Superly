@@ -5,7 +5,7 @@ import Domain.Business.Objects.Inventory.StockReport;
 import Domain.Business.Objects.Inventory.Product;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.*;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import java.util.List;
 import static java.util.Collections.max;
 import static org.junit.jupiter.api.Assertions.*;
 
-@NotThreadSafe
+//@NotThreadSafe
 class StockReportTest {
     Product product;
     private static final InventoryController is  =  InventoryController.getInventoryController();

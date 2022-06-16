@@ -556,7 +556,7 @@ public class BackendController {
     }
 
     public DestinationDocument getDestinationDocument(int ddSN) throws Exception {
-        Result<Domain.Service.Objects.Document.DestinationDocument> result = documentService.getTransportDocument(ddSN);
+        Result<Domain.Service.Objects.Document.DestinationDocument> result = documentService.getDestinationDocument(ddSN);
         throwIfError(result);
         return presentationDocumentFactory.createPresentationDocument(result.getValue());
     }

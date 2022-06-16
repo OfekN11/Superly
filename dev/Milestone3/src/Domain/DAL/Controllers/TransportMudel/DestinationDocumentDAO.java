@@ -25,7 +25,10 @@ public class DestinationDocumentDAO extends DAO {
                 else {
                     document = DESTINATION_DOCUMENT_IDENTITY_MAP.get(resultSet.getInt(1));
                 }
-                document.addProduct(resultSet.getString(3));
+                if(!document.getProvidedProducts().contains(resultSet.getString(3))){
+                    document.addProduct(resultSet.getString(3));
+                }
+
             }
 
         } catch (SQLException throwables) {

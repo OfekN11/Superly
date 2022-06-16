@@ -1,14 +1,14 @@
 package SuppliersTests;
 
 import Domain.Business.Objects.Supplier.AgreementItem;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
 
-@NotThreadSafe
+//@NotThreadSafe
 public class AgreementItemTest {
 
     private AgreementItem item;
