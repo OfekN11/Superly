@@ -1,5 +1,6 @@
 package Domain.Service.Services;
 
+import Domain.Business.Controllers.InventoryController;
 import Domain.Service.Objects.SupplierObjects.*;
 import Domain.Business.Controllers.SupplierController;
 import Domain.Service.util.Result;
@@ -19,6 +20,13 @@ public class SupplierService {
         controller.loadSuppliersData();
     }
 
+    public void setInventoryController(InventoryController invCont){
+        controller.setInventoryController(invCont);
+    }
+
+    public SupplierController getSupplierController(){
+        return controller;
+    }
 
 
     //Pair.first = name , Pair.second = phoneNumber

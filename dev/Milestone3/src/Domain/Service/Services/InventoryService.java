@@ -1,6 +1,7 @@
 package Domain.Service.Services;
 
 
+import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.Business.Objects.Inventory.SaleToCustomer;
 import Domain.Business.Controllers.InventoryController;
@@ -26,6 +27,10 @@ public class InventoryService {
 
     public InventoryService(){
         controller = new InventoryController();
+    }
+
+    public void setSupplierController(SupplierController supCont){
+        controller.setSupplierController(supCont);
     }
 
 

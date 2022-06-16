@@ -247,7 +247,7 @@ public class OrderDAO extends DataMapper<Order> {
     public void setOrderItemDescription(int itemId, String desc) throws SQLException {
         orderItemDAO.updateDescription(itemId, desc);
     }
-    public List<Order> getAll(){
+    public List<Order> getAllOrders(){
         return ORDER_IDENTITY_MAP.values().stream().collect(Collectors.toList());
     }
 }
