@@ -639,6 +639,7 @@ public class InventoryController {
      * @param amount - can be negative (if negative than we subtract from the product), just use add "+". we will take care of the rest.
      */
     public void updateOnTheWayProducts(int productId, int storeId, int amount) {
+        getProduct(productId).getStockReport(storeId).channgeInDelivery(amount);
     }
 
 //    private void addCategoriesForTests () {
