@@ -28,7 +28,7 @@ public class AddItemToAgreement extends Screen {
         header(resp);
         greet(resp);
 
-        //int supId = getSupplierId( req, resp);
+        int supId = getSupplierId( req, resp);
 
         printForm(resp, new String[] {"productId", "idBySupplier", "manufacturer", "pricePerUnit", "bulkPrices"}
         , new String[]{"Product ID", "ID by Supplier", "Manufacturer", "Price Per Unit", "Bulk Prices"}, new String[]{"Add Item To Agreement"});
@@ -53,12 +53,20 @@ public class AddItemToAgreement extends Screen {
 
                 String[] bulkArr = bulkString.replaceAll("\\s+","").split(",");
                 if(bulkArr.length % 2 != 0){
-                    System.out.println("Inserted wrong or not complete values, please try again");
+                    setError("Inserted wrong or not complete values, please try again");
+                    refresh(req, resp);
                 }
                 Map<Integer, Integer> bulkMap = new HashMap<>();
                 for(int i=0; i<bulkArr.length; i++){
-                    bulkMap.put(Integer.parseInt(bulkArr[i]), Integer.parseInt(bulkArr[i+1]));
-                    i++;
+                    if(i+1 >= bulkArr.length) {
+                        setError("Missing info in bulkMap!");
+                        //refresh(req, resp);
+                        return;
+                    }
+                    else{
+                        bulkMap.put(Integer.parseInt(bulkArr[i]), Integer.parseInt(bulkArr[i+1]));
+                        i++;
+                    }
                 }
                 if(controller.addItemToAgreement(supId, productId, idBySupplier, manufacturer, ppu, bulkMap)) {
 
@@ -84,25 +92,7 @@ public class AddItemToAgreement extends Screen {
 
 
     private int getSupplierId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int supId = -1;
-        supId = Integer.parseInt(getCookie("supplierId", req, resp, 5));
-        return supId;
+        return Integer.parseInt(getParamVal(req,"supId"));
     }
-
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                cookie = c.getValue();
-            }
-            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-            resp.addCookie(c);
-        }
-        return cookie;
-    }
-
-
-
-
 
 }

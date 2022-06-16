@@ -19,7 +19,6 @@ public class ViewSupplier extends Screen {
 
     private static final String greet = "View Supplier for Storekeeper and Store Manager";
     private static final String addAgreement = "Add New Agreement";
-    //private static boolean showItems = false;
 
     public ViewSupplier() {
         super(greet);
@@ -31,22 +30,23 @@ public class ViewSupplier extends Screen {
         greet(resp);
 
         int supId = getSupplierId(req, resp);
+
         resp.getWriter().println("<h2>Watching Supplier " + supId + ".</h2><br>");
 
         printMenu(resp, new String[]{"Show Supplier Info", "Show Contacts","Show Manufacturers", "Show Agreement", "Show all Orders", "Show all discount items", "Edit Card"});
-
-
         printForm(resp, new String[] {"agreementType", "agreementDays" }, new String[]{"Agreement Type", "Agreement Days"}, new String[]{addAgreement});
         printInstructions(resp);
 
 
-        if (req.getParameter("showItems") != null && req.getParameter("showItems").equals("true")){
+        String val;
+
+        if ((val = getParamVal(req,"showInfo")) != null &&  val.equals("true")){
             showSupplierInfo(req, resp, supId);
         }
-        else if (req.getParameter("showAllOrders") != null && req.getParameter("showAllOrders").equals("true")){
+        else if ((val = getParamVal(req,"showAllOrders")) != null && val.equals("true")){
             showAllOrders(req, resp, supId);
         }
-        else if (req.getParameter("showAllDiscountItems") != null && req.getParameter("showAllDiscountItems").equals("true")){
+        else if ((val = getParamVal(req,"showAllDiscountItems")) != null && val.equals("true")){
             showAllDiscountItems(req, resp, supId);
         }
         handleError(resp);
@@ -72,44 +72,49 @@ public class ViewSupplier extends Screen {
             addAgreement(req, resp);
         }
 
+        //Every time I open a new instance of this window I need to send all the info I was given...
+        String supId = getParamVal(req,"supId");
         switch (getIndexOfButtonPressed(req)){
             case 0:
-                resp.sendRedirect("/ViewSupplier?showItems=true");
+                redirect(resp, ViewSupplier.class, new String[]{"showInfo","supId"}, new String[]{"true",supId});
+                //resp.sendRedirect("/ViewSupplier?showInfo=true");
                 break;
             case 1:
-                manageContacts(req, resp);
+                manageContacts(req, resp, supId);
                 break;
             case 2:
-                manageManufacturers(req,resp);
+                manageManufacturers(req,resp, supId);
                 break;
             case 3:
                 showAgreement(req, resp);
                 break;
             case 4:
-                resp.sendRedirect("/ViewSupplier?showAllOrders=true");
+                redirect(resp, ViewSupplier.class, new String[]{"showAllOrders","supId"}, new String[]{"true", supId});
+                //resp.sendRedirect("/ViewSupplier?showAllOrders=true");
                 break;
             case 5:
-                resp.sendRedirect("/ViewSupplier?showAllDiscountItems=true");
+                redirect(resp, ViewSupplier.class, new String[]{"showAllDiscountItems","supId"}, new String[]{"true", supId});
+                //resp.sendRedirect("/ViewSupplier?showAllDiscountItems=true");
                 break;
             case 6:
-                redirect(resp, EditCard.class);
+                redirect(resp, EditCard.class, new String[]{"supId"}, new String[]{supId});
                 break;
         }
     }
 
 
-    private void manageContacts(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void manageContacts(HttpServletRequest req, HttpServletResponse resp, String supId) throws IOException {
         try {
-            redirect(resp, ManageContacts.class);
+            redirect(resp, ManageContacts.class, new String[]{"supId"},  new String[]{supId});
         } catch (Exception e) {
             setError(e.getMessage());
             refresh(req, resp);
         }
     }
 
-    private void manageManufacturers(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void manageManufacturers(HttpServletRequest req, HttpServletResponse resp, String supId) throws IOException {
         try {
-            redirect(resp, ManageManufacturers.class);
+            redirect(resp, ManageManufacturers.class, new String[]{"supId"},  new String[]{supId});
         } catch (Exception e) {
             setError(e.getMessage());
             refresh(req, resp);
@@ -124,7 +129,7 @@ public class ViewSupplier extends Screen {
                 refresh(req, resp);
             }
             else{
-                redirect(resp, ShowAgreement.class);
+                redirect(resp, ShowAgreement.class, new String[]{"supId"},  new String[]{String.valueOf(supId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
@@ -165,8 +170,8 @@ public class ViewSupplier extends Screen {
         try {
             ArrayList<ServiceOrderObject> r = controller.getAllOrdersForSupplier(supId);
             if(r != null && r.size() > 0){
+                PrintWriter out = resp.getWriter();
                 for(ServiceOrderObject orderObject : r){
-                    PrintWriter out = resp.getWriter();
                     out.println(orderObject.toString() + "<br><br>");
                 }
             }
@@ -189,12 +194,10 @@ public class ViewSupplier extends Screen {
             int supId = getSupplierId(req, resp);
             int agreementType = Integer.parseInt(req.getParameter("agreementType"));
             String agreementDays = req.getParameter("agreementDays");
-
             if (!controller.hasAgreement(supId)) {
                 if(agreementType == 1 || agreementType == 2 || agreementType == 3) {
                     if (controller.addAgreement(supId, agreementType, agreementDays)) {
-
-                        redirect(resp, AddItemToAgreement.class);
+                        redirect(resp, AddItemToAgreement.class, new String[]{"supId"}, new String[]{ String.valueOf(supId)});
                     } else {
                         setError("A problem has occurred, please try again later");
                         refresh(req, resp);
@@ -220,8 +223,9 @@ public class ViewSupplier extends Screen {
     }
 
 
-    private void showSupplierInfo(HttpServletRequest req, HttpServletResponse resp, int supId) throws IOException {
+    private void showSupplierInfo(HttpServletRequest req, HttpServletResponse resp, int supId2) throws IOException {
         try {
+            int supId = Integer.parseInt(getParamVal(req,"supId"));
             ServiceSupplierObject result = controller.getSupplierInfo(supId);
             if(result != null){
                 PrintWriter out = resp.getWriter();
@@ -245,11 +249,14 @@ public class ViewSupplier extends Screen {
 
 
     private int getSupplierId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int supId = -1;
-        supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
-        return supId;
+        //int supId = -1;
+        //supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
+        //return supId;
+        return Integer.parseInt(getParamVal(req,"supId"));
+
     }
 
+        /*
     private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
         String cookie = "";
         for (Cookie c : req.getCookies()) {
@@ -262,6 +269,19 @@ public class ViewSupplier extends Screen {
         return cookie;
     }
 
+     */
+
+    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
+        String cookie = "";
+        for (Cookie c : req.getCookies()) {
+            if (c.getName().equals(name)) {
+                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
+                resp.addCookie(c);
+                return c.getValue();
+            }
+        }
+        return cookie;
+    }
 
 
     private void addCookie(String value, String nameOfCookie, HttpServletResponse resp, int time) {

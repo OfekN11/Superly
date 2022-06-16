@@ -4,29 +4,20 @@ import Domain.Service.Objects.SupplierObjects.ServiceItemObject;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class ShowAgreement extends Screen {
 
-    //private final int supplierId;
-    //private int agreementType;
+
     private static final String greet = "Agreement Info";
-    private static final String greetRoutine = "Routine Supplier";
-    private static final String greetByOrder = "By Order Supplier";
-    private static final String greetNotTransporting = "Not Transporting Supplier";
 
 
     public ShowAgreement(){
         super(greet);
-        //this.supplierId = 1;
-
-        //agreementType = getAgreementType();
     }
 
     private int getAgreementType(int supId) {
@@ -50,6 +41,8 @@ public class ShowAgreement extends Screen {
         int supId = getSupplierId(req, resp);
         int agreementType = getAgreementType(supId);
 
+        resp.getWriter().println("<h2>Agreement Information for Supplier" + supId + ".</h2><br>");
+
         printMenu(resp, new String[]{"Show All Items", "Add item to agreement"});
         printForm(resp, new String[] {"idBySupplier"}, new String[]{"ID By Supplier"}, new String[]{"Remove Item"});
         printForm(resp, new String[] {"idBySupplier2"}, new String[]{"ID By Supplier"}, new String[]{"View Item"});
@@ -58,30 +51,35 @@ public class ShowAgreement extends Screen {
         printForm(resp, new String[] {"agreementType", "agreementDays" }, new String[]{"Agreement Type", "Agreement Days"}, new String[]{"Change Agreement Type"});
         printInstructions(resp);
 
+        differentOptionsForAgreement(agreementType, req, resp);
+        chooseAction(req, resp, supId);
+        handleError(resp);
+    }
+
+    private void differentOptionsForAgreement(int agreementType, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
         if(agreementType == 1){  //routine
             printForm(resp, new String[] {"agreementDays2" }, new String[]{"Delivery Days"}, new String[]{"Change Delivery Days"});
             printInstructionsDeliveryDays(req, resp);
-
         }
         else if(agreementType == 2){  //byOrder
             printForm(resp, new String[] {"day" }, new String[]{"Days Until Delivery"}, new String[]{"Change Days Until Delivery"});
             printInstructionsDaysUntilDelivery(resp);
         }
 
-        chooseAction(req, resp, supId);
-
-        handleError(resp);
     }
 
     private void chooseAction(HttpServletRequest req, HttpServletResponse resp, int supId) throws IOException {
 
-        if (req.getParameter("showItems") != null && req.getParameter("showItems").equals("true")){
+        String val;
+        if ((val = getParamVal(req,"showItems")) != null && val.equals("true")){
             showAllItems(req, resp, supId);
         }
-        else if (req.getParameter("viewItem") != null && req.getParameter("viewItem").equals("true")){
-            int itemId = Integer.parseInt(getCookie("itemId2ShowAgreement", req, resp, 5));
-            viewItem(req, resp, itemId, supId);
-        }
+        // TODO: Supplier Use it?
+        //else if ((val = getParamVal(req,"viewItem")) != null && val.equals("true")){
+            //int itemId = Integer.parseInt(getCookie("itemId2ShowAgreement", req, resp, 5));
+            //viewItem(req, resp, supId);
+        //}
     }
 
 
@@ -113,13 +111,14 @@ public class ShowAgreement extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
 
+        String supId = String.valueOf(getSupplierId(req, resp));
         if (isButtonPressed(req, "Remove Item")) {
             removeItemFromAgreement(req, resp);
         }
         else if(isButtonPressed(req, "View Item")){
             try {
-                addCookiesForViewItem(req, resp);
-                resp.sendRedirect("/ShowAgreement?viewItem=true");
+                //redirect(resp, ShowAgreement.class, new String[]{"viewItem","supId"}, new String[]{"true", supId});
+                viewItem(req, resp, 45);
             } catch (Exception e) {
                 setError(e.getMessage());
                 refresh(req, resp);
@@ -139,10 +138,11 @@ public class ShowAgreement extends Screen {
 
         switch (getIndexOfButtonPressed(req)){
             case 0:
-                resp.sendRedirect("/ShowAgreement?showItems=true");
+                redirect(resp, ShowAgreement.class, new String[]{"showItems","supId"}, new String[]{"true",supId});
+                //resp.sendRedirect("/ShowAgreement?showItems=true");
                 break;
             case 1:
-                addItemToAgreement(req, resp);
+                addItemToAgreement(req, resp, supId);
                 break;
 
         }
@@ -150,21 +150,23 @@ public class ShowAgreement extends Screen {
 
 
 
-    private void addItemToAgreement(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void addItemToAgreement(HttpServletRequest req, HttpServletResponse resp, String supId) throws IOException {
         try {
-            redirect(resp, AddItemToAgreement.class);
+            redirect(resp, AddItemToAgreement.class, new String[]{"supId"}, new String[]{supId});
         } catch (Exception e) {
             setError("Item is not in the system!, Please enter Id By supplier!");
             refresh(req, resp);
         }
     }
 
-    private void viewItem(HttpServletRequest req, HttpServletResponse resp, int itemId, int supId) throws IOException {
+    private void viewItem(HttpServletRequest req, HttpServletResponse resp, int supId2) throws IOException {
         try {
+            int idBySupplier = Integer.parseInt(req.getParameter("idBySupplier2"));
+            // TODO: Supplier : check if the supplier supplies this Item!!
+            int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
+            int supId = getSupplierId(req,resp);
 
-            addCookie(String.valueOf(supId), "supIdShowAgreementItem", resp,5);
-            addCookie(String.valueOf(itemId), "ItemIdShowAgreementItem", resp,5);
-            redirect(resp, ShowAgreementItem.class);
+            redirect(resp, ShowAgreementItem.class, new String[]{"supId","itemId"},new String[]{String.valueOf(supId), String.valueOf(itemId)});
         } catch (Exception e) {
             setError("Item is not in the system!, Please enter Id By supplier!");
             refresh(req, resp);
@@ -176,7 +178,6 @@ public class ShowAgreement extends Screen {
             int day = Integer.parseInt(req.getParameter("day"));
             int supId = getSupplierId(req, resp);
             if(controller.changeDaysUntilDelivery(supId, day)){
-
                 setError(String.format("Days until delivery updated to %s", day));
                 refresh(req, resp);
             }
@@ -199,7 +200,6 @@ public class ShowAgreement extends Screen {
             String days = req.getParameter("agreementDays2");
             int supId = getSupplierId(req, resp);
             if(days.length() > 0 && controller.setDaysOfDelivery(supId, days) ){
-
                 setError(String.format("Days updated to %s", days));
                 refresh(req, resp);
             }
@@ -221,11 +221,8 @@ public class ShowAgreement extends Screen {
 
             // TODO: Supplier check what it does when not inserting anything for not transporting! should be ""
             if((type == 1 || type == 2 || type == 3) && controller.changeAgreementType(supId, type, days)){
-
                 setError("Agreement type was changed successfully");
                 refresh(req, resp);
-
-                //agreementType = type;
             }
             else{
                 setError("Agreement wasn't changed!");
@@ -247,7 +244,6 @@ public class ShowAgreement extends Screen {
             int idBySupplier = Integer.parseInt(req.getParameter("idBySupplier"));
             int supId = getSupplierId(req, resp);
             int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
-
             if(controller.deleteItemFromAgreement(supId, itemId) ){
                 setError(String.format("Deleted Item %d", idBySupplier));
                 refresh(req, resp);
@@ -274,13 +270,11 @@ public class ShowAgreement extends Screen {
                 setError("[NO ITEMS ARE IN THE AGREEMENT]");
                 refresh(req, resp);
             }
-
             for(ServiceItemObject orderObject : list) {
                 PrintWriter out = resp.getWriter();
                 out.println(orderObject.toString() + "<br><br>");
                 //refresh(req, resp);
             }
-
         }
         catch (Exception e) {
             setError(e.getMessage());
@@ -291,11 +285,11 @@ public class ShowAgreement extends Screen {
 
 
     private int getSupplierId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int supId = -1;
-        supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
-        return supId;
+        return Integer.parseInt(getParamVal(req,"supId"));
+
     }
 
+        /*
     private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
         String cookie = "";
         for (Cookie c : req.getCookies()) {
@@ -304,6 +298,21 @@ public class ShowAgreement extends Screen {
             }
             c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
             resp.addCookie(c);
+        }
+        return cookie;
+    }
+
+     */
+
+    /*
+    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
+        String cookie = "";
+        for (Cookie c : req.getCookies()) {
+            if (c.getName().equals(name)) {
+                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
+                resp.addCookie(c);
+                return c.getValue();
+            }
         }
         return cookie;
     }
@@ -342,6 +351,7 @@ public class ShowAgreement extends Screen {
         resp.addCookie(c);
     }
 
+     */
 
 
 }

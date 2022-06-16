@@ -23,7 +23,12 @@ public class OrderStoreManager extends RemoveViewOrder{
         printOrderIds(resp);
         printForm(resp, new String[] {"orderId3"}, new String[]{"Order ID"}, new String[]{"View Order"});
 
-
+        String val;
+        if ((val = getParamVal(req,"viewOrder")) != null && val.equals("true")){
+            String orderId = getParamVal(req,"orderId");
+            if(orderId != null )
+                printOrder(req, resp, Integer.parseInt(orderId));
+        }
         handleError(resp);
     }
 
@@ -32,7 +37,8 @@ public class OrderStoreManager extends RemoveViewOrder{
         handleHeader(req, resp);
 
         if(isButtonPressed(req, "View Order")){
-            printOrder(req, resp);
+            String orderId = req.getParameter("orderId3");
+            redirect(resp, OrderStoreManager.class, new String[]{"viewOrder", "orderId"}, new String[]{"true", orderId});
         }
     }
 }

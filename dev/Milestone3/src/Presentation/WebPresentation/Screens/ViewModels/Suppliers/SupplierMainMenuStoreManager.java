@@ -41,7 +41,6 @@ public class SupplierMainMenuStoreManager extends SupplierMainMenu {
                 redirect(resp, ManageSuppliers.class);
                 break;
             case 1:
-                // TODO: Supplier : can he remove orders? I think he needs only to view
                 redirect(resp, OrderStoreManager.class);
                 break;
         }

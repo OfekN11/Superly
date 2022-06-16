@@ -8,6 +8,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -29,13 +30,17 @@ public class ManageManufacturers extends Screen {
         header(resp);
         greet(resp);
 
-        //int supId = getSupplierId(req, resp);
+        int supId = getSupplierId(req, resp);
+        resp.getWriter().println("<h2>Manage Manufacturers for Supplier" + supId + ".</h2><br>");
 
         printMenu(resp, new String[]{"Show Manufacturers"});
         printForm(resp, new String[] {"nameAdd"}, new String[]{"Name"}, new String[]{"Add Manufacturer"});
         printForm(resp, new String[] {"nameRemove"}, new String[]{"Name"}, new String[]{"Remove Manufacturer"});
 
-
+        String val;
+        if(((val = getParamVal(req, "showManufacturers")) != null) && val.equals("true")){
+            showManufacturers(req, resp, supId);
+        }
         handleError(resp);
     }
 
@@ -44,6 +49,7 @@ public class ManageManufacturers extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
 
+        String supId = (getParamVal(req,"supId"));
         if (isButtonPressed(req, "Add Manufacturer")) {
             addManufacturer(req, resp);
         }
@@ -51,26 +57,26 @@ public class ManageManufacturers extends Screen {
             removeManufacturer(req, resp);
         }
         if(getIndexOfButtonPressed(req) == 0){
-            showManufacturers(req, resp);
+            redirect(resp, ManageManufacturers.class, new String[]{"showManufacturers","supId"}, new String[]{"true",supId});
+            //showManufacturers(req, resp);
         }
 
     }
 
-    private void showManufacturers(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void showManufacturers(HttpServletRequest req, HttpServletResponse resp, int supId) throws IOException {
         try {
-            int supId = getSupplierId(req, resp);
             List<String> list = controller.getManufacturers(supId);
             if(list.isEmpty()){
-                // TODO: Supplier change this to normal print!
                 setError("[THERE ARE NO REPRESENTED MANUFACTURERS BY THIS SUPPLIER]");
-                refresh(req, resp);
+                //refresh(req, resp);
             }
             else{
+                PrintWriter out = resp.getWriter();
+                out.println("<h4>");
                 for(String s : list){
-                    // TODO: Supplier change this to normal print!
-                    setError(s);
-                    refresh(req, resp);
+                    out.println(s + "<br>");
                 }
+                out.println("</h4>");
             }
         } catch (Exception e) {
             setError(e.getMessage());
@@ -84,7 +90,6 @@ public class ManageManufacturers extends Screen {
             int supId = getSupplierId(req, resp);
             if(controller.addSupplierManufacturer(supId, name)){
 
-                // TODO: Supplier change this to normal print!
                 setError(String.format("Added manufacturer %s", name));
                 refresh(req, resp);
             }
@@ -122,11 +127,13 @@ public class ManageManufacturers extends Screen {
 
 
     private int getSupplierId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int supId = -1;
-        supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
-        return supId;
+        //int supId = -1;
+        //supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
+        //return supId;
+        return Integer.parseInt(getParamVal(req,"supId"));
     }
 
+        /*
     private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
         String cookie = "";
         for (Cookie c : req.getCookies()) {
@@ -139,6 +146,19 @@ public class ManageManufacturers extends Screen {
         return cookie;
     }
 
+     */
+
+    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
+        String cookie = "";
+        for (Cookie c : req.getCookies()) {
+            if (c.getName().equals(name)) {
+                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
+                resp.addCookie(c);
+                return c.getValue();
+            }
+        }
+        return cookie;
+    }
 
 
 }

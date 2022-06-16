@@ -14,11 +14,9 @@ public class EditCard extends Screen {
 
 
     private static final String greet = "Edit Card";
-    private final int supplierId;
 
     public EditCard() {
         super(greet);
-        supplierId = 1;
     }
 
 
@@ -28,7 +26,10 @@ public class EditCard extends Screen {
         header(resp);
         greet(resp);
 
-        int supId = getSupplierId("supplierId", req, resp);
+        int supId = getSupplierId(req);
+
+        resp.getWriter().println("<h2>Edit card for Supplier " + supId + ".</h2><br>");
+
 
         printForm(resp, new String[] {"bankNumber"}, new String[]{"Bank Number"}, new String[]{"Update Bank Number"});
         printForm(resp, new String[] {"address" }, new String[]{"Address"}, new String[]{"Update Address"});
@@ -61,9 +62,8 @@ public class EditCard extends Screen {
     private void updateBankNumber(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             int num = Integer.parseInt(req.getParameter("bankNumber"));
+            int supplierId = getSupplierId(req);
             if(controller.updateSupplierBankNumber(supplierId, num) ){
-
-                // TODO: Supplier change this to normal print!
                 setError(String.format("Bank number updated to %d", num));
                 refresh(req, resp);
             }
@@ -84,9 +84,8 @@ public class EditCard extends Screen {
     private void updateAddress(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             String name = req.getParameter("address");
+            int supplierId = getSupplierId(req);
             if(controller.updateSupplierAddress(supplierId, name) ){
-
-                // TODO: Supplier change this to normal print!
                 setError(String.format("Address updated to %s", name));
                 refresh(req, resp);
             }
@@ -103,9 +102,8 @@ public class EditCard extends Screen {
     private void updateName(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             String name = req.getParameter("name");
+            int supplierId = getSupplierId(req);
             if(controller.updateSupplierName(supplierId, name) ){
-
-                // TODO: Supplier change this to normal print!
                 setError(String.format("Name updated to %s", name));
                 refresh(req, resp);
             }
@@ -122,9 +120,8 @@ public class EditCard extends Screen {
     private void updatePayingAgreement(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             String name = req.getParameter("payingAgreement");
+            int supplierId = getSupplierId(req);
             if(controller.updateSupplierPayingAgreement(supplierId, name) ){
-
-                // TODO: Supplier change this to normal print!
                 setError(String.format("Paying Agreement updated to %s", name));
                 refresh(req, resp);
             }
@@ -140,12 +137,12 @@ public class EditCard extends Screen {
 
 
 
-    private int getSupplierId(String supplierId, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int supId = -1;
-        supId = Integer.parseInt(getCookie(supplierId, req, resp, 5));
-        return supId;
+    private int getSupplierId(HttpServletRequest req) {
+        return Integer.parseInt(getParamVal(req,"supId"));
+
     }
 
+    /*
     private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
         String cookie = "";
         for (Cookie c : req.getCookies()) {
@@ -154,6 +151,20 @@ public class EditCard extends Screen {
             }
             c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
             resp.addCookie(c);
+        }
+        return cookie;
+    }
+
+     */
+
+    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
+        String cookie = "";
+        for (Cookie c : req.getCookies()) {
+            if (c.getName().equals(name)) {
+                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
+                resp.addCookie(c);
+                return c.getValue();
+            }
         }
         return cookie;
     }

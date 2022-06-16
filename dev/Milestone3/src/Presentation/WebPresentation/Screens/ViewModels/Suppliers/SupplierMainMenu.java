@@ -30,8 +30,10 @@ public abstract class SupplierMainMenu extends Screen {
         try {
             int supplierId = Integer.parseInt(req.getParameter("ID"));
             if(controller.doesSupplierExists(supplierId)) {
-                addCookie(String.valueOf(supplierId), "supplierId",resp,30);
-                redirect(resp, ViewSupplier.class);
+
+                //instead of addCookie I will send it through roi function!!!!
+                //addCookie(String.valueOf(supplierId), "supplierId",resp,30);
+                redirect(resp, ViewSupplier.class, new String[]{"supId"},new String[]{String.valueOf(supplierId)});
             }
             else{
                 setError("No such supplier, please try again.");

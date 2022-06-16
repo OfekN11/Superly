@@ -16,7 +16,6 @@ public class ManageContacts extends Screen {
     private static final String greet = "Contacts Management";
 
     public ManageContacts() {
-        // TODO: Supplier pass SupplierId
         super(greet);
     }
 
@@ -27,15 +26,18 @@ public class ManageContacts extends Screen {
         greet(resp);
 
         int supId = getSupplierId(req, resp);
+        resp.getWriter().println("<h2>Manage Contacts for Supplier" + supId + ".</h2><br>");
+
 
         printMenu(resp, new String[]{"Show Contacts"});
         printForm(resp, new String[] {"nameAdd", "phone" }, new String[]{"Name", "Phone number"}, new String[]{"Add Contact"});
         printForm(resp, new String[] {"nameRemove" }, new String[]{"Name"}, new String[]{"Remove Contact"});
 
-        if (req.getParameter("showContacts") != null && req.getParameter("showContacts").equals("true")){
+
+        String val;
+        if(((val = getParamVal(req, "showContacts")) != null) && val.equals("true")){
             showContacts(req, resp, supId);
         }
-
         handleError(resp);
     }
 
@@ -44,6 +46,7 @@ public class ManageContacts extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
 
+        String supId = getParamVal(req,"supId");
         if (isButtonPressed(req, "Add Contact")) {
             addContact(req, resp);
         }
@@ -51,8 +54,7 @@ public class ManageContacts extends Screen {
             removeContact(req, resp);
         }
         if(getIndexOfButtonPressed(req) == 0){
-            resp.sendRedirect("/ManageContacts?showContacts=true");
-            //showContacts(req, resp);
+            redirect(resp, ManageContacts.class, new String[]{"showContacts","supId"}, new String[]{"true", supId});
         }
 
     }
@@ -125,11 +127,13 @@ public class ManageContacts extends Screen {
 
 
     private int getSupplierId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int supId = -1;
-        supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
-        return supId;
+        //int supId = -1;
+        //supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
+        //return supId;
+        return Integer.parseInt(getParamVal(req,"supId"));
     }
 
+        /*
     private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
         String cookie = "";
         for (Cookie c : req.getCookies()) {
@@ -138,6 +142,20 @@ public class ManageContacts extends Screen {
             }
             c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
             resp.addCookie(c);
+        }
+        return cookie;
+    }
+
+     */
+
+    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
+        String cookie = "";
+        for (Cookie c : req.getCookies()) {
+            if (c.getName().equals(name)) {
+                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
+                resp.addCookie(c);
+                return c.getValue();
+            }
         }
         return cookie;
     }

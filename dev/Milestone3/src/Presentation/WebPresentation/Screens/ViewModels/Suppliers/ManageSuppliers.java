@@ -126,7 +126,7 @@ public class ManageSuppliers extends Screen {
                 setError("Missing details in Contacts!");
                 return new ArrayList<>();
             }
-            contacts.add(new Pair<>(splitContact[0], splitContact[1]));
+            contacts.add(new Pair<>(splitContact[i], splitContact[i+1]));
         }
         return contacts;
     }

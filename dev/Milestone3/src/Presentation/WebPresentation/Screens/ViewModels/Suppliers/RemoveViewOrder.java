@@ -14,9 +14,6 @@ import java.util.List;
 public class RemoveViewOrder extends Screen {
 
 
-    //private static final String greet = "Remove Order for HR & Logistics";
-
-
     public RemoveViewOrder(String greet) {
         super(greet);
     }
@@ -32,7 +29,12 @@ public class RemoveViewOrder extends Screen {
         printForm(resp, new String[] {"orderId1"}, new String[]{"Order ID"}, new String[]{"Remove Order"});
         printForm(resp, new String[] {"orderId3"}, new String[]{"Order ID"}, new String[]{"View Order"});
 
-
+        String val;
+        if ((val = getParamVal(req,"viewOrder")) != null && val.equals("true")){
+            String orderId = getParamVal(req,"orderId");
+            if(orderId != null )
+                printOrder(req, resp, Integer.parseInt(orderId));
+        }
         handleError(resp);
     }
 
@@ -43,7 +45,6 @@ public class RemoveViewOrder extends Screen {
             ArrayList<Integer> supplierIds = controller.getSuppliersID();
             for(Integer id : supplierIds){
                 List<Integer> orderIds = controller.geOrdersID(id);
-                // TODO: Supplier change this to normal print!
                 out.print(String.format("Order from Supplier %s  : ", id));
                 out.println(orderIds);
             }
@@ -63,11 +64,11 @@ public class RemoveViewOrder extends Screen {
         }
 
         else if(isButtonPressed(req, "View Order")){
-            printOrder(req, resp);
+            String orderId = req.getParameter("orderId3");
+            redirect(resp, RemoveViewOrder.class, new String[]{"viewOrder", "orderId"}, new String[]{"true", orderId});
         }
 
     }
-
 
 
 
@@ -75,8 +76,6 @@ public class RemoveViewOrder extends Screen {
         try {
             int orderId = Integer.parseInt(req.getParameter("orderId1"));
             if(controller.removeOrder(orderId) ){
-
-                // TODO: Supplier change this to normal print!
                 setError(String.format("Order %d was removed", orderId));
                 refresh(req, resp);
             }
@@ -96,9 +95,9 @@ public class RemoveViewOrder extends Screen {
 
 
 
-    protected void printOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void printOrder(HttpServletRequest req, HttpServletResponse resp, int orderId) throws IOException {
         try {
-            int orderId = Integer.parseInt(req.getParameter("orderId3"));
+            //int orderId = Integer.parseInt(req.getParameter("orderId3"));
             ServiceOrderObject result = controller.getOrder(orderId);
             if(result != null){
 
