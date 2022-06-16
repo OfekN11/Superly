@@ -20,7 +20,7 @@ import java.util.Set;
 public class Sales extends Screen{
 
     private static final String greet = "Sales";
-    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
+    public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>();
 
     private static final String viewButton = "View Sale";
     private static final String addButton = "Add Sale";
