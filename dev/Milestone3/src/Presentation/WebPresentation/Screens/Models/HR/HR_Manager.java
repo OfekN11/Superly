@@ -7,15 +7,11 @@ import java.io.IOException;
 
 public class HR_Manager extends Employee{
 
-    private static String greeting = "Welcome HR Manager ";
+    private static final String GREETING = "Welcome HR Manager ";
 
-    private static String[] menuOptions = {};
+    private static final String[] EXTRA_OPTIONS = {};
 
     protected HR_Manager(Domain.Service.Objects.Employee.HR_Manager sHRMan) {
-        super(sHRMan, greeting, menuOptions);
-    }
-
-    @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super(sHRMan, GREETING, EXTRA_OPTIONS);
     }
 }

@@ -11,12 +11,13 @@ import java.util.stream.Stream;
 
 public abstract class Employee extends Screen {
 
-    private static final String[] BASE_OPTIONS = {
-            "View Upcoming shifts",
-            "Manage Constraints",
-            "Calculate Salary",
-            "Print Employment Conditions"
+    protected static final String[] BASE_OPTIONS = {
+            "View Upcoming shifts",         //0
+            "Manage Constraints",           //1
+            "Calculate Salary",             //2
+            "Print Employment Conditions"   //3
     };
+
     private final String[] menuOption;
 
     public final String id;
@@ -48,23 +49,26 @@ public abstract class Employee extends Screen {
         super.greet(resp);
     }
 
-    /***
-     * prints a form of submit buttons.
-     * buttons names are the index of their value in menuOptions
-     * @param resp the response to print to
-     * @throws IOException
-     */
-    public void printMenu(HttpServletResponse resp) throws IOException {
-        printMenu(resp, menuOption);
-    }
-
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        header(resp);
+        greet(resp);
+        printMenu(resp, menuOption);
+        handleError(resp);
     }
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        switch (getIndexOfButtonPressed(req)){
+            case 0:
+
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
     }
 }

@@ -7,15 +7,11 @@ import java.io.IOException;
 
 public class Logistics_Manager extends Employee{
 
-    private static String greeting = "Welcome Logistics Manager ";
+    private static final String GREETING = "Welcome Logistics Manager ";
 
-    private static String[] menuOptions = {};
+    private static final String[] EXTRA_OPTIONS = {};
 
     protected Logistics_Manager(Domain.Service.Objects.Employee.Logistics_Manager sLogMan) {
-        super(sLogMan, greeting, menuOptions);
-    }
-
-    @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super(sLogMan, GREETING, EXTRA_OPTIONS);
     }
 }

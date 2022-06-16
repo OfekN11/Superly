@@ -7,15 +7,11 @@ import java.io.IOException;
 
 public class Cashier extends Employee{
 
-    private static String greeting = "Welcome Cashier ";
+    private static String GREETING = "Welcome Cashier ";
 
-    private static String[] menuOptions = {};
+    private static String[] EXTRA_OPTIONS = {};
 
     protected Cashier(Domain.Service.Objects.Employee.Cashier sCashier) {
-        super(sCashier, greeting, menuOptions);
-    }
-
-    @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super(sCashier, GREETING, EXTRA_OPTIONS);
     }
 }
