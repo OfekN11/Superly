@@ -273,4 +273,9 @@ public class Transport {
     public void initWeight(int weight){
         truckWeight = weight;
     }
+
+    public void removeOrder(int id,int weight) {
+        transportOrders.remove(id);
+        truckWeight = truckWeight - weight;
+    }
 }
