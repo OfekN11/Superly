@@ -118,7 +118,7 @@ public class ShowAgreement extends Screen {
         else if(isButtonPressed(req, "View Item")){
             try {
                 //redirect(resp, ShowAgreement.class, new String[]{"viewItem","supId"}, new String[]{"true", supId});
-                viewItem(req, resp, 45);
+                viewItem(req, resp);
             } catch (Exception e) {
                 setError(e.getMessage());
                 refresh(req, resp);
@@ -159,7 +159,7 @@ public class ShowAgreement extends Screen {
         }
     }
 
-    private void viewItem(HttpServletRequest req, HttpServletResponse resp, int supId2) throws IOException {
+    private void viewItem(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             int idBySupplier = Integer.parseInt(req.getParameter("idBySupplier2"));
             // TODO: Supplier : check if the supplier supplies this Item!
