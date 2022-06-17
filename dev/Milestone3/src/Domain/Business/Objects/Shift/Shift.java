@@ -269,7 +269,8 @@ public abstract class Shift {
 
     public Set<String> getAssignedEmployeesIDs() {
         Set<String> assigned = new HashSet<>();
-        assigned.add(shiftManagerId);
+        if(!shiftManagerId.equals("-1"))
+            assigned.add(shiftManagerId);
         assigned.addAll(carrierIDs);
         assigned.addAll(cashierIDs);
         assigned.addAll(sorterIDs);
