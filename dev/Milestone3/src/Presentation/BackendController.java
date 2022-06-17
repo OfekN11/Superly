@@ -47,10 +47,6 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public List<String> getSuppliersMessagesForHR(){
-        return new LinkedList<>();
-    }
-
     //READ
 
     public Employee getEmployee(String id) throws Exception {
@@ -577,8 +573,11 @@ public class BackendController {
     public List<String> getImportantHRMessagesTransport() throws Exception {
         return Arrays.stream(orderService.getImportantMessages()).collect(Collectors.toList());
     }
-    public List<String> getImportantHRMessagesInventory() throws Exception {
+    public List<String> getImportantHRMessagesInventory() {
         return inventoryService.getReadyOrders();
+    }
+    public List<String> getImportantHRMessagesSuppliers(){
+        return new LinkedList<>();
     }
 
     //Transport Order

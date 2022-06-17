@@ -44,9 +44,9 @@ public class ManageInventory extends Screen {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //if(!isAllowed(req, resp)) {
-        //    redirect(resp, Login.class);
-        //}
+        if(!isAllowed(req, resp)) {
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
         //printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{viewButton});
