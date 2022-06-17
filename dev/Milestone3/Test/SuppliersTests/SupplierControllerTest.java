@@ -3,8 +3,12 @@ package SuppliersTests;
 import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
+import Domain.DAL.Abstract.DAO;
 import Globals.Pair;
-//import net.jcip.annotations.NotThreadSafe;
+import InventoryTests.CategoryTests;
+import net.jcip.annotations.NotThreadSafe;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +21,7 @@ import java.util.Map;
  * NOTE: The Tests assumes that the DB is empty
  */
 
-//@NotThreadSafe
+@NotThreadSafe
 class SupplierControllerTest {
 
     private SupplierController controller;
@@ -27,6 +31,21 @@ class SupplierControllerTest {
     private int supId2 = -1;
     private ArrayList<Integer> supplierIds;
     private int storeId = 1;
+
+
+
+    @BeforeAll
+    public synchronized static void setData() {
+        DAO.setDBForTests(SupplierControllerTest.class);
+    }
+
+    @AfterAll
+    public static void removeData() {
+        DAO.deleteTestDB(SupplierControllerTest.class);
+    }
+
+
+
 
     @BeforeEach
     void setUp() {
@@ -285,7 +304,6 @@ class SupplierControllerTest {
             assertEquals(orderItem.getQuantity(), 10);
             assertEquals(orderItem.getDiscount(), 30);
             assertEquals(orderItem.getFinalPrice(), 28);
-            assertEquals(orderItem.getName(), "name");
             assertEquals(orderItem.getPricePerUnit(), 4);
         } catch (Exception e) {
             e.printStackTrace();

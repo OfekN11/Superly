@@ -593,11 +593,11 @@ public class Supplier {
         return orders.get(orderId);
     }
 
-    public boolean orderExists(int id, OrderDAO orderDAO) throws Exception {
-        if(orders.containsKey(id) )
+    public boolean orderExists(int currOrderId, OrderDAO orderDAO) throws Exception {
+        if(orders.containsKey(currOrderId) )
             return true;
-        if(orderDAO.containsKey(id, suppliersDAO)){
-            Order order = orderDAO.getOrder(id, suppliersDAO);
+        if(orderDAO.containsKey(currOrderId, suppliersDAO)){
+            Order order = orderDAO.getOrder(currOrderId, suppliersDAO);
             if(order.getSupplierId() == id){
                 orders.put(order.getId(), order);
                 return true;

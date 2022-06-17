@@ -1,13 +1,12 @@
 package Domain.Business.Controllers;
 
 import Domain.Business.Controllers.HR.EmployeeController;
+import Domain.Business.Controllers.Transport.SiteController;
 import Domain.Business.Controllers.Transport.TransportController;
 import Domain.Business.Controllers.Transport.TruckController;
 import Domain.Business.Objects.Shift.*;
 import Domain.Business.Objects.Employee.*;
-import Domain.Business.Objects.Document.*;
 import Domain.Business.Objects.Inventory.*;
-import Domain.Business.Objects.Site.*;
 import Domain.Business.Objects.Supplier.*;
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.DAL.Controllers.InventoryAndSuppliers.*;
@@ -34,10 +33,11 @@ public class EmployeeControllerTest extends TestCase {
     @Test
     public void testEditEmployeeName() {
         try {
+            SiteController s = new SiteController();
             //loadHR();
-            // addInventoryTestData();
             //loadShiftForJuly();
-           // insertFirstDataToDB(); // the db in the desktop is updated until (not including) this line. aka employees and Inventory
+            //addInventoryTestData();
+            //insertFirstDataToDB(); // the db in the desktop is updated until (not including) this line. aka employees and Inventory
             //transportData();
             employeeController.editEmployeeName("160","updated");
             assertEquals(employeeController.getEmployee("160").getName(),"updated");
@@ -187,7 +187,6 @@ public class EmployeeControllerTest extends TestCase {
         }
 
     }
-
     private void addInventoryTestData() {
         addStoresTestDate();
         addCategoryAndProductTestDate();

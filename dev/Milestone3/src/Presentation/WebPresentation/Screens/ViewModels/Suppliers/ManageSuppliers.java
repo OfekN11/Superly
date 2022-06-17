@@ -1,7 +1,11 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Globals.Pair;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class ManageSuppliers extends Screen {
@@ -18,18 +24,23 @@ public class ManageSuppliers extends Screen {
     private static final String removeButton = "Remove Supplier";
     private static final String addButton = "Add Supplier";
 
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Admin.class, Storekeeper.class));
+
+
 
     public ManageSuppliers() {
-        super(greet);
+        super(greet,ALLOWED);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
 
         printForm(resp, new String[] {"ID"}, new String[]{"Supplier ID"}, new String[]{removeButton});
-
         printForm(resp, new String[] {"name", "bankNumber", "address", "payingAgreement", "contacts", "manufacturers"},
                         new String[]{"Name", "Bank Number", "Address", "Paying agreement", "Contacts", "Manufacturers" }, new String[]{addButton});
         printInstructions(req, resp);
@@ -45,13 +56,8 @@ public class ManageSuppliers extends Screen {
             try {
                 int supplierId = Integer.parseInt(req.getParameter("ID"));
                 if(controller.removeSupplier(supplierId) ){
-
-                    // TODO: Supplier It opens a new window!, if I put it in goGet it works
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Removed supplier %d", supplierId)));
-                    // TODO: Supplier change this to normal print!
-                    //setError(String.format("Removed supplier %d", supplierId));
-                    //refresh(req, resp);
+                    setError(String.format("Supplier %d removed successfully!", supplierId));
+                    refresh(req, resp);
                 }
                 else{
                     setError("Supplier wasn't removed!");
@@ -76,11 +82,9 @@ public class ManageSuppliers extends Screen {
     private void printInstructions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             PrintWriter out = resp.getWriter();
-            out.println("Enter Contacts like this : Name1, phone-number1, Name2, phone-number2  ");
-            // TODO: Supplier Fix the \n
-            // TODO: Supplier change this to normal print!
-            out.println(" For example:Israel, 0591234567");
-            out.println(" Enter manufacturers divided by , like this : Osem, Elit");
+            out.println("<h4>Enter Contacts like this : Name1, phone-number1, Name2, phone-number2<br>");
+            out.println("For example:Israel, 0591234567<br>");
+            out.println("Enter manufacturers divided by , like this : Osem, Elit</h4>");
 
         } catch (Exception e) {
             setError(e.getMessage());
@@ -106,11 +110,8 @@ public class ManageSuppliers extends Screen {
             }
             int supplierId = controller.addSupplier(name, bankNumber, address, payingAgreement, contacts, manufacturers);
             if(supplierId != -1){
-                PrintWriter out = resp.getWriter();
-                out.print("Supplier ");
-                out.print(supplierId);
-                out.print(" was added successfully to the data base");
-                // TODO: Supplier change this to normal print!
+                setError(String.format("Supplier %d added successfully!", supplierId));
+                refresh(req, resp);
             }
             else{
                 setError("Supplier wasn't added!");
@@ -137,7 +138,7 @@ public class ManageSuppliers extends Screen {
                 setError("Missing details in Contacts!");
                 return new ArrayList<>();
             }
-            contacts.add(new Pair<>(splitContact[0], splitContact[1]));
+            contacts.add(new Pair<>(splitContact[i], splitContact[i+1]));
         }
         return contacts;
     }
