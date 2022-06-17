@@ -1,10 +1,10 @@
 package Presentation.WebPresentation.Screens.Models.HR;
 
 import Presentation.WebPresentation.Screens.Screen;
-import Presentation.WebPresentation.Screens.ViewModels.HR.ConstraintManagement;
-import Presentation.WebPresentation.Screens.ViewModels.HR.EmploymentConds;
-import Presentation.WebPresentation.Screens.ViewModels.HR.SalaryCalculator;
-import Presentation.WebPresentation.Screens.ViewModels.HR.UpcomingShifts;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.ConstraintManagement;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.EmploymentConds;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.SalaryCalculator;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.UpcomingShifts;
 import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.InventoryMainMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.SupplierMainMenuStorekeeper;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;

@@ -1,9 +1,10 @@
-package Presentation.WebPresentation.Screens.ViewModels.HR;
+package Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee;
 
 import Domain.Service.Objects.Shift.Shift;
 import Globals.util.ShiftComparator;
 import Presentation.WebPresentation.Screens.Models.HR.*;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
