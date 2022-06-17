@@ -109,7 +109,11 @@ public class Categories extends Screen{
                 return;
             }
             try {
-                redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Category.class);
+                String categoryIDstr = req.getParameter("ID");
+                int categoryID = Integer.parseInt(categoryIDstr);
+                Result<Domain.Service.Objects.InventoryObjects.Category> category = controller.getCategory(categoryID);
+                if(category.isOk() && category.getValue().getID()==categoryID)
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Category.class, new String[]{"CategoryID"}, new String[]{categoryIDstr});
             }catch (NumberFormatException e1){
                 setError("Please enter a number!");
                 refresh(req, resp);

@@ -57,7 +57,7 @@ public class Category extends Screen{
         if (isButtonPressed(req, setParentButton)){
             if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Transport_Manager.class, HR_Manager.class)))) {
                 setError("You have no permission to set category parent");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
                 return;
             }
             try {
@@ -65,25 +65,25 @@ public class Category extends Screen{
                 if(controller.changeCategoryParent(categoryID, newParentID).isOk()) {
                     PrintWriter out = resp.getWriter();
                     out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed parent category of category %d to %d", categoryID, controller.getCategory(newParentID).getValue().getName())));
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
                 }
                 else{
                     setError("Parent category hasn't been changed");
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
                 }
             }catch (NumberFormatException e1){
                 setError("Please enter a number!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
             }
             catch (Exception e) {
                 setError(e.getMessage());
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
             }
         }
         else if (isButtonPressed(req, setNameButton)){
             if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
                 setError("You have no permission to set category name");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
                 return;
             }
             try {
@@ -91,19 +91,19 @@ public class Category extends Screen{
                 if(controller.editCategoryName(categoryID, newName).isOk()) {
                     PrintWriter out = resp.getWriter();
                     out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed name of category %d to %s", categoryID, newName)));
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
                 }
                 else{
                     setError("Category name hasn't been changed");
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
                 }
             }catch (NumberFormatException e1){
                 setError("Please enter a number!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
             }
             catch (Exception e) {
                 setError(e.getMessage());
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
             }
         }
     }

@@ -577,8 +577,8 @@ public class InventoryController {
         if (!categoryToRemove.getAllProductsInCategory().isEmpty())
             throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
         categoryToRemove.changeParentCategory(null);
-        CATEGORY_DATA_MAPPER.remove(Integer.toString(catID));
-        if(categories.remove(catID)!=null)
+        int flag = CATEGORY_DATA_MAPPER.remove(Integer.toString(catID));
+        if(categories.remove(catID)!=null || flag!=-1)
             return true;
         else
             return false;
