@@ -9,10 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class PlaceTruck extends Screen {
+    private static final String greet = "Place Truck";
+    public PlaceTruck() {
+        super(greet);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         header(resp);
         greet(resp);
+        String info = getParamVal(req,"info");
         printForm(resp, new String[]{"LN"}, new String[]{"License number"}, new String[]{"Place", "Cancel"});
         handleError(resp);
     }

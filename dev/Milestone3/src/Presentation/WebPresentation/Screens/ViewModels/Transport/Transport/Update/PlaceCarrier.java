@@ -18,6 +18,7 @@ public class PlaceCarrier extends Screen {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         header(resp);
         greet(resp);
+        String info = getParamVal(req,"info");
         printForm(resp, new String[]{"LN"}, new String[]{"License number"}, new String[]{"Place", "Cancel"});
         handleError(resp);
     }
