@@ -1,13 +1,12 @@
-package Presentation.CLIPresentation.Factories;
+package Presentation.WebPresentation.Screens.ViewModels.Transport.Factories;
 
-import Presentation.CLIPresentation.Objects.Document.*;
-import Presentation.CLIPresentation.Objects.Document.DestinationDocument;
-import Presentation.CLIPresentation.Objects.Document.Document;
-import Presentation.CLIPresentation.Objects.Document.TransportDocument;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Document.DestinationDocument;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Document.Document;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Document.TransportDocument;
 
 public class PresentationDocumentFactory {
     public Document createPresentationDocument(Domain.Service.Objects.Document.Document doc){
-        return null;
+        return doc.accept(this);
     }
 
     public DestinationDocument createPresentationDocument(Domain.Service.Objects.Document.DestinationDocument destinationDoc){
