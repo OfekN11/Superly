@@ -32,6 +32,8 @@ public class SalaryCalculator extends Screen {
             redirect(resp, Login.class);
             return;
         }
+        header(resp);
+        greet(resp);
         String val;
         PrintWriter out = resp.getWriter();
         LocalDate start = LocalDate.now(), end = LocalDate.now();
@@ -40,14 +42,14 @@ public class SalaryCalculator extends Screen {
             start = LocalDate.parse(val);
         }
         if (endGiven = ((val = getParamVal(req, "end")) != null)) {
-            start = LocalDate.parse(val);
+            end = LocalDate.parse(val);
         }
-        out.println("<form method=\"post\">\n");
+        out.println("<form method=\"post\">");
         out.println("<p>Enter start date to calculate from: </p>");
         out.println(String.format("<input type=\"date\" name=\"start\" value=\"%s\"><br><br>", start));
         out.println("<p>Enter end date to calculate to: </p>");
         out.println(String.format("<input type=\"date\" name=\"end\" value=\"%s\"><br><br>", end));
-        out.println("<input type=\"submit\" name=\"calculate\" value=\"test2\"><br><br>");
+        out.println("<input type=\"submit\" name=\"calculate\" value=\"calculate\"><br><br>");
         out.println("</form>");
 
         if (startGiven && endGiven) {

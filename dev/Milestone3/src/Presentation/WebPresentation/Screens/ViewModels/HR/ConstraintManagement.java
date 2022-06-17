@@ -102,5 +102,6 @@ public class ConstraintManagement extends Screen {
                 setError(e.getMessage());
             }
         }
+        refresh(req, resp);
     }
 }
