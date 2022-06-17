@@ -690,13 +690,6 @@ public class BackendController {
         }
     }
 
-    //For testing
-//    public BackendController(SupplierService service){
-//        this.supplierService = service;
-//        this.inventoryService = new InventoryService();
-//        inventoryService.loadTestData();
-//    }
-
     private boolean getValueFromBooleanResult(Result<Boolean> result) throws Exception {
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
@@ -862,8 +855,6 @@ public class BackendController {
         return getValueFromBooleanResult(result);
     }
 
-
-
     public boolean changeDaysUntilDelivery(int supplierID, int input) throws Exception {
         Result<Boolean> result = supplierService.changeDaysUntilDelivery(supplierID, input);
         return getValueFromBooleanResult(result);
@@ -881,14 +872,6 @@ public class BackendController {
         return getValueFromBooleanResult(result);
 
     }
-
-    /*
-    public boolean updateItemName(int supplierID, int itemID, String input) throws Exception {
-        Result<Boolean> result = supplierService.updateItemName(supplierID, itemID, input);
-        return getValueFromBooleanResult(result);
-    }
-
-     */
 
     public boolean updateItemManufacturer(int supplierID, int itemID, String input) throws Exception {
         Result<Boolean> result = supplierService.updateItemManufacturer(supplierID, itemID, input);
@@ -961,20 +944,12 @@ public class BackendController {
 //    }
 
 
-    //public Result<Object> loadTestData(){
-    //    return inventoryService.loadTestData();
-    //}
-
     public Result<Collection<Integer>> getStoreIDs(){
         return inventoryService.getStoreIDs();
     }
 
     public Result<List<Sale>> getRemovableSales(){
         return inventoryService.getRemovableSales();
-    }
-
-    public Result<Object> loadData(){
-        return inventoryService.loadData();
     }
 
     public Result<Product> newProduct(String name, int categoryID, double weight, double price, String manufacturer){
@@ -1007,18 +982,6 @@ public class BackendController {
 
     public Result<Set<Sale>> getSaleHistoryByCategory(int categoryID){
         return inventoryService.getSaleHistoryByCategory(categoryID);
-    }
-
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
-        return inventoryService.getDefectiveItemsByStore(start, end, storeIDs);
-    }
-
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
-        return inventoryService.getDefectiveItemsByCategory(start, end, categoryIDs);
-    }
-
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
-        return inventoryService.getDefectiveItemsByProduct(start, end, productIDs);
     }
 
     public Result<List<Product>> getProducts(){
@@ -1061,27 +1024,39 @@ public class BackendController {
         return inventoryService.reportExpired(storeID, productID, amount, employeeID, description, inWarehouse);
     }
 
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
+        return inventoryService.getDefectiveItemsByStore(start, end, storeIDs);
+    }
+
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
+        return inventoryService.getDefectiveItemsByCategory(start, end, categoryIDs);
+    }
+
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
+        return inventoryService.getDefectiveItemsByProduct(start, end, productIDs);
+    }
+
+    public Result<List<DefectiveItemReport>> getDamagedItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
         return inventoryService.getDamagedItemsReportByStore(start, end, storeIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
         return inventoryService.getDamagedItemsReportByCategory(start, end, categoryIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
         return inventoryService.getDamagedItemsReportByProduct(start, end, productIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
         return inventoryService.getExpiredItemReportsByStore(start, end, storeIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
         return inventoryService.getExpiredItemReportsByCategory(start, end, categoryIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
         return inventoryService.getExpiredItemReportsByProduct(start, end, productIDs);
     }
 
