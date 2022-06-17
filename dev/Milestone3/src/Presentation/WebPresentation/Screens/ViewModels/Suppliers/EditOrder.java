@@ -65,13 +65,13 @@ public class EditOrder extends Screen {
             int supplierId = getSupplierId(req);
             int orderId = getOrderId(req);
 
-            int idBySupplier = Integer.parseInt(req.getParameter("orderItemId"));
+            int itemId = Integer.parseInt(req.getParameter("orderItemId"));
             int quantity = Integer.parseInt(req.getParameter("quantity"));
-            int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
+            //int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
 
             Result<Boolean> r = controller.updateItemQuantityInOrder(supplierId, orderId, itemId, quantity);
             if(r.isOk()){
-                setError(String.format("Item %d updated to quantity %d!", idBySupplier, quantity));
+                setError(String.format("Item %d updated to quantity %d!", itemId, quantity));
                 refresh(req, resp);
             }
             else{
@@ -94,12 +94,12 @@ public class EditOrder extends Screen {
             int supplierId = getSupplierId(req);
             int orderId = getOrderId(req);
 
-            int idBySupplier = Integer.parseInt(req.getParameter("orderItemId1"));
-            int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
+            int itemId = Integer.parseInt(req.getParameter("orderItemId1"));
+            //int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
 
             Result<Boolean> r = controller.removeItemFromOrder(supplierId, orderId, itemId);
             if(r.isOk()){
-                setError(String.format("Item %d removed from order %d!", idBySupplier, orderId));
+                setError(String.format("Item %d removed from order %d!", itemId , orderId));
                 refresh(req, resp);
             }
             else{
