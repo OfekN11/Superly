@@ -1,4 +1,4 @@
-package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport;
+package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update;
 
 import Presentation.WebPresentation.Screens.Screen;
 
@@ -32,7 +32,7 @@ public class UpdateTransport extends Screen {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req,resp);
-        //int id = Integer.parseInt(req.getParameter("Transport ID"));
+        String id = getParamVal(req,"Transport ID");
         if(isButtonPressed(req,"Place truck")){
 
         }
@@ -42,7 +42,7 @@ public class UpdateTransport extends Screen {
             }
             else {
                 if(isButtonPressed(req,"Start transport")){
-
+                    handelStart(id,req,resp);
                 }
                 else{
                     if(isButtonPressed(req,"View orders")){
@@ -67,5 +67,18 @@ public class UpdateTransport extends Screen {
 
             }
         }
+    }
+    public void handelStart(String id,HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try{
+            int transportId= Integer.parseInt(id);
+            controller.startTransport(transportId);
+            setError("Transport" + id + "started successfully");
+        }
+        catch (NumberFormatException e){
+            setError("Please Enter a valid id");
+        } catch (Exception e) {
+            setError(e.getMessage());
+        }
+        refresh(req,resp);
     }
 }

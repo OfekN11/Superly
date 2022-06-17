@@ -2,6 +2,7 @@ package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport;
 
 import Presentation.CLIPresentation.Objects.Transport.Transport;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.UpdateTransport;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
 import javax.servlet.Servlet;
@@ -41,7 +42,7 @@ public class TransportManagementMenu extends Screen {
                 //TODO: redirect(resp, CreateNewTransport.class);
                 break;
             case 1:
-                //TODO: redirect(resp, UpdateTransport.class);
+                redirect(resp, UpdateTransport.class);
                 break;
             case 2:
                 redirect(resp,TransportsView.class,new String[]{"Pending"},new String[]{"true"});
