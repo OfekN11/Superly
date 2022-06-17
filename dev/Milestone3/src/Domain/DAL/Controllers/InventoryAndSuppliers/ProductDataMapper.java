@@ -4,15 +4,18 @@ import Domain.Business.Objects.Inventory.Category;
 import Domain.Business.Objects.Inventory.Product;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class ProductDataMapper extends DataMapper<Product> {
 
 
-    private final static Map<String, Product> PRODUCT_IDENTITY_MAP = new HashMap<>();
+    private final static ConcurrentMap<String, Product> PRODUCT_IDENTITY_MAP = new ConcurrentHashMap<>();
     private final static CategoryDataMapper CATEGORY_DATA_MAPPER = Category.CATEGORY_DATA_MAPPER;
 
     private final static int ID_COLUMN = 1;
@@ -32,6 +35,11 @@ public class ProductDataMapper extends DataMapper<Product> {
             output.put(Integer.parseInt(entry.getKey()), entry.getValue());
         }
         return output;
+    }
+
+    @Override
+    public String instanceToId(Product instance) {
+        return String.valueOf(instance.getId());
     }
 
     @Override
@@ -96,6 +104,11 @@ public class ProductDataMapper extends DataMapper<Product> {
         }
     }
 
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
+    }
+
     public void updateCategory(int productID, int category) {
         try {
             updateProperty(Integer.toString(productID), CATEGORY_COLUMN, category);
@@ -123,23 +136,12 @@ public class ProductDataMapper extends DataMapper<Product> {
         }
     }
 
-    public Collection<Product> getAll() {
-        CATEGORY_DATA_MAPPER.getAll();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection);
-            while (instanceResult.next()) {
-                PRODUCT_IDENTITY_MAP.put(instanceResult.getString(ID_COLUMN), buildObject(instanceResult));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return PRODUCT_IDENTITY_MAP.values();
-    }
+
 
     public List<Product> getProductsFromCategory(int id) {
-        try(Connection connection = getConnection()) {
+        try(ConnectionHandler handler = getConnectionHandler()) {
             List<Integer> productIDs = new ArrayList<>();
-            ResultSet resultSet = executeQuery(connection, String.format("Select %s from %s where %s=" + id,
+            ResultSet resultSet = executeQuery(handler.get(), String.format("Select %s from %s where %s=" + id,
                     getColumnName(ID_COLUMN),
                     tableName,
                     getColumnName(CATEGORY_COLUMN)));
@@ -158,8 +160,8 @@ public class ProductDataMapper extends DataMapper<Product> {
     }
 
     public Integer getIDCount() {
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = getMax(connection, ID_COLUMN);
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = getMax(handler.get(), ID_COLUMN);
             while (instanceResult.next()) {
                 return instanceResult.getInt(1);
             }
@@ -170,8 +172,8 @@ public class ProductDataMapper extends DataMapper<Product> {
     }
 
     public void removeTestProducts() {
-        try(Connection connection = getConnection()){
-            ResultSet resultSet = executeQuery(connection,String.format("Select * FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
+        try(ConnectionHandler handler = getConnectionHandler()){
+            ResultSet resultSet = executeQuery(handler.get(),String.format("Select * FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
             List<Integer> products = new ArrayList<>();
             while (resultSet.next()) {
                 products.add(resultSet.getInt(ID_COLUMN));

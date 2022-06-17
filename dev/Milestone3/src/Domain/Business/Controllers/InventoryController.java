@@ -1,5 +1,6 @@
 package Domain.Business.Controllers;
 
+import Domain.Business.Controllers.Transport.TransportController;
 import Domain.Business.Objects.Inventory.Category;
 import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.Business.Objects.Inventory.SaleToCustomer;
@@ -27,6 +28,7 @@ public class InventoryController {
     private int productID;
     private int storeID;
     private SupplierController supplierController;
+    private TransportController transportController;
     private final static StoreDAO STORE_DAO = new StoreDAO();
     private final static ProductDataMapper PRODUCT_DATA_MAPPER = Product.PRODUCT_DATA_MAPPER;
     private final static CategoryDataMapper CATEGORY_DATA_MAPPER = Category.CATEGORY_DATA_MAPPER;
@@ -40,9 +42,18 @@ public class InventoryController {
         saleID=SALE_DATA_MAPPER.getIDCount() + 1;
         catID=CATEGORY_DATA_MAPPER.getIDCount() + 1;
         productID=PRODUCT_DATA_MAPPER.getIDCount() + 1;
-        supplierController = new SupplierController();
+
+        //supplierController = new SupplierController();
+        transportController = new TransportController();
     }
 
+    public void setSupplierController(SupplierController supCont){
+        supplierController = supCont;
+    }
+
+//    public void setTransportController(TransportController controller) {
+//        this.transportController = controller;
+//    }
     //for tests
     private static InventoryController instance;
     public static synchronized InventoryController getInventoryController() {
@@ -50,17 +61,6 @@ public class InventoryController {
             instance = new InventoryController();
         }
         return instance;
-    }
-
-    public void loadTestData() {
-        //initialize stuff for tests
-        //add stores
-//        for (int i = 1; i <= 10; i++)
-//            addStore();
-//        addCategoriesForTests();
-//        addProductsForTests();
-//        addSalesForTests();
-//        addReportsForTests();
     }
 
     public Category getCategory(int categoryID) {
@@ -99,7 +99,13 @@ public class InventoryController {
     }
 
     private Collection<SaleToCustomer> getAllSales() {
-        return SALE_DATA_MAPPER.getAll();
+        try {
+            return SALE_DATA_MAPPER.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
     }
 
     private SaleToCustomer getSale(int saleID) {
@@ -217,14 +223,30 @@ public class InventoryController {
             SALE_DATA_MAPPER.remove(sale.getId());
         }
     }
-
-    public void orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
-        Order arrivedOrder = supplierController.orderHasArrived(orderID, reportOfOrder);
-        int orderStoreID = arrivedOrder.getStoreID();
-        for (OrderItem orderItem : arrivedOrder.getOrderItems()) {
-            getProduct(orderItem.getProductId()).addItems(orderStoreID, orderItem.getQuantity(), orderItem.getMissingItems()+orderItem.getDefectiveItems(), orderItem.getDescription());
+    //Map<OrderId<ProductId , ( (missingAmount,defectiveAmount), description)>>
+    public void orderArrived(int transportID, Map<Integer,Map<Integer, Pair<Pair<Integer, Integer>, String>>> reports) throws Exception {
+        transportController.endTransport(transportID);
+        List<Integer> orderIDs = transportController.getTransport(transportID).gerOrders();
+        Order arrivedOrder;
+        for (int orderID : orderIDs) {
+            Map<Integer, Pair<Pair<Integer, Integer>, String>> rep = reports.get(orderID);
+            if (rep==null)
+                rep = new HashMap<>();
+            arrivedOrder = supplierController.orderHasArrived(orderID, rep);
+            int orderStoreID = arrivedOrder.getStoreID();
+            for (OrderItem orderItem : arrivedOrder.getOrderItems()) {
+                getProduct(orderItem.getProductId()).addItems(orderStoreID, orderItem.getQuantity(), orderItem.getMissingItems() + orderItem.getDefectiveItems(), orderItem.getDescription());
+            }
         }
     }
+
+//    public void orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
+//        Order arrivedOrder = supplierController.orderHasArrived(orderID, reportOfOrder);
+//        int orderStoreID = arrivedOrder.getStoreID();
+//        for (OrderItem orderItem : arrivedOrder.getOrderItems()) {
+//            getProduct(orderItem.getProductId()).addItems(orderStoreID, orderItem.getQuantity(), orderItem.getMissingItems()+orderItem.getDefectiveItems(), orderItem.getDescription());
+//        }
+//    }
 
     public Set<SaleToCustomer> getSaleHistoryByProduct(int productID) {
         return getProduct(productID).getSaleHistory();
@@ -258,11 +280,21 @@ public class InventoryController {
     }
 
     public Collection<Product> getProducts() {
-        return PRODUCT_DATA_MAPPER.getAll();
+        try {
+            return PRODUCT_DATA_MAPPER.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Collection<Category> getCategories() {
-        Collection<Category> categoryCollection = CATEGORY_DATA_MAPPER.getAll();
+        Collection<Category> categoryCollection = null;
+        try {
+            categoryCollection = CATEGORY_DATA_MAPPER.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         for (Category category: categoryCollection) {
             categories.put(category.getID(), category);
         }
@@ -334,9 +366,12 @@ public class InventoryController {
         return product;
     }
 
-    public void deleteProduct(int id){
-        products.remove(id);
+    public boolean deleteProduct(int id){
         PRODUCT_DATA_MAPPER.remove(Integer.toString(id));
+        if(products.remove(id)!=null)
+            return true;
+        else
+            return false;
     }
 
     public Pair<DefectiveItems, String> reportDamaged(int storeID, int productID, int amount, int employeeID, String description, boolean inWarehouse) {
@@ -532,9 +567,7 @@ public class InventoryController {
         return stock;
     }
 
-
-
-    public void deleteCategory(int catID) {
+    public boolean deleteCategory(int catID) {
         getCategories();
         Category categoryToRemove = getCategory(catID);
         if (categoryToRemove==null)
@@ -544,8 +577,11 @@ public class InventoryController {
         if (!categoryToRemove.getAllProductsInCategory().isEmpty())
             throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
         categoryToRemove.changeParentCategory(null);
-        categories.remove(catID);
         CATEGORY_DATA_MAPPER.remove(Integer.toString(catID));
+        if(categories.remove(catID)!=null)
+            return true;
+        else
+            return false;
     }
 
     public Product changeProductMin(int store, int product, int min) {
@@ -593,6 +629,16 @@ public class InventoryController {
             }
         }
         return orders;
+    }
+
+
+    /**
+     *
+     * @param productId
+     * @param storeId
+     * @param amount - can be negative (if negative than we subtract from the product), just use add "+". we will take care of the rest.
+     */
+    public void updateOnTheWayProducts(int productId, int storeId, int amount) {
     }
 
 //    private void addCategoriesForTests () {

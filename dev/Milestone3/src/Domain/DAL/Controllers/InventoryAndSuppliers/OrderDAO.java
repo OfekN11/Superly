@@ -2,15 +2,19 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 
 import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
+import Domain.Business.Objects.Truck;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
+import Domain.DAL.ConnectionHandler;
 import Globals.Enums.OrderStatus;
+import Globals.Enums.TruckModel;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class OrderDAO extends DataMapper<Order> {
 
@@ -27,9 +31,14 @@ public class OrderDAO extends DataMapper<Order> {
     private final static int STATUS_COLOUMN = 6;
 
 
-    public OrderDAO(){
+    public OrderDAO()  {
         super("Orders");
         orderItemDAO = new OrderItemDAO();
+        /*try {
+            getAllOrders();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
     }
 
     public Order getOrder(int orderId, SuppliersDAO suppliersDAO) throws Exception {
@@ -84,6 +93,16 @@ public class OrderDAO extends DataMapper<Order> {
         }
     }
 
+    @Override
+    public String instanceToId(Order instance) {
+        return String.valueOf(instance.getId());
+    }
+
+    @Override
+    protected Set<LinkDAO> getAllLinkDTOs() {
+        return new HashSet<>();
+    }
+
     public void addOrder(Order order) throws SQLException {
         insert(order);
         ORDER_IDENTITY_MAP.put(String.valueOf(order.getId()), order);
@@ -134,11 +153,15 @@ public class OrderDAO extends DataMapper<Order> {
 
     }
 
+    public void updateStatus(Order order) throws SQLException {
+        update(Arrays.asList(STATUS_COLOUMN),Arrays.asList(order.getStatus()),Arrays.asList(ORDER_ID_COLUMN),Arrays.asList(order.getId()));
+    }
+
     public ArrayList<Order> getLastOrdersFromALlSuppliers(ArrayList<Integer> orderIds) {
         ArrayList<Order> result = new ArrayList<>();
         for(Integer orderId : orderIds){
-            try(Connection connection = getConnection()) {
-                ResultSet instanceResult = select(connection, orderId);
+            try(ConnectionHandler handler = getConnectionHandler()) {
+                ResultSet instanceResult = select(handler.get(), orderId);
                 while (instanceResult.next()) {
                     Order order = buildObject(instanceResult);
                     result.add(order);
@@ -153,8 +176,8 @@ public class OrderDAO extends DataMapper<Order> {
 
     public int getGlobalId() {
         ArrayList<Integer> ids = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection);
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get());
             while (instanceResult.next()) {
                 ids.add(instanceResult.getInt(1));
             }
@@ -175,8 +198,8 @@ public class OrderDAO extends DataMapper<Order> {
 
     public ArrayList<Integer> getSupplierOrdersIds(int supplierId) {
         ArrayList<Integer> ids = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(ORDER_ID_COLUMN),  Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), Arrays.asList(ORDER_ID_COLUMN),  Arrays.asList(SUPPLIER_ID_COLUMN), Arrays.asList(supplierId));
             while (instanceResult.next()) {
                 ids.add(instanceResult.getInt(1));
             }
@@ -192,8 +215,8 @@ public class OrderDAO extends DataMapper<Order> {
 
     //for tests
     public void removeByStore(int store) {
-        try (Connection connection = getConnection()){
-            ResultSet resultSet = select(connection, Arrays.asList(STORE_ID_COLUMN), Arrays.asList(store));
+        try (ConnectionHandler handler = getConnectionHandler()){
+            ResultSet resultSet = select(handler.get(), Arrays.asList(STORE_ID_COLUMN), Arrays.asList(store));
             List<Integer> ordersIds = new ArrayList<>();
             while (resultSet.next()) {
                 ordersIds.add(resultSet.getInt(ORDER_ID_COLUMN));
@@ -234,6 +257,21 @@ public class OrderDAO extends DataMapper<Order> {
 
     public void setOrderItemDescription(int itemId, String desc) throws SQLException {
         orderItemDAO.updateDescription(itemId, desc);
+    }
+    public List<Order> getAllOrders() throws Exception {
+        List<Order> orders = new ArrayList<>();
+        try(ConnectionHandler handler = getConnectionHandler()){
+            ResultSet resultSet= select(handler.get());
+            while (resultSet.next()){
+                int id = resultSet.getInt(ORDER_ID_COLUMN);
+                orders.add(getOrder(id,new SuppliersDAO()));
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            throw new RuntimeException("we could not load data from the db");
+        }
+        return orders;
     }
 }
 

@@ -13,17 +13,23 @@ import java.util.*;
 
 public class SupplierController {
 
-    private SuppliersDAO suppliersDAO;
+    public SuppliersDAO suppliersDAO;
     private OrderDAO orderDAO;
-
+    private InventoryController inventoryController;
     private TransportController transportController;
 
-    // TODO: 10/06/2022 SHould get the transportController in the constructor
+
     public SupplierController(){
+        this.inventoryController = null;
         suppliersDAO = new SuppliersDAO();
         orderDAO = new OrderDAO();
+        // TODO: 10/06/2022 SHould get the transportController in the constructor
         transportController = new TransportController();
 
+    }
+
+    public void setInventoryController(InventoryController invCont){
+        inventoryController = invCont;
     }
 
 
@@ -31,8 +37,8 @@ public class SupplierController {
         try {
             int largestId = suppliersDAO.loadAllSuppliersInfo();
             Supplier.setGlobalId(largestId + 1);
-            int largerstOrderid = orderDAO.getGlobalId();
-            Order.setGlobalId(largerstOrderid + 1);
+            int largestOrderId = orderDAO.getGlobalId();
+            Order.setGlobalId(largestOrderId + 1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -134,7 +140,7 @@ public class SupplierController {
         suppliersDAO.getSupplier(supplierId).updateAgreementType(agreementType, agreementDays);
         suppliersDAO.updateAgreementType(supplierId, agreementType);
         List<Integer> days = suppliersDAO.getSupplier(supplierId).getAgreementDays();
-        suppliersDAO.getAgreementController().removeSupplier(supplierId);
+        suppliersDAO.getAgreementController().removeSupplierForChangingAgreement(supplierId);
         suppliersDAO.getAgreementController().updateAgreementDays(supplierId, days, agreementType);
     }
 
@@ -190,11 +196,15 @@ public class SupplierController {
         suppliersDAO.getSupplier(supplierId).updateItemId(olditemId, newItemId, suppliersDAO.getAgreementItemDAO());
     }
 
+    /*
     public void updateItemName(int supplierId, int itemId, String newName) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
         suppliersDAO.getSupplier(supplierId).updateItemName(itemId, newName, suppliersDAO.getAgreementItemDAO());
     }
+     */
+
+
 
     public void updateItemManufacturer(int supplierId, int itemId, String manufacturer) throws Exception {
         if(!supplierExist(supplierId))
@@ -203,11 +213,12 @@ public class SupplierController {
     }
 
 
-    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
+
+    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
         if(!supplierExist(supplierId))
             throw new Exception("There is no supplier with this ID!");
 
-        suppliersDAO.getSupplier(supplierId).addItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices, suppliersDAO);
+        suppliersDAO.getSupplier(supplierId).addItem(itemId, idBySupplier, itemManu, itemPrice, bulkPrices, suppliersDAO);
     }
 
     public void deleteItemFromAgreement(int supplierId, int itemId) throws Exception {
@@ -300,6 +311,7 @@ public class SupplierController {
         }
     }
 
+
     public String getItem(int supplierID, int itemId) throws Exception {
         if(!supplierExist(supplierID)){
             throw new Exception("The supplier does not exists!");
@@ -313,6 +325,7 @@ public class SupplierController {
             throw new Exception("The supplier does not exists!");
         }
 
+        suppliersDAO.getAgreementItemDAO().updateBulkPrice(supplierID, itemId, quantity, discount);
         suppliersDAO.getSupplier(supplierID).getItem(itemId).editBulkPrice(quantity, discount);
     }
 
@@ -320,15 +333,16 @@ public class SupplierController {
         if(!supplierExist(supplierID)){
             throw new Exception("The supplier does not exists!");
         }
-
+        suppliersDAO.getAgreementItemDAO().addBulkPrice(supplierID, itemId, quantity, discount);
         suppliersDAO.getSupplier(supplierID).getItem(itemId).addBulkPrice(quantity, discount);
+
     }
 
     public void removeBulkPrice(int supplierID, int itemId, int quantity)throws Exception{
         if(!supplierExist(supplierID)){
             throw new Exception("The supplier does not exists!");
         }
-
+        suppliersDAO.getAgreementItemDAO().removeBulkPrice(supplierID, itemId, quantity);
         suppliersDAO.getSupplier(supplierID).getItem(itemId).removeBulkPrice(quantity);
     }
 
@@ -415,17 +429,7 @@ public class SupplierController {
 
 
 
-
-
-    public int addNewOrder(int supId, int storeId) throws Exception {
-        if(!supplierExist(supId)){
-            throw new Exception("The supplier does not exists!");
-        }
-        Order order = suppliersDAO.getSupplier(supId).addNewOrder(storeId, orderDAO, suppliersDAO.getAgreementController());
-
-        return order.getId();
-    }
-
+    /*
     public void addItemsToOrder(int supId, int orderId, List<String> itemsString) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
@@ -437,54 +441,116 @@ public class SupplierController {
         }
         //suppliers.get(supId).addItemsToOrder(orderId, itemsString);
     }
+     */
 
+
+    public int addNewOrder(int supId, int storeId) throws Exception {
+        if(!supplierExist(supId)){
+            throw new Exception("The supplier does not exists!");
+        }
+        Order order = suppliersDAO.getSupplier(supId).addNewOrder(storeId, orderDAO, suppliersDAO.getAgreementController());
+        return order.getId();
+    }
+
+    // TODO: SR72
     public void addItemToOrder(int supId, int orderId, int itemId, int itemQuantity) throws Exception {
+        double weight = 0;
+
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
-        suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity, orderDAO);
-    }
 
+        Order order = suppliersDAO.getSupplier(supId).getOrderFromList(orderId, orderDAO);
 
-    public void removeOrder(int supId, int orderId) throws Exception {
-        if(!supplierExist(supId)){
-            throw new Exception("The supplier does not exists!");
+        if(order.getStatus() == OrderStatus.waiting){
+            // order is a new Order, or it has no transport, can be changed either way
+            suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity, orderDAO);
+            addOrderToTransport(order); // POSSIBLE BUG: if order has no transport but was sent earlier, what happens?
         }
-        suppliersDAO.getSupplier(supId).removeOrder(orderId, orderDAO);
+        else{
+            // order has a transport
+            weight = suppliersDAO.getSupplier(supId).getAgreementItem(itemId).getWeight();
+
+            if(checkWeightLegal(supId, orderId, itemId, itemQuantity, weight)){
+                suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity, orderDAO);
+                transportController.changeWeight(orderId, (int)(itemQuantity * weight));
+            }
+            else{
+                throw new Error("Error!\nCan't update this order due to weight limit.\nYou can try to order manually.");
+            }
+        }
+
+        callInventoryToUpdateOnTheWay(itemId, order.getStoreID(), itemQuantity);
     }
 
+    // TODO: SR72
+    public boolean removeOrder(int orderId) throws Exception {
+        int supId = getSupplierWithOrder(orderId);
+        Order order = orderDAO.getOrder(orderId, suppliersDAO);
+        List<OrderItem> items = order.getOrderItems();
+
+        if(supId == -1){
+            throw new Exception("No Supplier with this order!");
+        }
+
+        if(!transportController.canDeleteOrder(order)){
+            throw new Exception("Error!\nCan't delete an order if it's on-the-way or already arrived.");
+        }
+
+        for(OrderItem item : items){
+            callInventoryToUpdateOnTheWay(item.getProductId(), order.getStoreID(), -1*item.getQuantity());
+        }
+
+        return suppliersDAO.getSupplier(supId).removeOrder(orderId, orderDAO);
+    }
+
+    // TODO: SR72
     public void removeItemFromOrder(int supId, int orderId, int itemId) throws Exception {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
+
+        int totalWeight = (int)(suppliersDAO.getSupplier(supId).getAgreementItem(itemId).getWeight() *
+                suppliersDAO.getSupplier(supId).getOrderFromList(orderId, orderDAO).getQuantityOfItem(itemId))*(-1);
+
+        transportController.changeWeight(orderId, totalWeight);
+
+        callInventoryToUpdateOnTheWay(itemId, suppliersDAO.getSupplier(supId).getOrderFromList(orderId, orderDAO).getStoreID(), suppliersDAO.getSupplier(supId).getOrderFromList(orderId, orderDAO).getQuantityOfItem(itemId)*(-1));
+
         suppliersDAO.getSupplier(supId).removeItemFromOrder(orderId, itemId, orderDAO);
     }
 
+    // TODO: SR72
     public void updateItemQuantityInOrder(int supID, int orderID, int itemID, int quantity) throws Exception {
+        double weight;
+        int sign = 1;
+        Supplier supplier;
+        int discount;
+        double finalPrice;
+
         if(!supplierExist(supID)){
             throw new Exception("The supplier does not exists!");
         }
-        Order currOrder = suppliersDAO.getSupplier(supID).getOrderObject(orderID, orderDAO);
-        int oldQuantity = currOrder.getQuantityOfItem(itemID);
-        double weightOfItem = currOrder.getWeightOfItem(itemID);
-        if(oldQuantity < quantity){
-            if(checkWeightLegal(supID, orderID, itemID, quantity, oldQuantity, weightOfItem )){
-                double addedWeight = quantity * weightOfItem - oldQuantity * weightOfItem;
-                suppliersDAO.getSupplier(supID).updateOrder(orderID, itemID, quantity , orderDAO);
 
-                // TODO: 10/06/2022 Transport : update the weight of this orderId, need to change the arguments!
-                //transportController.updateWeight(orderID, addedWeight);
+        supplier = suppliersDAO.getSupplier(supID);
 
-            }
-            else{
-                //create new Order with this newQuantityOfItem and issue a transport for it
-                int newQuantityOfItem = quantity - oldQuantity;
-                int newOrderId = addNewOrder(supID, currOrder.getStoreID());
-                Order order = suppliersDAO.getSupplier(supID).getOrderObject(newOrderId, orderDAO);
-                addItemToOrder(supID, newOrderId, itemID, newQuantityOfItem);
-                addOrderToTransport(order);
-            }
+        if(supplier.getOrderFromList(orderID, orderDAO).getQuantityOfItem(itemID) > quantity){
+            sign = -1;
         }
+
+        weight = supplier.getAgreementItem(itemID).getWeight()*sign;
+        discount = supplier.getItem(itemID).getDiscount(quantity);
+        finalPrice = supplier.getItem(itemID).calculateTotalPrice(quantity);
+
+        if(checkWeightLegal(supID, orderID, itemID, quantity, weight)){
+            supplier.getOrderFromList(orderID, orderDAO).updateItemQuantity(itemID, quantity, discount, finalPrice, orderDAO);
+            transportController.changeWeight(orderID, (int)(quantity * weight));
+            callInventoryToUpdateOnTheWay(itemID, supplier.getOrderFromList(orderID, orderDAO).getStoreID(), sign*quantity);
+        }
+        else{
+            throw new Error("Error!\nCan't update this order due to weight limit.\nYou can try to order manually.");
+        }
+
     }
 
 
@@ -506,10 +572,11 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supID).orderExists(orderID, orderDAO);
     }
 
+    // TODO: SR72
     //Map<ProductId , ( (missingAmount,defectiveAmount), description)>
     public Order orderHasArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
         int supplierId = orderDAO.getOrder(orderID, suppliersDAO).getSupplierId();
-        //I know I return here an Order Object and than search for it again...
+        //I know I return here an Order Object and then search for it again...
         //I do this so the order is saved in orders list in Supplier.
         Order order = getOrderObject(supplierId, orderID);
         order.uploadItemsFromDB(uploadOrderItems(order.getId()));
@@ -539,6 +606,7 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supplierID).getOrderObject(orderID, orderDAO);
     }
 
+    // TODO: SR71
     //returns all orders that cannot be changed anymore (routine) + everything needed because of MinAmounts
     public List<Order> createAllOrders(Map<Integer, Map<Integer, Integer>> orderItemMinAmounts) throws Exception { //map<productID, Map<store, amount>>
 
@@ -584,15 +652,15 @@ public class SupplierController {
             if(order.getSupplierId() == supplierId){
 
                 OrderItem orderItem = createNewOrderItem(supplierId, productId, quantity);
+
                 Order newOrder = new Order(order, orderItem, storeId);
 
-                deletableOrders.remove(order);
+                deletableOrders.remove(order);    //remove this from here, its should be above!
                 notDeletableOrders.add(newOrder);
-                deleteOrderFromDAO(order.getId());
+                deleteOrderFromDAO(order.getId());  //remove this from here, its should be above!
                 insertToOrderDAO(newOrder);
                 suppliersDAO.getSupplier(newOrder.getSupplierId()).setLastOrderId(suppliersDAO.getAgreementController(), newOrder.getId());
 
-                // replace the old order with the new One
                 return true;
             }
         }
@@ -607,20 +675,45 @@ public class SupplierController {
 
                 for(OrderItem item : items){
                     if (item.getProductId() == orderItem.getProductId()){
-                        item.setQuantity(item.getQuantity() + orderItem.getQuantity());
-                        cantains = true;
-                        break;
+
+                        if(order.getStatus() != OrderStatus.waiting && checkWeightLegal(supplierId, order.getId(), orderItem.getProductId(), orderItem.getQuantity(), orderItem.getWeight())){
+                            item.setQuantity(item.getQuantity() + orderItem.getQuantity());
+                            cantains = true;
+                            transportController.changeWeight(order.getId(), (int)(orderItem.getQuantity() * orderItem.getWeight()));
+                            break;
+                        }
+                        else{
+                            if(order.getStatus() == OrderStatus.waiting){
+                                item.setQuantity(item.getQuantity() + orderItem.getQuantity());
+                                cantains = true;
+                                break;
+                            }
+                            else{
+                                return false;
+                            }
+                        }
                     }
                 }
 
                 if(!cantains){
-                    items.add(orderItem);
+                    if(order.getStatus() != OrderStatus.waiting && checkWeightLegal(supplierId, order.getId(), orderItem.getProductId(), orderItem.getQuantity(), orderItem.getWeight())){
+                        items.add(orderItem);
+                        transportController.changeWeight(order.getId(), (int)(orderItem.getQuantity() * orderItem.getWeight()));
+                    }
+                    else{
+                        if(order.getStatus() == OrderStatus.waiting){
+                            items.add(orderItem);
+                        }
+                        else{
+                            return false;
+                        }
+                    }
+
+
                 }
 
                 Order newOrder = new Order(order, items);   //why this function add +1 to global Id , its creating new Id for this order but it shouldn't
 
-                // replace the old order with the new One
-                //suppliersDAO.getSupplier(order.getSupplierId()).ReplaceOrderInList();
 
                 notDeletableOrders.remove(order);
                 notDeletableOrders.add(newOrder);
@@ -632,16 +725,15 @@ public class SupplierController {
     }
 
 
-    private void createNewOrderForThisProduct(int supplierId, int productId, int storeId, int quantity, Map<String, ArrayList<Order>> orders) {
+    private void createNewOrderForThisProduct(int supplierId, int productId, int storeId, int quantity, Map<String, ArrayList<Order>> orders) throws Exception {
         Supplier supplier = suppliersDAO.getSupplier(supplierId);
         OrderItem orderItem  = createNewOrderItem(supplierId, productId, quantity);
         try {
             Order newOrder =  new Order(supplier.daysToDelivery() , supplierId, storeId, orderItem);
+
             insertToOrderDAO(newOrder);
             suppliersDAO.getSupplier(newOrder.getSupplierId()).setLastOrderId(suppliersDAO.getAgreementController(), newOrder.getId());
             orders.get("not deletable").add(newOrder);
-
-            // Add the new Order to some list in Supplier
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -651,7 +743,7 @@ public class SupplierController {
     }
 
     //public for testing
-    public OrderItem createNewOrderItem(int supplierId, int productId, int quantity) {
+    public OrderItem createNewOrderItem(int supplierId, int productId, int quantity) throws Exception {
         Supplier supplier = suppliersDAO.getSupplier(supplierId);
         AgreementItem currItem = null;
         try {
@@ -669,7 +761,7 @@ public class SupplierController {
         try {
             for(Supplier supplier : suppliersDAO.getAllSuppliers()){
                 if( supplier.itemExists(productId)){
-                    double currFinalPrice = supplier.getToatalPriceForItem(productId, quantity);
+                    double currFinalPrice = supplier.getTotalPriceForItem(productId, quantity);
                     if( currFinalPrice < finalPrice){
                         finalPrice = currFinalPrice;
                         supplierId = supplier.getId();
@@ -807,7 +899,7 @@ public class SupplierController {
 
 
 
-    private void insertToOrderDAO(Order order) throws SQLException {
+    public void insertToOrderDAO(Order order) throws SQLException {
         orderDAO.addOrder(order);
     }
 
@@ -825,7 +917,7 @@ public class SupplierController {
     }
 
 
-    private void addItemToOrderDAO(int orderId, int id, String name, int quantity, float pricePerUnit, int discount, double calculateTotalPrice, double weight) throws SQLException {
+    public void addItemToOrderDAO(int orderId, int id, String name, int quantity, float pricePerUnit, int discount, double calculateTotalPrice, double weight) throws SQLException {
         orderDAO.addItem(orderId, new OrderItem(id, id, name, quantity, pricePerUnit, discount, calculateTotalPrice,  weight));
     }
 
@@ -849,22 +941,20 @@ public class SupplierController {
     }
 
 
-    // TODO: call this function when we want to add the order to a Transport
+    // TODO: SR72
     public void addOrderToTransport(Order order) throws Exception {
         List<LocalDate> availableDays = getPossibleDates(order.getSupplierId());
 
-        LocalDate date = null;
-        // TODO: 10/06/2022 Transport , if this dates are good add the order (maybe just orderId?) to a transport, if not alert the HR manager..
-        //  if you cant put this order in a transport return null.
-        //date = transportController.addOrderToTransport(availableDays, order.getId());
-
-        if(date == null){
+        LocalDate date = transportController.SchedulingOrderToTransport(order, availableDays);
+        if(date == null)
             date = LocalDate.of(2100, 1, 1);
-        }
-        order.setArrivalTime(date);
+        else
+            order.setArrivalTime(date);
+
         orderDAO.setOrderArrivalTime(order.getId(), date);
     }
 
+    // TODO: SR72
     // TODO: 10/06/2022 check this function
     private List<LocalDate> getPossibleDates(int supplierId) {
         List<LocalDate> dates = new ArrayList<>();
@@ -915,14 +1005,11 @@ public class SupplierController {
 
     // TODO:  call this functions from updateItemQuantityInOrder, return to it the total new weight if ok, if not return 0 or -1...
     //      Where should we call this function from the automatic Orders?.
-    public boolean checkWeightLegal(int supplierId, int orderID, int orderItemId, int quantity, int oldQuantity, double weightOfItem) throws Exception {
+    public boolean checkWeightLegal(int supplierId, int orderID, int orderItemId, int differenceQuantity, double weightOfItem) throws Exception {
 
-        double newItemWeight = weightOfItem * quantity - weightOfItem * oldQuantity;  //just the added weight
+        double newItemWeight = weightOfItem * differenceQuantity;  //just the added weight
 
-        boolean ans = false;
-        // TODO: 10/06/2022 Transport : check here if we can add this weight to the order with this orderId, return true/false
-        //ans = transportController.canWeAddThisWeight(orderID, newItemsWeight);
-        return ans;
+        return transportController.canChangeOrder(orderID, (int) newItemWeight);
 
     }
 
@@ -949,34 +1036,33 @@ public class SupplierController {
         addAgreement(supplierId1, 1, "1 2 3 4 5 6 7");
 
         ArrayList<String> items = new ArrayList<>();
-        items.add("1 , 1,  Bamba small ,Osem , 3.5 , 100 , 20 ");
-        items.add("2 , 2, Milk 1L Tnuva ,Tnuva, 4.0 , 100 , 20 , 200 , 50 , 500 , 70");
-        items.add("3 , 3, melon ,Milk 1L Tara, 4.0 , 100 , 20 , 200 , 40 , 500 , 50");
-        items.add("4 , 4, Yoplait Pineapple ,Yoplait, 5.9 , 10 , 20 , 20 , 80 ");
-        items.add("5 , 5, Halva ,Elit, 7.0 , 10 , 20 , 20 , 50 , 30 , 80 ");
+        items.add("1 , 1,  Osem , 3.5 , 100 , 20 ");
+        items.add("2 , 2, Tnuva, 4.0 , 100 , 20 , 200 , 50 , 500 , 70");
+        items.add("3 , 3,  Tara, 4.0 , 100 , 20 , 200 , 40 , 500 , 50");
+        items.add("4 , 4, Yoplait, 5.9 ,  10 , 20 , 20 , 80 ");
+        items.add("5 , 5, Elit, 7.0 ,  10 , 20 , 20 , 50 , 30 , 80 ");
 
 
         addItemsToAgreement(supplierId1, items);
 
-        Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 11),  LocalDate.of(2022, 5, 16), storeId , OrderStatus.ordered);
+        Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 25),  LocalDate.of(2022, 6, 1), storeId , OrderStatus.complete);
         int order1Id = order1.getId();
         insertToOrderDAO(order1);
         suppliersDAO.getAgreementController().setLastOrderId(supplierId1, order1Id);
 
+        //Bamba  80 * 0.2 = 16kg
         int id = 1;
         AgreementItem curr = suppliersDAO.getSupplier(supplierId1).getItem(id);
         int quantity = 80;
         addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
 
+        // Milk 100 * 1 = 100kg
         id = 2;
         curr = suppliersDAO.getSupplier(supplierId1).getItem(id);
         quantity = 100;
         addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
 
-        id = 3;
-        curr = suppliersDAO.getSupplier(supplierId1).getItem(id);
-        quantity = 100;
-        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
+        //Order weight = 116 kg
     }
 
 
@@ -992,51 +1078,68 @@ public class SupplierController {
         addAgreement(supplierId2, 2, "3");
 
         ArrayList<String> items = new ArrayList<>();
-        items.add("1 , 1,  Bamba small ,Osem , 3.5 , 100 , 30 ");
-        items.add("2 , 2, Milk 1L Tnuva ,Tnuva, 4.0 , 100 , 30 , 200 , 60 , 500 , 80");
-        items.add("3 , 3, melon ,Milk 1L Tara, 4.0 , 100 , 30 , 200 , 50 , 500 , 60");
-        items.add("4 , 4, Yoplait Pineapple ,Yoplait, 5.9 , 10 , 30 , 20 , 90 ");
-        items.add("5 , 5, Halva ,Elit, 7.0 , 10 , 30 , 20 , 60 , 30 , 90 ");
+        items.add("1 , 1, Osem , 3.5 , 100 , 30 ");
+        items.add("2 , 2, Tnuva, 4.0, 100 , 30 , 200 , 60 , 500 , 80");
+        items.add("3 , 3, Tara, 4.0 ,  100 , 30 , 200 , 50 , 500 , 60");
+        items.add("4 , 4, Yoplait, 5.9 , 10 , 30 , 20 , 90 ");
+        items.add("5 , 5, Elit, 7.0 ,  10 , 30 , 20 , 60 , 30 , 90 ");
 
         addItemsToAgreement(supplierId2, items);
 
 
-        Order order1 = new Order(3, supplierId2, LocalDate.of(2022, 5, 9),  LocalDate.of(2022, 5, 12), storeId , OrderStatus.ordered);
-        int order1Id = order1.getId();
-        insertToOrderDAO(order1);
-
-        int id = 1;
-        AgreementItem curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
-        int quantity = 20;
-        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
-
-
-        id = 2;
-        curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
-        quantity = 20;
-        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
-
-        id = 3;
-        curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
-        quantity = 20;
-        addItemToOrderDAO(order1Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
-
-        Order order2 = new Order(4, supplierId2, LocalDate.of(2022, 5, 12),  LocalDate.of(2022, 5, 15), storeId, OrderStatus.ordered);
+        Order order2 = new Order(2, supplierId2, LocalDate.of(2022, 5, 29),  LocalDate.of(2022, 6, 1), storeId, OrderStatus.complete);
         int order2Id = order2.getId();
         insertToOrderDAO(order2);
 
-        id = 4;
-        curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
-        quantity = 20;
+        //Yoplait 20 * 0.15 = 3kg
+        int id = 4;
+        AgreementItem curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
+        int quantity = 20;
         addItemToOrderDAO(order2Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
 
+        //Halva 20 * 0.3 = 6kg
         id = 5;
         curr = suppliersDAO.getSupplier(supplierId2).getItem(id);
         quantity = 20;
         addItemToOrderDAO(order2Id, id, curr.getName(), quantity, curr.getPricePerUnit(), curr.getDiscount(quantity), curr.calculateTotalPrice(quantity) , curr.getWeight());
 
+        //Order 2 weight = 9 kg
 
     }
+
+
+    public int getSupplierWithOrder(int orderId) throws Exception {
+        for(Integer supplierId : getSuppliersIds()){
+            if(orderExists(supplierId, orderId))
+                return supplierId;
+        }
+        return -1;
+    }
+
+
+    public List<String> getOrder(int orderId) throws Exception {
+        int supId = getSupplierWithOrder(orderId);
+        if(supId == -1){
+            throw new Exception("No Supplier has this order!");
+        }
+        return suppliersDAO.getSupplier(supId).getOrder(orderId, orderDAO);
+    }
+
+    public int getMatchingProductIdForIdBySupplier(int idBySupplier) throws Exception {
+        return suppliersDAO.getAgreementItemDAO().getMatchingProductIdForIdBySupplier(idBySupplier);
+    }
+
+    public Boolean orderItemExistsInOrder(int supplierId, int orderId, int itemId) throws Exception {
+        Order order  = suppliersDAO.getSupplier(supplierId).getOrderObject(orderId, orderDAO);
+        return order.containsItem(itemId);
+    }
+
+
+    public void callInventoryToUpdateOnTheWay(int productId, int storeId,int amount){
+        inventoryController.updateOnTheWayProducts(productId, storeId, amount);
+    }
+
+
 
 
 }

@@ -187,11 +187,12 @@ public class Supplier {
     }
 
 
-    public void addItem(int itemId, int idBySupplier, String itemName, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices, SuppliersDAO suppliersDAO) throws Exception {
+    public void addItem(int itemId, int idBySupplier, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices, SuppliersDAO suppliersDAO) throws Exception {
         agreementExists();
-        if(agreement.itemExists(itemId))
+        if(agreement.itemExists(itemId) || agreement.IdBySupplierExists(idBySupplier))
             throw new Exception("item with this ID already exists!");
-        AgreementItem item = new AgreementItem(itemId, idBySupplier, itemName, itemManu, itemPrice, bulkPrices);
+
+        AgreementItem item = new AgreementItem(itemId, idBySupplier,  itemManu, itemPrice, bulkPrices);
         ArrayList<AgreementItem> _items = new ArrayList<>();
         _items.add(item);
         AgreementController agreementController = suppliersDAO.getAgreementController();
@@ -225,18 +226,21 @@ public class Supplier {
 
 
 
-    public void updateItemId(int oldItemId, int newItemId, AgreementItemDAO agreementItemDAO) throws Exception {
+    public void updateItemId(int prodcutId, int newIdBySupplier, AgreementItemDAO agreementItemDAO) throws Exception {
         agreementExists();
-        agreementItemDAO.updateItemId(oldItemId, newItemId);
-        agreement.setItemId(oldItemId, newItemId);
+        agreementItemDAO.updateItemIdBySupplier(prodcutId, newIdBySupplier);
+        agreement.setItemId(prodcutId, newIdBySupplier);
     }
 
 
+    /*
     public void updateItemName(int itemId, String newName, AgreementItemDAO agreementItemDAO) throws Exception {
         agreementExists();
         agreementItemDAO.updateItemName(itemId, newName);
         agreement.getItem(itemId).setName(newName);
     }
+
+     */
 
     public void updateItemManufacturer(int itemId, String manufacturer, SuppliersDAO suppliersDAO) throws Exception {
         AgreementItemDAO agreementItemDAO = suppliersDAO.getAgreementItemDAO();
@@ -246,10 +250,11 @@ public class Supplier {
         agreementItemDAO.updateManufacturer(itemId, manufacturer);
         agreement.getItem(itemId).setManufacturer(manufacturer);
 
+
         if(!agreement.isManufacturerRepresented(manu)){
-            suppliersDAO.removeSupplierManufacturer(id, manu);
+            //suppliersDAO.removeSupplierManufacturer(id, manu);
             suppliersDAO.addSupplierManufacturer(id, manufacturer);
-            manufacturers.remove(manu);
+            //manufacturers.remove(manu);
             manufacturers.add(manufacturer);
         }
     }
@@ -514,7 +519,7 @@ public class Supplier {
 
     }
 
-    public void removeOrder(int orderId, OrderDAO orderDAO) throws Exception {
+    public boolean removeOrder(int orderId, OrderDAO orderDAO) throws Exception {
         if(!orderExists(orderId, orderDAO))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
 
@@ -524,6 +529,7 @@ public class Supplier {
 
         orderDAO.removeOrder(orderId);
         orders.remove(orderId);
+        return true;
     }
 
     public void updateOrder(int orderID, int itemID, int quantity, OrderDAO orderDAO) throws Exception {
@@ -579,7 +585,7 @@ public class Supplier {
         return result;
     }
 
-    private Order getOrderFromList(int orderId, OrderDAO orderDAO) throws Exception {
+    public Order getOrderFromList(int orderId, OrderDAO orderDAO) throws Exception {
         if(!orderExists(orderId, orderDAO))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
         if(!orders.containsKey(orderId))
@@ -592,14 +598,19 @@ public class Supplier {
             return true;
         if(orderDAO.containsKey(id, suppliersDAO)){
             Order order = orderDAO.getOrder(id, suppliersDAO);
-            orders.put(order.getId(), order);
-            return true;
+            if(order.getSupplierId() == id){
+                orders.put(order.getId(), order);
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         return false;
     }
 
 
-    public Double getToatalPriceForItem(int itemId, int quantity) throws Exception {
+    public Double getTotalPriceForItem(int itemId, int quantity) throws Exception {
         agreementExists();
         return agreement.getOrderPrice(itemId, quantity);
     }
@@ -671,5 +682,9 @@ public class Supplier {
         else{
             orders.put(order.getId(), order);
         }
+    }
+
+    public AgreementItem getAgreementItem(int id) throws Exception {
+        return agreement.getItem(id);
     }
 }

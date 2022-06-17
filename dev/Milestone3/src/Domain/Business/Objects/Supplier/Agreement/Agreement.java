@@ -52,8 +52,7 @@ public abstract class Agreement {
         listToMap(_items);
     }
 
-
-    //Format : " productId, idBySupplier , name , manufacturer , pricePerUnit , quantity , percent , quantity , percent ..."
+    //Format : " productId, idBySupplier , manufacturer , pricePerUnit ,  quantity , percent , quantity , percent ..."
     private List<AgreementItem> transformStringToItems(List<String> itemsString) throws Exception {
         List<AgreementItem> items = new ArrayList<>();
         for(String curr : itemsString){
@@ -64,14 +63,14 @@ public abstract class Agreement {
             }
             int productId = Integer.parseInt(arr[0]);
             int idBuSupplier = Integer.parseInt(arr[1]);
-            String name = arr[2];  String manufacturer = arr[3];
-            float pricePerUnit = Float.parseFloat(arr[4]);
+            String manufacturer = arr[2];
+            float pricePerUnit = Float.parseFloat(arr[3]);
             HashMap<Integer, Integer> bulk = new HashMap<>();
-            for(int i = 5; i < arr.length; i++ ){
+            for(int i = 4; i < arr.length; i++ ){
                 bulk.put(Integer.parseInt(arr[i]) , Integer.parseInt(arr[i+1]));
                 i++;
             }
-            items.add(new AgreementItem(productId, idBuSupplier, name , manufacturer, pricePerUnit, bulk));
+            items.add(new AgreementItem(productId, idBuSupplier, manufacturer, pricePerUnit, bulk));
         }
         return items;
     }
@@ -123,7 +122,7 @@ public abstract class Agreement {
     }
 
 
-    public List<String> getItemsInMapFormat() {
+    public List<String> getItemsInMapFormat() throws Exception {
         ArrayList<String> result = new ArrayList<>();
         for( Map.Entry<Integer, AgreementItem> currItem : items.entrySet()){
             String currItemInfo = currItem.getValue().getInfoInStringFormat();
@@ -133,15 +132,25 @@ public abstract class Agreement {
     }
 
 
-    public void setItemId(int oldItemId, int newItemId) throws Exception {
-        if(!itemExists(oldItemId))
-            throw new Exception("Item with this ID does not exist");
-        if(itemExists(newItemId))
-            throw new Exception("The new ID you gave has already been used!");
-        AgreementItem item = items.remove(oldItemId);
-        item.setProductId(newItemId);
-        items.put(newItemId, item);
+    public void setItemId(int productId, int newIdBySupplier) throws Exception {
+        if(!itemExists(productId))
+            throw new Exception("Item with this ID By Supplier does not exist");
+        if(IdBySupplierExists(newIdBySupplier))
+            throw new Exception("The new ID By Supplier you gave has already been used!");
 
+        items.get(productId).setIdBySupplier(newIdBySupplier);
+        //AgreementItem item = items.remove(productId);
+        //item.setIdBySupplier(newIdBySupplier);
+        //items.put(productId, item);
+
+    }
+
+    private int getMatchingProductIdToIdBySupplier(int oldIdBySupplier) throws Exception {
+        for(AgreementItem item : items.values()){
+            if(item.getIdBySupplier() == oldIdBySupplier)
+                return item.getProductId();
+        }
+        throw new Exception("There is no product with this ID!");
     }
 
 
@@ -160,5 +169,13 @@ public abstract class Agreement {
 
     public void addAgreementItems(Map<Integer, AgreementItem> items) {
         this.items = items;
+    }
+
+    public boolean IdBySupplierExists(int idBySupplier) {
+        for(AgreementItem item : items.values()){
+            if(item.getIdBySupplier() == idBySupplier)
+                return true;
+        }
+        return false;
     }
 }

@@ -91,32 +91,40 @@ public class Store extends Screen {
     }
 
     private void orderArrived() {
-        Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder = new HashMap<>();
-
-        System.out.println("Please insert the ID of the arrived order");
-        int orderID = scanner.nextInt();
-        System.out.println("Please insert the ID of the product you want to report on in the order, or insert 0 to continue");
-        int productID = scanner.nextInt();
-        int missingItems;
-        int defectiveItems;
-        String description;
-        while(productID!=0) {
-            System.out.println("Please insert the number of missing items in the order of product: " + productID);
-            missingItems = scanner.nextInt();
-            System.out.println("Please insert the number of defective items in the order of product: " + productID);
-            defectiveItems = scanner.nextInt();
-            System.out.println("Please insert the description of your report");
-            description = scanner.nextLine();
-            reportOfOrder.put(productID, new Pair<>(new Pair<>(missingItems, defectiveItems), description));
-            System.out.println("Please insert the next ID of the product you want to report on in the order, or insert 0 to continue");
-            productID = scanner.nextInt();
+        System.out.println("Please insert the ID of the arrived transport");
+        int transportID = scanner.nextInt();
+        Map<Integer, Map<Integer, Pair<Pair<Integer, Integer>, String>>> reports = new HashMap<>();
+        boolean anotherOrder = true;
+        while (anotherOrder) {
+            System.out.println("Please insert the ID of the arrived order");
+            int orderID = scanner.nextInt();
+            Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder = new HashMap<>();
+            reports.put(orderID, reportOfOrder);
+            System.out.println("Please insert the ID of the product you want to report on in the order, or insert 0 to continue");
+            int productID = scanner.nextInt();
+            int missingItems;
+            int defectiveItems;
+            String description;
+            while (productID != 0) {
+                System.out.println("Please insert the number of missing items in the order of product: " + productID);
+                missingItems = scanner.nextInt();
+                System.out.println("Please insert the number of defective items in the order of product: " + productID);
+                defectiveItems = scanner.nextInt();
+                System.out.println("Please insert the description of your report");
+                description = scanner.nextLine();
+                reportOfOrder.put(productID, new Pair<>(new Pair<>(missingItems, defectiveItems), description));
+                System.out.println("Please insert the next ID of the product you want to report on in the order, or insert 0 to continue");
+                productID = scanner.nextInt();
+            }
+            System.out.println("is there another order? (yes/no)");
+            anotherOrder = scanner.nextLine().equals("yes");
         }
-        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<Object> r = controller.orderArrived(orderID, reportOfOrder);
+//        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
+        Result<Object> r = controller.orderArrived(transportID, reports);
         if (r.isError())
             System.out.println(r.getError());
         else {
-            System.out.println("Order inserted into system successfully");
+            System.out.println("Transport inserted into system successfully");
         }
     }
 

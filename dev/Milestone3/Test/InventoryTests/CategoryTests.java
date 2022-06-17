@@ -1,14 +1,27 @@
 package InventoryTests;
 
 import Domain.Business.Objects.Inventory.Category;
+import Domain.DAL.Abstract.DAO;
 import net.jcip.annotations.NotThreadSafe;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 @NotThreadSafe
 public class CategoryTests {
+
+    @BeforeAll
+    public synchronized static void setData() {
+        DAO.setDBForTests(CategoryTests.class);
+    }
+
+    @AfterAll
+    public static void removeData() {
+        DAO.deleteTestDB(CategoryTests.class);
+    }
 
     @Test
     public void testChangeParentCategory(){

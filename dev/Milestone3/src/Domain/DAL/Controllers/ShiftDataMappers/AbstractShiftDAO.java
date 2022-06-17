@@ -85,4 +85,9 @@ public abstract class AbstractShiftDAO<T extends Shift> extends DataMapper<T> {
     }
 
     protected abstract String getType();
+
+    @Override
+    public String instanceToId(T instance) {
+        return instance.getWorkday().toString()+getType();
+    }
 }

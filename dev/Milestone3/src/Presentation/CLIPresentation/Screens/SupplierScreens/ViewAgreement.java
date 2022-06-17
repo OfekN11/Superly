@@ -140,7 +140,7 @@ public abstract class ViewAgreement extends Screen {
 
 
             try {
-                if(controller.addItemToAgreement(supplierID, productId, idBySupplier, name, manufacturer, pricePerUnit, bulkMap)){
+                if(controller.addItemToAgreement(supplierID, productId, idBySupplier, manufacturer, pricePerUnit, bulkMap)){
                     System.out.println("The new Item was added successfully.");
                     System.out.println("Choose:");
                     System.out.println("1) Add another item");

@@ -105,19 +105,26 @@ public class Transport {
     }
     public boolean isDoneTransport(){
         //TODO need to be implemented
-        return sourcesID.isEmpty() && destinationsID.isEmpty();
+        return status== TransportStatus.inProgress;
     }
 
     public boolean placeTruck(int licenseNumber,int weight,int max)
     {
         if(truckNumber==-1){
-            if(truckWeight + weight > max){
-                return false;
-            }
-            else{
+            if (truckWeight==-1){
                 truckNumber = licenseNumber;
                 truckWeight = weight;
                 return true;
+            }
+            else{
+                if(truckWeight + weight > max){
+                    return false;
+                }
+                else{
+                    truckWeight=truckWeight+weight;
+                    truckNumber = licenseNumber;
+                    return true;
+                }
             }
         }
         return false;
@@ -264,6 +271,17 @@ public class Transport {
     }
 
     public void initWeight(int weight){
-        truckWeight = weight;
+        if(truckWeight == -1){
+            truckWeight = weight;
+        }
+        else {
+            truckWeight = truckWeight + weight;
+        }
+
+    }
+
+    public void removeOrder(int id,int weight) {
+        transportOrders.remove(id);
+        truckWeight = truckWeight - weight;
     }
 }

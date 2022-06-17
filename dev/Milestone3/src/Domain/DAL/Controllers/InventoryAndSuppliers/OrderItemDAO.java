@@ -2,6 +2,7 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 
 import Domain.Business.Objects.Supplier.*;
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.ConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -46,8 +47,8 @@ public class OrderItemDAO extends DAO {
 
     public ArrayList<OrderItem> uploadAllItemsFromOrder(int orderId, AgreementItemDAO agreementItemDAO){
         ArrayList<OrderItem> output = new ArrayList<>();
-        try(Connection connection = getConnection()) {
-            ResultSet instanceResult = select(connection, Arrays.asList(ORDER_ID_COLUMN), Arrays.asList(orderId));
+        try(ConnectionHandler handler = getConnectionHandler()) {
+            ResultSet instanceResult = select(handler.get(), Arrays.asList(ORDER_ID_COLUMN), Arrays.asList(orderId));
 
             while (instanceResult.next()) {
                 String itemName = agreementItemDAO.getNameOfItem(instanceResult.getInt(PRODUCT_ID_COLUMN));
