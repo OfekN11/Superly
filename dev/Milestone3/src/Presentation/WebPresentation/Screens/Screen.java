@@ -180,7 +180,7 @@ public abstract class Screen extends HttpServlet {
      * @throws IOException
      */
     protected static int getIndexOfButtonPressed(HttpServletRequest req) throws ServletException, IOException {
-        for (int i = 0; i < 20 ; i++) {
+        for (int i = 0; i < 100 ; i++) {
             if (req.getParameter(String.valueOf(i)) != null)
                 return i;
         }
