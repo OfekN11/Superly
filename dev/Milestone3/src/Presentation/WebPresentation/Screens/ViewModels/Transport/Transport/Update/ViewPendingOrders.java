@@ -34,6 +34,7 @@ public class ViewPendingOrders extends Screen {
                 setError("failure");
             }
         }
+        printMenu(resp,new String[]{"Exit"});
     }
     public List<String> split(String s){
         List<String> l = new ArrayList<>();
@@ -60,5 +61,12 @@ public class ViewPendingOrders extends Screen {
             out.println("<br>");
         }
 
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(getIndexOfButtonPressed(req) == 0){
+            redirect(resp,UpdateTransport.class);
+        }
     }
 }

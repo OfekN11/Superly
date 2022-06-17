@@ -57,7 +57,12 @@ public class UpdateTransport extends Screen {
                     }
                     else {
                         if(isButtonPressed(req,"Add order")){
-
+                            if (is_number(id)){
+                                redirect(resp,AddOrderToTransport.class,new String[]{"ID"},new String[]{id});
+                            }
+                            else{
+                                refresh(req,resp);
+                            }
                         }
                         else{
                             if(isButtonPressed(req,"Exit")){
