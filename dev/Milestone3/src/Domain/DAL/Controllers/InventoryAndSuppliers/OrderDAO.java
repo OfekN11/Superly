@@ -243,7 +243,7 @@ public class OrderDAO extends DataMapper<Order> {
     }
 
     public void setOrderArrivalTime(int orderId ,LocalDate date) throws SQLException {
-        updateProperty(String.valueOf(orderId), ARRIVAL_TIME_COLUMN, date);
+        updateProperty(String.valueOf(orderId), ARRIVAL_TIME_COLUMN, String.valueOf(date));
     }
 
 
