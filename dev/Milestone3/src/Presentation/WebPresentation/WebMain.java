@@ -30,7 +30,9 @@ public class WebMain {
              */
             new AbstractMap.SimpleEntry<>(Login.class, "/"),
             new AbstractMap.SimpleEntry<>(EmployeeServlet.class, "/home"),
-            new AbstractMap.SimpleEntry<>(UpcomingShifts.class, "/UpcomingShifts"),
+            new AbstractMap.SimpleEntry<>(UpcomingShifts.class, "/home/UpcomingShifts"),
+            new AbstractMap.SimpleEntry<>(SalaryCalculator.class, "/home/SalaryCalculator"),
+            new AbstractMap.SimpleEntry<>(EmploymentConds.class, "/home/EmploymentConds"),
             new AbstractMap.SimpleEntry<>(AddItemToAgreement.class, "/AddItemToAgreement"),
             new AbstractMap.SimpleEntry<>(AddOrderItem.class, "/AddOrderItem"),
             new AbstractMap.SimpleEntry<>(EditCard.class, "/EditCard"),

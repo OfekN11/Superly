@@ -247,4 +247,10 @@ public abstract class Screen extends HttpServlet {
             paramsAndValues[i] = params[i] + "=" + paramVals[i];
         return "?" + String.join("&", paramsAndValues);
     }
+
+    @Override
+    protected abstract void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
+
+    @Override
+    protected abstract void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 }
