@@ -104,12 +104,11 @@ public class InventoryService {
      */
     public Result<Boolean> deleteProduct(int id){
         try {
-            Result.makeOk(controller.deleteProduct(id));
+            return Result.makeOk(controller.deleteProduct(id));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
     }
 
     /**
