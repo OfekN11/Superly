@@ -46,6 +46,10 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
+    public List<String> getSuppliersMessagesForHR(){
+        return new LinkedList<>();
+    }
+
     //READ
 
     public Employee getEmployee(String id) throws Exception {
@@ -563,7 +567,7 @@ public class BackendController {
         throwIfError(result);
         return presentationDocumentFactory.createPresentationDocument(result.getValue());
     }
-    public String[] getImportantMessagesTransport(){
+    public String[] getImportantMessagesTransport() throws Exception {
         return orderService.getImportantMessages();
     }
 
