@@ -1,9 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport;
 
 import Presentation.WebPresentation.Screens.Screen;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Document.DocumentManagementMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.TruckManagementMenu;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -12,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class TransportManagementMenu extends Screen {
-    private static final String greet = "TransportManagement Menu";
+    private static final String greet = "Transport Management Menu";
     private static final String[] menuOptions = {
             "Create new transport",         //1
             "Update transport",             //2
@@ -43,15 +41,12 @@ public class TransportManagementMenu extends Screen {
                 break;
             case 2:
                 //TODO: Get pending transport
-                redirect(resp, DocumentManagementMenu.class);
                 break;
             case 3:
                 //TODO: Get pending transport
-                redirect(resp, TransportManagementMenu.class);
                 break;
             case 4:
                 //TODO: Get complete transport
-                redirect(resp, TruckManagementMenu.class);
                 break;
             case 5://Exit
                 redirect(resp, TransportMainMenu.class);
@@ -60,4 +55,6 @@ public class TransportManagementMenu extends Screen {
                 redirect(resp, TransportManagementMenu.class);
         }
     }
+
+
 }
