@@ -465,7 +465,8 @@ public class SupplierController {
         if(order.getStatus() == OrderStatus.waiting){
             // order is a new Order, or it has no transport, can be changed either way
             suppliersDAO.getSupplier(supId).addOneItemToOrder(orderId, itemId, itemQuantity, orderDAO);
-            addOrderToTransport(order); // POSSIBLE BUG: if order has no transport but was sent earlier, what happens?
+            addOrderToTransport(order);
+            // POSSIBLE BUG: if order has no transport but was sent earlier, what happens?
             // POSSIBLE FIX: add a new field to the order that indicates it was sent to transport, if so don't send it again.
             // NOTE: according to TRANSPORT TEAM this process is fine.
         }
