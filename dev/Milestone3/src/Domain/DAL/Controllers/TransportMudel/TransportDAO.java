@@ -43,7 +43,7 @@ public class TransportDAO extends DAO {
         }
     }
 
-    public void save(Transport transport){
+    public Transport save(Transport transport){
         if (!TRUCK_IDENTITY_MAP.containsKey(transport.getSN())){
             TRUCK_IDENTITY_MAP.put(transport.getSN(),transport);
         }
@@ -66,7 +66,7 @@ public class TransportDAO extends DAO {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
+        return null;
     }
     public Transport get(int id){
         return TRUCK_IDENTITY_MAP.get(id);

@@ -124,10 +124,9 @@ public class TransportService {
             return Result.makeError(e.getMessage());
         }
     }
-    public Result createTransport(Pair<LocalDate, ShiftTypes> shift){
+    public Result<Integer> createTransport(Pair<LocalDate, ShiftTypes> shift){
         try {
-            controller.createTransport(shift);
-            return Result.makeOk(null);
+            return Result.makeOk(controller.createTransport(shift).getSN());
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -154,6 +153,16 @@ public class TransportService {
     public Result advanceSite(int transportSN,int siteID){
         try {
             controller.advanceSite(transportSN,siteID);
+            return Result.makeOk(null);
+        }
+        catch (Exception e){
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result removeTruck(int licenseNumber) {
+        try {
+            controller.removeTruck(licenseNumber);
             return Result.makeOk(null);
         }
         catch (Exception e){

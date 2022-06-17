@@ -110,8 +110,8 @@ public class Transport {
 
     public boolean placeTruck(int licenseNumber,int weight,int max)
     {
-        if(truckNumber==-1){
-            if (truckWeight==-1){
+        if(truckNumber == -1){
+            if (truckWeight == -1){
                 truckNumber = licenseNumber;
                 truckWeight = weight;
                 return true;
@@ -159,16 +159,7 @@ public class Transport {
     public boolean isPlacedCarrier(){
         return driverID.equals("");
     }
-    private void removeShippingArea(ShippingAreas sa)
-    {
-        if(shippingAreas.get(sa) > 1)
-        {
-            shippingAreas.replace(sa, shippingAreas.get(sa) - 1);
-        }
-        else {
-            shippingAreas.remove(sa);
-        }
-    }
+
     public String getDriverID(){
         return driverID;
     }
@@ -177,18 +168,6 @@ public class Transport {
         return truckNumber;
     }
 
-    private List<Integer> getSrcIDs()
-    {
-        return sourcesID;
-    }
-
-    private List<Integer> getDstIDs()
-    {
-        return destinationsID;
-    }
-    /*public TransportDocument toDocument() {
-        return new TransportDocument(startTime, truckNumber, driverName, getSrcIDs(), getDstIDs());
-    }*/
 
     public void addOrder(Order order)
     {

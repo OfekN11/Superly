@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
 public class CreateTransport extends Screen {
     private static final String greet = "Create new transport:";
     private static final String NO_SHIFTS = "There are no shifts in the coming month!";
-    //private static List<Shift> shifts;
+    private static final String SUCCESS_MSG = "The transport was created successfully!";
+    private String success = null;
     private static HashMap<String, Shift> shifts;
     public CreateTransport() {
         super(greet);
@@ -34,6 +35,27 @@ public class CreateTransport extends Screen {
         greet(resp);
         printForm(resp, new String[]{"Create", "Cancel"});
         handleError(resp);
+        handleSuccess(resp);
+    }
+
+    private void handleSuccess(HttpServletResponse resp) throws IOException {
+        if (!isSuccess())
+            return;
+        PrintWriter out = resp.getWriter();
+        out.println(String.format("<p style=\"color:green\">%s</p><br><br>", getSuccess()));
+        cleanSuccess();
+    }
+
+    private void cleanSuccess() {
+        success = null;
+    }
+
+    private String getSuccess() {
+        return success;
+    }
+
+    private boolean isSuccess() {
+        return success != null;
     }
 
     private static void printForm(HttpServletResponse resp, String[] buttons) throws IOException {
@@ -71,9 +93,8 @@ public class CreateTransport extends Screen {
         if (isButtonPressed(req, "Create")){
             try {
                 Shift shift = getShift(req);
-                controller.createNewTransport(new Pair<LocalDate, ShiftTypes>(shift.date, shift.getType()));
-                //TODO: Add print of the iD of transport that create
-                setError("e.getMessage()");
+                int transportID = controller.createNewTransport(new Pair<LocalDate, ShiftTypes>(shift.date, shift.getType()));
+                setSuccess(SUCCESS_MSG + "<br>Transport SN: " +  transportID);
                 refresh(req, resp);
             } catch (Exception e) {
                 setError(e.getMessage());
@@ -83,6 +104,15 @@ public class CreateTransport extends Screen {
         else if(isButtonPressed(req, "Cancel")) {
             redirect(resp, TransportManagementMenu.class);
         }
+    }
+
+    private void setSuccess(String success) {
+        this.success = success;
+    }
+
+    private static void showSuccessMsg(HttpServletResponse resp, String msg) throws IOException {
+        PrintWriter out = resp.getWriter();
+        out.println(String.format("<p style=\"color:green\">%s</p><br>", msg));
     }
     private Shift getShift(HttpServletRequest req) throws Exception {
         String shift = getParamVal(req, "shift");
