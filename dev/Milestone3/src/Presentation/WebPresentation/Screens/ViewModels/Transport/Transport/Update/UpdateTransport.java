@@ -36,36 +36,23 @@ public class UpdateTransport extends Screen {
         if(isButtonPressed(req,"Place truck")){
 
         }
+        else if(isButtonPressed(req,"Place carrier")){
+
+        }
+        else if(isButtonPressed(req,"Start transport")){
+            handelStart(id,req,resp);
+        }
+        else if(isButtonPressed(req,"View orders")){
+
+        }
+        else if(isButtonPressed(req,"Add order")) {
+
+        }
+        else if(isButtonPressed(req,"Exit")) {
+
+        }
         else {
-            if(isButtonPressed(req,"Place carrier")){
-
-            }
-            else {
-                if(isButtonPressed(req,"Start transport")){
-                    handelStart(id,req,resp);
-                }
-                else{
-                    if(isButtonPressed(req,"View orders")){
-
-                    }
-                    else {
-                        if(isButtonPressed(req,"Add order")){
-
-                        }
-                        else{
-                            if(isButtonPressed(req,"Exit")){
-
-                            }
-                            else {
-                                setError("failure");
-                            }
-
-                        }
-                    }
-
-                }
-
-            }
+            setError("failure");
         }
     }
     public void handelStart(String id,HttpServletRequest req, HttpServletResponse resp) throws IOException {
