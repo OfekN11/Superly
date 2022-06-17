@@ -54,13 +54,17 @@ public class Products extends Screen{
             }
             try {
                 int productID = Integer.parseInt(req.getParameter("ID"));
-                if(controller.deleteProduct(productID).getValue()) {
+                if(controller.getProduct(productID).isError()) {
+                    setError("Product ID " + productID + " doesn't exist");
+                    refresh(req, resp);
+                }
+                else if (controller.deleteProduct(productID).getValue()){
                     PrintWriter out = resp.getWriter();
                     out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Deleted product %d", productID)));
                     refresh(req, resp);
                 }
-                else{
-                    setError("Product ID " + productID + " doesn't exist!");
+                else {
+                    setError("Product ID " + productID + " is already has been used in other places in the system so it can't be deleted");
                     refresh(req, resp);
                 }
             }catch (NumberFormatException e1){
@@ -81,13 +85,13 @@ public class Products extends Screen{
             try {
                 String productName = req.getParameter("product name");
                 int categoryID = Integer.parseInt(req.getParameter("category ID"));
-                int weight = Integer.parseInt(req.getParameter("weight"));
-                int price = Integer.parseInt(req.getParameter("price"));
+                double weight = Double.parseDouble(req.getParameter("weight"));
+                double price = Double.parseDouble(req.getParameter("price"));
                 String manufacturer = req.getParameter("manufacturer");
 
                 if(controller.newProduct(productName, categoryID, weight, price, manufacturer).isOk()) {
                     PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Added new product %d", productName)));
+                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Added new product %s", productName)));
                     refresh(req, resp);
                 }
                 else{

@@ -366,9 +366,9 @@ public class InventoryController {
         return product;
     }
 
-    public boolean deleteProduct(int id){
-        PRODUCT_DATA_MAPPER.remove(Integer.toString(id));
-        if(products.remove(id)!=null)
+    public Boolean deleteProduct(int id){
+        int flag = PRODUCT_DATA_MAPPER.remove(Integer.toString(id));
+        if(products.remove(id)!=null || flag!=-1)
             return true;
         else
             return false;

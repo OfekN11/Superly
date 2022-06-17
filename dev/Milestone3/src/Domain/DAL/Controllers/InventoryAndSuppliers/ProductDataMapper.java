@@ -71,16 +71,18 @@ public class ProductDataMapper extends DataMapper<Product> {
 
     public int remove(Object id) {
         try{
-            List<Integer> products = Arrays.asList((Integer)id);
+            //List<Integer> products = Arrays.asList((Integer)id);
             PRODUCT_IDENTITY_MAP.remove(id);
-            LocationDataMapper locationDataMapper = new LocationDataMapper();
+
+            /*LocationDataMapper locationDataMapper = new LocationDataMapper();
             for (Integer product : products)
                 locationDataMapper.removeByProduct(product);
-            StockReportDataMapper stockReportDataMapper = new StockReportDataMapper();
 
+            StockReportDataMapper stockReportDataMapper = new StockReportDataMapper();
             for (Integer product : products)
-                stockReportDataMapper.removeProduct(product);
-            executeNonQuery(String.format("DELETE FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
+                stockReportDataMapper.removeProduct(product);*/
+            //remove(Arrays.asList(ID_COLUMN), Arrays.asList(id));
+            //executeNonQuery(String.format("DELETE FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
             return super.remove(id);
         } catch (Exception e) {
             e.printStackTrace();
