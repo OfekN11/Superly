@@ -1,5 +1,8 @@
 package Presentation.WebPresentation.Screens.Models.HR;
 
+import Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement.EmployeesMenu;
+import Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement.HrMessages;
+import Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement.ShiftMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.SupplierMainMenuStoreManager;
 
 import javax.servlet.ServletException;
@@ -12,7 +15,10 @@ public class Admin extends Employee{
     private static final String GREET = "Admin Page";
 
     private static final String[] MENU_OPTIONS = {
-            "Suppliers Menu"
+            "Suppliers Menu",           //0
+            "Employees Menu",           //1
+            "Shifts Menu",              //2
+            "HR Important Messages",    //3
 
     };
 
@@ -26,6 +32,15 @@ public class Admin extends Employee{
         switch (getIndexOfButtonPressed(req)){
             case 0:
                 redirect(resp, SupplierMainMenuStoreManager.class);
+                break;
+            case 1:
+                redirect(resp, EmployeesMenu.class);
+                break;
+            case 2:
+                redirect(resp, ShiftMenu.class);
+                break;
+            case 3:
+                redirect(resp, HrMessages.class);
                 break;
         }
     }

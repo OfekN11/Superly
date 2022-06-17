@@ -1,6 +1,8 @@
 package Presentation.WebPresentation.Screens.Models.HR;
 
+import Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement.EmployeesMenu;
 import Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement.HrMessages;
+import Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement.ShiftMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.OrderHRLogistics;
 
 import javax.servlet.ServletException;
@@ -29,9 +31,10 @@ public class HR_Manager extends Employee{
         int index = getIndexOfButtonPressed(req) - BASE_OPTIONS_COUNT;
         switch (index) {
             case 0:
+                redirect(resp, EmployeesMenu.class);
+                break;
             case 1:
-                setError("Not Implemented yet");
-                refresh(req, resp);
+                redirect(resp, ShiftMenu.class);
                 break;
             case 2:
                 redirect(resp, HrMessages.class);
