@@ -1,37 +1,48 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class ManageManufacturers extends Screen {
 
     private static final String greet = "Manage Manufacturers";
-    private final int supplierId;
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Admin.class, Storekeeper.class));
+
 
     public ManageManufacturers() {
-        // TODO: Supplier pass SupplierId
-        super(greet);
-        supplierId = 1;
+        super(greet,ALLOWED);
     }
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
+
+        int supId = getSupplierId(req);
+        resp.getWriter().println("<h2>Manage Manufacturers for Supplier" + supId + ".</h2><br>");
 
         printMenu(resp, new String[]{"Show Manufacturers"});
         printForm(resp, new String[] {"nameAdd"}, new String[]{"Name"}, new String[]{"Add Manufacturer"});
         printForm(resp, new String[] {"nameRemove"}, new String[]{"Name"}, new String[]{"Remove Manufacturer"});
 
-
+        String val;
+        if(((val = getParamVal(req, "showManufacturers")) != null) && val.equals("true")){
+            showManufacturers(req, resp, supId);
+        }
         handleError(resp);
     }
 
@@ -40,6 +51,7 @@ public class ManageManufacturers extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
 
+        String supId = (getParamVal(req,"supId"));
         if (isButtonPressed(req, "Add Manufacturer")) {
             addManufacturer(req, resp);
         }
@@ -47,68 +59,76 @@ public class ManageManufacturers extends Screen {
             removeManufacturer(req, resp);
         }
         if(getIndexOfButtonPressed(req) == 0){
-            showManufacturers(req, resp);
+            redirect(resp, ManageManufacturers.class, new String[]{"showManufacturers","supId"}, new String[]{"true",supId});
+            //showManufacturers(req, resp);
         }
 
     }
 
-    private void showManufacturers(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void showManufacturers(HttpServletRequest req, HttpServletResponse resp, int supId) throws IOException {
         try {
-            List<String> list = controller.getManufacturers(supplierId);
+            List<String> list = controller.getManufacturers(supId);
             if(list.isEmpty()){
-                // TODO: Supplier change this to normal print!
                 setError("[THERE ARE NO REPRESENTED MANUFACTURERS BY THIS SUPPLIER]");
-                refresh(req, resp);
+                //refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
             else{
+                PrintWriter out = resp.getWriter();
+                out.println("<h4>");
                 for(String s : list){
-                    // TODO: Supplier change this to normal print!
-                    setError(s);
-                    refresh(req, resp);
+                    out.println(s + "<br>");
                 }
+                out.println("</h4>");
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
         }
     }
 
     private void addManufacturer(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             String name = req.getParameter("nameAdd");
-            if(controller.addSupplierManufacturer(supplierId, name)){
+            int supId = getSupplierId(req);
+            if(!name.equals("") && controller.addSupplierManufacturer(supId, name)){
 
-                // TODO: Supplier change this to normal print!
                 setError(String.format("Added manufacturer %s", name));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
             else{
                 setError("Manufacturer wasn't added!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});
         }
     }
 
     private void removeManufacturer(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
+            int supId = getSupplierId(req);
             String name = req.getParameter("nameRemove");
-            if(controller.removeManufacturer(supplierId, name)){
+            if(!name.equals("") && controller.removeManufacturer(supId, name)){
 
-                // TODO: Supplier change this to normal print!
                 setError(String.format("Removed manufacturer %s", name));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
             else{
                 setError("Manufacturer wasn't removed!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});
         }
     }
+
+
+
+    private int getSupplierId(HttpServletRequest req) throws IOException {
+        return Integer.parseInt(getParamVal(req,"supId"));
+    }
+
 
 }

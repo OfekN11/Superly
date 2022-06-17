@@ -1,21 +1,16 @@
 package Presentation.WebPresentation;
 
-import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.ConstraintManagement;
-import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.EmploymentConds;
-import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.SalaryCalculator;
-import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.UpcomingShifts;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.*;
+import Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement.*;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.*;
-import Presentation.WebPresentation.Screens.ViewModels.HR.*;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.*;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Document.DocumentManagementMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.CreateTransport;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.TransportManagementMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.TransportsView;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.PlaceCarrier;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.PlaceTruck;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.AddOrderToTransport;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.UpdateTransport;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.ViewPendingOrders;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.*;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.AddTruck;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.DeleteTruck;
@@ -38,11 +33,17 @@ public class WebMain {
              * For each new screen add another entry and make sure it doesn't share a path with another screen
              */
             new AbstractMap.SimpleEntry<>(Login.class, "/"),
+            //All Employees:
             new AbstractMap.SimpleEntry<>(EmployeeServlet.class, "/home"),
             new AbstractMap.SimpleEntry<>(UpcomingShifts.class, "/UpcomingShifts"),
             new AbstractMap.SimpleEntry<>(SalaryCalculator.class, "/SalaryCalculator"),
             new AbstractMap.SimpleEntry<>(EmploymentConds.class, "/EmploymentConds"),
-            new AbstractMap.SimpleEntry<>(ConstraintManagement.class, "/home/ConstraintManagement"),
+            new AbstractMap.SimpleEntry<>(ConstraintManagement.class, "/ConstraintManagement"),
+            //HR Manager:
+            new AbstractMap.SimpleEntry<>(HrMessages.class, "/HRMessages"),
+            new AbstractMap.SimpleEntry<>(EmployeesMenu.class, "/EmployeesMenu"),
+            new AbstractMap.SimpleEntry<>(ShiftMenu.class, "/ShiftMenu"),
+
             new AbstractMap.SimpleEntry<>(AddItemToAgreement.class, "/AddItemToAgreement"),
             new AbstractMap.SimpleEntry<>(AddOrderItem.class, "/AddOrderItem"),
             new AbstractMap.SimpleEntry<>(EditCard.class, "/EditCard"),
