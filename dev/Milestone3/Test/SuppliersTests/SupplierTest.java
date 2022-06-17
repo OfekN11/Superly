@@ -1,5 +1,6 @@
 package SuppliersTests;
 
+import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Supplier.Agreement.Agreement;
 import Domain.Business.Objects.Supplier.Contact;
 import Domain.Business.Objects.Supplier.Supplier;
@@ -13,7 +14,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @NotThreadSafe
 class SupplierTest {
 
-    private SupplierService supplierService = new SupplierService();
+    private SupplierController supplierController = new SupplierController();
 
 
 
@@ -89,11 +93,31 @@ class SupplierTest {
 
     @Test
     void newOrder() {
-        Result<Integer> orderId = supplierService.order(1,1);
-        assertTrue(orderId.isOk());
-        Result<Boolean> res = supplierService.removeOrder(orderId.getValue());
-        assertTrue(res.isOk());
+        int orderId = 0;
+        try {
+            orderId = supplierController.addNewOrder(1, 1);
+            assertTrue(orderId != -1);
+            boolean res = supplierController.removeOrder(orderId);
+            assertTrue(res);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
+    @Test
+    void getPossibleDates(){
+        try{
+            supplierController.loadSuppliersData();
+            List<LocalDate> dates = supplierController.getPossibleDates(1);
+            LocalDate now = LocalDate.now();
+            for(int i = 0; i <=7; i++ ){
+                assertTrue(dates.contains(now));
+                now.plusDays(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }

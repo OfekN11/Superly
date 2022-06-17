@@ -985,7 +985,8 @@ public class SupplierController {
     }
 
     // TODO: SR73
-    private List<LocalDate> getPossibleDates(int supplierId) {
+    //public for testing!!!
+    public List<LocalDate> getPossibleDates(int supplierId) {
         List<LocalDate> dates = new ArrayList<>();
         Supplier supplier = suppliersDAO.getSupplier(supplierId);
 
