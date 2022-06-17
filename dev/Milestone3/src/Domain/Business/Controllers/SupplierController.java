@@ -553,8 +553,11 @@ public class SupplierController {
         supplier = suppliersDAO.getSupplier(supID);
         Order order = supplier.getOrderFromList(orderID, orderDAO);
 
-        if(!order.changeable() || !order.containsItem(itemID)){
+        if(!order.changeable()){
             throw new Exception("Can't change this order!");
+        }
+        if(!order.containsItem(itemID)){
+            throw new Exception("Item isn't in this order!");
         }
 
         quantityDifference = quantity - order.getQuantityOfItem(itemID);

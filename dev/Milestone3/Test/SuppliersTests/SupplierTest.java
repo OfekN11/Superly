@@ -5,6 +5,8 @@ import Domain.Business.Objects.Supplier.Contact;
 import Domain.Business.Objects.Supplier.Supplier;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.SuppliersDAO;
+import Domain.Service.Services.SupplierService;
+import Domain.Service.util.Result;
 import InventoryTests.CategoryTests;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.AfterAll;
@@ -22,10 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @NotThreadSafe
 class SupplierTest {
 
-    private Supplier supplier;
-    private ArrayList<Contact> contacts;
-    private ArrayList<String> manufacturers;
-    private SuppliersDAO dao;
+    private SupplierService supplierService = new SupplierService();
 
 
 
@@ -41,6 +40,7 @@ class SupplierTest {
     }
 
 
+    /*
     @BeforeEach
     public void setUp() throws Exception{
         contacts = new ArrayList<>();
@@ -83,5 +83,17 @@ class SupplierTest {
 
     }
 
+
+     */
+
+
+    @Test
+    void newOrder() {
+        Result<Integer> orderId = supplierService.order(1,1);
+        assertTrue(orderId.isOk());
+        Result<Boolean> res = supplierService.removeOrder(orderId.getValue());
+        assertTrue(res.isOk());
+
+    }
 
 }
