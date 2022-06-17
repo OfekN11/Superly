@@ -1,13 +1,12 @@
 package Domain.Business.Controllers;
 
 import Domain.Business.Controllers.HR.EmployeeController;
+import Domain.Business.Controllers.Transport.SiteController;
 import Domain.Business.Controllers.Transport.TransportController;
 import Domain.Business.Controllers.Transport.TruckController;
 import Domain.Business.Objects.Shift.*;
 import Domain.Business.Objects.Employee.*;
-import Domain.Business.Objects.Document.*;
 import Domain.Business.Objects.Inventory.*;
-import Domain.Business.Objects.Site.*;
 import Domain.Business.Objects.Supplier.*;
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.DAL.Controllers.InventoryAndSuppliers.*;
@@ -34,10 +33,11 @@ public class EmployeeControllerTest extends TestCase {
     @Test
     public void testEditEmployeeName() {
         try {
+            SiteController s = new SiteController();
             //loadHR();
-            // addInventoryTestData();
             //loadShiftForJuly();
-           // insertFirstDataToDB(); // the db in the desktop is updated until (not including) this line. aka employees and Inventory
+            //addInventoryTestData();
+            //insertFirstDataToDB(); // the db in the desktop is updated until (not including) this line. aka employees and Inventory
             //transportData();
             employeeController.editEmployeeName("160","updated");
             assertEquals(employeeController.getEmployee("160").getName(),"updated");
@@ -187,7 +187,6 @@ public class EmployeeControllerTest extends TestCase {
         }
 
     }
-
     private void addInventoryTestData() {
         addStoresTestDate();
         addCategoryAndProductTestDate();
@@ -311,7 +310,10 @@ public class EmployeeControllerTest extends TestCase {
 
         Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 25),  LocalDate.of(2022, 6, 1), storeId , OrderStatus.waiting);
         int order1Id = order1.getId();
-        supplierController.insertToOrderDAO(order1);
+        OrderDAO orderDAO = new OrderDAO();
+        orderDAO.insert(order1);
+        //supplierController.suppliersDAO.add(order1);
+        //supplierController.insertToOrderDAO(order1);
         supplierController.suppliersDAO.getAgreementController().setLastOrderId(supplierId1, order1Id);
 
         //Bamba  80 * 0.2 = 16kg
@@ -353,7 +355,8 @@ public class EmployeeControllerTest extends TestCase {
 
         Order order2 = new Order(2, supplierId2, LocalDate.of(2022, 5, 29),  LocalDate.of(2022, 6, 1), storeId, OrderStatus.waiting);
         int order2Id = order2.getId();
-        supplierController.insertToOrderDAO(order2);
+        new OrderDAO().insert(order2);
+        //supplierController.insertToOrderDAO(order2);
 
         //Yoplait 20 * 0.15 = 3kg
         int id = 4;

@@ -257,6 +257,7 @@ public class EmployeeController {
 
     //DELETE
     public void removeEmployee(String id) throws Exception {
+        if (!new ShiftController().getEmployeeShiftsBetween(id, LocalDate.now(), LocalDate.now().plusDays(30)).isEmpty()) throw new Exception("Employee assigned");
         employeeDataMapper.delete(id);
     }
 

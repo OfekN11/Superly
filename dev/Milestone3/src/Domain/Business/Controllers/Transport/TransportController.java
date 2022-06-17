@@ -42,7 +42,7 @@ public class TransportController {
             return transport;
         }
         else{
-            throw new Exception("there is no sorter in this shift");
+            throw new Exception("there is no Storekeeper in this shift");
         }
 
     }
@@ -154,6 +154,7 @@ public class TransportController {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()== TransportStatus.padding)
         {
+
             Order order = orderController.getTransportOrder(convert(orderID));
             if(transport.isPlacedTruck()){
                 if(order.getStatus()== OrderStatus.waiting){
@@ -169,12 +170,17 @@ public class TransportController {
                 }
             }
             else{
-                int weight = (int)(order.getOrderWeight());
-                transport.initWeight(weight);
-                transport.addOrder(order);
-                transportDataMapper.save(transport);
-                order.order();
-                orderController.updateOrder(order);
+                if(order.getStatus()== OrderStatus.waiting){
+                    int weight = (int)(order.getOrderWeight());
+                    transport.initWeight(weight);
+                    transport.addOrder(order);
+                    transportDataMapper.save(transport);
+                    order.order();
+                    orderController.updateOrder(order);
+                }
+                else{
+                    throw new Exception("this order already out");
+                }
 
             }
         }

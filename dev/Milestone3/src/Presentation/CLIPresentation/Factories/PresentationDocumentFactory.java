@@ -7,7 +7,7 @@ import Presentation.CLIPresentation.Objects.Document.TransportDocument;
 
 public class PresentationDocumentFactory {
     public Document createPresentationDocument(Domain.Service.Objects.Document.Document doc){
-        return doc.accept(this);
+        return null;
     }
 
     public DestinationDocument createPresentationDocument(Domain.Service.Objects.Document.DestinationDocument destinationDoc){

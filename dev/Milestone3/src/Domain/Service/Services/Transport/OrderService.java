@@ -46,7 +46,7 @@ public class OrderService {
             return Result.makeError(e.getMessage());
         }
     }
-    public String[] getImportantMessages(){
+    public String[] getImportantMessages() throws Exception {
         return order.alertsToHR();
     }
 

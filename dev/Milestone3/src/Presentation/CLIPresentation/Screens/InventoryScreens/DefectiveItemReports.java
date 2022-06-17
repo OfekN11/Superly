@@ -97,7 +97,7 @@ public class DefectiveItemReports extends Screen {
         LocalDate end = getDate();
         if (end==null)
             return;
-        Result<List<DefectiveItemReport>> r = controller.getExpiredItemReportsByStore(start, end, new ArrayList<>());
+        Result<List<DefectiveItemReport>> r = controller.getExpiredItemsByStore(start, end, new ArrayList<>());
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -120,7 +120,7 @@ public class DefectiveItemReports extends Screen {
         LocalDate end = getDate();
         if (end==null)
             return;
-        Result<List<DefectiveItemReport>> r = controller.getExpiredItemReportsByStore(start, end, storeIDs);
+        Result<List<DefectiveItemReport>> r = controller.getExpiredItemsByStore(start, end, storeIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -143,7 +143,7 @@ public class DefectiveItemReports extends Screen {
         LocalDate end = getDate();
         if (end==null)
             return;
-        Result<List<DefectiveItemReport>> r = controller.getExpiredItemReportsByCategory(start, end, categoryIDs);
+        Result<List<DefectiveItemReport>> r = controller.getExpiredItemsByCategory(start, end, categoryIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -166,7 +166,7 @@ public class DefectiveItemReports extends Screen {
         LocalDate end = getDate();
         if (end==null)
             return;
-        Result<List<DefectiveItemReport>> r = controller.getExpiredItemReportsByProduct(start, end, productIDs);
+        Result<List<DefectiveItemReport>> r = controller.getExpiredItemsByProduct(start, end, productIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -329,7 +329,7 @@ public class DefectiveItemReports extends Screen {
         LocalDate end = getDate();
         if (end==null)
             return;
-        Result<List<DefectiveItemReport>> r = controller.getDamagedItemsReportByStore(start, end, new ArrayList<>());
+        Result<List<DefectiveItemReport>> r = controller.getDamagedItemsByStore(start, end, new ArrayList<>());
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -352,7 +352,7 @@ public class DefectiveItemReports extends Screen {
         LocalDate end = getDate();
         if (end==null)
             return;
-        Result<List<DefectiveItemReport>> r = controller.getDamagedItemsReportByStore(start, end, storeIDs);
+        Result<List<DefectiveItemReport>> r = controller.getDamagedItemsByStore(start, end, storeIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -375,7 +375,7 @@ public class DefectiveItemReports extends Screen {
         LocalDate end = getDate();
         if (end==null)
             return;
-        Result<List<DefectiveItemReport>> r = controller.getDamagedItemsReportByCategory(start, end, categoryIDs);
+        Result<List<DefectiveItemReport>> r = controller.getDamagedItemsByCategory(start, end, categoryIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {
@@ -398,7 +398,7 @@ public class DefectiveItemReports extends Screen {
         LocalDate end = getDate();
         if (end==null)
             return;
-        Result<List<DefectiveItemReport>> r = controller.getDamagedItemsReportByProduct(start, end, productIDs);
+        Result<List<DefectiveItemReport>> r = controller.getDamagedItemsByProduct(start, end, productIDs);
         if (r.isError())
             System.out.println(r.getError());
         else {

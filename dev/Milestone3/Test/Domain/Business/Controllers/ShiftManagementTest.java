@@ -1,6 +1,7 @@
 package Domain.Business.Controllers;
 import Domain.Business.Controllers.HR.EmployeeController;
 import Domain.Business.Controllers.HR.ShiftController;
+import Domain.Business.Objects.Shift.Shift;
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Globals.Enums.Certifications;
@@ -8,6 +9,7 @@ import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
 import org.junit.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -85,5 +87,15 @@ public class ShiftManagementTest {
             assertTrue(true);
         }
     }
+
+    @org.junit.Test
+    public void AssignEmployeeTest() throws SQLException {
+        Shift shift = shiftDataMapper.get(date,ShiftTypes.Morning);
+        assertNotNull(shift);
+        shift.registerAsAvailable("100");
+        shiftDataMapper.save(shift);
+        assertNotNull(shift);
+    }
+
 
 }

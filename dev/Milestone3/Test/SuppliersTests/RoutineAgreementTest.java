@@ -1,8 +1,12 @@
 package SuppliersTests;
 
 import Domain.Business.Objects.Supplier.Agreement.RoutineAgreement;
+import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
+import InventoryTests.CategoryTests;
 import net.jcip.annotations.NotThreadSafe;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +22,20 @@ public class RoutineAgreementTest {
     private List<Integer> days;
     private AgreementController dao;
     private int supplierId = 1000;
+
+
+
+
+    @BeforeAll
+    public synchronized static void setData() {
+        DAO.setDBForTests(RoutineAgreementTest.class);
+    }
+
+    @AfterAll
+    public static void removeData() {
+        DAO.deleteTestDB(RoutineAgreementTest.class);
+    }
+
 
     @BeforeEach
     public void setUp(){

@@ -75,7 +75,7 @@ public class ServiceOrderItemObject {
     }
 
     public String toString(){
-        return "ID at Inventory: " + productId + ", Name:" + name + ", Id by Supplier:" + idBySupplier + ", Quantity: " + quantity + ", Price Per Unit: " + ppu + ", Discount: " + discount
+        return "Item Id: " + productId + ", Name:" + name + ", Id by Supplier:" + idBySupplier + ", Quantity: " + quantity + ", Price Per Unit: " + ppu + ", Discount: " + discount
                 + ", Final Price: " + finalPrice + "\nWeight: " + weight  + ", Missing items: " + missing + ", Defective items: " + defective + ", Description: " + description + "\n";
     }
 

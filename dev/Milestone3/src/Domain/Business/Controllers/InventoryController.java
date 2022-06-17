@@ -33,6 +33,8 @@ public class InventoryController {
     private final static ProductDataMapper PRODUCT_DATA_MAPPER = Product.PRODUCT_DATA_MAPPER;
     private final static CategoryDataMapper CATEGORY_DATA_MAPPER = Category.CATEGORY_DATA_MAPPER;
     private final static SalesDataMapper SALE_DATA_MAPPER = SaleToCustomer.SALES_DATA_MAPPER;
+    private List<Order> readyOrders;
+
     public InventoryController() {
         storeIds = STORE_DAO.getAll();
         categories = CATEGORY_DATA_MAPPER.getIntegerMap();
@@ -42,7 +44,7 @@ public class InventoryController {
         saleID=SALE_DATA_MAPPER.getIDCount() + 1;
         catID=CATEGORY_DATA_MAPPER.getIDCount() + 1;
         productID=PRODUCT_DATA_MAPPER.getIDCount() + 1;
-
+        readyOrders = new ArrayList<>();
         //supplierController = new SupplierController();
         transportController = new TransportController();
     }
@@ -366,9 +368,9 @@ public class InventoryController {
         return product;
     }
 
-    public boolean deleteProduct(int id){
-        PRODUCT_DATA_MAPPER.remove(Integer.toString(id));
-        if(products.remove(id)!=null)
+    public Boolean deleteProduct(int id){
+        int flag = PRODUCT_DATA_MAPPER.remove(Integer.toString(id));
+        if(products.remove(id)!=null || flag!=-1)
             return true;
         else
             return false;
@@ -577,8 +579,8 @@ public class InventoryController {
         if (!categoryToRemove.getAllProductsInCategory().isEmpty())
             throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
         categoryToRemove.changeParentCategory(null);
-        CATEGORY_DATA_MAPPER.remove(Integer.toString(catID));
-        if(categories.remove(catID)!=null)
+        int flag = CATEGORY_DATA_MAPPER.remove(Integer.toString(catID));
+        if(categories.remove(catID)!=null || flag!=-1)
             return true;
         else
             return false;
@@ -628,6 +630,7 @@ public class InventoryController {
                 getProduct(orderItem.getProductId()).addDelivery(order.getStoreID(), orderItem.getQuantity());
             }
         }
+        readyOrders = orders;
         return orders;
     }
 
@@ -639,6 +642,10 @@ public class InventoryController {
      * @param amount - can be negative (if negative than we subtract from the product), just use add "+". we will take care of the rest.
      */
     public void updateOnTheWayProducts(int productId, int storeId, int amount) {
+    }
+
+    public List<Order> getReadyOrders() {
+        return readyOrders;
     }
 
 //    private void addCategoriesForTests () {

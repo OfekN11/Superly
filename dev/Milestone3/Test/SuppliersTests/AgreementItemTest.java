@@ -1,7 +1,11 @@
 package SuppliersTests;
 
 import Domain.Business.Objects.Supplier.AgreementItem;
+import Domain.DAL.Abstract.DAO;
+import InventoryTests.CategoryTests;
 import net.jcip.annotations.NotThreadSafe;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +16,20 @@ import java.util.HashMap;
 public class AgreementItemTest {
 
     private AgreementItem item;
+
+
+
+
+    @BeforeAll
+    public synchronized static void setData() {
+        DAO.setDBForTests(AgreementItemTest.class);
+    }
+
+    @AfterAll
+    public static void removeData() {
+        DAO.deleteTestDB(AgreementItemTest.class);
+    }
+
 
     @BeforeEach
     public void setUp(){
