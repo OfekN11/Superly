@@ -134,7 +134,7 @@ public abstract class Screen extends HttpServlet {
     protected static boolean isAllowed(HttpServletRequest req, HttpServletResponse resp, Set<Class<? extends Employee>> allowed) {
         return allowed == null ||
                 (Login.isLoggedIn(req, resp) &&
-                        (allowed.isEmpty() || Arrays.asList(allowed).contains(Login.getLoggedUser(req).getClass())));
+                        (allowed.isEmpty() || allowed.contains(Login.getLoggedUser(req).getClass())));
     }
 
     /***
