@@ -31,7 +31,6 @@ public class DocumentManagementMenu extends Screen {
                 out.println("<h4>");
                 out.println(val);
                 out.println("</h4>");
-                out.println("<br>");
             }
         }
         handleError(resp);
