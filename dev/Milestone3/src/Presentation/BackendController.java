@@ -11,11 +11,11 @@ import Domain.Service.Objects.SupplierObjects.*;
 import Domain.Service.Services.HR.*;
 import Domain.Service.Services.*;
 import Domain.Service.Services.Transport.*;
-import Presentation.CLIPresentation.Factories.PresentationDocumentFactory;
-import Presentation.CLIPresentation.Objects.Document.DestinationDocument;
-import Presentation.CLIPresentation.Objects.Document.TransportDocument;
-import Presentation.CLIPresentation.Objects.Transport.Transport;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Factories.PresentationDocumentFactory;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Document.*;
 import Presentation.CLIPresentation.Objects.Transport.TransportOrder;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Order;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Transport;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -597,11 +597,11 @@ public class BackendController {
         throwIfError(result);
         return toPLTransports(result.getValue());
     }
-    private Set<TransportOrder> toPLTransportOrder(Set<Domain.Service.Objects.TransportOrder> orders)
+    private Set<Order> toPLTransportOrder(Set<Domain.Service.Objects.SupplierObjects.ServiceOrderObject> orders)
     {
-        Set<TransportOrder> transportList = new HashSet<>();
-        for (Domain.Service.Objects.TransportOrder order: orders) {
-            transportList.add(new TransportOrder(order));
+        Set<Order> transportList = new HashSet<>();
+        for (Domain.Service.Objects.SupplierObjects.ServiceOrderObject order: orders) {
+            transportList.add(new Order(order));
         }
         return transportList;
     }
@@ -635,8 +635,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Set<TransportOrder> getPendingOrders() throws Exception {
-        Result<Set<Domain.Service.Objects.TransportOrder>> result = orderService.getPendingOrders();
+    public Set<Order> getPendingOrders() throws Exception {
+        Result<Set<Domain.Service.Objects.SupplierObjects.ServiceOrderObject>> result = orderService.getPendingOrders();
         throwIfError(result);
         return toPLTransportOrder(result.getValue());
     }
