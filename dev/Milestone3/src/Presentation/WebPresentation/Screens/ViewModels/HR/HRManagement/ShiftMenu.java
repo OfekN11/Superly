@@ -29,8 +29,8 @@ public class ShiftMenu extends Screen {
             "Manage existing shifts"            //4
     };
 
-    public ShiftMenu(String greeting, Set<Class<? extends Employee>> allowed) {
-        super(greeting, allowed);
+    public ShiftMenu() {
+        super(GREET, ALLOWED);
     }
 
     @Override
