@@ -22,7 +22,7 @@ public class AddTruck extends Screen {
         handleError(resp);
     }
 
-    protected static void printForm(HttpServletResponse resp, String[] buttons) throws IOException {
+    private static void printForm(HttpServletResponse resp, String[] buttons) throws IOException {
         PrintWriter out = resp.getWriter();
         out.println("<form method=\"post\">\n");
         out.println(String.format("<input type=\"text\" name=\"%s\" placeholder=\"%s\"><br><br>", "LN", "License number"));
