@@ -68,7 +68,6 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(TransportManagementMenu.class, "/TransportMainMenu/TransportManagementMenu"),
             new AbstractMap.SimpleEntry<>(CreateTransport.class, "/TransportMainMenu/TransportManagementMenu/CreateTransport"),
             new AbstractMap.SimpleEntry<>(TransportsView.class, "/TransportMainMenu/TransportManagementMenu/TransportsView"),
-            new AbstractMap.SimpleEntry<>(UpdateTransport.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport"),
             new AbstractMap.SimpleEntry<>(PlaceTruck.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport/PlaceTruck"),
             new AbstractMap.SimpleEntry<>(PlaceCarrier.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport/PlaceCarrier"),
             new AbstractMap.SimpleEntry<>(UpdateTransport.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport"),
