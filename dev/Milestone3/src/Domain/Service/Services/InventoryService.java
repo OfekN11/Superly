@@ -1,6 +1,7 @@
 package Domain.Service.Services;
 
 
+import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.Business.Objects.Inventory.SaleToCustomer;
 import Domain.Business.Controllers.InventoryController;
@@ -26,6 +27,10 @@ public class InventoryService {
 
     public InventoryService(){
         controller = new InventoryController();
+    }
+
+    public void setSupplierController(SupplierController supCont){
+        controller.setSupplierController(supCont);
     }
 
 
@@ -97,9 +102,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> deleteProduct(int id){
+    public Result<Boolean> deleteProduct(int id){
         try {
-            controller.deleteProduct(id);
+            Result.makeOk(controller.deleteProduct(id));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -708,9 +713,9 @@ public class InventoryService {
      * @param catID = ID of category to remove
      * @return Result detailing success of operation
      */
-    public Result<Object> deleteCategory(int catID) {
+    public Result<Boolean> deleteCategory(int catID) {
         try {
-            controller.deleteCategory(catID);
+            Result.makeOk(controller.deleteCategory(catID));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());

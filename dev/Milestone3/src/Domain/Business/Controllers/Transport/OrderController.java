@@ -1,20 +1,21 @@
 package Domain.Business.Controllers.Transport;
 
 import Domain.Business.Objects.Supplier.Order;
+import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementItemDAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.OrderDAO;
+import Domain.DAL.Controllers.InventoryAndSuppliers.SuppliersDAO;
 import Globals.Enums.OrderStatus;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class OrderController {
-    private static List<Integer> alertOrders;
     private final OrderDAO transportOrderDataMapper = new OrderDAO();
 
     public OrderController() {
-        alertOrders = new ArrayList<>();
     }
     /*public void addTransportOrder(int daysToArrival, int supplierID, int storeID) throws Exception {
 
@@ -23,7 +24,8 @@ public class OrderController {
     }*/
 
     public Order getTransportOrder(String orderID) throws Exception {
-        Order order = transportOrderDataMapper.get(orderID);
+        Order order = transportOrderDataMapper.getOrder(Integer.parseInt(orderID),new SuppliersDAO());
+        transportOrderDataMapper.uploadAllItemsFromOrder(order.getId(), new AgreementItemDAO());
         if (order==null){
             throw new Exception("the order not found");
         }
@@ -40,7 +42,7 @@ public class OrderController {
 
     public Collection<Order> getPendingOrder() throws Exception {
         Collection<Order> padding = new ArrayList<>();
-        Collection<Order> orders = transportOrderDataMapper.getAll();
+        Collection<Order> orders = transportOrderDataMapper.getAllOrders();
         for (Order order:orders){
             if(order.getStatus()== OrderStatus.waiting){
                 padding.add(order);
@@ -50,19 +52,22 @@ public class OrderController {
     }
 
     public void updateOrder(Order order) throws SQLException {
-        transportOrderDataMapper.updateOrder(order);
+        transportOrderDataMapper.updateStatus(order);
     }
 
-    public void addAlertOrder(Integer orderID){
-        if(alertOrders.contains(orderID)){
-            alertOrders.add(orderID);
+    public String[] alertsToHR() throws Exception {
+
+        List<Order> allOrders = transportOrderDataMapper.getAllOrders();
+        List<Order> alertOrders = new ArrayList<>();
+        for(Order o :allOrders){
+            if(o.getStatus() == OrderStatus.waiting){
+                alertOrders.add(o);
+            }
         }
-    }
-    public String[] alertsToHR(){
         String[] message = new String[alertOrders.size()];
         int place = 0 ;
-        for (Integer order:alertOrders) {
-            message[place] = "Order "+order+" cannot be in transport in a week from now";
+        for (Order order:alertOrders) {
+            message[place] = "Order "+order.getId()+" cannot be in transport in a week from now";
         }
         return message;
     }

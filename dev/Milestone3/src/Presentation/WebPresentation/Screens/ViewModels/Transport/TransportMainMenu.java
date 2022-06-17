@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport;
 
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Document.DocumentManagementMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.TransportManagementMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.TruckManagementMenu;
 

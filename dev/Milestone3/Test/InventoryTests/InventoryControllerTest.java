@@ -6,7 +6,7 @@ import Domain.Business.Objects.Inventory.Product;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.*;
 import Globals.Pair;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import java.util.*;
 import static java.util.Collections.max;
 import static org.junit.jupiter.api.Assertions.*;
 
-@NotThreadSafe
+//@NotThreadSafe
 class InventoryControllerTest {
     private static final InventoryController is = InventoryController.getInventoryController();
     private static SupplierController sc;
