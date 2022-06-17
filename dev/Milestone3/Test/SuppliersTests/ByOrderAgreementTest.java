@@ -2,14 +2,14 @@ package SuppliersTests;
 
 import Domain.Business.Objects.Supplier.Agreement.ByOrderAgreement;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@NotThreadSafe
+//@NotThreadSafe
 public class ByOrderAgreementTest {
     private ByOrderAgreement agreement;
     private AgreementController controller;

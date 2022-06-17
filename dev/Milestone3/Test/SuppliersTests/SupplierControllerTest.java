@@ -4,7 +4,7 @@ import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
 import Globals.Pair;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,7 @@ import java.util.Map;
  * NOTE: The Tests assumes that the DB is empty
  */
 
-@NotThreadSafe
+//@NotThreadSafe
 class SupplierControllerTest {
 
     private SupplierController controller;
