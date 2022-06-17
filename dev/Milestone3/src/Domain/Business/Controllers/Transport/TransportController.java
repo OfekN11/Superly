@@ -154,6 +154,7 @@ public class TransportController {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()== TransportStatus.padding)
         {
+            orderController.getPendingOrder();
             Order order = orderController.getTransportOrder(convert(orderID));
             if(transport.isPlacedTruck()){
                 if(order.getStatus()== OrderStatus.waiting){
@@ -272,6 +273,7 @@ public class TransportController {
             for (Integer order:transport.getTransportOrders()) {
                 Order o = orderController.getTransportOrder(convert(order));
                 o.start();
+                orderController.updateOrder(o);
                 DestinationDocument document = new DestinationDocument(order,o.getStoreID(),o.getProductList());
                 documentController.uploadDestinationDocument(document);
                 transportDocument.addDoc(document.getID());

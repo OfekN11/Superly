@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.HR;
 
-import Presentation.WebPresentation.Screens.InventoryScreens.InventoryMainMenu;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.InventoryMainMenu;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
 import Presentation.WebPresentation.Screens.Screen;
@@ -50,7 +51,11 @@ public class Login extends Screen {
         if (isButtonPressed(req, "Sign in!")){
             String id = req.getParameter("ID");
             try {
-                Employee emp = factory.createEmployee(controller.getEmployee(id));
+                Employee emp;
+                if (id.equals("admin"))
+                    emp = new Admin();
+                else
+                    emp = factory.createEmployee(controller.getEmployee(id));
                 String hash = hash(id);
                 loggedUser.put(hash, emp);
                 Cookie c = new Cookie("superly_user", hash);
