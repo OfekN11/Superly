@@ -10,10 +10,9 @@ public class HR_Manager extends Employee{
     private static final String GREETING = "Welcome HR Manager ";
 
     private static final String[] EXTRA_OPTIONS = {
-            "View Employees",       //BASE + 0
-            "Register Employee",    //BASE + 1
-            "Manage Employee",      //BASE + 2
-            "Remove Employee"       //BASE + 3
+            "Employees Menu",       //BASE + 0
+            "Shifts Menu",          //BASE + 1
+            "HR Important Messages" //BASE + 2
     };
 
     protected HR_Manager(Domain.Service.Objects.Employee.HR_Manager sHRMan) {
@@ -26,12 +25,10 @@ public class HR_Manager extends Employee{
         int index = getIndexOfButtonPressed(req) - BASE_OPTIONS_COUNT;
         switch (index) {
             case 0:
-                break;
             case 1:
-                break;
             case 2:
-                break;
-            case 3:
+                setError("Not Implemented yet");
+                refresh(req, resp);
                 break;
         }
     }

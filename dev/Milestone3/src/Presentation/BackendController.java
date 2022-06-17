@@ -19,6 +19,7 @@ import Presentation.CLIPresentation.Objects.Transport.TransportOrder;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BackendController {
     private final EmployeeService employeeService = new EmployeeService();
@@ -530,6 +531,12 @@ public class BackendController {
     }
 
     //MISC
+    public List<String> getImportantHRMessagesShifts() throws Exception {
+        Result<List<String>> result = shiftService.getImportantHRMessages();
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
 
 
     //private
@@ -567,8 +574,8 @@ public class BackendController {
         throwIfError(result);
         return presentationDocumentFactory.createPresentationDocument(result.getValue());
     }
-    public String[] getImportantMessagesTransport() throws Exception {
-        return orderService.getImportantMessages();
+    public List<String> getImportantHRMessagesTransport() throws Exception {
+        return Arrays.stream(orderService.getImportantMessages()).collect(Collectors.toList());
     }
 
     //Transport Order
@@ -1220,4 +1227,5 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
+
 }

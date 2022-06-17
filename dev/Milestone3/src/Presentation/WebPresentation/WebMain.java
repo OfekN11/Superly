@@ -1,5 +1,9 @@
 package Presentation.WebPresentation;
 
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.ConstraintManagement;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.EmploymentConds;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.SalaryCalculator;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.UpcomingShifts;
 import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.*;
 import Presentation.WebPresentation.Screens.ViewModels.HR.*;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.*;
