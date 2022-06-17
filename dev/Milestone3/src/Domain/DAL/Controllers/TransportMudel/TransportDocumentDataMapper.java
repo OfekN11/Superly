@@ -26,7 +26,9 @@ public class TransportDocumentDataMapper extends DAO {
                 else {
                     document = TRANSPORT_DOCUMENTS_MAP.get(id);
                 }
-                document.getDocuments().add(resultSet.getInt(7));
+                if(!document.getDocuments().contains(resultSet.getInt(7))){
+                    document.getDocuments().add(resultSet.getInt(7));
+                }
             }
         } catch (SQLException throwables) {
             throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");

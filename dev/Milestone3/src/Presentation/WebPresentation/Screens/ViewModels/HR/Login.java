@@ -6,6 +6,7 @@ import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.SupplierMainMenuStorekeeper;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -39,7 +40,7 @@ public class Login extends Screen {
         header(resp);
         greet(resp);
         printForm(resp, new String[]{"ID"}, new String[]{"Employee ID"}, new String[]{"Sign in!"});
-        printMenu(resp, new String[]{"Suppliers Main Menu", "Inventory Main Menu"});
+        printMenu(resp, new String[]{"Transport Main Menu", "Suppliers Main Menu", "Inventory Main Menu"});
 
         handleError(resp);
     }
@@ -57,6 +58,7 @@ public class Login extends Screen {
                 else
                     emp = factory.createEmployee(controller.getEmployee(id));
                 String hash = hash(id);
+                //TODO:
                 loggedUser.put(hash, emp);
                 Cookie c = new Cookie("superly_user", hash);
                 c.setMaxAge(LOGIN_COOKIE_MAX_AGE);
@@ -68,8 +70,10 @@ public class Login extends Screen {
             }
         }
         else if(getIndexOfButtonPressed(req) == 0)
-            redirect(resp, SupplierMainMenuStorekeeper.class);
+            redirect(resp, TransportMainMenu.class);
         else if(getIndexOfButtonPressed(req) == 1)
+            redirect(resp, SupplierMainMenuStorekeeper.class);
+        else if(getIndexOfButtonPressed(req) == 2)
             redirect(resp, InventoryMainMenu.class);
     }
 

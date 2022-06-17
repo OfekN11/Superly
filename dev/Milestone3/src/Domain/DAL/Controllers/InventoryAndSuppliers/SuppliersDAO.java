@@ -1,6 +1,7 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
 import Domain.Business.Objects.Supplier.Contact;
+import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.Supplier;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
@@ -355,5 +356,9 @@ public class SuppliersDAO extends DataMapper<Supplier> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void add(Order order1) {
+
     }
 }

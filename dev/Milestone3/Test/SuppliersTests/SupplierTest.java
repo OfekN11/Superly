@@ -4,7 +4,7 @@ import Domain.Business.Objects.Supplier.Agreement.Agreement;
 import Domain.Business.Objects.Supplier.Contact;
 import Domain.Business.Objects.Supplier.Supplier;
 import Domain.DAL.Controllers.InventoryAndSuppliers.SuppliersDAO;
-import net.jcip.annotations.NotThreadSafe;
+//import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * NOTE: the tests assumes that the DB is empty.
  */
 
-@NotThreadSafe
+//@NotThreadSafe
 class SupplierTest {
 
     private Supplier supplier;
