@@ -205,7 +205,7 @@ public abstract class Employee extends Screen {
         LocalDate start = buildDate();
         System.out.println("Enter last date to calculate: ");
         LocalDate end = buildDate();
-        int numOfShifts = controller.getEmployeeShiftsBetween(this, start, end).size();
+        int numOfShifts = controller.getEmployeeShiftsBetween(getID(), start, end).size();
         System.out.println("Between the dates entered " + name + " has done " + numOfShifts + "shifts");
         System.out.println("With a salary of " + salary + " per shift");
         System.out.println("Calculated salary between these date is: " + (numOfShifts * salary));
@@ -266,7 +266,7 @@ public abstract class Employee extends Screen {
     private void printUpcomingShifts() throws Exception {
         LocalDate today = LocalDate.now();
         LocalDate nextWeek = today.plusWeeks(1);
-        List<Shift> shifts= new ArrayList<>(controller.getEmployeeShiftsBetween(this, today, nextWeek));
+        List<Shift> shifts= new ArrayList<>(controller.getEmployeeShiftsBetween(getID(), today, nextWeek));
         shifts.sort(new ShiftComparator());
         System.out.println("Upcoming shift for the following week");
         for (Shift shift : shifts)

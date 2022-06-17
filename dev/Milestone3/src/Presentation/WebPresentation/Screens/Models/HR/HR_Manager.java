@@ -22,12 +22,8 @@ public class HR_Manager extends Employee{
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int index = getIndexOfButtonPressed(req);
-        if (index < BASE_OPTIONS_COUNT) {
-            super.doPost(req, resp);
-            return;
-        }
-        index -= BASE_OPTIONS_COUNT;
+        super.doPost(req, resp);
+        int index = getIndexOfButtonPressed(req) - BASE_OPTIONS_COUNT;
         switch (index) {
             case 0:
                 break;

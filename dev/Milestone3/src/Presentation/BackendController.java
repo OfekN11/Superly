@@ -297,8 +297,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Set<Shift> getEmployeeShiftsBetween(Presentation.CLIPresentation.Screens.Employee employee, LocalDate start, LocalDate end) throws Exception {
-        Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(employee.getID(), start, end);
+    public Set<Shift> getEmployeeShiftsBetween(String eId, LocalDate start, LocalDate end) throws Exception {
+        Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(eId, start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();

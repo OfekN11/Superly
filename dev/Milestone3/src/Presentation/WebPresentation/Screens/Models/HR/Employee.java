@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens.Models.HR;
 
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.UpcomingShifts;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -61,9 +62,10 @@ public abstract class Employee extends Screen {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        handleHeader(req, resp);
         switch (getIndexOfButtonPressed(req)){
             case 0:
-
+                redirect(resp, UpcomingShifts.class);
                 break;
             case 1:
                 break;
