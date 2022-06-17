@@ -15,10 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Product extends Screen {
 
@@ -27,6 +24,8 @@ public class Product extends Screen {
     private static final String setMinButton = "Set min";
     private static final String setTargetButton = "Set target";
     private static final String setNameButton = "Set name";
+    private static final String changeCategoryButton = "Change category";
+
     public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
 
     private int productID;
@@ -51,7 +50,9 @@ public class Product extends Screen {
                 printForm(resp, new String[]{"storeID", "new min"}, new String[]{"StoreID", "New min"}, new String[]{setMinButton});
                 printForm(resp, new String[]{"storeID", "new target"}, new String[]{"StoreID", "New target"}, new String[]{setTargetButton});
                 printForm(resp, new String[]{"new name"}, new String[]{"New name"}, new String[]{setNameButton});
+                printForm(resp, new String[]{"new category id"}, new String[]{"New category ID"}, new String[]{changeCategoryButton});
                 printProduct(resp, product.getValue());
+                printCategories(resp);
             }
         }
         handleError(resp);
@@ -167,6 +168,37 @@ public class Product extends Screen {
                 refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
             }
         }
+        else if (isButtonPressed(req, changeCategoryButton)){
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+                setError("You have no permission to change product's category");
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
+                return;
+            }
+            try {
+                int newCategoryID = Integer.parseInt(req.getParameter("new category id"));
+                if (controller.getCategory(newCategoryID).isError()) {
+                    setError("Category with ID: " + newCategoryID + " doesn't exists");
+                    refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
+                    return;
+                }
+                if(controller.moveProductToCategory(productID, newCategoryID).isOk()) {
+                    PrintWriter out = resp.getWriter();
+                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed category of product %d to %d", productID, newCategoryID)));
+                    refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
+                }
+                else{
+                    setError("Product's category hasn't been changed");
+                    refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
+                }
+            }catch (NumberFormatException e1){
+                setError("Please enter a number!");
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
+            }
+            catch (Exception e) {
+                setError(e.getMessage());
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
+            }
+        }
     }
     private void printProduct(HttpServletResponse resp, Domain.Service.Objects.InventoryObjects.Product p) {
         try {
@@ -177,7 +209,19 @@ public class Product extends Screen {
             out.println("Original price: " + p.getOriginalPrice() + "<br>");
             out.println("Current price: " + p.getCurrentPrice() + "<br>");
             out.println("Weight: " + p.getWeight() + "<br>");
-            out.println("Manufacturer: " + p.getManufacturer() + "<br>");
+            out.println("Manufacturer: " + p.getManufacturer() + "<br><br>");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void printCategories(HttpServletResponse resp) {
+        try {
+            List<Domain.Service.Objects.InventoryObjects.Category> categories = controller.getCategories().getValue();
+            PrintWriter out = resp.getWriter();
+            categories.sort(Comparator.comparingInt(Domain.Service.Objects.InventoryObjects.Category::getID));
+            for (Domain.Service.Objects.InventoryObjects.Category c: categories) {
+                out.println(c.getName() + ": " + c.getID() + "<br>");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
