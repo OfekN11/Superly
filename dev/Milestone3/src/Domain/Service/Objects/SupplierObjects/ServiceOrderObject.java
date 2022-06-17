@@ -32,7 +32,7 @@ public class ServiceOrderObject {
     public ServiceOrderObject(Domain.Business.Objects.Supplier.Order order) {
         List<ServiceOrderItemObject> items = new ArrayList<>();
         for (OrderItem oItem : order.getOrderItems()) {
-            items.add(new ServiceOrderItemObject(oItem.getProductId(), oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice(), oItem.getMissingItems(), oItem.getDefectiveItems(), oItem.getDescription(), oItem.getWeight()));
+            items.add(new ServiceOrderItemObject(oItem.getProductId(),oItem.getIdBySupplier(),oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice(), oItem.getMissingItems(), oItem.getDefectiveItems(), oItem.getDescription(), oItem.getWeight()));
         }
         this.orderId = order.getId();
         this.supplierId = order.getSupplierId();

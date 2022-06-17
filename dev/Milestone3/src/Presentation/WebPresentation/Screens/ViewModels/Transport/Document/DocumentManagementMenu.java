@@ -1,7 +1,8 @@
-package Presentation.WebPresentation.Screens.ViewModels.Transport;
+package Presentation.WebPresentation.Screens.ViewModels.Transport.Document;
 
 import Presentation.BackendController;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -68,7 +69,7 @@ public class DocumentManagementMenu extends Screen {
             }
             else{
                 if(isButtonPressed(req,"Exit")){
-                    redirect(resp,TransportMainMenu.class);
+                    redirect(resp, TransportMainMenu.class);
                 }
                 else {
                     refresh(req,resp);

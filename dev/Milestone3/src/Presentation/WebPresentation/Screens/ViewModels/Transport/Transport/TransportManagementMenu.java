@@ -1,4 +1,4 @@
-package Presentation.WebPresentation.Screens.ViewModels.Transport;
+package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport;
 
 import Presentation.WebPresentation.Screens.Screen;
 

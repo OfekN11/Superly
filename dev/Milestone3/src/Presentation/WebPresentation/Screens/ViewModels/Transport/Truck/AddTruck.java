@@ -106,11 +106,11 @@ public class AddTruck extends Screen {
         return ans;
     }
     private int getMaxCapacityWeight(HttpServletRequest req, TruckModel tm) throws Exception {
-        String error = "Enter valid mac capacity weight:\n" +
-                "Van - 200 < weight <= 1000\n" +
-                "SemiTrailer - 1000 < weight <= 5000\n" +
-                "DoubleTrailer - 5000 < weight <= 10000\n" +
-                "FullTrailer - 10000 < weight <= 20000\n";
+        String error = "<b>Enter valid max capacity weight:</b><br>" +
+                "Van - 200 < weight <= 1000<br>" +
+                "SemiTrailer - 1000 < weight <= 5000<br>" +
+                "DoubleTrailer - 5000 < weight <= 10000<br>" +
+                "FullTrailer - 10000 < weight <= 20000<br>";
         try {
             int maxCapacityWeight = Integer.parseInt(req.getParameter("MaxCapacityWeight"));
             if(isValidWeight(tm, maxCapacityWeight)){
