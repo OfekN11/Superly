@@ -88,6 +88,9 @@ public class TransportsView extends Screen {
     }
     public void printTransport(Set<Transport> lst,HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
+        if (lst.size()==0){
+            out.println("<h2>" + "There is no transports in this status" + "</h2>");
+        }
         List<String> all = new ArrayList<>();
         for (Transport t: lst){
             all.add(t.displayWeb());
