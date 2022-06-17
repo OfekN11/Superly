@@ -44,8 +44,8 @@ public class ShowAgreement extends Screen {
         resp.getWriter().println("<h2>Agreement Information for Supplier" + supId + ".</h2><br>");
 
         printMenu(resp, new String[]{"Show All Items", "Add item to agreement"});
-        printForm(resp, new String[] {"itemId"}, new String[]{"ID By Supplier"}, new String[]{"Remove Item"});
-        printForm(resp, new String[] {"itemId2"}, new String[]{"ID By Supplier"}, new String[]{"View Item"});
+        printForm(resp, new String[] {"itemId"}, new String[]{"Item ID"}, new String[]{"Remove Item"});
+        printForm(resp, new String[] {"itemId2"}, new String[]{"Item ID"}, new String[]{"View Item"});
 
         // TODO: 11/06/2022 Should we do it? maybe it can cause problems...
         printForm(resp, new String[] {"agreementType", "agreementDays" }, new String[]{"Agreement Type", "Agreement Days"}, new String[]{"Change Agreement Type"});
