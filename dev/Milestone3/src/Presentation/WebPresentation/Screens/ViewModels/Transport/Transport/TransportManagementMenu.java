@@ -38,7 +38,7 @@ public class TransportManagementMenu extends Screen {
         handleHeader(req, resp);
         switch (getIndexOfButtonPressed(req)) {
             case 0:
-                //TODO: redirect(resp, CreateNewTransport.class);
+                redirect(resp, CreateTransport.class);
                 break;
             case 1:
                 //TODO: redirect(resp, UpdateTransport.class);

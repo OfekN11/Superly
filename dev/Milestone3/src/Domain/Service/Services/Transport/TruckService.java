@@ -40,15 +40,4 @@ public class TruckService {
         return Result.makeOk(null);
     }
 
-
-    public Result removeTruck(int licenseNumber)
-    {
-        try {
-            controller.removeTruck(licenseNumber);
-        }
-        catch (Exception e){
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
 }

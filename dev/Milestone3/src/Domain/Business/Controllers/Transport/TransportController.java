@@ -39,6 +39,7 @@ public class TransportController {
         if(shiftController.getShift(shift.getLeft(),shift.getRight()).getStorekeeperCount()>0){
             Transport transport = new Transport(shift);
             transportDataMapper.save(transport);
+            //TODO: Get update transport from DB
             return transport;
         }
         else{
@@ -330,7 +331,7 @@ public class TransportController {
         List<Transport> allTransports = getAllTransports();
         HashMap<Integer,Transport> complete = new HashMap<>();
         for(Transport t : allTransports){
-            if(t.getStatus()==TransportStatus.done){
+            if(t.getStatus() == TransportStatus.done){
                 complete.put(t.getSN(),t);
             }
         }
@@ -396,7 +397,26 @@ public class TransportController {
 
 
     }
+    public void removeTruck(int licenseNumber) throws Exception {
 
+        if(!checkIfTruckPlaceInTransport(licenseNumber)){
+            truckController.removeTruck(licenseNumber);
+        }
+        else{
+            throw new Exception("This truck is already embedded in transports that are in progress or pending!");
+        }
+    }
+
+    private boolean checkIfTruckPlaceInTransport(int licenseNumber){
+        List<Transport> allTransports = getAllTransports();
+        for(Transport transport: allTransports){
+            if(transport.getTruckNumber() == licenseNumber &&
+                    (transport.getStatus() == TransportStatus.padding | transport.getStatus() == TransportStatus.inProgress)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 

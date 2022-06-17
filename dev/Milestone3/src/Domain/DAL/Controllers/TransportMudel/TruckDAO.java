@@ -53,7 +53,6 @@ public class TruckDAO extends DAO {
     public void insert(Truck instance) throws SQLException {
         int id = instance.getLicenseNumber();
         if(!TRUCK_IDENTITY_MAP.containsKey(id)){
-            TRUCK_IDENTITY_MAP.put(id,instance);
             try
             {
                 super.insert(Arrays.asList(id, instance.getModel(), instance.getNetWeight(), instance.getMaxCapacityWeight()));
@@ -61,6 +60,7 @@ public class TruckDAO extends DAO {
             catch (SQLException throwables) {
                 throw new RuntimeException("FATAL ERROR WITH DB CONNECTION. STOP WORK IMMEDIATELY!");
             }
+            TRUCK_IDENTITY_MAP.put(id,instance);
         }
         else{
             throw new RuntimeException("A truck with this license number already exists!");
@@ -83,7 +83,9 @@ public class TruckDAO extends DAO {
 
     public int delete(int licenseNumber) throws Exception {
         if(TRUCK_IDENTITY_MAP.containsKey(licenseNumber)){
-            return super.remove(licenseNumber);
+            int ans = super.remove(licenseNumber);
+            TRUCK_IDENTITY_MAP.remove(licenseNumber);
+            return ans;
         }
         throw new RuntimeException("A truck with this license number doesn't exists!");
     }
