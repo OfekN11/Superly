@@ -7,15 +7,23 @@ import java.io.IOException;
 
 public class Carrier extends Employee{
 
-    private static String greeting = "Welcome Carrier ";
+    private static final String GREETING = "Welcome Carrier ";
 
-    private static String[] menuOptions = {};
+    private static final String[] EXTRA_OPTIONS = {};
 
     protected Carrier(Domain.Service.Objects.Employee.Carrier sCarrier) {
-        super(sCarrier, greeting, menuOptions);
+        super(sCarrier, GREETING, EXTRA_OPTIONS);
     }
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int index = getIndexOfButtonPressed(req);
+        if (index < BASE_OPTIONS_COUNT) {
+            super.doPost(req, resp);
+            return;
+        }
+        index -= BASE_OPTIONS_COUNT;
+        switch (index) {
+        }
     }
 }

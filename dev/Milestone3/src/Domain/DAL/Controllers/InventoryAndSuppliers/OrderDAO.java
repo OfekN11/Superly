@@ -146,6 +146,10 @@ public class OrderDAO extends DataMapper<Order> {
 
     }
 
+    public void updateStatus(Order order) throws SQLException {
+        update(Arrays.asList(STATUS_COLOUMN),Arrays.asList(order.getStatus()),Arrays.asList(ORDER_ID_COLUMN),Arrays.asList(order.getId()));
+    }
+
     public ArrayList<Order> getLastOrdersFromALlSuppliers(ArrayList<Integer> orderIds) {
         ArrayList<Order> result = new ArrayList<>();
         for(Integer orderId : orderIds){

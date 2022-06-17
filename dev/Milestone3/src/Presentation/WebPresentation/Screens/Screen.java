@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens;
 
 import Presentation.BackendController;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 import Presentation.WebPresentation.WebMain;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Set;
 
 public abstract class Screen extends HttpServlet {
 
@@ -20,12 +23,25 @@ public abstract class Screen extends HttpServlet {
      */
     private final String greeting;
 
+    /***
+     * see the isAllowed method
+     * allowed == null -> anyone may visit
+     * allowed.length == 0 -> any logged in user may visit
+     * else -> only the types in the array may visit
+     */
+    private final Set<Class<? extends Employee>> allowed;
+
     private String error = null;
 
     public static BackendController controller = new BackendController();
 
-    public Screen(String greeting) {
+    public Screen(String greeting, Set<Class<? extends Employee>> allowed) {
         this.greeting = greeting;
+        this.allowed = allowed;
+    }
+
+    public Screen(String greeting) {
+        this(greeting, null);
     }
 
     /***
@@ -101,6 +117,27 @@ public abstract class Screen extends HttpServlet {
     }
 
     /***
+     * checks if the visitor has permission to visit this page
+     * allowed == null -> anyone may visit
+     * allowed.length == 0 -> any logged in user may visit
+     * else -> only the types in the array may visit
+     * @param req the request sent
+     * @param resp the response to send
+     * @return true if visiting this screen is allowed
+     */
+    protected boolean isAllowed(HttpServletRequest req, HttpServletResponse resp) {
+        return allowed == null ||
+                (Login.isLoggedIn(req, resp) &&
+                        (allowed.isEmpty() || allowed.contains(Login.getLoggedUser(req).getClass())));
+    }
+
+    protected static boolean isAllowed(HttpServletRequest req, HttpServletResponse resp, Set<Class<? extends Employee>> allowed) {
+        return allowed == null ||
+                (Login.isLoggedIn(req, resp) &&
+                        (allowed.isEmpty() || Arrays.asList(allowed).contains(Login.getLoggedUser(req).getClass())));
+    }
+
+    /***
      * prints a form of submit buttons.
      * buttons names are the index of their value in menuOptions
      * @param resp the response to print to
@@ -169,7 +206,7 @@ public abstract class Screen extends HttpServlet {
      * @throws IOException
      */
     protected static void refresh(HttpServletRequest req, HttpServletResponse resp, String[] params, String[] paramVals) throws IOException {
-        resp.sendRedirect(req.getHeader("referer") + buildGetParams(params, paramVals));
+        resp.sendRedirect(req.getServletPath() + buildGetParams(params, paramVals));
     }
 
     protected static void refresh(HttpServletRequest req, HttpServletResponse resp) throws IOException {

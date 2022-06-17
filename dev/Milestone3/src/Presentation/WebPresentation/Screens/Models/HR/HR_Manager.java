@@ -7,15 +7,36 @@ import java.io.IOException;
 
 public class HR_Manager extends Employee{
 
-    private static String greeting = "Welcome HR Manager ";
+    private static final String GREETING = "Welcome HR Manager ";
 
-    private static String[] menuOptions = {};
+    private static final String[] EXTRA_OPTIONS = {
+            "View Employees",       //BASE + 0
+            "Register Employee",    //BASE + 1
+            "Manage Employee",      //BASE + 2
+            "Remove Employee"       //BASE + 3
+    };
 
     protected HR_Manager(Domain.Service.Objects.Employee.HR_Manager sHRMan) {
-        super(sHRMan, greeting, menuOptions);
+        super(sHRMan, GREETING, EXTRA_OPTIONS);
     }
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int index = getIndexOfButtonPressed(req);
+        if (index < BASE_OPTIONS_COUNT) {
+            super.doPost(req, resp);
+            return;
+        }
+        index -= BASE_OPTIONS_COUNT;
+        switch (index) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
     }
 }

@@ -36,9 +36,9 @@ public class EmployeeControllerTest extends TestCase {
         try {
             //loadHR();
             // addInventoryTestData();
-
-            insertFirstDataToDB(); // the db in the desktop is updated until (not including) this line. aka employees and Inventory
-            transportData();
+            //loadShiftForJuly();
+           // insertFirstDataToDB(); // the db in the desktop is updated until (not including) this line. aka employees and Inventory
+            //transportData();
             employeeController.editEmployeeName("160","updated");
             assertEquals(employeeController.getEmployee("160").getName(),"updated");
         } catch (Exception e) {
@@ -131,6 +131,56 @@ public class EmployeeControllerTest extends TestCase {
 
             morningShift.registerAsAvailable(Integer.toString(i+160));
             morningShift.setTransport_managerIDs(transportManagers);
+
+            shiftDataMapper.save(morningShift);
+            shiftDataMapper.save(eveningShift);
+        }
+
+    }
+
+    public void loadShiftForJuly() throws Exception {
+        EmployeeDataMapper employeeDataMapper = new EmployeeDataMapper();
+        LocalDate firstOfJul = LocalDate.parse("2022-07-01");
+        LocalDate endOfJul = LocalDate.parse("2022-07-31");
+        Set<Certifications> notEmptyCertification = new HashSet<>();
+        notEmptyCertification.add(Certifications.ShiftManagement);
+        Set<Certifications> emptyCertification = new HashSet<>();
+        Set<LicenseTypes> licenseTypes = new HashSet<>();
+        licenseTypes.add(LicenseTypes.B);
+        licenseTypes.add(LicenseTypes.CE);
+
+        long numOfDays = ChronoUnit.DAYS.between(firstOfJul, endOfJul.plusDays(1));
+        java.util.List<LocalDate> listOfDates = Stream.iterate(firstOfJul, date -> date.plusDays(1))
+                .limit(numOfDays)
+                .collect(Collectors.toList());
+
+        for (LocalDate date : listOfDates){
+            try {
+                shiftDataMapper.delete(date, ShiftTypes.Morning);
+                shiftDataMapper.delete(date,ShiftTypes.Evening);
+                shiftDataMapper.save(new MorningShift(date,10,10,10,10,10,10,10));
+                shiftDataMapper.save(new EveningShift(date,10,10,10,10,0,0,0));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        LocalDate movingDate = firstOfJul;
+        Set<String> carriers = new HashSet<>();
+        for (int i = 100; i < 110; i++) {
+            carriers.add(Integer.toString(i));
+        }
+
+        for (int i =0; i<10; i++, movingDate = movingDate.plusDays(1)) {
+            Shift morningShift =shiftDataMapper.get(movingDate,ShiftTypes.Morning);
+            Shift eveningShift =shiftDataMapper.get(movingDate,ShiftTypes.Evening);
+            morningShift.registerAsAvailable(Integer.toString(i+100));
+            eveningShift.registerAsAvailable(Integer.toString(i+100));
+            morningShift.registerAsAvailable(Integer.toString(i+110));
+            eveningShift.registerAsAvailable(Integer.toString(i+110));
+            morningShift.setCarrierIDs(carriers);
+            eveningShift.setCarrierIDs(carriers);
+            morningShift.setShiftManagerId(Integer.toString(i+110));
+            eveningShift.setShiftManagerId(Integer.toString(i+110));
 
             shiftDataMapper.save(morningShift);
             shiftDataMapper.save(eveningShift);
@@ -259,7 +309,7 @@ public class EmployeeControllerTest extends TestCase {
 
         supplierController.addItemsToAgreement(supplierId1, items);
 
-        Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 25),  LocalDate.of(2022, 6, 1), storeId , OrderStatus.complete);
+        Order order1 = new Order(1, supplierId1, LocalDate.of(2022, 5, 25),  LocalDate.of(2022, 6, 1), storeId , OrderStatus.waiting);
         int order1Id = order1.getId();
         supplierController.insertToOrderDAO(order1);
         supplierController.suppliersDAO.getAgreementController().setLastOrderId(supplierId1, order1Id);
@@ -301,7 +351,7 @@ public class EmployeeControllerTest extends TestCase {
         supplierController.addItemsToAgreement(supplierId2, items);
 
 
-        Order order2 = new Order(2, supplierId2, LocalDate.of(2022, 5, 29),  LocalDate.of(2022, 6, 1), storeId, OrderStatus.complete);
+        Order order2 = new Order(2, supplierId2, LocalDate.of(2022, 5, 29),  LocalDate.of(2022, 6, 1), storeId, OrderStatus.waiting);
         int order2Id = order2.getId();
         supplierController.insertToOrderDAO(order2);
 
