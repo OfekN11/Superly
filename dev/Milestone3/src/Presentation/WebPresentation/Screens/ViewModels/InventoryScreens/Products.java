@@ -100,7 +100,7 @@ public class Products extends Screen{
                     refresh(req, resp);
                 }
             }catch (NumberFormatException e1){
-                setError("Please enter a number!");
+                setError("Please enter a number in the following fields: category ID, weight, price");
                 refresh(req, resp);
             }
             catch (Exception e) {
@@ -147,13 +147,5 @@ public class Products extends Screen{
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private Product findProduct(List<Product> products, int id) {
-        for (Product p : products) {
-            if (p.getId()==id)
-                return p;
-        }
-        return null;
     }
 }

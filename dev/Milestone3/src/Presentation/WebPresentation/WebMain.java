@@ -11,6 +11,11 @@ import Presentation.WebPresentation.Screens.ViewModels.Transport.Document.Docume
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.CreateTransport;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.TransportManagementMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.TransportsView;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.PlaceCarrier;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.PlaceTruck;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.AddOrderToTransport;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.UpdateTransport;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.ViewPendingOrders;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.AddTruck;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.DeleteTruck;
@@ -61,7 +66,7 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(Categories.class, "/Categories"),
             new AbstractMap.SimpleEntry<>(Category.class, "/Category"),
             new AbstractMap.SimpleEntry<>(Sales.class, "/Sales"),
-            new AbstractMap.SimpleEntry<>(Sale.class, "/Sale"),
+            new AbstractMap.SimpleEntry<>(SaleHistory.class, "/Sale"),
             new AbstractMap.SimpleEntry<>(TransportMainMenu.class, "/TransportMainMenu"),
             new AbstractMap.SimpleEntry<>(TruckManagementMenu.class, "/TransportMainMenu/TruckManagementMenu"),
             new AbstractMap.SimpleEntry<>(AddTruck.class, "/TransportMainMenu/TruckManagementMenu/AddTruck"),
@@ -69,8 +74,12 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(DocumentManagementMenu.class, "/TransportMainMenu/DocumentManagementMenu"),
             new AbstractMap.SimpleEntry<>(TransportManagementMenu.class, "/TransportMainMenu/TransportManagementMenu"),
             new AbstractMap.SimpleEntry<>(CreateTransport.class, "/TransportMainMenu/TransportManagementMenu/CreateTransport"),
-            new AbstractMap.SimpleEntry<>(TransportsView.class, "/TransportMainMenu/TransportManagementMenu/TransportsView")
-
+            new AbstractMap.SimpleEntry<>(TransportsView.class, "/TransportMainMenu/TransportManagementMenu/TransportsView"),
+            new AbstractMap.SimpleEntry<>(PlaceTruck.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport/PlaceTruck"),
+            new AbstractMap.SimpleEntry<>(PlaceCarrier.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport/PlaceCarrier"),
+            new AbstractMap.SimpleEntry<>(UpdateTransport.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport"),
+            new AbstractMap.SimpleEntry<>(ViewPendingOrders.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport/ViewPendingOrders"),
+            new AbstractMap.SimpleEntry<>(AddOrderToTransport.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport/AddOrderToTransport")
 
             ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
