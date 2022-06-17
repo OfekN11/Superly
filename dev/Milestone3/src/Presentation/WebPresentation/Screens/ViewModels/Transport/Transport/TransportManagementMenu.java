@@ -1,5 +1,6 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport;
 
+import Presentation.CLIPresentation.Objects.Transport.Transport;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
@@ -8,6 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class TransportManagementMenu extends Screen {
     private static final String greet = "Transport Management Menu";
@@ -40,19 +44,19 @@ public class TransportManagementMenu extends Screen {
                 //TODO: redirect(resp, UpdateTransport.class);
                 break;
             case 2:
-                //TODO: Get pending transport
+                redirect(resp,TransportsView.class,new String[]{"Pending"},new String[]{"true"});
                 break;
             case 3:
-                //TODO: Get pending transport
+                redirect(resp,TransportsView.class,new String[]{"In Progress"},new String[]{"true"});
                 break;
             case 4:
-                //TODO: Get complete transport
+                redirect(resp,TransportsView.class,new String[]{"Done"},new String[]{"true"});
                 break;
             case 5://Exit
                 redirect(resp, TransportMainMenu.class);
                 break;
             default:
-                redirect(resp, TransportManagementMenu.class);
+                refresh(req,resp);
         }
     }
 

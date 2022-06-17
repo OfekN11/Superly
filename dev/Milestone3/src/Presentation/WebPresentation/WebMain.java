@@ -6,6 +6,7 @@ import Presentation.WebPresentation.Screens.ViewModels.Suppliers.*;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Document.DocumentManagementMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.CreateTransport;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.TransportManagementMenu;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.TransportsView;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.AddTruck;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.DeleteTruck;
@@ -60,7 +61,8 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(DeleteTruck.class, "/TransportMainMenu/TruckManagementMenu/DeleteTruck"),
             new AbstractMap.SimpleEntry<>(DocumentManagementMenu.class, "/TransportMainMenu/DocumentManagementMenu"),
             new AbstractMap.SimpleEntry<>(TransportManagementMenu.class, "/TransportMainMenu/TransportManagementMenu"),
-            new AbstractMap.SimpleEntry<>(CreateTransport.class, "/TransportMainMenu/TransportManagementMenu/CreateTransport")
+            new AbstractMap.SimpleEntry<>(CreateTransport.class, "/TransportMainMenu/TransportManagementMenu/CreateTransport"),
+            new AbstractMap.SimpleEntry<>(TransportsView.class, "/TransportMainMenu/TransportManagementMenu/TransportsView")
 
 
             ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));

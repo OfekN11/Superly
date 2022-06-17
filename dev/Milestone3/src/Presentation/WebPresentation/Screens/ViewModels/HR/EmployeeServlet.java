@@ -24,6 +24,7 @@ public class EmployeeServlet extends Screen {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (!isAllowed(req, resp)){
             redirect(resp, Login.class);
+            return;
         }
         Employee employee = Login.getLoggedUser(req);
         employee.doGet(req, resp);
