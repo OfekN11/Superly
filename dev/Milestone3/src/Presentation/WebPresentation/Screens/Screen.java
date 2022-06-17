@@ -206,7 +206,7 @@ public abstract class Screen extends HttpServlet {
      * @throws IOException
      */
     protected static void refresh(HttpServletRequest req, HttpServletResponse resp, String[] params, String[] paramVals) throws IOException {
-        resp.sendRedirect(req.getHeader("referer") + buildGetParams(params, paramVals));
+        resp.sendRedirect(req.getServletPath() + buildGetParams(params, paramVals));
     }
 
     protected static void refresh(HttpServletRequest req, HttpServletResponse resp) throws IOException {

@@ -6,8 +6,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public abstract class Employee extends Screen {
+
+    private static final String[] BASE_OPTIONS = {
+            "View Upcoming shifts",         //0
+            "Manage Constraints",           //1
+            "Calculate Salary",             //2
+            "Print Employment Conditions"   //3
+    };
+
+    protected static final int BASE_OPTIONS_COUNT = BASE_OPTIONS.length;
 
     private final String[] menuOption;
 
@@ -16,13 +27,23 @@ public abstract class Employee extends Screen {
     public final String bankDetails;
     public final int salary;
 
-    protected Employee(Domain.Service.Objects.Employee.Employee sEmployee, String greeting, String[] menuOptions) {
+    protected Employee(Domain.Service.Objects.Employee.Employee sEmployee, String greeting, String[] extraMenuOptions) {
         super(greeting + sEmployee.name); //greeting is of structure "Welcome <type> "
-        this.menuOption = menuOptions;
+        this.menuOption = Stream.concat(Arrays.stream(BASE_OPTIONS), Arrays.stream(extraMenuOptions)).toArray(String[]::new);
         id = sEmployee.id;
         name = sEmployee.name;
         bankDetails = sEmployee.bankDetails;
         salary = sEmployee.salary;
+    }
+
+    //for admin purposes
+    protected Employee(String greeting, String[] menuOption) {
+        super(greeting);
+        this.menuOption = menuOption;
+        this.id = null;
+        this.name = null;
+        this.bankDetails = null;
+        this.salary = 0;
     }
 
     @Override
@@ -30,16 +51,26 @@ public abstract class Employee extends Screen {
         super.greet(resp);
     }
 
-    /***
-     * prints a form of submit buttons.
-     * buttons names are the index of their value in menuOptions
-     * @param resp the response to print to
-     * @throws IOException
-     */
-    public void printMenu(HttpServletResponse resp) throws IOException {
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        header(resp);
+        greet(resp);
         printMenu(resp, menuOption);
+        handleError(resp);
     }
 
     @Override
-    public abstract void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        switch (getIndexOfButtonPressed(req)){
+            case 0:
+
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
+    }
 }

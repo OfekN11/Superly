@@ -1,12 +1,22 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
+import Domain.Service.util.Result;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
+import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 import Domain.Service.Objects.InventoryObjects.Product;
 import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
-
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,19 +24,23 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-public class Products extends Screen{
+    //ADD BUTTONS:
+    //viewReports
 
-    private static final String greet = "Products";
+public class ManageInventory extends Screen {
 
-    private static final String viewButton = "View product";
-    private static final String addButton = "Add product";
-    private static final String deleteButton = "Delete product";
+    private static final String greet = "Inventory and Reports";
+
+    private static final String moveButton = "Move items";
+    private static final String returnButton = "Return items";
+    private static final String buyButton = "Buy items";
+    private static final String arrivedButton = "Arrived items";
+    private static final String reportDefectiveButton = "Report defective items";
+
 
     public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>();
 
-    public Products() {
-        super(greet, ALLOWED);
-    }
+    public ManageInventory() { super(greet, ALLOWED); }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,18 +49,16 @@ public class Products extends Screen{
         }
         header(resp);
         greet(resp);
-        printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{viewButton});
-        printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{deleteButton});
-        printForm(resp, new String[] {"product name", "category ID", "weight", "price", "manufacturer"},
-                new String[]{"Product name", "Category ID", "Weight", "Price", "Manufacturer"}, new String[]{addButton});
-        printProducts(resp);
+        //printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{viewButton});
+        //printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{deleteButton});
+        //printForm(resp, new String[] {"product name", "category ID", "weight", "price", "manufacturer"}, new String[]{"Product name", "Category ID", "Weight", "Price", "Manufacturer"}, new String[]{addButton});
         handleError(resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
-        if (isButtonPressed(req, deleteButton)){
+        /*if (isButtonPressed(req, deleteButton)){
             if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
                 setError("You have no permission to delete product");
                 refresh(req, resp);
@@ -112,7 +124,7 @@ public class Products extends Screen{
             try {
                 String productIDstr = req.getParameter("ID");
                 int productID = Integer.parseInt(productIDstr);
-                Result<Product> product = controller.getProduct(productID);
+                Result<Domain.Service.Objects.InventoryObjects.Product> product = controller.getProduct(productID);
                 if(product.isOk() && product.getValue().getId()==productID)
                     redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.class, new String[]{"ProductID"}, new String[]{productIDstr});
                 else
@@ -128,27 +140,19 @@ public class Products extends Screen{
                 setError(e.getMessage());
                 refresh(req, resp);
             }
-        }
+        }*/
     }
 
     private void printProducts(HttpServletResponse resp) {
         try {
-           List<Product> products = controller.getProducts().getValue();
+            Result<List<Domain.Service.Objects.InventoryObjects.Product>> products = controller.getProducts();
             PrintWriter out = resp.getWriter();
-            products.sort(Comparator.comparingInt(Product::getId));
-            for (Product p: products) {
+            products.getValue().sort(Comparator.comparingInt(Product::getId));
+            for (Domain.Service.Objects.InventoryObjects.Product p: products.getValue()) {
                 out.println(p.getName() + ": " + p.getId() + "<br>");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private Product findProduct(List<Product> products, int id) {
-        for (Product p : products) {
-            if (p.getId()==id)
-                return p;
-        }
-        return null;
     }
 }

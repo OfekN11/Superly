@@ -1,8 +1,7 @@
 package Presentation.WebPresentation;
 
 import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.*;
-import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
-import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
+import Presentation.WebPresentation.Screens.ViewModels.HR.*;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -23,6 +22,7 @@ public class WebMain {
              */
             new AbstractMap.SimpleEntry<>(Login.class, "/"),
             new AbstractMap.SimpleEntry<>(EmployeeServlet.class, "/home"),
+            new AbstractMap.SimpleEntry<>(UpcomingShifts.class, "/UpcomingShifts"),
             new AbstractMap.SimpleEntry<>(AddItemToAgreement.class, "/AddItemToAgreement"),
             new AbstractMap.SimpleEntry<>(AddOrderItem.class, "/AddOrderItem"),
             new AbstractMap.SimpleEntry<>(EditCard.class, "/EditCard"),

@@ -376,7 +376,29 @@ public class TransportController {
     public String convert(int i){
         return ""+i;
     }
+
+    public boolean canDeleteOrder(Order order) throws Exception {
+        if(order.getStatus() == OrderStatus.waiting){
+            return true;
+        }
+        else {
+            if(order.getStatus() == OrderStatus.ordered){
+                Transport transport = getTransportFromOrder(order.getId());
+                if(transport.getStatus() == TransportStatus.padding){
+                    transport.removeOrder(order.getId(),(int)(order.getOrderWeight()));
+                    return true;
+                }
+                else return false;
+            }
+            return false;
+        }
+
+
+    }
+
 }
+
+
 
     //TODO will be added in the next assignment
     /*
