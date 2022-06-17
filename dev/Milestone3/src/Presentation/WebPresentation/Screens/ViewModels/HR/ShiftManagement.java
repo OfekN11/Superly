@@ -29,4 +29,8 @@ public class ShiftManagement extends Screen {
             redirect(resp, Login.class);
         }
     }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        handleHeader(req, resp);
+    }
 }
