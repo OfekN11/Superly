@@ -40,14 +40,14 @@ public class Login extends Screen {
         header(resp);
         greet(resp);
         printForm(resp, new String[]{"ID"}, new String[]{"Employee ID"}, new String[]{"Sign in!"});
-        printMenu(resp, new String[]{"Transport Main Menu", "Suppliers Main Menu", "Inventory Main Menu"});
 
         handleError(resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
 
         if (isButtonPressed(req, "Sign in!")){
             String id = req.getParameter("ID");
@@ -69,12 +69,6 @@ public class Login extends Screen {
                 refresh(req, resp);
             }
         }
-        else if(getIndexOfButtonPressed(req) == 0)
-            redirect(resp, TransportMainMenu.class);
-        else if(getIndexOfButtonPressed(req) == 1)
-            redirect(resp, SupplierMainMenuStorekeeper.class);
-        else if(getIndexOfButtonPressed(req) == 2)
-            redirect(resp, InventoryMainMenu.class);
     }
 
     public static boolean isLoggedIn(HttpServletRequest req, HttpServletResponse resp) {

@@ -1,4 +1,4 @@
-package Presentation.WebPresentation.Screens.ViewModels.HR;
+package Presentation.WebPresentation.Screens;
 
 import Presentation.WebPresentation.Screens.Screen;
 

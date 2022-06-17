@@ -366,9 +366,9 @@ public class InventoryController {
         return product;
     }
 
-    public boolean deleteProduct(int id){
-        PRODUCT_DATA_MAPPER.remove(Integer.toString(id));
-        if(products.remove(id)!=null)
+    public Boolean deleteProduct(int id){
+        int flag = PRODUCT_DATA_MAPPER.remove(Integer.toString(id));
+        if(products.remove(id)!=null || flag!=-1)
             return true;
         else
             return false;
@@ -577,8 +577,8 @@ public class InventoryController {
         if (!categoryToRemove.getAllProductsInCategory().isEmpty())
             throw new IllegalArgumentException("Cannot delete a category that has products still assigned to it");
         categoryToRemove.changeParentCategory(null);
-        CATEGORY_DATA_MAPPER.remove(Integer.toString(catID));
-        if(categories.remove(catID)!=null)
+        int flag = CATEGORY_DATA_MAPPER.remove(Integer.toString(catID));
+        if(categories.remove(catID)!=null || flag!=-1)
             return true;
         else
             return false;

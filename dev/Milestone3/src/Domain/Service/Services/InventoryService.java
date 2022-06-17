@@ -104,12 +104,11 @@ public class InventoryService {
      */
     public Result<Boolean> deleteProduct(int id){
         try {
-            Result.makeOk(controller.deleteProduct(id));
+            return Result.makeOk(controller.deleteProduct(id));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
     }
 
     /**
@@ -119,8 +118,7 @@ public class InventoryService {
      */
     public Result<Sale> addSale(List<Integer> categories, List<Integer> products, int percent, LocalDate start, LocalDate end){
         try {
-            SaleToCustomer s = controller.addSale(categories, products, percent, start, end);
-            return Result.makeOk(new Sale(s));
+            return Result.makeOk(new Sale(controller.addSale(categories, products, percent, start, end)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -758,6 +756,8 @@ public class InventoryService {
      */
     public Result<Category> getCategory(int categoryID) {
         try {
+            if (controller.getCategory(categoryID)==null)
+                return Result.makeError("Category not found");
             return Result.makeOk(new Category(controller.getCategory(categoryID)));
         }
         catch (Exception e){

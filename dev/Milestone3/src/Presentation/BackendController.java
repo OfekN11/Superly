@@ -297,8 +297,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Set<Shift> getEmployeeShiftsBetween(Presentation.CLIPresentation.Screens.Employee employee, LocalDate start, LocalDate end) throws Exception {
-        Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(employee.getID(), start, end);
+    public Set<Shift> getEmployeeShiftsBetween(String eId, LocalDate start, LocalDate end) throws Exception {
+        Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(eId, start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
@@ -417,14 +417,14 @@ public class BackendController {
 
     //UPDATE
 
-    public void registerToConstraint(Presentation.CLIPresentation.Screens.Employee employee, Shift shift) throws Exception {
-        Result<Object> result = shiftService.registerAsAvailable(shift.date, shift.getType(), employee.getID());
+    public void registerToConstraint(String eId, Shift shift) throws Exception {
+        Result<Object> result = shiftService.registerAsAvailable(shift.date, shift.getType(), eId);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void unregisterFromConstraint(Presentation.CLIPresentation.Screens.Employee employee, Shift shift) throws Exception{
-        Result<Object> result = shiftService.unregisterFromAvailable(shift.date, shift.getType(), employee.getID());
+    public void unregisterFromConstraint(String eId, Shift shift) throws Exception{
+        Result<Object> result = shiftService.unregisterFromAvailable(shift.date, shift.getType(), eId);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
@@ -628,8 +628,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Set<Shift> getEmployeeConstraintsBetween(Presentation.CLIPresentation.Screens.Employee employee, LocalDate start, LocalDate end) throws Exception {
-        Result<Set<Shift>> result = shiftService.getEmployeeConstraintsBetween(employee.getID(), start, end);
+    public Set<Shift> getEmployeeConstraintsBetween(String eId, LocalDate start, LocalDate end) throws Exception {
+        Result<Set<Shift>> result = shiftService.getEmployeeConstraintsBetween(eId, start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();

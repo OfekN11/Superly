@@ -19,6 +19,7 @@ public class Admin extends Employee{
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        handleHeader(req, resp);
         switch (getIndexOfButtonPressed(req)){
         }
     }
