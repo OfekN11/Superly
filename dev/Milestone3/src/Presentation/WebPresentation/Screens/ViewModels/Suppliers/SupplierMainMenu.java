@@ -1,5 +1,6 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
@@ -9,13 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public abstract class SupplierMainMenu extends Screen {
 
 
-    public SupplierMainMenu(String greet) {
-        super(greet);
+    public SupplierMainMenu(String greet, Set<Class<? extends Employee>> allowed) {
+        super(greet,allowed);
     }
 
 
@@ -30,9 +32,6 @@ public abstract class SupplierMainMenu extends Screen {
         try {
             int supplierId = Integer.parseInt(req.getParameter("ID"));
             if(controller.doesSupplierExists(supplierId)) {
-
-                //instead of addCookie I will send it through roi function!!!!
-                //addCookie(String.valueOf(supplierId), "supplierId",resp,30);
                 redirect(resp, ViewSupplier.class, new String[]{"supId"},new String[]{String.valueOf(supplierId)});
             }
             else{
@@ -64,11 +63,5 @@ public abstract class SupplierMainMenu extends Screen {
 
     }
 
-
-    private void addCookie(String value, String nameOfCookie, HttpServletResponse resp, int time) {
-        Cookie c = new Cookie(nameOfCookie, value);
-        c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time));
-        resp.addCookie(c);
-    }
 
 }

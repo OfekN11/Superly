@@ -3,8 +3,12 @@ package SuppliersTests;
 import Domain.Business.Objects.Supplier.Agreement.Agreement;
 import Domain.Business.Objects.Supplier.Agreement.NotTransportingAgreement;
 import Domain.Business.Objects.Supplier.AgreementItem;
+import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
+import InventoryTests.CategoryTests;
 import net.jcip.annotations.NotThreadSafe;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,6 +25,20 @@ public class AgreementTest {
     private HashMap<Integer, Integer> bulkPrices;
     private AgreementController dao;
     private int supId = 1001;
+
+
+
+
+    @BeforeAll
+    public synchronized static void setData() {
+        DAO.setDBForTests(AgreementTest.class);
+    }
+
+    @AfterAll
+    public static void removeData() {
+        DAO.deleteTestDB(AgreementTest.class);
+    }
+
 
     @BeforeEach
     public void setUp(){
@@ -245,7 +263,6 @@ public class AgreementTest {
         try{
             agreement.setItems(makeItemList());
 
-            assertTrue(agreement.itemExists(103));
             assertFalse(agreement.itemExists(10005));
         }
         catch(Exception e){

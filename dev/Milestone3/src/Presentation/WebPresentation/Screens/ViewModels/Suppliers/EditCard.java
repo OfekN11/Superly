@@ -1,12 +1,19 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 
@@ -14,15 +21,20 @@ public class EditCard extends Screen {
 
 
     private static final String greet = "Edit Card";
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Admin.class, Storekeeper.class));
+
 
     public EditCard() {
-        super(greet);
+        super(greet, ALLOWED);
     }
 
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
 
@@ -31,10 +43,10 @@ public class EditCard extends Screen {
         resp.getWriter().println("<h2>Edit card for Supplier " + supId + ".</h2><br>");
 
 
-        printForm(resp, new String[] {"bankNumber"}, new String[]{"Bank Number"}, new String[]{"Update Bank Number"});
-        printForm(resp, new String[] {"address" }, new String[]{"Address"}, new String[]{"Update Address"});
-        printForm(resp, new String[] {"name" }, new String[]{"name"}, new String[]{"Update Name"});
-        printForm(resp, new String[] {"payingAgreement" }, new String[]{"Paying Agreement"}, new String[]{"Update Paying Agreement"});
+        printForm(resp, new String[]{"bankNumber"}, new String[]{"Bank Number"}, new String[]{"Update Bank Number"});
+        printForm(resp, new String[]{"address"}, new String[]{"Address"}, new String[]{"Update Address"});
+        printForm(resp, new String[]{"name"}, new String[]{"name"}, new String[]{"Update Name"});
+        printForm(resp, new String[]{"payingAgreement"}, new String[]{"Paying Agreement"}, new String[]{"Update Paying Agreement"});
 
 
         handleError(resp);
@@ -65,37 +77,35 @@ public class EditCard extends Screen {
             int supplierId = getSupplierId(req);
             if(controller.updateSupplierBankNumber(supplierId, num) ){
                 setError(String.format("Bank number updated to %d", num));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supplierId)});
             }
             else{
                 setError("Bank number wasn't updated!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supplierId)});
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
-        }
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});        }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
-        }
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});        }
     }
 
     private void updateAddress(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             String name = req.getParameter("address");
             int supplierId = getSupplierId(req);
-            if(controller.updateSupplierAddress(supplierId, name) ){
+            if(!name.equals("") && controller.updateSupplierAddress(supplierId, name) ){
                 setError(String.format("Address updated to %s", name));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supplierId)});
             }
             else{
                 setError("Address wasn't updated!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supplierId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});
         }
     }
 
@@ -103,17 +113,17 @@ public class EditCard extends Screen {
         try {
             String name = req.getParameter("name");
             int supplierId = getSupplierId(req);
-            if(controller.updateSupplierName(supplierId, name) ){
+            if(!name.equals("") && controller.updateSupplierName(supplierId, name) ){
                 setError(String.format("Name updated to %s", name));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supplierId)});
             }
             else{
                 setError("Name wasn't updated!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supplierId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});
         }
     }
 
@@ -121,17 +131,17 @@ public class EditCard extends Screen {
         try {
             String name = req.getParameter("payingAgreement");
             int supplierId = getSupplierId(req);
-            if(controller.updateSupplierPayingAgreement(supplierId, name) ){
+            if(!name.equals("") && controller.updateSupplierPayingAgreement(supplierId, name) ){
                 setError(String.format("Paying Agreement updated to %s", name));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supplierId)});
             }
             else{
                 setError("Paying Agreement wasn't updated!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supplierId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});
         }
     }
 
@@ -141,33 +151,5 @@ public class EditCard extends Screen {
         return Integer.parseInt(getParamVal(req,"supId"));
 
     }
-
-    /*
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                cookie = c.getValue();
-            }
-            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-            resp.addCookie(c);
-        }
-        return cookie;
-    }
-
-     */
-
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-                resp.addCookie(c);
-                return c.getValue();
-            }
-        }
-        return cookie;
-    }
-
 
 }

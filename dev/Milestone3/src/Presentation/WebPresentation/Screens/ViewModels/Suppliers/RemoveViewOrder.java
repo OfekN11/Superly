@@ -1,26 +1,31 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class RemoveViewOrder extends Screen {
 
 
-    public RemoveViewOrder(String greet) {
-        super(greet);
+
+    public RemoveViewOrder(String greet, Set<Class<? extends Employee>> allowed) {
+        super(greet, allowed);
     }
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
 
@@ -33,7 +38,7 @@ public class RemoveViewOrder extends Screen {
         if ((val = getParamVal(req,"viewOrder")) != null && val.equals("true")){
             String orderId = getParamVal(req,"orderId");
             if(orderId != null )
-                printOrder(req, resp, Integer.parseInt(orderId));
+                printOrder(req, resp, orderId);
         }
         handleError(resp);
     }
@@ -95,9 +100,9 @@ public class RemoveViewOrder extends Screen {
 
 
 
-    protected void printOrder(HttpServletRequest req, HttpServletResponse resp, int orderId) throws IOException {
+    protected void printOrder(HttpServletRequest req, HttpServletResponse resp, String orderIdString) throws IOException {
         try {
-            //int orderId = Integer.parseInt(req.getParameter("orderId3"));
+            int orderId = Integer.parseInt(orderIdString);
             ServiceOrderObject result = controller.getOrder(orderId);
             if(result != null){
 
@@ -111,11 +116,11 @@ public class RemoveViewOrder extends Screen {
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            //refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            //refresh(req, resp);
         }
     }
 }

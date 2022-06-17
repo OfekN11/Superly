@@ -1,7 +1,11 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Globals.Pair;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class ManageSuppliers extends Screen {
@@ -18,13 +24,19 @@ public class ManageSuppliers extends Screen {
     private static final String removeButton = "Remove Supplier";
     private static final String addButton = "Add Supplier";
 
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Admin.class, Storekeeper.class));
+
+
 
     public ManageSuppliers() {
-        super(greet);
+        super(greet,ALLOWED);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
 

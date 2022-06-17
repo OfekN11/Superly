@@ -1,36 +1,38 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 public class ManageManufacturers extends Screen {
 
     private static final String greet = "Manage Manufacturers";
-    //private final int supplierId;
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Admin.class, Storekeeper.class));
+
 
     public ManageManufacturers() {
-        // TODO: Supplier pass SupplierId
-        super(greet);
-        //supplierId = 1;
+        super(greet,ALLOWED);
     }
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
 
-        int supId = getSupplierId(req, resp);
+        int supId = getSupplierId(req);
         resp.getWriter().println("<h2>Manage Manufacturers for Supplier" + supId + ".</h2><br>");
 
         printMenu(resp, new String[]{"Show Manufacturers"});
@@ -68,7 +70,7 @@ public class ManageManufacturers extends Screen {
             List<String> list = controller.getManufacturers(supId);
             if(list.isEmpty()){
                 setError("[THERE ARE NO REPRESENTED MANUFACTURERS BY THIS SUPPLIER]");
-                //refresh(req, resp);
+                //refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
             else{
                 PrintWriter out = resp.getWriter();
@@ -80,84 +82,52 @@ public class ManageManufacturers extends Screen {
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
         }
     }
 
     private void addManufacturer(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             String name = req.getParameter("nameAdd");
-            int supId = getSupplierId(req, resp);
+            int supId = getSupplierId(req);
             if(controller.addSupplierManufacturer(supId, name)){
 
                 setError(String.format("Added manufacturer %s", name));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
             else{
                 setError("Manufacturer wasn't added!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});
         }
     }
 
     private void removeManufacturer(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            int supId = getSupplierId(req, resp);
+            int supId = getSupplierId(req);
             String name = req.getParameter("nameRemove");
             if(controller.removeManufacturer(supId, name)){
 
-                // TODO: Supplier change this to normal print!
                 setError(String.format("Removed manufacturer %s", name));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
             else{
                 setError("Manufacturer wasn't removed!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});
         }
     }
 
 
 
-
-    private int getSupplierId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        //int supId = -1;
-        //supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
-        //return supId;
+    private int getSupplierId(HttpServletRequest req) throws IOException {
         return Integer.parseInt(getParamVal(req,"supId"));
-    }
-
-        /*
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                cookie = c.getValue();
-            }
-            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-            resp.addCookie(c);
-        }
-        return cookie;
-    }
-
-     */
-
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-                resp.addCookie(c);
-                return c.getValue();
-            }
-        }
-        return cookie;
     }
 
 

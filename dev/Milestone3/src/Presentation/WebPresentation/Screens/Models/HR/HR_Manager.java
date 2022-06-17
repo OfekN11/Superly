@@ -1,5 +1,7 @@
 package Presentation.WebPresentation.Screens.Models.HR;
 
+import Presentation.WebPresentation.Screens.ViewModels.Suppliers.OrderHRLogistics;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +15,8 @@ public class HR_Manager extends Employee{
             "View Employees",       //BASE + 0
             "Register Employee",    //BASE + 1
             "Manage Employee",      //BASE + 2
-            "Remove Employee"       //BASE + 3
+            "Remove Employee",       //BASE + 3
+            "Cancel Order"           //BASE + 4
     };
 
     protected HR_Manager(Domain.Service.Objects.Employee.HR_Manager sHRMan) {
@@ -37,6 +40,8 @@ public class HR_Manager extends Employee{
                 break;
             case 3:
                 break;
+            case 4:
+                redirect(resp, OrderHRLogistics.class);
         }
     }
 }

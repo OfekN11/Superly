@@ -1,6 +1,10 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -8,24 +12,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class ManageContacts extends Screen {
 
     private static final String greet = "Contacts Management";
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Admin.class, Storekeeper.class));
+
 
     public ManageContacts() {
-        super(greet);
+        super(greet,ALLOWED);
     }
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
 
-        int supId = getSupplierId(req, resp);
+        int supId = getSupplierId(req);
         resp.getWriter().println("<h2>Manage Contacts for Supplier" + supId + ".</h2><br>");
 
 
@@ -36,7 +48,7 @@ public class ManageContacts extends Screen {
 
         String val;
         if(((val = getParamVal(req, "showContacts")) != null) && val.equals("true")){
-            showContacts(req, resp, supId);
+            showContacts(req, resp);
         }
         handleError(resp);
     }
@@ -64,20 +76,20 @@ public class ManageContacts extends Screen {
             String name = req.getParameter("nameAdd");
             String phone = req.getParameter("phone");
 
-            int supId = getSupplierId(req, resp);
+            int supId = getSupplierId(req);
 
             if(controller.addSupplierContact(supId, name, phone) ){
 
                 setError(String.format("Added Contact %s", name));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
             else{
                 setError("Contact wasn't added!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});
         }
     }
 
@@ -85,25 +97,25 @@ public class ManageContacts extends Screen {
         try {
             String name = req.getParameter("nameRemove");
 
-            int supId = getSupplierId(req, resp);
+            int supId = getSupplierId(req);
             if(controller.removeContact(supId, name)){
 
                 setError(String.format("Removed Contact %s", name));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
             else{
                 setError("Contact wasn't removed!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});
         }
     }
 
-    private void showContacts(HttpServletRequest req, HttpServletResponse resp, int supId) throws IOException {
+    private void showContacts(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-
+            int supId = getSupplierId(req);
             List<String> contacts = controller.getAllContacts(supId);
             if(contacts.size() > 0){
                 PrintWriter out = resp.getWriter();
@@ -115,51 +127,19 @@ public class ManageContacts extends Screen {
             }
             else{
                 setError("[NO CONTACTS!]");
-                //refresh(req, resp);
+                refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            //refresh(req, resp);
+            refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(getSupplierId(req))});
         }
 
     }
 
 
-
-    private int getSupplierId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        //int supId = -1;
-        //supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
-        //return supId;
+    private int getSupplierId(HttpServletRequest req) {
         return Integer.parseInt(getParamVal(req,"supId"));
     }
-
-        /*
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                cookie = c.getValue();
-            }
-            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-            resp.addCookie(c);
-        }
-        return cookie;
-    }
-
-     */
-
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-                resp.addCookie(c);
-                return c.getValue();
-            }
-        }
-        return cookie;
-    }
-
 
 
 }

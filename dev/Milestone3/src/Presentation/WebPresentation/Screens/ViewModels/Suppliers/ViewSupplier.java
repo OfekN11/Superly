@@ -3,7 +3,11 @@ package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 import Domain.Service.Objects.SupplierObjects.ServiceOrderItemObject;
 import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
 import Domain.Service.Objects.SupplierObjects.ServiceSupplierObject;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -12,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 
@@ -19,35 +26,44 @@ public class ViewSupplier extends Screen {
 
     private static final String greet = "View Supplier for Storekeeper and Store Manager";
     private static final String addAgreement = "Add New Agreement";
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Admin.class, Storekeeper.class));
 
     public ViewSupplier() {
-        super(greet);
+        super(greet,ALLOWED);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
 
-        int supId = getSupplierId(req, resp);
+        try {
+            int supId = getSupplierId(req, resp);
 
-        resp.getWriter().println("<h2>Watching Supplier " + supId + ".</h2><br>");
+            resp.getWriter().println("<h2>Watching Supplier " + supId + ".</h2><br>");
 
-        printMenu(resp, new String[]{"Show Supplier Info", "Show Contacts","Show Manufacturers", "Show Agreement", "Show all Orders", "Show all discount items", "Edit Card"});
-        printForm(resp, new String[] {"agreementType", "agreementDays" }, new String[]{"Agreement Type", "Agreement Days"}, new String[]{addAgreement});
-        printInstructions(resp);
+            printMenu(resp, new String[]{"Show Supplier Info", "Show Contacts", "Show Manufacturers", "Show Agreement", "Show all Orders", "Show all discount items", "Edit Card"});
+            printForm(resp, new String[]{"agreementType", "agreementDays"}, new String[]{"Agreement Type", "Agreement Days"}, new String[]{addAgreement});
+            printInstructions(resp);
 
+            String val;
 
-        String val;
-
-        if ((val = getParamVal(req,"showInfo")) != null &&  val.equals("true")){
-            showSupplierInfo(req, resp, supId);
-        }
-        else if ((val = getParamVal(req,"showAllOrders")) != null && val.equals("true")){
-            showAllOrders(req, resp, supId);
-        }
-        else if ((val = getParamVal(req,"showAllDiscountItems")) != null && val.equals("true")){
-            showAllDiscountItems(req, resp, supId);
+            if ((val = getParamVal(req, "showInfo")) != null && val.equals("true")) {
+                showSupplierInfo(req, resp, supId);
+            } else if ((val = getParamVal(req, "showAllOrders")) != null && val.equals("true")) {
+                showAllOrders(req, resp, supId);
+            } else if ((val = getParamVal(req, "showAllDiscountItems")) != null && val.equals("true")) {
+                showAllDiscountItems(req, resp, supId);
+            }
+        } catch (IOException e) {
+            setError("Something went Wrong!");
+            //            refreshPage(req,resp);
+        } catch (NumberFormatException e) {
+            setError("Enter a number please!");
+            //            refreshPage(req,resp);
         }
         handleError(resp);
     }
@@ -108,7 +124,7 @@ public class ViewSupplier extends Screen {
             redirect(resp, ManageContacts.class, new String[]{"supId"},  new String[]{supId});
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -117,7 +133,7 @@ public class ViewSupplier extends Screen {
             redirect(resp, ManageManufacturers.class, new String[]{"supId"},  new String[]{supId});
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -126,14 +142,14 @@ public class ViewSupplier extends Screen {
             int supId = getSupplierId(req, resp);
             if(!controller.hasAgreement(supId)){
                 setError("No agreement with this supplier");
-                refresh(req, resp);
+                refreshPage(req,resp);
             }
             else{
                 redirect(resp, ShowAgreement.class, new String[]{"supId"},  new String[]{String.valueOf(supId)});
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -152,17 +168,17 @@ public class ViewSupplier extends Screen {
             }
             else{
                 setError("No order Items available!");
-                //refresh(req, resp);
+                refreshPage(req,resp);
             }
 
 
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            //refresh(req, resp);
+            refreshPage(req,resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            //refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -177,15 +193,15 @@ public class ViewSupplier extends Screen {
             }
             else{
                 setError("No orders available!");
-                //refresh(req, resp);
+                refreshPage(req,resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            //refresh(req, resp);
+            refreshPage(req,resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            //refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -200,25 +216,25 @@ public class ViewSupplier extends Screen {
                         redirect(resp, AddItemToAgreement.class, new String[]{"supId"}, new String[]{ String.valueOf(supId)});
                     } else {
                         setError("A problem has occurred, please try again later");
-                        refresh(req, resp);
+                        refreshPage(req,resp);
                     }
                 } else {
                     setError("Wrong number!, enter 1, 2 or 3");
-                    refresh(req, resp);
+                    refreshPage(req,resp);
                 }
             }
             else{
                 setError("Agreement Already Exists!, if you want to change it, go to Show Agreement Window");
-                refresh(req, resp);
+                refreshPage(req,resp);
             }
 
         }catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -235,23 +251,20 @@ public class ViewSupplier extends Screen {
             }
             else{
                 setError("Something went wrong!");
-                //refresh(req, resp);
+                refreshPage(req,resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            //refresh(req, resp);
+            refreshPage(req,resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            //refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
 
     private int getSupplierId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        //int supId = -1;
-        //supId = Integer.parseInt(getCookie("supplierId", req, resp, 10));
-        //return supId;
         return Integer.parseInt(getParamVal(req,"supId"));
 
     }
@@ -288,6 +301,10 @@ public class ViewSupplier extends Screen {
         Cookie c = new Cookie(nameOfCookie, value);
         c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time));
         resp.addCookie(c);
+    }
+
+    private void refreshPage(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        refresh(req, resp, new String[]{"supId"},new String[]{String.valueOf(getSupplierId(req, resp))});
     }
 
 

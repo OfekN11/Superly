@@ -1,26 +1,38 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Domain.Service.util.Result;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class EditOrder extends Screen {
 
 
     private static final String greet = "Edit orders";
 
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList( Storekeeper.class));
+
 
     public EditOrder() {
-        super(greet);
+        super(greet,ALLOWED);
     }
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
 
@@ -72,19 +84,19 @@ public class EditOrder extends Screen {
             Result<Boolean> r = controller.updateItemQuantityInOrder(supplierId, orderId, itemId, quantity);
             if(r.isOk()){
                 setError(String.format("Item %d updated to quantity %d!", itemId, quantity));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId","orderId"},  new String[]{String.valueOf(supplierId),String.valueOf(orderId) });
             }
             else{
                 setError("Item's quantity wasn't updated!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId","orderId"},  new String[]{String.valueOf(supplierId),String.valueOf(orderId) });
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId","orderId"},  new String[]{String.valueOf(getSupplierId(req)),String.valueOf(getOrderId(req)) });
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId","orderId"},  new String[]{String.valueOf(getSupplierId(req)),String.valueOf(getOrderId(req)) });
         }
     }
 
@@ -100,19 +112,19 @@ public class EditOrder extends Screen {
             Result<Boolean> r = controller.removeItemFromOrder(supplierId, orderId, itemId);
             if(r.isOk()){
                 setError(String.format("Item %d removed from order %d!", itemId , orderId));
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId","orderId"},  new String[]{String.valueOf(supplierId),String.valueOf(orderId) });
             }
             else{
                 setError("Item wasn't removed!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId","orderId"},  new String[]{String.valueOf(supplierId),String.valueOf(orderId) });
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId","orderId"},  new String[]{String.valueOf(getSupplierId(req)),String.valueOf(getOrderId(req)) });
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refresh(req, resp, new String[]{"supId","orderId"},  new String[]{String.valueOf(getSupplierId(req)),String.valueOf(getOrderId(req)) });
         }
 
     }
@@ -126,31 +138,6 @@ public class EditOrder extends Screen {
         return Integer.parseInt(getParamVal(req,"supId"));
 
     }
-
-
-    /*
-
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-                resp.addCookie(c);
-                return c.getValue();
-            }
-        }
-        return cookie;
-    }
-
-
-    private void addCookie(String value, String nameOfCookie, HttpServletResponse resp, int time) {
-        Cookie c = new Cookie(nameOfCookie, value);
-        c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time));
-        resp.addCookie(c);
-    }
-
-
-     */
 
 
 

@@ -1,7 +1,11 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -9,22 +13,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
 public class ManageOrders extends Screen {
 
     private static final String greet = "Manage orders for Storekeeper";
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Storekeeper.class));
 
 
     public ManageOrders() {
-        super(greet);
+        super(greet,ALLOWED);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
 
@@ -38,29 +45,25 @@ public class ManageOrders extends Screen {
 
         String val;
 
-
-        if ((val = getParamVal(req,"addOrder")) != null &&  val.equals("true")){
-            String supId = getParamVal(req,"supId");
-            String  storeId = getParamVal(req,"storeId");
-            if(storeId != null & supId != null)
-                addOrder(req, resp, Integer.parseInt(storeId), Integer.parseInt(supId));
+        if ((val = getParamVal(req, "addOrder")) != null && val.equals("true")) {
+            String supId = getParamVal(req, "supId");
+            String storeId = getParamVal(req, "storeId");
+            if (storeId != null & supId != null)
+                addOrder(req, resp, storeId, supId);
+        } else if ((val = getParamVal(req, "viewAllOrders")) != null && val.equals("true")) {
+            String supId = getParamVal(req, "supId");
+            if (supId != null)
+                showAllOrders(req, resp, supId);
+        } else if ((val = getParamVal(req, "editOrder")) != null && val.equals("true")) {
+            String orderId = getParamVal(req, "orderId");
+            if (orderId != null)
+                editOrder(req, resp, orderId);
+        } else if ((val = getParamVal(req, "viewOrder")) != null && val.equals("true")) {
+            String orderId = getParamVal(req, "orderId");
+            if (orderId != null)
+                printOrder(req, resp, orderId);
+            handleError(resp);
         }
-        else if ((val = getParamVal(req,"viewAllOrders")) != null && val.equals("true")){
-            String supId = getParamVal(req,"supId");
-            if(supId != null)
-                showAllOrders(req, resp, Integer.parseInt(supId));
-        }
-        else if ((val = getParamVal(req,"editOrder")) != null && val.equals("true")){
-            String orderId = getParamVal(req,"orderId");
-            if(orderId != null)
-                editOrder(req, resp, Integer.parseInt(orderId));
-        }
-        else if ((val = getParamVal(req,"viewOrder")) != null && val.equals("true")){
-            String orderId = getParamVal(req,"orderId");
-            if(orderId != null )
-                printOrder(req, resp, Integer.parseInt(orderId));
-        }
-        handleError(resp);
     }
 
     private void printOrderIds(HttpServletResponse resp, HttpServletRequest req) throws IOException {
@@ -113,9 +116,9 @@ public class ManageOrders extends Screen {
 
 
 
-    private void showAllOrders(HttpServletRequest req, HttpServletResponse resp, int supplierId) throws IOException {
+    private void showAllOrders(HttpServletRequest req, HttpServletResponse resp, String supplierIdString) throws IOException {
         try {
-            //int supplierId = Integer.parseInt(req.getParameter("supplierId"));
+            int supplierId = Integer.parseInt(supplierIdString);
             ArrayList<ServiceOrderObject> r = controller.getAllOrdersForSupplier(supplierId);
             if(r != null && r.size() > 0){
                 PrintWriter out = resp.getWriter();
@@ -125,15 +128,15 @@ public class ManageOrders extends Screen {
             }
             else{
                 setError("No orders available!");
-                //refresh(req, resp);
+                refresh(req, resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            //refresh(req, resp);
+            refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            //refresh(req, resp);
+            refresh(req, resp);
         }
     }
 
@@ -158,19 +161,26 @@ public class ManageOrders extends Screen {
         }
     }
 
-    private void editOrder(HttpServletRequest req, HttpServletResponse resp, int orderId) throws IOException {
+    private void editOrder(HttpServletRequest req, HttpServletResponse resp, String orderIdString) throws IOException {
         try {
+            int orderId = Integer.parseInt(orderIdString);
             int supplierId = controller.getSupplierWIthOrderID(orderId);
             //addCookie(String.valueOf(orderId), "OrderIdToEditOrder", resp, 10);
-            redirect(resp, EditOrder.class, new String[]{"supId","orderId"},  new String[]{String.valueOf(supplierId),String.valueOf(orderId) });
+            if(supplierId != -1)
+                redirect(resp, EditOrder.class, new String[]{"supId","orderId"},  new String[]{String.valueOf(supplierId),String.valueOf(orderId) });
+            else{
+                setError(String.format("Didn't found Supplier with Order number %d", orderId));
+                refresh(req, resp);
+            }
         } catch (Exception e) {
             setError(e.getMessage());
             refresh(req, resp);
         }
     }
 
-    private void printOrder(HttpServletRequest req, HttpServletResponse resp, int orderId) throws IOException {
+    private void printOrder(HttpServletRequest req, HttpServletResponse resp, String orderIdString) throws IOException {
         try {
+            int orderId = Integer.parseInt(orderIdString);
             ServiceOrderObject result = controller.getOrder(orderId);
             if(result != null){
                 PrintWriter out = resp.getWriter();
@@ -178,36 +188,26 @@ public class ManageOrders extends Screen {
             }
             else{
                 setError("Something went wrong, try again later");
-                //refresh(req, resp);
+                refresh(req, resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            //refresh(req, resp);
+            refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            //refresh(req, resp);
+            refresh(req, resp);
         }
     }
 
-    private void addOrder(HttpServletRequest req, HttpServletResponse resp, int storeId, int supplierId) throws IOException {
+    private void addOrder(HttpServletRequest req, HttpServletResponse resp, String storeIdString, String supplierIdString) throws IOException {
         try {
-            //int supplierId = Integer.parseInt(req.getParameter("supplierId"));
-            //int storeId = Integer.parseInt(req.getParameter("storeId"));
+            int supplierId = Integer.parseInt(supplierIdString);
+            int storeId = Integer.parseInt(storeIdString);
             int orderId = controller.order(supplierId, storeId);
-
             if(orderId != -1){
                 redirect(resp, AddOrderItem.class, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
 
-                /*
-                if (getCookie("OrderIdToAddItem",req,resp,10) == null || !getCookie("OrderIdToAddItem",req,resp,10).equals(String.valueOf(orderId))) {  //if addOrder didn't enter the cookie
-                    addCookie(String.valueOf(orderId), "OrderIdToAddItem", resp, 10);
-                }
-                //if (getCookie("supIdAddOrderItem",req,resp,10) == null || getCookie("supIdAddOrderItem",req,resp,10).equals("")) {  //if addOrder didn't enter the cookie
-                addCookie(String.valueOf(supplierId), "supIdAddOrderItem", resp, 10);
-                //}
-
-                 */
             }
             else{
                 setError("Order wasn't added!");
@@ -223,27 +223,6 @@ public class ManageOrders extends Screen {
         }
 
     }
-
-
-    /*
-    private void addCookie(String value, String nameOfCookie, HttpServletResponse resp, int time) {
-        Cookie c = new Cookie(nameOfCookie, value);
-        c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time));
-        resp.addCookie(c);
-    }
-
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-                resp.addCookie(c);
-                return c.getValue();
-            }
-        }
-        return cookie;
-    }
-     */
 
 
 }

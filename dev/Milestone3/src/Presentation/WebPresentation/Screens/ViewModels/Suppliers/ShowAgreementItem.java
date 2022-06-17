@@ -1,7 +1,11 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Domain.Service.Objects.SupplierObjects.ServiceItemObject;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -9,21 +13,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class ShowAgreementItem extends Screen {
 
 
     private static final String greet = "View Agreement Item";
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Admin.class, Storekeeper.class));
 
     public ShowAgreementItem() {
-        super(greet);
+        super(greet,ALLOWED);
 
     }
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
 
@@ -95,14 +106,14 @@ public class ShowAgreementItem extends Screen {
             int quantity = Integer.parseInt(req.getParameter("quantity4"));
             Double total = controller.calculatePriceForItemOrder(supplierId, itemId, quantity);
             setError(String.format("Bulk Price updated for quantity %f.", total));
-            refresh(req, resp);
+            refreshPage(req,resp);
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -118,12 +129,12 @@ public class ShowAgreementItem extends Screen {
             }
             else{
                 setError("Something went wrong, please try again!");
-                //refresh(req, resp);
+                refreshPage(req,resp);
             }
         }
         catch (Exception e) {
             setError(e.getMessage());
-            //refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -136,19 +147,19 @@ public class ShowAgreementItem extends Screen {
 
             if(controller.editBulkPriceForItem(supplierId, itemId, quantity, discount)){
                 setError(String.format("Bulk Price updated for quantity %d.", quantity));
-                refresh(req, resp);
+                refreshPage(req,resp);
             }
             else{
                 setError("Bulk Price wasn't updated!");
-                refresh(req, resp);
+                refreshPage(req,resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -159,19 +170,19 @@ public class ShowAgreementItem extends Screen {
             int quantity = Integer.parseInt(req.getParameter("quantity2"));
             if(controller.removeBulkPriceForItem(supplierId, itemId, quantity)){
                 setError(String.format("Bulk Price removed for quantity %d.", quantity));
-                refresh(req, resp);
+                refreshPage(req,resp);
             }
             else{
                 setError("Bulk Price wasn't removed!");
-                refresh(req, resp);
+                refreshPage(req,resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -183,19 +194,19 @@ public class ShowAgreementItem extends Screen {
             int discount = Integer.parseInt(req.getParameter("discount1"));
             if(controller.addBulkPriceForItem(supplierId, itemId, quantity, discount) ){
                 setError(String.format("Bulk Price added to quantity %d.", quantity));
-                refresh(req, resp);
+                refreshPage(req,resp);
             }
             else{
                 setError("Bulk Price wasn't added!");
-                refresh(req, resp);
+                refreshPage(req,resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -206,19 +217,19 @@ public class ShowAgreementItem extends Screen {
             float num = Float.parseFloat(req.getParameter("ppu"));
             if(controller.updatePricePerUnitForItem(supplierId, itemId, num) ){
                 setError(String.format("Price per unit updated to %f", num));
-                refresh(req, resp);
+                refreshPage(req,resp);
             }
             else{
                 setError("Price per unit wasn't updated!");
-                refresh(req, resp);
+                refreshPage(req,resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -229,14 +240,14 @@ public class ShowAgreementItem extends Screen {
             String name = req.getParameter("manufacturer");
             if (controller.updateItemManufacturer(supplierId, itemId, name)) {
                 setError(String.format("Manufacturer updated to %s", name));
-                refresh(req, resp);
+                refreshPage(req,resp);
             } else {
                 setError("Manufacturer wasn't updated!");
-                refresh(req, resp);
+                refreshPage(req,resp);
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
 
@@ -250,25 +261,15 @@ public class ShowAgreementItem extends Screen {
 
     }
 
-    /*
-    private void changeName(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try {
-            String name = req.getParameter("itemName");
-            if (controller.updateItemName(supplierId, itemId, name)) {
 
-                setError(String.format("Name updated to %s", name));
-                refresh(req, resp);
-            } else {
-                setError("Name wasn't updated!");
-                refresh(req, resp);
-            }
-        } catch (Exception e) {
-            setError(e.getMessage());
-            refresh(req, resp);
-        }
+    private void refreshPage(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        refresh(req, resp, new String[]{"supId","itemId"},new String[]{String.valueOf(getSupplierId(req)), String.valueOf(getItemId(req))});
+
     }
 
 
+
+    /*
 
     private void changeId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
@@ -278,51 +279,23 @@ public class ShowAgreementItem extends Screen {
             int num = Integer.parseInt(req.getParameter("itemId"));
             if(controller.updateItemId(supplierId, itemId,num) ){
                 setError(String.format("ID updated to %d", num));
-                refresh(req, resp);
+            refreshPage(req,resp);
             }
             else{
                 setError("ID wasn't updated!");
-                refresh(req, resp);
+            refreshPage(req,resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            refreshPage(req,resp);
         }
     }
  */
 
-
-        /*
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                cookie = c.getValue();
-            }
-            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-            resp.addCookie(c);
-        }
-        return cookie;
-    }
-
-
-
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-                resp.addCookie(c);
-                return c.getValue();
-            }
-        }
-        return cookie;
-    }
-     */
 
 
 }

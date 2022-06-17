@@ -1,20 +1,29 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AddOrderItem extends Screen {
 
 
     private static final String greet = "Add Items to order";
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Storekeeper.class));
+
 
     public AddOrderItem() {
-        super(greet);
+        super(greet,ALLOWED);
 
     }
 
@@ -22,6 +31,9 @@ public class AddOrderItem extends Screen {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
 
@@ -50,24 +62,24 @@ public class AddOrderItem extends Screen {
 
                 if(controller.orderItemExistsInOrder(supplierId, orderId, itemId)){
                     setError(String.format("Item %d already exists in Order %d!. If you want to add, use Update quantity", itemId, orderId));
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
                 }
                 else {
                     if (controller.addItemToOrder(supplierId, orderId, itemId, quantity)) {
                         setError(String.format("Item %d added to Order %d!", itemId, orderId));
-                        refresh(req, resp);
+                        refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
                     } else {
                         setError("Item wasn't added!");
-                        refresh(req, resp);
+                        refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
                     }
                 }
             } catch (NumberFormatException e1){
                 setError("Please enter a number!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
             }
             catch (Exception e) {
                 setError(e.getMessage());
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
             }
         }
 
@@ -83,32 +95,5 @@ public class AddOrderItem extends Screen {
 
     }
 
-        /*
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                cookie = c.getValue();
-            }
-            c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-            resp.addCookie(c);
-        }
-        return cookie;
-    }
-
-
-
-    private String getCookie(String name, HttpServletRequest req, HttpServletResponse resp, int time) throws IOException {
-        String cookie = "";
-        for (Cookie c : req.getCookies()) {
-            if (c.getName().equals(name)) {
-                c.setMaxAge((int) TimeUnit.MINUTES.toSeconds(time)); //time of life of the cookie, if bot listed its infinite
-                resp.addCookie(c);
-                return c.getValue();
-            }
-        }
-        return cookie;
-    }
- */
 
 }
