@@ -792,7 +792,7 @@ public class InventoryService {
         }
     }
 
-    public Result<List<String>> getReadyOrders() {
+    public List<String> getReadyOrders() {
         try {
             Collection<Order> orders = controller.getReadyOrders();
             Collection<ServiceOrderObject> serviceOrders = new ArrayList<>();
@@ -807,9 +807,9 @@ public class InventoryService {
             for (ServiceOrderObject order: serviceOrders) {
                 ordersStrings.add(order.toString());
             }
-            return Result.makeOk(ordersStrings);
+            return ordersStrings;
         } catch (Exception e) {
-            return Result.makeError(e.getMessage());
+            return new ArrayList<>();
         }
     }
 }

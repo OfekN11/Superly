@@ -577,7 +577,7 @@ public class BackendController {
     public List<String> getImportantHRMessagesTransport() throws Exception {
         return Arrays.stream(orderService.getImportantMessages()).collect(Collectors.toList());
     }
-    public Result<List<String>> getImportantMessagesInventory() throws Exception {
+    public List<String> getImportantHRMessagesInventory() throws Exception {
         return inventoryService.getReadyOrders();
     }
 
