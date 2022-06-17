@@ -72,7 +72,7 @@ CREATE TABLE "Supplier" (
 	"Bank"	INTEGER NOT NULL,
 	"Address"	TEXT NOT NULL,
 	"Name"	TEXT NOT NULL,
-	"Payment Agreement"	TEXT NOT NULL,
+	"PaymentAgreement"	TEXT NOT NULL,
 	"AgreementType"	INTEGER,
 	PRIMARY KEY("ID")
 );
