@@ -7,15 +7,23 @@ import java.io.IOException;
 
 public class Storekeeper extends Employee{
 
-    private static String greeting = "Welcome Storekeeper ";
+    private static final String GREETING = "Welcome Storekeeper ";
 
-    private static String[] menuOptions = {};
+    private static final String[] EXTRA_OPTIONS = {};
 
     protected Storekeeper(Domain.Service.Objects.Employee.Storekeeper sStorekeeper) {
-        super(sStorekeeper, greeting, menuOptions);
+        super(sStorekeeper, GREETING, EXTRA_OPTIONS);
     }
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int index = getIndexOfButtonPressed(req);
+        if (index < BASE_OPTIONS_COUNT) {
+            super.doPost(req, resp);
+            return;
+        }
+        index -= BASE_OPTIONS_COUNT;
+        switch (index) {
+        }
     }
 }

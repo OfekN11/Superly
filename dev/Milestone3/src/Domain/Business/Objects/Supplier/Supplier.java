@@ -585,7 +585,7 @@ public class Supplier {
         return result;
     }
 
-    private Order getOrderFromList(int orderId, OrderDAO orderDAO) throws Exception {
+    public Order getOrderFromList(int orderId, OrderDAO orderDAO) throws Exception {
         if(!orderExists(orderId, orderDAO))
             throw new Exception(String.format("Order with ID: %d does not Exists!", orderId));
         if(!orders.containsKey(orderId))
@@ -598,14 +598,19 @@ public class Supplier {
             return true;
         if(orderDAO.containsKey(id, suppliersDAO)){
             Order order = orderDAO.getOrder(id, suppliersDAO);
-            orders.put(order.getId(), order);
-            return true;
+            if(order.getSupplierId() == id){
+                orders.put(order.getId(), order);
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         return false;
     }
 
 
-    public Double getToatalPriceForItem(int itemId, int quantity) throws Exception {
+    public Double getTotalPriceForItem(int itemId, int quantity) throws Exception {
         agreementExists();
         return agreement.getOrderPrice(itemId, quantity);
     }
@@ -677,5 +682,9 @@ public class Supplier {
         else{
             orders.put(order.getId(), order);
         }
+    }
+
+    public AgreementItem getAgreementItem(int id) throws Exception {
+        return agreement.getItem(id);
     }
 }
