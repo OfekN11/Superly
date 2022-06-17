@@ -44,8 +44,8 @@ public class ShowAgreement extends Screen {
         resp.getWriter().println("<h2>Agreement Information for Supplier" + supId + ".</h2><br>");
 
         printMenu(resp, new String[]{"Show All Items", "Add item to agreement"});
-        printForm(resp, new String[] {"idBySupplier"}, new String[]{"ID By Supplier"}, new String[]{"Remove Item"});
-        printForm(resp, new String[] {"idBySupplier2"}, new String[]{"ID By Supplier"}, new String[]{"View Item"});
+        printForm(resp, new String[] {"itemId"}, new String[]{"ID By Supplier"}, new String[]{"Remove Item"});
+        printForm(resp, new String[] {"itemId2"}, new String[]{"ID By Supplier"}, new String[]{"View Item"});
 
         // TODO: 11/06/2022 Should we do it? maybe it can cause problems...
         printForm(resp, new String[] {"agreementType", "agreementDays" }, new String[]{"Agreement Type", "Agreement Days"}, new String[]{"Change Agreement Type"});
@@ -161,10 +161,8 @@ public class ShowAgreement extends Screen {
 
     private void viewItem(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            int idBySupplier = Integer.parseInt(req.getParameter("idBySupplier2"));
-            // TODO: Supplier : check if the supplier supplies this Item!
-            //  use getItem in controller?!
-            int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
+            int itemId = Integer.parseInt(req.getParameter("itemId2"));
+            //int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
             int supId = getSupplierId(req,resp);
 
             redirect(resp, ShowAgreementItem.class, new String[]{"supId","itemId"},new String[]{String.valueOf(supId), String.valueOf(itemId)});
@@ -242,11 +240,11 @@ public class ShowAgreement extends Screen {
 
     private void removeItemFromAgreement(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            int idBySupplier = Integer.parseInt(req.getParameter("idBySupplier"));
+            int itemId = Integer.parseInt(req.getParameter("itemId"));
             int supId = getSupplierId(req, resp);
-            int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
+            //int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
             if(controller.deleteItemFromAgreement(supId, itemId) ){
-                setError(String.format("Deleted Item %d", idBySupplier));
+                setError(String.format("Deleted Item %d", itemId));
                 refresh(req, resp);
             }
             else{

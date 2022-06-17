@@ -29,7 +29,7 @@ public class AddOrderItem extends Screen {
         int orderId = getOrderId(req);
         // TODO: Supplier : check if multiple screens work here
 
-        printForm(resp, new String[] {"idBySupplier", "quantity"}, new String[]{"ID By Supplier", "Quantity"}, new String[]{"Add Item"});
+        printForm(resp, new String[] {"itemId", "quantity"}, new String[]{"Product ID", "Quantity"}, new String[]{"Add Item"});
 
 
         handleError(resp);
@@ -45,17 +45,16 @@ public class AddOrderItem extends Screen {
 
         if (isButtonPressed(req, "Add Item")) {
             try {
-                int idBySupplier = Integer.parseInt(req.getParameter("idBySupplier"));
+                int itemId = Integer.parseInt(req.getParameter("itemId"));
                 int quantity = Integer.parseInt(req.getParameter("quantity"));
 
-                int itemId = controller.getMatchingProductIdForIdBySupplier(idBySupplier);
                 if(controller.orderItemExistsInOrder(supplierId, orderId, itemId)){
-                    setError(String.format("Item %d already exists in Order %d!. If you want to add, use Update quantity", idBySupplier, orderId));
+                    setError(String.format("Item %d already exists in Order %d!. If you want to add, use Update quantity", itemId, orderId));
                     refresh(req, resp);
                 }
                 else {
                     if (controller.addItemToOrder(supplierId, orderId, itemId, quantity)) {
-                        setError(String.format("Item %d added to Order %d!", idBySupplier, orderId));
+                        setError(String.format("Item %d added to Order %d!", itemId, orderId));
                         refresh(req, resp);
                     } else {
                         setError("Item wasn't added!");
