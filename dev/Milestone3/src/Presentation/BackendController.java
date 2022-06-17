@@ -47,7 +47,7 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public List<String> getSuppliersMessagesForHR(){
+    public List<String> getImportantHRMessagesSuppliers(){
         return new LinkedList<>();
     }
 
