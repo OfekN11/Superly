@@ -7,7 +7,9 @@ import Presentation.WebPresentation.Screens.ViewModels.Transport.Document.Docume
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.CreateTransport;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.TransportManagementMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.TransportsView;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.AddOrderToTransport;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.UpdateTransport;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.ViewPendingOrders;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.AddTruck;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.DeleteTruck;
@@ -64,7 +66,9 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(TransportManagementMenu.class, "/TransportMainMenu/TransportManagementMenu"),
             new AbstractMap.SimpleEntry<>(CreateTransport.class, "/TransportMainMenu/TransportManagementMenu/CreateTransport"),
             new AbstractMap.SimpleEntry<>(TransportsView.class, "/TransportMainMenu/TransportManagementMenu/TransportsView"),
-            new AbstractMap.SimpleEntry<>(UpdateTransport.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport")
+            new AbstractMap.SimpleEntry<>(UpdateTransport.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport"),
+            new AbstractMap.SimpleEntry<>(ViewPendingOrders.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport/ViewPendingOrders"),
+            new AbstractMap.SimpleEntry<>(AddOrderToTransport.class, "/TransportMainMenu/TransportManagementMenu/UpdateTransport/AddOrderToTransport")
 
             ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
