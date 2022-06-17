@@ -570,6 +570,9 @@ public class BackendController {
     public String[] getImportantMessagesTransport() throws Exception {
         return orderService.getImportantMessages();
     }
+    public Result<List<String>> getImportantMessagesInventory() throws Exception {
+        return inventoryService.getReadyOrders();
+    }
 
     //Transport Order
     public void addTransportOrder(int srcID, int dstID, HashMap<Integer, Integer> productList) throws Exception {
