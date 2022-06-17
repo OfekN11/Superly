@@ -33,7 +33,8 @@ public class InventoryMainMenu extends Screen {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
         switch (getIndexOfButtonPressed(req)){
             case 0:
                 redirect(resp, Products.class);

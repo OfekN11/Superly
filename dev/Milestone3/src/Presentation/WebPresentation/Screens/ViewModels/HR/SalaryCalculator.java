@@ -75,7 +75,8 @@ public class SalaryCalculator extends Screen {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
         if (isButtonPressed(req, "calculate"))
             refresh(req, resp, new String[]{"start", "end"}, new String[]{req.getParameter("start"), req.getParameter("end")});
     }

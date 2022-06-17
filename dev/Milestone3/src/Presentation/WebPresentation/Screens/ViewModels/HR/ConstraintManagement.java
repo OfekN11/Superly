@@ -69,7 +69,8 @@ public class ConstraintManagement extends Screen {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
         if (isButtonPressed(req, "Add Constraints")){
             refresh(req, resp, new String[]{"add"}, new String[]{"true"});
             return;

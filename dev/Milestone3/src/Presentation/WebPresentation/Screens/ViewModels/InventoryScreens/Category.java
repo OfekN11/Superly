@@ -53,7 +53,8 @@ public class Category extends Screen{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
         if (isButtonPressed(req, setParentButton)){
             if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Transport_Manager.class, HR_Manager.class)))) {
                 setError("You have no permission to set category parent");
