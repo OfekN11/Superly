@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update;
 
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.TransportManagementMenu;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,10 +35,10 @@ public class UpdateTransport extends Screen {
         handleHeader(req,resp);
         String id = getParamVal(req,"Transport ID");
         if(isButtonPressed(req,"Place truck")){
-
+            redirect(resp, PlaceTruck.class, new String[] {"ID"}, new String[]{id});
         }
         else if(isButtonPressed(req,"Place carrier")){
-
+            redirect(resp, PlaceCarrier.class, new String[] {"ID"}, new String[]{id});
         }
         else if(isButtonPressed(req,"Start transport")){
             handelStart(id,req,resp);
@@ -49,7 +50,7 @@ public class UpdateTransport extends Screen {
 
         }
         else if(isButtonPressed(req,"Exit")) {
-
+            redirect(resp, TransportManagementMenu.class);
         }
         else {
             setError("failure");
