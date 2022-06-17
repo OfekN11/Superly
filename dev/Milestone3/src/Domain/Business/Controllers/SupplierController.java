@@ -606,7 +606,7 @@ public class SupplierController {
         return suppliersDAO.getSupplier(supplierID).getOrderObject(orderID, orderDAO);
     }
 
-    // TODO: SR71
+    // TODO: SR72
     //returns all orders that cannot be changed anymore (routine) + everything needed because of MinAmounts
     public List<Order> createAllOrders(Map<Integer, Map<Integer, Integer>> orderItemMinAmounts) throws Exception { //map<productID, Map<store, amount>>
 
@@ -621,6 +621,12 @@ public class SupplierController {
         result.addAll(ordersForTomorrow.get("deletable"));
 
         insertToSuppliersBusiness(result);
+
+        for(Order order : result){
+            if(order.getStatus() == OrderStatus.waiting){
+                addOrderToTransport(order);
+            }
+        }
 
         return result;
     }
