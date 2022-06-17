@@ -42,7 +42,7 @@ public class TransportController {
             return transport;
         }
         else{
-            throw new Exception("there is no sorter in this shift");
+            throw new Exception("there is no Storekeeper in this shift");
         }
 
     }

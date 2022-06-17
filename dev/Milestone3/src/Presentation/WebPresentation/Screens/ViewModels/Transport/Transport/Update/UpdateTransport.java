@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpdateTransport extends Screen {
     private static final String greet = "Transport Management Menu";
@@ -46,7 +48,12 @@ public class UpdateTransport extends Screen {
                 }
                 else{
                     if(isButtonPressed(req,"View orders")){
-
+                        if (is_number(id)){
+                            redirect(resp,ViewPendingOrders.class,new String[]{"ID"},new String[]{id});
+                        }
+                        else{
+                            refresh(req,resp);
+                        }
                     }
                     else {
                         if(isButtonPressed(req,"Add order")){
@@ -70,15 +77,24 @@ public class UpdateTransport extends Screen {
     }
     public void handelStart(String id,HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try{
-            int transportId= Integer.parseInt(id);
-            controller.startTransport(transportId);
-            setError("Transport" + id + "started successfully");
-        }
-        catch (NumberFormatException e){
-            setError("Please Enter a valid id");
+            if(is_number(id)){
+                int transportId= Integer.parseInt(id);
+                controller.startTransport(transportId);
+                setError("Transport" + id + "started successfully");
+            }
         } catch (Exception e) {
             setError(e.getMessage());
         }
         refresh(req,resp);
+    }
+    public boolean is_number(String id){
+        try{
+            int transportId= Integer.parseInt(id);
+            return true;
+        }
+        catch (NumberFormatException e){
+            setError("Please Enter a valid id");
+            return false;
+        }
     }
 }

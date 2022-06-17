@@ -1,6 +1,6 @@
 package Domain.Service.Objects.Document;
 
-import Presentation.CLIPresentation.Factories.PresentationDocumentFactory;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Factories.PresentationDocumentFactory;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class TransportDocument extends Document {
     }
 
     @Override
-    public Presentation.CLIPresentation.Objects.Document.Document accept(PresentationDocumentFactory presentationDocumentFactory) {
+    public Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Document.Document accept(PresentationDocumentFactory presentationDocumentFactory) {
         return presentationDocumentFactory.createPresentationDocument(this);
     }
 }
