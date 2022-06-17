@@ -87,7 +87,7 @@ public class EditOrder extends Screen {
                 refresh(req, resp, new String[]{"supId","orderId"},  new String[]{String.valueOf(supplierId),String.valueOf(orderId) });
             }
             else{
-                setError("Item's quantity wasn't updated!");
+                setError(r.getError());
                 refresh(req, resp, new String[]{"supId","orderId"},  new String[]{String.valueOf(supplierId),String.valueOf(orderId) });
             }
         } catch (NumberFormatException e1){

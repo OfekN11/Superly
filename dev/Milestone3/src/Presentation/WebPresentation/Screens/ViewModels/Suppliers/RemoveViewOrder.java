@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-public class RemoveViewOrder extends Screen {
+public abstract class RemoveViewOrder extends Screen {
 
 
 
@@ -23,24 +23,7 @@ public class RemoveViewOrder extends Screen {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!isAllowed(req, resp)){
-            redirect(resp, Login.class);
-        }
-        header(resp);
-        greet(resp);
 
-
-        printOrderIds(resp);
-        printForm(resp, new String[] {"orderId1"}, new String[]{"Order ID"}, new String[]{"Remove Order"});
-        printForm(resp, new String[] {"orderId3"}, new String[]{"Order ID"}, new String[]{"View Order"});
-
-        String val;
-        if ((val = getParamVal(req,"viewOrder")) != null && val.equals("true")){
-            String orderId = getParamVal(req,"orderId");
-            if(orderId != null )
-                printOrder(req, resp, orderId);
-        }
-        handleError(resp);
     }
 
     protected void printOrderIds(HttpServletResponse resp) {
@@ -61,23 +44,10 @@ public class RemoveViewOrder extends Screen {
 
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
-
-        if(isButtonPressed(req, "Remove Order")){
-            removeOrder(req, resp);
-        }
-
-        else if(isButtonPressed(req, "View Order")){
-            String orderId = req.getParameter("orderId3");
-            redirect(resp, RemoveViewOrder.class, new String[]{"viewOrder", "orderId"}, new String[]{"true", orderId});
-        }
-
-    }
+    protected abstract void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 
 
-
-    private void removeOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void removeOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             int orderId = Integer.parseInt(req.getParameter("orderId1"));
             if(controller.removeOrder(orderId) ){
@@ -106,9 +76,8 @@ public class RemoveViewOrder extends Screen {
             ServiceOrderObject result = controller.getOrder(orderId);
             if(result != null){
 
-                // TODO: Supplier change this to normal print!
-                setError(result.toString());
-                refresh(req, resp);
+                PrintWriter out = resp.getWriter();
+                out.println(result.toString());
             }
             else{
                 setError("Something went wrong, try again later");

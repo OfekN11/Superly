@@ -165,7 +165,7 @@ public class ShowAgreement extends Screen {
         try {
             redirect(resp, AddItemToAgreement.class, new String[]{"supId"}, new String[]{supId});
         } catch (Exception e) {
-            setError("Item is not in the system!, Please enter Id By supplier!");
+            setError("Item is not in the system!, Please enter Product ID!");
             refresh(req, resp, new String[]{"supId"},  new String[]{String.valueOf(supId)});
         }
     }
@@ -178,7 +178,7 @@ public class ShowAgreement extends Screen {
 
             redirect(resp, ShowAgreementItem.class, new String[]{"supId","itemId"},new String[]{String.valueOf(supId), String.valueOf(itemId)});
         } catch (Exception e) {
-            setError("Item is not in the system!, Please enter Id By supplier!");
+            setError("Item is not in the system!, Please enter Product ID!");
             refresh(req, resp, new String[]{"supId"},  new String[]{String.valueOf(getSupplierId(req))});
         }
     }

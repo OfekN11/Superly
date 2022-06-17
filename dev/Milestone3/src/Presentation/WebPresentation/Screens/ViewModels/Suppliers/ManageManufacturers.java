@@ -90,7 +90,7 @@ public class ManageManufacturers extends Screen {
         try {
             String name = req.getParameter("nameAdd");
             int supId = getSupplierId(req);
-            if(controller.addSupplierManufacturer(supId, name)){
+            if(!name.equals("") && controller.addSupplierManufacturer(supId, name)){
 
                 setError(String.format("Added manufacturer %s", name));
                 refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});
@@ -109,7 +109,7 @@ public class ManageManufacturers extends Screen {
         try {
             int supId = getSupplierId(req);
             String name = req.getParameter("nameRemove");
-            if(controller.removeManufacturer(supId, name)){
+            if(!name.equals("") && controller.removeManufacturer(supId, name)){
 
                 setError(String.format("Removed manufacturer %s", name));
                 refresh(req, resp, new String[]{"supId"}, new String[]{String.valueOf(supId)});

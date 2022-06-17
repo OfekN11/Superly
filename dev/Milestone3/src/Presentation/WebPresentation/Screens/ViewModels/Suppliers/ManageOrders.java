@@ -132,11 +132,11 @@ public class ManageOrders extends Screen {
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            //refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            //refresh(req, resp);
         }
     }
 
@@ -153,11 +153,11 @@ public class ManageOrders extends Screen {
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            //refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            //refresh(req, resp);
         }
     }
 
@@ -170,11 +170,11 @@ public class ManageOrders extends Screen {
                 redirect(resp, EditOrder.class, new String[]{"supId","orderId"},  new String[]{String.valueOf(supplierId),String.valueOf(orderId) });
             else{
                 setError(String.format("Didn't found Supplier with Order number %d", orderId));
-                refresh(req, resp);
+                //refresh(req, resp);
             }
         } catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            //refresh(req, resp);
         }
     }
 
@@ -188,15 +188,15 @@ public class ManageOrders extends Screen {
             }
             else{
                 setError("Something went wrong, try again later");
-                refresh(req, resp);
+                //refresh(req, resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            //refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            //refresh(req, resp);
         }
     }
 
@@ -215,11 +215,11 @@ public class ManageOrders extends Screen {
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            //refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            //refresh(req, resp);
         }
 
     }

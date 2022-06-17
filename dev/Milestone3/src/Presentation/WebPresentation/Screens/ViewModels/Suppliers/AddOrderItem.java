@@ -73,11 +73,7 @@ public class AddOrderItem extends Screen {
                         refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
                     }
                 }
-            } catch (NumberFormatException e1){
-                setError("Please enter a number!");
-                refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
-            }
-            catch (Exception e) {
+            }catch (Exception e) {
                 setError(e.getMessage());
                 refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
             }

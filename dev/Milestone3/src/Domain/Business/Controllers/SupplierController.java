@@ -479,7 +479,7 @@ public class SupplierController {
                 transportController.changeWeight(orderId, (int)(itemQuantity * weight));
             }
             else{
-                throw new Error("Error!\nCan't update this order due to weight limit.\nYou can try to order manually.");
+                throw new Exception("Can't update this order due to weight limit.\nYou can try to order manually.");
             }
         }
 
@@ -569,7 +569,7 @@ public class SupplierController {
             callInventoryToUpdateOnTheWay(itemID, order.getStoreID(), quantityDifference);
         }
         else{
-            throw new Error("Error!\nCan't update this order due to weight limit.\nYou can try to order manually.");
+            throw new Exception("Can't update this order due to weight limit.\nYou can try to order manually.");
         }
 
     }
@@ -974,7 +974,7 @@ public class SupplierController {
 
         LocalDate date = transportController.SchedulingOrderToTransport(order, availableDays);
         if(date == null){
-            date = LocalDate.of(3000, 1, 1);
+            date = LocalDate.of(2100, 1, 1);
         }
         order.setArrivalTime(date);
 

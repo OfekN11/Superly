@@ -33,12 +33,36 @@ public class OrderHRLogistics extends RemoveViewOrder {
         if (!isAllowed(req, resp)){
             redirect(resp, Login.class);
         }
-        super.doGet(req, resp);
+        header(resp);
+        greet(resp);
+
+
+        printOrderIds(resp);
+        printForm(resp, new String[] {"orderId1"}, new String[]{"Order ID"}, new String[]{"Remove Order"});
+        printForm(resp, new String[] {"orderId3"}, new String[]{"Order ID"}, new String[]{"View Order"});
+
+        String val;
+        if ((val = getParamVal(req,"viewOrder")) != null && val.equals("true")){
+            String orderId = getParamVal(req,"orderId");
+            if(orderId != null )
+                printOrder(req, resp, orderId);
+        }
+        handleError(resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        handleHeader(req, resp);
+
+        if(isButtonPressed(req, "Remove Order")){
+            removeOrder(req, resp);
+        }
+
+        else if(isButtonPressed(req, "View Order")){
+            String orderId = req.getParameter("orderId3");
+            redirect(resp, OrderHRLogistics.class, new String[]{"viewOrder", "orderId"}, new String[]{"true", orderId});
+        }
+
     }
 
 
