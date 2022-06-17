@@ -66,6 +66,7 @@ public abstract class AbstractShiftDAO<T extends Shift> extends DataMapper<T> {
         shiftsSortersLink.replaceSet(id,instance.getSorterIDs());
         shiftsStorekeepersLink.replaceSet(id,instance.getStorekeeperIDs());
         shiftsTransportManagers.replaceSet(id,instance.getTransport_managerIDs());
+        constraintsEmployeesLink.replaceSet(id,instance.getAvailableEmployeeIDs());
         super.remove(instance.getWorkday().toString()+getType());
         super.insert(Arrays.asList(id,instance.getWorkday(),instance.getShiftManagerId(),instance.getCarrierCount(),instance.getCashierCount(),instance.getStorekeeperCount(),instance.getSorterCount(),instance.getHr_managersCount(),instance.getLogistics_managersCount(),instance.getTransport_managersCount()));
     }
