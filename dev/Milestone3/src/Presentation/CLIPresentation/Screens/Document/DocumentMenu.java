@@ -45,8 +45,8 @@ public class DocumentMenu extends Screen {
         int ddSN = 0;
         try {
             ddSN = getSNOfDestDocument();
-            DestinationDocument dd = controller.getDestinationDocument(ddSN);
-            dd.display();
+            //DestinationDocument dd = controller.getDestinationDocument(ddSN);
+            //dd.display();
 
         } catch (HumanInteraction.OperationCancelledException ignore){
         }catch (Exception e) {
@@ -58,8 +58,8 @@ public class DocumentMenu extends Screen {
         int tdSN = 0;
         try {
             tdSN = getSNOfTranDocument();
-            TransportDocument td = controller.getTransportDocument(tdSN);
-            td.display();
+            //TransportDocument td = controller.getTransportDocument(tdSN);
+            //td.display();
         }catch (HumanInteraction.OperationCancelledException ignore){
         }
         catch (Exception e) {
