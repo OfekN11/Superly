@@ -30,6 +30,7 @@ public class UpcomingShifts extends Screen {
         if (!isAllowed(req, resp)) {
             redirect(resp, Login.class);
         }
+        header(resp);
         Employee emp = Login.getLoggedUser(req);
         PrintWriter out = resp.getWriter();
         out.println(String.format("<h1>Upcoming shifts in the next 30 days for %s</h1>", emp.name));

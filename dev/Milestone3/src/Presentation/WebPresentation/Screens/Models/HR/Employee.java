@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens.Models.HR;
 
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.ConstraintManagement;
 import Presentation.WebPresentation.Screens.ViewModels.HR.EmploymentConds;
 import Presentation.WebPresentation.Screens.ViewModels.HR.SalaryCalculator;
 import Presentation.WebPresentation.Screens.ViewModels.HR.UpcomingShifts;
@@ -76,8 +77,7 @@ public abstract class Employee extends Screen {
                 redirect(resp, UpcomingShifts.class);
                 break;
             case 1:
-                setError("Not Implemented yet");
-                refresh(req, resp);
+                redirect(resp, ConstraintManagement.class);
                 break;
             case 2:
                 redirect(resp, SalaryCalculator.class);

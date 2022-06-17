@@ -46,7 +46,8 @@ public class Login extends Screen {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
 
         if (isButtonPressed(req, "Sign in!")){
             String id = req.getParameter("ID");

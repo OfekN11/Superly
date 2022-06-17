@@ -29,6 +29,7 @@ public class EmploymentConds extends Screen {
             redirect(resp, Login.class);
             return;
         }
+        header(resp);
         try {
             Employee employee = Login.getLoggedUser(req);
             PrintWriter out = resp.getWriter();

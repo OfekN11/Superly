@@ -8,6 +8,7 @@ import Presentation.WebPresentation.WebMain;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -65,6 +66,7 @@ public abstract class Screen extends HttpServlet {
         out.println("<form method=\"post\">");
         out.println("<input type=\"submit\" name=\"home\" value=\"home\">");
         out.println("<input type=\"submit\" name=\"logout\" value=\"logout\">");
+        out.println("<input type=\"submit\" name=\"clean\" value=\"clean cookies\" style=\"direction: rtl;\">");
         out.println("</form>");
         out.println("</header>");
     }
@@ -76,15 +78,28 @@ public abstract class Screen extends HttpServlet {
      * @return true if a post occurred and handle from the header
      * @throws IOException
      */
-    protected static void handleHeader(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected static boolean handleHeader(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         if (isButtonPressed(req, "home")) {
             redirect(resp, EmployeeServlet.class);
+            return true;
         }
         if (isButtonPressed(req, "logout")){
             if (Login.isLoggedIn(req, resp))
                 Login.logout(req, resp);
             redirect(resp, Login.class);
+            return true;
         }
+        if (isButtonPressed(req, "clean")) {
+            Cookie[] cookies = req.getCookies();
+            if (cookies != null)
+                for (Cookie c : cookies) {
+                    c.setMaxAge(0);
+                    resp.addCookie(c);
+                }
+            refresh(req, resp);
+            return true;
+        }
+        return false;
     }
 
     protected void setError(String error) {
@@ -180,7 +195,7 @@ public abstract class Screen extends HttpServlet {
      * @throws IOException
      */
     protected static int getIndexOfButtonPressed(HttpServletRequest req) throws ServletException, IOException {
-        for (int i = 0; i < 20 ; i++) {
+        for (int i = 0; i < 100 ; i++) {
             if (req.getParameter(String.valueOf(i)) != null)
                 return i;
         }
