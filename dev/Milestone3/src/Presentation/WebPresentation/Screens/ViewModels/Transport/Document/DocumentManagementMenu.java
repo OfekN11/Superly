@@ -1,6 +1,10 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Document;
 
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
+import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
 import javax.servlet.ServletException;
@@ -8,17 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DocumentManagementMenu extends Screen {
     private static final String greet = "DocumentManagement Menu";
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Transport_Manager.class, Logistics_Manager.class));
 
     public DocumentManagementMenu() {
-        super(greet);
+        super(greet, ALLOWED);
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp, ALLOWED)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
         printForm(resp,new String[] {"Document ID"},new String[]{"Document ID"},new String[]{"Transport Document Print", "Destination Document Print","Exit"});

@@ -562,7 +562,7 @@ public class BackendController {
     }
 
     public void removeTruck(int licenseNumber) throws Exception {
-        Result result =  truckService.removeTruck(licenseNumber);
+        Result result =  transportService.removeTruck(licenseNumber);
         throwIfError(result);
     }
 
@@ -633,9 +633,10 @@ public class BackendController {
         throwIfError(result);
     }
 
-    public void createNewTransport(Pair<LocalDate, ShiftTypes> localDateShiftTypesPair) throws Exception {
-        Result result = transportService.createTransport(localDateShiftTypesPair);
+    public int createNewTransport(Pair<LocalDate, ShiftTypes> localDateShiftTypesPair) throws Exception {
+        Result<Integer> result = transportService.createTransport(localDateShiftTypesPair);
         throwIfError(result);
+        return result.getValue();
     }
 
     public Set<Employee> getAvailableEmployeesFor(LocalDate date, ShiftTypes type) throws Exception {
