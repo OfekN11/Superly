@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ViewSupplier extends Screen {
 
-    private static final String greet = "View Supplier for Storekeeper and Store Manager";
+    private static final String greet = "View Supplier";
     private static final String addAgreement = "Add New Agreement";
     private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Admin.class, Storekeeper.class));
 

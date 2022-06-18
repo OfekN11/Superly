@@ -12,7 +12,7 @@ public class Storekeeper extends Employee{
     private static final String GREETING = "Welcome Storekeeper ";
 
     private static final String[] EXTRA_OPTIONS = {
-            "Suppliers Menu"
+
     };
 
     protected Storekeeper(Domain.Service.Objects.Employee.Storekeeper sStorekeeper) {
@@ -24,9 +24,7 @@ public class Storekeeper extends Employee{
         super.doPost(req, resp);
         int index = getIndexOfButtonPressed(req) - BASE_OPTIONS_COUNT;
         switch (index) {
-            case 0:
-                redirect(resp, SupplierMainMenuStorekeeper.class);
-                break;
+
         }
     }
 
