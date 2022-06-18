@@ -43,6 +43,8 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(HrMessages.class, "/HRMessages"),
             new AbstractMap.SimpleEntry<>(EmployeesMenu.class, "/EmployeesMenu"),
             new AbstractMap.SimpleEntry<>(ShiftMenu.class, "/ShiftMenu"),
+            new AbstractMap.SimpleEntry<>(RemoveEmployee.class, "/RemoveEmployee"),
+
 
             new AbstractMap.SimpleEntry<>(AddItemToAgreement.class, "/AddItemToAgreement"),
             new AbstractMap.SimpleEntry<>(AddOrderItem.class, "/AddOrderItem"),
@@ -61,14 +63,19 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(SupplierMainMenuStorekeeper.class, "/SupplierMainMenuStorekeeper"),
             new AbstractMap.SimpleEntry<>(SupplierMainMenuStoreManager.class, "/SupplierMainMenuStoreManager"),
             new AbstractMap.SimpleEntry<>(ViewSupplier.class, "/ViewSupplier"),
+
             new AbstractMap.SimpleEntry<>(InventoryMainMenu.class, "/InventoryMainMenu"),
-            new AbstractMap.SimpleEntry<>(ManageInventory.class, "/ManageInventory"),
+            new AbstractMap.SimpleEntry<>(StockReport.class, "/StockReport"),
+            new AbstractMap.SimpleEntry<>(Reports.class, "/Reports"),
+            new AbstractMap.SimpleEntry<>(Report.class, "/Report"),
             new AbstractMap.SimpleEntry<>(Products.class, "/Products"),
             new AbstractMap.SimpleEntry<>(Product.class, "/Product"),
             new AbstractMap.SimpleEntry<>(Categories.class, "/Categories"),
             new AbstractMap.SimpleEntry<>(Category.class, "/Category"),
             new AbstractMap.SimpleEntry<>(Sales.class, "/Sales"),
             new AbstractMap.SimpleEntry<>(SaleHistory.class, "/Sale"),
+            new AbstractMap.SimpleEntry<>(InventoryManagement.class, "/InventoryManagement"),
+
             new AbstractMap.SimpleEntry<>(TransportMainMenu.class, "/TransportMainMenu"),
             new AbstractMap.SimpleEntry<>(TruckManagementMenu.class, "/TransportMainMenu/TruckManagementMenu"),
             new AbstractMap.SimpleEntry<>(AddTruck.class, "/TransportMainMenu/TruckManagementMenu/AddTruck"),

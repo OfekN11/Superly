@@ -226,7 +226,7 @@ public class InventoryController {
         }
     }
     //Map<OrderId<ProductId , ( (missingAmount,defectiveAmount), description)>>
-    public void orderArrived(int transportID, Map<Integer,Map<Integer, Pair<Pair<Integer, Integer>, String>>> reports) throws Exception {
+    public void transportArrived(int transportID, Map<Integer,Map<Integer, Pair<Pair<Integer, Integer>, String>>> reports) throws Exception {
         transportController.endTransport(transportID);
         List<Integer> orderIDs = transportController.getTransport(transportID).gerOrders();
         Order arrivedOrder;
@@ -242,7 +242,7 @@ public class InventoryController {
         }
     }
 
-//    public void orderArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
+//    public void transportArrived(int orderID, Map<Integer, Pair<Pair<Integer, Integer>, String>> reportOfOrder) throws Exception {
 //        Order arrivedOrder = supplierController.orderHasArrived(orderID, reportOfOrder);
 //        int orderStoreID = arrivedOrder.getStoreID();
 //        for (OrderItem orderItem : arrivedOrder.getOrderItems()) {

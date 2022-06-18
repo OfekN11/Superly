@@ -3,6 +3,7 @@ package Presentation.WebPresentation.Screens.Models.HR;
 import Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement.EmployeesMenu;
 import Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement.HrMessages;
 import Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement.ShiftMenu;
+import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.InventoryMainMenu;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.SupplierMainMenuStoreManager;
 
 import javax.servlet.ServletException;
@@ -19,7 +20,7 @@ public class Admin extends Employee{
             "Employees Menu",           //1
             "Shifts Menu",              //2
             "HR Important Messages",    //3
-
+            "Inventory Main Menu"       //4
     };
 
     public Admin() {
@@ -41,6 +42,9 @@ public class Admin extends Employee{
                 break;
             case 3:
                 redirect(resp, HrMessages.class);
+                break;
+            case 4:
+                redirect(resp, InventoryMainMenu.class);
                 break;
         }
     }
