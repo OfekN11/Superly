@@ -45,6 +45,11 @@ public class OrderDAO extends DataMapper<Order> {
         if(ORDER_IDENTITY_MAP.containsKey(String.valueOf(orderId)))
             return ORDER_IDENTITY_MAP.get(String.valueOf(orderId));
         Order order = get(String.valueOf(orderId));
+
+        if(order == null){
+            throw new Exception("Error!\nNo such order.");
+        }
+
         order.uploadItemsFromDB(uploadAllItemsFromOrder(order.getId(), suppliersDAO.getAgreementItemDAO()));
         return order;
     }
