@@ -33,15 +33,6 @@ public class StockReport {
 
     @Override
     public String toString() {
-        return "StockReport{" +
-                "storeID=" + storeID +
-                ", productID=" + productID +
-//                ", productName='" + productName + '\'' +
-                ", amountInStore=" + amountInStore +
-                ", amountInWarehouse=" + amountInWarehouse +
-                ", amountInDeliveries=" + amountInDeliveries +
-                ", minAmountInStore=" + minAmountInStore +
-                ", targetAmountInStore=" + targetAmountInStore +
-                '}';
+        return "Store ID: " + getStoreID() + "\n| Product ID: " + getProductID() + "\n| Amount In Store: " + getAmountInStore() + "\n| Amount In Warehouse: " + getAmountInWarehouse() + "\n| Amount In Deliveries: " + getAmountInDeliveries() + "\n| Minimum Amount: " + getMinAmountInStore() + "\n| Target Amount: " + getTargetAmountInStore();
     }
 }

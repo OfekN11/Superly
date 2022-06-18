@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class InventoryMainMenu extends Screen {
 
-    private static final String greet = "Inventory's Main Menu - TO REMEMBER: FIX CREATE ORDERS\n";
+    private static final String greet = "Inventory's Main Menu\n";
     public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>();
 
     public InventoryMainMenu() {
@@ -27,13 +27,14 @@ public class InventoryMainMenu extends Screen {
         }
         header(resp);
         greet(resp);
-        printMenu(resp, new String[]{"Manage Products", "Manage Categories", "Manage sales", "Manage inventory"});
+        printMenu(resp, new String[]{"Manage Products", "Manage Categories", "Manage Sales", "View Reports", "Manage Inventory"});
         handleError(resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
         switch (getIndexOfButtonPressed(req)){
             case 0:
                 redirect(resp, Products.class);
@@ -45,9 +46,10 @@ public class InventoryMainMenu extends Screen {
                 redirect(resp, Sales.class);
                 break;
             case 3:
-                redirect(resp, ManageInventory.class);
-            default:
-                redirect(resp, InventoryMainMenu.class);
+                redirect(resp, Reports.class);
+                break;
+            case 4:
+                redirect(resp, InventoryManagement.class);
         }
     }
 }

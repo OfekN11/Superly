@@ -4,19 +4,18 @@ import Domain.Business.Controllers.InventoryController;
 import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Inventory.Product;
 import Domain.DAL.Abstract.DAO;
-import Domain.DAL.Controllers.InventoryAndSuppliers.*;
 import Globals.Pair;
-import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.util.*;
 
 import static java.util.Collections.max;
 import static org.junit.jupiter.api.Assertions.*;
 
-@NotThreadSafe
+//@NotThreadSafe
 class InventoryControllerTest {
     private static final InventoryController is = InventoryController.getInventoryController();
     private static SupplierController sc;
@@ -28,6 +27,7 @@ class InventoryControllerTest {
         DAO.setDBForTests(InventoryControllerTest.class);
         stores = new ArrayList<>();
         sc = new SupplierController();
+        sc.setInventoryController(is);
         sc.loadSuppliersData();
         maxStoreCount = max(is.getStoreIDs());
     }
@@ -42,13 +42,13 @@ class InventoryControllerTest {
     void orderArrived() throws Exception {
         //setup
         int cat = is.addCategory("TestCategory", 0).getID();
-        Product prod1 = is.newProduct("TestProduct", cat,2,2,"testManu");
-        Product prod2 = is.newProduct("TestProduct", cat,2,2,"testManu");
+        Product prod1 = is.newProduct("TestProduct", cat,0,2,"testManu");
+        Product prod2 = is.newProduct("TestProduct", cat,0,2,"testManu");
         int supplier = sc.addSupplier("Test-OrderArrived", 2, "address", "Agreement", new ArrayList<>(), new ArrayList<>());
         sc.addAgreement(supplier,1, "1 2 3 4 5 6 7");
         //    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
         sc.addItemToAgreement(supplier, prod1.getId(), 1, "",  3, new HashMap<>());
-        sc.addItemToAgreement(supplier, prod2.getId(), 1, "",  3,  new HashMap<>());
+        sc.addItemToAgreement(supplier, prod2.getId(), 2, "",  3,  new HashMap<>());
         int store = is.addStore();
         stores.add(store);
         is.addProductToStore(store,Arrays.asList(1),Arrays.asList(1),prod1.getId(),100,200);
@@ -56,7 +56,7 @@ class InventoryControllerTest {
         int order = sc.addNewOrder(supplier, store);
         //check for error
         Map<Integer, Map<Integer, Pair<Pair<Integer, Integer>, String>>> reports = new HashMap<>();
-        assertThrows(Exception.class, ()->is.orderArrived(0,reports));
+        assertThrows(Exception.class, ()->is.transportArrived(0,reports));
         //check preconditions
         assertEquals(0,prod1.getTotalInStore(store));
         assertEquals(0,prod2.getTotalInStore(store));
@@ -66,7 +66,7 @@ class InventoryControllerTest {
         prod2.getStockReport(store).setInDelivery(200);
         //check post conditions
 //        reportOfOrder.put(prod1.getId(), new Pair<>(new Pair<>(0,2),"2 items were defective"));
-//        assertDoesNotThrow(()->is.orderArrived(order, reportOfOrder));
+//        assertDoesNotThrow(()->is.transportArrived(order, reportOfOrder));
 //        assertEquals(198,prod1.getTotalInStore(store));
 //        assertEquals(200,prod2.getTotalInStore(store));
 
@@ -136,7 +136,8 @@ class InventoryControllerTest {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
         LocalDate afterTwoDays = LocalDate.now().plusDays(2);
         List<Integer> pIDs = new ArrayList<>();
-        pIDs.add(1);
+        int cat = is.addCategory("TestCategory", 0).getID();
+        pIDs.add(is.newProduct("TestProduct", cat,2,2,"testManu").getId());
         //empty
         assertIterableEquals(new ArrayList<>(), is.getExpiredItemReportsByProduct(yesterday, today, pIDs));
         //illegal - future

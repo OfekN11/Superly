@@ -5,7 +5,6 @@ import Domain.Business.Objects.Supplier.Agreement.ByOrderAgreement;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.ConnectionHandler;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;

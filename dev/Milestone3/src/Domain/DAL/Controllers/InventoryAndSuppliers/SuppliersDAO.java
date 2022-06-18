@@ -1,14 +1,13 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
+import Domain.Business.Objects.Supplier.Agreement.Agreement;
 import Domain.Business.Objects.Supplier.Contact;
 import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.Supplier;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
-import Domain.Business.Objects.Supplier.Agreement.Agreement;
 import Domain.DAL.ConnectionHandler;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;

@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
 import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
 
 import javax.servlet.ServletException;
@@ -10,30 +11,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-public class RemoveViewOrder extends Screen {
-
-
-    //private static final String greet = "Remove Order for HR & Logistics";
+public abstract class RemoveViewOrder extends Screen {
 
 
-    public RemoveViewOrder(String greet) {
-        super(greet);
+
+    public RemoveViewOrder(String greet, Set<Class<? extends Employee>> allowed) {
+        super(greet, allowed);
     }
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        header(resp);
-        greet(resp);
 
-
-        printOrderIds(resp);
-        printForm(resp, new String[] {"orderId1"}, new String[]{"Order ID"}, new String[]{"Remove Order"});
-        printForm(resp, new String[] {"orderId3"}, new String[]{"Order ID"}, new String[]{"View Order"});
-
-
-        handleError(resp);
     }
 
     protected void printOrderIds(HttpServletResponse resp) {
@@ -43,7 +34,6 @@ public class RemoveViewOrder extends Screen {
             ArrayList<Integer> supplierIds = controller.getSuppliersID();
             for(Integer id : supplierIds){
                 List<Integer> orderIds = controller.geOrdersID(id);
-                // TODO: Supplier change this to normal print!
                 out.print(String.format("Order from Supplier %s  : ", id));
                 out.println(orderIds);
             }
@@ -55,28 +45,13 @@ public class RemoveViewOrder extends Screen {
 
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
-
-        if(isButtonPressed(req, "Remove Order")){
-            removeOrder(req, resp);
-        }
-
-        else if(isButtonPressed(req, "View Order")){
-            printOrder(req, resp);
-        }
-
-    }
+    protected abstract void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 
 
-
-
-    private void removeOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void removeOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             int orderId = Integer.parseInt(req.getParameter("orderId1"));
             if(controller.removeOrder(orderId) ){
-
-                // TODO: Supplier change this to normal print!
                 setError(String.format("Order %d was removed", orderId));
                 refresh(req, resp);
             }
@@ -96,15 +71,14 @@ public class RemoveViewOrder extends Screen {
 
 
 
-    protected void printOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void printOrder(HttpServletRequest req, HttpServletResponse resp, String orderIdString) throws IOException {
         try {
-            int orderId = Integer.parseInt(req.getParameter("orderId3"));
+            int orderId = Integer.parseInt(orderIdString);
             ServiceOrderObject result = controller.getOrder(orderId);
             if(result != null){
 
-                // TODO: Supplier change this to normal print!
-                setError(result.toString());
-                refresh(req, resp);
+                PrintWriter out = resp.getWriter();
+                out.println(result.toString());
             }
             else{
                 setError("Something went wrong, try again later");
@@ -112,11 +86,11 @@ public class RemoveViewOrder extends Screen {
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            refresh(req, resp);
+            //refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            refresh(req, resp);
+            //refresh(req, resp);
         }
     }
 }

@@ -1,12 +1,10 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
-import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.Business.Objects.Inventory.Location;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.ConnectionHandler;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

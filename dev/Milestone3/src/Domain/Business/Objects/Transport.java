@@ -1,8 +1,5 @@
 package Domain.Business.Objects;
 
-import Domain.Business.Objects.Document.TransportDocument;
-import Domain.Business.Objects.Site.Destination;
-import Domain.Business.Objects.Site.Source;
 import Domain.Business.Objects.Supplier.Order;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;
@@ -85,6 +82,9 @@ public class Transport {
         if (status == TransportStatus.padding)
         {
             startTime = LocalDateTime.now().toString();
+            if(startTime.indexOf("T")!=-1){
+                startTime = startTime.substring(0,startTime.indexOf("T"));
+            }
             status = TransportStatus.inProgress;
         }
         else {
@@ -96,6 +96,9 @@ public class Transport {
         if (status == TransportStatus.inProgress)
         {
             endTime = LocalDateTime.now().toString();
+            if(endTime.indexOf("T")!=-1){
+                endTime = endTime.substring(0,endTime.indexOf("T"));
+            }
             status = TransportStatus.done;
         }
         else{
@@ -284,4 +287,5 @@ public class Transport {
         transportOrders.remove(id);
         truckWeight = truckWeight - weight;
     }
+
 }

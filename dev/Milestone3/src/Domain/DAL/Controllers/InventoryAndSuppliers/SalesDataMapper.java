@@ -5,7 +5,6 @@ import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.ConnectionHandler;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -149,13 +148,25 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
     public void updateEndDate(int saleID, LocalDate date) {
         String endDate = "" + date.getYear() + "-" + ((date.getMonthValue()<10) ? ("0" + date.getMonthValue()) : (date.getMonthValue())) + "-" + ((date.getDayOfMonth()<10) ? ("0" + date.getDayOfMonth()) : (date.getDayOfMonth()));
         try {
             updateProperty(Integer.toString(saleID), END_DATE_COLUMN, endDate);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteByProduct(int id) {
+        Collection<SaleToCustomer> d = getSalesByProduct(id);
+        try {
+            for (SaleToCustomer def : d) {
+                delete(String.valueOf(def.getId()));
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

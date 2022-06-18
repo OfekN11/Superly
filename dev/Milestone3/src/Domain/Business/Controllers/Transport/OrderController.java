@@ -5,12 +5,11 @@ import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementItemDAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.OrderDAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.SuppliersDAO;
 import Globals.Enums.OrderStatus;
-import java.sql.SQLException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class OrderController {
     private final OrderDAO transportOrderDataMapper = new OrderDAO();

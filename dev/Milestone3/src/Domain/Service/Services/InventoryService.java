@@ -1,10 +1,10 @@
 package Domain.Service.Services;
 
 
+import Domain.Business.Controllers.InventoryController;
 import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.Business.Objects.Inventory.SaleToCustomer;
-import Domain.Business.Controllers.InventoryController;
 import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
 import Domain.Service.Objects.InventoryObjects.*;
@@ -27,10 +27,6 @@ public class InventoryService {
 
     public InventoryService(){
         controller = new InventoryController();
-    }
-
-    public void setSupplierController(SupplierController supCont){
-        controller.setSupplierController(supCont);
     }
 
 
@@ -104,12 +100,11 @@ public class InventoryService {
      */
     public Result<Boolean> deleteProduct(int id){
         try {
-            Result.makeOk(controller.deleteProduct(id));
+            return Result.makeOk(controller.deleteProduct(id));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
-        return Result.makeOk(null);
     }
 
     /**
@@ -119,8 +114,7 @@ public class InventoryService {
      */
     public Result<Sale> addSale(List<Integer> categories, List<Integer> products, int percent, LocalDate start, LocalDate end){
         try {
-            SaleToCustomer s = controller.addSale(categories, products, percent, start, end);
-            return Result.makeOk(new Sale(s));
+            return Result.makeOk(new Sale(controller.addSale(categories, products, percent, start, end)));
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -177,9 +171,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the info on the purchase
      */
-    public Result<Object> orderArrived(int orderID, Map<Integer, Map<Integer, Pair<Pair<Integer, Integer>, String>>> reportOfOrder){
+    public Result<Object> transportArrived(int transportID, Map<Integer, Map<Integer, Pair<Pair<Integer, Integer>, String>>> reportOfOrder){
         try {
-            controller.orderArrived(orderID, reportOfOrder);
+            controller.transportArrived(transportID, reportOfOrder);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -758,6 +752,8 @@ public class InventoryService {
      */
     public Result<Category> getCategory(int categoryID) {
         try {
+            if (controller.getCategory(categoryID)==null)
+                return Result.makeError("Category not found");
             return Result.makeOk(new Category(controller.getCategory(categoryID)));
         }
         catch (Exception e){
@@ -790,5 +786,37 @@ public class InventoryService {
         catch (Exception e){
             return Result.makeError(e.getMessage());
         }
+    }
+
+    public List<String> getReadyOrders() {
+        try {
+            Collection<Order> orders = controller.getReadyOrders();
+            Collection<ServiceOrderObject> serviceOrders = new ArrayList<>();
+            for (Order o : orders) {
+                List<ServiceOrderItemObject> oItems = new ArrayList<>();
+                for (OrderItem oItem : o.getOrderItems()) {
+                    oItems.add(new ServiceOrderItemObject(oItem.getProductId(),oItem.getIdBySupplier(), oItem.getName(), oItem.getQuantity(), oItem.getPricePerUnit(), oItem.getDiscount(), oItem.getFinalPrice(), oItem.getMissingItems(), oItem.getDefectiveItems(), oItem.getDescription(), oItem.getWeight()));
+                }
+                serviceOrders.add(new ServiceOrderObject(o.getId(), o.getSupplierId(), o.getCreationTime(), o.getArrivaltime(), o.getStoreID(), o.getStatusString(), oItems));
+            }
+            List<String> ordersStrings = new ArrayList<>(orders.size());
+            for (ServiceOrderObject order: serviceOrders) {
+                ordersStrings.add(order.toString());
+            }
+            return ordersStrings;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public void setSupplierController(SupplierController supplierController) {
+        controller.setSupplierController(supplierController);
+    }
+
+    public int getTarget(int i, int productID) {
+        return controller.getTarget(i, productID);
+    }
+    public int getMin(int i, int productID) {
+        return controller.getMin(i, productID);
     }
 }

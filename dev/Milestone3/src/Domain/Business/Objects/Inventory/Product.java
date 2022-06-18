@@ -126,9 +126,10 @@ public class Product {
     }
 
     public void moveItems(int storeID, int amount) { //from warehouse to store
-        if (!stockReports.containsKey(storeID))
+        StockReport stockReport = STOCK_REPORT_DATA_MAPPER.get(storeID, id);
+        if (stockReport==null)
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
-        stockReports.get(storeID).moveItems(amount);
+        stockReport.moveItems(amount);
     }
 
     public double returnItems(int storeId, int amount, LocalDate dateBought) { //from customer to store
@@ -315,5 +316,11 @@ public class Product {
 
     public void addDelivery(int storeID, int amount) {
         getStockReport(storeID).addDelivery(amount);
+    }
+
+    public void delete() {
+        removeLocation(1);
+        DEFECTIVE_ITEMS_DATA_MAPPER.deleteByProduct(id);
+        SALE_DATA_MAPPER.deleteByProduct(id);
     }
 }

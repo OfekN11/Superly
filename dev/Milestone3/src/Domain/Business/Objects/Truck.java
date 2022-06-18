@@ -1,13 +1,8 @@
 package Domain.Business.Objects;
 
 import Globals.Enums.LicenseTypes;
-import Globals.Enums.ShiftTypes;
 import Globals.Enums.TruckModel;
-import Globals.Pair;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import static Globals.Enums.LicenseTypes.*;

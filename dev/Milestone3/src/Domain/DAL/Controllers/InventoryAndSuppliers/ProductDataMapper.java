@@ -6,7 +6,6 @@ import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.ConnectionHandler;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -71,16 +70,7 @@ public class ProductDataMapper extends DataMapper<Product> {
 
     public int remove(Object id) {
         try{
-            List<Integer> products = Arrays.asList((Integer)id);
             PRODUCT_IDENTITY_MAP.remove(id);
-            LocationDataMapper locationDataMapper = new LocationDataMapper();
-            for (Integer product : products)
-                locationDataMapper.removeByProduct(product);
-            StockReportDataMapper stockReportDataMapper = new StockReportDataMapper();
-
-            for (Integer product : products)
-                stockReportDataMapper.removeProduct(product);
-            executeNonQuery(String.format("DELETE FROM %s WHERE %s LIKE \"%s\"",tableName, getColumnName(NAME_COLUMN), "Test%"));
             return super.remove(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,7 +158,7 @@ public class ProductDataMapper extends DataMapper<Product> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
     public void removeTestProducts() {

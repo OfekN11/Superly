@@ -2,13 +2,12 @@ package InventoryTests;
 
 import Domain.Business.Objects.Inventory.SaleToCustomer;
 import Domain.DAL.Abstract.DAO;
-import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
 
-@NotThreadSafe
+//@NotThreadSafe
 public class SaleToCustomerTests {
 
     SaleToCustomer sale1;

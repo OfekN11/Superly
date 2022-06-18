@@ -1,6 +1,4 @@
-package Presentation.WebPresentation.Screens.ViewModels.HR;
-
-import Presentation.WebPresentation.Screens.Screen;
+package Presentation.WebPresentation.Screens;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

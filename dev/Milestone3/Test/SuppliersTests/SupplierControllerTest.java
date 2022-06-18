@@ -1,17 +1,25 @@
 package SuppliersTests;
 
+import Domain.Business.Controllers.InventoryController;
 import Domain.Business.Controllers.SupplierController;
+import Domain.Business.Objects.Inventory.Category;
+import Domain.Business.Objects.Inventory.Product;
 import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
+import Domain.DAL.Abstract.DAO;
 import Globals.Pair;
 import net.jcip.annotations.NotThreadSafe;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * NOTE: The Tests assumes that the DB is empty
@@ -27,6 +35,26 @@ class SupplierControllerTest {
     private int supId2 = -1;
     private ArrayList<Integer> supplierIds;
     private int storeId = 1;
+    static Category category0;
+    static Product product1;
+    private static final InventoryController is =  InventoryController.getInventoryController();
+
+
+
+    @BeforeAll
+    public synchronized static void setData() {
+        DAO.setDBForTests(SupplierControllerTest.class);
+        category0 = is.addCategory("Test-Milk",  0);
+        product1 = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
+    }
+
+    @AfterAll
+    public static void removeData() {
+        DAO.deleteTestDB(SupplierControllerTest.class);
+    }
+
+
+
 
     @BeforeEach
     void setUp() {
@@ -122,11 +150,11 @@ class SupplierControllerTest {
 
         try {
             controller.addAgreement(supId1, 1, "1");
-            controller.addItemToAgreement(supId1, 1, 1,  "manu", 4,  prices);
+            controller.addItemToAgreement(supId1, product1.getId(), 1,  "manu", 4,  prices);
             controller.addAgreement(supId2, 1, "1");
-            controller.addItemToAgreement(supId2, 1, 1, "manu", 4,  prices2);
+            controller.addItemToAgreement(supId2, product1.getId(), 1, "manu", 4,  prices2);
 
-            assertEquals(controller.getTheCheapestSupplier(1, 100), supId2);
+            assertEquals(controller.getTheCheapestSupplier(product1.getId(), 100), supId2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,7 +190,7 @@ class SupplierControllerTest {
 
         try {
             controller.addAgreement(supId1, 1, "1");
-            controller.addItemToAgreement(supId1, 1, 1,  "manu", 4,  prices);
+            controller.addItemToAgreement(supId1, product1.getId(), 1,  "manu", 4,  prices);
             int orderId = controller.addNewOrder(supId1, 1);
 
             ArrayList<Integer> supplierIds = new ArrayList<>();
@@ -207,9 +235,9 @@ class SupplierControllerTest {
 
         try {
             controller.addAgreement(supId1, 1, "1");
-            controller.addItemToAgreement(supId1, 1, 1,  "manu", 4,  prices);
+            controller.addItemToAgreement(supId1, product1.getId(), 1,  "manu", 4,  prices);
             controller.addAgreement(supId2, 1, "1");
-            controller.addItemToAgreement(supId2, 1, 1,  "manu", 4,  prices2);
+            controller.addItemToAgreement(supId2, product1.getId(), 1,  "manu", 4,  prices2);
 
             int orderId1 = controller.addNewOrder(supId1, storeId);
             Order order1 = controller.getOrderObject(supId1, orderId1);
@@ -243,9 +271,9 @@ class SupplierControllerTest {
 
         try {
             controller.addAgreement(supId1, 2, "1");
-            controller.addItemToAgreement(supId1, 1, 1,  "manu", 4, prices);
+            controller.addItemToAgreement(supId1, product1.getId(), 1,  "manu", 4, prices);
             controller.addAgreement(supId2, 2, "2");
-            controller.addItemToAgreement(supId2, 1, 1,  "manu", 4,  prices2);
+            controller.addItemToAgreement(supId2, product1.getId(), 1,  "manu", 4,  prices2);
 
             int orderId1 = controller.addNewOrder(supId1, storeId);
             Order order1 = controller.getOrderObject(supId1, orderId1);
@@ -278,14 +306,13 @@ class SupplierControllerTest {
 
         try {
             controller.addAgreement(supId1, 1, "1");
-            controller.addItemToAgreement(supId1, 1, 1,  "manu", 4,  prices);
-            OrderItem orderItem = controller.createNewOrderItem(supId1 , 1, 10);
+            controller.addItemToAgreement(supId1, product1.getId(), 1,  "manu", 4,  prices);
+            OrderItem orderItem = controller.createNewOrderItem(supId1 , product1.getId(), 10);
 
-            assertEquals(orderItem.getProductId(), 1);
+            assertEquals(orderItem.getProductId(), product1.getId());
             assertEquals(orderItem.getQuantity(), 10);
             assertEquals(orderItem.getDiscount(), 30);
             assertEquals(orderItem.getFinalPrice(), 28);
-            assertEquals(orderItem.getName(), "name");
             assertEquals(orderItem.getPricePerUnit(), 4);
         } catch (Exception e) {
             e.printStackTrace();

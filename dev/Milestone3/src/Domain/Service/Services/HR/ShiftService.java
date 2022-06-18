@@ -7,8 +7,10 @@ import Domain.Service.util.Result;
 import Domain.Service.util.ServiceEmployeeFactory;
 import Domain.Service.util.ServiceShiftFactory;
 import Globals.Enums.ShiftTypes;
+import Globals.util.ShiftComparator;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -401,6 +403,18 @@ public class ShiftService {
     public Result<Set<Shift>> getIncompleteShiftsBetween(LocalDate start, LocalDate end) {
         try {
             return Result.makeOk(controller.getIncompleteShiftsBetween(start, end).stream().map(shiftFactory::createServiceShift).collect(Collectors.toSet()));
+        } catch (Exception e) {
+            return Result.makeError(e.getMessage());
+        }
+    }
+
+    public Result<List<String>> getImportantHRMessages() {
+        try {
+            List<Shift> incompleteShifts = controller.getIncompleteShiftsBetween(LocalDate.now(), LocalDate.now()).stream().map(shiftFactory::createServiceShift).sorted(new ShiftComparator()).collect(Collectors.toList());
+            List<String> messages = incompleteShifts.stream().filter(s -> s.shiftManagerId.equals("-1")).map(s -> s.toString() + " - No manager assigned!").collect(Collectors.toList());
+            messages.addAll(incompleteShifts.stream().filter(s -> !s.shiftManagerId.equals("-1")).map(s -> s.toString() + " - Incomplete assignment").collect(Collectors.toList()));
+            return Result.makeOk(messages);
+
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }

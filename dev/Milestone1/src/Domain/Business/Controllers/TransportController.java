@@ -14,6 +14,8 @@ import Globals.Pair;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
+
 //TODO not finished methods(ADD,GET,getAllTransports,getPendingTransports,getInProgressTransports,getCompletedTransports)
 public class TransportController {
     private final TransportDAO transportDataMapper = new TransportDAO();
@@ -131,7 +133,7 @@ public class TransportController {
         Transport transport = getTransport(transportSN);
         if(transport.getStatus()==TransportStatus.padding){
             Truck truck = truckController.getTruck(licenseNumber);
-            List<Transport> allTransports = getAllTransports();
+            List<Transport> allTransports = getAllTransports().stream().filter((Transport t)->(t.getShift().getLeft()==transport.getShift().getLeft()&&t.getShift().getRight()==transport.getShift().getRight())).collect(Collectors.toList());
             if(!(isAvailable(allTransports,truck) && transport.placeTruck(licenseNumber)))
             {
                 throw new Exception("truck cant be placed");

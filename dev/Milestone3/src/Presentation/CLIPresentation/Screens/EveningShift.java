@@ -3,7 +3,7 @@ package Presentation.CLIPresentation.Screens;
 import Globals.Enums.ShiftTypes;
 import Globals.util.HumanInteraction;
 
-import static Globals.util.HumanInteraction.*;
+import static Globals.util.HumanInteraction.dateFormat;
 
 public class EveningShift extends Shift {
     private static final String[] extraMenuOptions = {

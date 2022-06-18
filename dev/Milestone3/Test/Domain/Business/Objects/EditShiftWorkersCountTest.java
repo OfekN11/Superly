@@ -6,7 +6,7 @@ import Domain.Business.Objects.Shift.Shift;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class EditShiftWorkersCountTest {
     static LocalDate date=LocalDate.parse("2021-06-19");

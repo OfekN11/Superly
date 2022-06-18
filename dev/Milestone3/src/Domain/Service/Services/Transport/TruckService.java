@@ -1,8 +1,6 @@
 package Domain.Service.Services.Transport;
 
 import Domain.Business.Controllers.Transport.TruckController;
-import Globals.Enums.LicenseTypes;
-import Domain.Service.Objects.*;
 import Domain.Service.util.Result;
 import Globals.Enums.TruckModel;
 

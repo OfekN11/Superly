@@ -2,19 +2,15 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 
 import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
-import Domain.Business.Objects.Truck;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.ConnectionHandler;
 import Globals.Enums.OrderStatus;
-import Globals.Enums.TruckModel;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class OrderDAO extends DataMapper<Order> {
 
@@ -73,11 +69,13 @@ public class OrderDAO extends DataMapper<Order> {
 
     private OrderStatus getStatus(ResultSet instanceResult) throws SQLException {
         String status = instanceResult.getString(STATUS_COLOUMN);
-        //status : waiting, ordered
+        //status : waiting, ordered, complete
         if(status.equals("waiting"))
             return OrderStatus.waiting;
+        else if(status.equals("complete"))
+            return  OrderStatus.complete;
         else
-            return  OrderStatus.ordered;
+            return OrderStatus.ordered;
     }
 
     @Override
@@ -243,7 +241,7 @@ public class OrderDAO extends DataMapper<Order> {
     }
 
     public void setOrderArrivalTime(int orderId ,LocalDate date) throws SQLException {
-        updateProperty(String.valueOf(orderId), ARRIVAL_TIME_COLUMN, date);
+        updateProperty(String.valueOf(orderId), ARRIVAL_TIME_COLUMN, String.valueOf(date));
     }
 
 

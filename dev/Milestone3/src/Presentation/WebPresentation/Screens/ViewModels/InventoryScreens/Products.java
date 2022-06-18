@@ -1,5 +1,6 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
+import Domain.Service.Objects.InventoryObjects.Category;
 import Domain.Service.Objects.InventoryObjects.Product;
 import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Products extends Screen{
 
@@ -37,15 +39,17 @@ public class Products extends Screen{
         greet(resp);
         printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{viewButton});
         printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{deleteButton});
-        printForm(resp, new String[] {"product name", "category ID", "weight", "price", "manufacturer"},
-                new String[]{"Product name", "Category ID", "Weight", "Price", "Manufacturer"}, new String[]{addButton});
+        printForm(resp, new String[] {"product name", "category ID", "weight", "price", "manufacturer", "min", "target", "shelves in store", "shelves in warehouse"},
+                new String[]{"Product name", "Category ID", "Weight", "Price", "Manufacturer", "Min", "Target", "Shelves in store", "Shelves in warehouse"}, new String[]{addButton});
         printProducts(resp);
+        printCategories(resp);
         handleError(resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
         if (isButtonPressed(req, deleteButton)){
             if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
                 setError("You have no permission to delete product");
@@ -54,13 +58,16 @@ public class Products extends Screen{
             }
             try {
                 int productID = Integer.parseInt(req.getParameter("ID"));
-                if(controller.deleteProduct(productID).getValue()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Deleted product %d", productID)));
+                if(controller.getProduct(productID).isError()) {
+                    setError("Product ID " + productID + " doesn't exist");
                     refresh(req, resp);
                 }
-                else{
-                    setError("Product ID " + productID + " doesn't exist!");
+                else if (controller.deleteProduct(productID).getValue()){
+                    setError("Product has been removed");
+                    refresh(req, resp);
+                }
+                else {
+                    setError("Product ID " + productID + " is already has been used in other places in the system so it can't be deleted");
                     refresh(req, resp);
                 }
             }catch (NumberFormatException e1){
@@ -81,13 +88,16 @@ public class Products extends Screen{
             try {
                 String productName = req.getParameter("product name");
                 int categoryID = Integer.parseInt(req.getParameter("category ID"));
-                int weight = Integer.parseInt(req.getParameter("weight"));
-                int price = Integer.parseInt(req.getParameter("price"));
+                double weight = Double.parseDouble(req.getParameter("weight"));
+                double price = Double.parseDouble(req.getParameter("price"));
                 String manufacturer = req.getParameter("manufacturer");
-
-                if(controller.newProduct(productName, categoryID, weight, price, manufacturer).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Added new product %d", productName)));
+                int min = Integer.parseInt(req.getParameter("min"));
+                int target = Integer.parseInt(req.getParameter("target"));
+                List<Integer> shelvesInStore = (Arrays.asList(req.getParameter("shelves in store").split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
+                List<Integer> shelvesInWarehouse = (Arrays.asList(req.getParameter("shelves in warehouse").split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
+                Result<Product> p = controller.newProduct(productName, categoryID, weight, price, manufacturer);
+                if(p.isOk() && controller.addProductToStore(1, shelvesInStore, shelvesInWarehouse, p.getValue().getId(), min, target).isOk()) {
+                    setError("Product has been added successfully");
                     refresh(req, resp);
                 }
                 else{
@@ -95,7 +105,7 @@ public class Products extends Screen{
                     refresh(req, resp);
                 }
             }catch (NumberFormatException e1){
-                setError("Please enter a number!");
+                setError("Please enter a number in the following fields: category ID, weight, price");
                 refresh(req, resp);
             }
             catch (Exception e) {
@@ -136,19 +146,27 @@ public class Products extends Screen{
            List<Product> products = controller.getProducts().getValue();
             PrintWriter out = resp.getWriter();
             products.sort(Comparator.comparingInt(Product::getId));
+            out.println("PRODUCTS:<br>");
             for (Product p: products) {
                 out.println(p.getName() + ": " + p.getId() + "<br>");
             }
+            out.println("<br>");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    private Product findProduct(List<Product> products, int id) {
-        for (Product p : products) {
-            if (p.getId()==id)
-                return p;
+    private void printCategories(HttpServletResponse resp) {
+        try {
+            List<Domain.Service.Objects.InventoryObjects.Category> categories = controller.getCategories().getValue();
+            PrintWriter out = resp.getWriter();
+            categories.sort(Comparator.comparingInt(Category::getID));
+            out.println("CATEGORIES:<br>");
+            for (Domain.Service.Objects.InventoryObjects.Category c: categories) {
+                out.println(c.getName() + ": " + c.getID() + "<br>");
+            }
+            out.println("<br>");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return null;
     }
 }

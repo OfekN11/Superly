@@ -3,7 +3,6 @@ package Domain.DAL.Abstract;
 
 import Domain.DAL.ConnectionHandler;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;

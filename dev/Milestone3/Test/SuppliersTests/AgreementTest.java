@@ -1,18 +1,27 @@
 package SuppliersTests;
 
+import Domain.Business.Controllers.InventoryController;
+import Domain.Business.Objects.Inventory.Category;
+import Domain.Business.Objects.Inventory.Product;
 import Domain.Business.Objects.Supplier.Agreement.Agreement;
 import Domain.Business.Objects.Supplier.Agreement.NotTransportingAgreement;
 import Domain.Business.Objects.Supplier.AgreementItem;
+import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
 import net.jcip.annotations.NotThreadSafe;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @NotThreadSafe
 public class AgreementTest {
@@ -21,6 +30,35 @@ public class AgreementTest {
     private HashMap<Integer, Integer> bulkPrices;
     private AgreementController dao;
     private int supId = 1001;
+    static Category category0;
+    static Product product1;
+    static Product product2;
+    static Product product3;
+    static Product product4;
+    static Product product5;
+    static Product product6;
+    private static final InventoryController is =  InventoryController.getInventoryController();
+
+
+
+    @BeforeAll
+    public synchronized static void setData() {
+        DAO.setDBForTests(AgreementTest.class);
+        category0 = is.addCategory("Test-Milk",  0);
+        product1 = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
+        product2 = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
+        product3 = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
+        product4 = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
+        product5 = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
+        product6 = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
+
+    }
+
+    @AfterAll
+    public static void removeData() {
+        DAO.deleteTestDB(AgreementTest.class);
+    }
+
 
     @BeforeEach
     public void setUp(){
@@ -34,12 +72,12 @@ public class AgreementTest {
         bulkPrices = new HashMap<>();
         bulkPrices.put(5, 20);
         try {
-            list.add(new AgreementItem(101,101,  "m1", 5.11f,  bulkPrices));
-            list.add(new AgreementItem(102,102,  "m2", 7.11f, bulkPrices));
-            list.add(new AgreementItem(103, 103, "m3", 12.876f,  bulkPrices));
-            list.add(new AgreementItem(104, 104, "m4", 184.2f,  bulkPrices));
-            list.add(new AgreementItem(105, 105, "m5", 1123f, bulkPrices));
-            list.add(new AgreementItem(106, 106, "m6", 687248.45621f, bulkPrices));
+            list.add(new AgreementItem(product1.getId(),101,  "m1", 5.11f,  bulkPrices));
+            list.add(new AgreementItem(product2.getId(),102,  "m2", 7.11f, bulkPrices));
+            list.add(new AgreementItem(product3.getId(), 103, "m3", 12.876f,  bulkPrices));
+            list.add(new AgreementItem(product4.getId(), 104, "m4", 184.2f,  bulkPrices));
+            list.add(new AgreementItem(product5.getId(), 105, "m5", 1123f, bulkPrices));
+            list.add(new AgreementItem(product6.getId(), 106, "m6", 687248.45621f, bulkPrices));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,9 +121,9 @@ public class AgreementTest {
     public void test_addItem(){
 
         try{
-            AgreementItem item1 = new AgreementItem(117, 117, "man1", 1565165f,  bulkPrices);
-            AgreementItem item2 = new AgreementItem(118, 118,"man2", 1565165f,  bulkPrices);
-            AgreementItem item3 = new AgreementItem(119, 119,"man3", 1565165f,  bulkPrices);
+            AgreementItem item1 = new AgreementItem(product2.getId(), 117, "man1", 1565165f,  bulkPrices);
+            AgreementItem item2 = new AgreementItem(product3.getId(), 118,"man2", 1565165f,  bulkPrices);
+            AgreementItem item3 = new AgreementItem(product4.getId(), 119,"man3", 1565165f,  bulkPrices);
 
             List<AgreementItem> aiList = makeItemList();
 
@@ -157,12 +195,12 @@ public class AgreementTest {
             agreement.setItems(aiList);
 
             assertEquals(aiList.size(), agreement.getItems().size());
-            agreement.removeItem(101);
+            agreement.removeItem(product1.getId());
             aiList = makeItemList();
             assertEquals(aiList.size() - 1, agreement.getItems().size());
 
 
-            agreement.removeItem(105);
+            agreement.removeItem(product1.getId());
             aiList = makeItemList();
             aiList.remove(0);
             aiList.remove(3);
@@ -197,9 +235,9 @@ public class AgreementTest {
     public void test_addAndRemove(){
 
         try{
-            AgreementItem item1 = new AgreementItem(117, 117,  "man1", 1565165,  bulkPrices);
-            AgreementItem item2 = new AgreementItem(118, 118,  "man2", 1565165,  bulkPrices);
-            AgreementItem item3 = new AgreementItem(119, 119,"man3", 1565165,  bulkPrices);
+            AgreementItem item1 = new AgreementItem(product1.getId(), 117,  "man1", 1565165,  bulkPrices);
+            AgreementItem item2 = new AgreementItem(product2.getId(), 118,  "man2", 1565165,  bulkPrices);
+            AgreementItem item3 = new AgreementItem(product4.getId(), 119,"man3", 1565165,  bulkPrices);
 
             List<AgreementItem> aiList = makeItemList();
 
@@ -212,11 +250,11 @@ public class AgreementTest {
             assertEquals(item3, agreement.getItem(item3.getProductId()));
             assertEquals(aiList.size(), agreement.getItems().size());
 
-            agreement.removeItem(104);
+            agreement.removeItem(product1.getId());
             aiList.remove(3);
             assertEquals(aiList.size(), agreement.getItems().size());
 
-            agreement.removeItem(102);
+            agreement.removeItem(product1.getId());
             aiList.remove(1);
             assertEquals(aiList.size(), agreement.getItems().size());
 
@@ -230,7 +268,7 @@ public class AgreementTest {
             assertEquals(aiList.size(), agreement.getItems().size());
             assertEquals(item2, agreement.getItem(item2.getProductId()));
 
-            agreement.removeItem(103);
+            agreement.removeItem(product1.getId());
             aiList.remove(1);
             assertEquals(aiList.size() , agreement.getItems().size());
 
@@ -245,7 +283,6 @@ public class AgreementTest {
         try{
             agreement.setItems(makeItemList());
 
-            assertTrue(agreement.itemExists(103));
             assertFalse(agreement.itemExists(10005));
         }
         catch(Exception e){

@@ -108,4 +108,9 @@ public class StockReport {
     public void setInDelivery(int i) {
         amountInDeliveries=i;
     }
+
+    public void channgeInDelivery(int amount) {
+        amountInDeliveries+=amount;
+        dataMapper.updateInDelivery(productID, storeID, amountInDeliveries);
+    }
 }

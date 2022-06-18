@@ -1,10 +1,7 @@
 package Presentation.CLIPresentation.Screens.Document;
 
 import Globals.util.HumanInteraction;
-import Presentation.CLIPresentation.Objects.Document.*;
 import Presentation.CLIPresentation.Screens.Screen;
-import Presentation.CLIPresentation.Objects.Document.DestinationDocument;
-import Presentation.CLIPresentation.Objects.Document.TransportDocument;
 
 public class DocumentMenu extends Screen {
     private static final String[] menuOptions = {
@@ -45,8 +42,8 @@ public class DocumentMenu extends Screen {
         int ddSN = 0;
         try {
             ddSN = getSNOfDestDocument();
-            DestinationDocument dd = controller.getDestinationDocument(ddSN);
-            dd.display();
+            //DestinationDocument dd = controller.getDestinationDocument(ddSN);
+            //dd.display();
 
         } catch (HumanInteraction.OperationCancelledException ignore){
         }catch (Exception e) {
@@ -58,8 +55,8 @@ public class DocumentMenu extends Screen {
         int tdSN = 0;
         try {
             tdSN = getSNOfTranDocument();
-            TransportDocument td = controller.getTransportDocument(tdSN);
-            td.display();
+            //TransportDocument td = controller.getTransportDocument(tdSN);
+            //td.display();
         }catch (HumanInteraction.OperationCancelledException ignore){
         }
         catch (Exception e) {

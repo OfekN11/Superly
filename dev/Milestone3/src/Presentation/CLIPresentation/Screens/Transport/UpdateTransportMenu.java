@@ -1,10 +1,7 @@
 package Presentation.CLIPresentation.Screens.Transport;
 
 import Globals.util.HumanInteraction;
-import Presentation.CLIPresentation.Objects.Transport.TransportOrder;
 import Presentation.CLIPresentation.Screens.Screen;
-
-import java.util.Set;
 
 public class UpdateTransportMenu extends Screen {
 
@@ -97,12 +94,12 @@ public class UpdateTransportMenu extends Screen {
     }
 
     private void viewOrders() throws Exception {
-        Set<TransportOrder> orders = controller.getPendingOrders();
+        /*Set<TransportOrder> orders = controller.getPendingOrders();
         System.out.println("Pending Orders List: ");
         for(TransportOrder to: orders )
         {
             to.display();
-        }
+        }*/
     }
 
     //TODO change this function after change
