@@ -23,12 +23,12 @@ public class DocumentControllerTest {
 
     @BeforeAll
     public static synchronized void setData() {
-        DAO.setDBForTests(CategoryTests.class);
+        DAO.setDBForTests(DocumentControllerTest.class);
     }
 
     @AfterAll
     public static void removeData() {
-        DAO.deleteTestDB(CategoryTests.class);
+        DAO.deleteTestDB(DocumentControllerTest.class);
     }
 
     @BeforeEach

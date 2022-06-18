@@ -25,12 +25,12 @@ public class SiteControllerTest {
     static DestinationsDAO destinationsDAO = new DestinationsDAO();
     @BeforeAll
     public static synchronized void setData() {
-        DAO.setDBForTests(CategoryTests.class);
+        DAO.setDBForTests(SiteControllerTest.class);
     }
 
     @AfterAll
     public static void removeData() {
-        DAO.deleteTestDB(CategoryTests.class);
+        DAO.deleteTestDB(SiteControllerTest.class);
     }
 
     @BeforeEach

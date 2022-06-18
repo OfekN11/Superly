@@ -12,7 +12,10 @@ public class TruckController {
 
     //TODO Change the exception
     public void removeTruck(int licenseNumber) throws Exception {
-        truckDataMapper.delete(licenseNumber);
+        if(truckDataMapper.delete(licenseNumber)==0){
+            throw new Exception("A truck with this license number doesn't exists!");
+        }
+
     }
 
     public void addTruck(int licenseNumber, TruckModel model, int netWeight, int maxCapacityWeight) throws Exception {
