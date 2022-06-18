@@ -1182,6 +1182,11 @@ public class SupplierController {
     }
 
 
-
-
+    public void deleteProduct(int id) throws Exception {
+        for(Supplier supplier : suppliersDAO.getAllSuppliers()) {
+            if (supplier.itemExists(id)) {
+                supplier.deleteItem(id, suppliersDAO);
+            }
+        }
+    }
 }

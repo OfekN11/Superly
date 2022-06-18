@@ -45,6 +45,7 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(ShiftMenu.class, "/ShiftMenu"),
             new AbstractMap.SimpleEntry<>(RegisterEmployee.class, "/RegisterEmployee"),
             new AbstractMap.SimpleEntry<>(RemoveEmployee.class, "/RemoveEmployee"),
+            new AbstractMap.SimpleEntry<>(ManageEmployee.class, "/ManageEmployee"),
 
 
             new AbstractMap.SimpleEntry<>(AddItemToAgreement.class, "/AddItemToAgreement"),

@@ -316,4 +316,10 @@ public class Product {
     public void addDelivery(int storeID, int amount) {
         getStockReport(storeID).addDelivery(amount);
     }
+
+    public void delete() {
+        removeLocation(1);
+        DEFECTIVE_ITEMS_DATA_MAPPER.deleteByProduct(id);
+        SALE_DATA_MAPPER.deleteByProduct(id);
+    }
 }
