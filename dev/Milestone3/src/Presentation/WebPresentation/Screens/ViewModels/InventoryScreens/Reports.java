@@ -32,7 +32,7 @@ public class Reports extends Screen {
         header(resp);
         greet(resp);
         printMenu(resp,new String[] {"Stock Reports"});
-        printForm(resp, new String[] {"start date", "end date", "IDs", "type", "by"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Store IDs (3,8,1)", "defective/damaged/expired", "store/category/product"}, new String[]{viewReportButton});
+        printForm(resp, new String[] {"start date", "end date", "IDs", "type", "by"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "IDs (3,8,1)", "defective/damaged/expired", "store/category/product"}, new String[]{viewReportButton});
         handleError(resp);
     }
 
