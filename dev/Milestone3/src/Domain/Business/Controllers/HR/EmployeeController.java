@@ -257,12 +257,11 @@ public class EmployeeController {
     }
 
     public void editCarrierLicenses(String id, Set<LicenseTypes> licences) throws Exception {
-        for(EditCarrierLicenseObserver observer:EDIT_CARRIER_LICENSE_OBSERVERS)
-            observer.observe(id,licences);
-
         Carrier carrier = employeeDataMapper.getCarrier(id);
         if (carrier == null)
             throw new Exception(String.format(EmployeeNotFoundErrorMsg, id));
+        for(EditCarrierLicenseObserver observer:EDIT_CARRIER_LICENSE_OBSERVERS)
+            observer.observe(id,licences);
         carrier.setLicences(licences);
         employeeDataMapper.save(carrier);
     }

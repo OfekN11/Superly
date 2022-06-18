@@ -49,7 +49,6 @@ public class ShiftMenu extends Screen {
         if (handleHeader(req, resp))
             return;
         switch (getIndexOfButtonPressed(req)){
-            //TODO
             case 0:
                 redirect(resp, ViewIncompleteShifts.class);
                 break;

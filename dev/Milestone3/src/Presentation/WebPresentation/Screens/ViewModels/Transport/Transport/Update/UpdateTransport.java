@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update;
 
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
 import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
 import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
 import Presentation.WebPresentation.Screens.Screen;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 public class UpdateTransport extends Screen {
     private static final String greet = "Update Transport Menu";
-    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Transport_Manager.class, Logistics_Manager.class));
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(HR_Manager.class, Transport_Manager.class, Logistics_Manager.class));
     private static final String[] forumOptions = {
             "Place truck",                  //1
             "Place carrier",                //2
@@ -45,7 +46,13 @@ public class UpdateTransport extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
         String id = getParamVal(req, "Transport ID");
-        if (!is_number(id)) {
+        if (isButtonPressed(req, "Exit")) {
+            redirect(resp,TransportManagementMenu.class);
+        }
+        else if (isButtonPressed(req, "View orders")) {
+            redirect(resp, ViewPendingOrders.class);
+        }
+        else if (!is_number(id)) {
             refresh(req, resp);
         }
         else  if (isButtonPressed(req, "Place truck")) {
@@ -69,19 +76,10 @@ public class UpdateTransport extends Screen {
                 refresh(req, resp);
             }
         }
-        else if (isButtonPressed(req, "Add order")) {
-            if (is_number(id)) {
-                redirect(resp, AddOrderToTransport.class, new String[]{"ID"}, new String[]{id});
-            } else {
-                refresh(req, resp);
-            }
-        }
         else {
             setError("Failure!");
         }
-        if (isButtonPressed(req, "Exit")) {
-            redirect(resp,TransportManagementMenu.class);
-        }
+
 
     }
 
@@ -91,7 +89,7 @@ public class UpdateTransport extends Screen {
             if(is_number(id)){
                 int transportId= Integer.parseInt(id);
                 controller.startTransport(transportId);
-                setError("Transport" + id + "started successfully");
+                setError("Transport " + id + " started successfully");
             }
         } catch (Exception e) {
             setError(e.getMessage());

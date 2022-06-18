@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
 import Domain.Service.util.Result;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
 import Presentation.WebPresentation.Screens.Screen;
@@ -42,9 +43,10 @@ public class Categories extends Screen{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
         if (isButtonPressed(req, deleteButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Admin.class)))) {
                 setError("You have no permission to delete category");
                 refresh(req, resp);
                 return;
@@ -69,7 +71,7 @@ public class Categories extends Screen{
             }
         }
         else if(isButtonPressed(req, addButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Admin.class)))) {
                 setError("You have no permission to add category");
                 refresh(req, resp);
                 return;

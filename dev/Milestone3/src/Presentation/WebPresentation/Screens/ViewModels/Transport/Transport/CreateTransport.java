@@ -5,6 +5,7 @@ import Globals.Enums.ShiftTypes;
 import Globals.Pair;
 import Globals.util.ShiftComparator;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
 import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
 import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
 import Presentation.WebPresentation.Screens.Screen;
@@ -23,7 +24,7 @@ public class CreateTransport extends Screen {
     private static final String greet = "Create new transport:";
     private static final String NO_SHIFTS = "There are no shifts in the coming month!";
     private static final String SUCCESS_MSG = "The transport was created successfully!";
-    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Transport_Manager.class, Logistics_Manager.class));
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(HR_Manager.class, Transport_Manager.class, Logistics_Manager.class));
     private String success = null;
     private static HashMap<String, Shift> shifts;
     public CreateTransport() {

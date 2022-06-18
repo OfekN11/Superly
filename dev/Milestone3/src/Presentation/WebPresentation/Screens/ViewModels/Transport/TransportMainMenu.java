@@ -3,6 +3,7 @@ package Presentation.WebPresentation.Screens.ViewModels.Transport;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
 import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
+import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Document.DocumentManagementMenu;
@@ -19,7 +20,7 @@ import java.util.Set;
 
 public class TransportMainMenu extends Screen {
     private static final String greet = "Transport's Main Menu";
-    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Transport_Manager.class, Logistics_Manager.class));
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(HR_Manager.class, Transport_Manager.class, Logistics_Manager.class));
 
     public TransportMainMenu() {
         super(greet, ALLOWED);
