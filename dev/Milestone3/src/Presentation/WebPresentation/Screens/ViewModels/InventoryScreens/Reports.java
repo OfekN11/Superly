@@ -1,33 +1,20 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
 import Domain.Service.Objects.InventoryObjects.DefectiveItemReport;
-import Domain.Service.Objects.InventoryObjects.Sale;
 import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
-import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
-import Domain.Service.Objects.InventoryObjects.Product;
-import Domain.Service.util.Result;
-import Presentation.WebPresentation.Screens.Models.HR.Employee;
-import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
-import Presentation.WebPresentation.Screens.Screen;
-import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.util.*;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Reports extends Screen {
@@ -55,6 +42,7 @@ public class Reports extends Screen {
         }
         header(resp);
         greet(resp);
+        printMenu(resp,new String[] {"Stock Reports"});
         printForm(resp, new String[] {"start date", "end date", "store IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Store IDs (3,8,1)"}, new String[]{defectiveByStoreButton});
         printForm(resp, new String[] {"start date", "end date", "category IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Category IDs (3,8,1)"}, new String[]{defectiveByCategoryButton});
         printForm(resp, new String[] {"start date", "end date", "product IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Product IDs (3,8,1)"}, new String[]{defectiveByProductButton});
@@ -71,6 +59,11 @@ public class Reports extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (handleHeader(req, resp))
             return;
+        switch (getIndexOfButtonPressed(req)) {
+            case 0 :
+                redirect(resp, StockReport.class);
+                break;
+        }
         if(isButtonPressed(req, defectiveByStoreButton)){
             if (!isAllowed(req, resp, Report.ALLOWED)) {
                 setError("You have no permission to view defective reports");

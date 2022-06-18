@@ -1,7 +1,10 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
+import Domain.Service.util.Result;
 import Globals.Pair;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
+import Presentation.WebPresentation.Screens.Models.HR.Storekeeper;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
@@ -10,10 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class TransportArrived extends Screen {
 
@@ -65,14 +65,34 @@ public class TransportArrived extends Screen {
             addReport(req, resp);
         }
         else if (isButtonPressed(req, doneButton)) {
-            transportArrived(resp);
+            transportArrived(req, resp);
         }
     }
 
-    private void transportArrived(HttpServletResponse resp) throws IOException {
-        controller.transportArrived(transport,
-                info);
-        redirect(resp, ManageInventory.class);
+    private void transportArrived(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Storekeeper.class)))) {
+            setError("You have no permission to accept order to the warehouse");
+            refresh(req, resp);
+            return;
+        }
+        try {
+            Result r = controller.transportArrived(transport, info);
+            if (r.isError()) {
+                setError(r.getError());
+                refresh(req, resp);
+            }
+            else {
+                redirect(resp, InventoryManagement.class);
+            }
+        }
+        catch (NumberFormatException e1){
+            setError("Please enter a number!");
+            refresh(req, resp);
+        }
+        catch (Exception e) {
+            setError(e.getMessage());
+            refresh(req, resp);
+        }
     }
 
     private void addReport(HttpServletRequest req, HttpServletResponse resp) throws IOException {
