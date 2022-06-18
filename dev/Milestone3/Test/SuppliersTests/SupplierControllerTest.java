@@ -6,6 +6,7 @@ import Domain.Business.Objects.Inventory.Category;
 import Domain.Business.Objects.Inventory.Product;
 import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
+import Domain.Business.Objects.Supplier.Supplier;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.StoreDAO;
 import Globals.Pair;
@@ -177,7 +178,8 @@ class SupplierControllerTest {
             controller.addAgreement(supId1, 1, "1 2 3 4 5 6 7");
             controller.addAgreement(supId2, 1, "1");
             ArrayList<Integer> result = controller.getAllRoutineSuppliersDeliveringTomorrow();
-            assertEquals(result.get(0), supId1);
+            Supplier sup = controller.suppliersDAO.getSupplier(supId1);
+            assertEquals(sup.getName(), "name");
 
         } catch (Exception e) {
             e.printStackTrace();

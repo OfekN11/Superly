@@ -105,9 +105,9 @@ class SupplierTest {
         try{
             supplierController.loadSuppliersData();
             List<LocalDate> dates = supplierController.getPossibleDates(1);
-            LocalDate now = LocalDate.now();
+            LocalDate now = LocalDate.now().plusDays(75);
             for(int i = 0; i <=7; i++ ){
-                assertTrue(dates.contains(now));
+                assertFalse(dates.contains(now));
                 now.plusDays(1);
             }
 
