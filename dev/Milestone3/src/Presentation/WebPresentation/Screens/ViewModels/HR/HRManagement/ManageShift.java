@@ -98,7 +98,7 @@ public class ManageShift extends Screen {
                     for (Domain.Service.Objects.Employee.Employee employee : assigned)
                         out.println(String.format("<option value=\"%s\">%s(ID - %s). %s</option>", employee.id, employee.name, employee.id, controller.getEmployeeWorkDetailsForCurrentMonth(employee.id)));
                     out.println("</select>");
-                    out.println(String.format("<input type=\"submit\" name=\"rem%s\" value=\"Add to shift\"><br>", title));
+                    out.println(String.format("<input type=\"submit\" name=\"rem%s\" value=\"Remove From shift\"><br><br>", title));
                 }
 
                 //MISC Buttons
