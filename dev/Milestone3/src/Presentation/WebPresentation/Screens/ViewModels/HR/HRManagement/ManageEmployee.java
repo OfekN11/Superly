@@ -198,7 +198,7 @@ public class ManageEmployee extends Screen {
         else if (isButtonPressed(req, "remLicenseBut")){
             try {
                 Carrier sCarrier = (Carrier)controller.getEmployee(getParamVal(req, "EmpID"));
-                LicenseTypes newLicense = LicenseTypes.valueOf(getParamVal(req, "addLicense"));
+                LicenseTypes newLicense = LicenseTypes.valueOf(getParamVal(req, "remLicense"));
                 Set<LicenseTypes> newLicenses = new HashSet<>(sCarrier.licenses);
                 newLicenses.remove(newLicense);
                 controller.editCarrierLicenses(sCarrier.id, newLicenses);
