@@ -17,9 +17,6 @@ public class AgreementItemTest {
 
     private AgreementItem item;
 
-
-
-
     @BeforeAll
     public synchronized static void setData() {
         DAO.setDBForTests(AgreementItemTest.class);
