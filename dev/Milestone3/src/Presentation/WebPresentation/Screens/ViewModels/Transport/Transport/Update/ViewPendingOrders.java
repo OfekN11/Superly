@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update;
 
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
 import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
 import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
 import Presentation.WebPresentation.Screens.Screen;
@@ -16,7 +17,7 @@ import java.util.*;
 
 public class ViewPendingOrders extends Screen {
     private static final String greet = "View Pending Orders";
-    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Transport_Manager.class, Logistics_Manager.class));
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(HR_Manager.class, Transport_Manager.class, Logistics_Manager.class));
     public ViewPendingOrders() {
         super(greet, ALLOWED);
     }

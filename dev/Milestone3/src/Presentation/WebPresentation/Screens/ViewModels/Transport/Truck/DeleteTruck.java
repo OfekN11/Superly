@@ -1,6 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Truck;
 
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
 import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
 import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
 import Presentation.WebPresentation.Screens.Screen;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 public class DeleteTruck extends Screen {
     private static final String greet = "Delete Truck:";
-    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Transport_Manager.class, Logistics_Manager.class));
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(HR_Manager.class, Transport_Manager.class, Logistics_Manager.class));
     private static final String SUCCESS_MSG = "Truck was successfully removed!";
     private String success = null;
     public DeleteTruck() {
