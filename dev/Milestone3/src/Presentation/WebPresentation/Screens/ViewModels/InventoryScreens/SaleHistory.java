@@ -31,7 +31,7 @@ public class SaleHistory extends Screen{
         greet(resp);
         String productOrCategory = getParamVal(req, "product or category");
         int ID = Integer.parseInt(getParamVal(req, "ID"));
-        Set<Sale> sales = productOrCategory=="product" ? controller.getSaleHistoryByProduct(ID).getValue() : controller.getSaleHistoryByCategory(ID).getValue();
+        Set<Sale> sales = productOrCategory.equals("product") ? controller.getSaleHistoryByProduct(ID).getValue() : controller.getSaleHistoryByCategory(ID).getValue();
         printSales(resp, sales);
         handleError(resp);
     }

@@ -18,8 +18,10 @@ import java.util.Set;
 public class SalaryCalculator extends Screen {
 
     private static final Set<Class<? extends Employee>> ALLOWED
-            = new HashSet<>(Arrays.asList(Carrier.class, Cashier.class, HR_Manager.class, Logistics_Manager.class,
-            Sorter.class, Storekeeper.class, Storekeeper.class, Transport_Manager.class));
+            = new HashSet<>();
+
+    private static final Set<Class<? extends Employee>> ALLOWED_TO_WATCH_OTHERS
+            = new HashSet<>(Arrays.asList(Admin.class, HR_Manager.class));
 
     private static final String GREET = "Salary Calculator";
 
@@ -33,10 +35,31 @@ public class SalaryCalculator extends Screen {
             redirect(resp, Login.class);
             return;
         }
+
+        String givenID = getParamVal(req, "EmpID");
+        Employee emp = Login.getLoggedUser(req);
+        if (givenID != null) {
+            if (givenID.equals(emp.id) || !isAllowed(req, resp, ALLOWED_TO_WATCH_OTHERS)) {
+                refresh(req, resp);
+                return;
+            }
+            try {
+                emp = new EmployeeFactory().createEmployee(controller.getEmployee(givenID));
+            } catch (Exception e) {
+                setError(e.getMessage());
+            }
+        }
+        else if (emp instanceof Admin){
+            redirect(resp, Login.class);
+            return;
+        }
+
         header(resp);
         greet(resp);
-        String val;
         PrintWriter out = resp.getWriter();
+        out.println(String.format("<h3>Calculating salary for %s(ID - %s)</h3>", emp.name, emp.id));
+
+        String val;
         LocalDate start = LocalDate.now(), end = LocalDate.now();
         boolean startGiven = false, endGiven = false;
         if (startGiven = ((val = getParamVal(req, "start")) != null)) {
@@ -47,14 +70,13 @@ public class SalaryCalculator extends Screen {
         }
         out.println("<form method=\"post\">");
         out.println("<p>Enter start date to calculate from: </p>");
-        out.println(String.format("<input type=\"date\" name=\"start\" value=\"%s\"><br><br>", start));
+        out.println(String.format("<input type=\"date\" name=\"startIn\" value=\"%s\"><br><br>", start));
         out.println("<p>Enter end date to calculate to: </p>");
-        out.println(String.format("<input type=\"date\" name=\"end\" value=\"%s\"><br><br>", end));
+        out.println(String.format("<input type=\"date\" name=\"endIn\" value=\"%s\"><br><br>", end));
         out.println("<input type=\"submit\" name=\"calculate\" value=\"calculate\"><br><br>");
         out.println("</form>");
 
-        if (startGiven && endGiven) {
-            Employee emp = Login.getLoggedUser(req);
+        if (startGiven && endGiven && !isError()) {
             int numOfShifts = 0;
             try {
                 numOfShifts = controller.getEmployeeShiftsBetween(emp.id, start, end).size();
@@ -79,6 +101,9 @@ public class SalaryCalculator extends Screen {
         if (handleHeader(req, resp))
             return;
         if (isButtonPressed(req, "calculate"))
-            refresh(req, resp, new String[]{"start", "end"}, new String[]{req.getParameter("start"), req.getParameter("end")});
+            if (getParamVal(req, "EmpID") != null)
+                refresh(req, resp, new String[]{"start", "end", "EmpID"}, new String[]{req.getParameter("startIn"), req.getParameter("endIn"), req.getParameter("EmpID")});
+            else
+                refresh(req, resp, new String[]{"start", "end"}, new String[]{req.getParameter("startIn"), req.getParameter("endIn")});
     }
 }

@@ -53,12 +53,12 @@ public class Category {
         CATEGORY_DATA_MAPPER.updateParentCategory(getID(),newParentCategory==null ? null : newParentCategory.getID());
     }
     public List<Product> getAllProductsInCategory() {
-        List<Product> output = new ArrayList<>();
+//         output = new ArrayList<>();
         //if (products.isEmpty()) {
-        //output = PRODUCT_DATA_MAPPER.getProductsFromCategory(ID);
+        List<Product> output = PRODUCT_DATA_MAPPER.getProductsFromCategory(ID);
         //}
         //else
-        output.addAll(products);
+//        output.addAll(products);
         for (Category c : subcategories) {
             output.addAll(c.getAllProductsInCategory());
         }

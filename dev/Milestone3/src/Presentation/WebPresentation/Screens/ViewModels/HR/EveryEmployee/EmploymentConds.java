@@ -15,8 +15,10 @@ import java.util.Set;
 
 public class EmploymentConds extends Screen {
     private static final Set<Class<? extends Employee>> ALLOWED
-            = new HashSet<>(Arrays.asList(Carrier.class, Cashier.class, HR_Manager.class, Logistics_Manager.class,
-            Sorter.class, Storekeeper.class, Storekeeper.class, Transport_Manager.class));
+            = new HashSet<>();
+
+    private static final Set<Class<? extends Employee>> ALLOWED_TO_WATCH_OTHERS
+            = new HashSet<>(Arrays.asList(Admin.class, HR_Manager.class));
 
     private static final String GREET = "";
 
@@ -30,16 +32,35 @@ public class EmploymentConds extends Screen {
             redirect(resp, Login.class);
             return;
         }
+        String givenID = getParamVal(req, "EmpID");
+        Employee employee = Login.getLoggedUser(req);
+        if (givenID != null) {
+            if (givenID.equals(employee.id) || !isAllowed(req, resp, ALLOWED_TO_WATCH_OTHERS)) {
+                refresh(req, resp);
+                return;
+            }
+            try {
+                employee = new EmployeeFactory().createEmployee(controller.getEmployee(givenID));
+            } catch (Exception e) {
+                setError(e.getMessage());
+            }
+        }
+        else if (employee instanceof Admin){
+            redirect(resp, Login.class);
+            return;
+        }
+
         header(resp);
-        try {
-            Employee employee = Login.getLoggedUser(req);
-            PrintWriter out = resp.getWriter();
-            out.println(String.format("<h1>%s's Employment Conditions</h1><br><br>", employee.name));
-            out.println("<p>");
-            out.println(controller.getEmploymentConditionsOf(employee.id).replaceAll("\n", "<br>"));
-            out.println("</p>");
-        } catch (Exception e) {
-            setError(e.getMessage());
+        if (!isError()) {
+            try {
+                PrintWriter out = resp.getWriter();
+                out.println(String.format("<h1>%s's Employment Conditions</h1><br><br>", employee.name));
+                out.println("<p>");
+                out.println(controller.getEmploymentConditionsOf(employee.id).replaceAll("\n", "<br>"));
+                out.println("</p>");
+            } catch (Exception e) {
+                setError(e.getMessage());
+            }
         }
         handleError(resp);
     }

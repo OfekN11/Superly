@@ -369,6 +369,13 @@ public class InventoryController {
     }
 
     public Boolean deleteProduct(int id){
+        getProduct(id).delete();
+        try {
+            supplierController.deleteProduct(id);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         int flag = PRODUCT_DATA_MAPPER.remove(Integer.toString(id));
         if(products.remove(id)!=null || flag!=-1)
             return true;
@@ -531,18 +538,6 @@ public class InventoryController {
         return lowOnStock;
     }
 
-//    public Product addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier) {
-//        Product product = getProduct(productID);
-//        product.addSupplier(supplierID, productIDWithSupplier);
-//        return product;
-//    }
-//
-//    public Product removeSupplierFromProduct(int productID, int supplierID) {
-//        Product product = getProduct(productID);
-//        product.removeSupplier(supplierID);
-//        return product;
-//    }
-
     public boolean isUnderMin(int storeID, int productID) {
         return getProduct(productID).isLow(storeID);
     }
@@ -649,4 +644,10 @@ public class InventoryController {
         return readyOrders;
     }
 
+    public int getTarget(int i, int productID) {
+        return getProduct(productID).getStockReport(i).getTargetAmountInStore();
+    }
+    public int getMin(int i, int productID) {
+        return getProduct(productID).getStockReport(i).getMinAmountInStore();
+    }
 }

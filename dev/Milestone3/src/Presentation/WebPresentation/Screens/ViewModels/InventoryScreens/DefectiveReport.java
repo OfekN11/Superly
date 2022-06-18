@@ -22,12 +22,12 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Report extends Screen {
+public class DefectiveReport extends Screen {
     public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
 
     private static final String greet = "Report";
 
-    public Report() {
+    public DefectiveReport() {
         super(greet, ALLOWED);
     }
 

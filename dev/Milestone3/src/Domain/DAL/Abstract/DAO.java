@@ -18,7 +18,6 @@ public abstract class DAO {
     private final static String UPDATE_QUERY = "UPDATE %s SET %s WHERE %s";
 
     public static void setDBForTests(Class testClass) {
-        //create and delete db?
         ConnectionHandler.setUrl(String.format("jdbc:sqlite:out/test/Milestone3/SuperlyTests%s.db", testClass.getName().replace('.','_')));
         try (Connection connection = DriverManager.getConnection(ConnectionHandler.getUrl())) {
             Statement statement = connection.createStatement();
