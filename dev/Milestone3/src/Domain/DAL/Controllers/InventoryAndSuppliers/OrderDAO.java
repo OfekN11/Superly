@@ -73,11 +73,13 @@ public class OrderDAO extends DataMapper<Order> {
 
     private OrderStatus getStatus(ResultSet instanceResult) throws SQLException {
         String status = instanceResult.getString(STATUS_COLOUMN);
-        //status : waiting, ordered
+        //status : waiting, ordered, complete
         if(status.equals("waiting"))
             return OrderStatus.waiting;
+        else if(status.equals("complete"))
+            return  OrderStatus.complete;
         else
-            return  OrderStatus.ordered;
+            return OrderStatus.ordered;
     }
 
     @Override
