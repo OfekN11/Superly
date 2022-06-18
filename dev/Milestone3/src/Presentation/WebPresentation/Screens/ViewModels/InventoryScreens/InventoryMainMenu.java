@@ -27,7 +27,7 @@ public class InventoryMainMenu extends Screen {
         }
         header(resp);
         greet(resp);
-        printMenu(resp, new String[]{"Manage Products", "Manage Categories", "Manage sales", "Manage inventory"});
+        printMenu(resp, new String[]{"Manage Products", "Manage Categories", "Manage Sales", "View Reports", "Manage Inventory"});
         handleError(resp);
     }
 
@@ -46,8 +46,10 @@ public class InventoryMainMenu extends Screen {
                 redirect(resp, Sales.class);
                 break;
             case 3:
-                redirect(resp, ManageInventory.class);
+                redirect(resp, Reports.class);
                 break;
+            case 4:
+                redirect(resp, InventoryManagement.class);
         }
     }
 }

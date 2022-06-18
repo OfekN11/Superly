@@ -18,9 +18,6 @@ public class SaleHistory extends Screen{
     private static final String greet = "Sales History";
     public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
 
-    private String productOrCategory;
-    private int ID;
-
     public SaleHistory() {
         super(greet,ALLOWED);
     }
@@ -32,8 +29,8 @@ public class SaleHistory extends Screen{
         }
         header(resp);
         greet(resp);
-        productOrCategory = getParamVal(req, "product or category");
-        ID = Integer.parseInt(getParamVal(req, "ID"));
+        String productOrCategory = getParamVal(req, "product or category");
+        int ID = Integer.parseInt(getParamVal(req, "ID"));
         Set<Sale> sales = productOrCategory=="product" ? controller.getSaleHistoryByProduct(ID).getValue() : controller.getSaleHistoryByCategory(ID).getValue();
         printSales(resp, sales);
         handleError(resp);
@@ -53,6 +50,7 @@ public class SaleHistory extends Screen{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
     }
 }
