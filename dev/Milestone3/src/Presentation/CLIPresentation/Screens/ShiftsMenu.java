@@ -2,8 +2,6 @@ package Presentation.CLIPresentation.Screens;
 
 import Domain.Service.Objects.Shift.Shift;
 import Globals.Enums.ShiftTypes;
-import static Globals.util.HumanInteraction.*;
-
 import Globals.util.ShiftComparator;
 import Presentation.BackendController;
 import Presentation.CLIPresentation.PresentationShiftBuilder;
@@ -11,6 +9,8 @@ import Presentation.CLIPresentation.PresentationShiftBuilder;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static Globals.util.HumanInteraction.*;
 
 
 public class ShiftsMenu extends Screen {

@@ -8,18 +8,20 @@ import Domain.Business.Objects.Supplier.Agreement.NotTransportingAgreement;
 import Domain.Business.Objects.Supplier.AgreementItem;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
-import InventoryTests.CategoryTests;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @NotThreadSafe
 public class AgreementTest {

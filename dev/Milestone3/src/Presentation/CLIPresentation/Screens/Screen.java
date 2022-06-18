@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static Globals.util.HumanInteraction.*;
+import static Globals.util.HumanInteraction.OperationCancelledException;
+import static Globals.util.HumanInteraction.getNumber;
 
 public abstract class Screen implements Runnable{
     protected final static Scanner scanner = new Scanner(System.in);

@@ -1,12 +1,6 @@
 package Domain.Service.Objects;
 
 
-import Globals.Enums.ShippingAreas;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-
 public class Transport {
     private int transportID;
     private String startTime;

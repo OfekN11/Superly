@@ -1,7 +1,6 @@
 package Domain.DAL.Controllers.EmployeeMappers;
 
 import Domain.Business.Objects.Employee.Transport_Manager;
-import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
 import java.util.HashMap;

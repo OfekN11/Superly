@@ -8,17 +8,18 @@ import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
 import Domain.DAL.Abstract.DAO;
 import Globals.Pair;
-import InventoryTests.CategoryTests;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * NOTE: The Tests assumes that the DB is empty

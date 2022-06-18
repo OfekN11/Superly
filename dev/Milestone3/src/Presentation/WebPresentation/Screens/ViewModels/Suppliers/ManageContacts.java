@@ -7,7 +7,6 @@ import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,7 +15,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class ManageContacts extends Screen {
 

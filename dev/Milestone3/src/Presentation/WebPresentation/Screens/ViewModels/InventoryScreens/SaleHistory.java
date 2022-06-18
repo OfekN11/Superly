@@ -1,7 +1,6 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
 import Domain.Service.Objects.InventoryObjects.Sale;
-import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;

@@ -1,7 +1,5 @@
 package Domain.Business.Objects;
 
-import Domain.Business.Objects.Site.Destination;
-import Domain.Business.Objects.Site.Source;
 import Globals.Enums.OrderStatus;
 
 import java.util.ArrayList;

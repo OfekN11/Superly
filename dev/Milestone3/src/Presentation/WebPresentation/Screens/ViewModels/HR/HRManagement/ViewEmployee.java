@@ -1,6 +1,5 @@
 package Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement;
 
-import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.util.EmployeeComparator;
 import Presentation.WebPresentation.Screens.Models.HR.Admin;

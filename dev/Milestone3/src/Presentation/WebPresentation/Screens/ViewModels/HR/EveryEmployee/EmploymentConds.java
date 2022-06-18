@@ -1,6 +1,9 @@
 package Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee;
 
-import Presentation.WebPresentation.Screens.Models.HR.*;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
+import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 

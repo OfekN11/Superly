@@ -3,7 +3,6 @@ package SuppliersTests;
 import Domain.Business.Objects.Supplier.Agreement.ByOrderAgreement;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
-import InventoryTests.CategoryTests;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;

@@ -1,19 +1,27 @@
 package Presentation;
 
 import Domain.Business.Controllers.InventoryController;
-import Domain.Service.util.Result;
-import Globals.Enums.*;
-import Globals.*;
 import Domain.Service.Objects.Employee.*;
 import Domain.Service.Objects.InventoryObjects.*;
 import Domain.Service.Objects.Shift.Shift;
-import Domain.Service.Objects.SupplierObjects.*;
-import Domain.Service.Services.HR.*;
-import Domain.Service.Services.*;
-import Domain.Service.Services.Transport.*;
+import Domain.Service.Objects.SupplierObjects.ServiceItemObject;
+import Domain.Service.Objects.SupplierObjects.ServiceOrderItemObject;
+import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
+import Domain.Service.Objects.SupplierObjects.ServiceSupplierObject;
+import Domain.Service.Services.HR.EmployeeService;
+import Domain.Service.Services.HR.ShiftService;
+import Domain.Service.Services.InventoryService;
+import Domain.Service.Services.SupplierService;
+import Domain.Service.Services.Transport.DocumentService;
+import Domain.Service.Services.Transport.OrderService;
+import Domain.Service.Services.Transport.TransportService;
+import Domain.Service.Services.Transport.TruckService;
+import Domain.Service.util.Result;
+import Globals.Enums.*;
+import Globals.Pair;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Factories.PresentationDocumentFactory;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Document.*;
-import Presentation.CLIPresentation.Objects.Transport.TransportOrder;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Document.DestinationDocument;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Document.TransportDocument;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Order;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Transport;
 

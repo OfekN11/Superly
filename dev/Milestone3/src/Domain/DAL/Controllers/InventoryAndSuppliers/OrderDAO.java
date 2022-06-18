@@ -2,19 +2,15 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 
 import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
-import Domain.Business.Objects.Truck;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.ConnectionHandler;
 import Globals.Enums.OrderStatus;
-import Globals.Enums.TruckModel;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class OrderDAO extends DataMapper<Order> {
 

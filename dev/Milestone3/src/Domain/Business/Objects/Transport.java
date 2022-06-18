@@ -1,8 +1,5 @@
 package Domain.Business.Objects;
 
-import Domain.Business.Objects.Document.TransportDocument;
-import Domain.Business.Objects.Site.Destination;
-import Domain.Business.Objects.Site.Source;
 import Domain.Business.Objects.Supplier.Order;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.ShippingAreas;

@@ -3,7 +3,6 @@ package Domain.DAL.Controllers.InventoryAndSuppliers;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.ConnectionHandler;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
