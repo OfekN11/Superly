@@ -162,7 +162,7 @@ public class TransportService {
     }
 
     public Result<Boolean> isThereAvailableCriersAndSupForTheWeek(){
-        return Result.makeOk(controller.isThereAvailableCriersAndSupForTheWeek());
-
+//        return Result.makeOk(controller.isThereAvailableCriersAndSupForTheWeek());
+        return null;
     }
 }
