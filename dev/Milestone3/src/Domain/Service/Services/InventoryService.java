@@ -808,4 +808,8 @@ public class InventoryService {
             return new ArrayList<>();
         }
     }
+
+    public void setSupplierController(SupplierController supplierController) {
+        controller.setSupplierController(supplierController);
+    }
 }
