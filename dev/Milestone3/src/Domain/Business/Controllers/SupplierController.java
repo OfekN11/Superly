@@ -448,6 +448,9 @@ public class SupplierController {
         if(!supplierExist(supId)){
             throw new Exception("The supplier does not exists!");
         }
+        if(!inventoryController.getStoreIDs().contains(storeId)){
+            throw new Exception("The store does not exists!");
+        }
         Order order = suppliersDAO.getSupplier(supId).addNewOrder(storeId, orderDAO, suppliersDAO.getAgreementController());
         return order.getId();
     }
@@ -516,7 +519,7 @@ public class SupplierController {
 
         Order order = suppliersDAO.getSupplier(supId).getOrderFromList(orderId, orderDAO);
 
-        if(order.itemExists(itemId)){
+        if(!order.itemExists(itemId)){
             throw new Exception("Error!\nThe order does not contains this item.");
         }
 

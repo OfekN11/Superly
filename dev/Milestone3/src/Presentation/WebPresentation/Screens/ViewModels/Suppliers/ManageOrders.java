@@ -42,25 +42,15 @@ public class ManageOrders extends Screen {
 
         String val;
 
-        if ((val = getParamVal(req, "addOrder")) != null && val.equals("true")) {
-            String supId = getParamVal(req, "supId");
-            String storeId = getParamVal(req, "storeId");
-            if (storeId != null & supId != null)
-                addOrder(req, resp, storeId, supId);
-        } else if ((val = getParamVal(req, "viewAllOrders")) != null && val.equals("true")) {
+        if ((val = getParamVal(req, "viewAllOrders")) != null && val.equals("true")) {
             String supId = getParamVal(req, "supId");
             if (supId != null)
                 showAllOrders(req, resp, supId);
-        } else if ((val = getParamVal(req, "editOrder")) != null && val.equals("true")) {
-            String orderId = getParamVal(req, "orderId");
-            if (orderId != null)
-                editOrder(req, resp, orderId);
         } else if ((val = getParamVal(req, "viewOrder")) != null && val.equals("true")) {
             String orderId = getParamVal(req, "orderId");
             if (orderId != null)
                 printOrder(req, resp, orderId);
         }
-
         handleError(resp);
     }
 
@@ -86,28 +76,21 @@ public class ManageOrders extends Screen {
         handleHeader(req, resp);
 
         if (isButtonPressed(req, "Add Order")){
-            String supplierId = req.getParameter("supplierId");
-            String storeId = req.getParameter("storeId");
-            redirect(resp, ManageOrders.class, new String[]{"addOrder","supId","storeId"}, new String[]{"true",supplierId, storeId});
-            //addOrder(req, resp);
+            addOrder(req, resp);
         }
         else if(isButtonPressed(req, "Remove Order")){
             removeOrder(req, resp);
         }
         else if(isButtonPressed(req, "Edit Order")){
-            String orderId = req.getParameter("orderId2");
-            redirect(resp, ManageOrders.class, new String[]{"editOrder", "orderId"}, new String[]{"true", orderId});
-            //editOrder(req, resp);
+            editOrder(req, resp);
         }
         else if(isButtonPressed(req, "View Order")){
             String orderId = req.getParameter("orderId3");
             redirect(resp, ManageOrders.class, new String[]{"viewOrder", "orderId"}, new String[]{"true", orderId});
-            //printOrder(req, resp);
         }
         else if(isButtonPressed(req,"View Orders From Supplier")){
             String supplierId = req.getParameter("supplierId");
             redirect(resp, ManageOrders.class, new String[]{"viewAllOrders","supId"}, new String[]{"true",supplierId});
-            //showAllOrders(req, resp);
         }
 
     }
@@ -159,23 +142,22 @@ public class ManageOrders extends Screen {
         }
     }
 
-    private void editOrder(HttpServletRequest req, HttpServletResponse resp, String orderIdString) throws IOException {
+    private void editOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            int orderId = Integer.parseInt(orderIdString);
+            int orderId = Integer.parseInt(req.getParameter("orderId2"));
             int supplierId = controller.getSupplierWIthOrderID(orderId);
-            //addCookie(String.valueOf(orderId), "OrderIdToEditOrder", resp, 10);
             if(supplierId != -1)
                 redirect(resp, EditOrder.class, new String[]{"supId","orderId"},  new String[]{String.valueOf(supplierId),String.valueOf(orderId) });
             else{
                 setError(String.format("Didn't found Supplier with Order number %d", orderId));
-                //refresh(req, resp);
+                refresh(req, resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            //refresh(req, resp);
+            refresh(req, resp);
         } catch (Exception e) {
             setError(e.getMessage());
-            //refresh(req, resp);
+            refresh(req, resp);
         }
     }
 
@@ -201,25 +183,25 @@ public class ManageOrders extends Screen {
         }
     }
 
-    private void addOrder(HttpServletRequest req, HttpServletResponse resp, String storeIdString, String supplierIdString) throws IOException {
+    private void addOrder(HttpServletRequest req, HttpServletResponse resp/*, String storeIdString, String supplierIdString*/) throws IOException {
         try {
-            int supplierId = Integer.parseInt(supplierIdString);
-            int storeId = Integer.parseInt(storeIdString);
+            int supplierId = Integer.parseInt(req.getParameter("supplierId"));
+            int storeId = Integer.parseInt(req.getParameter("storeId"));
             int orderId = controller.order(supplierId, storeId);
             if(orderId != -1){
                 redirect(resp, AddOrderItem.class, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
             }
             else{
                 setError("Order wasn't added!");
-                //refresh(req, resp);
+                refresh(req, resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            //refresh(req, resp);
+            refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            //refresh(req, resp);
+            refresh(req, resp);
         }
 
     }

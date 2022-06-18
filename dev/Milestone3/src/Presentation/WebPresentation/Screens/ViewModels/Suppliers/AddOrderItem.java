@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class AddOrderItem extends Screen {
@@ -62,6 +63,10 @@ public class AddOrderItem extends Screen {
                     setError(String.format("Item %d already exists in Order %d!. If you want to add, use Update quantity", itemId, orderId));
                     refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
                 }
+                else if(quantity < 0) {
+                    setError(String.format("Quantity should be POSITIVE!", itemId, orderId));
+                    refresh(req, resp, new String[]{"supId", "orderId"}, new String[]{String.valueOf(supplierId), String.valueOf(orderId)});
+                }
                 else {
                     if (controller.addItemToOrder(supplierId, orderId, itemId, quantity)) {
                         setError(String.format("Item %d added to Order %d!", itemId, orderId));
@@ -71,7 +76,15 @@ public class AddOrderItem extends Screen {
                         refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
                     }
                 }
-            }catch (Exception e) {
+
+            } catch(NoSuchElementException e) {
+                setError("Something went wrong, please try again");
+                refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
+            } catch (NumberFormatException e1){
+                setError("Please enter a number!");
+                refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
+            }
+            catch (Exception e) {
                 setError(e.getMessage());
                 refresh(req, resp, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
             }
