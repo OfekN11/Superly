@@ -20,21 +20,8 @@ import java.util.stream.Collectors;
 public class Reports extends Screen {
 
     private static final String greet = "Reports";
-
     private static final String viewReportButton = "View defective reports";
-
-    /*private static final String defectiveByStoreButton = "Get defective items report by store";
-    private static final String defectiveByCategoryButton = "Get defective items report by category";
-    private static final String defectiveByProductButton = "Get defective items report by product";
-    private static final String damagedByStoreButton = "Get damaged items report by store";
-    private static final String damagedByCategoryButton = "Get damaged items report by category";
-    private static final String damagedByProductButton = "Get damaged items report by product";
-    private static final String expiredByStoreButton = "Get expired items report by store";
-    private static final String expiredByCategoryButton = "Get expired items report by category";
-    private static final String expiredByProductButton = "Get expired items report by product";*/
-
     public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>();
-
     public Reports() { super(greet, ALLOWED); }
 
     @Override
@@ -46,15 +33,6 @@ public class Reports extends Screen {
         greet(resp);
         printMenu(resp,new String[] {"Stock Reports"});
         printForm(resp, new String[] {"start date", "end date", "IDs", "type", "by"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Store IDs (3,8,1)", "defective/damaged/expired", "store/category/product"}, new String[]{viewReportButton});
-        /*printForm(resp, new String[] {"start date", "end date", "store IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Store IDs (3,8,1)"}, new String[]{defectiveByStoreButton});
-        printForm(resp, new String[] {"start date", "end date", "category IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Category IDs (3,8,1)"}, new String[]{defectiveByCategoryButton});
-        printForm(resp, new String[] {"start date", "end date", "product IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Product IDs (3,8,1)"}, new String[]{defectiveByProductButton});
-        printForm(resp, new String[] {"start date", "end date", "store IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Store IDs (3,8,1)"}, new String[]{damagedByStoreButton});
-        printForm(resp, new String[] {"start date", "end date", "category IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Category IDs (3,8,1)"}, new String[]{damagedByCategoryButton});
-        printForm(resp, new String[] {"start date", "end date", "product IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Product IDs (3,8,1)"}, new String[]{damagedByProductButton});
-        printForm(resp, new String[] {"start date", "end date", "store IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Store IDs (3,8,1)"}, new String[]{expiredByStoreButton});
-        printForm(resp, new String[] {"start date", "end date", "category IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Category IDs (3,8,1)"}, new String[]{expiredByCategoryButton});
-        printForm(resp, new String[] {"start date", "end date", "product IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Product IDs (3,8,1)"}, new String[]{expiredByProductButton});*/
         handleError(resp);
     }
 
@@ -67,12 +45,6 @@ public class Reports extends Screen {
                 redirect(resp, StockReport.class);
                 break;
         }
-        /*String x = Integer.toString(getIndexOfButtonPressed(req));
-        setError(x);
-        refresh(req, resp);
-        return;*/
-        //redirect(resp, Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"defective", "by store", "1,2,3,4,5", "2022-01-01", "2023-12-31"});
-        //redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"defective", "by store", IDsString, startDateStr, endDateStr});
         if(isButtonPressed(req, viewReportButton)){
             if (!isAllowed(req, resp, Report.ALLOWED)) {
                 setError("You have no permission to view defective reports");

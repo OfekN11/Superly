@@ -60,7 +60,7 @@ public class Products extends Screen{
                     setError("Product ID " + productID + " doesn't exist");
                     refresh(req, resp);
                 }
-                else if (controller.removeProductFromStore(1, productID).isOk() && controller.deleteProduct(productID).getValue()){
+                else if (controller.deleteProduct(productID).getValue()){
                     setError("Product has been removed");
                     refresh(req, resp);
                 }
