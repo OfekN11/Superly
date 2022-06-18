@@ -219,14 +219,14 @@ public class ShiftService {
      *
      * @return Result detailing success of operation
      */
-    public Result<Object> deleteData() {
+    /*public Result<Object> deleteData() {
         try {
             controller.deleteData();
         } catch (Exception e) {
             return Result.makeError(e.getMessage());
         }
         return Result.makeOk(null);
-    }
+    }*/
 
     //MISC
 

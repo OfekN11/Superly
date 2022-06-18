@@ -67,6 +67,7 @@ public class OrderController {
         int place = 0 ;
         for (Order order:alertOrders) {
             message[place] = "Order "+order.getId()+" cannot be in transport in a week from now";
+            place++;
         }
         return message;
     }

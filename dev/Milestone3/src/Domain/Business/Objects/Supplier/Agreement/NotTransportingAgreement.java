@@ -16,7 +16,7 @@ public class NotTransportingAgreement extends Agreement {
 
     @Override
     public int daysToDelivery() {
-        return -1; // means not delivering
+        return 2; // means not delivering
     }
 
     public List<Integer> getDays() {
