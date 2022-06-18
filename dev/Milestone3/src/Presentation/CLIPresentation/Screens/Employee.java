@@ -65,24 +65,24 @@ public abstract class Employee extends Screen {
     }
 
     protected void setName(String name) throws Exception {
-        controller.editEmployeeName(this, name);
+        controller.editEmployeeName(getID(), name);
         this.name = name;
         updateEmploymentConditions();
     }
 
     protected void setBankDetails(String bankDetails) throws Exception {
-        controller.editEmployeeBankDetails(this, bankDetails);
+        controller.editEmployeeBankDetails(getID(), bankDetails);
         this.bankDetails = bankDetails;
     }
 
     protected void setSalary(int salary) throws Exception {
-        controller.editEmployeeSalary(this, salary);
+        controller.editEmployeeSalary(getID(), salary);
         this.salary = salary;
         updateEmploymentConditions();
     }
 
     protected void setCertifications(Set<Certifications> certifications) throws Exception {
-        controller.editEmployeeCertifications(this, certifications);
+        controller.editEmployeeCertifications(getID(), certifications);
         this.certifications = certifications;
     }
 
