@@ -30,6 +30,7 @@ public abstract class SupplierMainMenu extends Screen {
 
     protected void viewSupplier(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
+            //
             int supplierId = Integer.parseInt(req.getParameter("ID"));
             if(controller.doesSupplierExists(supplierId)) {
                 redirect(resp, ViewSupplier.class, new String[]{"supId"},new String[]{String.valueOf(supplierId)});
