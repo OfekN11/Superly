@@ -64,8 +64,7 @@ public class Category extends Screen{
             try {
                 int newParentID = Integer.parseInt(req.getParameter("new parent"));
                 if(controller.changeCategoryParent(categoryID, newParentID).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed parent category of category %d to %d", categoryID, controller.getCategory(newParentID).getValue().getName())));
+                    setError("Category parent has beed changed to: " + controller.getCategory(newParentID).getValue().getName());
                     refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
                 }
                 else{
@@ -90,8 +89,7 @@ public class Category extends Screen{
             try {
                 String newName = req.getParameter("new name");
                 if(controller.editCategoryName(categoryID, newName).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed name of category %d to %s", categoryID, newName)));
+                    setError("Category name has been changed to: " + newName);
                     refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
                 }
                 else{

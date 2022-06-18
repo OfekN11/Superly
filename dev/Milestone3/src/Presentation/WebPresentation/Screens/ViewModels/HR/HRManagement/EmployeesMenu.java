@@ -52,12 +52,14 @@ public class EmployeesMenu extends Screen {
         switch (getIndexOfButtonPressed(req)){
             //TODO
             case 0:
-            case 2:
                 setError("not implemented yet");
                 refresh(req, resp);
                 break;
             case 1:
                 redirect(resp, RegisterEmployee.class);
+                break;
+            case 2:
+                redirect(resp, ManageEmployee.class);
                 break;
             case 3:
                 redirect(resp, RemoveEmployee.class);

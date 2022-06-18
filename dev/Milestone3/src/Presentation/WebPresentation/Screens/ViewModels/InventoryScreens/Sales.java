@@ -77,8 +77,7 @@ public class Sales extends Screen{
             try {
                 int saleID = Integer.parseInt(req.getParameter("ID"));
                 if(controller.removeSale(saleID).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Deleted sale %d", saleID)));
+                    setError("Sale " + saleID + " has been deleted");
                     refresh(req, resp);
                 }
                 else{
@@ -115,8 +114,7 @@ public class Sales extends Screen{
                     refresh(req, resp);
                 }
                 else if(controller.addSale(categories, products, percent, startDate, endDate).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Added new sale")));
+                    setError("Sale has been added successfully");
                     refresh(req, resp);
                 }
                 else{

@@ -62,8 +62,7 @@ public class InventoryManagement extends Screen {
                 int productID = Integer.parseInt(req.getParameter("product ID"));
                 int amount = Integer.parseInt(req.getParameter("amount"));
                 if(controller.moveItems(storeID, productID, amount).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format(amount + " items of product " + productID + " were moved from store " + storeID + " to the warehouse")));
+                    setError(amount + " items of product " + productID + " has been moved from the store to the warehouse");
                     refresh(req, resp);
                 }
                 else{
@@ -92,8 +91,7 @@ public class InventoryManagement extends Screen {
                 LocalDate dateBought = LocalDate.parse(req.getParameter("date bought"));
                 Result<Double> refund = controller.returnItems(storeID, productID, amount, dateBought);
                 if(refund.isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format(amount + " items of product " + productID + " were returned to store " + storeID + " with " + refund.getValue() + " refund to the customer")));
+                    setError(amount + " items of product " + productID + " has been returned to the store with " + refund.getValue() + " refund to the customer");
                     refresh(req, resp);
                 }
                 else{
@@ -122,11 +120,11 @@ public class InventoryManagement extends Screen {
                 Result<Pair<Double, String>> priceAndMessage = controller.buyItems(storeID, productID, amount);
                 if(priceAndMessage.isOk()) {
                     double price = priceAndMessage.getValue().getLeft();
-                    String message = priceAndMessage.getValue().getRight();
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format(amount + " items of product " + productID + " were bought in store " + storeID + " at a price of " + price)));
-                    if (message!=null)
-                        setError(message);
+                    String message1 = priceAndMessage.getValue().getRight();
+                    String message2 = amount + " items of product " + productID + " were bought in the store at a price of " + price;
+                    setError(message2);
+                    if (message1!=null)
+                        setError(message2 + "<br>" + message1);
                     refresh(req, resp);
                 }
                 else{
@@ -157,8 +155,7 @@ public class InventoryManagement extends Screen {
                 String damagedOrExpired = req.getParameter("damaged or expired");
                 int employeeID = Integer.parseInt(Login.getLoggedUser(req).id);
                 if(damagedOrExpired.equals("damaged") ? controller.reportDamaged(storeID, productID, amount, employeeID, description, location.equals("warehouse")).isOk() : controller.reportExpired(storeID, productID, amount, employeeID, description, location.equals("warehouse")).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format(amount + " items of product " + productID + " were found " + damagedOrExpired + " in " + location + " " + storeID + " by employee " + employeeID + ". Description: " + description)));
+                    setError(amount + " items of product " + productID + " were found " + damagedOrExpired + " in the " + location + " by employee " + employeeID + "<br>Description: " + description);
                     refresh(req, resp);
                 }
                 else{
