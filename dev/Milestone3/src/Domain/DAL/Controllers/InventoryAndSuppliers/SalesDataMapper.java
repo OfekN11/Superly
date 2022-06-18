@@ -150,7 +150,7 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
     public void updateEndDate(int saleID, LocalDate date) {

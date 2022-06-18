@@ -191,7 +191,7 @@ public abstract class Shift {
     }
 
     public Set<String> getCarrierIDs() {
-        return carrierIDs;
+        return new HashSet<>(carrierIDs);
     }
 
     public void setCarrierIDs(Set<String> carrierIDs) throws Exception {

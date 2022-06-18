@@ -53,6 +53,6 @@ public class StoreDAO extends DAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 }

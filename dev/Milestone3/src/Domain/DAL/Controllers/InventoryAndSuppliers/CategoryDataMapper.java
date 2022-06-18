@@ -112,7 +112,7 @@ public class CategoryDataMapper extends DataMapper<Category> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
     public void removeTestCategories() {

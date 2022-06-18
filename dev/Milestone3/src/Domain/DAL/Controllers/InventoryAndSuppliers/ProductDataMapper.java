@@ -159,7 +159,7 @@ public class ProductDataMapper extends DataMapper<Product> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
     public void removeTestProducts() {
