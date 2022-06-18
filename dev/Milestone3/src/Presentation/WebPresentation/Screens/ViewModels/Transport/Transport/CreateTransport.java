@@ -86,7 +86,7 @@ public class CreateTransport extends Screen {
         shifts = new LinkedHashMap();
         try {
             LocalDate today = LocalDate.now();
-            LocalDate nextMonth = today.plusMonths(1);
+            LocalDate nextMonth = today.plusMonths(2);
             for(Shift shift: controller.getShiftsBetween(today, nextMonth).stream().sorted(new ShiftComparator()).collect(Collectors.toList())){
                 shifts.put(shift.toString(), shift);
             }

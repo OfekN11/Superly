@@ -38,7 +38,7 @@ public class TransportController {
         documentController = new DocumentController();
     }
     public Transport createTransport(Pair<LocalDate,ShiftTypes> shift) throws Exception {
-        if(shiftController.getShift(shift.getLeft(),shift.getRight()).getStorekeeperCount()>0){
+        if(shiftController.getShift(shift.getLeft(),shift.getRight()).getStorekeeperIDs().size()>0){
             Transport transport = new Transport(shift);
             transportDataMapper.save(transport);
             return transport;
@@ -136,7 +136,7 @@ public class TransportController {
     public Pair<Boolean,ShiftTypes> canCreateTransportInShift(ShiftTypes shift,LocalDate d){
         try {
             Shift s = shiftController.getShift(d,shift);
-            if(s.getStorekeeperCount()>0 && getTransportsInShift(getAllTransports(),new Pair<>(d,shift)).size()<truckController.getTruckNumber()){
+            if(s.getStorekeeperIDs().size()>0 && getTransportsInShift(getAllTransports(),new Pair<>(d,shift)).size()<truckController.getTruckNumber()){
                 return new Pair<>(true,shift);
             }
         } catch (Exception e) {

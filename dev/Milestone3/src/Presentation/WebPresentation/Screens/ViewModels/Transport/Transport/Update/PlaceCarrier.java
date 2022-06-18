@@ -63,20 +63,19 @@ public class PlaceCarrier extends Screen {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
-
         if (isButtonPressed(req, "Place")){
             try {
                 if(transportSN != NOT_TRANSPORT){
                     int carrierID = getCarrierID(req);
                     controller.placeCarrier(transportSN, carrierID);
                     setSuccess(SUCCESS_MSG);
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"ID"}, new String[]{String.valueOf(transportSN)});
                 }
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ID"}, new String[]{String.valueOf(transportSN)});
             }
             catch (Exception e) {
                 setError(e.getMessage());
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ID"}, new String[]{String.valueOf(transportSN)});
             }
         }
         else if(isButtonPressed(req, "Cancel"))
@@ -84,7 +83,7 @@ public class PlaceCarrier extends Screen {
     }
     private int getTransportSN(HttpServletRequest req){
         String val;
-        if ((val = getParamVal(req,"Transport ID")) != null){
+        if ((val = getParamVal(req,"ID")) != null){
             try
             {
                 return Integer.parseInt(val);

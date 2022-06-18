@@ -70,13 +70,13 @@ public class PlaceTruck extends Screen {
                     int ln = getLicenseNumber(req);
                     controller.placeTruck(transportSN, ln);
                     setSuccess(SUCCESS_MSG);
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"ID"}, new String[]{String.valueOf(transportSN)});
                 }
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ID"}, new String[]{String.valueOf(transportSN)});
             }
             catch (Exception e) {
                 setError(e.getMessage());
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ID"}, new String[]{String.valueOf(transportSN)});
             }
         }
         else if(isButtonPressed(req, "Cancel"))
