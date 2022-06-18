@@ -59,7 +59,7 @@ public class Sales extends Screen{
     private void printInstructions(HttpServletResponse resp) {
         try {
             PrintWriter out = resp.getWriter();
-            out.println("Enter 0 for no products or no categories<br>");
+            out.println("Enter 0 for no products or no categories<br><br>");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -210,10 +210,11 @@ public class Sales extends Screen{
             List<Domain.Service.Objects.InventoryObjects.Sale> sales = controller.getRemovableSales().getValue();
             PrintWriter out = resp.getWriter();
             sales.sort(Comparator.comparingInt(Domain.Service.Objects.InventoryObjects.Sale::getSaleID));
-            out.println("SALES<br>");
+            out.println("REMOVABLE SALES:<br>");
             for (Domain.Service.Objects.InventoryObjects.Sale s: sales) {
-//                out.println(String.format("%s: %s%, %s-%s, %s, &s <br>"), s.getSaleID(), s.getPercent(), s.getStartDate(), s.getEndDate(), s.getCategories(), s.getProducts());
+                out.println("Sale ID: " + s.getSaleID() + " | Sale Percentage: " + s.getPercent() + " | Sale Start Date: " + s.getStartDate() + " | Sale End Date: " + s.getEndDate() + " | Sale Categories: " + s.getCategories() + " | Sale Products: " + s.getProducts() + "<br>");
             }
+            out.println("<br>");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -224,10 +225,11 @@ public class Sales extends Screen{
             List<Domain.Service.Objects.InventoryObjects.Product> products = controller.getProducts().getValue();
             PrintWriter out = resp.getWriter();
             products.sort(Comparator.comparingInt(Product::getId));
-            out.println("PRODUCTS<br>");
+            out.println("PRODUCTS:<br>");
             for (Product p: products) {
                 out.println(p.getName() + ": " + p.getId() + "<br>");
             }
+            out.println("<br>");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -238,10 +240,11 @@ public class Sales extends Screen{
             List<Domain.Service.Objects.InventoryObjects.Category> categories = controller.getCategories().getValue();
             PrintWriter out = resp.getWriter();
             categories.sort(Comparator.comparingInt(Category::getID));
-            out.println("CATEGORIES<br>");
+            out.println("CATEGORIES:<br>");
             for (Domain.Service.Objects.InventoryObjects.Category c: categories) {
                 out.println(c.getName() + ": " + c.getID() + "<br>");
             }
+            out.println("<br>");
         } catch (Exception e) {
             e.printStackTrace();
         }

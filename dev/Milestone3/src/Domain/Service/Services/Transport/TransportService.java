@@ -160,4 +160,9 @@ public class TransportService {
             return Result.makeError(e.getMessage());
         }
     }
+
+    public Result<Boolean> isThereAvailableCriersAndSupForTheWeek(){
+//        return Result.makeOk(controller.isThereAvailableCriersAndSupForTheWeek());
+        return null;
+    }
 }

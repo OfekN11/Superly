@@ -1009,7 +1009,11 @@ public class SupplierController {
             int dayInt = getDayInt(today);
             for(Integer currDay : availableDays){
                 int addDays = (7 - dayInt + currDay) % 7;  //number of days to add
-                dates.add(today.plusDays(addDays));
+                LocalDate addDate = today.plusDays(addDays);
+                if(addDate.isEqual(today))
+                    dates.add(today.plusDays(7));
+                else
+                    dates.add(addDate);
 
                 //if today is 6 and the date is : 10/06
                 //if 2 is here we need to add him : ( 7+2-6 % 7= 3) = 13.6
@@ -1182,6 +1186,11 @@ public class SupplierController {
     }
 
 
-
-
+    public void deleteProduct(int id) throws Exception {
+        for(Supplier supplier : suppliersDAO.getAllSuppliers()) {
+            if (supplier.itemExists(id)) {
+                supplier.deleteItem(id, suppliersDAO);
+            }
+        }
+    }
 }

@@ -200,7 +200,9 @@ public class Product extends Screen {
             out.println("Original price: " + p.getOriginalPrice() + "<br>");
             out.println("Current price: " + p.getCurrentPrice() + "<br>");
             out.println("Weight: " + p.getWeight() + "<br>");
-            out.println("Manufacturer: " + p.getManufacturer() + "<br><br>");
+            out.println("Manufacturer: " + p.getManufacturer() + "<br>");
+            out.println("Minimum amount: " + controller.getMin(1, p.getId()) + "<br>");
+            out.println("Target amount: " + controller.getTarget(1, p.getId()) + "<br><br>");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -111,9 +111,12 @@ public class Category extends Screen{
             PrintWriter out = resp.getWriter();
             out.println("Category ID: " + c.getID() + "<br>");
             out.println("Category name: " + c.getName() + "<br>");
-            out.println("Parent category ID: " + c.getParentCategory() + "<br>");
+            out.println("Parent category ID: " + (c.getParentCategory()=="" ? "no parent" : c.getParentCategory()) + "<br>");
             out.println("Number of products: " + c.getNumOfProducts() + "<br>");
-            out.println("Sub categories IDs: " + c.getSubCategories() + "<br>");
+            out.println("Sub categories:");
+            for (Domain.Service.Objects.InventoryObjects.Category cat: c.getSubCategories()) {
+                out.println(" " + cat.getName() + ",");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

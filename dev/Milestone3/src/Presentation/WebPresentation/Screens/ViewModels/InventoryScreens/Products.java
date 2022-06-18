@@ -1,5 +1,6 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
+import Domain.Service.Objects.InventoryObjects.Category;
 import Domain.Service.Objects.InventoryObjects.Product;
 import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
@@ -41,6 +42,7 @@ public class Products extends Screen{
         printForm(resp, new String[] {"product name", "category ID", "weight", "price", "manufacturer", "min", "target", "shelves in store", "shelves in warehouse"},
                 new String[]{"Product name", "Category ID", "Weight", "Price", "Manufacturer", "Min", "Target", "Shelves in store", "Shelves in warehouse"}, new String[]{addButton});
         printProducts(resp);
+        printCategories(resp);
         handleError(resp);
     }
 
@@ -144,9 +146,25 @@ public class Products extends Screen{
            List<Product> products = controller.getProducts().getValue();
             PrintWriter out = resp.getWriter();
             products.sort(Comparator.comparingInt(Product::getId));
+            out.println("PRODUCTS:<br>");
             for (Product p: products) {
                 out.println(p.getName() + ": " + p.getId() + "<br>");
             }
+            out.println("<br>");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void printCategories(HttpServletResponse resp) {
+        try {
+            List<Domain.Service.Objects.InventoryObjects.Category> categories = controller.getCategories().getValue();
+            PrintWriter out = resp.getWriter();
+            categories.sort(Comparator.comparingInt(Category::getID));
+            out.println("CATEGORIES:<br>");
+            for (Domain.Service.Objects.InventoryObjects.Category c: categories) {
+                out.println(c.getName() + ": " + c.getID() + "<br>");
+            }
+            out.println("<br>");
         } catch (Exception e) {
             e.printStackTrace();
         }

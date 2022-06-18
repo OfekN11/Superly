@@ -1196,5 +1196,10 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
-
+    public int getTarget(int i, int productID) {
+        return inventoryService.getTarget(i, productID);
+    }
+    public int getMin(int i, int productID) {
+        return inventoryService.getMin(i, productID);
+    }
 }
