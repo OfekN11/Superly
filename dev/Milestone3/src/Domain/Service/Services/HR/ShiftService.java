@@ -214,20 +214,6 @@ public class ShiftService {
         return Result.makeOk(null);
     }
 
-    /**
-     * Calls for employee data deletion
-     *
-     * @return Result detailing success of operation
-     */
-    public Result<Object> deleteData() {
-        try {
-            controller.deleteData();
-        } catch (Exception e) {
-            return Result.makeError(e.getMessage());
-        }
-        return Result.makeOk(null);
-    }
-
     //MISC
 
     public Result<Set<Shift>> getEmployeeShiftsBetween(String id, LocalDate start, LocalDate end) {
