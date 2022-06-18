@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Products extends Screen{
 
@@ -37,8 +38,8 @@ public class Products extends Screen{
         greet(resp);
         printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{viewButton});
         printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{deleteButton});
-        printForm(resp, new String[] {"product name", "category ID", "weight", "price", "manufacturer"},
-                new String[]{"Product name", "Category ID", "Weight", "Price", "Manufacturer"}, new String[]{addButton});
+        printForm(resp, new String[] {"product name", "category ID", "weight", "price", "manufacturer", "min", "target", "shelves in store", "shelves in warehouse"},
+                new String[]{"Product name", "Category ID", "Weight", "Price", "Manufacturer", "Min", "Target", "Shelves in store", "Shelves in warehouse"}, new String[]{addButton});
         printProducts(resp);
         handleError(resp);
     }
@@ -60,8 +61,7 @@ public class Products extends Screen{
                     refresh(req, resp);
                 }
                 else if (controller.deleteProduct(productID).getValue()){
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Deleted product %d", productID)));
+                    setError("Product has been removed");
                     refresh(req, resp);
                 }
                 else {
@@ -89,10 +89,13 @@ public class Products extends Screen{
                 double weight = Double.parseDouble(req.getParameter("weight"));
                 double price = Double.parseDouble(req.getParameter("price"));
                 String manufacturer = req.getParameter("manufacturer");
-
-                if(controller.newProduct(productName, categoryID, weight, price, manufacturer).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Added new product %s", productName)));
+                int min = Integer.parseInt(req.getParameter("min"));
+                int target = Integer.parseInt(req.getParameter("target"));
+                List<Integer> shelvesInStore = (Arrays.asList(req.getParameter("shelves in store").split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
+                List<Integer> shelvesInWarehouse = (Arrays.asList(req.getParameter("shelves in warehouse").split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
+                Result<Product> p = controller.newProduct(productName, categoryID, weight, price, manufacturer);
+                if(p.isOk() && controller.addProductToStore(1, shelvesInStore, shelvesInWarehouse, p.getValue().getId(), min, target).isOk()) {
+                    setError("Product has been added successfully");
                     refresh(req, resp);
                 }
                 else{

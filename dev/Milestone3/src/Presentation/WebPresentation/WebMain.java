@@ -69,7 +69,7 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(InventoryMainMenu.class, "/InventoryMainMenu"),
             new AbstractMap.SimpleEntry<>(StockReport.class, "/StockReport"),
             new AbstractMap.SimpleEntry<>(Reports.class, "/Reports"),
-            new AbstractMap.SimpleEntry<>(Report.class, "/Report"),
+            new AbstractMap.SimpleEntry<>(DefectiveReport.class, "/DefectiveReport"),
             new AbstractMap.SimpleEntry<>(Products.class, "/Products"),
             new AbstractMap.SimpleEntry<>(Product.class, "/Product"),
             new AbstractMap.SimpleEntry<>(Categories.class, "/Categories"),
@@ -77,6 +77,7 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(Sales.class, "/Sales"),
             new AbstractMap.SimpleEntry<>(SaleHistory.class, "/Sale"),
             new AbstractMap.SimpleEntry<>(InventoryManagement.class, "/InventoryManagement"),
+            new AbstractMap.SimpleEntry<>(TransportArrived.class, "/TransportArrived"),
 
             new AbstractMap.SimpleEntry<>(TransportMainMenu.class, "/TransportMainMenu"),
             new AbstractMap.SimpleEntry<>(TruckManagementMenu.class, "/TransportMainMenu/TruckManagementMenu"),
