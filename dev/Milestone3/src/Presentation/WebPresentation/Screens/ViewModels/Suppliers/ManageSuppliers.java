@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class ManageSuppliers extends Screen {
 
-    private static final String greet = "Manage Suppliers for Storekeeper and Store Manager";
+    private static final String greet = "Manage Suppliers";
     private static final String removeButton = "Remove Supplier";
     private static final String addButton = "Add Supplier";
 

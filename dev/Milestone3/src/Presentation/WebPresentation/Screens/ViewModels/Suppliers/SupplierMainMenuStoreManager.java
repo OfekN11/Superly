@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class SupplierMainMenuStoreManager extends SupplierMainMenu {
 
-    private static final String greet = "Supplier's Main Menu for Store Manager!";
+    private static final String greet = "Supplier's Main Menu";
     private static final String button = "View Supplier";
 
     private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Admin.class));
