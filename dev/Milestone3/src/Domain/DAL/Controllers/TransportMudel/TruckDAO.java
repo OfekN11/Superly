@@ -55,6 +55,7 @@ public class TruckDAO extends DAO {
         if(!TRUCK_IDENTITY_MAP.containsKey(id)){
             try
             {
+                super.remove(instance.getLicenseNumber());
                 super.insert(Arrays.asList(id, instance.getModel(), instance.getNetWeight(), instance.getMaxCapacityWeight()));
             }
             catch (SQLException throwables) {
@@ -85,9 +86,9 @@ public class TruckDAO extends DAO {
         if(TRUCK_IDENTITY_MAP.containsKey(licenseNumber)){
             int ans = super.remove(licenseNumber);
             TRUCK_IDENTITY_MAP.remove(licenseNumber);
-            return ans;
+            return 1;
         }
-        throw new RuntimeException("A truck with this license number doesn't exists!");
+        return 0;
     }
     public int size(){
         return TRUCK_IDENTITY_MAP.size();

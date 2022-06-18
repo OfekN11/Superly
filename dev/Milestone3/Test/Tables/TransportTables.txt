@@ -9,8 +9,7 @@ CREATE TABLE "Destinations" (
 CREATE TABLE "DestinationsDocuments" (
 	"orderID"	INTEGER,
 	"destID"	TEXT,
-	"products"	TEXT,
-	PRIMARY KEY("orderID")
+	"products"	TEXT
 );
 
 CREATE TABLE "Sources" (
@@ -59,7 +58,7 @@ CREATE TABLE "Transports" (
 );
 
 CREATE TABLE "Trucks" (
-	"LicenseNumber "	TEXT,
+	"LicenseNumber"	TEXT,
 	"model"	TEXT,
 	"netWeight"	INTEGER,
 	"maxCapacityWeight"	INTEGER

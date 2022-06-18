@@ -25,6 +25,7 @@ public class Transport {
     private List<Integer> transportOrders;
     private HashMap<ShippingAreas, Integer> shippingAreas;
     private TransportStatus status;
+    private static final int MAX_TRANSPORT_WEIGHT = 15000;
     //TODO need to change the shift restart. the restart of Transport need to be with shift as argument
 
     private Pair<LocalDate, ShiftTypes> shift;
@@ -273,12 +274,17 @@ public class Transport {
         truckWeight = truckWeight + amount;
     }
 
-    public void initWeight(int weight){
+    public void initWeight(int weight) throws Exception {
         if(truckWeight == -1){
             truckWeight = weight;
         }
         else {
-            truckWeight = truckWeight + weight;
+            if(truckWeight + weight>MAX_TRANSPORT_WEIGHT){
+                throw new Exception("this order is above the maximum");
+            }
+            else{
+                truckWeight = truckWeight + weight;
+            }
         }
 
     }
