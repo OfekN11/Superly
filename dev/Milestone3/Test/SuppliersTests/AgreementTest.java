@@ -8,6 +8,7 @@ import Domain.Business.Objects.Supplier.Agreement.NotTransportingAgreement;
 import Domain.Business.Objects.Supplier.AgreementItem;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.AgreementController;
+import Domain.DAL.Controllers.InventoryAndSuppliers.StoreDAO;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -65,6 +66,8 @@ public class AgreementTest {
         agreement = new NotTransportingAgreement();
         bulkPrices = new HashMap<>();
         dao = new AgreementController();
+        StoreDAO storeDAO = new StoreDAO();
+        storeDAO.getAll();
     }
 
     private List<AgreementItem> makeItemList(){
@@ -92,7 +95,7 @@ public class AgreementTest {
 
         try{
             agreement.setItems(list);
-            assertEquals(list, agreement.getItems());
+            assertEquals(list.size(), agreement.getItems().size());
         }
         catch (Exception e){
             System.out.println(e.getMessage());

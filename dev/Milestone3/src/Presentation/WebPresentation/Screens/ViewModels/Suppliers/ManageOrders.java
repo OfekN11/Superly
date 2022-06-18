@@ -16,7 +16,7 @@ import java.util.*;
 
 public class ManageOrders extends Screen {
 
-    private static final String greet = "Manage orders for Storekeeper";
+    private static final String greet = "Manage orders";
     private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Storekeeper.class));
 
 
