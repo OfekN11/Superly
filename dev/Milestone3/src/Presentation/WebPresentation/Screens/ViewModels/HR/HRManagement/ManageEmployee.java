@@ -103,6 +103,7 @@ public class ManageEmployee extends Screen {
                 out.println(String.format("<input type=\"submit\" name=\"upcShifts\" value=\"View %s's upcoming shifts\"><br><br>", sEmp.name));
                 out.println(String.format("<input type=\"submit\" name=\"salCalc\" value=\"Calculate %s's salary\"><br><br>", sEmp.name));
                 out.println(String.format("<input type=\"submit\" name=\"delete\" value=\"Remove %s from the system\"><br><br>", sEmp.name));
+                out.println("</form>");
 
             } catch (Exception e){
                 setError(e.getMessage());

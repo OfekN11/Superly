@@ -43,7 +43,7 @@ public class AddShifts extends Screen {
         PrintWriter out = resp.getWriter();
         out.println("<form method=\"post\">");
         out.println("<p>Enter Date: </p>");
-        out.println(String.format("<input type=\"date\" name=\"date\" value=\"" + LocalDate.now() + "\"><br><br>"));
+        out.println("<input type=\"date\" name=\"date\" value=\"" + LocalDate.now() + "\"><br><br>");
         out.println("<p>Enter Type: </p>");
         out.println("<select name=\"type\">");
         for (ShiftTypes type: ShiftTypes.values())
@@ -53,6 +53,7 @@ public class AddShifts extends Screen {
             out.println(String.format("<p>Enter %s count: </p>", title.toString().replaceAll("_", " ")));
             out.println(String.format("<input type=\"number\" name=\"%sCount\" placeholder=\"%s Count\" value=\"0\" min=\"0\"><br><br>", title.toString().toLowerCase(), title));
         }
+        out.println("<input type=\"submit\" name=\"add\" value=\"add\"><br><br>");
         out.println("</form>");
 
         handleError(resp);
