@@ -1,25 +1,36 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update;
 
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
+import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PlaceTruck extends Screen {
     private static final String greet = "Place Truck";
     private static final String SUCCESS_MSG = "A truck was successfully place into transport!";
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Transport_Manager.class, Logistics_Manager.class));
     private static final int NOT_TRANSPORT = -1;
     private String success = null;
     private int transportSN = NOT_TRANSPORT;
     public PlaceTruck() {
-        super(greet);
+        super(greet, ALLOWED);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp, ALLOWED)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
         transportSN = getTransportSN(req);

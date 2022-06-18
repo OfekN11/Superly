@@ -404,6 +404,25 @@ public class TransportController {
 
     }
 
+    public void removeTruck(int licenseNumber) throws Exception {
+        if(!checkIfTruckPlaceInTransport(licenseNumber)){
+            truckController.removeTruck(licenseNumber);
+        }
+        else{
+            throw new Exception("This truck is already embedded in transports that are in progress or pending!");
+        }
+    }
+    private boolean checkIfTruckPlaceInTransport(int licenseNumber){
+        List<Transport> allTransports = getAllTransports();
+        for(Transport transport: allTransports){
+            if(transport.getTruckNumber() == licenseNumber &&
+                    (transport.getStatus() == TransportStatus.padding | transport.getStatus() == TransportStatus.inProgress)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 
 
