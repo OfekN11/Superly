@@ -30,18 +30,9 @@ import java.io.PrintWriter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-//ADD BUTTONS:
-    //viewReports
+public class Reports extends Screen {
 
-public class ManageInventory extends Screen {
-
-    private static final String greet = "Inventory and Reports";
-
-    private static final String moveButton = "Move items";
-    private static final String returnButton = "Return items";
-    private static final String buyButton = "Buy items";
-    private static final String arrivedButton = "Arrived items";
-    private static final String reportDefectiveButton = "Report defective items";
+    private static final String greet = "Reports";
 
     private static final String defectiveByStoreButton = "Get defective items report by store";
     private static final String defectiveByCategoryButton = "Get defective items report by category";
@@ -55,7 +46,7 @@ public class ManageInventory extends Screen {
 
     public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>();
 
-    public ManageInventory() { super(greet, ALLOWED); }
+    public Reports() { super(greet, ALLOWED); }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -64,15 +55,15 @@ public class ManageInventory extends Screen {
         }
         header(resp);
         greet(resp);
-        printForm(resp, new String[] {"start date", "end date", "store IDs"}, new String[]{"Start date", "End date", "Store IDs"}, new String[]{defectiveByStoreButton});
-        printForm(resp, new String[] {"start date", "end date", "category IDs"}, new String[]{"Start date", "End date", "Category IDs"}, new String[]{defectiveByCategoryButton});
-        printForm(resp, new String[] {"start date", "end date", "product IDs"}, new String[]{"Start date", "End date", "Product IDs"}, new String[]{defectiveByProductButton});
-        printForm(resp, new String[] {"start date", "end date", "store IDs"}, new String[]{"Start date", "End date", "Store IDs"}, new String[]{damagedByStoreButton});
-        printForm(resp, new String[] {"start date", "end date", "category IDs"}, new String[]{"Start date", "End date", "Category IDs"}, new String[]{damagedByCategoryButton});
-        printForm(resp, new String[] {"start date", "end date", "product IDs"}, new String[]{"Start date", "End date", "Product IDs"}, new String[]{damagedByProductButton});
-        printForm(resp, new String[] {"start date", "end date", "store IDs"}, new String[]{"Start date", "End date", "Store IDs"}, new String[]{expiredByStoreButton});
-        printForm(resp, new String[] {"start date", "end date", "category IDs"}, new String[]{"Start date", "End date", "Category IDs"}, new String[]{expiredByCategoryButton});
-        printForm(resp, new String[] {"start date", "end date", "product IDs"}, new String[]{"Start date", "End date", "Product IDs"}, new String[]{expiredByProductButton});
+        printForm(resp, new String[] {"start date", "end date", "store IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Store IDs (3,8,1)"}, new String[]{defectiveByStoreButton});
+        printForm(resp, new String[] {"start date", "end date", "category IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Category IDs (3,8,1)"}, new String[]{defectiveByCategoryButton});
+        printForm(resp, new String[] {"start date", "end date", "product IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Product IDs (3,8,1)"}, new String[]{defectiveByProductButton});
+        printForm(resp, new String[] {"start date", "end date", "store IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Store IDs (3,8,1)"}, new String[]{damagedByStoreButton});
+        printForm(resp, new String[] {"start date", "end date", "category IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Category IDs (3,8,1)"}, new String[]{damagedByCategoryButton});
+        printForm(resp, new String[] {"start date", "end date", "product IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Product IDs (3,8,1)"}, new String[]{damagedByProductButton});
+        printForm(resp, new String[] {"start date", "end date", "store IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Store IDs (3,8,1)"}, new String[]{expiredByStoreButton});
+        printForm(resp, new String[] {"start date", "end date", "category IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Category IDs (3,8,1)"}, new String[]{expiredByCategoryButton});
+        printForm(resp, new String[] {"start date", "end date", "product IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Product IDs (3,8,1)"}, new String[]{expiredByProductButton});
         handleError(resp);
     }
 
@@ -87,13 +78,15 @@ public class ManageInventory extends Screen {
                 return;
             }
             try {
-                LocalDate startDate = LocalDate.parse(req.getParameter("start date"));
-                LocalDate endDate = LocalDate.parse(req.getParameter("end date"));
+                String startDateStr = req.getParameter("start date");
+                String endDateStr = req.getParameter("end date");
+                LocalDate startDate = LocalDate.parse(startDateStr);
+                LocalDate endDate = LocalDate.parse(endDateStr);
                 String storeIDsString = req.getParameter("IDs");
                 List<Integer> storeIDs = (Arrays.asList(storeIDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                 Result<List<DefectiveItemReport>> defectiveItemsByStore = controller.getDefectiveItemsByStore(startDate, endDate, storeIDs);
                 if(defectiveItemsByStore.isOk() && defectiveItemsByStore.getValue().size()>0)
-                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs"}, new String[]{"defective", "by store", storeIDsString});
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"defective", "by store", storeIDsString, startDateStr, endDateStr});
                 else if (defectiveItemsByStore.isOk()) {
                     setError("no reports");
                     refresh(req, resp);
@@ -118,13 +111,15 @@ public class ManageInventory extends Screen {
                 return;
             }
             try {
-                LocalDate startDate = LocalDate.parse(req.getParameter("start date"));
-                LocalDate endDate = LocalDate.parse(req.getParameter("end date"));
+                String startDateStr = req.getParameter("start date");
+                String endDateStr = req.getParameter("end date");
+                LocalDate startDate = LocalDate.parse(startDateStr);
+                LocalDate endDate = LocalDate.parse(endDateStr);
                 String categoryIDsString = req.getParameter("IDs");
                 List<Integer> categoryIDs = (Arrays.asList(categoryIDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                 Result<List<DefectiveItemReport>> defectiveItemsByCategory = controller.getDefectiveItemsByCategory(startDate, endDate, categoryIDs);
                 if(defectiveItemsByCategory.isOk() && defectiveItemsByCategory.getValue().size()>0)
-                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs"}, new String[]{"defective", "by category", categoryIDsString});
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"defective", "by category", categoryIDsString, startDateStr, endDateStr});
                 else if (defectiveItemsByCategory.isOk()) {
                     setError("no reports");
                     refresh(req, resp);
@@ -149,13 +144,15 @@ public class ManageInventory extends Screen {
                 return;
             }
             try {
-                LocalDate startDate = LocalDate.parse(req.getParameter("start date"));
-                LocalDate endDate = LocalDate.parse(req.getParameter("end date"));
+                String startDateStr = req.getParameter("start date");
+                String endDateStr = req.getParameter("end date");
+                LocalDate startDate = LocalDate.parse(startDateStr);
+                LocalDate endDate = LocalDate.parse(endDateStr);
                 String productIDsString = req.getParameter("IDs");
                 List<Integer> productIDs = (Arrays.asList(productIDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                 Result<List<DefectiveItemReport>> defectiveItemsByProduct = controller.getDefectiveItemsByProduct(startDate, endDate, productIDs);
                 if(defectiveItemsByProduct.isOk() && defectiveItemsByProduct.getValue().size()>0)
-                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs"}, new String[]{"defective", "by product", productIDsString});
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"defective", "by product", productIDsString, startDateStr, endDateStr});
                 else if (defectiveItemsByProduct.isOk()) {
                     setError("no reports");
                     refresh(req, resp);
@@ -180,13 +177,15 @@ public class ManageInventory extends Screen {
                 return;
             }
             try {
-                LocalDate startDate = LocalDate.parse(req.getParameter("start date"));
-                LocalDate endDate = LocalDate.parse(req.getParameter("end date"));
+                String startDateStr = req.getParameter("start date");
+                String endDateStr = req.getParameter("end date");
+                LocalDate startDate = LocalDate.parse(startDateStr);
+                LocalDate endDate = LocalDate.parse(endDateStr);
                 String storeIDsString = req.getParameter("IDs");
                 List<Integer> storeIDs = (Arrays.asList(storeIDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                 Result<List<DefectiveItemReport>> damagedItemsByStore = controller.getDamagedItemsByStore(startDate, endDate, storeIDs);
                 if(damagedItemsByStore.isOk() && damagedItemsByStore.getValue().size()>0)
-                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs"}, new String[]{"damaged", "by store", storeIDsString});
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"damaged", "by store", storeIDsString, startDateStr, endDateStr});
                 else if (damagedItemsByStore.isOk()) {
                     setError("no reports");
                     refresh(req, resp);
@@ -211,13 +210,15 @@ public class ManageInventory extends Screen {
                 return;
             }
             try {
-                LocalDate startDate = LocalDate.parse(req.getParameter("start date"));
-                LocalDate endDate = LocalDate.parse(req.getParameter("end date"));
+                String startDateStr = req.getParameter("start date");
+                String endDateStr = req.getParameter("end date");
+                LocalDate startDate = LocalDate.parse(startDateStr);
+                LocalDate endDate = LocalDate.parse(endDateStr);
                 String categoryIDsString = req.getParameter("IDs");
                 List<Integer> categoryIDs = (Arrays.asList(categoryIDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                 Result<List<DefectiveItemReport>> damagedItemsByCategory = controller.getDamagedItemsByCategory(startDate, endDate, categoryIDs);
                 if(damagedItemsByCategory.isOk() && damagedItemsByCategory.getValue().size()>0)
-                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs"}, new String[]{"damaged", "by category", categoryIDsString});
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"damaged", "by category", categoryIDsString, startDateStr, endDateStr});
                 else if (damagedItemsByCategory.isOk()) {
                     setError("no reports");
                     refresh(req, resp);
@@ -242,13 +243,15 @@ public class ManageInventory extends Screen {
                 return;
             }
             try {
-                LocalDate startDate = LocalDate.parse(req.getParameter("start date"));
-                LocalDate endDate = LocalDate.parse(req.getParameter("end date"));
+                String startDateStr = req.getParameter("start date");
+                String endDateStr = req.getParameter("end date");
+                LocalDate startDate = LocalDate.parse(startDateStr);
+                LocalDate endDate = LocalDate.parse(endDateStr);
                 String productIDsString = req.getParameter("IDs");
                 List<Integer> productIDs = (Arrays.asList(productIDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                 Result<List<DefectiveItemReport>> damagedItemsByProduct = controller.getDamagedItemsByProduct(startDate, endDate, productIDs);
                 if(damagedItemsByProduct.isOk() && damagedItemsByProduct.getValue().size()>0)
-                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs"}, new String[]{"damaged", "by product", productIDsString});
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"damaged", "by product", productIDsString, startDateStr, endDateStr});
                 else if (damagedItemsByProduct.isOk()) {
                     setError("no reports");
                     refresh(req, resp);
@@ -273,13 +276,15 @@ public class ManageInventory extends Screen {
                 return;
             }
             try {
-                LocalDate startDate = LocalDate.parse(req.getParameter("start date"));
-                LocalDate endDate = LocalDate.parse(req.getParameter("end date"));
+                String startDateStr = req.getParameter("start date");
+                String endDateStr = req.getParameter("end date");
+                LocalDate startDate = LocalDate.parse(startDateStr);
+                LocalDate endDate = LocalDate.parse(endDateStr);
                 String storeIDsString = req.getParameter("IDs");
                 List<Integer> storeIDs = (Arrays.asList(storeIDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                 Result<List<DefectiveItemReport>> expiredItemsByStore = controller.getExpiredItemsByStore(startDate, endDate, storeIDs);
                 if(expiredItemsByStore.isOk() && expiredItemsByStore.getValue().size()>0)
-                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs"}, new String[]{"expired", "by store", storeIDsString});
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"expired", "by store", storeIDsString, startDateStr, endDateStr});
                 else if (expiredItemsByStore.isOk()) {
                     setError("no reports");
                     refresh(req, resp);
@@ -304,13 +309,15 @@ public class ManageInventory extends Screen {
                 return;
             }
             try {
-                LocalDate startDate = LocalDate.parse(req.getParameter("start date"));
-                LocalDate endDate = LocalDate.parse(req.getParameter("end date"));
+                String startDateStr = req.getParameter("start date");
+                String endDateStr = req.getParameter("end date");
+                LocalDate startDate = LocalDate.parse(startDateStr);
+                LocalDate endDate = LocalDate.parse(endDateStr);
                 String categoryIDsString = req.getParameter("IDs");
                 List<Integer> categoryIDs = (Arrays.asList(categoryIDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                 Result<List<DefectiveItemReport>> expiredItemsByCategory = controller.getExpiredItemsByCategory(startDate, endDate, categoryIDs);
                 if(expiredItemsByCategory.isOk() && expiredItemsByCategory.getValue().size()>0)
-                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs"}, new String[]{"expired", "by category", categoryIDsString});
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"expired", "by category", categoryIDsString, startDateStr, endDateStr});
                 else if (expiredItemsByCategory.isOk()) {
                     setError("no reports");
                     refresh(req, resp);
@@ -335,13 +342,15 @@ public class ManageInventory extends Screen {
                 return;
             }
             try {
-                LocalDate startDate = LocalDate.parse(req.getParameter("start date"));
-                LocalDate endDate = LocalDate.parse(req.getParameter("end date"));
+                String startDateStr = req.getParameter("start date");
+                String endDateStr = req.getParameter("end date");
+                LocalDate startDate = LocalDate.parse(startDateStr);
+                LocalDate endDate = LocalDate.parse(endDateStr);
                 String productIDsString = req.getParameter("IDs");
                 List<Integer> productIDs = (Arrays.asList(productIDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                 Result<List<DefectiveItemReport>> expiredItemsByProduct = controller.getExpiredItemsByProduct(startDate, endDate, productIDs);
                 if(expiredItemsByProduct.isOk() && expiredItemsByProduct.getValue().size()>0)
-                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs"}, new String[]{"expired", "by product", productIDsString});
+                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"expired", "by product", productIDsString, startDateStr, endDateStr});
                 else if (expiredItemsByProduct.isOk()) {
                     setError("no reports");
                     refresh(req, resp);
