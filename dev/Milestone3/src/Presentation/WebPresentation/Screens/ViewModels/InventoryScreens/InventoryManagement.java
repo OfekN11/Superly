@@ -24,7 +24,7 @@ public class InventoryManagement extends Screen {
     private static final String returnButton = "Return items";
     private static final String buyButton = "Buy items";
     private static final String reportDefectiveButton = "Report defective items";
-    private static final String arrivedButton = "Arrived items";
+    private static final String transportButton = "Transport Arrived";
 
     public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>();
 
@@ -43,7 +43,7 @@ public class InventoryManagement extends Screen {
         printForm(resp, new String[]{"store ID", "product ID", "amount", "date bought"}, new String[]{"Store ID", "Product ID", "Amount", "Date bought"}, new String[]{returnButton});
         printForm(resp, new String[]{"store ID", "product ID", "amount"}, new String[]{"Store ID", "Product ID", "Amount"}, new String[]{buyButton});
         printForm(resp, new String[]{"store ID", "product ID", "amount", "description", "store or warehouse", "damaged or expired"}, new String[]{"Store ID", "Product ID", "Amount", "Description", "Store or warehouse", "damaged or expired"}, new String[]{reportDefectiveButton});
-        printForm(resp, new String[]{}, new String[]{}, new String[]{arrivedButton}); //WHAT FIELDS?
+        printForm(resp, new String[] {"transport"}, new String[]{"Transport ID"}, new String[]{transportButton});
         handleError(resp);
     }
 
@@ -174,30 +174,8 @@ public class InventoryManagement extends Screen {
                 refresh(req, resp);
             }
         }
-        else if (isButtonPressed(req, arrivedButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Storekeeper.class)))) {
-                setError("You have no permission to accept order to the warehouse");
-                refresh(req, resp);
-                return;
-            }
-            try {
-                if(controller.orderArrived(1, new HashMap<>()).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("SOME SUCCESS MESSAGE")));
-                    refresh(req, resp);
-                }
-                else{
-                    setError("Order weren't arrived");
-                    refresh(req, resp);
-                }
-            }catch (NumberFormatException e1){
-                setError("Please enter a number!");
-                refresh(req, resp);
-            }
-            catch (Exception e) {
-                setError(e.getMessage());
-                refresh(req, resp);
-            }
+        else if (isButtonPressed(req, transportButton)) {
+            redirect(resp, TransportArrived.class, new String[] {transportButton}, new String[] {getParamVal(req,"transport")});
         }
     }
 }

@@ -62,8 +62,9 @@ public class ManageOrders extends Screen {
             String orderId = getParamVal(req, "orderId");
             if (orderId != null)
                 printOrder(req, resp, orderId);
-            handleError(resp);
         }
+
+        handleError(resp);
     }
 
     private void printOrderIds(HttpServletResponse resp, HttpServletRequest req) throws IOException {
@@ -153,11 +154,11 @@ public class ManageOrders extends Screen {
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");
-            //refresh(req, resp);
+            refresh(req, resp);
         }
         catch (Exception e) {
             setError(e.getMessage());
-            //refresh(req, resp);
+            refresh(req, resp);
         }
     }
 
@@ -172,6 +173,9 @@ public class ManageOrders extends Screen {
                 setError(String.format("Didn't found Supplier with Order number %d", orderId));
                 //refresh(req, resp);
             }
+        } catch (NumberFormatException e1){
+            setError("Please enter a number!");
+            //refresh(req, resp);
         } catch (Exception e) {
             setError(e.getMessage());
             //refresh(req, resp);
@@ -207,11 +211,10 @@ public class ManageOrders extends Screen {
             int orderId = controller.order(supplierId, storeId);
             if(orderId != -1){
                 redirect(resp, AddOrderItem.class, new String[]{"supId","orderId"}, new String[]{String.valueOf(supplierId) ,String.valueOf(orderId)});
-
             }
             else{
                 setError("Order wasn't added!");
-                refresh(req, resp);
+                //refresh(req, resp);
             }
         } catch (NumberFormatException e1){
             setError("Please enter a number!");

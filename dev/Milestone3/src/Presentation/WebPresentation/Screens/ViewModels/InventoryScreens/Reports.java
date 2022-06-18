@@ -42,6 +42,7 @@ public class Reports extends Screen {
         }
         header(resp);
         greet(resp);
+        printMenu(resp,new String[] {"Stock Reports"});
         printForm(resp, new String[] {"start date", "end date", "store IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Store IDs (3,8,1)"}, new String[]{defectiveByStoreButton});
         printForm(resp, new String[] {"start date", "end date", "category IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Category IDs (3,8,1)"}, new String[]{defectiveByCategoryButton});
         printForm(resp, new String[] {"start date", "end date", "product IDs"}, new String[]{"Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)", "Product IDs (3,8,1)"}, new String[]{defectiveByProductButton});
@@ -58,6 +59,11 @@ public class Reports extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (handleHeader(req, resp))
             return;
+        switch (getIndexOfButtonPressed(req)) {
+            case 0 :
+                redirect(resp, StockReport.class);
+                break;
+        }
         if(isButtonPressed(req, defectiveByStoreButton)){
             if (!isAllowed(req, resp, Report.ALLOWED)) {
                 setError("You have no permission to view defective reports");

@@ -29,10 +29,6 @@ public class InventoryService {
         controller = new InventoryController();
     }
 
-    public void setSupplierController(SupplierController supCont){
-        controller.setSupplierController(supCont);
-    }
-
 
     /**
      * gets store ids of existing stores
@@ -175,9 +171,9 @@ public class InventoryService {
      *
      * @return Result detailing success of operation, containing the info on the purchase
      */
-    public Result<Object> orderArrived(int orderID, Map<Integer, Map<Integer, Pair<Pair<Integer, Integer>, String>>> reportOfOrder){
+    public Result<Object> transportArrived(int transportID, Map<Integer, Map<Integer, Pair<Pair<Integer, Integer>, String>>> reportOfOrder){
         try {
-            controller.orderArrived(orderID, reportOfOrder);
+            controller.transportArrived(transportID, reportOfOrder);
         }
         catch (Exception e){
             return Result.makeError(e.getMessage());
@@ -811,5 +807,9 @@ public class InventoryService {
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+
+    public void setSupplierController(SupplierController supplierController) {
+        controller.setSupplierController(supplierController);
     }
 }
