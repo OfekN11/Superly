@@ -43,6 +43,7 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(HrMessages.class, "/HRMessages"),
             new AbstractMap.SimpleEntry<>(EmployeesMenu.class, "/EmployeesMenu"),
             new AbstractMap.SimpleEntry<>(ShiftMenu.class, "/ShiftMenu"),
+            new AbstractMap.SimpleEntry<>(RegisterEmployee.class, "/RegisterEmployee"),
             new AbstractMap.SimpleEntry<>(RemoveEmployee.class, "/RemoveEmployee"),
 
 
