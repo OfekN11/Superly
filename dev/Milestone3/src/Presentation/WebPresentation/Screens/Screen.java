@@ -22,7 +22,7 @@ public abstract class Screen extends HttpServlet {
     /***
      * greeting message, used in greet method
      */
-    private final String greeting;
+    private String greeting;
 
     /***
      * see the isAllowed method
@@ -268,4 +268,8 @@ public abstract class Screen extends HttpServlet {
 
     @Override
     protected abstract void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
+
+    public void setGreeting(String greeting) {
+        this.greeting = greeting;
+    }
 }

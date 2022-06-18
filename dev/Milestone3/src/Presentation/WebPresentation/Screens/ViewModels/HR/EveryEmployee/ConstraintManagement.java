@@ -42,7 +42,7 @@ public class ConstraintManagement extends Screen {
         PrintWriter out = resp.getWriter();
         header(resp);
         greet(resp);
-        out.println(String.format("<h3>Current user: %s</p><br>", employee.name));
+        out.println(String.format("<h3>Current user: %s</p><br>", employee.getName()));
         printForm(resp, new String[0], new String[0], new String[]{"Add Constraints", "Remove Constraints"});
         String addVal = getParamVal(req, "add");
         String remVal = getParamVal(req, "remove");

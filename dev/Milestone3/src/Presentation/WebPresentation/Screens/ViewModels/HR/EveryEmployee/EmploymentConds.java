@@ -54,7 +54,7 @@ public class EmploymentConds extends Screen {
         if (!isError()) {
             try {
                 PrintWriter out = resp.getWriter();
-                out.println(String.format("<h1>%s's Employment Conditions</h1><br><br>", employee.name));
+                out.println(String.format("<h1>%s's Employment Conditions</h1><br><br>", employee.getName()));
                 out.println("<p>");
                 out.println(controller.getEmploymentConditionsOf(employee.id).replaceAll("\n", "<br>"));
                 out.println("</p>");

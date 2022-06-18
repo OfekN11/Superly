@@ -29,4 +29,9 @@ public class Storekeeper extends Employee{
                 break;
         }
     }
+
+    @Override
+    protected void updateGreet() {
+        setGreeting(GREETING + getName());
+    }
 }
