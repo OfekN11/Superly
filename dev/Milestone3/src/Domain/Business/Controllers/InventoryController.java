@@ -644,4 +644,10 @@ public class InventoryController {
         return readyOrders;
     }
 
+    public int getTarget(int i, int productID) {
+        return getProduct(productID).getStockReport(i).getTargetAmountInStore();
+    }
+    public int getMin(int i, int productID) {
+        return getProduct(productID).getStockReport(i).getMinAmountInStore();
+    }
 }

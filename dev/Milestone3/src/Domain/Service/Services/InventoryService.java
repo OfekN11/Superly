@@ -812,4 +812,11 @@ public class InventoryService {
     public void setSupplierController(SupplierController supplierController) {
         controller.setSupplierController(supplierController);
     }
+
+    public int getTarget(int i, int productID) {
+        return controller.getTarget(i, productID);
+    }
+    public int getMin(int i, int productID) {
+        return controller.getMin(i, productID);
+    }
 }
