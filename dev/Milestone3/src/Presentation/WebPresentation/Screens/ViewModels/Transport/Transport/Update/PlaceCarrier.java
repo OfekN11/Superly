@@ -72,7 +72,6 @@ public class PlaceCarrier extends Screen {
                     setSuccess(SUCCESS_MSG);
                     refresh(req, resp, new String[]{"ID"}, new String[]{String.valueOf(transportSN)});
                 }
-                refresh(req, resp, new String[]{"ID"}, new String[]{String.valueOf(transportSN)});
             }
             catch (Exception e) {
                 setError(e.getMessage());

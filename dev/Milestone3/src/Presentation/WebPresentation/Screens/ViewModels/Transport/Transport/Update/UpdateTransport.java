@@ -89,7 +89,7 @@ public class UpdateTransport extends Screen {
             if(is_number(id)){
                 int transportId= Integer.parseInt(id);
                 controller.startTransport(transportId);
-                setError("Transport" + id + "started successfully");
+                setError("Transport " + id + " started successfully");
             }
         } catch (Exception e) {
             setError(e.getMessage());

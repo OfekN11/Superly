@@ -287,6 +287,11 @@ public class TransportController {
             if(transport.readyToGo()){
                 transport.startTransport();
                 transportDataMapper.save(transport);
+                for (Integer order:transport.getTransportOrders()) {
+                    Order o = orderController.getTransportOrder(convert(order));
+                    o.start();
+                    orderController.updateOrder(o);
+                }
             }
             else{
                 throw new Exception("transport not ready to go");
@@ -304,8 +309,6 @@ public class TransportController {
             TransportDocument transportDocument = new TransportDocument(transport.getSN(),transport.getStartTime(),transport.getTruckNumber(),transport.getDriverID());
             for (Integer order:transport.getTransportOrders()) {
                 Order o = orderController.getTransportOrder(convert(order));
-                o.start();
-                orderController.updateOrder(o);
                 DestinationDocument document = new DestinationDocument(order,o.getStoreID(),o.getProductList());
                 documentController.uploadDestinationDocument(document);
                 transportDocument.addDoc(document.getID());
