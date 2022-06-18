@@ -1,12 +1,10 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
-import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.Business.Objects.Inventory.SaleToCustomer;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
 import Domain.DAL.ConnectionHandler;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -150,7 +148,7 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
     public void updateEndDate(int saleID, LocalDate date) {

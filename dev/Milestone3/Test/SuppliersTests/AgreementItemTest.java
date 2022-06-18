@@ -5,15 +5,16 @@ import Domain.Business.Objects.Inventory.Category;
 import Domain.Business.Objects.Inventory.Product;
 import Domain.Business.Objects.Supplier.AgreementItem;
 import Domain.DAL.Abstract.DAO;
-import InventoryTests.CategoryTests;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @NotThreadSafe
 public class AgreementItemTest {
@@ -112,5 +113,24 @@ public class AgreementItemTest {
         }
     }
 
+    @Test
+    public void test_calculateTotalPrice_noBulk(){
+        double price = item.calculateTotalPrice(10);
+
+        assertTrue(10*8.99 - price < 0.00001);
+    }
+
+    @Test
+    public void test_calculateTotalPrice_withBulk(){
+        double price = item.calculateTotalPrice(30);
+
+        assertTrue(30*8.99*0.85 - price < 0.0001);
+
+        price = item.calculateTotalPrice(50);
+        assertTrue(50*8.99*0.8 - price < 0.0001);
+
+        price = item.calculateTotalPrice(99);
+        assertTrue(99*8.99*0.8 - price < 0.0001);
+    }
 
 }

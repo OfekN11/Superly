@@ -1,17 +1,18 @@
 package InventoryTests;
 
 import Domain.Business.Controllers.InventoryController;
-import Domain.Business.Objects.Inventory.StockReport;
 import Domain.Business.Objects.Inventory.Product;
+import Domain.Business.Objects.Inventory.StockReport;
 import Domain.DAL.Abstract.DAO;
-import Domain.DAL.Controllers.InventoryAndSuppliers.*;
-//import net.jcip.annotations.NotThreadSafe;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.util.Collections.max;
 import static org.junit.jupiter.api.Assertions.*;
 
 //@NotThreadSafe

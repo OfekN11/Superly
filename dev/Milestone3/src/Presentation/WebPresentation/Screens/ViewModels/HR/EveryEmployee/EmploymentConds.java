@@ -1,6 +1,9 @@
 package Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee;
 
-import Presentation.WebPresentation.Screens.Models.HR.*;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
+import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
@@ -54,7 +57,7 @@ public class EmploymentConds extends Screen {
         if (!isError()) {
             try {
                 PrintWriter out = resp.getWriter();
-                out.println(String.format("<h1>%s's Employment Conditions</h1><br><br>", employee.name));
+                out.println(String.format("<h1>%s's Employment Conditions</h1><br><br>", employee.getName()));
                 out.println("<p>");
                 out.println(controller.getEmploymentConditionsOf(employee.id).replaceAll("\n", "<br>"));
                 out.println("</p>");

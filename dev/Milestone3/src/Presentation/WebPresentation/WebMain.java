@@ -1,7 +1,10 @@
 package Presentation.WebPresentation;
 
 import Presentation.WebPresentation.Screens.ViewModels.HR.EmployeeServlet;
-import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.*;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.ConstraintManagement;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.EmploymentConds;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.SalaryCalculator;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.UpcomingShifts;
 import Presentation.WebPresentation.Screens.ViewModels.HR.HRManagement.*;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.*;
@@ -46,6 +49,7 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(RegisterEmployee.class, "/RegisterEmployee"),
             new AbstractMap.SimpleEntry<>(RemoveEmployee.class, "/RemoveEmployee"),
             new AbstractMap.SimpleEntry<>(ManageEmployee.class, "/ManageEmployee"),
+            new AbstractMap.SimpleEntry<>(ViewEmployee.class, "/ViewEmployee"),
 
 
             new AbstractMap.SimpleEntry<>(AddItemToAgreement.class, "/AddItemToAgreement"),

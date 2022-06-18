@@ -4,7 +4,8 @@ import Domain.Business.Objects.Shift.EveningShift;
 import Globals.Enums.ShiftTypes;
 
 import java.sql.ResultSet;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EveningShiftDAO extends AbstractShiftDAO<EveningShift> {
     private static final Map<String,EveningShift> EVENING_SHIFTS_MAP = new HashMap<>();

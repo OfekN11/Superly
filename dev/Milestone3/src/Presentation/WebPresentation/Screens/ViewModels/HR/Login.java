@@ -1,12 +1,9 @@
 package Presentation.WebPresentation.Screens.ViewModels.HR;
 
 import Presentation.WebPresentation.Screens.Models.HR.Admin;
-import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.InventoryMainMenu;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
 import Presentation.WebPresentation.Screens.Screen;
-import Presentation.WebPresentation.Screens.ViewModels.Suppliers.SupplierMainMenuStorekeeper;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -58,7 +55,6 @@ public class Login extends Screen {
                 else
                     emp = factory.createEmployee(controller.getEmployee(id));
                 String hash = hash(id);
-                //TODO:
                 loggedUser.put(hash, emp);
                 Cookie c = new Cookie("superly_user", hash);
                 c.setMaxAge(LOGIN_COOKIE_MAX_AGE);
@@ -108,8 +104,20 @@ public class Login extends Screen {
             }
     }
 
-    public static void removeUser(String id) throws NoSuchAlgorithmException {
-        loggedUser.remove(hash(id));
+    public static void removeUser(String eid) throws NoSuchAlgorithmException {
+        loggedUser.remove(hash(eid));
+    }
+
+    public static void updateUserName(String eid) throws Exception {
+        String hash = hash(eid);
+        if (loggedUser.containsKey(hash))
+            loggedUser.get(hash).updateName();
+    }
+
+    public static void updateSalary(String eid) throws Exception {
+        String hash = hash(eid);
+        if (loggedUser.containsKey(hash))
+            loggedUser.get(hash).updateSalary();
     }
 
     private static String hash(String toHash) throws NoSuchAlgorithmException {

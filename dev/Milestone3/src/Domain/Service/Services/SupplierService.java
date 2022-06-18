@@ -1,8 +1,8 @@
 package Domain.Service.Services;
 
 import Domain.Business.Controllers.InventoryController;
-import Domain.Service.Objects.SupplierObjects.*;
 import Domain.Business.Controllers.SupplierController;
+import Domain.Service.Objects.SupplierObjects.*;
 import Domain.Service.util.Result;
 import Globals.Pair;
 

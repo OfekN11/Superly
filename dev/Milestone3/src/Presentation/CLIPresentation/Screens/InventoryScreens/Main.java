@@ -1,11 +1,5 @@
 package Presentation.CLIPresentation.Screens.InventoryScreens;
 
-import Domain.Business.Controllers.SupplierController;
-import Presentation.BackendController;
-import Presentation.CLIPresentation.Screens.MainMenuInventoryAndSuppliers;
-
-import java.util.*;
-
 public class Main {
 
     public static void main(String[] args) {

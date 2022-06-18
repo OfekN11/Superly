@@ -1,7 +1,6 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update;
 
 import Presentation.WebPresentation.Screens.Screen;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.TruckManagementMenu;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

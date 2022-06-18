@@ -1,9 +1,10 @@
 package Domain.DAL.Controllers.EmployeeMappers;
+
 import Domain.Business.Objects.Employee.Cashier;
-import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CashierDAO extends AbstractEmployeeDAO<Cashier> {
     //static fields

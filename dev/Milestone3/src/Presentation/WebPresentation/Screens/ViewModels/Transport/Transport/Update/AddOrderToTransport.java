@@ -1,13 +1,11 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update;
 
 import Presentation.WebPresentation.Screens.Screen;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Order;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Set;
 
 public class AddOrderToTransport extends Screen {
     private static final String greet = "Add order to transport";

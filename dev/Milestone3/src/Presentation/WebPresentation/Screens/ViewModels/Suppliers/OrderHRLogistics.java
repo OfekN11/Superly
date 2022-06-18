@@ -1,6 +1,5 @@
 package Presentation.WebPresentation.Screens.ViewModels.Suppliers;
 
-import Presentation.WebPresentation.Screens.Models.HR.Admin;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
 import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;

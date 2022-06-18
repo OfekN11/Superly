@@ -1,7 +1,5 @@
 package Domain.Business.Objects.Site;
 
-import Domain.Business.Objects.Site.Source;
-
 public class Destination extends Source {
     public Destination(Address address, String contactId, String phoneNumber) {
         super(address, contactId, phoneNumber);

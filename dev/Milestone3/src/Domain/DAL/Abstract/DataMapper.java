@@ -1,9 +1,13 @@
 package Domain.DAL.Abstract;
 
 import Domain.DAL.ConnectionHandler;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class DataMapper<T> extends DAO {
     public DataMapper(String tableName) {

@@ -22,4 +22,9 @@ public class Cashier extends Employee{
         switch (index) {
         }
     }
+
+    @Override
+    protected void updateGreet() {
+        setGreeting(GREETING + getName());
+    }
 }

@@ -28,4 +28,9 @@ public class Logistics_Manager extends Employee{
                 redirect(resp, OrderHRLogistics.class);
         }
     }
+
+    @Override
+    protected void updateGreet() {
+        setGreeting(GREETING + getName());
+    }
 }

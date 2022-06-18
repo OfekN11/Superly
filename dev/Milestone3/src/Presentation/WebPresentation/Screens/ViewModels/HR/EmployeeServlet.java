@@ -2,7 +2,6 @@ package Presentation.WebPresentation.Screens.ViewModels.HR;
 
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
-import Presentation.WebPresentation.Screens.Models.HR.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

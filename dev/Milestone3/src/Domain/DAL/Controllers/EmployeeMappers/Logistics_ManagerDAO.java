@@ -1,9 +1,11 @@
 package Domain.DAL.Controllers.EmployeeMappers;
+
 import Domain.Business.Objects.Employee.Logistics_Manager;
 import Domain.DAL.Controllers.EmployeeLinks.EmployeeCertificationDAO;
 
 import java.sql.ResultSet;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Logistics_ManagerDAO extends AbstractEmployeeDAO<Logistics_Manager> {
     private static Map<String, Logistics_Manager> LOGISTIC_MANAGERS_MAP = new HashMap<>();

@@ -1,15 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
-import Domain.Service.Objects.Employee.Sorter;
-import Domain.Service.Objects.Employee.Storekeeper;
-import Domain.Service.Objects.InventoryObjects.Category;
 import Domain.Service.Objects.InventoryObjects.DefectiveItemReport;
-import Domain.Service.Objects.InventoryObjects.Sale;
-import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
-import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
-import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
-import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
@@ -19,7 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DefectiveReport extends Screen {

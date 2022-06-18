@@ -1,18 +1,20 @@
 package Presentation.CLIPresentation.Screens.Transport;
 
-import Domain.Service.Objects.Shift.*;
+import Domain.Service.Objects.Shift.Shift;
+import Globals.Enums.ShiftTypes;
+import Globals.Pair;
 import Globals.util.HumanInteraction;
 import Globals.util.ShiftComparator;
 import Presentation.CLIPresentation.Objects.Transport.Transport;
-import Globals.Enums.ShiftTypes;
-import Globals.Pair;
 import Presentation.CLIPresentation.Screens.Screen;
 
-import static Globals.util.HumanInteraction.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static Globals.util.HumanInteraction.OperationCancelledException;
+import static Globals.util.HumanInteraction.getNumber;
 
 public class TransportsMenu extends Screen {
 

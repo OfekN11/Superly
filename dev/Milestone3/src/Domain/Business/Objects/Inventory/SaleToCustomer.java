@@ -3,7 +3,7 @@ package Domain.Business.Objects.Inventory;
 import Domain.DAL.Controllers.InventoryAndSuppliers.SalesDataMapper;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
 
 public class SaleToCustomer {
 

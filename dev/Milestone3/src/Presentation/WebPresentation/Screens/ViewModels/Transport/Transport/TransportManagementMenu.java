@@ -1,18 +1,13 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport;
 
-import Presentation.CLIPresentation.Objects.Transport.Transport;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.UpdateTransport;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public class TransportManagementMenu extends Screen {
     private static final String greet = "Transport Management Menu";

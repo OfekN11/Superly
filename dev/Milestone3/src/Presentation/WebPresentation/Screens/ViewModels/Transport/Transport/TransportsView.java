@@ -1,9 +1,8 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport;
 
 
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Transport;
-import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Transport;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

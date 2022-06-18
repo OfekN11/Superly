@@ -4,10 +4,11 @@ import Globals.Enums.JobTitles;
 import Globals.Enums.LicenseTypes;
 import Globals.util.HumanInteraction;
 
-import static Globals.util.HumanInteraction.*;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import static Globals.util.HumanInteraction.OperationCancelledException;
+import static Globals.util.HumanInteraction.yesOrNo;
 
 public class Carrier extends Employee {
     private static final String[] extraMenuOptions = {

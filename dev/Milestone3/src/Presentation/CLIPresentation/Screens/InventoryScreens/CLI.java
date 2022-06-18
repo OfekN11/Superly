@@ -1,8 +1,10 @@
 package Presentation.CLIPresentation.Screens.InventoryScreens;
 
+import Domain.Service.Objects.SupplierObjects.ServiceItemObject;
+import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
+import Domain.Service.Objects.SupplierObjects.ServiceSupplierObject;
 import Domain.Service.Services.SupplierService;
 import Domain.Service.util.Result;
-import Domain.Service.Objects.SupplierObjects.*;
 import Globals.Pair;
 
 import java.util.*;

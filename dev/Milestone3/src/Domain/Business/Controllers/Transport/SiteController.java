@@ -9,7 +9,6 @@ import Domain.DAL.Controllers.TransportMudel.SourcesDAO;
 import Globals.Enums.ShippingAreas;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 //TODO not finished methods (GET) for each site
 public class SiteController {
     private final SourcesDAO sourcesDataMapper = new SourcesDAO();

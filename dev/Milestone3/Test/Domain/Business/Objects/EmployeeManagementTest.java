@@ -1,4 +1,5 @@
 package Domain.Business.Objects;
+
 import Domain.Business.Objects.Employee.Employee;
 import Domain.Business.Objects.Employee.Storekeeper;
 import Globals.Enums.Certifications;
@@ -8,7 +9,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 public class EmployeeManagementTest {
 

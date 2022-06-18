@@ -1,10 +1,10 @@
 package Domain.Service.Services;
 
 
+import Domain.Business.Controllers.InventoryController;
 import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.Business.Objects.Inventory.SaleToCustomer;
-import Domain.Business.Controllers.InventoryController;
 import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
 import Domain.Service.Objects.InventoryObjects.*;

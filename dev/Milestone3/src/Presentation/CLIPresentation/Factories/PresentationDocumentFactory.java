@@ -1,6 +1,5 @@
 package Presentation.CLIPresentation.Factories;
 
-import Presentation.CLIPresentation.Objects.Document.*;
 import Presentation.CLIPresentation.Objects.Document.DestinationDocument;
 import Presentation.CLIPresentation.Objects.Document.Document;
 import Presentation.CLIPresentation.Objects.Document.TransportDocument;

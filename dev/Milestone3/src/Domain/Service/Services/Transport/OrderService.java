@@ -2,12 +2,8 @@ package Domain.Service.Services.Transport;
 
 import Domain.Business.Controllers.Transport.OrderController;
 import Domain.Business.Objects.Supplier.Order;
-import Domain.Service.Objects.SupplierObjects.ServiceOrderItemObject;
-import Domain.Service.Objects.SupplierObjects.ServiceOrderObject;
-import Domain.Service.Objects.TransportOrder;
 import Domain.Service.util.Result;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

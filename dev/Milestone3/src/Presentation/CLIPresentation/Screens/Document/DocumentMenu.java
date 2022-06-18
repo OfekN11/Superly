@@ -1,10 +1,7 @@
 package Presentation.CLIPresentation.Screens.Document;
 
 import Globals.util.HumanInteraction;
-import Presentation.CLIPresentation.Objects.Document.*;
 import Presentation.CLIPresentation.Screens.Screen;
-import Presentation.CLIPresentation.Objects.Document.DestinationDocument;
-import Presentation.CLIPresentation.Objects.Document.TransportDocument;
 
 public class DocumentMenu extends Screen {
     private static final String[] menuOptions = {

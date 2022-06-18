@@ -10,10 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,10 +37,10 @@ public class InventoryManagement extends Screen {
         }
         header(resp);
         greet(resp);
-        printForm(resp, new String[]{"store ID", "product ID", "amount"}, new String[]{"Store ID", "Product ID", "Amount"}, new String[]{moveButton});
-        printForm(resp, new String[]{"store ID", "product ID", "amount", "date bought"}, new String[]{"Store ID", "Product ID", "Amount", "Date bought"}, new String[]{returnButton});
-        printForm(resp, new String[]{"store ID", "product ID", "amount"}, new String[]{"Store ID", "Product ID", "Amount"}, new String[]{buyButton});
-        printForm(resp, new String[]{"store ID", "product ID", "amount", "description", "store or warehouse", "damaged or expired"}, new String[]{"Store ID", "Product ID", "Amount", "Description", "Store or warehouse", "damaged or expired"}, new String[]{reportDefectiveButton});
+        printForm(resp, new String[]{"product ID", "amount"}, new String[]{"Product ID", "Amount"}, new String[]{moveButton});
+        printForm(resp, new String[]{"product ID", "amount", "date bought"}, new String[]{"Product ID", "Amount", "Date bought YYYY-MM-DD"}, new String[]{returnButton});
+        printForm(resp, new String[]{"product ID", "amount"}, new String[]{"Product ID", "Amount"}, new String[]{buyButton});
+        printForm(resp, new String[]{"product ID", "amount", "description", "store or warehouse", "damaged or expired"}, new String[]{"Product ID", "Amount", "Description", "Store or warehouse", "damaged or expired"}, new String[]{reportDefectiveButton});
         printForm(resp, new String[] {"transport"}, new String[]{"Transport ID"}, new String[]{transportButton});
         handleError(resp);
     }
@@ -58,17 +56,12 @@ public class InventoryManagement extends Screen {
                 return;
             }
             try {
-                int storeID = Integer.parseInt(req.getParameter("store ID"));
+                int storeID = 1;
                 int productID = Integer.parseInt(req.getParameter("product ID"));
                 int amount = Integer.parseInt(req.getParameter("amount"));
-                if(controller.moveItems(storeID, productID, amount).isOk()) {
-                    setError(amount + " items of product " + productID + " has been moved from the store to the warehouse");
-                    refresh(req, resp);
-                }
-                else{
-                    setError("Items weren't moved");
-                    refresh(req, resp);
-                }
+                controller.moveItems(storeID, productID, amount);
+                setError(amount + " items of product " + productID + " has been moved from the store to the warehouse");
+                refresh(req, resp);
             }catch (NumberFormatException e1){
                 setError("Please enter a number!");
                 refresh(req, resp);
@@ -85,7 +78,7 @@ public class InventoryManagement extends Screen {
                 return;
             }
             try {
-                int storeID = Integer.parseInt(req.getParameter("store ID"));
+                int storeID = 1;
                 int productID = Integer.parseInt(req.getParameter("product ID"));
                 int amount = Integer.parseInt(req.getParameter("amount"));
                 LocalDate dateBought = LocalDate.parse(req.getParameter("date bought"));
@@ -114,7 +107,7 @@ public class InventoryManagement extends Screen {
                 return;
             }
             try {
-                int storeID = Integer.parseInt(req.getParameter("store ID"));
+                int storeID = 1;
                 int productID = Integer.parseInt(req.getParameter("product ID"));
                 int amount = Integer.parseInt(req.getParameter("amount"));
                 Result<Pair<Double, String>> priceAndMessage = controller.buyItems(storeID, productID, amount);
@@ -147,7 +140,7 @@ public class InventoryManagement extends Screen {
                 return;
             }
             try {
-                int storeID = Integer.parseInt(req.getParameter("store ID"));
+                int storeID = 1;
                 int productID = Integer.parseInt(req.getParameter("product ID"));
                 int amount = Integer.parseInt(req.getParameter("amount"));
                 String description = req.getParameter("description");

@@ -3,7 +3,10 @@ package Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee;
 import Domain.Service.Objects.Shift.Shift;
 import Globals.util.HumanInteraction;
 import Globals.util.ShiftComparator;
-import Presentation.WebPresentation.Screens.Models.HR.*;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
+import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
@@ -54,7 +57,7 @@ public class UpcomingShifts extends Screen {
 
         header(resp);
         PrintWriter out = resp.getWriter();
-        out.println(String.format("<h1>Upcoming shifts in the next 30 days for %s</h1>", emp.name));
+        out.println(String.format("<h1>Upcoming shifts in the next 30 days for %s</h1>", emp.getName()));
         try {
             List<Shift> upcoming = new ArrayList<>(controller.getEmployeeShiftsBetween(emp.id, LocalDate.now(), LocalDate.now().plusDays(30)));
             upcoming.sort(new ShiftComparator());

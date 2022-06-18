@@ -2,7 +2,6 @@ package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Upda
 
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Order;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Transport;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

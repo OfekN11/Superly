@@ -1,14 +1,10 @@
 package SuppliersTests;
 
 import Domain.Business.Controllers.SupplierController;
-import Domain.Business.Objects.Supplier.Agreement.Agreement;
 import Domain.Business.Objects.Supplier.Contact;
 import Domain.Business.Objects.Supplier.Supplier;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.SuppliersDAO;
-import Domain.Service.Services.SupplierService;
-import Domain.Service.util.Result;
-import InventoryTests.CategoryTests;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,7 +15,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * NOTE: the tests assumes that the DB is empty.

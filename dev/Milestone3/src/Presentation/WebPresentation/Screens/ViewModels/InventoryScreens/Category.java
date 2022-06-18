@@ -1,6 +1,5 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
-import Domain.Service.Objects.InventoryObjects.Product;
 import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
