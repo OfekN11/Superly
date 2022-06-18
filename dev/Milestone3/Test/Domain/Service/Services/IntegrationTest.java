@@ -1,5 +1,7 @@
 package Domain.Service.Services;
 
+import Domain.Business.Objects.Inventory.Category;
+import Domain.Business.Objects.Inventory.Product;
 import Domain.DAL.Abstract.DAO;
 import Domain.Service.Services.HR.EmployeeService;
 import Domain.Service.Services.HR.ShiftService;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 
 
 public class IntegrationTest {
-    static LocalDate date=LocalDate.parse("2021-09-19");
+    static LocalDate date = LocalDate.parse("2021-09-19");
     static EmployeeService employeeService = new EmployeeService();
     static ShiftService shiftService = new ShiftService();
     static DocumentService documentService = new DocumentService();
@@ -30,6 +32,11 @@ public class IntegrationTest {
     @BeforeAll
     public static void createTables(){
         DAO.setDBForTests(IntegrationTest.class);
+
+        int orderId = supplierService.order(1, 1).getValue();
+        supplierService.addItemToOrder(1,orderId, 1, 20);
+
+
     }
 
     @AfterAll

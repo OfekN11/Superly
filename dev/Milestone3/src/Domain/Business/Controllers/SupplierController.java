@@ -500,7 +500,7 @@ public class SupplierController {
         Order order = orderDAO.getOrder(orderId, suppliersDAO);
         List<OrderItem> items = order.getOrderItems();
 
-        if(!order.changeable() && !transportController.canDeleteOrder(order)){
+        if(!order.changeable() || !transportController.canDeleteOrder(order)){
             throw new Exception("Error!\nCan't delete an order if it's on-the-way or already arrived.");
         }
 
