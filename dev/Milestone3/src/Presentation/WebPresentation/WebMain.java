@@ -50,7 +50,7 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(RemoveEmployee.class, "/RemoveEmployee"),
             new AbstractMap.SimpleEntry<>(ManageEmployee.class, "/ManageEmployee"),
             new AbstractMap.SimpleEntry<>(ViewEmployee.class, "/ViewEmployee"),
-
+            new AbstractMap.SimpleEntry<>(AddShifts.class, "/AddShift"),
 
             new AbstractMap.SimpleEntry<>(AddItemToAgreement.class, "/AddItemToAgreement"),
             new AbstractMap.SimpleEntry<>(AddOrderItem.class, "/AddOrderItem"),

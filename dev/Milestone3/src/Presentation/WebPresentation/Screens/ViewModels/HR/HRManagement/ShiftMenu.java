@@ -25,8 +25,7 @@ public class ShiftMenu extends Screen {
             "View incomplete shifts (7 days)",  //0
             "View existing shifts",             //1
             "Add shifts",                       //2
-            "Remove shifts",                    //3
-            "Manage existing shifts"            //4
+            "Manage existing shifts"            //3
     };
 
     public ShiftMenu() {
@@ -53,9 +52,13 @@ public class ShiftMenu extends Screen {
             //TODO
             case 0:
             case 1:
+                setError("not implemented yet");
+                refresh(req, resp);
+                break;
             case 2:
+                redirect(resp, AddShifts.class);
+                break;
             case 3:
-            case 4:
                 setError("not implemented yet");
                 refresh(req, resp);
                 break;
