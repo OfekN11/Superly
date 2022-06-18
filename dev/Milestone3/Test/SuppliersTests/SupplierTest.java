@@ -29,9 +29,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class SupplierTest {
 
     private SupplierController supplierController = new SupplierController();
-
-
-
+    static Supplier supplier;
+    static ArrayList<Contact> contacts;
+    static ArrayList<String> manufacturers;
+    static SuppliersDAO dao;
 
     @BeforeAll
     public synchronized static void setData() {
@@ -44,7 +45,7 @@ class SupplierTest {
     }
 
 
-    /*
+
     @BeforeEach
     public void setUp() throws Exception{
         contacts = new ArrayList<>();
@@ -87,8 +88,6 @@ class SupplierTest {
 
     }
 
-
-     */
 
 
     @Test
