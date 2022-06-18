@@ -16,7 +16,7 @@ import java.util.Set;
 public class OrderHRLogistics extends RemoveViewOrder {
 
 
-    private static final String greet = "Remove Order for HR & Logistics";
+    private static final String greet = "Remove & View Order";
     private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Logistics_Manager.class, HR_Manager.class));
 
 
