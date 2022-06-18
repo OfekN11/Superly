@@ -3,20 +3,35 @@ package Domain.Business.Controllers;
 import Domain.Business.Controllers.Transport.DocumentController;
 import Domain.Business.Objects.Document.DestinationDocument;
 import Domain.Business.Objects.Document.TransportDocument;
+import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.TransportMudel.DestinationDocumentDAO;
 import Domain.DAL.Controllers.TransportMudel.TransportDocumentDataMapper;
+import InventoryTests.CategoryTests;
 import junit.framework.TestCase;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 
-public class DocumentControllerTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class DocumentControllerTest {
     static DocumentController controller;
     static DestinationDocumentDAO destinationDocumentDAO = new DestinationDocumentDAO();
     static TransportDocumentDataMapper transportDocument = new TransportDocumentDataMapper();
     private DestinationDocument dDoc;
     private TransportDocument tDoc;
 
-    @Override
+    @BeforeAll
+    public static synchronized void setData() {
+        DAO.setDBForTests(CategoryTests.class);
+    }
+
+    @AfterAll
+    public static void removeData() {
+        DAO.deleteTestDB(CategoryTests.class);
+    }
+
+    @BeforeEach
     public void setUp() throws Exception {
         controller = new DocumentController();
         dDoc  =  new DestinationDocument(303, 1, new ArrayList<>());
@@ -24,13 +39,13 @@ public class DocumentControllerTest extends TestCase {
 
     }
 
-    @Override
+    @AfterEach
     public void tearDown() throws Exception {
         destinationDocumentDAO.remove(303);
         transportDocument.remove(202);
 
     }
-
+    @Test
     public void testUploadDestinationDocument() {
         try {
             controller.uploadDestinationDocument(dDoc);
@@ -40,7 +55,7 @@ public class DocumentControllerTest extends TestCase {
 
         }
     }
-
+    @Test
     public void testGetDestinationDocument() {
         try {
             dDoc = controller.getDestinationDocument(303);
@@ -50,22 +65,22 @@ public class DocumentControllerTest extends TestCase {
         }
 
     }
-
+    @Test
     public void testUploadTransportDocument() {
         try {
             controller.uploadTransportDocument(tDoc);
             tDoc = controller.getTransportDocument(202);
-            assertEquals(202, dDoc.getID());
+            assertEquals(202, tDoc.getTransportID());
         } catch (Exception e) {
 
         }
 
     }
-
+    @Test
     public void testGetTransportDocument() {
         try {
             tDoc = controller.getTransportDocument(202);
-            assertEquals(202, dDoc.getID());
+            assertEquals(202, tDoc.getTransportID());
         } catch (Exception e) {
 
         }
