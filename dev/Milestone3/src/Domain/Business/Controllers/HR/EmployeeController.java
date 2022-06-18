@@ -5,6 +5,8 @@ import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Globals.Enums.Certifications;
 import Globals.Enums.JobTitles;
 import Globals.Enums.LicenseTypes;
+import Globals.ObserverInterfaces.EditCarrierLicenseObserver;
+import Globals.ObserverInterfaces.RemoveEmployeeObserver;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
 
 public class EmployeeController {
     private static final String EmployeeNotFoundErrorMsg = "Employee id %s could not be found";
+    private final static Set<RemoveEmployeeObserver> REMOVE_EMPLOYEE_OBSERVER = new HashSet<>();
+    private final static Set<EditCarrierLicenseObserver> EDIT_CARRIER_LICENSE_OBSERVERS = new HashSet<>();
 
     // properties
     private final EmployeeDataMapper employeeDataMapper = new EmployeeDataMapper();
@@ -253,6 +257,9 @@ public class EmployeeController {
     }
 
     public void editCarrierLicenses(String id, Set<LicenseTypes> licences) throws Exception {
+        for(EditCarrierLicenseObserver observer:EDIT_CARRIER_LICENSE_OBSERVERS)
+            observer.observe(id,licences);
+
         Carrier carrier = employeeDataMapper.getCarrier(id);
         if (carrier == null)
             throw new Exception(String.format(EmployeeNotFoundErrorMsg, id));
@@ -262,6 +269,9 @@ public class EmployeeController {
 
     //DELETE
     public void removeEmployee(String id) throws Exception {
+        for (RemoveEmployeeObserver observer : REMOVE_EMPLOYEE_OBSERVER)
+            observer.observe(id);
+
         employeeDataMapper.delete(id);
     }
 
@@ -285,11 +295,18 @@ public class EmployeeController {
             validateID(id);
     }
 
-    //TODO: get rid of this if possible
     public String getEmploymentConditionsOf(String id) throws Exception {
         Employee employee = employeeDataMapper.get(id);
         if (employee == null)
             throw new RuntimeException(String.format(EmployeeNotFoundErrorMsg, id));
         return employee.getEmploymentConditions();
+    }
+
+    public void registerToRemoveEmployeeEvent(RemoveEmployeeObserver removeEmployeeObserver){
+        REMOVE_EMPLOYEE_OBSERVER.add(removeEmployeeObserver);
+    }
+
+    public void registerToChangeCarrierLicenseEvent(EditCarrierLicenseObserver observer){
+        EDIT_CARRIER_LICENSE_OBSERVERS.add(observer);
     }
 }

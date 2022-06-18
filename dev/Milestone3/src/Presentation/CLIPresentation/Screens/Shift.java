@@ -22,23 +22,23 @@ public abstract class Shift extends Screen {
     };
 
     private final Map<JobTitles, Supplier<Set<Employee>>> getAssignedByType = Stream.of(
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Sorter, () -> controller.getAssignedSortersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Storekeeper, () -> controller.getAssignedStorekeepersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Carrier, () -> controller.getAssignedCarriersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Cashier, () -> controller.getAssignedCashiersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.HR_Manager, () -> controller.getAssignedHR_ManagersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Logistics_Manager, () -> controller.getAssignedLogistics_ManagersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Transport_Manager, () -> controller.getAssignedTransports_ManagersFor(this))
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Sorter, () -> controller.getAssignedSortersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Storekeeper, () -> controller.getAssignedStorekeepersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Carrier, () -> controller.getAssignedCarriersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Cashier, () -> controller.getAssignedCashiersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.HR_Manager, () -> controller.getAssignedHR_ManagersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Logistics_Manager, () -> controller.getAssignedLogistics_ManagersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Transport_Manager, () -> controller.getAssignedTransports_ManagersFor(getDate(), getType()))
     ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
     private final Map<JobTitles, Supplier<Set<Employee>>> getAvailableByType = Stream.of(
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Sorter, () -> controller.getAvailableSortersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Storekeeper, () -> controller.getAvailableStorekeepersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Carrier, () -> controller.getAvailableCarriersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Cashier, () -> controller.getAvailableCashiersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.HR_Manager, () -> controller.getAvailableHR_ManagersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Logistics_Manager, () -> controller.getAvailableLogistics_ManagersFor(this)),
-            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Transport_Manager, () -> controller.getAvailableTransports_ManagersFor(this))
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Sorter, () -> controller.getAvailableSortersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Storekeeper, () -> controller.getAvailableStorekeepersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Carrier, () -> controller.getAvailableCarriersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Cashier, () -> controller.getAvailableCashiersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.HR_Manager, () -> controller.getAvailableHR_ManagersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Logistics_Manager, () -> controller.getAvailableLogistics_ManagersFor(getDate(), getType())),
+            new AbstractMap.SimpleEntry<JobTitles, Supplier<Set<Employee>>>(JobTitles.Transport_Manager, () -> controller.getAvailableTransports_ManagersFor(getDate(), getType()))
     ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
     protected final LocalDate date;
@@ -112,25 +112,25 @@ public abstract class Shift extends Screen {
 
         switch (type) {
             case Sorter:
-                controller.editShiftSorterIDs(this, assignedIDs);
+                controller.editShiftSorterIDs(getDate(), getType(), assignedIDs);
                 break;
             case Storekeeper:
-                controller.editShiftStorekeeperIDs(this, assignedIDs);
+                controller.editShiftStorekeeperIDs(getDate(), getType(), assignedIDs);
                 break;
             case Carrier:
-                controller.editShiftCarrierIDs(this, assignedIDs);
+                controller.editShiftCarrierIDs(getDate(), getType(), assignedIDs);
                 break;
             case Cashier:
-                controller.editShiftCashierIDs(this, assignedIDs);
+                controller.editShiftCashierIDs(getDate(), getType(), assignedIDs);
                 break;
             case HR_Manager:
-                controller.editShiftHR_ManagerIDs(this, assignedIDs);
+                controller.editShiftHR_ManagerIDs(getDate(), getType(), assignedIDs);
                 break;
             case Logistics_Manager:
-                controller.editShiftLogistics_ManagerIDs(this, assignedIDs);
+                controller.editShiftLogistics_ManagerIDs(getDate(), getType(), assignedIDs);
                 break;
             case Transport_Manager:
-                controller.editShiftTransport_ManagerIDs(this, assignedIDs);
+                controller.editShiftTransport_ManagerIDs(getDate(), getType(), assignedIDs);
                 break;
         }
     }
@@ -186,25 +186,25 @@ public abstract class Shift extends Screen {
 
         switch (type) {
             case Sorter:
-                controller.editShiftSorterIDs(this, assignedIDs);
+                controller.editShiftSorterIDs(getDate(), getType(), assignedIDs);
                 break;
             case Storekeeper:
-                controller.editShiftStorekeeperIDs(this, assignedIDs);
+                controller.editShiftStorekeeperIDs(getDate(), getType(), assignedIDs);
                 break;
             case Carrier:
-                controller.editShiftCarrierIDs(this, assignedIDs);
+                controller.editShiftCarrierIDs(getDate(), getType(), assignedIDs);
                 break;
             case Cashier:
-                controller.editShiftCashierIDs(this, assignedIDs);
+                controller.editShiftCashierIDs(getDate(), getType(), assignedIDs);
                 break;
             case HR_Manager:
-                controller.editShiftHR_ManagerIDs(this, assignedIDs);
+                controller.editShiftHR_ManagerIDs(getDate(), getType(), assignedIDs);
                 break;
             case Logistics_Manager:
-                controller.editShiftLogistics_ManagerIDs(this, assignedIDs);
+                controller.editShiftLogistics_ManagerIDs(getDate(), getType(), assignedIDs);
                 break;
             case Transport_Manager:
-                controller.editShiftTransport_ManagerIDs(this, assignedIDs);
+                controller.editShiftTransport_ManagerIDs(getDate(), getType(), assignedIDs);
                 break;
         }
         System.out.println("Chosen group saved successfully");
@@ -221,7 +221,7 @@ public abstract class Shift extends Screen {
         }
         else
             System.out.println("\nCurrent shift manager: NO MANAGER ASSIGNED!");
-        List<Employee> availableManagers = new ArrayList<>(controller.getAvailableShiftManagersFor(this));
+        List<Employee> availableManagers = new ArrayList<>(controller.getAvailableShiftManagersFor(getDate(), getType()));
         if (availableManagers.size() == 0) {
             System.out.println("No employee who is certified to manage shifts has filled a possibility to work at this shift.");
             System.out.println("Cannot assign a shift manager");
@@ -279,42 +279,42 @@ public abstract class Shift extends Screen {
     }
 
     protected void setShiftManagerId(String shiftManagerId) throws Exception {
-        controller.editShiftManagerID(this, shiftManagerId);
+        controller.editShiftManagerID(getDate(), getType(), shiftManagerId);
         this.shiftManagerId = shiftManagerId;
     }
 
     protected void setCarrierCount(int newCount) throws Exception {
-        controller.editShiftCarrierCount(this, newCount);
+        controller.editShiftCarrierCount(getDate(), getType(), newCount);
         getCountByType.put(JobTitles.Carrier ,newCount);
     }
 
     protected void setCashierCount(int newCount) throws Exception {
-        controller.editShiftCashierCount(this, newCount);
+        controller.editShiftCashierCount(getDate(), getType(), newCount);
         getCountByType.put(JobTitles.Cashier ,newCount);
     }
 
     protected void setStorekeeperCount(int newCount) throws Exception {
-        controller.editShiftStorekeeperCount(this, newCount);
+        controller.editShiftStorekeeperCount(getDate(), getType(), newCount);
         getCountByType.put(JobTitles.Storekeeper ,newCount);
     }
 
     protected void setSorterCount(int newCount) throws Exception {
-        controller.editShiftSorterCount(this, newCount);
+        controller.editShiftSorterCount(getDate(), getType(), newCount);
         getCountByType.put(JobTitles.Sorter ,newCount);
     }
 
     protected void setHr_managersCount(int newCount) throws Exception {
-        controller.editShiftHR_ManagerCount(this, newCount);
+        controller.editShiftHR_ManagerCount(getDate(), getType(), newCount);
         getCountByType.put(JobTitles.HR_Manager ,newCount);
     }
 
     protected void setLogistics_managersCount(int newCount) throws Exception {
-        controller.editShiftLogistics_ManagerCount(this, newCount);
+        controller.editShiftLogistics_ManagerCount(getDate(), getType(), newCount);
         getCountByType.put(JobTitles.Logistics_Manager ,newCount);
     }
 
     private void setTransport_managersCount(int newCount) throws Exception {
-        controller.editShiftTransport_ManagerCount(this, newCount);
+        controller.editShiftTransport_ManagerCount(getDate(), getType(), newCount);
         getCountByType.put(JobTitles.Transport_Manager,newCount);
     }
 

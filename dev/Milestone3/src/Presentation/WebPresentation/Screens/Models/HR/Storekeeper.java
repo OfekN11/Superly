@@ -1,7 +1,5 @@
 package Presentation.WebPresentation.Screens.Models.HR;
 
-import Presentation.WebPresentation.Screens.ViewModels.Suppliers.SupplierMainMenuStorekeeper;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -10,17 +10,19 @@ import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Transport;
 import Domain.Business.Objects.Truck;
 import Domain.DAL.Controllers.TransportMudel.TransportDAO;
+import Globals.Enums.LicenseTypes;
 import Globals.Enums.OrderStatus;
 import Globals.Enums.ShiftTypes;
 import Globals.Enums.TransportStatus;
 import Globals.Pair;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class TransportController {
+    private static final String CANNOT_CHANGE_LICENSES = "Cannot edit license of id: %s because he is assign to transport number %o and will no longer have the required license";
+    private static final String EMPLOYEE_HAS_A_DRIVE_TO_DO = "Cannot remove id: %s from this shift because he is assign to transport who is out this day";
     private final TransportDAO transportDataMapper = new TransportDAO();
     private TruckController truckController;
     private OrderController orderController;
@@ -36,9 +38,30 @@ public class TransportController {
         siteController = new SiteController();
         shiftController = new ShiftController();
         documentController = new DocumentController();
+        employeeController.registerToChangeCarrierLicenseEvent(this::verifyEmployeeHasRequiredLicenseForAssignedTransports);
+        shiftController.registerToRemoveEmployeeFromShiftEvent(this::verifyEmployeeIsNotADriverInTheShift);
     }
+
+    private void verifyEmployeeIsNotADriverInTheShift(Set<String> eIds, LocalDate shiftDate, ShiftTypes shiftType) {
+        List<Transport> transportsWithDriverFromTheEIds = getTransportInDate(shiftDate).stream().filter(transport ->  eIds.contains(transport.getDriverID())).collect(Collectors.toList());
+        if (!transportsWithDriverFromTheEIds.isEmpty())
+            throw new RuntimeException(String.format(EMPLOYEE_HAS_A_DRIVE_TO_DO,transportsWithDriverFromTheEIds.get(0).getDriverID()));
+    }
+
+    private void verifyEmployeeHasRequiredLicenseForAssignedTransports(String id, Set<LicenseTypes> newLicenses) throws Exception {
+        Set<Transport> employeeTransport = new HashSet<>(); // will be filter to the employee Transport for the next 8 days
+        LocalDate date= LocalDate.now();
+        for(int i=0;i<40;i++,date = date.plusDays(1))
+            employeeTransport.addAll(getTransportInDate(date));
+
+        employeeTransport = employeeTransport.stream().filter(transport -> transport.getDriverID().equals(id)).collect(Collectors.toSet());
+        for(Transport transport : employeeTransport)
+            if(!truckController.getTruck(transport.getTruckNumber()).canDriveOn(newLicenses))
+                throw new RuntimeException(String.format(CANNOT_CHANGE_LICENSES,id,transport.getSN()));
+    }
+
     public Transport createTransport(Pair<LocalDate,ShiftTypes> shift) throws Exception {
-        if(shiftController.getShift(shift.getLeft(),shift.getRight()).getStorekeeperCount()>0){
+        if(shiftController.getShift(shift.getLeft(),shift.getRight()).getStorekeeperIDs().size()>0){
             Transport transport = new Transport(shift);
             transportDataMapper.save(transport);
             return transport;
@@ -136,7 +159,7 @@ public class TransportController {
     public Pair<Boolean,ShiftTypes> canCreateTransportInShift(ShiftTypes shift,LocalDate d){
         try {
             Shift s = shiftController.getShift(d,shift);
-            if(s.getStorekeeperCount()>0 && getTransportsInShift(getAllTransports(),new Pair<>(d,shift)).size()<truckController.getTruckNumber()){
+            if(s.getStorekeeperIDs().size()>0 && getTransportsInShift(getAllTransports(),new Pair<>(d,shift)).size()<truckController.getTruckNumber()){
                 return new Pair<>(true,shift);
             }
         } catch (Exception e) {
@@ -304,7 +327,7 @@ public class TransportController {
     }
     public boolean isAvailable(List<Transport> transports,Carrier c){
         for (Transport t:transports) {
-            if(t.getDriverID()==c.getId()){
+            if(t.getDriverID().equals(c.getId())){
                 return false;
             }
         }
@@ -402,6 +425,25 @@ public class TransportController {
         }
 
 
+    }
+
+    public void removeTruck(int licenseNumber) throws Exception {
+        if(!checkIfTruckPlaceInTransport(licenseNumber)){
+            truckController.removeTruck(licenseNumber);
+        }
+        else{
+            throw new Exception("This truck is already embedded in transports that are in progress or pending!");
+        }
+    }
+    private boolean checkIfTruckPlaceInTransport(int licenseNumber){
+        List<Transport> allTransports = getAllTransports();
+        for(Transport transport: allTransports){
+            if(transport.getTruckNumber() == licenseNumber &&
+                    (transport.getStatus() == TransportStatus.padding | transport.getStatus() == TransportStatus.inProgress)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -1,11 +1,16 @@
 package Domain.Service.Objects.Shift;
 
+import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
 import Presentation.CLIPresentation.Screens.ScreenShiftFactory;
 
 import java.time.LocalDate;
+import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Service model for Shift
@@ -22,13 +27,15 @@ public abstract class Shift {
     public final int logistics_managersCount;
     public final int transport_managersCount;
 
+    public final Map<JobTitles, Integer> titleToCount;
+    public final Map<JobTitles, Set<String>> titleToIDs;
+
     public final Set<String> carrierIDs;
     public final Set<String> cashierIDs;
     public final Set<String> storekeeperIDs;
     public final Set<String> sorterIDs;
     public final Set<String> hr_managerIDs;
     public final Set<String> logistics_managerIDs;
-
     public final Set<String> transport_managersIDs;
 
     private Shift(LocalDate date, String shiftManagerId,
@@ -52,6 +59,26 @@ public abstract class Shift {
         this.hr_managerIDs = Collections.unmodifiableSet(hr_managerIDs);
         this.logistics_managerIDs = Collections.unmodifiableSet(logistics_managerIDs);
         this.transport_managersIDs = Collections.unmodifiableSet(transport_managersIDs);
+
+        titleToCount = Collections.unmodifiableMap(Stream.of(
+                new AbstractMap.SimpleEntry<>(JobTitles.Sorter, sorterCount),
+                new AbstractMap.SimpleEntry<>(JobTitles.Storekeeper, storekeeperCount),
+                new AbstractMap.SimpleEntry<>(JobTitles.Carrier, carrierCount),
+                new AbstractMap.SimpleEntry<>(JobTitles.Cashier, cashierCount),
+                new AbstractMap.SimpleEntry<>(JobTitles.HR_Manager, hr_managersCount),
+                new AbstractMap.SimpleEntry<>(JobTitles.Logistics_Manager, logistics_managersCount),
+                new AbstractMap.SimpleEntry<>(JobTitles.Transport_Manager, transport_managersCount)
+        ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)));
+
+        titleToIDs = Collections.unmodifiableMap(Stream.of(
+                new AbstractMap.SimpleEntry<>(JobTitles.Sorter, sorterIDs),
+                new AbstractMap.SimpleEntry<>(JobTitles.Storekeeper, storekeeperIDs),
+                new AbstractMap.SimpleEntry<>(JobTitles.Carrier, carrierIDs),
+                new AbstractMap.SimpleEntry<>(JobTitles.Cashier, cashierIDs),
+                new AbstractMap.SimpleEntry<>(JobTitles.HR_Manager, hr_managerIDs),
+                new AbstractMap.SimpleEntry<>(JobTitles.Logistics_Manager, logistics_managerIDs),
+                new AbstractMap.SimpleEntry<>(JobTitles.Transport_Manager, transport_managersIDs)
+                ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)));
     }
 
     public Shift(Domain.Business.Objects.Shift.Shift bShift){
