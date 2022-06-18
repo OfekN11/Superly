@@ -1,5 +1,6 @@
 package Domain.DAL.Controllers.InventoryAndSuppliers;
 
+import Domain.Business.Objects.Inventory.DefectiveItems;
 import Domain.Business.Objects.Inventory.SaleToCustomer;
 import Domain.DAL.Abstract.DataMapper;
 import Domain.DAL.Abstract.LinkDAO;
@@ -156,6 +157,18 @@ public class SalesDataMapper extends DataMapper<SaleToCustomer> {
         String endDate = "" + date.getYear() + "-" + ((date.getMonthValue()<10) ? ("0" + date.getMonthValue()) : (date.getMonthValue())) + "-" + ((date.getDayOfMonth()<10) ? ("0" + date.getDayOfMonth()) : (date.getDayOfMonth()));
         try {
             updateProperty(Integer.toString(saleID), END_DATE_COLUMN, endDate);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteByProduct(int id) {
+        Collection<SaleToCustomer> d = getSalesByProduct(id);
+        try {
+            for (SaleToCustomer def : d) {
+                delete(String.valueOf(def.getId()));
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

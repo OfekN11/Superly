@@ -219,4 +219,15 @@ public class DefectiveItemsDataMapper extends DataMapper<DefectiveItems> {
         }
     }
 
+    public void deleteByProduct(int id) {
+        Collection<DefectiveItems> d = getByProduct(id);
+        try {
+            for (DefectiveItems def : d) {
+                delete(String.valueOf(def.getId()));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
