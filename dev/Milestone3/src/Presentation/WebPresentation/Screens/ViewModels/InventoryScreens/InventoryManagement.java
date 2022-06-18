@@ -72,7 +72,7 @@ public class InventoryManagement extends Screen {
             }
         }
         else if (isButtonPressed(req, returnButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Cashier.class, Sorter.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Cashier.class, Sorter.class, Admin.class)))) {
                 setError("You have no permission to return items to the store");
                 refresh(req, resp);
                 return;
@@ -134,7 +134,7 @@ public class InventoryManagement extends Screen {
             }
         }
         else if (isButtonPressed(req, reportDefectiveButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Storekeeper.class, Sorter.class, Cashier.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Storekeeper.class, Sorter.class, Cashier.class, Admin.class)))) {
                 setError("You have no permission to report defective items in the store or in the warehouse");
                 refresh(req, resp);
                 return;
@@ -165,7 +165,27 @@ public class InventoryManagement extends Screen {
             }
         }
         else if (isButtonPressed(req, transportButton)) {
-            redirect(resp, TransportArrived.class, new String[] {transportButton}, new String[] {getParamVal(req,"transport")});
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Storekeeper.class)))) {
+                setError("You have no permission to accept a transport");
+                refresh(req, resp);
+                return;
+            }
+            try {
+                String transportID = getParamVal(req, "transport");
+                if (transportID==null || transportID.equals("")) {
+                    setError("Please enter transport ID");
+                    refresh(req, resp);
+                }
+                else
+                    redirect(resp, TransportArrived.class, new String[] {"transport ID"}, new String[] {transportID});
+            } catch (NumberFormatException e1) {
+                setError("Please enter transport ID");
+                refresh(req, resp);
+            }
+            catch (Exception e) {
+                setError(e.getMessage());
+                refresh(req, resp);
+            }
         }
     }
 }

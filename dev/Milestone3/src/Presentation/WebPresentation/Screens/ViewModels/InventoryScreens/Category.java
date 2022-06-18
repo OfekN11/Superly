@@ -1,10 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
 import Domain.Service.util.Result;
-import Presentation.WebPresentation.Screens.Models.HR.Employee;
-import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
-import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
-import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
+import Presentation.WebPresentation.Screens.Models.HR.*;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
@@ -55,7 +52,7 @@ public class Category extends Screen{
         if (handleHeader(req, resp))
             return;
         if (isButtonPressed(req, setParentButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Transport_Manager.class, HR_Manager.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Transport_Manager.class, HR_Manager.class, Admin.class)))) {
                 setError("You have no permission to set category parent");
                 refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
                 return;
@@ -80,7 +77,7 @@ public class Category extends Screen{
             }
         }
         else if (isButtonPressed(req, setNameButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Admin.class)))) {
                 setError("You have no permission to set category name");
                 refresh(req, resp, new String[]{"CategoryID"}, new String[]{Integer.toString(categoryID)});
                 return;
@@ -110,7 +107,7 @@ public class Category extends Screen{
             PrintWriter out = resp.getWriter();
             out.println("Category ID: " + c.getID() + "<br>");
             out.println("Category name: " + c.getName() + "<br>");
-            out.println("Parent category ID: " + (c.getParentCategory()=="" ? "no parent" : c.getParentCategory()) + "<br>");
+            out.println("Parent category ID: " + (c.getParentCategory().equals("") ? "no parent" : c.getParentCategory()) + "<br>");
             out.println("Number of products: " + c.getNumOfProducts() + "<br>");
             out.println("Sub categories:");
             for (Domain.Service.Objects.InventoryObjects.Category cat: c.getSubCategories()) {

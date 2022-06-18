@@ -1,10 +1,7 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
 import Domain.Service.util.Result;
-import Presentation.WebPresentation.Screens.Models.HR.Employee;
-import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
-import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
-import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
+import Presentation.WebPresentation.Screens.Models.HR.*;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 
@@ -61,7 +58,7 @@ public class Product extends Screen {
         if (handleHeader(req, resp))
             return;
         if (isButtonPressed(req, setPriceButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Transport_Manager.class, HR_Manager.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Transport_Manager.class, HR_Manager.class, Admin.class)))) {
                 setError("You have no permission to set product price");
                 refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 return;
@@ -86,7 +83,7 @@ public class Product extends Screen {
             }
         }
         else if (isButtonPressed(req, setMinButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Admin.class)))) {
                 setError("You have no permission to set product minimum amount");
                 refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 return;
@@ -111,7 +108,7 @@ public class Product extends Screen {
             }
         }
         else if (isButtonPressed(req, setTargetButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Admin.class)))) {
                 setError("You have no permission to set product target amount");
                 refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 return;
@@ -136,7 +133,7 @@ public class Product extends Screen {
             }
         }
         else if (isButtonPressed(req, setNameButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Admin.class)))) {
                 setError("You have no permission to set product name");
                 refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 return;
@@ -161,7 +158,7 @@ public class Product extends Screen {
             }
         }
         else if (isButtonPressed(req, changeCategoryButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Admin.class)))) {
                 setError("You have no permission to change product's category");
                 refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 return;
