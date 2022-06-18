@@ -1,17 +1,23 @@
 package SuppliersTests;
 
+import Domain.Business.Controllers.SupplierController;
 import Domain.Business.Objects.Supplier.Agreement.Agreement;
 import Domain.Business.Objects.Supplier.Contact;
 import Domain.Business.Objects.Supplier.Supplier;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.InventoryAndSuppliers.SuppliersDAO;
+import Domain.Service.Services.SupplierService;
+import Domain.Service.util.Result;
 import InventoryTests.CategoryTests;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,10 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @NotThreadSafe
 class SupplierTest {
 
-    private Supplier supplier;
-    private ArrayList<Contact> contacts;
-    private ArrayList<String> manufacturers;
-    private SuppliersDAO dao;
+    private SupplierController supplierController = new SupplierController();
 
 
 
@@ -41,6 +44,7 @@ class SupplierTest {
     }
 
 
+    /*
     @BeforeEach
     public void setUp() throws Exception{
         contacts = new ArrayList<>();
@@ -83,5 +87,37 @@ class SupplierTest {
 
     }
 
+
+     */
+
+
+    @Test
+    void newOrder() {
+        int orderId = 0;
+        try {
+            orderId = supplierController.addNewOrder(1, 1);
+            assertTrue(orderId != -1);
+            boolean res = supplierController.removeOrder(orderId);
+            assertTrue(res);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void getPossibleDates(){
+        try{
+            supplierController.loadSuppliersData();
+            List<LocalDate> dates = supplierController.getPossibleDates(1);
+            LocalDate now = LocalDate.now();
+            for(int i = 0; i <=7; i++ ){
+                assertTrue(dates.contains(now));
+                now.plusDays(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 }
