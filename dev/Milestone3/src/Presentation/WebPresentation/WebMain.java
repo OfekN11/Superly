@@ -76,6 +76,7 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(Sales.class, "/Sales"),
             new AbstractMap.SimpleEntry<>(SaleHistory.class, "/Sale"),
             new AbstractMap.SimpleEntry<>(InventoryManagement.class, "/InventoryManagement"),
+            new AbstractMap.SimpleEntry<>(TransportArrived.class, "/TransportArrived"),
 
             new AbstractMap.SimpleEntry<>(TransportMainMenu.class, "/TransportMainMenu"),
             new AbstractMap.SimpleEntry<>(TruckManagementMenu.class, "/TransportMainMenu/TruckManagementMenu"),
