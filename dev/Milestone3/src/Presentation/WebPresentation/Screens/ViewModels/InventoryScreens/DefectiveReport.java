@@ -22,12 +22,12 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Report extends Screen {
+public class DefectiveReport extends Screen {
     public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(0);
 
     private static final String greet = "Report";
 
-    public Report() {
+    public DefectiveReport() {
         super(greet, ALLOWED);
     }
 
@@ -38,6 +38,12 @@ public class Report extends Screen {
         }
         header(resp);
         greet(resp);
+//        String defectiveOrDamagedOrExpired = "defective";//getParamVal(req, "defective or damaged or expired");
+//        String byStoreOrByCategoryOrByProduct = "by product";//getParamVal(req, "by store or by category or by product");
+//        LocalDate startDate = LocalDate.parse("2020-01-01");//LocalDate.parse(getParamVal(req, "start date"));
+//        LocalDate endDate = LocalDate.parse("2023-12-31");//LocalDate.parse(getParamVal(req, "end date"));
+//        List<Integer> IDs = new ArrayList<>();//(Arrays.asList(getParamVal(req, "IDs").split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
+//        IDs.add(1);
         String defectiveOrDamagedOrExpired = getParamVal(req, "defective or damaged or expired");
         String byStoreOrByCategoryOrByProduct = getParamVal(req, "by store or by category or by product");
         LocalDate startDate =LocalDate.parse(getParamVal(req, "start date"));

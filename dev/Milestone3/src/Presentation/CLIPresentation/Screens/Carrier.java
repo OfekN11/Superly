@@ -66,7 +66,7 @@ public class Carrier extends Employee {
     }
 
     private void setLicenses(Set<LicenseTypes> curr) throws Exception {
-        controller.editCarrierLicenses(this, curr);
+        controller.editCarrierLicenses(getID(), curr);
         licenses = new HashSet<>(curr);
     }
 

@@ -48,7 +48,7 @@ public class Sales extends Screen{
         printForm(resp, new String[] {"ID"}, new String[]{"Sale ID"}, new String[]{deleteButton});
         //categories, products, percent, start, end
         printForm(resp, new String[] {"categories", "products", "percent", "start", "end"},
-                new String[]{"Categories (1,2,..7)", "Products (1,2..7)", "Percent", "Start Date (2007-12-03)", "End Date (2007-12-03)"}, new String[]{addButton});
+                new String[]{"Categories (1,2,..7)", "Products (1,2..7)", "Percent", "Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)"}, new String[]{addButton});
         printInstructions(resp);
         printSales(resp);
         printProducts(resp);
@@ -59,7 +59,7 @@ public class Sales extends Screen{
     private void printInstructions(HttpServletResponse resp) {
         try {
             PrintWriter out = resp.getWriter();
-            out.println("Enter 0 for no products or no categories<br>");
+            out.println("Enter 0 for no products or no categories<br><br>");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,8 +77,7 @@ public class Sales extends Screen{
             try {
                 int saleID = Integer.parseInt(req.getParameter("ID"));
                 if(controller.removeSale(saleID).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Deleted sale %d", saleID)));
+                    setError("Sale " + saleID + " has been deleted");
                     refresh(req, resp);
                 }
                 else{
@@ -115,8 +114,7 @@ public class Sales extends Screen{
                     refresh(req, resp);
                 }
                 else if(controller.addSale(categories, products, percent, startDate, endDate).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Added new sale")));
+                    setError("Sale has been added successfully");
                     refresh(req, resp);
                 }
                 else{
@@ -212,10 +210,11 @@ public class Sales extends Screen{
             List<Domain.Service.Objects.InventoryObjects.Sale> sales = controller.getRemovableSales().getValue();
             PrintWriter out = resp.getWriter();
             sales.sort(Comparator.comparingInt(Domain.Service.Objects.InventoryObjects.Sale::getSaleID));
-            out.println("SALES<br>");
+            out.println("REMOVABLE SALES:<br>");
             for (Domain.Service.Objects.InventoryObjects.Sale s: sales) {
-//                out.println(String.format("%s: %s%, %s-%s, %s, &s <br>"), s.getSaleID(), s.getPercent(), s.getStartDate(), s.getEndDate(), s.getCategories(), s.getProducts());
+                out.println("Sale ID: " + s.getSaleID() + " | Sale Percentage: " + s.getPercent() + " | Sale Start Date: " + s.getStartDate() + " | Sale End Date: " + s.getEndDate() + " | Sale Categories: " + s.getCategories() + " | Sale Products: " + s.getProducts() + "<br>");
             }
+            out.println("<br>");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -226,10 +225,11 @@ public class Sales extends Screen{
             List<Domain.Service.Objects.InventoryObjects.Product> products = controller.getProducts().getValue();
             PrintWriter out = resp.getWriter();
             products.sort(Comparator.comparingInt(Product::getId));
-            out.println("PRODUCTS<br>");
+            out.println("PRODUCTS:<br>");
             for (Product p: products) {
                 out.println(p.getName() + ": " + p.getId() + "<br>");
             }
+            out.println("<br>");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -240,10 +240,11 @@ public class Sales extends Screen{
             List<Domain.Service.Objects.InventoryObjects.Category> categories = controller.getCategories().getValue();
             PrintWriter out = resp.getWriter();
             categories.sort(Comparator.comparingInt(Category::getID));
-            out.println("CATEGORIES<br>");
+            out.println("CATEGORIES:<br>");
             for (Domain.Service.Objects.InventoryObjects.Category c: categories) {
                 out.println(c.getName() + ": " + c.getID() + "<br>");
             }
+            out.println("<br>");
         } catch (Exception e) {
             e.printStackTrace();
         }

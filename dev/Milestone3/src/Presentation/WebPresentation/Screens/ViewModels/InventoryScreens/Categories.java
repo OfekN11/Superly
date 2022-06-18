@@ -52,8 +52,7 @@ public class Categories extends Screen{
             try {
                 int categoryID = Integer.parseInt(req.getParameter("ID"));
                 if(controller.deleteCategory(categoryID).getValue()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Deleted category %d", categoryID)));
+                    setError("Deleted category " + categoryID);
                     refresh(req, resp);
                 }
                 else{
@@ -78,10 +77,8 @@ public class Categories extends Screen{
             try {
                 String categoryName = req.getParameter("category name");
                 int parentCategoryID = Integer.parseInt(req.getParameter("parent category ID"));
-
                 if(controller.addNewCategory(categoryName, parentCategoryID).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Added new category %d", categoryName)));
+                    setError("Added new category: " + categoryName);
                     refresh(req, resp);
                 }
                 else{

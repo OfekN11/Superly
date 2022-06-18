@@ -38,8 +38,14 @@ public abstract class Employee {
     public Employee(String id, String name, String bankDetails, int salary, LocalDate startingDate, Set<Certifications> certifications) throws Exception {
         validateLegalID(id);
         this.id = id;
+        if (name.equals(""))
+            throw new Exception("Employee name can't be empty");
         this.name = name;
+        if (bankDetails.equals(""))
+            throw new Exception("Bank Details can't be empty");
         this.bankDetails = bankDetails;
+        if (salary < 0)
+            throw new Exception("Can't have negative salary");
         this.salary = salary;
         this.startingDate = startingDate;
         this.certifications = certifications;

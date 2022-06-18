@@ -1,7 +1,5 @@
 package Presentation.WebPresentation.Screens.ViewModels.InventoryScreens;
 
-import Domain.Service.Objects.Employee.Sorter;
-import Domain.Service.Objects.Employee.Storekeeper;
 import Domain.Service.util.Result;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.HR_Manager;
@@ -47,8 +45,8 @@ public class Product extends Screen {
             Result<Domain.Service.Objects.InventoryObjects.Product> product = controller.getProduct(productID);
             if (product.isOk() && product.getValue() != null) {
                 printForm(resp, new String[]{"new price"}, new String[]{"New price"}, new String[]{setPriceButton});
-                printForm(resp, new String[]{"storeID", "new min"}, new String[]{"StoreID", "New min"}, new String[]{setMinButton});
-                printForm(resp, new String[]{"storeID", "new target"}, new String[]{"StoreID", "New target"}, new String[]{setTargetButton});
+                printForm(resp, new String[]{"new min"}, new String[]{"New min"}, new String[]{setMinButton});
+                printForm(resp, new String[]{"new target"}, new String[]{"New target"}, new String[]{setTargetButton});
                 printForm(resp, new String[]{"new name"}, new String[]{"New name"}, new String[]{setNameButton});
                 printForm(resp, new String[]{"new category id"}, new String[]{"New category ID"}, new String[]{changeCategoryButton});
                 printProduct(resp, product.getValue());
@@ -71,8 +69,7 @@ public class Product extends Screen {
             try {
                 double newPrice = Double.parseDouble(req.getParameter("new price"));
                 if(controller.editProductPrice(productID, newPrice).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed price of product %d to %f", productID, newPrice)));
+                    setError("Changed price of product " + productID + " to " + newPrice);
                     refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
                 else{
@@ -95,11 +92,9 @@ public class Product extends Screen {
                 return;
             }
             try {
-                int storeID = Integer.parseInt(req.getParameter("storeID"));
                 int newMin = Integer.parseInt(req.getParameter("new min"));
-                if(controller.changeProductMin(storeID, productID, newMin).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed minimum amount of product %d in store %d to %d", productID, storeID, newMin)));
+                if(controller.changeProductMin(1, productID, newMin).isOk()) {
+                    setError("Changed minimum amount of product " + productID + " to " + newMin);
                     refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
                 else{
@@ -122,11 +117,9 @@ public class Product extends Screen {
                 return;
             }
             try {
-                int storeID = Integer.parseInt(req.getParameter("storeID"));
                 int newTarget = Integer.parseInt(req.getParameter("new target"));
-                if(controller.changeProductTarget(storeID, productID, newTarget).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed target amount of product %d in store %d to %d", productID, storeID, newTarget)));
+                if(controller.changeProductTarget(1, productID, newTarget).isOk()) {
+                    setError("Changed target amount of product " + productID + " to " + newTarget);
                     refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
                 else{
@@ -151,8 +144,7 @@ public class Product extends Screen {
             try {
                 String newName = req.getParameter("new name");
                 if(controller.editProductName(productID, newName).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed name of product %d to %s", productID, newName)));
+                    setError("Product name has been changed to: " + newName);
                     refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
                 else{
@@ -182,8 +174,7 @@ public class Product extends Screen {
                     return;
                 }
                 if(controller.moveProductToCategory(productID, newCategoryID).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed category of product %d to %d", productID, newCategoryID)));
+                    setError("Changed category of product " + productID + " to " + newCategoryID);
                     refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
                 else{
@@ -209,7 +200,9 @@ public class Product extends Screen {
             out.println("Original price: " + p.getOriginalPrice() + "<br>");
             out.println("Current price: " + p.getCurrentPrice() + "<br>");
             out.println("Weight: " + p.getWeight() + "<br>");
-            out.println("Manufacturer: " + p.getManufacturer() + "<br><br>");
+            out.println("Manufacturer: " + p.getManufacturer() + "<br>");
+            out.println("Minimum amount: " + controller.getMin(1, p.getId()) + "<br>");
+            out.println("Target amount: " + controller.getTarget(1, p.getId()) + "<br><br>");
         } catch (Exception e) {
             e.printStackTrace();
         }
