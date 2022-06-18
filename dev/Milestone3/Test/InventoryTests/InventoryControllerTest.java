@@ -42,8 +42,8 @@ class InventoryControllerTest {
     void orderArrived() throws Exception {
         //setup
         int cat = is.addCategory("TestCategory", 0).getID();
-        Product prod1 = is.newProduct("TestProduct", cat,2,2,"testManu");
-        Product prod2 = is.newProduct("TestProduct", cat,2,2,"testManu");
+        Product prod1 = is.newProduct("TestProduct", cat,0,2,"testManu");
+        Product prod2 = is.newProduct("TestProduct", cat,0,2,"testManu");
         int supplier = sc.addSupplier("Test-OrderArrived", 2, "address", "Agreement", new ArrayList<>(), new ArrayList<>());
         sc.addAgreement(supplier,1, "1 2 3 4 5 6 7");
         //    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
