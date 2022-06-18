@@ -29,15 +29,12 @@ public class ViewPendingOrders extends Screen {
         header(resp);
         greet(resp);
         String val;
-        if((val = getParamVal(req,"ID"))!=null){
-            int TransportId = Integer.parseInt(val);
-            try {
-                Set<Order> pending = controller.getPendingOrders();
-                printTransport(pending,resp);
-            }
-            catch (Exception e) {
-                setError("failure");
-            }
+        try {
+            Set<Order> pending = controller.getPendingOrders();
+            printTransport(pending,resp);
+        }
+        catch (Exception e) {
+            setError("failure");
         }
         printMenu(resp,new String[]{"Exit"});
     }
