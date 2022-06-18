@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class UpdateTransport extends Screen {
-    private static final String greet = "Transport Management Menu";
+    private static final String greet = "Update Transport Menu";
     private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Transport_Manager.class, Logistics_Manager.class));
     private static final String[] forumOptions = {
             "Place truck",                  //1
@@ -76,12 +76,13 @@ public class UpdateTransport extends Screen {
                 refresh(req, resp);
             }
         }
-        else if (isButtonPressed(req, "Exit")) {
+        else {
+            setError("Failure!");
+        }
+        if (isButtonPressed(req, "Exit")) {
             redirect(resp,TransportManagementMenu.class);
         }
-        else {
-            setError("failure");
-        }
+
     }
 
 
