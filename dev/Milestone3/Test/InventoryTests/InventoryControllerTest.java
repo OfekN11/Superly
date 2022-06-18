@@ -28,6 +28,7 @@ class InventoryControllerTest {
         DAO.setDBForTests(InventoryControllerTest.class);
         stores = new ArrayList<>();
         sc = new SupplierController();
+        sc.setInventoryController(is);
         sc.loadSuppliersData();
         maxStoreCount = max(is.getStoreIDs());
     }
@@ -48,7 +49,7 @@ class InventoryControllerTest {
         sc.addAgreement(supplier,1, "1 2 3 4 5 6 7");
         //    public void addItemToAgreement(int supplierId, int itemId, int idBySupplier, String itemManu, float itemPrice, Map<Integer, Integer> bulkPrices) throws Exception {
         sc.addItemToAgreement(supplier, prod1.getId(), 1, "",  3, new HashMap<>());
-        sc.addItemToAgreement(supplier, prod2.getId(), 1, "",  3,  new HashMap<>());
+        sc.addItemToAgreement(supplier, prod2.getId(), 2, "",  3,  new HashMap<>());
         int store = is.addStore();
         stores.add(store);
         is.addProductToStore(store,Arrays.asList(1),Arrays.asList(1),prod1.getId(),100,200);
