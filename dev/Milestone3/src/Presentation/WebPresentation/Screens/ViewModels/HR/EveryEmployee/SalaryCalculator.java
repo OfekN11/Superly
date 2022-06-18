@@ -57,7 +57,7 @@ public class SalaryCalculator extends Screen {
         header(resp);
         greet(resp);
         PrintWriter out = resp.getWriter();
-        out.println(String.format("<h3>Calculating salary for %s(ID - %s)</h3>", emp.name, emp.id));
+        out.println(String.format("<h3>Calculating salary for %s(ID - %s)</h3>", emp.getName(), emp.id));
 
         String val;
         LocalDate start = LocalDate.now(), end = LocalDate.now();
@@ -82,11 +82,11 @@ public class SalaryCalculator extends Screen {
                 numOfShifts = controller.getEmployeeShiftsBetween(emp.id, start, end).size();
                 out.println("<p>");
                 out.println(String.format("Between %s and %s, %s has done %s shifts",
-                        start.format(HumanInteraction.dateFormat), end.format(HumanInteraction.dateFormat), emp.name, numOfShifts));
+                        start.format(HumanInteraction.dateFormat), end.format(HumanInteraction.dateFormat), emp.getName(), numOfShifts));
                 out.println("<br>");
-                out.println(String.format("With a salary of %s per shift", emp.salary));
+                out.println(String.format("With a salary of %s per shift", emp.getSalary()));
                 out.println("<br>");
-                out.println(String.format("Calculated salary between these dates is: %s ", (numOfShifts * emp.salary)));
+                out.println(String.format("Calculated salary between these dates is: %s ", (numOfShifts * emp.getSalary())));
                 out.println("</p><br><br>");
             } catch (Exception e) {
                 setError(e.getMessage());

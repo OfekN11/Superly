@@ -44,4 +44,9 @@ public class HR_Manager extends Employee{
                 break;
         }
     }
+
+    @Override
+    protected void updateGreet() {
+        setGreeting(GREETING + getName());
+    }
 }

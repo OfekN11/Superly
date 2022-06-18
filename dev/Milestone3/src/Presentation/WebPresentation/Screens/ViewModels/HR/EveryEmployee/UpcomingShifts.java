@@ -54,7 +54,7 @@ public class UpcomingShifts extends Screen {
 
         header(resp);
         PrintWriter out = resp.getWriter();
-        out.println(String.format("<h1>Upcoming shifts in the next 30 days for %s</h1>", emp.name));
+        out.println(String.format("<h1>Upcoming shifts in the next 30 days for %s</h1>", emp.getName()));
         try {
             List<Shift> upcoming = new ArrayList<>(controller.getEmployeeShiftsBetween(emp.id, LocalDate.now(), LocalDate.now().plusDays(30)));
             upcoming.sort(new ShiftComparator());

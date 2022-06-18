@@ -102,6 +102,7 @@ public class ManageEmployee extends Screen {
                 out.println(String.format("<input type=\"submit\" name=\"viewConds\" value=\"View %s's Employment Conditions\"><br><br>", sEmp.name));
                 out.println(String.format("<input type=\"submit\" name=\"upcShifts\" value=\"View %s's upcoming shifts\"><br><br>", sEmp.name));
                 out.println(String.format("<input type=\"submit\" name=\"salCalc\" value=\"Calculate %s's salary\"><br><br>", sEmp.name));
+                out.println(String.format("<input type=\"submit\" name=\"delete\" value=\"Remove %s from the system\"><br><br>", sEmp.name));
 
             } catch (Exception e){
                 setError(e.getMessage());
@@ -121,7 +122,9 @@ public class ManageEmployee extends Screen {
         else if (isButtonPressed(req, "uName")){
             try {
                 String newName = getParamVal(req, "name");
-                controller.editEmployeeName(getParamVal(req, "EmpID"), newName);
+                String eid = getParamVal(req, "EmpID");
+                controller.editEmployeeName(eid, newName);
+                Login.updateUserName(eid);
                 setError("Name successfully updated to " + newName);
             } catch (Exception e) {
                 setError(e.getMessage());
@@ -141,7 +144,9 @@ public class ManageEmployee extends Screen {
         else if (isButtonPressed(req, "uSal")){
             try {
                 int newSal = Integer.parseInt(getParamVal(req, "salary"));
-                controller.editEmployeeSalary(getParamVal(req, "EmpID"), newSal);
+                String eid = getParamVal(req, "EmpID");
+                controller.editEmployeeSalary(eid, newSal);
+                Login.updateSalary(eid);
                 setError("Salary successfully updated to " + newSal);
             } catch (NumberFormatException e) {
                 setError("Error occurred: Enter numerical value as salary");
@@ -210,6 +215,8 @@ public class ManageEmployee extends Screen {
         }
         else if (isButtonPressed(req, "upcShifts")){
             redirect(resp, UpcomingShifts.class, new String[]{"EmpID"}, new String[]{getParamVal(req, "EmpID")});
+        } else if (isButtonPressed(req, "delete")) {
+            redirect(resp, RemoveEmployee.class, new String[]{"eid"}, new String[]{getParamVal(req, "EmpID")});
         }
     }
 }

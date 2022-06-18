@@ -108,8 +108,20 @@ public class Login extends Screen {
             }
     }
 
-    public static void removeUser(String id) throws NoSuchAlgorithmException {
-        loggedUser.remove(hash(id));
+    public static void removeUser(String eid) throws NoSuchAlgorithmException {
+        loggedUser.remove(hash(eid));
+    }
+
+    public static void updateUserName(String eid) throws Exception {
+        String hash = hash(eid);
+        if (loggedUser.containsKey(hash))
+            loggedUser.get(hash).updateName();
+    }
+
+    public static void updateSalary(String eid) throws Exception {
+        String hash = hash(eid);
+        if (loggedUser.containsKey(hash))
+            loggedUser.get(hash).updateSalary();
     }
 
     private static String hash(String toHash) throws NoSuchAlgorithmException {

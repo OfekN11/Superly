@@ -33,16 +33,14 @@ public abstract class Employee extends Screen {
     private final String[] menuOption;
 
     public final String id;
-    public final String name;
-    public final String bankDetails;
-    public final int salary;
+    private String name;
+    private int salary;
 
     protected Employee(Domain.Service.Objects.Employee.Employee sEmployee, String greeting, String[] extraMenuOptions) {
         super(greeting + sEmployee.name); //greeting is of structure "Welcome <type> "
         this.menuOption = Stream.concat(Arrays.stream(BASE_OPTIONS), Arrays.stream(extraMenuOptions)).toArray(String[]::new);
         id = sEmployee.id;
         name = sEmployee.name;
-        bankDetails = sEmployee.bankDetails;
         salary = sEmployee.salary;
     }
 
@@ -52,7 +50,6 @@ public abstract class Employee extends Screen {
         this.menuOption = menuOption;
         this.id = null;
         this.name = null;
-        this.bankDetails = null;
         this.salary = 0;
     }
 
@@ -95,5 +92,24 @@ public abstract class Employee extends Screen {
                 redirect(resp, InventoryMainMenu.class);
                 break;
         }
+    }
+
+    public void updateName() throws Exception {
+        name = controller.getEmployee(id).name;
+        updateGreet();
+    }
+
+    protected abstract void updateGreet();
+
+    public void updateSalary() throws Exception {
+        salary = controller.getEmployee(id).salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getSalary() {
+        return salary;
     }
 }

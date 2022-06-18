@@ -48,4 +48,9 @@ public class Admin extends Employee{
                 break;
         }
     }
+
+    @Override
+    protected void updateGreet() {
+       setGreeting(GREET);
+    }
 }
