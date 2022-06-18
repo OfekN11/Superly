@@ -204,32 +204,32 @@ public class BackendController {
 
     //UPDATE
 
-    public void editEmployeeName(Presentation.CLIPresentation.Screens.Employee employee, String newName) throws Exception {
-        Result<Object> result = employeeService.editEmployeeName(employee.getID(), newName);
+    public void editEmployeeName(String eID, String newName) throws Exception {
+        Result<Object> result = employeeService.editEmployeeName(eID, newName);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editEmployeeBankDetails(Presentation.CLIPresentation.Screens.Employee employee, String newNankDetails) throws Exception {
-        Result<Object> result = employeeService.editEmployeeBankDetails(employee.getID(), newNankDetails);
+    public void editEmployeeBankDetails(String eID, String newNankDetails) throws Exception {
+        Result<Object> result = employeeService.editEmployeeBankDetails(eID, newNankDetails);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editEmployeeSalary(Presentation.CLIPresentation.Screens.Employee employee, int newSalary) throws Exception {
-        Result<Object> result = employeeService.editEmployeeSalary(employee.getID(), newSalary);
+    public void editEmployeeSalary(String eID, int newSalary) throws Exception {
+        Result<Object> result = employeeService.editEmployeeSalary(eID, newSalary);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editEmployeeCertifications(Presentation.CLIPresentation.Screens.Employee employee, Set<Certifications> newCertifications) throws Exception {
-        Result<Object> result = employeeService.editEmployeeCertifications(employee.getID(), newCertifications);
+    public void editEmployeeCertifications(String eId, Set<Certifications> newCertifications) throws Exception {
+        Result<Object> result = employeeService.editEmployeeCertifications(eId, newCertifications);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editCarrierLicenses(Presentation.CLIPresentation.Screens.Carrier carrier, Set<LicenseTypes> newLicenses) throws Exception {
-        Result<Object> result = employeeService.editCarrierLicenses(carrier.getID(), newLicenses);
+    public void editCarrierLicenses(String cId, Set<LicenseTypes> newLicenses) throws Exception {
+        Result<Object> result = employeeService.editCarrierLicenses(cId, newLicenses);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }

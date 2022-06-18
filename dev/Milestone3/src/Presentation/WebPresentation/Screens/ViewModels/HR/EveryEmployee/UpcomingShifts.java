@@ -2,6 +2,7 @@ package Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee;
 
 import Domain.Service.Objects.Shift.Shift;
 import Globals.util.HumanInteraction;
+import Globals.util.ShiftComparator;
 import Presentation.WebPresentation.Screens.Models.HR.*;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
@@ -12,15 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class UpcomingShifts extends Screen {
 
     private static final Set<Class<? extends Employee>> ALLOWED
-            = new HashSet<>(Arrays.asList(Carrier.class, Cashier.class, HR_Manager.class, Logistics_Manager.class,
-            Sorter.class, Storekeeper.class, Storekeeper.class, Transport_Manager.class));
+            = new HashSet<>();
+
+    private static final Set<Class<? extends Employee>> ALLOWED_TO_WATCH_OTHERS
+            = new HashSet<>(Arrays.asList(Admin.class, HR_Manager.class));
 
     public UpcomingShifts() {
         super("", ALLOWED);
@@ -31,20 +32,41 @@ public class UpcomingShifts extends Screen {
         if (!isAllowed(req, resp)) {
             redirect(resp, Login.class);
         }
-        header(resp);
+
+        String givenID = getParamVal(req, "EmpID");
         Employee emp = Login.getLoggedUser(req);
+        if (givenID != null) {
+            if (givenID.equals(emp.id) || !isAllowed(req, resp, ALLOWED_TO_WATCH_OTHERS)) {
+                refresh(req, resp);
+                return;
+            }
+            try {
+                emp = new EmployeeFactory().createEmployee(controller.getEmployee(givenID));
+            } catch (Exception e) {
+                setError(e.getMessage());
+            }
+        }
+        else if (emp instanceof Admin){
+            redirect(resp, Login.class);
+            return;
+        }
+
+
+        header(resp);
         PrintWriter out = resp.getWriter();
         out.println(String.format("<h1>Upcoming shifts in the next 30 days for %s</h1>", emp.name));
         try {
-            Set<Shift> upcoming = controller.getEmployeeShiftsBetween(emp.id, LocalDate.now(), LocalDate.now().plusDays(30));
+            List<Shift> upcoming = new ArrayList<>(controller.getEmployeeShiftsBetween(emp.id, LocalDate.now(), LocalDate.now().plusDays(30)));
+            upcoming.sort(new ShiftComparator());
             for (Shift shift : upcoming)
                 if (emp.id.equals(shift.shiftManagerId))
-                    out.println(String.format("<p>%s - %s shift - As shift manager</p><br>", shift.date.format(HumanInteraction.dateFormat), shift.getType()));
+                    out.println(String.format("<p>%s - %s shift - As shift manager</p>", shift.date.format(HumanInteraction.dateFormat), shift.getType()));
                 else
-                    out.println(String.format("<p>%s - %s shift</p><br>", shift.date.format(HumanInteraction.dateFormat), shift.getType()));
+                    out.println(String.format("<p>%s - %s shift</p>", shift.date.format(HumanInteraction.dateFormat), shift.getType()));
         } catch (Exception e) {
             setError(e.getMessage());
         }
+        out.println("<br>");
         handleError(resp);
     }
 
