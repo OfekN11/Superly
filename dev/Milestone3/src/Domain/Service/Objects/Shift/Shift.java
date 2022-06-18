@@ -1,9 +1,7 @@
 package Domain.Service.Objects.Shift;
 
-import Domain.Service.Objects.Employee.Employee;
 import Globals.Enums.JobTitles;
 import Globals.Enums.ShiftTypes;
-import Globals.util.Supplier;
 import Presentation.CLIPresentation.Screens.ScreenShiftFactory;
 
 import java.time.LocalDate;

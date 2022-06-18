@@ -2,7 +2,6 @@ package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport;
 
 import Domain.Service.Objects.Shift.Shift;
 import Globals.Enums.ShiftTypes;
-import Globals.Enums.TruckModel;
 import Globals.Pair;
 import Globals.util.ShiftComparator;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
@@ -10,7 +9,6 @@ import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
 import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
-import Presentation.WebPresentation.Screens.ViewModels.Transport.Truck.TruckManagementMenu;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
