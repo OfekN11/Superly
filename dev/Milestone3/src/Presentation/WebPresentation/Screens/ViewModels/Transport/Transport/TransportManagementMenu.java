@@ -1,6 +1,10 @@
 package Presentation.WebPresentation.Screens.ViewModels.Transport.Transport;
 
+import Presentation.WebPresentation.Screens.Models.HR.Employee;
+import Presentation.WebPresentation.Screens.Models.HR.Logistics_Manager;
+import Presentation.WebPresentation.Screens.Models.HR.Transport_Manager;
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.Login;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.Transport.Update.UpdateTransport;
 import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
@@ -8,9 +12,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TransportManagementMenu extends Screen {
     private static final String greet = "Transport Management Menu";
+    private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Transport_Manager.class, Logistics_Manager.class));
     private static final String[] menuOptions = {
             "Create new transport",         //1
             "Update transport",             //2
@@ -20,9 +28,12 @@ public class TransportManagementMenu extends Screen {
             "Exit"                          //6
     };
     public TransportManagementMenu() {
-        super(greet);
+        super(greet, ALLOWED);
     }
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!isAllowed(req, resp, ALLOWED)){
+            redirect(resp, Login.class);
+        }
         header(resp);
         greet(resp);
         printMenu(resp, menuOptions);
@@ -34,7 +45,7 @@ public class TransportManagementMenu extends Screen {
         handleHeader(req, resp);
         switch (getIndexOfButtonPressed(req)) {
             case 0:
-                //TODO: redirect(resp, CreateNewTransport.class);
+                redirect(resp, CreateTransport.class);
                 break;
             case 1:
                 redirect(resp, UpdateTransport.class);
