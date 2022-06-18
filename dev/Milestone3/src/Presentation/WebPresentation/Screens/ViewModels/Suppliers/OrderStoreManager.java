@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class OrderStoreManager extends RemoveViewOrder{
 
-    private static final String greet = "View Order for Store Manager";
+    private static final String greet = "View Order";
     private static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>(Arrays.asList(Admin.class));
 
 

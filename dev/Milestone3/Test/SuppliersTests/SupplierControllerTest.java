@@ -7,6 +7,7 @@ import Domain.Business.Objects.Inventory.Product;
 import Domain.Business.Objects.Supplier.Order;
 import Domain.Business.Objects.Supplier.OrderItem;
 import Domain.DAL.Abstract.DAO;
+import Domain.DAL.Controllers.InventoryAndSuppliers.StoreDAO;
 import Globals.Pair;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.AfterAll;
@@ -60,6 +61,7 @@ class SupplierControllerTest {
     void setUp() {
         supplierIds = new ArrayList<>();
         controller = new SupplierController();
+        controller.setInventoryController(is);
         contacts = new ArrayList<>();
         manufacturers = new ArrayList<>();
         manufacturers.add("Osem");
@@ -76,6 +78,9 @@ class SupplierControllerTest {
             e.printStackTrace();
         }
 
+
+        StoreDAO storeDAO = new StoreDAO();
+        storeDAO.getAll();
     }
 
     @Test

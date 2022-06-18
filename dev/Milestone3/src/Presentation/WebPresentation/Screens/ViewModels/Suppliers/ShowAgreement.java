@@ -86,7 +86,6 @@ public class ShowAgreement extends Screen {
         if ((val = getParamVal(req,"showItems")) != null && val.equals("true")){
             showAllItems(req, resp, supId);
         }
-        // TODO: Supplier I don't think we need it!
         //else if ((val = getParamVal(req,"viewItem")) != null && val.equals("true")){
             //int itemId = Integer.parseInt(getCookie("itemId2ShowAgreement", req, resp, 5));
             //viewItem(req, resp, supId);
@@ -229,7 +228,6 @@ public class ShowAgreement extends Screen {
             String days = req.getParameter("agreementDays");
             int supId = getSupplierId(req);
 
-            // TODO: Supplier check what it does when not inserting anything for not transporting! should be ""
             if((type == 1 || type == 2 || type == 3) && controller.changeAgreementType(supId, type, days)){
                 setError("Agreement type was changed successfully");
                 refresh(req, resp, new String[]{"supId"},  new String[]{String.valueOf(getSupplierId(req))});
