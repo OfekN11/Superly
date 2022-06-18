@@ -38,7 +38,6 @@ public class AddOrderItem extends Screen {
 
         int supId = getSupplierId(req);
         int orderId = getOrderId(req);
-        // TODO: Supplier : check if multiple screens work here
 
         printForm(resp, new String[] {"itemId", "quantity"}, new String[]{"Product ID", "Quantity"}, new String[]{"Add Item"});
 
