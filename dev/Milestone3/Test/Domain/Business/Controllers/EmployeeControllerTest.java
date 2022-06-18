@@ -38,7 +38,6 @@ public class EmployeeControllerTest extends TestCase {
         try {
             SiteController s = new SiteController();
             //loadHR();
-            //loadShiftForJuly();
             //addInventoryTestData();
             //insertFirstDataToDB(); // the db in the desktop is updated until (not including) this line. aka employees and Inventory
             //transportData();
@@ -137,6 +136,50 @@ public class EmployeeControllerTest extends TestCase {
 
             shiftDataMapper.save(morningShift);
             shiftDataMapper.save(eveningShift);
+        }
+        loadShiftForJuly();
+        loadStoreKeepersWithDrivers();
+    }
+
+    private void loadStoreKeepersWithDrivers() throws Exception {
+        LocalDate firstOfJul = LocalDate.parse("2022-07-01");
+        LocalDate firstOfJun =LocalDate.parse("2022-06-01");
+
+
+        LocalDate movingDateJul = firstOfJul;
+        LocalDate movingDateJun = firstOfJun;
+        Set<String> storekeepers = new HashSet<>();
+        for (int i = 150; i < 160; i++) {
+            storekeepers.add(Integer.toString(i));
+        }
+
+        for (int i =150; i<160; i++, movingDateJul = movingDateJul.plusDays(1),movingDateJun = movingDateJun.plusDays(1)) {
+            Shift morningShiftJul =shiftDataMapper.get(movingDateJul,ShiftTypes.Morning);
+            Shift morningShiftJun =shiftDataMapper.get(movingDateJun,ShiftTypes.Morning);
+            Shift eveningShiftJul =shiftDataMapper.get(movingDateJul,ShiftTypes.Evening);
+            Shift eveningShiftJun =shiftDataMapper.get(movingDateJun,ShiftTypes.Evening);
+            morningShiftJul.registerAsAvailable(Integer.toString(i));
+            morningShiftJun.registerAsAvailable(Integer.toString(i));
+            eveningShiftJul.registerAsAvailable(Integer.toString(i));
+            eveningShiftJun.registerAsAvailable(Integer.toString(i));
+
+            morningShiftJul.setStorekeeperIDs(storekeepers);
+            morningShiftJun.setStorekeeperIDs(storekeepers);
+            eveningShiftJul.setStorekeeperIDs(storekeepers);
+            eveningShiftJun.setStorekeeperIDs(storekeepers);
+        }
+        movingDateJul = firstOfJul;
+        movingDateJun = firstOfJun;
+
+        for (int i =150; i<160; i++, movingDateJul = movingDateJul.plusDays(1),movingDateJun = movingDateJun.plusDays(1)) {
+            Shift morningShiftJul =shiftDataMapper.get(movingDateJul,ShiftTypes.Morning);
+            Shift morningShiftJun =shiftDataMapper.get(movingDateJun,ShiftTypes.Morning);
+            Shift eveningShiftJul =shiftDataMapper.get(movingDateJul,ShiftTypes.Evening);
+            Shift eveningShiftJun =shiftDataMapper.get(movingDateJun,ShiftTypes.Evening);
+            shiftDataMapper.save(morningShiftJul);
+            shiftDataMapper.save(morningShiftJun);
+            shiftDataMapper.save(eveningShiftJul);
+            shiftDataMapper.save(eveningShiftJun);
         }
 
     }

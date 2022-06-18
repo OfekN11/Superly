@@ -40,6 +40,7 @@ public class TransportController {
         documentController = new DocumentController();
         employeeController.registerToChangeCarrierLicenseEvent(this::verifyEmployeeHasRequiredLicenseForAssignedTransports);
         shiftController.registerToRemoveEmployeeFromShiftEvent(this::verifyEmployeeIsNotADriverInTheShift);
+
     }
 
     private void verifyEmployeeIsNotADriverInTheShift(Set<String> eIds, LocalDate shiftDate, ShiftTypes shiftType) {
@@ -49,15 +50,16 @@ public class TransportController {
     }
 
     private void verifyEmployeeHasRequiredLicenseForAssignedTransports(String id, Set<LicenseTypes> newLicenses) throws Exception {
-        Set<Transport> employeeTransport = new HashSet<>(); // will be filter to the employee Transport for the next 8 days
+        Set<Transport> employeeTransport = new HashSet<>(); // will be filter to the employee
         LocalDate date= LocalDate.now();
         for(int i=0;i<40;i++,date = date.plusDays(1))
             employeeTransport.addAll(getTransportInDate(date));
 
         employeeTransport = employeeTransport.stream().filter(transport -> transport.getDriverID().equals(id)).collect(Collectors.toSet());
-        for(Transport transport : employeeTransport)
-            if(!truckController.getTruck(transport.getTruckNumber()).canDriveOn(newLicenses))
-                throw new RuntimeException(String.format(CANNOT_CHANGE_LICENSES,id,transport.getSN()));
+        for(Transport transport : employeeTransport) {
+            if (!truckController.getTruck(transport.getTruckNumber()).canDriveOn(newLicenses))
+                throw new RuntimeException(String.format(CANNOT_CHANGE_LICENSES, id, transport.getSN()));
+        }
     }
 
     public Transport createTransport(Pair<LocalDate,ShiftTypes> shift) throws Exception {
