@@ -52,6 +52,8 @@ public class WebMain {
             new AbstractMap.SimpleEntry<>(ViewEmployee.class, "/ViewEmployee"),
             new AbstractMap.SimpleEntry<>(AddShifts.class, "/AddShift"),
             new AbstractMap.SimpleEntry<>(ManageShift.class, "/ManageShift"),
+            new AbstractMap.SimpleEntry<>(ViewShifts.class, "/ViewShifts"),
+            new AbstractMap.SimpleEntry<>(ViewIncompleteShifts.class, "/ViewIncompleteShifts"),
 
             new AbstractMap.SimpleEntry<>(AddItemToAgreement.class, "/AddItemToAgreement"),
             new AbstractMap.SimpleEntry<>(AddOrderItem.class, "/AddOrderItem"),
