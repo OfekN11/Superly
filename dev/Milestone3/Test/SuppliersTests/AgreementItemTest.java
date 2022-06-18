@@ -16,10 +16,17 @@ import java.util.HashMap;
 public class AgreementItemTest {
 
     private AgreementItem item;
+    static Category category0;
+    static Product product;
+    private static final InventoryController is =  InventoryController.getInventoryController();
+
+
 
     @BeforeAll
     public synchronized static void setData() {
         DAO.setDBForTests(AgreementItemTest.class);
+        category0 = is.addCategory("Test-Milk",  0);
+        product = is.newProduct("Test-Milk-Tnuva-1L", category0.getID(), 1, 4.5, "18");
     }
 
     @AfterAll
@@ -30,10 +37,11 @@ public class AgreementItemTest {
 
     @BeforeEach
     public void setUp(){
+
         HashMap<Integer, Integer> map = new HashMap<>();
         map.put(20, 15); map.put(50, 20); map.put(100, 30);
         try {
-            item = new AgreementItem(1, 1, "Osem", 8.99f,  map);
+            item = new AgreementItem(product.getId(), 1, "Osem", 8.99f,  map);
         } catch (Exception e) {
             e.printStackTrace();
         }
