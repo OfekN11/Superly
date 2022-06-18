@@ -156,7 +156,7 @@ public class InventoryManagement extends Screen {
                 String location = req.getParameter("store or warehouse");
                 String damagedOrExpired = req.getParameter("damaged or expired");
                 int employeeID = Integer.parseInt(Login.getLoggedUser(req).id);
-                if(damagedOrExpired=="damaged" ? controller.reportDamaged(storeID, productID, amount, employeeID, description, location=="warehouse").isOk() : controller.reportExpired(storeID, productID, amount, employeeID, description, location=="warehouse").isOk()) {
+                if(damagedOrExpired.equals("damaged") ? controller.reportDamaged(storeID, productID, amount, employeeID, description, location.equals("warehouse")).isOk() : controller.reportExpired(storeID, productID, amount, employeeID, description, location.equals("warehouse")).isOk()) {
                     PrintWriter out = resp.getWriter();
                     out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format(amount + " items of product " + productID + " were found " + damagedOrExpired + " in " + location + " " + storeID + " by employee " + employeeID + ". Description: " + description)));
                     refresh(req, resp);

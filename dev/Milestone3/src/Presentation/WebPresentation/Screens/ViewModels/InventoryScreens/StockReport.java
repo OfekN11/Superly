@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class StockReport  extends Screen {
 
@@ -19,6 +20,7 @@ public class StockReport  extends Screen {
 
     private static final String minButton = "Under Min";
     private static final String allButton = "All";
+    private static final String catButton = "By Category";
 
     public static final Set<Class<? extends Employee>> ALLOWED = new HashSet<>();
 
@@ -33,50 +35,78 @@ public class StockReport  extends Screen {
         greet(resp);
         String underMin = getParamVal(req, "underMin");
         String all = getParamVal(req, "all");
+        String cats = getParamVal(req, "cats");
         if (underMin!=null) {
             resp.getWriter().println("Showing stock reports of products under min value<br><br>");
-            printMenu(resp, new String[]{minButton, allButton});
-            printReports(req, resp, true);
+            printOptions(resp);
+            printReports(req, resp, 0);
         }
         else if (all!=null) {
             resp.getWriter().println("Showing all stock reports<br><br>");
-            printMenu(resp, new String[]{minButton, allButton});
-            printReports(req, resp, false);
+            printOptions(resp);
+            printReports(req, resp, 1);
+        }
+        else if (cats!=null) {
+            resp.getWriter().println(String.format("Showing Stock reports of products in categories: %s<br><br>", cats));
+            printOptions(resp);
+            printReports(req, resp, 2);
         }
         else {
-            printMenu(resp, new String[]{minButton, allButton});
+            printOptions(resp);
         }
         handleError(resp);
     }
 
-    private void printReports(HttpServletRequest req, HttpServletResponse resp, boolean onlyUnderMin) throws IOException {
+    private void printOptions(HttpServletResponse resp) throws IOException {
+        printMenu(resp, new String[]{minButton, allButton});
+        printForm(resp, new String[]{"cats"}, new String[] {"Categories: 1,2,4..."}, new String[]{catButton});
+    }
+
+    private void printReports(HttpServletRequest req, HttpServletResponse resp, int filter) throws IOException {
         PrintWriter out = resp.getWriter();
-        if (onlyUnderMin) {
-            Result<List<Domain.Service.Objects.InventoryObjects.StockReport>> r = controller.getMinStockReport();
-            if (r.isOk()) {
-                List<Domain.Service.Objects.InventoryObjects.StockReport> reports = r.getValue();
-                for (Domain.Service.Objects.InventoryObjects.StockReport s : reports) {
-                    out.println(s);
-                    out.println("<br>");
+        Result<List<Domain.Service.Objects.InventoryObjects.StockReport>> r;
+        switch (filter) {
+            case 0:
+                r = controller.getMinStockReport();
+                if (r.isOk()) {
+                    List<Domain.Service.Objects.InventoryObjects.StockReport> reports = r.getValue();
+                    for (Domain.Service.Objects.InventoryObjects.StockReport s : reports) {
+                        out.println(s);
+                        out.println("<br>");
+                    }
+                } else {
+                    setError(r.getError());
+                    refresh(req, resp);
                 }
-            } else {
-                setError(r.getError());
-                refresh(req, resp);
-            }
-        }
-        else {
-            Result<List<Domain.Service.Objects.InventoryObjects.StockReport>> r = controller.storeStockReport(Arrays.asList(1), getCatIDs());
-            if (r.isOk()) {
-                List<Domain.Service.Objects.InventoryObjects.StockReport> reports = r.getValue();
-                for (Domain.Service.Objects.InventoryObjects.StockReport s : reports) {
-                    out.println(s);
-                    out.println("<br>");
+                break;
+            case 1:
+                r = controller.storeStockReport(Arrays.asList(1), getCatIDs());
+                if (r.isOk()) {
+                    List<Domain.Service.Objects.InventoryObjects.StockReport> reports = r.getValue();
+                    for (Domain.Service.Objects.InventoryObjects.StockReport s : reports) {
+                        out.println(s);
+                        out.println("<br>");
+                    }
+                } else {
+                    setError(r.getError());
+                    refresh(req, resp);
                 }
-            } else {
-                setError(r.getError());
-                refresh(req, resp);
-            }
+                break;
+            case 2:
+                r = controller.storeStockReport(Arrays.asList(1), Arrays.stream(getParamVal(req, "cats").split(",")).mapToInt(Integer::parseInt).boxed().collect(Collectors.toList()));
+                if (r.isOk()) {
+                    List<Domain.Service.Objects.InventoryObjects.StockReport> reports = r.getValue();
+                    for (Domain.Service.Objects.InventoryObjects.StockReport s : reports) {
+                        out.println(s);
+                        out.println("<br>");
+                    }
+                } else {
+                    setError(r.getError());
+                    refresh(req, resp);
+                }
+                break;
         }
+
     }
 
     protected List<Integer> getCatIDs() {
@@ -99,6 +129,16 @@ public class StockReport  extends Screen {
             case 1:
                 refresh(req, resp, new String[] {"all"}, new String[] {"placeHolder"});
                 break;
+        }
+        if (isButtonPressed(req, catButton)) {
+            try {
+                int[] cats = Arrays.stream(getParamVal(req, "cats").split(",")).mapToInt(Integer::parseInt).toArray();
+                refresh(req, resp, new String[] {"cats"}, new String[] {getParamVal(req, "cats")});
+            }
+            catch (Exception e) {
+                setError(e.getMessage());
+                refresh(req, resp);
+            }
         }
     }
 }
