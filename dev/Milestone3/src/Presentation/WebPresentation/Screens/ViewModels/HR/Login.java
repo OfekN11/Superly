@@ -6,6 +6,7 @@ import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.SupplierMainMenuStorekeeper;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -39,14 +40,14 @@ public class Login extends Screen {
         header(resp);
         greet(resp);
         printForm(resp, new String[]{"ID"}, new String[]{"Employee ID"}, new String[]{"Sign in!"});
-        printMenu(resp, new String[]{"Suppliers Main Menu", "Inventory Main Menu"});
 
         handleError(resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
 
         if (isButtonPressed(req, "Sign in!")){
             String id = req.getParameter("ID");
@@ -57,6 +58,7 @@ public class Login extends Screen {
                 else
                     emp = factory.createEmployee(controller.getEmployee(id));
                 String hash = hash(id);
+                //TODO:
                 loggedUser.put(hash, emp);
                 Cookie c = new Cookie("superly_user", hash);
                 c.setMaxAge(LOGIN_COOKIE_MAX_AGE);
@@ -67,10 +69,6 @@ public class Login extends Screen {
                 refresh(req, resp);
             }
         }
-        else if(getIndexOfButtonPressed(req) == 0)
-            redirect(resp, SupplierMainMenuStorekeeper.class);
-        else if(getIndexOfButtonPressed(req) == 1)
-            redirect(resp, InventoryMainMenu.class);
     }
 
     public static boolean isLoggedIn(HttpServletRequest req, HttpServletResponse resp) {

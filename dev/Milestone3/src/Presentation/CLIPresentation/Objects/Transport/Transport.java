@@ -34,49 +34,59 @@ public class Transport {
         printCarrier();
         printTruckDetails();
     }
-    private void printCarrier()
+    private String printCarrier()
     {
         if(driverID.equals(""))
         {
-            System.out.println("Carrier ID: The carrier has not been assigned yet!");
+            return "Carrier ID: The carrier has not been assigned yet!";
         }
         else
         {
-            System.out.println("Carrier ID: " + driverID);
+            return "Carrier ID: " + driverID;
         }
 
     }
 
-    private void printTruckDetails()
+    private String printTruckDetails()
     {
         if(truckNumber == -1)
         {
-            System.out.println("Truck License Number:  The truck has not been installed yet!");
+            return "Truck License Number:  The truck has not been installed yet!";
         }
         else
         {
-            System.out.println("Truck License Number: " + truckNumber +
-                    "\nTruck Weight: " + truckWeight);
+            return "Truck License Number: " + truckNumber +
+                    "/Truck Weight: " + truckWeight;
         }
 
     }
 
-    private void printDates()
+    private String printDates()
     {
+        String dateInfo = "";
         if(!startTime.equals(""))
         {
-            System.out.println("Start Time: " + startTime);
+            dateInfo = "Start Time: " + startTime +"/";
         }
         else {
-        System.out.println("Start Time: The transport has not left yet!");
+            dateInfo = "Start Time: The transport has not left yet!/";
     }
         if(!endTime.equals(""))
         {
-            System.out.println("End Time: " + endTime);
+            dateInfo = dateInfo +"End Time: " + endTime;
         }
         else {
-            System.out.println("End Time: The Transport has not been completed yet!");
+            dateInfo = dateInfo + "End Time: The Transport has not been completed yet!";
         }
+        return dateInfo;
+    }
+    public String displayWeb(){
+        String format = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/";
+        format = format + "Transport ID: " + transportID + "/";
+        format = format + printDates() + "/";
+        format = format + printCarrier() + "/";
+        format = format + printTruckDetails()+"/s";
+        return format;
     }
 
 }

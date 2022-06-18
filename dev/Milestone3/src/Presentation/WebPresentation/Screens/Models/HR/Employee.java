@@ -1,6 +1,13 @@
 package Presentation.WebPresentation.Screens.Models.HR;
 
 import Presentation.WebPresentation.Screens.Screen;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.ConstraintManagement;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.EmploymentConds;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.SalaryCalculator;
+import Presentation.WebPresentation.Screens.ViewModels.HR.EveryEmployee.UpcomingShifts;
+import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.InventoryMainMenu;
+import Presentation.WebPresentation.Screens.ViewModels.Suppliers.SupplierMainMenuStorekeeper;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +22,10 @@ public abstract class Employee extends Screen {
             "View Upcoming shifts",         //0
             "Manage Constraints",           //1
             "Calculate Salary",             //2
-            "Print Employment Conditions"   //3
+            "Print Employment Conditions",  //3
+            "Transport Main Menu",          //4
+            "Suppliers Main Menu",          //5
+            "Inventory Main Menu"           //6
     };
 
     protected static final int BASE_OPTIONS_COUNT = BASE_OPTIONS.length;
@@ -61,15 +71,28 @@ public abstract class Employee extends Screen {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        handleHeader(req, resp);
         switch (getIndexOfButtonPressed(req)){
             case 0:
-
+                redirect(resp, UpcomingShifts.class);
                 break;
             case 1:
+                redirect(resp, ConstraintManagement.class);
                 break;
             case 2:
+                redirect(resp, SalaryCalculator.class);
                 break;
             case 3:
+                redirect(resp, EmploymentConds.class);
+                break;
+            case 4:
+                redirect(resp, TransportMainMenu.class);
+                break;
+            case 5:
+                redirect(resp, SupplierMainMenuStorekeeper.class);
+                break;
+            case 6:
+                redirect(resp, InventoryMainMenu.class);
                 break;
         }
     }

@@ -59,11 +59,12 @@ public class Product extends Screen {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
         if (isButtonPressed(req, setPriceButton)){
             if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Transport_Manager.class, HR_Manager.class)))) {
                 setError("You have no permission to set product price");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 return;
             }
             try {
@@ -71,25 +72,25 @@ public class Product extends Screen {
                 if(controller.editProductPrice(productID, newPrice).isOk()) {
                     PrintWriter out = resp.getWriter();
                     out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed price of product %d to %f", productID, newPrice)));
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
                 else{
                     setError("Price hasn't been changed");
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
             }catch (NumberFormatException e1){
                 setError("Please enter a number!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
             }
             catch (Exception e) {
                 setError(e.getMessage());
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
             }
         }
         else if (isButtonPressed(req, setMinButton)){
             if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
                 setError("You have no permission to set product minimum amount");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 return;
             }
             try {
@@ -98,25 +99,25 @@ public class Product extends Screen {
                 if(controller.changeProductMin(storeID, productID, newMin).isOk()) {
                     PrintWriter out = resp.getWriter();
                     out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed minimum amount of product %d in store %d to %d", productID, storeID, newMin)));
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
                 else{
                     setError("Minimum amount hasn't been changed");
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
             }catch (NumberFormatException e1){
                 setError("Please enter a number!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
             }
             catch (Exception e) {
                 setError(e.getMessage());
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
             }
         }
         else if (isButtonPressed(req, setTargetButton)){
             if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
                 setError("You have no permission to set product target amount");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 return;
             }
             try {
@@ -125,25 +126,25 @@ public class Product extends Screen {
                 if(controller.changeProductTarget(storeID, productID, newTarget).isOk()) {
                     PrintWriter out = resp.getWriter();
                     out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed target amount of product %d in store %d to %d", productID, storeID, newTarget)));
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
                 else{
                     setError("Target amount hasn't been changed");
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
             }catch (NumberFormatException e1){
                 setError("Please enter a number!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
             }
             catch (Exception e) {
                 setError(e.getMessage());
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
             }
         }
         else if (isButtonPressed(req, setNameButton)){
             if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
                 setError("You have no permission to set product name");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 return;
             }
             try {
@@ -151,19 +152,19 @@ public class Product extends Screen {
                 if(controller.editProductName(productID, newName).isOk()) {
                     PrintWriter out = resp.getWriter();
                     out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Changed name of product %d to %s", productID, newName)));
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
                 else{
                     setError("Product name hasn't been changed");
-                    refresh(req, resp);
+                    refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
                 }
             }catch (NumberFormatException e1){
                 setError("Please enter a number!");
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
             }
             catch (Exception e) {
                 setError(e.getMessage());
-                refresh(req, resp);
+                refresh(req, resp, new String[]{"ProductID"}, new String[]{Integer.toString(productID)});
             }
         }
     }

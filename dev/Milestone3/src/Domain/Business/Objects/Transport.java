@@ -85,6 +85,9 @@ public class Transport {
         if (status == TransportStatus.padding)
         {
             startTime = LocalDateTime.now().toString();
+            if(startTime.indexOf("T")!=-1){
+                startTime = startTime.substring(0,startTime.indexOf("T"));
+            }
             status = TransportStatus.inProgress;
         }
         else {
@@ -96,6 +99,9 @@ public class Transport {
         if (status == TransportStatus.inProgress)
         {
             endTime = LocalDateTime.now().toString();
+            if(endTime.indexOf("T")!=-1){
+                endTime = endTime.substring(0,endTime.indexOf("T"));
+            }
             status = TransportStatus.done;
         }
         else{
@@ -284,4 +290,5 @@ public class Transport {
         transportOrders.remove(id);
         truckWeight = truckWeight - weight;
     }
+
 }

@@ -11,14 +11,15 @@ import Domain.Service.Objects.SupplierObjects.*;
 import Domain.Service.Services.HR.*;
 import Domain.Service.Services.*;
 import Domain.Service.Services.Transport.*;
-import Presentation.CLIPresentation.Factories.PresentationDocumentFactory;
-import Presentation.CLIPresentation.Objects.Document.DestinationDocument;
-import Presentation.CLIPresentation.Objects.Document.TransportDocument;
-import Presentation.CLIPresentation.Objects.Transport.Transport;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Factories.PresentationDocumentFactory;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Document.*;
 import Presentation.CLIPresentation.Objects.Transport.TransportOrder;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Order;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Transport;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BackendController {
     private final EmployeeService employeeService = new EmployeeService();
@@ -44,10 +45,6 @@ public class BackendController {
         Result<Object> result = employeeService.registerEmployee(jobTitle, id, name, bankDetails, salary, startingDate, certifications);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
-    }
-
-    public List<String> getSuppliersMessagesForHR(){
-        return new LinkedList<>();
     }
 
     //READ
@@ -297,8 +294,8 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Set<Shift> getEmployeeShiftsBetween(Presentation.CLIPresentation.Screens.Employee employee, LocalDate start, LocalDate end) throws Exception {
-        Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(employee.getID(), start, end);
+    public Set<Shift> getEmployeeShiftsBetween(String eId, LocalDate start, LocalDate end) throws Exception {
+        Result<Set<Shift>> result = shiftService.getEmployeeShiftsBetween(eId, start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
@@ -417,14 +414,14 @@ public class BackendController {
 
     //UPDATE
 
-    public void registerToConstraint(Presentation.CLIPresentation.Screens.Employee employee, Shift shift) throws Exception {
-        Result<Object> result = shiftService.registerAsAvailable(shift.date, shift.getType(), employee.getID());
+    public void registerToConstraint(String eId, Shift shift) throws Exception {
+        Result<Object> result = shiftService.registerAsAvailable(shift.date, shift.getType(), eId);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void unregisterFromConstraint(Presentation.CLIPresentation.Screens.Employee employee, Shift shift) throws Exception{
-        Result<Object> result = shiftService.unregisterFromAvailable(shift.date, shift.getType(), employee.getID());
+    public void unregisterFromConstraint(String eId, Shift shift) throws Exception{
+        Result<Object> result = shiftService.unregisterFromAvailable(shift.date, shift.getType(), eId);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
@@ -530,6 +527,12 @@ public class BackendController {
     }
 
     //MISC
+    public List<String> getImportantHRMessagesShifts() throws Exception {
+        Result<List<String>> result = shiftService.getImportantHRMessages();
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+        return result.getValue();
+    }
 
 
     //private
@@ -563,12 +566,18 @@ public class BackendController {
     }
 
     public DestinationDocument getDestinationDocument(int ddSN) throws Exception {
-        Result<Domain.Service.Objects.Document.DestinationDocument> result = documentService.getTransportDocument(ddSN);
+        Result<Domain.Service.Objects.Document.DestinationDocument> result = documentService.getDestinationDocument(ddSN);
         throwIfError(result);
         return presentationDocumentFactory.createPresentationDocument(result.getValue());
     }
-    public String[] getImportantMessagesTransport() throws Exception {
-        return orderService.getImportantMessages();
+    public List<String> getImportantHRMessagesTransport() throws Exception {
+        return Arrays.stream(orderService.getImportantMessages()).collect(Collectors.toList());
+    }
+    public List<String> getImportantHRMessagesInventory() {
+        return inventoryService.getReadyOrders();
+    }
+    public List<String> getImportantHRMessagesSuppliers(){
+        return new LinkedList<>();
     }
 
     //Transport Order
@@ -597,11 +606,11 @@ public class BackendController {
         throwIfError(result);
         return toPLTransports(result.getValue());
     }
-    private Set<TransportOrder> toPLTransportOrder(Set<Domain.Service.Objects.TransportOrder> orders)
+    private Set<Order> toPLTransportOrder(Set<Domain.Service.Objects.SupplierObjects.ServiceOrderObject> orders)
     {
-        Set<TransportOrder> transportList = new HashSet<>();
-        for (Domain.Service.Objects.TransportOrder order: orders) {
-            transportList.add(new TransportOrder(order));
+        Set<Order> transportList = new HashSet<>();
+        for (Domain.Service.Objects.SupplierObjects.ServiceOrderObject order: orders) {
+            transportList.add(new Order(order));
         }
         return transportList;
     }
@@ -628,15 +637,15 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Set<Shift> getEmployeeConstraintsBetween(Presentation.CLIPresentation.Screens.Employee employee, LocalDate start, LocalDate end) throws Exception {
-        Result<Set<Shift>> result = shiftService.getEmployeeConstraintsBetween(employee.getID(), start, end);
+    public Set<Shift> getEmployeeConstraintsBetween(String eId, LocalDate start, LocalDate end) throws Exception {
+        Result<Set<Shift>> result = shiftService.getEmployeeConstraintsBetween(eId, start, end);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<TransportOrder> getPendingOrders() throws Exception {
-        Result<Set<Domain.Service.Objects.TransportOrder>> result = orderService.getPendingOrders();
+    public Set<Order> getPendingOrders() throws Exception {
+        Result<Set<Domain.Service.Objects.SupplierObjects.ServiceOrderObject>> result = orderService.getPendingOrders();
         throwIfError(result);
         return toPLTransportOrder(result.getValue());
     }
@@ -680,13 +689,6 @@ public class BackendController {
             System.out.println("Error receiving relevant orders");
         }
     }
-
-    //For testing
-//    public BackendController(SupplierService service){
-//        this.supplierService = service;
-//        this.inventoryService = new InventoryService();
-//        inventoryService.loadTestData();
-//    }
 
     private boolean getValueFromBooleanResult(Result<Boolean> result) throws Exception {
         if (result.isError())
@@ -853,8 +855,6 @@ public class BackendController {
         return getValueFromBooleanResult(result);
     }
 
-
-
     public boolean changeDaysUntilDelivery(int supplierID, int input) throws Exception {
         Result<Boolean> result = supplierService.changeDaysUntilDelivery(supplierID, input);
         return getValueFromBooleanResult(result);
@@ -872,14 +872,6 @@ public class BackendController {
         return getValueFromBooleanResult(result);
 
     }
-
-    /*
-    public boolean updateItemName(int supplierID, int itemID, String input) throws Exception {
-        Result<Boolean> result = supplierService.updateItemName(supplierID, itemID, input);
-        return getValueFromBooleanResult(result);
-    }
-
-     */
 
     public boolean updateItemManufacturer(int supplierID, int itemID, String input) throws Exception {
         Result<Boolean> result = supplierService.updateItemManufacturer(supplierID, itemID, input);
@@ -952,20 +944,12 @@ public class BackendController {
 //    }
 
 
-    //public Result<Object> loadTestData(){
-    //    return inventoryService.loadTestData();
-    //}
-
     public Result<Collection<Integer>> getStoreIDs(){
         return inventoryService.getStoreIDs();
     }
 
     public Result<List<Sale>> getRemovableSales(){
         return inventoryService.getRemovableSales();
-    }
-
-    public Result<Object> loadData(){
-        return inventoryService.loadData();
     }
 
     public Result<Product> newProduct(String name, int categoryID, double weight, double price, String manufacturer){
@@ -998,18 +982,6 @@ public class BackendController {
 
     public Result<Set<Sale>> getSaleHistoryByCategory(int categoryID){
         return inventoryService.getSaleHistoryByCategory(categoryID);
-    }
-
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
-        return inventoryService.getDefectiveItemsByStore(start, end, storeIDs);
-    }
-
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
-        return inventoryService.getDefectiveItemsByCategory(start, end, categoryIDs);
-    }
-
-    public Result<List<DefectiveItemReport>> getDefectiveItemsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
-        return inventoryService.getDefectiveItemsByProduct(start, end, productIDs);
     }
 
     public Result<List<Product>> getProducts(){
@@ -1052,27 +1024,39 @@ public class BackendController {
         return inventoryService.reportExpired(storeID, productID, amount, employeeID, description, inWarehouse);
     }
 
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
+        return inventoryService.getDefectiveItemsByStore(start, end, storeIDs);
+    }
+
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
+        return inventoryService.getDefectiveItemsByCategory(start, end, categoryIDs);
+    }
+
+    public Result<List<DefectiveItemReport>> getDefectiveItemsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
+        return inventoryService.getDefectiveItemsByProduct(start, end, productIDs);
+    }
+
+    public Result<List<DefectiveItemReport>> getDamagedItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
         return inventoryService.getDamagedItemsReportByStore(start, end, storeIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
         return inventoryService.getDamagedItemsReportByCategory(start, end, categoryIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getDamagedItemsReportByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getDamagedItemsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
         return inventoryService.getDamagedItemsReportByProduct(start, end, productIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemsByStore(LocalDate start, LocalDate end, List<Integer> storeIDs){
         return inventoryService.getExpiredItemReportsByStore(start, end, storeIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemsByCategory(LocalDate start, LocalDate end, List<Integer> categoryIDs){
         return inventoryService.getExpiredItemReportsByCategory(start, end, categoryIDs);
     }
 
-    public Result<List<DefectiveItemReport>> getExpiredItemReportsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
+    public Result<List<DefectiveItemReport>> getExpiredItemsByProduct(LocalDate start, LocalDate end, List<Integer> productIDs){
         return inventoryService.getExpiredItemReportsByProduct(start, end, productIDs);
     }
 
@@ -1220,4 +1204,5 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
+
 }
