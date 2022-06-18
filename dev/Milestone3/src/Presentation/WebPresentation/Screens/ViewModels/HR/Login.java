@@ -108,6 +108,10 @@ public class Login extends Screen {
             }
     }
 
+    public static void removeUser(String id) throws NoSuchAlgorithmException {
+        loggedUser.remove(hash(id));
+    }
+
     private static String hash(String toHash) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(

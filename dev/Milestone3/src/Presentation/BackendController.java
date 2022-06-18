@@ -1100,14 +1100,6 @@ public class BackendController {
         return inventoryService.addNewCategory(name, parentCategoryID);
     }
 
-//    public Result<Product> addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier){
-//        return inventoryService.addSupplierToProduct(productID, supplierID, productIDWithSupplier);
-//    }
-//
-//    public Result<Product> removeSupplierFromProduct(int productID, int supplierID){
-//        return inventoryService.removeSupplierFromProduct(productID, supplierID);
-//    }
-
     public Result<Boolean> deleteCategory(int catID) {
         return inventoryService.deleteCategory(catID);
     }
@@ -1136,8 +1128,8 @@ public class BackendController {
         return inventoryService.getProduct(product);
     }
 
-    public Result<Object> orderArrived(int orderID, Map<Integer, Map<Integer, Pair<Pair<Integer, Integer>, String>>> reportOfOrder) {
-        return inventoryService.orderArrived(orderID, reportOfOrder);
+    public Result<Object> transportArrived(int transportID, Map<Integer, Map<Integer, Pair<Pair<Integer, Integer>, String>>> reportOfOrder) {
+        return inventoryService.transportArrived(transportID, reportOfOrder);
     }
 
 

@@ -120,7 +120,7 @@ public class Store extends Screen {
             anotherOrder = scanner.nextLine().equals("yes");
         }
 //        scanner.nextLine(); //without this line the next scanner will be passed without the user's input.
-        Result<Object> r = controller.orderArrived(transportID, reports);
+        Result<Object> r = controller.transportArrived(transportID, reports);
         if (r.isError())
             System.out.println(r.getError());
         else {

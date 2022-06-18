@@ -48,7 +48,7 @@ public class Sales extends Screen{
         printForm(resp, new String[] {"ID"}, new String[]{"Sale ID"}, new String[]{deleteButton});
         //categories, products, percent, start, end
         printForm(resp, new String[] {"categories", "products", "percent", "start", "end"},
-                new String[]{"Categories (1,2,..7)", "Products (1,2..7)", "Percent", "Start Date (2007-12-03)", "End Date (2007-12-03)"}, new String[]{addButton});
+                new String[]{"Categories (1,2,..7)", "Products (1,2..7)", "Percent", "Start Date (yyyy-mm-dd)", "End Date (yyyy-mm-dd)"}, new String[]{addButton});
         printInstructions(resp);
         printSales(resp);
         printProducts(resp);

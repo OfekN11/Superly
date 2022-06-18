@@ -54,9 +54,11 @@ public class EmployeesMenu extends Screen {
             case 0:
             case 1:
             case 2:
-            case 3:
                 setError("not implemented yet");
                 refresh(req, resp);
+                break;
+            case 3:
+                redirect(resp, RemoveEmployee.class);
                 break;
         }
     }
