@@ -150,7 +150,7 @@ public class ManageEmployee extends Screen {
                 Login.updateSalary(eid);
                 setError("Salary successfully updated to " + newSal);
             } catch (NumberFormatException e) {
-                setError("Error occurred: Enter numerical value as salary");
+                setError("Error Occurred: Please enter numeric value for salary");
             } catch (Exception e) {
                 setError(e.getMessage());
             }
@@ -198,9 +198,9 @@ public class ManageEmployee extends Screen {
         else if (isButtonPressed(req, "remLicenseBut")){
             try {
                 Carrier sCarrier = (Carrier)controller.getEmployee(getParamVal(req, "EmpID"));
-                LicenseTypes newLicense = LicenseTypes.valueOf(getParamVal(req, "addLicense"));
+                LicenseTypes newLicense = LicenseTypes.valueOf(getParamVal(req, "remLicense"));
                 Set<LicenseTypes> newLicenses = new HashSet<>(sCarrier.licenses);
-                newLicenses.remove(newLicenses);
+                newLicenses.remove(newLicense);
                 controller.editCarrierLicenses(sCarrier.id, newLicenses);
                 setError(newLicense + " license removed successfully");
             } catch (Exception e) {
