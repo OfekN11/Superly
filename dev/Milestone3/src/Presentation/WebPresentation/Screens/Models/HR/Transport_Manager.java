@@ -7,15 +7,19 @@ import java.io.IOException;
 
 public class Transport_Manager extends Employee{
 
-    private static String greeting = "Welcome Transport Manager ";
+    private static final String GREETING = "Welcome Transport Manager ";
 
-    private static String[] menuOptions = {};
+    private static final String[] EXTRA_OPTIONS = {};
 
     protected Transport_Manager(Domain.Service.Objects.Employee.Transport_Manager sTraMan) {
-        super(sTraMan, greeting, menuOptions);
+        super(sTraMan, GREETING, EXTRA_OPTIONS);
     }
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
+        int index = getIndexOfButtonPressed(req) - BASE_OPTIONS_COUNT;
+        switch (index) {
+        }
     }
 }

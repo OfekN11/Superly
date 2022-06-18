@@ -1,10 +1,12 @@
 package Presentation.WebPresentation.Screens.ViewModels.HR;
 
-import Presentation.WebPresentation.Screens.InventoryScreens.InventoryMainMenu;
+import Presentation.WebPresentation.Screens.Models.HR.Admin;
+import Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.InventoryMainMenu;
 import Presentation.WebPresentation.Screens.Models.HR.Employee;
 import Presentation.WebPresentation.Screens.Models.HR.EmployeeFactory;
 import Presentation.WebPresentation.Screens.Screen;
 import Presentation.WebPresentation.Screens.ViewModels.Suppliers.SupplierMainMenuStorekeeper;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.TransportMainMenu;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -22,6 +24,7 @@ public class Login extends Screen {
 
     private static final String greet = "Login";
     private static final Map<String, Employee> loggedUser = new HashMap<>();
+    private static final int LOGIN_COOKIE_MAX_AGE = (int)TimeUnit.MINUTES.toSeconds(5);
 
     private final EmployeeFactory factory = new EmployeeFactory();
 
@@ -31,29 +34,34 @@ public class Login extends Screen {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (isLoggedIn(req)) {
+        if (isLoggedIn(req, resp)) {
             redirect(resp, EmployeeServlet.class);
         }
         header(resp);
         greet(resp);
         printForm(resp, new String[]{"ID"}, new String[]{"Employee ID"}, new String[]{"Sign in!"});
-        printMenu(resp, new String[]{"Suppliers Main Menu", "Inventory Main Menu"});
 
         handleError(resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handleHeader(req, resp);
+        if (handleHeader(req, resp))
+            return;
 
         if (isButtonPressed(req, "Sign in!")){
             String id = req.getParameter("ID");
             try {
-                Employee emp = factory.createEmployee(controller.getEmployee(id));
+                Employee emp;
+                if (id.equals("admin"))
+                    emp = new Admin();
+                else
+                    emp = factory.createEmployee(controller.getEmployee(id));
                 String hash = hash(id);
+                //TODO:
                 loggedUser.put(hash, emp);
                 Cookie c = new Cookie("superly_user", hash);
-                c.setMaxAge((int)TimeUnit.MINUTES.toSeconds(2));
+                c.setMaxAge(LOGIN_COOKIE_MAX_AGE);
                 resp.addCookie(c);
                 redirect(resp, EmployeeServlet.class);
             } catch (Exception e) {
@@ -61,18 +69,24 @@ public class Login extends Screen {
                 refresh(req, resp);
             }
         }
-        else if(getIndexOfButtonPressed(req) == 0)
-            redirect(resp, SupplierMainMenuStorekeeper.class);
-        else if(getIndexOfButtonPressed(req) == 1)
-            redirect(resp, InventoryMainMenu.class);
     }
 
-    public static boolean isLoggedIn(HttpServletRequest req) {
+    public static boolean isLoggedIn(HttpServletRequest req, HttpServletResponse resp) {
         Cookie[] cookies = req.getCookies();
         if (cookies != null)
             for (Cookie c : cookies)
-                if (c.getName().equals("superly_user") && loggedUser.containsKey(c.getValue()))
-                    return true;
+                if (c.getName().equals("superly_user")) {
+                    if (loggedUser.containsKey(c.getValue())) {
+                        c.setMaxAge(LOGIN_COOKIE_MAX_AGE);
+                        resp.addCookie(c);
+                        return true;
+                    }
+                    else {
+                        c.setMaxAge(0);
+                        resp.addCookie(c);
+                        return false;
+                    }
+                }
         return false;
     }
 

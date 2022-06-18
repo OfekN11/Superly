@@ -1,4 +1,4 @@
-package Presentation.WebPresentation.Screens.ViewModels.HR;
+package Presentation.WebPresentation.Screens;
 
 import Presentation.WebPresentation.Screens.Screen;
 
@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 
 public class TestScreen extends Screen {
     public TestScreen() {
-        super("This is a test page");
+        super("This is a test page", null);
     }
 
     @Override

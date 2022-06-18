@@ -97,16 +97,16 @@ public class TransportsMenu extends Screen {
 
 
     private void getPendingTransports() throws Exception {
-        displayTransportList("Pending", controller.getPendingTransports());
+        //displayTransportList("Pending", controller.getPendingTransports());
 
     }
 
     private void getInProgressTransports() throws Exception {
-        displayTransportList("In Progress", controller.getInProgressTransports());
+        //displayTransportList("In Progress", controller.getInProgressTransports());
     }
 
     private void getCompleteTransports() throws Exception {
-        displayTransportList("Complete", controller.getCompleteTransports());
+        //displayTransportList("Complete", controller.getCompleteTransports());
     }
     private void displayTransportList(String status, Set<Transport> transports)
     {

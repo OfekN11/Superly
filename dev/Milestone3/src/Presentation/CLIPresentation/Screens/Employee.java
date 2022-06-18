@@ -205,7 +205,7 @@ public abstract class Employee extends Screen {
         LocalDate start = buildDate();
         System.out.println("Enter last date to calculate: ");
         LocalDate end = buildDate();
-        int numOfShifts = controller.getEmployeeShiftsBetween(this, start, end).size();
+        int numOfShifts = controller.getEmployeeShiftsBetween(getID(), start, end).size();
         System.out.println("Between the dates entered " + name + " has done " + numOfShifts + "shifts");
         System.out.println("With a salary of " + salary + " per shift");
         System.out.println("Calculated salary between these date is: " + (numOfShifts * salary));
@@ -214,7 +214,7 @@ public abstract class Employee extends Screen {
     private void manageConstraints() throws Exception {
         LocalDate today = LocalDate.now();
         LocalDate nextMonth = today.plusMonths(1);
-        List<Shift> constraints = controller.getEmployeeConstraintsBetween(this, today, nextMonth).stream().sorted(new ShiftComparator()).collect(Collectors.toList());
+        List<Shift> constraints = controller.getEmployeeConstraintsBetween(getID(), today, nextMonth).stream().sorted(new ShiftComparator()).collect(Collectors.toList());
         System.out.println("Current constraints for the following month");
         for (Shift constraint : constraints)
             System.out.println(constraint);
@@ -232,14 +232,14 @@ public abstract class Employee extends Screen {
     private void removeConstraints() throws Exception {
         LocalDate today = LocalDate.now();
         LocalDate nextMonth = today.plusMonths(1);
-        List<Shift> registeredShifts = controller.getEmployeeConstraintsBetween(this, today, nextMonth).stream().sorted(new ShiftComparator()).collect(Collectors.toList());
+        List<Shift> registeredShifts = controller.getEmployeeConstraintsBetween(getID(), today, nextMonth).stream().sorted(new ShiftComparator()).collect(Collectors.toList());
         System.out.println("Which constraint would you like to remove?");
         System.out.println("0 -- stop removing constraints");
         for (int i = 0; i < registeredShifts.size(); i++)
             System.out.println((i + 1) + " -- " + registeredShifts.get(i));
         for (int ans = getNumber(0, registeredShifts.size()); ans != 0; ans = getNumber(0, registeredShifts.size())) {
             try {
-                controller.unregisterFromConstraint(this, registeredShifts.get(ans - 1));
+                controller.unregisterFromConstraint(getID(), registeredShifts.get(ans - 1));
                 System.out.println("Successfully removed constraint for " + registeredShifts.get(ans - 1));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -257,7 +257,7 @@ public abstract class Employee extends Screen {
         for (int i = 0; i < availableShifts.size(); i++)
             System.out.println((i + 1) + " -- " + availableShifts.get(i));
         for (int ans = getNumber(0, availableShifts.size()); ans != 0; ans = getNumber(0, availableShifts.size())) {
-            controller.registerToConstraint(this, availableShifts.get(ans - 1));
+            controller.registerToConstraint(getID(), availableShifts.get(ans - 1));
             System.out.println("Successfully added constraint for " + availableShifts.get(ans - 1));
         }
         System.out.println("Finished adding constraints");
@@ -266,7 +266,7 @@ public abstract class Employee extends Screen {
     private void printUpcomingShifts() throws Exception {
         LocalDate today = LocalDate.now();
         LocalDate nextWeek = today.plusWeeks(1);
-        List<Shift> shifts= new ArrayList<>(controller.getEmployeeShiftsBetween(this, today, nextWeek));
+        List<Shift> shifts= new ArrayList<>(controller.getEmployeeShiftsBetween(getID(), today, nextWeek));
         shifts.sort(new ShiftComparator());
         System.out.println("Upcoming shift for the following week");
         for (Shift shift : shifts)

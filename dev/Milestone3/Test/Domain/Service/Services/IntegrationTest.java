@@ -6,8 +6,12 @@ import Domain.Business.Controllers.Transport.SiteController;
 import Domain.DAL.Controllers.EmployeeMappers.EmployeeDataMapper;
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Domain.DAL.Controllers.TransportMudel.TransportDAO;
+import Domain.Service.Services.HR.EmployeeService;
+import Domain.Service.Services.HR.ShiftService;
+import Domain.Service.Services.Transport.DocumentService;
 import Domain.Service.Services.Transport.OrderService;
 import Domain.Service.Services.Transport.TransportService;
+import Domain.Service.Services.Transport.TruckService;
 import Globals.Enums.Certifications;
 import org.junit.*;
 
@@ -16,16 +20,15 @@ import java.util.*;
 
 public class IntegrationTest {
     static LocalDate date=LocalDate.parse("2021-09-19");
-    static ShiftController shiftController = new ShiftController();
-    static EmployeeController employeeController = new EmployeeController();
-    static Set<Certifications> certifications = new HashSet<>();
-    static EmployeeDataMapper employeeDataMapper =new EmployeeDataMapper();
-    static ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
-    static TransportService transportService = new TransportService();
+    static EmployeeService employeeService = new EmployeeService();
+    static ShiftService shiftService = new ShiftService();
+    static DocumentService documentService = new DocumentService();
     static OrderService orderService = new OrderService();
-    static SiteController siteController = new SiteController();
+    static TransportService transportService = new TransportService();
+    static TruckService truckService =new TruckService();
+    static InventoryService inventoryService = new InventoryService();
+    static SupplierService supplierService = new SupplierService();
     static HashMap<Integer,Integer> productMap = new HashMap<>();
-    static TransportDAO transportDataMapper = new TransportDAO();
 
     @Test
     public void carrierInTransport() {
@@ -33,7 +36,8 @@ public class IntegrationTest {
         orderService.addOrder(1,2,productMap);
     }
 
+    @Test
+    public void IssuingAnOrder() {
 
-
-
+    }
 }

@@ -1,6 +1,6 @@
 package Domain.Service.Objects.Document;
 
-import Presentation.CLIPresentation.Factories.PresentationDocumentFactory;
+import Presentation.WebPresentation.Screens.ViewModels.Transport.Factories.PresentationDocumentFactory;
 
 public abstract class Document {
     private int documentSN;
@@ -13,5 +13,5 @@ public abstract class Document {
         return documentSN;
     }
 
-    public abstract Presentation.CLIPresentation.Objects.Document.Document accept(PresentationDocumentFactory presentationDocumentFactory);
+    public abstract Presentation.WebPresentation.Screens.ViewModels.Transport.Objects.Document.Document accept(PresentationDocumentFactory presentationDocumentFactory);
 }

@@ -7,15 +7,19 @@ import java.io.IOException;
 
 public class Sorter extends Employee{
 
-    private static String greeting = "Welcome Sorter ";
+    private static final String GREETING = "Welcome Sorter ";
 
-    private static String[] menuOptions = {};
+    private static final String[] EXTRA_OPTIONS = {};
 
     protected Sorter(Domain.Service.Objects.Employee.Sorter sSorter) {
-        super(sSorter, greeting, menuOptions);
+        super(sSorter, GREETING, EXTRA_OPTIONS);
     }
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
+        int index = getIndexOfButtonPressed(req) - BASE_OPTIONS_COUNT;
+        switch (index) {
+        }
     }
 }
