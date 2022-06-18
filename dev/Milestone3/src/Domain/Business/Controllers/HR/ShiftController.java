@@ -7,23 +7,33 @@ import Domain.Business.Objects.Shift.Shift;
 import Domain.DAL.Controllers.ShiftDataMappers.ShiftDataMapper;
 import Globals.Enums.Certifications;
 import Globals.Enums.ShiftTypes;
+import Globals.ObserverInterfaces.EditCarrierLicenseObserver;
+import Globals.ObserverInterfaces.RemoveEmployeeFromShiftObserver;
 import Globals.Pair;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ShiftController {
     private static final String SHIFT_ALREADY_EXIST = "There already exists a %s for date %s";
     private static final String SHIFT_DOES_NOT_EXIST = "There is no shift in date: %s type: %s";
-
+    private static final String UNREGISTER_ASSIGNED_EMPLOYEE_ERROR = "Employee id: %s is assign to a shift in date %s";
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private static final Set<RemoveEmployeeFromShiftObserver> REMOVE_EMPLOYEE_FROM_SHIFT_OBSERVER_FOR_EMPLOYEES = new HashSet<>();
     // properties
-    private final ShiftDataMapper shiftDataMapper = new ShiftDataMapper();
-    private final EmployeeController employeeController = new EmployeeController();
+    private final ShiftDataMapper shiftDataMapper;
+    private final EmployeeController employeeController;
+
+
+    // constructor
+    public ShiftController(){
+        shiftDataMapper = new ShiftDataMapper();
+        employeeController = new EmployeeController();
+        employeeController.registerToRemoveEmployeeEvent((this::verifyEmployeeIsNotAssignForShifts));
+    }
 
     //CREATE
 
@@ -60,7 +70,8 @@ public class ShiftController {
         shiftDataMapper.save(shift);
     }
 
-    public void editShiftCarrierCount(LocalDate workday, ShiftTypes type, int carrierCount) throws Exception {
+    public void editShiftCarrierCount(LocalDate workday, ShiftTypes type, int carrierCount) throws Exception
+    {
         Shift shift = getShift(workday, type);
         shift.setCarrierCount(carrierCount);
         shiftDataMapper.save(shift);
@@ -104,42 +115,70 @@ public class ShiftController {
 
     public void editShiftCarrierIDs(LocalDate workday, ShiftTypes type, Set<String> ids) throws Exception {
         Shift shift = getShift(workday, type);
+        Set<String> removedEmployees = getUnregisterEmployeeFromEdit(shift.getCarrierIDs(),ids);
+        if (!removedEmployees.isEmpty())
+            for(RemoveEmployeeFromShiftObserver observer: REMOVE_EMPLOYEE_FROM_SHIFT_OBSERVER_FOR_EMPLOYEES)
+                observer.observe(removedEmployees,workday,type);
         shift.setCarrierIDs(ids);
         shiftDataMapper.save(shift);
     }
 
     public void editShiftCashierIDs(LocalDate workday, ShiftTypes type, Set<String> ids) throws Exception {
         Shift shift = getShift(workday, type);
+        Set<String> removedEmployees = getUnregisterEmployeeFromEdit(shift.getCashierIDs(),ids);
+        if (!removedEmployees.isEmpty())
+            for(RemoveEmployeeFromShiftObserver observer: REMOVE_EMPLOYEE_FROM_SHIFT_OBSERVER_FOR_EMPLOYEES)
+                observer.observe(removedEmployees,workday,type);
         shift.setCashierIDs(ids);
         shiftDataMapper.save(shift);
     }
 
     public void editShiftStorekeeperIDs(LocalDate workday, ShiftTypes type, Set<String> ids) throws Exception {
         Shift shift = getShift(workday, type);
+        Set<String> removedEmployees = getUnregisterEmployeeFromEdit(shift.getStorekeeperIDs(),ids);
+        if (!removedEmployees.isEmpty())
+            for(RemoveEmployeeFromShiftObserver observer: REMOVE_EMPLOYEE_FROM_SHIFT_OBSERVER_FOR_EMPLOYEES)
+                observer.observe(removedEmployees,workday,type);
         shift.setStorekeeperIDs(ids);
         shiftDataMapper.save(shift);
     }
 
     public void editShiftSorterIDs(LocalDate workday, ShiftTypes type, Set<String> ids) throws Exception {
         Shift shift = getShift(workday, type);
+        Set<String> removedEmployees = getUnregisterEmployeeFromEdit(shift.getSorterIDs(),ids);
+        if (!removedEmployees.isEmpty())
+            for(RemoveEmployeeFromShiftObserver observer: REMOVE_EMPLOYEE_FROM_SHIFT_OBSERVER_FOR_EMPLOYEES)
+                observer.observe(removedEmployees,workday,type);
         shift.setSorterIDs(ids);
         shiftDataMapper.save(shift);
     }
 
     public void editShiftHR_ManagerIDs(LocalDate workday, ShiftTypes type, Set<String> ids) throws Exception {
         Shift shift = getShift(workday, type);
+        Set<String> removedEmployees = getUnregisterEmployeeFromEdit(shift.getHr_managerIDs(),ids);
+        if (!removedEmployees.isEmpty())
+            for(RemoveEmployeeFromShiftObserver observer: REMOVE_EMPLOYEE_FROM_SHIFT_OBSERVER_FOR_EMPLOYEES)
+                observer.observe(removedEmployees,workday,type);
         shift.setHr_managerIDs(ids);
         shiftDataMapper.save(shift);
     }
 
     public void editShiftLogistics_ManagerIDs(LocalDate workday, ShiftTypes type, Set<String> ids) throws Exception {
         Shift shift = getShift(workday, type);
+        Set<String> removedEmployees = getUnregisterEmployeeFromEdit(shift.getLogistics_managerIDs(),ids);
+        if (!removedEmployees.isEmpty())
+            for(RemoveEmployeeFromShiftObserver observer: REMOVE_EMPLOYEE_FROM_SHIFT_OBSERVER_FOR_EMPLOYEES)
+                observer.observe(removedEmployees,workday,type);
         shift.setLogistics_managerIDs(ids);
         shiftDataMapper.save(shift);
     }
 
     public void editShiftTransport_ManagerIDs(LocalDate workday, ShiftTypes type, Set<String> ids) throws Exception {
         Shift shift = getShift(workday, type);
+        Set<String> removedEmployees = getUnregisterEmployeeFromEdit(shift.getTransport_managerIDs(),ids);
+        if (!removedEmployees.isEmpty())
+            for(RemoveEmployeeFromShiftObserver observer: REMOVE_EMPLOYEE_FROM_SHIFT_OBSERVER_FOR_EMPLOYEES)
+                observer.observe(removedEmployees,workday,type);
         shift.setTransport_managerIDs(ids);
         shiftDataMapper.save(shift);
     }
@@ -162,8 +201,6 @@ public class ShiftController {
         shiftDataMapper.delete(date, type);
     }
 
-    public void deleteData() {
-    }
 
     //MISC
 
@@ -285,5 +322,22 @@ public class ShiftController {
         LocalDate start = initial.withDayOfMonth(1);
         LocalDate end = initial.withDayOfMonth(initial.getMonth().length(initial.isLeapYear()));
         return new Pair<>(start, end);
+    }
+
+    public void registerToRemoveEmployeeFromShiftEvent(RemoveEmployeeFromShiftObserver observer){
+        REMOVE_EMPLOYEE_FROM_SHIFT_OBSERVER_FOR_EMPLOYEES.add(observer);
+    }
+
+    public void verifyEmployeeIsNotAssignForShifts(String id) throws Exception {
+        List<Shift> employeeShifts = new ArrayList<>(getEmployeeShiftsBetween(id, LocalDate.now(), LocalDate.now().plusMonths(2)));
+        if (!employeeShifts.isEmpty())
+            throw new RuntimeException(String.format(UNREGISTER_ASSIGNED_EMPLOYEE_ERROR,id,employeeShifts.get(0).toString()));
+
+        for(Shift shift : getEmployeeConstraintsBetween(id,LocalDate.now(), LocalDate.now().plusMonths(2)))
+            shift.unregisterFromAvailable(id);
+    }
+
+    public Set<String> getUnregisterEmployeeFromEdit(Set<String> before, Set<String> after){
+        return before.stream().filter(id -> !after.contains(id)).collect(Collectors.toSet());
     }
 }
