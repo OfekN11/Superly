@@ -59,8 +59,7 @@ public class ShiftMenu extends Screen {
                 redirect(resp, AddShifts.class);
                 break;
             case 3:
-                setError("not implemented yet");
-                refresh(req, resp);
+                redirect(resp, ManageShift.class);
                 break;
         }
     }
