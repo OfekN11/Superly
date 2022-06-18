@@ -94,7 +94,7 @@ public class Sales extends Screen{
             }
         }
         else if(isButtonPressed(req, addButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
+            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class, Admin.class)))) {
                 setError("You have no permission to add sale");
                 refresh(req, resp);
                 return;

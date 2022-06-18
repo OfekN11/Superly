@@ -1007,7 +1007,7 @@ public class SupplierController {
         }
 
 
-        if(supplier.isRoutineAgreement()){
+        if(supplier.isRoutineAgreement()||supplier.isNotTransportingAgreement()){
             LocalDate today = LocalDate.now();
             int dayInt = getDayInt(today);
             for(Integer currDay : availableDays){
