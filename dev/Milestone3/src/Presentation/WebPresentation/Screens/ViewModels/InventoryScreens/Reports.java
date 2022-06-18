@@ -46,7 +46,7 @@ public class Reports extends Screen {
                 break;
         }
         if(isButtonPressed(req, viewReportButton)){
-            if (!isAllowed(req, resp, Report.ALLOWED)) {
+            if (!isAllowed(req, resp, DefectiveReport.ALLOWED)) {
                 setError("You have no permission to view defective reports");
                 refresh(req, resp);
                 return;
@@ -74,7 +74,7 @@ public class Reports extends Screen {
                         IDs = str.stream().map(Integer::parseInt).collect(Collectors.toList());
                         Result<List<DefectiveItemReport>> defectiveItemsByStore = controller.getDefectiveItemsByStore(startDate, endDate, IDs);
                         if (defectiveItemsByStore.isOk() && defectiveItemsByStore.getValue().size() > 0)
-                            redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"defective", "by store", IDsString, startDateStr, endDateStr});
+                            redirect(resp, DefectiveReport.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"defective", "by store", IDsString, startDateStr, endDateStr});
                         else if (defectiveItemsByStore.isOk()) {
                             setError("no reports");
                             refresh(req, resp);
@@ -88,7 +88,7 @@ public class Reports extends Screen {
                         IDs = (Arrays.asList(IDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                         Result<List<DefectiveItemReport>> defectiveItemsByCategory = controller.getDefectiveItemsByCategory(startDate, endDate, IDs);
                         if (defectiveItemsByCategory.isOk() && defectiveItemsByCategory.getValue().size() > 0)
-                            redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"defective", "by category", IDsString, startDateStr, endDateStr});
+                            redirect(resp, DefectiveReport.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"defective", "by category", IDsString, startDateStr, endDateStr});
                         else if (defectiveItemsByCategory.isOk()) {
                             setError("no reports");
                             refresh(req, resp);
@@ -102,7 +102,7 @@ public class Reports extends Screen {
                         IDs = (Arrays.asList(IDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                         Result<List<DefectiveItemReport>> defectiveItemsByProduct = controller.getDefectiveItemsByProduct(startDate, endDate, IDs);
                         if (defectiveItemsByProduct.isOk() && defectiveItemsByProduct.getValue().size() > 0)
-                            redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"defective", "by product", IDsString, startDateStr, endDateStr});
+                            redirect(resp, DefectiveReport.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"defective", "by product", IDsString, startDateStr, endDateStr});
                         else if (defectiveItemsByProduct.isOk()) {
                             setError("no reports");
                             refresh(req, resp);
@@ -116,7 +116,7 @@ public class Reports extends Screen {
                         IDs = (Arrays.asList(IDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                         Result<List<DefectiveItemReport>> damagedItemsByStore = controller.getDamagedItemsByStore(startDate, endDate, IDs);
                         if (damagedItemsByStore.isOk() && damagedItemsByStore.getValue().size() > 0)
-                            redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"damaged", "by store", IDsString, startDateStr, endDateStr});
+                            redirect(resp, DefectiveReport.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"damaged", "by store", IDsString, startDateStr, endDateStr});
                         else if (damagedItemsByStore.isOk()) {
                             setError("no reports");
                             refresh(req, resp);
@@ -130,7 +130,7 @@ public class Reports extends Screen {
                         IDs = (Arrays.asList(IDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                         Result<List<DefectiveItemReport>> damagedItemsByCategory = controller.getDamagedItemsByCategory(startDate, endDate, IDs);
                         if (damagedItemsByCategory.isOk() && damagedItemsByCategory.getValue().size() > 0)
-                            redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"damaged", "by category", IDsString, startDateStr, endDateStr});
+                            redirect(resp, DefectiveReport.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"damaged", "by category", IDsString, startDateStr, endDateStr});
                         else if (damagedItemsByCategory.isOk()) {
                             setError("no reports");
                             refresh(req, resp);
@@ -144,7 +144,7 @@ public class Reports extends Screen {
                         IDs = (Arrays.asList(IDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                         Result<List<DefectiveItemReport>> damagedItemsByProduct = controller.getDamagedItemsByProduct(startDate, endDate, IDs);
                         if (damagedItemsByProduct.isOk() && damagedItemsByProduct.getValue().size() > 0)
-                            redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"damaged", "by product", IDsString, startDateStr, endDateStr});
+                            redirect(resp, DefectiveReport.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"damaged", "by product", IDsString, startDateStr, endDateStr});
                         else if (damagedItemsByProduct.isOk()) {
                             setError("no reports");
                             refresh(req, resp);
@@ -158,7 +158,7 @@ public class Reports extends Screen {
                         IDs = (Arrays.asList(IDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                         Result<List<DefectiveItemReport>> expiredItemsByStore = controller.getExpiredItemsByStore(startDate, endDate, IDs);
                         if (expiredItemsByStore.isOk() && expiredItemsByStore.getValue().size() > 0)
-                            redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"expired", "by store", IDsString, startDateStr, endDateStr});
+                            redirect(resp, DefectiveReport.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"expired", "by store", IDsString, startDateStr, endDateStr});
                         else if (expiredItemsByStore.isOk()) {
                             setError("no reports");
                             refresh(req, resp);
@@ -172,7 +172,7 @@ public class Reports extends Screen {
                         IDs = (Arrays.asList(IDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                         Result<List<DefectiveItemReport>> expiredItemsByCategory = controller.getExpiredItemsByCategory(startDate, endDate, IDs);
                         if (expiredItemsByCategory.isOk() && expiredItemsByCategory.getValue().size() > 0)
-                            redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"expired", "by category", IDsString, startDateStr, endDateStr});
+                            redirect(resp, DefectiveReport.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"expired", "by category", IDsString, startDateStr, endDateStr});
                         else if (expiredItemsByCategory.isOk()) {
                             setError("no reports");
                             refresh(req, resp);
@@ -186,7 +186,7 @@ public class Reports extends Screen {
                         IDs = (Arrays.asList(IDsString.split(","))).stream().map(Integer::parseInt).collect(Collectors.toList());
                         Result<List<DefectiveItemReport>> expiredItemsByProduct = controller.getExpiredItemsByProduct(startDate, endDate, IDs);
                         if (expiredItemsByProduct.isOk() && expiredItemsByProduct.getValue().size() > 0)
-                            redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Report.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"expired", "by product", IDsString, startDateStr, endDateStr});
+                            redirect(resp, DefectiveReport.class, new String[]{"defective or damaged or expired", "by store or by category or by product", "IDs", "start date", "end date"}, new String[]{"expired", "by product", IDsString, startDateStr, endDateStr});
                         else if (expiredItemsByProduct.isOk()) {
                             setError("no reports");
                             refresh(req, resp);
