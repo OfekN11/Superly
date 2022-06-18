@@ -531,18 +531,6 @@ public class InventoryController {
         return lowOnStock;
     }
 
-//    public Product addSupplierToProduct(int productID, int supplierID, int productIDWithSupplier) {
-//        Product product = getProduct(productID);
-//        product.addSupplier(supplierID, productIDWithSupplier);
-//        return product;
-//    }
-//
-//    public Product removeSupplierFromProduct(int productID, int supplierID) {
-//        Product product = getProduct(productID);
-//        product.removeSupplier(supplierID);
-//        return product;
-//    }
-
     public boolean isUnderMin(int storeID, int productID) {
         return getProduct(productID).isLow(storeID);
     }
