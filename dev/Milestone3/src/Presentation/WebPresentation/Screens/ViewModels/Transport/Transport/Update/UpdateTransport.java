@@ -45,7 +45,13 @@ public class UpdateTransport extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         handleHeader(req, resp);
         String id = getParamVal(req, "Transport ID");
-        if (!is_number(id)) {
+        if (isButtonPressed(req, "Exit")) {
+            redirect(resp,TransportManagementMenu.class);
+        }
+        else if (isButtonPressed(req, "View orders")) {
+            redirect(resp, ViewPendingOrders.class);
+        }
+        else if (!is_number(id)) {
             refresh(req, resp);
         }
         else  if (isButtonPressed(req, "Place truck")) {
@@ -69,19 +75,10 @@ public class UpdateTransport extends Screen {
                 refresh(req, resp);
             }
         }
-        else if (isButtonPressed(req, "Add order")) {
-            if (is_number(id)) {
-                redirect(resp, AddOrderToTransport.class, new String[]{"ID"}, new String[]{id});
-            } else {
-                refresh(req, resp);
-            }
-        }
         else {
             setError("Failure!");
         }
-        if (isButtonPressed(req, "Exit")) {
-            redirect(resp,TransportManagementMenu.class);
-        }
+
 
     }
 
