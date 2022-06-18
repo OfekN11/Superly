@@ -309,115 +309,145 @@ public class BackendController {
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableShiftManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAvailableShiftManagersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAvailableShiftManagersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAvailableShiftManagersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public void editShiftTransport_ManagerCount(Presentation.CLIPresentation.Screens.Shift shift, int transport_managersCount) throws Exception {
-        Result<Object> result = shiftService.editShiftTransport_ManagerCount(shift.getDate(), shift.getType(), transport_managersCount);
-        if (result.isError())
-            throw new Exception("Error occurred: " + result.getError());
-    }
-
-    public Set<Employee> getAssignedSortersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAssignedSortersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAssignedSortersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAssignedSortersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedStorekeepersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAssignedStorekeepersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAssignedStorekeepersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAssignedStorekeepersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedCarriersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAssignedCarriersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAssignedCarriersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAssignedCarriersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedCashiersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAssignedCashiersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAssignedCashiersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAssignedCashiersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedHR_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAssignedHR_ManagersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAssignedHR_ManagersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAssignedHR_ManagersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedLogistics_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAssignedLogistics_ManagersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAssignedLogistics_ManagersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAssignedLogistics_ManagersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAssignedTransports_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAssignedTransport_ManagersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAssignedTransports_ManagersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAssignedTransport_ManagersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableSortersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAvailableSortersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAssignedJobTitleFor(LocalDate date, ShiftTypes type, JobTitles title) throws Exception {
+       if (title.equals(JobTitles.Carrier))
+           return getAssignedCarriersFor(date, type);
+        if (title.equals(JobTitles.Cashier))
+            return getAssignedCashiersFor(date, type);
+        if (title.equals(JobTitles.Sorter))
+            return getAssignedSortersFor(date, type);
+        if (title.equals(JobTitles.Storekeeper))
+            return getAssignedStorekeepersFor(date, type);
+        if (title.equals(JobTitles.HR_Manager))
+            return getAssignedHR_ManagersFor(date, type);
+        if (title.equals(JobTitles.Logistics_Manager))
+            return getAssignedLogistics_ManagersFor(date, type);
+        if (title.equals(JobTitles.Transport_Manager))
+            return getAssignedTransports_ManagersFor(date, type);
+       return null;
+    }
+
+    public Set<Employee> getAvailableSortersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAvailableSortersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableStorekeepersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAvailableStorekeepersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAvailableStorekeepersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAvailableStorekeepersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableCarriersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAvailableCarriersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAvailableCarriersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAvailableCarriersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableCashiersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAvailableCashiersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAvailableCashiersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAvailableCashiersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableHR_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAvailableHR_ManagersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAvailableHR_ManagersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAvailableHR_ManagersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableLogistics_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAssignedLogistics_ManagersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAvailableLogistics_ManagersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAssignedLogistics_ManagersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
     }
 
-    public Set<Employee> getAvailableTransports_ManagersFor(Presentation.CLIPresentation.Screens.Shift shift) throws Exception {
-        Result<Set<Employee>> result = shiftService.getAssignedTransport_ManagersFor(shift.getDate(), shift.getType());
+    public Set<Employee> getAvailableTransports_ManagersFor(LocalDate date, ShiftTypes type) throws Exception {
+        Result<Set<Employee>> result = shiftService.getAssignedTransport_ManagersFor(date, type);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
         return result.getValue();
+    }
+
+    public Set<Employee> getAvailableJobTitleFor(LocalDate date, ShiftTypes type, JobTitles title) throws Exception {
+        if (title.equals(JobTitles.Carrier))
+            return getAvailableCarriersFor(date, type);
+        if (title.equals(JobTitles.Cashier))
+            return getAvailableCashiersFor(date, type);
+        if (title.equals(JobTitles.Sorter))
+            return getAvailableSortersFor(date, type);
+        if (title.equals(JobTitles.Storekeeper))
+            return getAvailableStorekeepersFor(date, type);
+        if (title.equals(JobTitles.HR_Manager))
+            return getAvailableHR_ManagersFor(date, type);
+        if (title.equals(JobTitles.Logistics_Manager))
+            return getAvailableLogistics_ManagersFor(date, type);
+        if (title.equals(JobTitles.Transport_Manager))
+            return getAssignedTransports_ManagersFor(date, type);
+        return null;
     }
 
     //UPDATE
@@ -434,96 +464,136 @@ public class BackendController {
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftManagerID(Presentation.CLIPresentation.Screens.Shift shift, String shiftManagerId) throws Exception {
+    public void editShiftManagerID(LocalDate date, ShiftTypes type, String shiftManagerId) throws Exception {
         validateID(shiftManagerId);
-        Result<Object> result = shiftService.editShiftManagerID(shift.getDate(), shift.getType(), shiftManagerId);
+        Result<Object> result = shiftService.editShiftManagerID(date, type, shiftManagerId);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftCarrierCount(Presentation.CLIPresentation.Screens.Shift shift, int newCarrierCount) throws Exception {
-        Result<Object> result = shiftService.editShiftCarrierCount(shift.getDate(), shift.getType(), newCarrierCount);
+    public void editShiftCarrierCount(LocalDate date , ShiftTypes type, int newCarrierCount) throws Exception {
+        Result<Object> result = shiftService.editShiftCarrierCount(date, type, newCarrierCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftCashierCount(Presentation.CLIPresentation.Screens.Shift shift, int newCashierCount) throws Exception {
-        Result<Object> result = shiftService.editShiftCashierCount(shift.getDate(), shift.getType(), newCashierCount);
+    public void editShiftCashierCount(LocalDate date , ShiftTypes type, int newCashierCount) throws Exception {
+        Result<Object> result = shiftService.editShiftCashierCount(date, type, newCashierCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftSorterCount(Presentation.CLIPresentation.Screens.Shift shift, int newSorterCount) throws Exception {
-        Result<Object> result = shiftService.editShiftSorterCount(shift.getDate(), shift.getType(), newSorterCount);
+    public void editShiftSorterCount(LocalDate date , ShiftTypes type, int newSorterCount) throws Exception {
+        Result<Object> result = shiftService.editShiftSorterCount(date, type, newSorterCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftStorekeeperCount(Presentation.CLIPresentation.Screens.Shift shift, int newStorekeeperCount) throws Exception {
-        Result<Object> result = shiftService.editShiftStorekeeperCount(shift.getDate(), shift.getType(), newStorekeeperCount);
+    public void editShiftStorekeeperCount(LocalDate date , ShiftTypes type, int newStorekeeperCount) throws Exception {
+        Result<Object> result = shiftService.editShiftStorekeeperCount(date, type, newStorekeeperCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftHR_ManagerCount(Presentation.CLIPresentation.Screens.Shift shift, int newHr_managersCount) throws Exception {
-        Result<Object> result = shiftService.editShiftHR_ManagerCount(shift.getDate(), shift.getType(), newHr_managersCount);
+    public void editShiftHR_ManagerCount(LocalDate date , ShiftTypes type,int  newHr_managersCount) throws Exception {
+        Result<Object> result = shiftService.editShiftHR_ManagerCount(date, type, newHr_managersCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftLogistics_ManagerCount(Presentation.CLIPresentation.Screens.Shift shift, int newLogistics_managersCount) throws Exception {
-        Result<Object> result = shiftService.editShiftLogistics_ManagerCount(shift.getDate(), shift.getType(), newLogistics_managersCount);
+    public void editShiftLogistics_ManagerCount(LocalDate date , ShiftTypes type, int newLogistics_managersCount) throws Exception {
+        Result<Object> result = shiftService.editShiftLogistics_ManagerCount(date, type, newLogistics_managersCount);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftCarrierIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newCarrierIDs) throws Exception {
+    public void editShiftTransport_ManagerCount(LocalDate date , ShiftTypes type, int transport_managersCount) throws Exception {
+        Result<Object> result = shiftService.editShiftTransport_ManagerCount(date, type, transport_managersCount);
+        if (result.isError())
+            throw new Exception("Error occurred: " + result.getError());
+    }
+
+    public void editShiftJobtitleCount(LocalDate date, ShiftTypes type, int newCount, JobTitles title) throws Exception {
+        if (title.equals(JobTitles.Carrier))
+            editShiftCarrierCount(date, type, newCount);
+        if (title.equals(JobTitles.Cashier))
+            editShiftCashierCount(date, type, newCount);
+        if (title.equals(JobTitles.Sorter))
+            editShiftSorterCount(date, type, newCount);
+        if (title.equals(JobTitles.Storekeeper))
+            editShiftStorekeeperCount(date, type, newCount);
+        if (title.equals(JobTitles.HR_Manager))
+            editShiftHR_ManagerCount(date, type, newCount);
+        if (title.equals(JobTitles.Logistics_Manager))
+            editShiftLogistics_ManagerCount(date, type, newCount);
+        if (title.equals(JobTitles.Transport_Manager))
+            editShiftTransport_ManagerCount(date, type, newCount);
+    }
+
+    public void editShiftCarrierIDs(LocalDate date, ShiftTypes type, Set<String> newCarrierIDs) throws Exception {
         validateIDs(newCarrierIDs);
-        Result<Object> result = shiftService.editShiftCarrierIDs(shift.getDate(), shift.getType(), newCarrierIDs);
+        Result<Object> result = shiftService.editShiftCarrierIDs(date, type, newCarrierIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftCashierIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newCashierIDs) throws Exception {
+    public void editShiftCashierIDs(LocalDate date, ShiftTypes type, Set<String> newCashierIDs) throws Exception {
         validateIDs(newCashierIDs);
-        Result<Object> result = shiftService.editShiftCashierIDs(shift.getDate(), shift.getType(), newCashierIDs);
+        Result<Object> result = shiftService.editShiftCashierIDs(date, type, newCashierIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftStorekeeperIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newStorekeeperIDs) throws Exception {
+    public void editShiftStorekeeperIDs(LocalDate date, ShiftTypes type, Set<String> newStorekeeperIDs) throws Exception {
         validateIDs(newStorekeeperIDs);
-        Result<Object> result = shiftService.editShiftStorekeeperIDs(shift.getDate(), shift.getType(), newStorekeeperIDs);
+        Result<Object> result = shiftService.editShiftStorekeeperIDs(date, type, newStorekeeperIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftSorterIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newSorterIDs) throws Exception {
+    public void editShiftSorterIDs(LocalDate date, ShiftTypes type, Set<String> newSorterIDs) throws Exception {
         validateIDs(newSorterIDs);
-        Result<Object> result = shiftService.editShiftSorterIDs(shift.getDate(), shift.getType(), newSorterIDs);
+        Result<Object> result = shiftService.editShiftSorterIDs(date, type, newSorterIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftHR_ManagerIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newHr_managerIDs) throws Exception {
+    public void editShiftHR_ManagerIDs(LocalDate date, ShiftTypes type, Set<String> newHr_managerIDs) throws Exception {
         validateIDs(newHr_managerIDs);
-        Result<Object> result = shiftService.editShiftHR_ManagerIDs(shift.getDate(), shift.getType(), newHr_managerIDs);
+        Result<Object> result = shiftService.editShiftHR_ManagerIDs(date, type, newHr_managerIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftLogistics_ManagerIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newLogistics_managerIDs) throws Exception {
+    public void editShiftLogistics_ManagerIDs(LocalDate date, ShiftTypes type, Set<String> newLogistics_managerIDs) throws Exception {
         validateIDs(newLogistics_managerIDs);
-        Result<Object> result = shiftService.editShiftLogistics_ManagerIDs(shift.getDate(), shift.getType(), newLogistics_managerIDs);
+        Result<Object> result = shiftService.editShiftLogistics_ManagerIDs(date, type, newLogistics_managerIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
     }
 
-    public void editShiftTransport_ManagerIDs(Presentation.CLIPresentation.Screens.Shift shift, Set<String> newTransport_managersIDs) throws Exception {
+    public void editShiftTransport_ManagerIDs(LocalDate date, ShiftTypes type, Set<String> newTransport_managersIDs) throws Exception {
         validateIDs(newTransport_managersIDs);
-        Result<Object> result = shiftService.editShiftTransport_ManagerIDs(shift.getDate(), shift.getType(), newTransport_managersIDs);
+        Result<Object> result = shiftService.editShiftTransport_ManagerIDs(date, type, newTransport_managersIDs);
         if (result.isError())
             throw new Exception("Error occurred: " + result.getError());
+    }
+
+    public void editShiftJobTitleIDs(LocalDate date, ShiftTypes type, Set<String> newAssigned, JobTitles title) throws Exception {
+        if (title.equals(JobTitles.Carrier))
+            editShiftCarrierIDs(date, type, newAssigned);
+        if (title.equals(JobTitles.Cashier))
+            editShiftCashierIDs(date, type, newAssigned);
+        if (title.equals(JobTitles.Sorter))
+            editShiftSorterIDs(date, type, newAssigned);
+        if (title.equals(JobTitles.Storekeeper))
+            editShiftStorekeeperIDs(date, type, newAssigned);
+        if (title.equals(JobTitles.HR_Manager))
+            editShiftHR_ManagerIDs(date, type, newAssigned);
+        if (title.equals(JobTitles.Logistics_Manager))
+            editShiftLogistics_ManagerIDs(date, type, newAssigned);
+        if (title.equals(JobTitles.Transport_Manager))
+            editShiftTransport_ManagerIDs(date, type, newAssigned);
     }
 
     //DELETE
@@ -1211,4 +1281,5 @@ public class BackendController {
     public int getMin(int i, int productID) {
         return inventoryService.getMin(i, productID);
     }
+
 }

@@ -176,7 +176,7 @@ public class ShiftController {
         Pair<LocalDate, LocalDate> monthEdges = getMonthDatesEdges();
         return "Shifts during " + LocalDate.now().format(DateTimeFormatter.ofPattern("MMM")) + ": " +
                 Arrays.stream(ShiftTypes.values())
-                        .map((type) -> type + " - " + shiftDataMapper.getBetween(monthEdges.getLeft(), monthEdges.getLeft(), type))
+                        .map((type) -> type + " - " + shiftDataMapper.getBetween(monthEdges.getLeft(), monthEdges.getLeft(), type).stream().filter(s -> s.isEmployeeAssigned(id)).count())
                         .collect(Collectors.joining(", "));
     }
 
