@@ -4,6 +4,9 @@ import Domain.Business.Controllers.Transport.DocumentController;
 import Domain.Business.Controllers.Transport.TruckController;
 import Domain.Business.Objects.Document.DestinationDocument;
 import Domain.Business.Objects.Document.TransportDocument;
+import Domain.Business.Objects.Inventory.Category;
+import Domain.Business.Objects.Inventory.Product;
+import Domain.Business.Objects.Supplier.AgreementItem;
 import Domain.Business.Objects.Truck;
 import Domain.DAL.Abstract.DAO;
 import Domain.DAL.Controllers.TransportMudel.DestinationDocumentDAO;
@@ -11,20 +14,23 @@ import Domain.DAL.Controllers.TransportMudel.TransportDocumentDataMapper;
 import Domain.DAL.Controllers.TransportMudel.TruckDAO;
 import Globals.Enums.TruckModel;
 import InventoryTests.CategoryTests;
+import SuppliersTests.AgreementItemTest;
 import junit.framework.TestCase;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TruckControllerTest {
-    static TruckController controller;
-    static TruckDAO dao = new TruckDAO();
-    static Truck truck = new Truck(4, TruckModel.FullTrailer, 500, 1000);
+public class TruckControllerTest extends TestCase{
+    private static final  int TRUCK_NUMBER = 181;
+    static Truck truck = new Truck(TRUCK_NUMBER, TruckModel.FullTrailer, 500, 1000);
+    private static final TruckController tc =  new TruckController();
 
     @BeforeAll
-    public static synchronized void setData() {
+    public synchronized static void setData() {
         DAO.setDBForTests(TruckControllerTest.class);
     }
 
@@ -33,51 +39,103 @@ public class TruckControllerTest {
         DAO.deleteTestDB(TruckControllerTest.class);
     }
 
-    @BeforeEach
-    public void setUp() throws Exception {
-        controller = new TruckController();
-        dao.remove(4);
-    }
-
-    @AfterEach
+    @Override
     public void tearDown() throws Exception {
-        dao.remove(4);
+        try{
+            tc.removeTruck(507);
+        }catch(Exception e){
+
+        }
+    }
+
+    @BeforeEach
+    public void setUp(){
+        try {
+            tc.addTruck(truck.getLicenseNumber(), truck.getModel(), truck.getNetWeight(), truck.getMaxCapacityWeight());
+        } catch (Exception e) {
+
+        }
     }
 
     @Test
-    public void addTruck() {
-        try {
-            controller.addTruck(truck.getLicenseNumber(), truck.getModel(), truck.getNetWeight(), truck.getMaxCapacityWeight());
-            assertEquals(controller.getTruck(4), truck);
-        } catch (Exception e) {
-            fail();
+    public void test_setters(){
+        try{
+            truck.setLicenseNumber(444);
+            truck.setModel(TruckModel.DoubleTrailer);
+            truck.setNetWeight(200);
+            truck.setMaxCapacityWeight(200);
+            assertEquals(444, truck.getLicenseNumber());
+            assertEquals(TruckModel.DoubleTrailer, truck.getModel());
+            assertEquals(200, truck.getNetWeight());
+            assertEquals(200, truck.getMaxCapacityWeight());
+            truck.setLicenseNumber(TRUCK_NUMBER);
+            truck.setModel(TruckModel.FullTrailer);
+            truck.setNetWeight(500);
+            truck.setMaxCapacityWeight(1000);
         }
-
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Test
-    public void removeTruck() {
-        try {
-            controller.addTruck(truck.getLicenseNumber(), truck.getModel(), truck.getNetWeight(), truck.getMaxCapacityWeight());
-            controller.removeTruck(4);
-            controller.getTruck(4);
-            fail();
-        } catch (Exception e) {
-            assertTrue(true);
-        }
+    public void addTruck(){
+        try{
+            tc.removeTruck(truck.getLicenseNumber());
+            tc.addTruck(truck.getLicenseNumber(), truck.getModel(),truck.getNetWeight(), truck.getMaxCapacityWeight());
+            Truck t = getTruck(TRUCK_NUMBER);
+            if(t != null){
+                assertEquals(TRUCK_NUMBER, t.getLicenseNumber());
+            }
 
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private Truck getTruck(int licenseNumber){
+        try {
+            return tc.getTruck(licenseNumber);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    @Test
+    public void removeTruck(){
+        try{
+            tc.removeTruck(truck.getLicenseNumber());
+            Truck t = getTruck(TRUCK_NUMBER);
+            assertNull(t);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Test
-    public void getTruck() {
-        try {
-            controller.addTruck(truck.getLicenseNumber(), truck.getModel(), truck.getNetWeight(), truck.getMaxCapacityWeight());
-            assertEquals(controller.getTruck(4), truck);
-        } catch (Exception e) {
-            fail();
+    public void getTruck(){
+        try{
+            Truck t = getTruck(TRUCK_NUMBER);
+            if(t != null){
+                assertEquals(TRUCK_NUMBER, t.getLicenseNumber());
+            }
         }
-
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
+
+
+
+    private void cleanTrucks(){
+        try {
+            tc.removeTruck(507);
+        } catch (Exception e) {
+        }
+    }
+
+
 }
 
 
@@ -85,65 +143,3 @@ public class TruckControllerTest {
 
 
 
-    /*
-        @BeforeEach
-    public void setUp() throws Exception {
-        controller.removeTruck(12345678);
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        controller.removeTruck(12345678);
-    }
-    @Test
-    public void removeTruck() {
-        try {
-            controller.addTruck(12345678, TruckModel.SemiTrailer, 2, 1);
-            controller.removeTruck(12345678);
-        }
-        catch (Exception e){
-            assertTrue(false);
-        }
-        try{
-            controller.getTruck(12345678);
-        }
-        catch (Exception e){
-            assertTrue(true);
-        }
-
-    }
-
-    @Test
-    public void addTruck() {
-        try {
-            controller.addTruck(12345678, TruckModel.SemiTrailer, 2, 1);
-        }
-        catch (Exception e){
-            assertTrue(false);
-        }
-        try{
-            controller.getTruck(12345678);
-            assertTrue(true);
-        }
-        catch (Exception e){
-            assertTrue(false);
-        }
-
-    }
-
-    @Test
-    public void getTruck() {
-        try {
-            controller.addTruck(12345678, TruckModel.SemiTrailer, 2, 1);
-        } catch (Exception e) {
-            assertTrue(false);
-        }
-        try {
-            controller.getTruck(12345678);
-            assertTrue(true);
-        } catch (Exception e) {
-            assertTrue(false);
-        }
-
-    }
-    TruckControllerTest*/
