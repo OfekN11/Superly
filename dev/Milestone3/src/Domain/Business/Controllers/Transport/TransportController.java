@@ -240,11 +240,14 @@ public class TransportController {
                     transportDataMapper.save(transport);
                 }
                 else{
-                    throw new Exception("the transport is not in padding list");
+                    throw new Exception("the transport can not be placed");
                 }
             } else {
-                throw new Exception("the transport is not in padding list");
+                throw new Exception("the transport can not be placed");
             }
+        }
+        else {
+            throw new Exception("the transport is not in padding list");
         }
     }
 
