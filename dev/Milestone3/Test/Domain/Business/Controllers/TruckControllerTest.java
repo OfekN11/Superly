@@ -36,19 +36,19 @@ public class TruckControllerTest {
     @BeforeEach
     public void setUp() throws Exception {
         controller = new TruckController();
-        dao.remove(4);
+        dao.delete(4);
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        dao.remove(4);
+        dao.delete(4);
     }
 
     @Test
     public void addTruck() {
         try {
             controller.addTruck(truck.getLicenseNumber(), truck.getModel(), truck.getNetWeight(), truck.getMaxCapacityWeight());
-            assertEquals(controller.getTruck(4), truck);
+            assertEquals(controller.getTruck(4).getLicenseNumber(), 4);
         } catch (Exception e) {
             fail();
         }
@@ -72,7 +72,7 @@ public class TruckControllerTest {
     public void getTruck() {
         try {
             controller.addTruck(truck.getLicenseNumber(), truck.getModel(), truck.getNetWeight(), truck.getMaxCapacityWeight());
-            assertEquals(controller.getTruck(4), truck);
+            assertEquals(controller.getTruck(4).getLicenseNumber(), 4);
         } catch (Exception e) {
             fail();
         }

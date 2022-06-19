@@ -15,12 +15,12 @@ import java.time.LocalDate;
 public class TransportControllerTest extends TestCase {
     @BeforeAll
     public static synchronized void setData() {
-        DAO.setDBForTests(CategoryTests.class);
+        DAO.setDBForTests(TransportControllerTest.class);
     }
 
     @AfterAll
     public static void removeData() {
-        DAO.deleteTestDB(CategoryTests.class);
+        DAO.deleteTestDB(TransportControllerTest.class);
     }
 
 

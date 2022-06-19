@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DestinationDocumentDAO extends DAO {
-    private Map<Integer, DestinationDocument> DESTINATION_DOCUMENT_IDENTITY_MAP = new HashMap<>();
+    private static Map<Integer, DestinationDocument> DESTINATION_DOCUMENT_IDENTITY_MAP = new HashMap<>();
     public DestinationDocumentDAO() {
         super("DestinationsDocuments");
         try(ConnectionHandler connection = getConnectionHandler()) {
