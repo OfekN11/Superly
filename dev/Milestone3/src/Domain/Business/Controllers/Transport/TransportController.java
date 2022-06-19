@@ -63,13 +63,14 @@ public class TransportController {
     }
 
     public Transport createTransport(Pair<LocalDate,ShiftTypes> shift) throws Exception {
-        if(shiftController.getShift(shift.getLeft(),shift.getRight()).getStorekeeperIDs().size()>0){
+        if(shiftController.getShift(shift.getLeft(),shift.getRight()).getStorekeeperIDs().size()>0 &
+                shiftController.getShift(shift.getLeft(),shift.getRight()).getCarrierIDs().size()>0){
             Transport transport = new Transport(shift);
             transportDataMapper.save(transport);
             return transport;
         }
         else{
-            throw new Exception("there is no Storekeeper in this shift");
+            throw new Exception("There is no Storekeeper or Carrier in this shift!");
         }
 
     }
