@@ -7,6 +7,7 @@ import Domain.DAL.Controllers.InventoryAndSuppliers.SuppliersDAO;
 import Globals.Enums.OrderStatus;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -70,5 +71,8 @@ public class OrderController {
             place++;
         }
         return message;
+    }
+    public void setDate(LocalDate d,int id) throws SQLException {
+        transportOrderDataMapper.setOrderArrivalTime(id,d);
     }
 }

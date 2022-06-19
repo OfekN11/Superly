@@ -132,6 +132,8 @@ public class TransportController {
                 if(t.getStatus()==TransportStatus.padding){
                     if (canAddWeightToTransport(t,weight)){
                         addOrderToTransport(t.getSN(),order.getId());
+                        orderController.setDate(d,order.getId());
+                        orderController.updateOrder(order);
                         dateOfTransport = d;
                         return dateOfTransport;
                     }
@@ -141,6 +143,8 @@ public class TransportController {
             if(canCreate.getLeft()){
                 Transport created = createTransport(new Pair<>(d,canCreate.getRight()));
                 addOrderToTransport(created.getSN(),order.getId());
+                orderController.setDate(d,order.getId());
+                orderController.updateOrder(order);
                 dateOfTransport = d;
                 return dateOfTransport;
             }
@@ -191,6 +195,7 @@ public class TransportController {
                     transport.addOrder(order);
                     transportDataMapper.save(transport);
                     order.order();
+                    orderController.setDate(LocalDate.now(),order.getId());
                     orderController.updateOrder(order);
                 }
                 else{
@@ -204,6 +209,7 @@ public class TransportController {
                     transport.addOrder(order);
                     transportDataMapper.save(transport);
                     order.order();
+                    orderController.setDate(LocalDate.now(),order.getId());
                     orderController.updateOrder(order);
                 }
                 else{
@@ -225,20 +231,20 @@ public class TransportController {
         }
     public void placeTruck(int transportSN, int licenseNumber) throws Exception {
         Transport transport = getTransport(transportSN);
-        if(transport.getStatus()==TransportStatus.padding){
+        if (transport.getStatus() == TransportStatus.padding) {
             Truck truck = truckController.getTruck(licenseNumber);
             List<Transport> allTransports = getAllTransports();
-            List<Transport> shiftTransports = getTransportsInShift(allTransports,transport.getShift());
-            if(!(isAvailable(shiftTransports,truck) && transport.placeTruck(licenseNumber,truck.getNetWeight(),truck.getMaxCapacityWeight())))
-            {
-                throw new Exception("truck cant be placed");
+            List<Transport> shiftTransports = getTransportsInShift(allTransports, transport.getShift());
+            if (isAvailable(shiftTransports, truck)) {
+                if (transport.placeTruck(licenseNumber, truck.getNetWeight(), truck.getMaxCapacityWeight())) {
+                    transportDataMapper.save(transport);
+                }
+                else{
+                    throw new Exception("the transport is not in padding list");
+                }
+            } else {
+                throw new Exception("the transport is not in padding list");
             }
-            else{
-                transportDataMapper.save(transport);
-            }
-        }
-        else{
-            throw new Exception("the transport is not in padding list");
         }
     }
 
@@ -375,7 +381,7 @@ public class TransportController {
     public List<Transport> getTransportsInShift(List<Transport >all,Pair<LocalDate,ShiftTypes> s){
         List<Transport> shiftTransports = new ArrayList<>();
         for(Transport t : all){
-            if(t.getShift().getLeft()==s.getLeft() && t.getShift().getRight()==s.getRight()){
+            if(t.getShift().getLeft().equals(s.getLeft()) && t.getShift().getRight()==s.getRight()){
                 shiftTransports.add(t);
             }
         }
