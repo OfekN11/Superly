@@ -100,9 +100,7 @@ public class StockReportDataMapper extends DataMapper<StockReport> {
 
     public StockReport get(int storeId, int productID) {
         Pair<Integer, Integer> key = new Pair(storeId, productID);
-        StockReport output = IDENTITY_MAP.get(key);
-        if (output != null)
-            return output;
+        StockReport output;
 
         try(ConnectionHandler handler = getConnectionHandler()) {
             ResultSet instanceResult = select(handler.get(),Arrays.asList(STORE_COLUMN, PRODUCT_COLUMN), Arrays.asList(storeId, productID));

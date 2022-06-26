@@ -51,10 +51,12 @@ class StockReportTest {
         stockReport = product.getStockReport(store);
         assertThrows(Exception.class, ()->product.addDelivery(store+1,200));
         assertDoesNotThrow(()->product.addDelivery(store,200));
+        stockReport = product.getStockReport(store);
         assertEquals(200, stockReport.getAmountInDeliveries());
         assertEquals(0,stockReport.getAmountInStore());
         assertEquals(0,stockReport.getAmountInWarehouse());
         product.addDelivery(store,200);
+        stockReport = product.getStockReport(store);
         assertEquals(400, stockReport.getAmountInDeliveries());
         assertEquals(0,stockReport.getAmountInStore());
         assertEquals(0,stockReport.getAmountInWarehouse());

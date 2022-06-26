@@ -86,7 +86,7 @@ public class Product {
     public Integer getInWarehouse(int store) {
         if (stockReports.get(store)==null)
             throw new IllegalArgumentException("Product " + id + " is not sold in store " + store);
-        return stockReports.get(store).getAmountInWarehouse();
+        return getStockReport(store).getAmountInWarehouse();
     }
 
     public double getCurrentPrice() {
@@ -114,7 +114,7 @@ public class Product {
             stockReports.put(storeID, stockReport);
         if (!stockReports.containsKey(storeID))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to store: " + storeID);
-        stockReports.get(storeID).removeItemsFromStore(amount, inWarehouse);
+        getStockReport(storeID).removeItemsFromStore(amount, inWarehouse);
     }
 
     public void addItems(int storeID, int amount, int missingAndDefectiveItems, String description) {
@@ -122,7 +122,7 @@ public class Product {
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
         if (amount < missingAndDefectiveItems)
             throw new IllegalArgumentException("You have entered more missing and defective items of product: " + id + ": " + name + " then arrived in the order");
-        stockReports.get(storeID).addItems(amount, missingAndDefectiveItems, description);
+        getStockReport(storeID).addItems(amount, missingAndDefectiveItems, description);
     }
 
     public void moveItems(int storeID, int amount) { //from warehouse to store
@@ -135,7 +135,7 @@ public class Product {
     public double returnItems(int storeId, int amount, LocalDate dateBought) { //from customer to store
         if (!stockReports.containsKey(storeId))
             throw new IllegalArgumentException("Product: " + name + ", hasn't been added to the store");
-        stockReports.get(storeId).returnItems(amount);
+        getStockReport(storeId).returnItems(amount);
         return amount*getPriceOnDate(dateBought);
     }
 
@@ -232,7 +232,7 @@ public class Product {
         if (getStockReport(storeID)!=null)
             throw new IllegalArgumentException("Product " + name + " is already sold at store " + storeID);
         stockReports.put(storeID, new StockReport(storeID, id, 0, 0, minAmount, targetAmount, 0));
-        STOCK_REPORT_DATA_MAPPER.insert(getStockReport(storeID));
+        STOCK_REPORT_DATA_MAPPER.insert(stockReports.get(storeID));
         locations.add(storeLocation);
         LOCATION_DATA_MAPPER.insert(storeLocation, id);
         locations.add(warehouseLocation);
@@ -300,7 +300,7 @@ public class Product {
     }
 
     public StockReport getStockReport(int store) {
-        StockReport stockReport = stockReports.get(store);
+        StockReport stockReport = STOCK_REPORT_DATA_MAPPER.get(store, id);//stockReports.get(store);
         if (stockReport==null) {
             stockReport = STOCK_REPORT_DATA_MAPPER.get(store, id);
         }
