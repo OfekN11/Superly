@@ -47,8 +47,7 @@ public class InventoryMainMenu extends Screen {
                 break;
             case 3:
                 redirect(resp, ManageInventory.class);
-            default:
-                redirect(resp, InventoryMainMenu.class);
+                break;
         }
     }
 }

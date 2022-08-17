@@ -44,9 +44,9 @@ public class ManageInventory extends Screen {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(!isAllowed(req, resp)) {
-            redirect(resp, Login.class);
-        }
+        //if(!isAllowed(req, resp)) {
+        //    redirect(resp, Login.class);
+        //}
         header(resp);
         greet(resp);
         //printForm(resp, new String[] {"ID"}, new String[]{"Product ID"}, new String[]{viewButton});
@@ -59,101 +59,7 @@ public class ManageInventory extends Screen {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (handleHeader(req, resp))
             return;
-        /*if (isButtonPressed(req, deleteButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
-                setError("You have no permission to delete product");
-                refresh(req, resp);
-                return;
-            }
-            try {
-                int productID = Integer.parseInt(req.getParameter("ID"));
-                if(controller.deleteProduct(productID).getValue()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Deleted product %d", productID)));
-                    refresh(req, resp);
-                }
-                else{
-                    setError("Product ID " + productID + " doesn't exist!");
-                    refresh(req, resp);
-                }
-            }catch (NumberFormatException e1){
-                setError("Please enter a number!");
-                refresh(req, resp);
-            }
-            catch (Exception e) {
-                setError(e.getMessage());
-                refresh(req, resp);
-            }
-        }
-        else if(isButtonPressed(req, addButton)){
-            if (!isAllowed(req, resp, new HashSet<>(Arrays.asList(Logistics_Manager.class)))) {
-                setError("You have no permission to add product");
-                refresh(req, resp);
-                return;
-            }
-            try {
-                String productName = req.getParameter("product name");
-                int categoryID = Integer.parseInt(req.getParameter("category ID"));
-                int weight = Integer.parseInt(req.getParameter("weight"));
-                int price = Integer.parseInt(req.getParameter("price"));
-                String manufacturer = req.getParameter("manufacturer");
 
-                if(controller.newProduct(productName, categoryID, weight, price, manufacturer).isOk()) {
-                    PrintWriter out = resp.getWriter();
-                    out.println(String.format("<p style=\"color:green\">%s</p><br><br>", String.format("Added new product %d", productName)));
-                    refresh(req, resp);
-                }
-                else{
-                    setError("Product wasn't added");
-                    refresh(req, resp);
-                }
-            }catch (NumberFormatException e1){
-                setError("Please enter a number!");
-                refresh(req, resp);
-            }
-            catch (Exception e) {
-                setError(e.getMessage());
-                refresh(req, resp);
-            }
-        }
-        else if(isButtonPressed(req, viewButton)){
-            if (!isAllowed(req, resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.ALLOWED)) {
-                setError("You have no permission to view product");
-                refresh(req, resp);
-                return;
-            }
-            try {
-                String productIDstr = req.getParameter("ID");
-                int productID = Integer.parseInt(productIDstr);
-                Result<Domain.Service.Objects.InventoryObjects.Product> product = controller.getProduct(productID);
-                if(product.isOk() && product.getValue().getId()==productID)
-                    redirect(resp, Presentation.WebPresentation.Screens.ViewModels.InventoryScreens.Product.class, new String[]{"ProductID"}, new String[]{productIDstr});
-                else
-                {
-                    setError("Product ID " + productID + " doesn't exist");
-                    refresh(req, resp);
-                }
-            }catch (NumberFormatException e1){
-                setError("Please enter a number!");
-                refresh(req, resp);
-            }
-            catch (Exception e) {
-                setError(e.getMessage());
-                refresh(req, resp);
-            }
-        }*/
     }
 
-    private void printProducts(HttpServletResponse resp) {
-        try {
-            Result<List<Domain.Service.Objects.InventoryObjects.Product>> products = controller.getProducts();
-            PrintWriter out = resp.getWriter();
-            products.getValue().sort(Comparator.comparingInt(Product::getId));
-            for (Domain.Service.Objects.InventoryObjects.Product p: products.getValue()) {
-                out.println(p.getName() + ": " + p.getId() + "<br>");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
